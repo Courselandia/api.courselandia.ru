@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="./vendor/phpunit/phpunit/phpunit.xsd"
+    bootstrap="vendor/autoload.php"
+    colors="true"
+>
+    <extensions>
+        <extension class="Tests\DBExtensions"/>
+    </extensions>
+    <testsuites>
+        <testsuite name="Modules">
+            <directory>./app/Modules</directory>
+        </testsuite>
+    </testsuites>
+    <php>
+        <server name="APP_ENV" value="testing"/>
+        <server name="APP_KEY" value="base64:OzWID/BypjRtB1fwhf7VBz9GiRKEEl8bKJPzn2H32+Q="/>
+        <server name="APP_URL" value="http://loc-api.courselandia.ru"/>
+        <server name="APP_NAME" value="courselandia.ru"/>
+        <server name="APP_LOCALE" value="en"/>
+        <server name="IMAGE" value="mongodb"/>
+        <server name="IMAGE_DRIVER" value="local"/>
+        <server name="DOCUMENT" value="mongodb"/>
+        <server name="DOCUMENT_DRIVER" value="local"/>
+        <server name="OAUTH_DRIVER" value="database"/>
+        <server name="BCRYPT_ROUNDS" value="4"/>
+        <server name="CACHE_DRIVER" value="redis"/>
+        <server name="DB_CONNECTION" value="mysql"/>
+        <server name="DB_HOST" value="db-test"/>
+        <server name="DB_PORT" value="3306"/>
+        <server name="DB_DATABASE" value="courselandia_ru_test"/>
+        <server name="DB_USERNAME" value="courselandia_ru_test"/>
+        <server name="DB_PASSWORD" value="dfdQO871-dsdw_wUUI"/>
+        <server name="DB_MONGODB_HOST" value="mongo-test"/>
+        <server name="DB_MONGODB_PORT" value="27017"/>
+        <server name="DB_MONGODB_DATABASE" value="courselandia_ru_test"/>
+        <server name="DB_MONGODB_USERNAME" value="root"/>
+        <server name="DB_MONGODB_PASSWORD" value="f9Qfpg45mc0b1RgDAlj"/>
+        <server name="LOG_CHANNEL" value="database"/>
+        <server name="LOG_DB_CONNECTION" value="mongodb"/>
+        <server name="LOG_DB_COLLECTION" value="logs"/>
+        <server name="LOG_DB_DETAILED" value="true"/>
+        <server name="LOG_DB_MAX" value="1000"/>
+        <server name="LOG_DB_QUEUE" value="false"/>
+        <server name="LOG_DB_QUEUE_NAME" value="logToDB"/>
+        <server name="LOG_DB_QUEUE_CONNECTION" value="default"/>
+        <server name="LOG_DB_MAX_COUNT" value="false"/>
+        <server name="LOG_DB_MAX_HOURS" value="false"/>
+        <server name="LOG_DB_DATETIME_FORMAT" value="Y-m-d H:i:s:ms"/>
+        <server name="RABBITMQ_HOST" value="rabbitmq"/>
+        <server name="RABBITMQ_USER" value="guest"/>
+        <server name="RABBITMQ_PASSWORD" value="fWg1re0-gjKg_kr_lQ8!76Zpfo"/>
+        <server name="MAIL_MAILER" value="array"/>
+        <server name="QUEUE_CONNECTION" value="sync"/>
+        <server name="SESSION_DRIVER" value="array"/>
+        <server name="TELESCOPE_ENABLED" value="false"/>
+        <server name="SMS_DRIVER" value="log"/>
+        <server name="APP_PAGES_URL" value="false"/>
+        <server name="GOOGLE_MAP_KEY" value="AIzaSyCKKsK2tKbKneKZyC81MgXbQDeJFTE3fFU"/>
+        <server name="FIREBASE_CREDENTIALS" value="storage/app/firebase.json"/>
+    </php>
+</phpunit>
