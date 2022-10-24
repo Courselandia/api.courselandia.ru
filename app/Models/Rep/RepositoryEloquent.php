@@ -42,7 +42,7 @@ trait RepositoryEloquent
      * @param  Entity|null  $entity  Класс сущности данных.
      *
      * @return Entity|null Данные.
-     * @throws ParameterInvalidException|ReflectionException
+     * @throws ParameterInvalidException
      */
     public function get(RepositoryQueryBuilder $repositoryQueryBuilder = null, Entity $entity = null): Entity|null
     {

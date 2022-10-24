@@ -1,28 +1,28 @@
 <?php
 /**
- * Модуль Обратной связи.
- * Этот модуль содержит все классы для работы с обратной связью.
+ * Модуль Направления.
+ * Этот модуль содержит все классы для работы с направлениями.
  *
- * @package App\Modules\Feedback
+ * @package App\Modules\Direction
  */
 
-namespace App\Modules\Feedback\Repositories;
+namespace App\Modules\Direction\Repositories;
 
 use App\Models\Entity;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Rep\RepositoryQueryBuilder;
+use App\Modules\Direction\Entities\Direction as DirectionEntity;
 use App\Models\Rep\RepositoryEloquent;
 use App\Models\Rep\Repository;
-use App\Modules\Feedback\Entities\Feedback as FeedbackEntity;
 use Illuminate\Database\Eloquent\Builder;
 
 /**
- * Класс репозитория для обратной связи на основе Eloquent.
+ * Класс репозитория компонента на основе Eloquent для направлений.
  *
- * @method FeedbackEntity|Entity|null get(RepositoryQueryBuilder $repositoryQueryBuilder = null, Entity $entity = null)
- * @method FeedbackEntity[]|Entity[] read(RepositoryQueryBuilder $repositoryQueryBuilder = null, Entity $entity = null)
+ * @method DirectionEntity|Entity|null get(RepositoryQueryBuilder $repositoryQueryBuilder = null, Entity $entity = null)
+ * @method DirectionEntity[]|Entity[] read(RepositoryQueryBuilder $repositoryQueryBuilder = null, Entity $entity = null)
  */
-class Feedback extends Repository
+class Direction extends Repository
 {
     use RepositoryEloquent;
 
@@ -45,10 +45,9 @@ class Feedback extends Repository
                 /**
                  * @var Builder $query
                  */
-                $query->where('id', 'LIKE', '%'.$search.'%')
-                    ->orWhere('name', 'LIKE', '%'.$search.'%')
-                    ->orWhere('phone', 'LIKE', '%'.$search.'%')
-                    ->orWhere('email', 'LIKE', '%'.$search.'%');
+                $query->where('directions.id', 'LIKE', '%' . $search . '%')
+                    ->orWhere('directions.name', 'LIKE', '%' . $search . '%')
+                    ->orWhere('directions.text', 'LIKE', '%' . $search . '%');
             });
         }
 

@@ -247,6 +247,9 @@ return [
 
         App\Modules\User\Providers\UserServiceProvider::class,
         App\Modules\User\Providers\RouteServiceProvider::class,
+
+        App\Modules\Direction\Providers\DirectionServiceProvider::class,
+        App\Modules\Direction\Providers\RouteServiceProvider::class,
     ],
 
     /*
