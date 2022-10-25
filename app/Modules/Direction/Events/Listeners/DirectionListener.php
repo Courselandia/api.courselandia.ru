@@ -25,6 +25,7 @@ class DirectionListener
     public function deleting(Direction $direction): bool
     {
         $direction->deleteRelation($direction->metatag(), $direction->isForceDeleting());
+        $direction->categories()->detach();
 
         return true;
     }

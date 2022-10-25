@@ -1,20 +1,20 @@
 <?php
 /**
- * Модуль Профессии.
- * Этот модуль содержит все классы для работы с профессиями.
+ * Модуль Категорий.
+ * Этот модуль содержит все классы для работы с категориями.
  *
- * @package App\Modules\Profession
+ * @package App\Modules\Category
  */
 
-namespace App\Modules\Profession\Http\Requests\Admin\Profession;
+namespace App\Modules\Category\Http\Requests\Admin;
 
 use App\Models\FormRequest;
 use JetBrains\PhpStorm\ArrayShape;
 
 /**
- * Класс запрос для обновления статуса профессии.
+ * Класс запрос для обновления статуса категории.
  */
-class ProfessionUpdateStatusRequest extends FormRequest
+class CategoryUpdateStatusRequest extends FormRequest
 {
     /**
      * Возвращает правила проверки.
@@ -36,7 +36,7 @@ class ProfessionUpdateStatusRequest extends FormRequest
     #[ArrayShape(['status' => 'string'])] public function attributes(): array
     {
         return [
-            'status' => trans('profession::http.requests.admin.profession.professionUpdateStatusRequest.status'),
+            'status' => trans('category::http.requests.admin.categoryUpdateStatusRequest.status'),
         ];
     }
 }

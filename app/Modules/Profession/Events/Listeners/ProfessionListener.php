@@ -25,6 +25,7 @@ class ProfessionListener
     public function deleting(Profession $profession): bool
     {
         $profession->deleteRelation($profession->metatag(), $profession->isForceDeleting());
+        $profession->categories()->detach();
 
         return true;
     }

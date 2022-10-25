@@ -1,21 +1,21 @@
 <?php
 /**
- * Модуль Профессии.
- * Этот модуль содержит все классы для работы с профессиями.
+ * Модуль Категорий.
+ * Этот модуль содержит все классы для работы с категориями.
  *
- * @package App\Modules\Profession
+ * @package App\Modules\Category
  */
 
-namespace App\Modules\Profession\Http\Requests\Admin\Profession;
+namespace App\Modules\Category\Http\Requests\Admin;
 
-use Schema;
 use App\Models\FormRequest;
 use JetBrains\PhpStorm\ArrayShape;
+use Schema;
 
 /**
- * Класс запрос для чтения профессий.
+ * Класс запрос для чтения категорий.
  */
-class ProfessionReadRequest extends FormRequest
+class CategoryReadRequest extends FormRequest
 {
     /**
      * Возвращает правила проверки.
@@ -29,7 +29,7 @@ class ProfessionReadRequest extends FormRequest
         'filters' => 'string',
     ])] public function rules(): array
     {
-        $column = Schema::getColumnListing('professions');
+        $column = Schema::getColumnListing('categories');
         $column = implode(',', $column);
 
         return [
@@ -53,10 +53,10 @@ class ProfessionReadRequest extends FormRequest
     ])] public function attributes(): array
     {
         return [
-            'sorts' => trans('profession::http.requests.admin.professionReadRequest.sorts'),
-            'start' => trans('profession::http.requests.admin.professionReadRequest.start'),
-            'limit' => trans('profession::http.requests.admin.professionReadRequest.limit'),
-            'filters' => trans('profession::http.requests.admin.professionReadRequest.filters'),
+            'sorts' => trans('category::http.requests.admin.categoryReadRequest.sorts'),
+            'start' => trans('category::http.requests.admin.categoryReadRequest.start'),
+            'limit' => trans('category::http.requests.admin.categoryReadRequest.limit'),
+            'filters' => trans('category::http.requests.admin.categoryReadRequest.filters'),
         ];
     }
 }

@@ -253,6 +253,9 @@ return [
 
         App\Modules\Profession\Providers\ProfessionServiceProvider::class,
         App\Modules\Profession\Providers\RouteServiceProvider::class,
+
+        App\Modules\Category\Providers\CategoryServiceProvider::class,
+        App\Modules\Category\Providers\RouteServiceProvider::class,
     ],
 
     /*

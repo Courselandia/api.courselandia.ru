@@ -6,11 +6,11 @@
  * @package App\Modules\Direction
  */
 
-namespace App\Modules\Direction\Http\Requests\Admin\Direction;
+namespace App\Modules\Direction\Http\Requests\Admin;
 
-use Schema;
 use App\Models\FormRequest;
 use JetBrains\PhpStorm\ArrayShape;
+use Schema;
 
 /**
  * Класс запрос для чтения направлений.

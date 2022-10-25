@@ -135,7 +135,7 @@ class ProfessionUpdateAction extends Action
             $professionEntity->status = $this->status;
 
             $this->profession->update($this->id, $professionEntity);
-            Cache::tags(['profession'])->flush();
+            Cache::tags(['catalog', 'category', 'direction', 'profession'])->flush();
 
             $action = app(ProfessionGetAction::class);
             $action->id = $this->id;

@@ -6,25 +6,25 @@
  * @package App\Modules\Profession
  */
 
-namespace App\Modules\Profession\Http\Requests\Admin\Profession;
+namespace App\Modules\Profession\Http\Requests\Admin;
 
 use App\Models\FormRequest;
 use JetBrains\PhpStorm\ArrayShape;
 
 /**
- * Класс запрос для удаления профессии.
+ * Класс запрос для обновления статуса профессии.
  */
-class ProfessionDestroyRequest extends FormRequest
+class ProfessionUpdateStatusRequest extends FormRequest
 {
     /**
      * Возвращает правила проверки.
      *
      * @return array Массив правил проверки.
      */
-    #[ArrayShape(['ids' => 'string'])] public function rules(): array
+    #[ArrayShape(['status' => 'string'])] public function rules(): array
     {
         return [
-            'ids' => 'required|json|ids'
+            'status' => 'required|boolean',
         ];
     }
 
@@ -33,10 +33,10 @@ class ProfessionDestroyRequest extends FormRequest
      *
      * @return array Массив атрибутов.
      */
-    #[ArrayShape(['ids' => 'string'])] public function attributes(): array
+    #[ArrayShape(['status' => 'string'])] public function attributes(): array
     {
         return [
-            'ids' => trans('profession::http.requests.admin.professionDestroyRequest.ids')
+            'status' => trans('profession::http.requests.admin.professionUpdateStatusRequest.status'),
         ];
     }
 }

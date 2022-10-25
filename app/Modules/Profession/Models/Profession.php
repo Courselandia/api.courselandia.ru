@@ -8,6 +8,7 @@
 
 namespace App\Modules\Profession\Models;
 
+use App\Modules\Category\Models\Category;
 use Eloquent;
 use App\Models\Status;
 use App\Models\Delete;
@@ -15,6 +16,7 @@ use App\Models\Validate;
 use App\Models\Sortable;
 use EloquentFilter\Filterable;
 use App\Modules\Metatag\Models\Metatag;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use JetBrains\PhpStorm\ArrayShape;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -35,6 +37,7 @@ use App\Modules\Profession\Filters\ProfessionFilter;
  * @property string $status Статус.
  *
  * @property-read Metatag $metatag
+ * @property-read Category[] $categories
  */
 class Profession extends Eloquent
 {
@@ -139,5 +142,15 @@ class Profession extends Eloquent
     public function metatag(): BelongsTo
     {
         return $this->belongsTo(Metatag::class);
+    }
+
+    /**
+     * Категории этой профессии.
+     *
+     * @return BelongsToMany Модели категорий.
+     */
+    public function categories(): BelongsToMany
+    {
+        return $this->belongsToMany(Category::class);
     }
 }

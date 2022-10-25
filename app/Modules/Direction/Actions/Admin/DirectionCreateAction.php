@@ -128,7 +128,7 @@ class DirectionCreateAction extends Action
         $directionEntity->metatag_id = $metatag->id;
 
         $id = $this->direction->create($directionEntity);
-        Cache::tags(['direction'])->flush();
+        Cache::tags(['catalog', 'category', 'direction', 'profession'])->flush();
 
         $action = app(DirectionGetAction::class);
         $action->id = $id;

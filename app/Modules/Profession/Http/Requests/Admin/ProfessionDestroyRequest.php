@@ -1,20 +1,20 @@
 <?php
 /**
- * Модуль Направления.
- * Этот модуль содержит все классы для работы с направлениями.
+ * Модуль Профессии.
+ * Этот модуль содержит все классы для работы с профессиями.
  *
- * @package App\Modules\Direction
+ * @package App\Modules\Profession
  */
 
-namespace App\Modules\Direction\Http\Requests\Admin\Direction;
+namespace App\Modules\Profession\Http\Requests\Admin;
 
 use App\Models\FormRequest;
 use JetBrains\PhpStorm\ArrayShape;
 
 /**
- * Класс запрос для удаления направления.
+ * Класс запрос для удаления профессии.
  */
-class DirectionDestroyRequest extends FormRequest
+class ProfessionDestroyRequest extends FormRequest
 {
     /**
      * Возвращает правила проверки.
@@ -36,7 +36,7 @@ class DirectionDestroyRequest extends FormRequest
     #[ArrayShape(['ids' => 'string'])] public function attributes(): array
     {
         return [
-            'ids' => trans('direction::http.requests.admin.directionDestroyRequest.ids')
+            'ids' => trans('profession::http.requests.admin.professionDestroyRequest.ids')
         ];
     }
 }

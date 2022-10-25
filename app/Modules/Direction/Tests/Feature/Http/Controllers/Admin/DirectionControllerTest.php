@@ -201,7 +201,7 @@ class DirectionControllerTest extends TestCase
             'api/private/admin/direction/update/' . $direction->id,
             [
                 'name' => $faker->text(150),
-                'header' => $faker->text(350),
+                'header' => $faker->realTextBetween(350, 500),
                 'weight' => $faker->numberBetween(1, 500),
                 'link' => Util::latin($faker->text(150)),
                 'text' => $faker->text(10000),

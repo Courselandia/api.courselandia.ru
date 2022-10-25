@@ -198,7 +198,7 @@ class ProfessionControllerTest extends TestCase
             'api/private/admin/profession/update/' . $profession->id,
             [
                 'name' => $faker->text(150),
-                'header' => $faker->text(350),
+                'header' => $faker->realTextBetween(350, 500),
                 'link' => Util::latin($faker->text(150)),
                 'text' => $faker->text(10000),
                 'status' => 'test',

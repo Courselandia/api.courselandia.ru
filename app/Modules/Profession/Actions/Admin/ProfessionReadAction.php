@@ -96,7 +96,7 @@ class ProfessionReadAction extends Action
 
         $cacheKey = Util::getKey('profession', 'read', 'count', $query);
 
-        return Cache::tags(['profession'])->remember(
+        return Cache::tags(['catalog', 'category', 'direction', 'profession'])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
             function () use ($query) {

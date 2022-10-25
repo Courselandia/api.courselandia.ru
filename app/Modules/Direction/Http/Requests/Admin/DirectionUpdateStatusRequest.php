@@ -6,7 +6,7 @@
  * @package App\Modules\Direction
  */
 
-namespace App\Modules\Direction\Http\Requests\Admin\Direction;
+namespace App\Modules\Direction\Http\Requests\Admin;
 
 use App\Models\FormRequest;
 use JetBrains\PhpStorm\ArrayShape;
@@ -36,7 +36,7 @@ class DirectionUpdateStatusRequest extends FormRequest
     #[ArrayShape(['status' => 'string'])] public function attributes(): array
     {
         return [
-            'status' => trans('direction::http.requests.admin.direction.directionUpdateStatusRequest.status'),
+            'status' => trans('direction::http.requests.admin.directionUpdateStatusRequest.status'),
         ];
     }
 }
