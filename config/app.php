@@ -250,6 +250,9 @@ return [
 
         App\Modules\Direction\Providers\DirectionServiceProvider::class,
         App\Modules\Direction\Providers\RouteServiceProvider::class,
+
+        App\Modules\Profession\Providers\ProfessionServiceProvider::class,
+        App\Modules\Profession\Providers\RouteServiceProvider::class,
     ],
 
     /*

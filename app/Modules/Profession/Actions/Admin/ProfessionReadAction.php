@@ -1,35 +1,35 @@
 <?php
 /**
- * Модуль Направления.
- * Этот модуль содержит все классы для работы с направлениями.
+ * Модуль Профессии.
+ * Этот модуль содержит все классы для работы с профессиями.
  *
- * @package App\Modules\Direction
+ * @package App\Modules\Profession
  */
 
-namespace App\Modules\Direction\Actions\Admin;
+namespace App\Modules\Profession\Actions\Admin;
 
 use App\Models\Action;
 use App\Models\Enums\CacheTime;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Rep\RepositoryFilter;
 use App\Models\Rep\RepositoryQueryBuilder;
-use App\Modules\Direction\Repositories\Direction;
+use App\Modules\Profession\Repositories\Profession;
 use Cache;
 use JetBrains\PhpStorm\ArrayShape;
 use ReflectionException;
 use Util;
 
 /**
- * Класс действия для чтения направлений.
+ * Класс действия для чтения профессий.
  */
-class DirectionReadAction extends Action
+class ProfessionReadAction extends Action
 {
     /**
-     * Репозиторий направлений.
+     * Репозиторий профессий.
      *
-     * @var Direction
+     * @var Profession
      */
-    private Direction $direction;
+    private Profession $profession;
 
     /**
      * Поиск данных.
@@ -69,11 +69,11 @@ class DirectionReadAction extends Action
     /**
      * Конструктор.
      *
-     * @param  Direction  $direction  Репозиторий направлений.
+     * @param  Profession  $profession  Репозиторий профессий.
      */
-    public function __construct(Direction $direction)
+    public function __construct(Profession $profession)
     {
-        $this->direction = $direction;
+        $this->profession = $profession;
     }
 
     /**
@@ -94,15 +94,15 @@ class DirectionReadAction extends Action
                 'metatag',
             ]);
 
-        $cacheKey = Util::getKey('direction', 'read', 'count', $query);
+        $cacheKey = Util::getKey('profession', 'read', 'count', $query);
 
-        return Cache::tags(['direction'])->remember(
+        return Cache::tags(['profession'])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
             function () use ($query) {
                 return [
-                    'data' => $this->direction->read($query),
-                    'total' => $this->direction->count($query),
+                    'data' => $this->profession->read($query),
+                    'total' => $this->profession->count($query),
                 ];
             }
         );
