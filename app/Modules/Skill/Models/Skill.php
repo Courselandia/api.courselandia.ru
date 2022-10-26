@@ -1,12 +1,12 @@
 <?php
 /**
- * Модуль Профессии.
- * Этот модуль содержит все классы для работы с профессиями.
+ * Модуль Навыков.
+ * Этот модуль содержит все классы для работы с навыками.
  *
- * @package App\Modules\Profession
+ * @package App\Modules\Skill
  */
 
-namespace App\Modules\Profession\Models;
+namespace App\Modules\Skill\Models;
 
 use App\Modules\Category\Models\Category;
 use Eloquent;
@@ -21,14 +21,14 @@ use JetBrains\PhpStorm\ArrayShape;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use App\Modules\Profession\Database\Factories\ProfessionFactory;
+use App\Modules\Skill\Database\Factories\SkillFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use App\Modules\Profession\Filters\ProfessionFilter;
+use App\Modules\Skill\Filters\SkillFilter;
 
 /**
- * Класс модель для таблицы профессий на основе Eloquent.
+ * Класс модель для таблицы навыков на основе Eloquent.
  *
- * @property int|string $id ID профессии.
+ * @property int|string $id ID навыка.
  * @property int|string $metatag_id ID метатегов.
  * @property string $name Название.
  * @property string $header Заголовок.
@@ -39,7 +39,7 @@ use App\Modules\Profession\Filters\ProfessionFilter;
  * @property-read Metatag $metatag
  * @property-read Category[] $categories
  */
-class Profession extends Eloquent
+class Skill extends Eloquent
 {
     use Delete;
     use HasFactory;
@@ -82,7 +82,7 @@ class Profession extends Eloquent
             'metatag_id' => 'digits_between:0,20',
             'name' => 'required|between:1,191',
             'header' => 'max:191',
-            'link' => 'required|between:1,191|alpha_dash|unique_soft:professions,link,' . $this->id . ',id',
+            'link' => 'required|between:1,191|alpha_dash|unique_soft:skills,link,' . $this->id . ',id',
             'text' => 'max:65000',
             'status' => 'required|boolean'
         ];
@@ -96,12 +96,12 @@ class Profession extends Eloquent
     protected function getNames(): array
     {
         return [
-            'metatag_id' => trans('profession::models.profession.metatagId'),
-            'name' => trans('profession::models.profession.name'),
-            'header' => trans('profession::models.profession.header'),
-            'link' => trans('profession::models.profession.link'),
-            'text' => trans('profession::models.profession.text'),
-            'status' => trans('profession::models.profession.status')
+            'metatag_id' => trans('skill::models.skill.metatagId'),
+            'name' => trans('skill::models.skill.name'),
+            'header' => trans('skill::models.skill.header'),
+            'link' => trans('skill::models.skill.link'),
+            'text' => trans('skill::models.skill.text'),
+            'status' => trans('skill::models.skill.status')
         ];
     }
 
@@ -112,7 +112,7 @@ class Profession extends Eloquent
      */
     public function modelFilter(): string
     {
-        return $this->provideFilter(ProfessionFilter::class);
+        return $this->provideFilter(SkillFilter::class);
     }
 
     /**
@@ -122,7 +122,7 @@ class Profession extends Eloquent
      */
     protected static function newFactory(): Factory
     {
-        return ProfessionFactory::new();
+        return SkillFactory::new();
     }
 
     /**
@@ -136,7 +136,7 @@ class Profession extends Eloquent
     }
 
     /**
-     * Категории этой профессии.
+     * Категории этой навыка.
      *
      * @return BelongsToMany Модели категорий.
      */

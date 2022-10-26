@@ -256,6 +256,9 @@ return [
 
         App\Modules\Category\Providers\CategoryServiceProvider::class,
         App\Modules\Category\Providers\RouteServiceProvider::class,
+
+        App\Modules\Skill\Providers\SkillServiceProvider::class,
+        App\Modules\Skill\Providers\RouteServiceProvider::class,
     ],
 
     /*

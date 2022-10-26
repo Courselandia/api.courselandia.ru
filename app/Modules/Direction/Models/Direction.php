@@ -51,15 +51,6 @@ class Direction extends Eloquent
     use Filterable;
 
     /**
-     * Атрибуты, которые должны быть преобразованы к дате.
-     *
-     * @var array
-     */
-    protected $dates = [
-        'published_at'
-    ];
-
-    /**
      * Атрибуты, для которых разрешено массовое назначение.
      *
      * @var array
