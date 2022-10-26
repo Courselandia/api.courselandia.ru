@@ -259,6 +259,9 @@ return [
 
         App\Modules\Skill\Providers\SkillServiceProvider::class,
         App\Modules\Skill\Providers\RouteServiceProvider::class,
+
+        App\Modules\Tool\Providers\ToolServiceProvider::class,
+        App\Modules\Tool\Providers\RouteServiceProvider::class,
     ],
 
     /*
