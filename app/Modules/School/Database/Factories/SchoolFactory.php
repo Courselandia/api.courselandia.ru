@@ -39,7 +39,7 @@ class SchoolFactory extends Factory
         'link' => 'string',
         'text' => 'string',
         'rating' => 'float',
-        'url' => 'string',
+        'site' => 'string',
         'status' => 'bool'
     ])] public function definition(): array
     {
@@ -50,7 +50,7 @@ class SchoolFactory extends Factory
             'link' => Util::latin($this->faker->name),
             'text' => $this->faker->text(5000),
             'rating' => 4.27,
-            'url' => $this->faker->url(),
+            'site' => $this->faker->url(),
             'status' => true,
         ];
     }

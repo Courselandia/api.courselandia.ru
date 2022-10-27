@@ -21,11 +21,11 @@ class SchoolCreateRequest extends FormRequest
      *
      * @return array Массив правил проверки.
      */
-    #[ArrayShape(['image' => 'string', 'published_at' => 'string'])] public function rules(): array
+    #[ArrayShape(['imageLogo' => 'string', 'imageSite' => 'string'])] public function rules(): array
     {
         return [
-            'image' => 'nullable|media:jpg,png,gif,webp,svg',
-            'published_at' => 'required|date_format:Y-m-d H:i:s O',
+            'imageLogo' => 'nullable|media:jpg,png,gif,webp,svg',
+            'imageSite' => 'nullable|media:jpg,png,gif,webp,svg',
         ];
     }
 
@@ -35,13 +35,13 @@ class SchoolCreateRequest extends FormRequest
      * @return array Массив атрибутов.
      */
     #[ArrayShape([
-        'image' => 'string',
-        'published_at' => 'string',
+        'imageLogo' => 'string',
+        'imageSite' => 'string',
     ])] public function attributes(): array
     {
         return [
-            'image' => trans('school::http.requests.admin.schoolCreateRequest.image'),
-            'published_at' => trans('school::http.requests.admin.schoolCreateRequest.publishedAt'),
+            'imageLogo' => trans('school::http.requests.admin.schoolCreateRequest.imageLogo'),
+            'imageSite' => trans('school::http.requests.admin.schoolCreateRequest.imageSite'),
         ];
     }
 }

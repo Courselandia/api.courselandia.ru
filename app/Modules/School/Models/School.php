@@ -261,7 +261,7 @@ class School extends Eloquent
      *
      * @return ImageEntity|null Среднее изображение.
      */
-    public function getImageMiddleIdAttribute(mixed $value): ?ImageEntity
+    public function getImageSiteIdAttribute(mixed $value): ?ImageEntity
     {
         if (is_numeric($value) || is_string($value)) {
             return ImageStore::get(new RepositoryQueryBuilder($value));

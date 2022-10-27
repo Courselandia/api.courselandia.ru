@@ -118,7 +118,7 @@ class SchoolController extends Controller
             }
 
             if ($request->hasFile('imageSite') && $request->file('imageSite')->isValid()) {
-                $action->image_logo_id = $request->file('imageSite');
+                $action->image_site_id = $request->file('imageSite');
             }
 
             $data = $action->run();
@@ -181,7 +181,7 @@ class SchoolController extends Controller
             }
 
             if ($request->hasFile('imageSite') && $request->file('imageSite')->isValid()) {
-                $action->image_logo_id = $request->file('imageSite');
+                $action->image_site_id = $request->file('imageSite');
             }
 
             $data = $action->run();

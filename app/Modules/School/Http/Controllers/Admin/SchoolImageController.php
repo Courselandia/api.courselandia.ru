@@ -43,7 +43,7 @@ class SchoolImageController extends Controller
             $action = app(SchoolImageUpdateAction::class);
             $action->id = $id;
             $action->image = $request->file('image');
-            $action->type = $request->file('type');
+            $action->type = $request->get('type');
 
             $school = $action->run();
 
@@ -86,7 +86,7 @@ class SchoolImageController extends Controller
         try {
             $action = app(SchoolImageDestroyAction::class);
             $action->id = $id;
-            $action->type = $request->file('type');
+            $action->type = $request->get('type');
             $action->run();
 
             Log::info(trans('school::http.controllers.admin.schoolController.destroyImage.log'), [

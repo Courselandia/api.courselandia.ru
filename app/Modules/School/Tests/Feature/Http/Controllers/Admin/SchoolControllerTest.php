@@ -36,7 +36,6 @@ class SchoolControllerTest extends TestCase
             'GET',
             'api/private/admin/school/read',
             [
-                'search' => $school->header,
                 'start' => 0,
                 'limit' => 10,
                 'sorts' => [

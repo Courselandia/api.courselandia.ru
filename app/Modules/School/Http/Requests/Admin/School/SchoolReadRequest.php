@@ -34,20 +34,16 @@ class SchoolReadRequest extends FormRequest
 
         $columnFilters = [
             'id',
-            'published_at',
-            'header',
-            'link',
-            'anons',
-            'article',
+            'name',
             'status',
         ];
         $columnFilters = implode(',', $columnFilters);
 
         return [
-            'sorts' => 'array|sorts:'.$columnSorts,
+            'sorts' => 'array|sorts:' . $columnSorts,
             'start' => 'integer|digits_between:0,20',
             'limit' => 'integer|digits_between:0,20',
-            'filters' => 'array|filters:'.$columnFilters.'|filter_date_range:published_at',
+            'filters' => 'array|filters:' . $columnFilters,
         ];
     }
 

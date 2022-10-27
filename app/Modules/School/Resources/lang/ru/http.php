@@ -13,7 +13,8 @@ return [
                 'ids' => 'ID'
             ],
             'schoolCreateRequest' => [
-                'image' => 'Изображение',
+                'imageLogo' => 'Изображение логотипа',
+                'imageSite' => 'Изображение сайта',
             ],
             'schoolUpdateStatusRequest' => [
                 'status' => 'Статус',
