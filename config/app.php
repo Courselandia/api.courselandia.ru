@@ -262,6 +262,9 @@ return [
 
         App\Modules\Tool\Providers\ToolServiceProvider::class,
         App\Modules\Tool\Providers\RouteServiceProvider::class,
+
+        App\Modules\School\Providers\SchoolServiceProvider::class,
+        App\Modules\School\Providers\RouteServiceProvider::class,
     ],
 
     /*
