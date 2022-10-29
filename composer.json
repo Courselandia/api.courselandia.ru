@@ -15,6 +15,7 @@
         "ext-mongodb": "*",
         "ext-pdo": "*",
         "ext-zip": "*",
+        "codebuds/webp-converter": "^0.5.1",
         "danielme85/laravel-log-to-db": "^3.0",
         "firebase/php-jwt": "^5.2",
         "guzzlehttp/guzzle": "^7.4",
@@ -29,7 +30,6 @@
         "menarasolutions/geographer-laravel": "^0.2.1",
         "orchestra/parser": "^7.0",
         "predis/predis": "^2.0",
-        "rosell-dk/webp-convert": "^2.9",
         "tucker-eric/eloquentfilter": "^3.1",
         "vladimir-yuldashev/laravel-queue-rabbitmq": "^13.0"
     },

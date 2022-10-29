@@ -12,6 +12,7 @@ RUN apt-get update && apt-get install -y \
     libpng-dev \
     libonig-dev \
     libxml2-dev \
+    libwebp-dev \
     zip \
     unzip \
     nano \
@@ -29,7 +30,7 @@ RUN pecl install mongodb \
     && echo "extension=mongodb.so" > $PHP_INI_DIR/conf.d/mongo.ini
 
 # Install PHP extensions
-RUN docker-php-ext-configure gd --with-jpeg
+RUN docker-php-ext-configure gd --with-jpeg --with-webp
 
 RUN docker-php-ext-install -j$(nproc) \
     iconv \

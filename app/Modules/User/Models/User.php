@@ -9,6 +9,8 @@
 namespace App\Modules\User\Models;
 
 use App\Modules\User\Filters\UserFilter;
+use CodeBuds\WebPConverter\WebPConverter;
+use Exception;
 use Size;
 use ImageStore;
 use Eloquent;
@@ -18,8 +20,6 @@ use App\Models\Delete;
 use App\Models\Sortable;
 use EloquentFilter\Filterable;
 use App\Models\Validate;
-use WebPConvert\Convert\Exceptions\ConversionFailedException;
-use WebPConvert\WebPConvert;
 use Illuminate\Http\UploadedFile;
 use JetBrains\PhpStorm\ArrayShape;
 use App\Models\BelongsToOneTrait;
@@ -199,10 +199,10 @@ class User extends Authenticatable
     /**
      * Преобразователь атрибута - запись: маленькое изображение.
      *
-     * @param  mixed  $value  Значение атрибута.
+     * @param mixed $value Значение атрибута.
      *
      * @return void
-     * @throws ConversionFailedException
+     * @throws Exception
      */
     public function setImageSmallIdAttribute(mixed $value): void
     {
@@ -211,15 +211,14 @@ class User extends Authenticatable
 
         $this->attributes[$name] = Image::set($name, $value, function (string $name, UploadedFile $value) use ($folder) {
             $path = ImageStore::tmp($value->getClientOriginalExtension());
-            $pathWebp = ImageStore::tmp('webp');
 
             Size::make($value)->fit(60, 60)->save($path);
 
-            WebPConvert::convert($path, $pathWebp);
+            $imageWebp = WebPConverter::createWebpImage($path, ['saveFile' => true]);
 
             ImageStore::setFolder($folder);
             $image = new ImageEntity();
-            $image->path = $pathWebp;
+            $image->path = $imageWebp['path'];
 
             if (isset($this->attributes[$name]) && $this->attributes[$name] !== '') {
                 return ImageStore::update($this->attributes[$name], $image);
@@ -251,7 +250,7 @@ class User extends Authenticatable
      * @param mixed $value Значение атрибута.
      *
      * @return void
-     * @throws ConversionFailedException
+     * @throws Exception
      */
     public function setImageMiddleIdAttribute(mixed $value): void
     {
@@ -260,7 +259,6 @@ class User extends Authenticatable
 
         $this->attributes[$name] = Image::set($name, $value, function (string $name, UploadedFile $value) use ($folder) {
             $path = ImageStore::tmp($value->getClientOriginalExtension());
-            $pathWebp = ImageStore::tmp('webp');
 
             Size::make($value)->resize(
                 350,
@@ -271,11 +269,11 @@ class User extends Authenticatable
                 }
             )->save($path);
 
-            WebPConvert::convert($path, $pathWebp);
+            $imageWebp = WebPConverter::createWebpImage($path, ['saveFile' => true]);
 
             ImageStore::setFolder($folder);
             $image = new ImageEntity();
-            $image->path = $pathWebp;
+            $image->path = $imageWebp['path'];
 
             if (isset($this->attributes[$name]) && $this->attributes[$name] !== '') {
                 return ImageStore::update($this->attributes[$name], $image);
@@ -307,7 +305,7 @@ class User extends Authenticatable
      * @param mixed $value Значение атрибута.
      *
      * @return void
-     * @throws ConversionFailedException
+     * @throws Exception
      */
     public function setImageBigIdAttribute(mixed $value): void
     {
@@ -316,7 +314,6 @@ class User extends Authenticatable
 
         $this->attributes[$name] = Image::set($name, $value, function (string $name, UploadedFile $value) use ($folder) {
             $path = ImageStore::tmp($value->getClientOriginalExtension());
-            $pathWebp = ImageStore::tmp('webp');
 
             Size::make($value)->resize(
                 1200,
@@ -327,11 +324,11 @@ class User extends Authenticatable
                 }
             )->save($path);
 
-            WebPConvert::convert($path, $pathWebp);
+            $imageWebp = WebPConverter::createWebpImage($path, ['saveFile' => true]);
 
             ImageStore::setFolder($folder);
             $image = new ImageEntity();
-            $image->path = $pathWebp;
+            $image->path = $imageWebp['path'];
 
             if (isset($this->attributes[$name]) && $this->attributes[$name] !== '') {
                 return ImageStore::update($this->attributes[$name], $image);

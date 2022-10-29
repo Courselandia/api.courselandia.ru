@@ -8,6 +8,7 @@
 
 namespace App\Modules\School\Models;
 
+use Exception;
 use Size;
 use Eloquent;
 use ImageStore;
@@ -15,7 +16,7 @@ use App\Models\Status;
 use App\Models\Delete;
 use App\Models\Validate;
 use App\Models\Sortable;
-use WebPConvert\WebPConvert;
+use CodeBuds\WebPConverter\WebPConverter;
 use EloquentFilter\Filterable;
 use App\Models\Rep\RepositoryQueryBuilder;
 use App\Modules\Image\Entities\Image as ImageEntity;
@@ -29,7 +30,6 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Modules\School\Database\Factories\SchoolFactory;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use WebPConvert\Convert\Exceptions\ConversionFailedException;
 use App\Modules\School\Filters\SchoolFilter;
 
 /**
@@ -156,7 +156,7 @@ class School extends Eloquent
      * @param  mixed  $value  Значение атрибута.
      *
      * @return void
-     * @throws FileNotFoundException|ConversionFailedException
+     * @throws FileNotFoundException|Exception
      */
     public function setImageLogoIdAttribute(mixed $value): void
     {
@@ -168,7 +168,6 @@ class School extends Eloquent
             $value,
             function (string $name, UploadedFile $value) use ($folder) {
                 $path = ImageStore::tmp($value->getClientOriginalExtension());
-                $pathWebp = ImageStore::tmp('webp');
 
                 Size::make($value)->resize(
                     150,
@@ -179,11 +178,11 @@ class School extends Eloquent
                     }
                 )->save($path);
 
-                WebPConvert::convert($path, $pathWebp);
+                $imageWebp = WebPConverter::createWebpImage($path, ['saveFile' => true]);
 
                 ImageStore::setFolder($folder);
                 $image = new ImageEntity();
-                $image->path = $pathWebp;
+                $image->path = $imageWebp['path'];
 
                 if (isset($this->attributes[$name]) && $this->attributes[$name] !== '') {
                     return ImageStore::update($this->attributes[$name], $image);
@@ -216,7 +215,7 @@ class School extends Eloquent
      * @param  mixed  $value  Значение атрибута.
      *
      * @return void
-     * @throws FileNotFoundException|ConversionFailedException
+     * @throws FileNotFoundException|Exception
      */
     public function setImageSiteIdAttribute(mixed $value): void
     {
@@ -228,7 +227,6 @@ class School extends Eloquent
             $value,
             function (string $name, UploadedFile $value) use ($folder) {
                 $path = ImageStore::tmp($value->getClientOriginalExtension());
-                $pathWebp = ImageStore::tmp('webp');
 
                 Size::make($value)->resize(
                     800,
@@ -239,11 +237,11 @@ class School extends Eloquent
                     }
                 )->save($path);
 
-                WebPConvert::convert($path, $pathWebp);
+                $imageWebp = WebPConverter::createWebpImage($path, ['saveFile' => true]);
 
                 ImageStore::setFolder($folder);
                 $image = new ImageEntity();
-                $image->path = $pathWebp;
+                $image->path = $imageWebp['path'];
 
                 if (isset($this->attributes[$name]) && $this->attributes[$name] !== '') {
                     return ImageStore::update($this->attributes[$name], $image);
