@@ -8,7 +8,9 @@
 
 namespace App\Modules\School\Models;
 
+use App\Modules\Teacher\Models\Teacher;
 use Exception;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Size;
 use Eloquent;
 use ImageStore;
@@ -48,6 +50,7 @@ use App\Modules\School\Filters\SchoolFilter;
  * @property int|string|array|UploadedFile|ImageEntity $image_logo_id Изображение логотипа.
  *
  * @property-read Metatag $metatag
+ * @property-read Teacher[] $teachers
  */
 class School extends Eloquent
 {
@@ -276,5 +279,15 @@ class School extends Eloquent
     public function metatag(): BelongsTo
     {
         return $this->belongsTo(Metatag::class);
+    }
+
+    /**
+     * Учителя этой школы.
+     *
+     * @return BelongsToMany Модели учителей.
+     */
+    public function teachers(): BelongsToMany
+    {
+        return $this->belongsToMany(Teacher::class);
     }
 }

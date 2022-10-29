@@ -117,9 +117,7 @@ class PublicationController extends Controller
             $action->keywords = $request->get('keywords');
 
             if ($request->hasFile('image') && $request->file('image')->isValid()) {
-                $action->image_small_id = $request->file('image');
-                $action->image_middle_id = $request->file('image');
-                $action->image_big_id = $request->file('image');
+                $action->image = $request->file('image');
             }
 
             $data = $action->run();
@@ -180,9 +178,7 @@ class PublicationController extends Controller
             $action->keywords = $request->get('keywords');
 
             if ($request->hasFile('image') && $request->file('image')->isValid()) {
-                $action->image_small_id = $request->file('image');
-                $action->image_middle_id = $request->file('image');
-                $action->image_big_id = $request->file('image');
+                $action->image = $request->file('image');
             }
 
             $data = $action->run();

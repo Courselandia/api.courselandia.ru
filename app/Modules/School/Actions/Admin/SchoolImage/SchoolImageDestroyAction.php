@@ -93,7 +93,7 @@ class SchoolImageDestroyAction extends Action
             }
 
             $this->school->update($this->id, $school);
-            Cache::tags(['catalog', 'school'])->flush();
+            Cache::tags(['catalog', 'school', 'teacher'])->flush();
 
             return true;
         }

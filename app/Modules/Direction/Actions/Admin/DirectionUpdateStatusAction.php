@@ -67,7 +67,7 @@ class DirectionUpdateStatusAction extends Action
         if ($directionEntity) {
             $directionEntity->status = $this->status;
             $this->direction->update($this->id, $directionEntity);
-            Cache::tags(['catalog', 'category', 'direction', 'profession'])->flush();
+            Cache::tags(['catalog', 'category', 'direction', 'profession', 'teacher'])->flush();
 
             return $directionEntity;
         }

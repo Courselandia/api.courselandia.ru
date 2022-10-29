@@ -361,6 +361,9 @@ class CategoryControllerTest extends TestCase
     /**
      * Получить структуру данных категории.
      *
+     * @param bool $direction Включать в структуру данные направлений.
+     * @param bool $profession Включать в структуру данные профессий.
+     *
      * @return array Массив структуры данных категории.
      */
     #[Pure] private function getCategoryStructure(bool $direction = false, bool $profession = false): array

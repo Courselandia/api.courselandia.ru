@@ -160,8 +160,6 @@ class SchoolUpdateAction extends Action
             $schoolEntity->text = $this->text;
             $schoolEntity->site = $this->site;
             $schoolEntity->rating = $this->rating;
-            $schoolEntity->image_logo_id = $this->image_logo_id;
-            $schoolEntity->image_site_id = $this->image_site_id;
             $schoolEntity->status = $this->status;
 
             if ($this->image_logo_id) {
@@ -173,7 +171,7 @@ class SchoolUpdateAction extends Action
             }
 
             $this->school->update($this->id, $schoolEntity);
-            Cache::tags(['catalog', 'school'])->flush();
+            Cache::tags(['catalog', 'school', 'teacher'])->flush();
 
             $action = app(SchoolGetAction::class);
             $action->id = $this->id;

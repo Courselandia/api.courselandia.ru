@@ -112,10 +112,6 @@ class Category extends Repository
         throw new RecordNotExistException(trans('modules.repositoryEloquent.record_exist'));
     }
 
-
-    ////
-
-
     /**
      * Добавить профессию.
      *

@@ -68,25 +68,11 @@ class PublicationCreateAction extends Action
     public ?string $article = null;
 
     /**
-     * Маленькое изображение.
+     * Изображение.
      *
      * @var int|UploadedFile|Image|null
      */
-    public int|UploadedFile|Image|null $image_small_id = null;
-
-    /**
-     * Среднее изображение.
-     *
-     * @var int|UploadedFile|Image|null
-     */
-    public int|UploadedFile|Image|null $image_middle_id = null;
-
-    /**
-     * Большое изображение.
-     *
-     * @var int|UploadedFile|Image|null
-     */
-    public int|UploadedFile|Image|null $image_big_id = null;
+    public int|UploadedFile|Image|null $image = null;
 
     /**
      * Статус.
@@ -148,9 +134,9 @@ class PublicationCreateAction extends Action
         $publicationEntity->link = $this->link;
         $publicationEntity->anons = $this->anons;
         $publicationEntity->article = $this->article;
-        $publicationEntity->image_small_id = $this->image_small_id;
-        $publicationEntity->image_middle_id = $this->image_middle_id;
-        $publicationEntity->image_big_id = $this->image_big_id;
+        $publicationEntity->image_small_id = $this->image;
+        $publicationEntity->image_middle_id = $this->image;
+        $publicationEntity->image_big_id = $this->image;
         $publicationEntity->status = $this->status;
         $publicationEntity->metatag_id = $metatag->id;
 

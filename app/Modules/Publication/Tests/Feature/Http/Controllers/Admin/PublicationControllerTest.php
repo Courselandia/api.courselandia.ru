@@ -48,7 +48,7 @@ class PublicationControllerTest extends TestCase
                 ],
             ],
             [
-                'Authorization' => 'Bearer '.$this->getAdminToken()
+                'Authorization' => 'Bearer ' . $this->getAdminToken()
             ]
         )->assertStatus(200)->assertJsonStructure([
             'data' => [
@@ -70,10 +70,10 @@ class PublicationControllerTest extends TestCase
 
         $this->json(
             'GET',
-            'api/private/admin/publication/get/'.$publication->id,
+            'api/private/admin/publication/get/' . $publication->id,
             [],
             [
-                'Authorization' => 'Bearer '.$this->getAdminToken()
+                'Authorization' => 'Bearer ' . $this->getAdminToken()
             ]
         )->assertStatus(200)->assertJsonStructure([
             'data' => $this->getPublicationStructure(),
@@ -93,7 +93,7 @@ class PublicationControllerTest extends TestCase
             'api/private/admin/publication/get/1000',
             [],
             [
-                'Authorization' => 'Bearer '.$this->getAdminToken()
+                'Authorization' => 'Bearer ' . $this->getAdminToken()
             ]
         )->assertStatus(404)->assertJsonStructure([
             'data',
@@ -115,15 +115,15 @@ class PublicationControllerTest extends TestCase
             'api/private/admin/publication/create',
             [
                 'published_at' => Carbon::now()->addMonths(-5)->format('Y-m-d H:i:s O'),
-                'header' => $faker->title,
-                'link' => Util::latin($faker->title),
+                'header' => $faker->text(191),
+                'link' => Util::latin($faker->text(191)),
                 'anons' => $faker->text(250),
                 'article' => $faker->text(1500),
                 'status' => true,
                 'image' => UploadedFile::fake()->image('publication.jpg', 1500, 1500),
             ],
             [
-                'Authorization' => 'Bearer '.$this->getAdminToken()
+                'Authorization' => 'Bearer ' . $this->getAdminToken()
             ]
         )->assertStatus(200)->assertJsonStructure([
             'success',
@@ -145,15 +145,15 @@ class PublicationControllerTest extends TestCase
             'api/private/admin/publication/create',
             [
                 'published_at' => Carbon::now()->addMonths(-5)->format('Y-m-d H:i:s'),
-                'header' => $faker->title,
-                'link' => Util::latin($faker->title),
+                'header' => $faker->text(191),
+                'link' => Util::latin($faker->text(191)),
                 'anons' => $faker->text(250),
                 'article' => $faker->text(1500),
                 'status' => true,
                 'image' => UploadedFile::fake()->image('publication.mp4'),
             ],
             [
-                'Authorization' => 'Bearer '.$this->getAdminToken()
+                'Authorization' => 'Bearer ' . $this->getAdminToken()
             ]
         )->assertStatus(400)->assertJsonStructure([
             'success',
@@ -173,18 +173,18 @@ class PublicationControllerTest extends TestCase
 
         $this->json(
             'PUT',
-            'api/private/admin/publication/update/'.$publication->id,
+            'api/private/admin/publication/update/' . $publication->id,
             [
                 'published_at' => Carbon::now()->addMonths(-5)->format('Y-m-d H:i:s O'),
-                'header' => $faker->title,
-                'link' => Util::latin($faker->title),
+                'header' => $faker->text(191),
+                'link' => Util::latin($faker->text(191)),
                 'anons' => $faker->text(250),
                 'article' => $faker->text(1500),
                 'status' => true,
                 'image' => UploadedFile::fake()->image('publication.jpg', 1500, 1500),
             ],
             [
-                'Authorization' => 'Bearer '.$this->getAdminToken()
+                'Authorization' => 'Bearer ' . $this->getAdminToken()
             ]
         )->assertStatus(200)->assertJsonStructure([
             'success',
@@ -204,19 +204,19 @@ class PublicationControllerTest extends TestCase
 
         $this->json(
             'PUT',
-            'api/private/admin/publication/update/'.$publication->id,
+            'api/private/admin/publication/update/' . $publication->id,
             [
                 'published_date_at' => Carbon::now()->addMonths(-5)->format('d-m-Y'),
                 'published_time_at' => Carbon::now()->addMonths(-5)->format('H:i'),
-                'header' => $faker->title,
-                'link' => Util::latin($faker->title),
+                'header' => $faker->text(191),
+                'link' => Util::latin($faker->text(191)),
                 'anons' => $faker->text(250),
                 'article' => $faker->text(1500),
                 'status' => true,
                 'image' => UploadedFile::fake()->image('publication.jpg', 1500, 1500),
             ],
             [
-                'Authorization' => 'Bearer '.$this->getAdminToken()
+                'Authorization' => 'Bearer ' . $this->getAdminToken()
             ]
         )->assertStatus(400)->assertJsonStructure([
             'success',
@@ -238,15 +238,15 @@ class PublicationControllerTest extends TestCase
             'api/private/admin/publication/update/1000',
             [
                 'published_at' => Carbon::now()->addMonths(-5)->format('Y-m-d H:i:s O'),
-                'header' => $faker->title,
-                'link' => Util::latin($faker->title),
+                'header' => $faker->text(191),
+                'link' => Util::latin($faker->text(191)),
                 'anons' => $faker->text(250),
                 'article' => $faker->text(1500),
                 'status' => true,
                 'image' => UploadedFile::fake()->image('publication.jpg', 1500, 1500),
             ],
             [
-                'Authorization' => 'Bearer '.$this->getAdminToken()
+                'Authorization' => 'Bearer ' . $this->getAdminToken()
             ]
         )->assertStatus(404)->assertJsonStructure([
             'success',
@@ -265,12 +265,12 @@ class PublicationControllerTest extends TestCase
 
         $this->json(
             'PUT',
-            'api/private/admin/publication/update/status/'.$publication->id,
+            'api/private/admin/publication/update/status/' . $publication->id,
             [
                 'status' => true,
             ],
             [
-                'Authorization' => 'Bearer '.$this->getAdminToken()
+                'Authorization' => 'Bearer ' . $this->getAdminToken()
             ]
         )->assertStatus(200)->assertJsonStructure([
             'success',
@@ -289,12 +289,12 @@ class PublicationControllerTest extends TestCase
 
         $this->json(
             'PUT',
-            'api/private/admin/publication/update/status/'.$publication->id,
+            'api/private/admin/publication/update/status/' . $publication->id,
             [
                 'status' => 'test',
             ],
             [
-                'Authorization' => 'Bearer '.$this->getAdminToken()
+                'Authorization' => 'Bearer ' . $this->getAdminToken()
             ]
         )->assertStatus(400)->assertJsonStructure([
             'success',
@@ -316,7 +316,7 @@ class PublicationControllerTest extends TestCase
                 'status' => true,
             ],
             [
-                'Authorization' => 'Bearer '.$this->getAdminToken()
+                'Authorization' => 'Bearer ' . $this->getAdminToken()
             ]
         )->assertStatus(404)->assertJsonStructure([
             'success',
@@ -340,7 +340,7 @@ class PublicationControllerTest extends TestCase
                 'ids' => json_encode([$publication->id]),
             ],
             [
-                'Authorization' => 'Bearer '.$this->getAdminToken()
+                'Authorization' => 'Bearer ' . $this->getAdminToken()
             ]
         )->assertStatus(200)->assertJsonStructure([
             'success',
@@ -350,7 +350,7 @@ class PublicationControllerTest extends TestCase
     /**
      * Получить структуру данных публикации.
      *
-     * @param  bool  $image  Добавить структуру данных изображения.
+     * @param bool $image Добавить структуру данных изображения.
      *
      * @return array Массив структуры данных публикации.
      */

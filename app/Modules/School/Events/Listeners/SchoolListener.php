@@ -33,6 +33,7 @@ class SchoolListener
         }
 
         $school->deleteRelation($school->metatag(), $school->isForceDeleting());
+        $school->teachers()->detach();
 
         return true;
     }

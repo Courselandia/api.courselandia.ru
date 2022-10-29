@@ -265,6 +265,9 @@ return [
 
         App\Modules\School\Providers\SchoolServiceProvider::class,
         App\Modules\School\Providers\RouteServiceProvider::class,
+
+        App\Modules\Teacher\Providers\TeacherServiceProvider::class,
+        App\Modules\Teacher\Providers\RouteServiceProvider::class,
     ],
 
     /*

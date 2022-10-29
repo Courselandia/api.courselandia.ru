@@ -75,25 +75,11 @@ class PublicationUpdateAction extends Action
     public ?string $article = null;
 
     /**
-     * Маленькое изображение.
+     * Изображение.
      *
      * @var int|UploadedFile|Image|null
      */
-    public int|UploadedFile|Image|null $image_small_id = null;
-
-    /**
-     * Среднее изображение.
-     *
-     * @var int|UploadedFile|Image|null
-     */
-    public int|UploadedFile|Image|null $image_middle_id = null;
-
-    /**
-     * Большое изображение.
-     *
-     * @var int|UploadedFile|Image|null
-     */
-    public int|UploadedFile|Image|null $image_big_id = null;
+    public int|UploadedFile|Image|null $image = null;
 
     /**
      * Статус.
@@ -162,16 +148,10 @@ class PublicationUpdateAction extends Action
             $publicationEntity->article = $this->article;
             $publicationEntity->status = $this->status;
 
-            if ($this->image_small_id) {
-                $publicationEntity->image_small_id = $this->image_small_id;
-            }
-
-            if ($this->image_middle_id) {
-                $publicationEntity->image_middle_id = $this->image_middle_id;
-            }
-
-            if ($this->image_big_id) {
-                $publicationEntity->image_big_id = $this->image_big_id;
+            if ($this->image) {
+                $publicationEntity->image_small_id = $this->image;
+                $publicationEntity->image_middle_id = $this->image;
+                $publicationEntity->image_big_id = $this->image;
             }
 
             $this->publication->update($this->id, $publicationEntity);

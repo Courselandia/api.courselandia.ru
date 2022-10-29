@@ -90,7 +90,11 @@ abstract class Entity
 
                 if ($property->isPublic()) {
                     if ($this->hasType($property, 'Carbon\Carbon')) {
-                        $this->{$property->getName()} = Carbon::parse($value);
+                        if ($value) {
+                            $this->{$property->getName()} = Carbon::parse($value);
+                        } else {
+                            $this->{$property->getName()} = null;
+                        }
                     } elseif ($this->hasType($property, 'Illuminate\Http\UploadedFile')) {
                         $this->{$property->getName()} = $value;
                     } elseif ($this->isEnum($property)) {

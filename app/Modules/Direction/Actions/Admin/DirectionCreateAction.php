@@ -95,7 +95,7 @@ class DirectionCreateAction extends Action
     /**
      * Конструктор.
      *
-     * @param  Direction  $direction  Репозиторий направлений.
+     * @param Direction $direction Репозиторий направлений.
      */
     public function __construct(Direction $direction)
     {
@@ -128,7 +128,7 @@ class DirectionCreateAction extends Action
         $directionEntity->metatag_id = $metatag->id;
 
         $id = $this->direction->create($directionEntity);
-        Cache::tags(['catalog', 'category', 'direction', 'profession'])->flush();
+        Cache::tags(['catalog', 'category', 'direction', 'profession', 'teacher'])->flush();
 
         $action = app(DirectionGetAction::class);
         $action->id = $id;
