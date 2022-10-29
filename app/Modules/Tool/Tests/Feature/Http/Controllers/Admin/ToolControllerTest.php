@@ -35,7 +35,6 @@ class ToolControllerTest extends TestCase
             'GET',
             'api/private/admin/tool/read',
             [
-                'search' => $tool->header,
                 'start' => 0,
                 'limit' => 10,
                 'sorts' => [

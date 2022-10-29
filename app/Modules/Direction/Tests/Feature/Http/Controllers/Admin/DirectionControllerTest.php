@@ -35,7 +35,6 @@ class DirectionControllerTest extends TestCase
             'GET',
             'api/private/admin/direction/read',
             [
-                'search' => $direction->header,
                 'start' => 0,
                 'limit' => 10,
                 'sorts' => [

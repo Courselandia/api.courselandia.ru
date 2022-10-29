@@ -76,7 +76,6 @@ class ToolController extends Controller
     public function read(ToolReadRequest $request): JsonResponse
     {
         $action = app(ToolReadAction::class);
-        $action->search = $request->get('search');
         $action->sorts = $request->get('sorts');
         $action->filters = $request->get('filters');
         $action->offset = $request->get('offset');

@@ -35,7 +35,6 @@ class AlertControllerTest extends TestCase
             'GET',
             'api/private/admin/alert/read',
             [
-                'search' => $name,
                 'start' => 0,
                 'limit' => 10,
                 'unread' => true,

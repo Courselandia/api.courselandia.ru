@@ -76,7 +76,6 @@ class ProfessionController extends Controller
     public function read(ProfessionReadRequest $request): JsonResponse
     {
         $action = app(ProfessionReadAction::class);
-        $action->search = $request->get('search');
         $action->sorts = $request->get('sorts');
         $action->filters = $request->get('filters');
         $action->offset = $request->get('offset');

@@ -42,7 +42,6 @@ class CategoryControllerTest extends TestCase
             'GET',
             'api/private/admin/category/read',
             [
-                'search' => $category->header,
                 'start' => 0,
                 'limit' => 10,
                 'sorts' => [

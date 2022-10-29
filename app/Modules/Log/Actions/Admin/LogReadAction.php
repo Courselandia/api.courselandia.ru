@@ -29,13 +29,6 @@ class LogReadAction extends Action
     private Log $log;
 
     /**
-     * Поиск данных.
-     *
-     * @var string|null
-     */
-    public ?string $search = null;
-
-    /**
      * Сортировка данных.
      *
      * @var array|null
@@ -82,8 +75,7 @@ class LogReadAction extends Action
     #[ArrayShape(['data' => 'array', 'total' => 'int'])] public function run(): array
     {
         $query = new RepositoryQueryBuilder();
-        $query->setSearch($this->search)
-            ->setFilters(RepositoryFilter::getFilters($this->filters))
+        $query->setFilters(RepositoryFilter::getFilters($this->filters))
             ->setSorts($this->sorts)
             ->setOffset($this->offset)
             ->setLimit($this->limit);

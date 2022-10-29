@@ -33,7 +33,6 @@ class LogControllerTest extends TestCase
             'GET',
             'api/private/admin/log/read',
             [
-                'search' => 'info',
                 'start' => 0,
                 'limit' => 10,
                 'sorts' => [

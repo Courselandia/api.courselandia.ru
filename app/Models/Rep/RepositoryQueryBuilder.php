@@ -37,13 +37,6 @@ class RepositoryQueryBuilder
     private ?array $conditions = null;
 
     /**
-     * Поиск данных.
-     *
-     * @var ?string
-     */
-    private ?string $search = null;
-
-    /**
      * Фильтрация.
      *
      * @var ?array
@@ -98,7 +91,6 @@ class RepositoryQueryBuilder
      * @param  int|string|null  $id  ID записи.
      * @param  bool|null  $active  Булево значение, если определить как true, то будет получать только активные записи.
      * @param  array|null  $conditions  Условия.
-     * @param  string|null  $search  Поиск данных.
      * @param  array|null  $filters  Фильтрация данных.
      * @param  array|null  $sorts  Массив значений для сортировки.
      * @param  int|null  $offset  Отступ вывода.
@@ -111,7 +103,6 @@ class RepositoryQueryBuilder
         int|string $id = null,
         bool $active = null,
         array $conditions = null,
-        string $search = null,
         array $filters = null,
         array $sorts = null,
         int $offset = null,
@@ -123,7 +114,6 @@ class RepositoryQueryBuilder
         $this->setId($id);
         $this->setActive($active);
         $this->setConditions($conditions);
-        $this->setSearch($search);
         $this->setFilters($filters);
         $this->setSorts($sorts);
         $this->setOffset($offset);
@@ -261,32 +251,6 @@ class RepositoryQueryBuilder
     public function clearConditions(): self
     {
         $this->conditions = null;
-
-        return $this;
-    }
-
-    //
-
-    /**
-     * Получение значение поиска.
-     *
-     * @return string|null Вернет значение поиска.
-     */
-    public function getSearch(): string|null
-    {
-        return $this->search;
-    }
-
-    /**
-     * Установка значение поиска
-     *
-     * @param  string|null  $search  Значение поиска.
-     *
-     * @return $this
-     */
-    public function setSearch(string|null $search): self
-    {
-        $this->search = $search;
 
         return $this;
     }

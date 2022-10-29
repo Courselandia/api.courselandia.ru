@@ -25,32 +25,4 @@ use Illuminate\Database\Eloquent\Builder;
 class Profession extends Repository
 {
     use RepositoryEloquent;
-
-    /**
-     * Получение запроса на выборку.
-     *
-     * @param RepositoryQueryBuilder $repositoryQueryBuilder Конструктор запроса к репозиторию.
-     *
-     * @return Builder Запрос.
-     * @throws ParameterInvalidException
-     */
-    protected function query(RepositoryQueryBuilder $repositoryQueryBuilder): Builder
-    {
-        $query = $this->newInstance()->newQuery();
-        $query = $this->queryHelper($query, $repositoryQueryBuilder);
-        $search = $repositoryQueryBuilder->getSearch();
-
-        if ($search) {
-            $query->where(function ($query) use ($search) {
-                /**
-                 * @var Builder $query
-                 */
-                $query->where('professions.id', 'LIKE', '%' . $search . '%')
-                    ->orWhere('professions.name', 'LIKE', '%' . $search . '%')
-                    ->orWhere('professions.text', 'LIKE', '%' . $search . '%');
-            });
-        }
-
-        return $query;
-    }
 }

@@ -35,7 +35,6 @@ class SkillControllerTest extends TestCase
             'GET',
             'api/private/admin/skill/read',
             [
-                'search' => $skill->header,
                 'start' => 0,
                 'limit' => 10,
                 'sorts' => [

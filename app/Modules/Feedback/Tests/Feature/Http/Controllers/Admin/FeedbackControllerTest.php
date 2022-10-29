@@ -32,7 +32,6 @@ class FeedbackControllerTest extends TestCase
             'GET',
             'api/private/admin/feedback/read',
             [
-                'search' => $feedback->name,
                 'start' => 0,
                 'limit' => 10,
                 'sorts' => [

@@ -46,7 +46,6 @@ class UserControllerTest extends TestCase
             'GET',
             'api/private/admin/user/read',
             [
-                'search' => $user->name,
                 'start' => 0,
                 'limit' => 10,
                 'sorts' => [

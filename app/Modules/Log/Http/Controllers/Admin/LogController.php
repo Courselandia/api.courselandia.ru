@@ -71,7 +71,6 @@ class LogController extends Controller
     {
         $action = app(LogReadAction::class);
 
-        $action->search = $request->get('search');
         $action->filters = $request->get('filters');
         $action->sorts = $request->get('sorts');
         $action->offset = $request->get('offset');

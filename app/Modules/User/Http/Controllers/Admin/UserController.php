@@ -95,7 +95,6 @@ class UserController extends Controller
     public function read(UserReadRequest $request): JsonResponse
     {
         $action = app(UserReadAction::class);
-        $action->search = $request->get('search');
         $action->sorts = $request->get('sorts');
         $action->filters = $request->get('filters');
         $action->offset = $request->get('offset');

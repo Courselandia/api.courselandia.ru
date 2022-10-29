@@ -41,22 +41,9 @@ class Publication extends Repository
         $query = $this->newInstance()->newQuery();
         $query = $this->queryHelper($query, $repositoryQueryBuilder);
         $year = $repositoryQueryBuilder->getYear();
-        $search = $repositoryQueryBuilder->getSearch();
 
         if (isset($year)) {
             $query->where(DB::raw("DATE_FORMAT(published_at, '%Y')"), $year);
-        }
-
-        if ($search) {
-            $query->where(function ($query) use ($search) {
-                /**
-                 * @var Builder $query
-                 */
-                $query->where('publications.id', 'LIKE', '%'.$search.'%')
-                    ->orWhere('publications.header', 'LIKE', '%'.$search.'%')
-                    ->orWhere('publications.article', 'LIKE', '%'.$search.'%')
-                    ->orWhere('publications.anons', 'LIKE', '%'.$search.'%');
-            });
         }
 
         return $query;

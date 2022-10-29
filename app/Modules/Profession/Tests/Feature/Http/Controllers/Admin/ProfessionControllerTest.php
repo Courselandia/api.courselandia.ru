@@ -35,7 +35,6 @@ class ProfessionControllerTest extends TestCase
             'GET',
             'api/private/admin/profession/read',
             [
-                'search' => $profession->header,
                 'start' => 0,
                 'limit' => 10,
                 'sorts' => [

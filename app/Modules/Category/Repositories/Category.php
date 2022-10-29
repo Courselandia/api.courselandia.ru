@@ -28,34 +28,6 @@ class Category extends Repository
     use RepositoryEloquent;
 
     /**
-     * Получение запроса на выборку.
-     *
-     * @param RepositoryQueryBuilder $repositoryQueryBuilder Конструктор запроса к репозиторию.
-     *
-     * @return Builder Запрос.
-     * @throws ParameterInvalidException
-     */
-    protected function query(RepositoryQueryBuilder $repositoryQueryBuilder): Builder
-    {
-        $query = $this->newInstance()->newQuery();
-        $query = $this->queryHelper($query, $repositoryQueryBuilder);
-        $search = $repositoryQueryBuilder->getSearch();
-
-        if ($search) {
-            $query->where(function ($query) use ($search) {
-                /**
-                 * @var Builder $query
-                 */
-                $query->where('categories.id', 'LIKE', '%' . $search . '%')
-                    ->orWhere('categories.name', 'LIKE', '%' . $search . '%')
-                    ->orWhere('categories.text', 'LIKE', '%' . $search . '%');
-            });
-        }
-
-        return $query;
-    }
-
-    /**
      * Добавить направления.
      *
      * @param int $id Id записи.

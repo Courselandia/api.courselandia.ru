@@ -79,7 +79,6 @@ class PublicationController extends Controller
     public function read(PublicationReadRequest $request): JsonResponse
     {
         $action = app(PublicationReadAction::class);
-        $action->search = $request->get('search');
         $action->sorts = $request->get('sorts');
         $action->filters = $request->get('filters');
         $action->offset = $request->get('offset');

@@ -36,42 +36,10 @@ class User extends Repository
     use RepositoryFlag;
 
     /**
-     * Получение запроса на выборку.
-     *
-     * @param RepositoryQueryBuilder|null $repositoryQueryBuilder Конструктор запроса к репозиторию.
-     *
-     * @return Builder Запрос.
-     * @throws ParameterInvalidException
-     */
-    protected function query(RepositoryQueryBuilder $repositoryQueryBuilder = null): Builder
-    {
-        $query = $this->newInstance()->newQuery();
-
-        if ($repositoryQueryBuilder) {
-            $query = $this->queryHelper($query, $repositoryQueryBuilder);
-            $search = $repositoryQueryBuilder->getSearch();
-
-            if ($search) {
-                $query->where(function ($query) use ($search) {
-                    /**
-                     * @var Builder $query
-                     */
-                    $query->where('users.id', 'LIKE', '%'.$search.'%')
-                        ->orWhere('users.login', 'LIKE', '%'.$search.'%')
-                        ->orWhere('users.first_name', 'LIKE', '%'.$search.'%')
-                        ->orWhere('users.second_name', 'LIKE', '%'.$search.'%')
-                        ->orWhere('users.phone', 'LIKE', '%'.$search.'%');
-                });
-            }
-        }
-
-        return $query;
-    }
-
-    /**
      * Получение название уникального токена для пользователя.
      *
      * @return string Вернет название токена.
+     * @throws ParameterInvalidException
      */
     public function getRememberTokenName(): string
     {
@@ -82,6 +50,7 @@ class User extends Repository
      * Получение название уникального идентификатора для пользователя.
      *
      * @return string Вернет название идентификатора.
+     * @throws ParameterInvalidException
      */
     public function getAuthIdentifierName(): string
     {

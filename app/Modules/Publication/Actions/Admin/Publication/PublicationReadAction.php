@@ -33,13 +33,6 @@ class PublicationReadAction extends Action
     private Publication $publication;
 
     /**
-     * Поиск данных.
-     *
-     * @var string|null
-     */
-    public ?string $search = null;
-
-    /**
      * Сортировка данных.
      *
      * @var array|null
@@ -86,8 +79,7 @@ class PublicationReadAction extends Action
     #[ArrayShape(['data' => 'array', 'total' => 'int'])] public function run(): array
     {
         $query = new RepositoryQueryBuilderPublication();
-        $query->setSearch($this->search)
-            ->setFilters(RepositoryFilter::getFilters($this->filters))
+        $query->setFilters(RepositoryFilter::getFilters($this->filters))
             ->setSorts($this->sorts)
             ->setOffset($this->offset)
             ->setLimit($this->limit)

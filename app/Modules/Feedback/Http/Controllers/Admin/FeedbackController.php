@@ -73,7 +73,6 @@ class FeedbackController extends Controller
     public function read(FeedbackReadRequest $request): JsonResponse
     {
         $action = app(FeedbackReadAction::class);
-        $action->search = $request->get('search');
         $action->filters = $request->get('filters');
         $action->sorts = $request->get('sorts');
         $action->offset = $request->get('offset');
