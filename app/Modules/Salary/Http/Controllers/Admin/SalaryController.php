@@ -1,51 +1,52 @@
 <?php
 /**
- * Модуль Школ.
- * Этот модуль содержит все классы для работы со школами.
+ * Модуль Зарплаты.
+ * Этот модуль содержит все классы для работы с зарплатами.
  *
- * @package App\Modules\School
+ * @package App\Modules\Salary
  */
 
-namespace App\Modules\School\Http\Controllers\Admin;
+namespace App\Modules\Salary\Http\Controllers\Admin;
 
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordExistException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Models\Exceptions\UserNotExistException;
 use App\Models\Exceptions\ValidateException;
-use App\Modules\School\Actions\Admin\School\SchoolCreateAction;
-use App\Modules\School\Actions\Admin\School\SchoolDestroyAction;
-use App\Modules\School\Actions\Admin\School\SchoolGetAction;
-use App\Modules\School\Actions\Admin\School\SchoolReadAction;
-use App\Modules\School\Actions\Admin\School\SchoolUpdateAction;
-use App\Modules\School\Actions\Admin\School\SchoolUpdateStatusAction;
-use App\Modules\School\Http\Requests\Admin\School\SchoolCreateRequest;
-use App\Modules\School\Http\Requests\Admin\School\SchoolDestroyRequest;
-use App\Modules\School\Http\Requests\Admin\School\SchoolReadRequest;
-use App\Modules\School\Http\Requests\Admin\School\SchoolUpdateRequest;
-use App\Modules\School\Http\Requests\Admin\School\SchoolUpdateStatusRequest;
+use App\Modules\Salary\Actions\Admin\SalaryCreateAction;
+use App\Modules\Salary\Actions\Admin\SalaryDestroyAction;
+use App\Modules\Salary\Actions\Admin\SalaryGetAction;
+use App\Modules\Salary\Actions\Admin\SalaryReadAction;
+use App\Modules\Salary\Actions\Admin\SalaryUpdateAction;
+use App\Modules\Salary\Actions\Admin\SalaryUpdateStatusAction;
+use App\Modules\Salary\Enums\Level;
+use App\Modules\Salary\Http\Requests\Admin\SalaryCreateRequest;
+use App\Modules\Salary\Http\Requests\Admin\SalaryDestroyRequest;
+use App\Modules\Salary\Http\Requests\Admin\SalaryReadRequest;
+use App\Modules\Salary\Http\Requests\Admin\SalaryUpdateStatusRequest;
 use Auth;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Log;
 use ReflectionException;
 
 /**
- * Класс контроллер для работы со школами в административной части.
+ * Класс контроллер для работы с зарплатами в административной части.
  */
-class SchoolController extends Controller
+class SalaryController extends Controller
 {
     /**
-     * Получение школы.
+     * Получение зарплаты.
      *
-     * @param int|string $id ID школы.
+     * @param int|string $id ID зарплаты.
      *
      * @return JsonResponse Вернет JSON ответ.
      * @throws ParameterInvalidException|ReflectionException
      */
     public function get(int|string $id): JsonResponse
     {
-        $action = app(SchoolGetAction::class);
+        $action = app(SalaryGetAction::class);
         $action->id = $id;
         $data = $action->run();
 
@@ -69,14 +70,14 @@ class SchoolController extends Controller
     /**
      * Чтение данных.
      *
-     * @param SchoolReadRequest $request Запрос.
+     * @param SalaryReadRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
      * @throws ParameterInvalidException|ReflectionException
      */
-    public function read(SchoolReadRequest $request): JsonResponse
+    public function read(SalaryReadRequest $request): JsonResponse
     {
-        $action = app(SchoolReadAction::class);
+        $action = app(SalaryReadAction::class);
         $action->sorts = $request->get('sorts');
         $action->filters = $request->get('filters');
         $action->offset = $request->get('offset');
@@ -92,40 +93,26 @@ class SchoolController extends Controller
     /**
      * Добавление данных.
      *
-     * @param SchoolCreateRequest $request Запрос.
+     * @param SalaryCreateRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws RecordNotExistException|ParameterInvalidException|ReflectionException
+     * @throws ParameterInvalidException|ReflectionException
      */
-    public function create(SchoolCreateRequest $request): JsonResponse
+    public function create(SalaryCreateRequest $request): JsonResponse
     {
         try {
-            $action = app(SchoolCreateAction::class);
-            $action->name = $request->get('name');
-            $action->header = $request->get('header');
-            $action->link = $request->get('link');
-            $action->text = $request->get('text');
-            $action->rating = $request->get('rating', 0);
-            $action->site = $request->get('site');
+            $action = app(SalaryCreateAction::class);
+            $action->profession_id = $request->get('profession_id');
+            $action->level = Level::from($request->get('level'));
+            $action->salary = $request->get('salary');
             $action->status = $request->get('status');
-            $action->title = $request->get('title');
-            $action->description = $request->get('description');
-            $action->keywords = $request->get('keywords');
-
-            if ($request->hasFile('imageLogo') && $request->file('imageLogo')->isValid()) {
-                $action->image_logo_id = $request->file('imageLogo');
-            }
-
-            if ($request->hasFile('imageSite') && $request->file('imageSite')->isValid()) {
-                $action->image_site_id = $request->file('imageSite');
-            }
 
             $data = $action->run();
 
             Log::info(
-                trans('school::http.controllers.admin.schoolController.create.log'),
+                trans('salary::http.controllers.admin.salaryController.create.log'),
                 [
-                    'module' => 'School',
+                    'module' => 'Salary',
                     'login' => Auth::getUser()->login,
                     'type' => 'create'
                 ]
@@ -153,42 +140,27 @@ class SchoolController extends Controller
     /**
      * Обновление данных.
      *
-     * @param int|string $id ID школы.
-     * @param SchoolUpdateRequest $request Запрос.
+     * @param int|string $id ID зарплаты.
+     * @param SalaryCreateRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException|ReflectionException
+     * @throws ParameterInvalidException
      */
-    public function update(int|string $id, SchoolUpdateRequest $request): JsonResponse
+    public function update(int|string $id, SalaryCreateRequest $request): JsonResponse
     {
         try {
-            $action = app(SchoolUpdateAction::class);
+            $action = app(SalaryUpdateAction::class);
             $action->id = $id;
-            $action->name = $request->get('name');
-            $action->header = $request->get('header');
-            $action->link = $request->get('link');
-            $action->text = $request->get('text');
-            $action->rating = $request->get('rating', 0);
-            $action->site = $request->get('site');
+            $action->profession_id = $request->get('profession_id');
+            $action->level = Level::from($request->get('level'));
+            $action->salary = $request->get('salary');
             $action->status = $request->get('status');
-            $action->title = $request->get('title');
-            $action->description = $request->get('description');
-            $action->keywords = $request->get('keywords');
-
-            if ($request->hasFile('imageLogo') && $request->file('imageLogo')->isValid()) {
-                $action->image_logo_id = $request->file('imageLogo');
-            }
-
-            if ($request->hasFile('imageSite') && $request->file('imageSite')->isValid()) {
-                $action->image_site_id = $request->file('imageSite');
-            }
-
             $data = $action->run();
 
             Log::info(
-                trans('school::http.controllers.admin.schoolController.update.log'),
+                trans('salary::http.controllers.admin.salaryController.update.log'),
                 [
-                    'module' => 'School',
+                    'module' => 'Salary',
                     'login' => Auth::getUser()->login,
                     'type' => 'update'
                 ]
@@ -217,21 +189,21 @@ class SchoolController extends Controller
      * Обновление статуса.
      *
      * @param int|string $id ID пользователя.
-     * @param SchoolUpdateStatusRequest $request Запрос.
+     * @param SalaryUpdateStatusRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
      * @throws ParameterInvalidException|ReflectionException
      */
-    public function updateStatus(int|string $id, SchoolUpdateStatusRequest $request): JsonResponse
+    public function updateStatus(int|string $id, SalaryUpdateStatusRequest $request): JsonResponse
     {
         try {
-            $action = app(SchoolUpdateStatusAction::class);
+            $action = app(SalaryUpdateStatusAction::class);
             $action->id = $id;
             $action->status = $request->get('status');
 
             $data = $action->run();
 
-            Log::info(trans('school::http.controllers.admin.schoolController.update.log'), [
+            Log::info(trans('salary::http.controllers.admin.salaryController.update.log'), [
                 'module' => 'User',
                 'login' => Auth::getUser()->login,
                 'type' => 'update'
@@ -259,21 +231,21 @@ class SchoolController extends Controller
     /**
      * Удаление данных.
      *
-     * @param SchoolDestroyRequest $request Запрос.
+     * @param SalaryDestroyRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
      * @throws ParameterInvalidException
      */
-    public function destroy(SchoolDestroyRequest $request): JsonResponse
+    public function destroy(SalaryDestroyRequest $request): JsonResponse
     {
-        $action = app(SchoolDestroyAction::class);
+        $action = app(SalaryDestroyAction::class);
         $action->ids = json_decode($request->get('ids'), true);
         $action->run();
 
         Log::info(
-            trans('school::http.controllers.admin.schoolController.destroy.log'),
+            trans('salary::http.controllers.admin.salaryController.destroy.log'),
             [
-                'module' => 'School',
+                'module' => 'Salary',
                 'login' => Auth::getUser()->login,
                 'type' => 'destroy'
             ]
