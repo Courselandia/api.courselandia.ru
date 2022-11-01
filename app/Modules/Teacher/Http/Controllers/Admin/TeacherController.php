@@ -259,7 +259,7 @@ class TeacherController extends Controller
     public function destroy(TeacherDestroyRequest $request): JsonResponse
     {
         $action = app(TeacherDestroyAction::class);
-        $action->ids = json_decode($request->get('ids'), true);
+        $action->ids = $request->get('ids');
         $action->run();
 
         Log::info(

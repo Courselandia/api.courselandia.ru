@@ -250,7 +250,7 @@ class CategoryController extends Controller
     public function destroy(CategoryDestroyRequest $request): JsonResponse
     {
         $action = app(CategoryDestroyAction::class);
-        $action->ids = json_decode($request->get('ids'), true);
+        $action->ids = $request->get('ids');
         $action->run();
 
         Log::info(

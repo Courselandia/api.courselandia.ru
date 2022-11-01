@@ -337,7 +337,7 @@ class PublicationControllerTest extends TestCase
             'DELETE',
             'api/private/admin/publication/destroy',
             [
-                'ids' => json_encode([$publication->id]),
+                'ids' => [$publication->id],
             ],
             [
                 'Authorization' => 'Bearer ' . $this->getAdminToken()

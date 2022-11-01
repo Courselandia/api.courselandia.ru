@@ -111,7 +111,7 @@ class FeedbackControllerTest extends TestCase
             'DELETE',
             'api/private/admin/feedback/destroy',
             [
-                'ids' => json_encode([$feedback['id']]),
+                'ids' => [$feedback['id']],
             ],
             [
                 'Authorization' => 'Bearer '.$this->getAdminToken()

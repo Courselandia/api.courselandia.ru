@@ -244,7 +244,7 @@ class ToolController extends Controller
     public function destroy(ToolDestroyRequest $request): JsonResponse
     {
         $action = app(ToolDestroyAction::class);
-        $action->ids = json_decode($request->get('ids'), true);
+        $action->ids = $request->get('ids');
         $action->run();
 
         Log::info(

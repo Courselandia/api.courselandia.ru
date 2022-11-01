@@ -166,7 +166,7 @@ class AlertControllerTest extends TestCase
         $this->json('DELETE',
             'api/private/admin/alert/destroy',
             [
-                'ids' => json_encode([$id]),
+                'ids' => [$id],
             ],
             [
                 'Authorization' => 'Bearer '.$this->getAdminToken()

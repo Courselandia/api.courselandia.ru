@@ -244,7 +244,7 @@ class ProfessionController extends Controller
     public function destroy(ProfessionDestroyRequest $request): JsonResponse
     {
         $action = app(ProfessionDestroyAction::class);
-        $action->ids = json_decode($request->get('ids'), true);
+        $action->ids = $request->get('ids');
         $action->run();
 
         Log::info(

@@ -138,7 +138,7 @@ class LogControllerTest extends TestCase
             'DELETE',
             'api/private/admin/log/destroy',
             [
-                'ids' => json_encode([$log['id']]),
+                'ids' => [$log['id']],
             ],
             [
                 'Authorization' => 'Bearer '.$this->getAdminToken()

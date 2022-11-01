@@ -322,7 +322,7 @@ class ToolControllerTest extends TestCase
             'DELETE',
             'api/private/admin/tool/destroy',
             [
-                'ids' => json_encode([$tool->id]),
+                'ids' => [$tool->id],
             ],
             [
                 'Authorization' => 'Bearer ' . $this->getAdminToken()

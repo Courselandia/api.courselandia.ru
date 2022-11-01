@@ -89,8 +89,7 @@ class AlertController extends Controller
      */
     public function destroy(AlertDestroyRequest $request): JsonResponse
     {
-        $ids = json_decode($request->get('ids'), true);
-        Alert::remove($ids);
+        Alert::remove($request->get('ids'));
 
         Log::info(trans('alert::http.controllers.site.alertController.destroy.log'), [
             'module' => 'Alert',

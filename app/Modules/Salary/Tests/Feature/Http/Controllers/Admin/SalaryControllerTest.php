@@ -324,7 +324,7 @@ class SalaryControllerTest extends TestCase
             'DELETE',
             'api/private/admin/salary/destroy',
             [
-                'ids' => json_encode([$salary->id]),
+                'ids' => [$salary->id],
             ],
             [
                 'Authorization' => 'Bearer ' . $this->getAdminToken()

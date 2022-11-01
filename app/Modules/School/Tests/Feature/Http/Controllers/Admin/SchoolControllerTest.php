@@ -344,7 +344,7 @@ class SchoolControllerTest extends TestCase
             'DELETE',
             'api/private/admin/school/destroy',
             [
-                'ids' => json_encode([$school->id]),
+                'ids' => [$school->id],
             ],
             [
                 'Authorization' => 'Bearer '.$this->getAdminToken()

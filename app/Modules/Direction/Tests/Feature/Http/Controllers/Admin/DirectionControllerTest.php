@@ -327,7 +327,7 @@ class DirectionControllerTest extends TestCase
             'DELETE',
             'api/private/admin/direction/destroy',
             [
-                'ids' => json_encode([$direction->id]),
+                'ids' => [$direction->id],
             ],
             [
                 'Authorization' => 'Bearer ' . $this->getAdminToken()

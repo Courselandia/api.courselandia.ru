@@ -322,7 +322,7 @@ class SkillControllerTest extends TestCase
             'DELETE',
             'api/private/admin/skill/destroy',
             [
-                'ids' => json_encode([$skill->id]),
+                'ids' => [$skill->id],
             ],
             [
                 'Authorization' => 'Bearer ' . $this->getAdminToken()

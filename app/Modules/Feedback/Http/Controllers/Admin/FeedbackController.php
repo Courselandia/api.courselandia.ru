@@ -95,7 +95,7 @@ class FeedbackController extends Controller
     public function destroy(FeedbackDestroyRequest $request): JsonResponse
     {
         $action = app(FeedbackDestroyAction::class);
-        $action->ids = json_decode($request->get('ids'), true);
+        $action->ids = $request->get('ids');
         $action->run();
 
         Log::info(trans('feedback::http.controllers.admin.feedbackController.destroy.log'), [

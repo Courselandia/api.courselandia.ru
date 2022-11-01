@@ -246,7 +246,7 @@ class DirectionController extends Controller
     public function destroy(DirectionDestroyRequest $request): JsonResponse
     {
         $action = app(DirectionDestroyAction::class);
-        $action->ids = json_decode($request->get('ids'), true);
+        $action->ids = $request->get('ids');
         $action->run();
 
         Log::info(

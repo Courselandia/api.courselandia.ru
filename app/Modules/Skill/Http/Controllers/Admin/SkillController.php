@@ -244,7 +244,7 @@ class SkillController extends Controller
     public function destroy(SkillDestroyRequest $request): JsonResponse
     {
         $action = app(SkillDestroyAction::class);
-        $action->ids = json_decode($request->get('ids'), true);
+        $action->ids = $request->get('ids');
         $action->run();
 
         Log::info(

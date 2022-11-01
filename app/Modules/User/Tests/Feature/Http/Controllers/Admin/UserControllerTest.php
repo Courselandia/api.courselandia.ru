@@ -419,7 +419,7 @@ class UserControllerTest extends TestCase
             'DELETE',
             'api/private/admin/user/destroy',
             [
-                'ids' => json_encode([$user['id']]),
+                'ids' => [$user['id']],
             ],
             [
                 'Authorization' => 'Bearer '.$this->getAdminToken()

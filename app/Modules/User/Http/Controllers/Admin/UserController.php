@@ -299,10 +299,8 @@ class UserController extends Controller
      */
     public function destroy(UserDestroyRequest $request): JsonResponse
     {
-        $ids = json_decode($request->get('ids'), true);
-
         $action = app(UserDestroyAction::class);
-        $action->ids = $ids;
+        $action->ids = $request->get('ids');
         $action->run();
 
         Log::info(trans('user::http.controllers.admin.userController.destroy.log'), [

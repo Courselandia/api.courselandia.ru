@@ -322,7 +322,7 @@ class ProfessionControllerTest extends TestCase
             'DELETE',
             'api/private/admin/profession/destroy',
             [
-                'ids' => json_encode([$profession->id]),
+                'ids' => [$profession->id],
             ],
             [
                 'Authorization' => 'Bearer ' . $this->getAdminToken()

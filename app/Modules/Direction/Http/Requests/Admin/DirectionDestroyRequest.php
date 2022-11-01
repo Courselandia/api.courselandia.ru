@@ -24,7 +24,7 @@ class DirectionDestroyRequest extends FormRequest
     #[ArrayShape(['ids' => 'string'])] public function rules(): array
     {
         return [
-            'ids' => 'required|json|ids'
+            'ids' => 'required|array',
         ];
     }
 

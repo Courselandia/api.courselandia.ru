@@ -348,7 +348,7 @@ class CategoryControllerTest extends TestCase
             'DELETE',
             'api/private/admin/category/destroy',
             [
-                'ids' => json_encode([$category->id]),
+                'ids' => [$category->id],
             ],
             [
                 'Authorization' => 'Bearer ' . $this->getAdminToken()
