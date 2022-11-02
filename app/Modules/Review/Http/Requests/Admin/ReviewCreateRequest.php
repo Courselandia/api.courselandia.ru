@@ -10,7 +10,7 @@ namespace App\Modules\Review\Http\Requests\Admin;
 
 use App\Models\Enums\EnumList;
 use App\Models\FormRequest;
-use App\Modules\Review\Enums\Level;
+use App\Modules\Review\Enums\Status;
 use JetBrains\PhpStorm\ArrayShape;
 
 /**
@@ -24,11 +24,11 @@ class ReviewCreateRequest extends FormRequest
      * @return array Массив правил проверки.
      */
     #[ArrayShape([
-        'level' => 'string',
+        'status' => 'string',
     ])] public function rules(): array
     {
         return [
-            'level' => 'in:'.implode(',' , EnumList::getValues(Level::class))
+            'status' => 'in:'.implode(',' , EnumList::getValues(Status::class))
         ];
     }
 
@@ -38,11 +38,11 @@ class ReviewCreateRequest extends FormRequest
      * @return array Массив атрибутов.
      */
     #[ArrayShape([
-        'level' => 'string'
+        'status' => 'string'
     ])] public function attributes(): array
     {
         return [
-            'level' => trans('review::http.requests.admin.reviewCreateRequest.level'),
+            'status' => trans('review::http.requests.admin.reviewCreateRequest.status'),
         ];
     }
 }

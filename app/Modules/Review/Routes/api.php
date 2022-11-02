@@ -25,9 +25,6 @@ Route::group([
         Route::put('update/{id}', 'Admin\ReviewController@update')
             ->name('update');
 
-        Route::put('update/status/{id}', 'Admin\ReviewController@updateStatus')
-            ->name('update.status');
-
         Route::delete('destroy/', 'Admin\ReviewController@destroy')
             ->name('destroy');
     });

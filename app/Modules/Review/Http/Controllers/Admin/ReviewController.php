@@ -8,28 +8,24 @@
 
 namespace App\Modules\Review\Http\Controllers\Admin;
 
+use App\Modules\Review\Enums\Status;
+use App\Modules\Review\Http\Requests\Admin\ReviewCreateRequest;
+use Auth;
+use Log;
+use ReflectionException;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Routing\Controller;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordExistException;
 use App\Models\Exceptions\RecordNotExistException;
-use App\Models\Exceptions\UserNotExistException;
 use App\Models\Exceptions\ValidateException;
 use App\Modules\Review\Actions\Admin\ReviewCreateAction;
 use App\Modules\Review\Actions\Admin\ReviewDestroyAction;
 use App\Modules\Review\Actions\Admin\ReviewGetAction;
 use App\Modules\Review\Actions\Admin\ReviewReadAction;
 use App\Modules\Review\Actions\Admin\ReviewUpdateAction;
-use App\Modules\Review\Actions\Admin\ReviewUpdateStatusAction;
-use App\Modules\Review\Enums\Level;
-use App\Modules\Review\Http\Requests\Admin\ReviewCreateRequest;
 use App\Modules\Review\Http\Requests\Admin\ReviewDestroyRequest;
 use App\Modules\Review\Http\Requests\Admin\ReviewReadRequest;
-use App\Modules\Review\Http\Requests\Admin\ReviewUpdateStatusRequest;
-use Auth;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
-use Illuminate\Routing\Controller;
-use Log;
-use ReflectionException;
 
 /**
  * Класс контроллер для работы с отзывовами в административной части.
@@ -42,7 +38,7 @@ class ReviewController extends Controller
      * @param int|string $id ID отзывов.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException|ReflectionException
+     * @throws ParameterInvalidException
      */
     public function get(int|string $id): JsonResponse
     {
@@ -73,7 +69,7 @@ class ReviewController extends Controller
      * @param ReviewReadRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException|ReflectionException
+     * @throws ParameterInvalidException
      */
     public function read(ReviewReadRequest $request): JsonResponse
     {
@@ -96,16 +92,18 @@ class ReviewController extends Controller
      * @param ReviewCreateRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException|ReflectionException
+     * @throws ParameterInvalidException
      */
     public function create(ReviewCreateRequest $request): JsonResponse
     {
         try {
             $action = app(ReviewCreateAction::class);
-            $action->profession_id = $request->get('profession_id');
-            $action->level = Level::from($request->get('level'));
-            $action->review = $request->get('review');
-            $action->status = $request->get('status');
+            $action->school_id = $request->get('school_id');
+            $action->name = $request->get('name');
+            $action->title = $request->get('title');
+            $action->text = $request->get('text');
+            $action->rating = $request->get('rating');
+            $action->status = Status::from($request->get('status'));
 
             $data = $action->run();
 
@@ -146,10 +144,13 @@ class ReviewController extends Controller
         try {
             $action = app(ReviewUpdateAction::class);
             $action->id = $id;
-            $action->profession_id = $request->get('profession_id');
-            $action->level = Level::from($request->get('level'));
-            $action->review = $request->get('review');
-            $action->status = $request->get('status');
+            $action->school_id = $request->get('school_id');
+            $action->name = $request->get('name');
+            $action->title = $request->get('title');
+            $action->text = $request->get('text');
+            $action->rating = $request->get('rating');
+            $action->status = Status::from($request->get('status'));
+
             $data = $action->run();
 
             Log::info(
@@ -173,49 +174,6 @@ class ReviewController extends Controller
                 'message' => $error->getMessage()
             ])->setStatusCode(400);
         } catch (RecordNotExistException $error) {
-            return response()->json([
-                'success' => false,
-                'message' => $error->getMessage()
-            ])->setStatusCode(404);
-        }
-    }
-
-    /**
-     * Обновление статуса.
-     *
-     * @param int|string $id ID пользователя.
-     * @param ReviewUpdateStatusRequest $request Запрос.
-     *
-     * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException|ReflectionException
-     */
-    public function updateStatus(int|string $id, ReviewUpdateStatusRequest $request): JsonResponse
-    {
-        try {
-            $action = app(ReviewUpdateStatusAction::class);
-            $action->id = $id;
-            $action->status = $request->get('status');
-
-            $data = $action->run();
-
-            Log::info(trans('review::http.controllers.admin.reviewController.update.log'), [
-                'module' => 'User',
-                'login' => Auth::getUser()->login,
-                'type' => 'update'
-            ]);
-
-            $data = [
-                'success' => true,
-                'data' => $data
-            ];
-
-            return response()->json($data);
-        } catch (ValidateException|RecordExistException $error) {
-            return response()->json([
-                'success' => false,
-                'message' => $error->getMessage()
-            ])->setStatusCode(400);
-        } catch (RecordNotExistException|UserNotExistException $error) {
             return response()->json([
                 'success' => false,
                 'message' => $error->getMessage()

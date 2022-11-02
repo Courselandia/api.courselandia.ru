@@ -13,7 +13,7 @@ return [
                 'ids' => 'ID'
             ],
             'reviewCreateRequest' => [
-                'level' => 'Level',
+                'status' => 'Status',
             ],
         ],
     ],

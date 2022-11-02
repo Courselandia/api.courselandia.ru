@@ -2,9 +2,11 @@
 
 return [
     'review' => [
-        'professionId' => 'ID профессии',
-        'level' => 'Уровень',
-        'review' => 'Отзыв',
+        'schoolId' => 'ID школы',
+        'name' => 'Имя автора',
+        'title' => 'Заголовок',
+        'text' => 'Текст',
+        'rating' => 'Рейтинг',
         'status' => 'Статус'
     ],
 ];

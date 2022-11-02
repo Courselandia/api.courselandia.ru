@@ -11,10 +11,9 @@ namespace App\Modules\Review\Actions\Admin;
 use App\Models\Action;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Review\Entities\Review as ReviewEntity;
-use App\Modules\Review\Enums\Level;
+use App\Modules\Review\Enums\Status;
 use App\Modules\Review\Repositories\Review;
 use Cache;
-use ReflectionException;
 
 /**
  * Класс действия для создания отзывов.
@@ -26,35 +25,49 @@ class ReviewCreateAction extends Action
      *
      * @var Review
      */
-    private Review $reviewRep;
+    private Review $review;
 
     /**
-     * ID профессии.
+     * ID школы.
      *
      * @var int|null
      */
-    public ?int $profession_id = null;
+    public ?int $school_id = null;
 
     /**
-     * Уровень.
+     * Имя автора.
      *
-     * @var Level|null
+     * @var string|null
      */
-    public ?Level $level = null;
+    public ?string $name = null;
 
     /**
-     * Отзыв.
+     * Заголовок.
      *
-     * @var int|null
+     * @var string|null
      */
-    public ?int $review = null;
+    public ?string $title = null;
+
+    /**
+     * Текст.
+     *
+     * @var string|null
+     */
+    public ?string $text = null;
+
+    /**
+     * Рейтинг.
+     *
+     * @var float|null
+     */
+    public ?float $rating = null;
 
     /**
      * Статус.
      *
-     * @var bool|null
+     * @var Status|null
      */
-    public ?bool $status = null;
+    public ?Status $status = null;
 
     /**
      * Конструктор.
@@ -63,7 +76,7 @@ class ReviewCreateAction extends Action
      */
     public function __construct(Review $review)
     {
-        $this->reviewRep = $review;
+        $this->review = $review;
     }
 
     /**
@@ -71,18 +84,19 @@ class ReviewCreateAction extends Action
      *
      * @return ReviewEntity Вернет результаты исполнения.
      * @throws ParameterInvalidException
-     * @throws ReflectionException
      */
     public function run(): ReviewEntity
     {
         $reviewEntity = new ReviewEntity();
-        $reviewEntity->level = $this->level;
-        $reviewEntity->review = $this->review;
-        $reviewEntity->profession_id = $this->profession_id;
+        $reviewEntity->school_id = $this->school_id;
+        $reviewEntity->name = $this->name;
+        $reviewEntity->title = $this->title;
+        $reviewEntity->text = $this->text;
+        $reviewEntity->rating = $this->rating;
         $reviewEntity->status = $this->status;
 
-        $id = $this->reviewRep->create($reviewEntity);
-        Cache::tags(['catalog', 'profession', 'review'])->flush();
+        $id = $this->review->create($reviewEntity);
+        Cache::tags(['catalog', 'school', 'review'])->flush();
 
         $action = app(ReviewGetAction::class);
         $action->id = $id;

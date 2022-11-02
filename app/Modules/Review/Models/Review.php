@@ -10,7 +10,6 @@ namespace App\Modules\Review\Models;
 
 use App\Modules\School\Models\School;
 use Eloquent;
-use App\Models\Status;
 use App\Models\Delete;
 use App\Models\Validate;
 use App\Models\Sortable;
@@ -22,6 +21,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Modules\Review\Database\Factories\ReviewFactory;
 use App\Modules\Review\Filters\ReviewFilter;
+use App\Models\Enums\EnumList;
+use App\Modules\Review\Enums\Status;
 
 /**
  * Класс модель для таблицы отзывов на основе Eloquent.
@@ -42,7 +43,6 @@ class Review extends Eloquent
     use HasFactory;
     use Sortable;
     use SoftDeletes;
-    use Status;
     use Validate;
     use Filterable;
 
@@ -81,7 +81,7 @@ class Review extends Eloquent
             'title' => 'max:191',
             'text' => 'required|between:1,65000',
             'rating' => 'float|float_between:0,5',
-            'status' => 'required|boolean'
+            'status' => 'required|in:' . implode(',', EnumList::getValues(Status::class)),
         ];
     }
 

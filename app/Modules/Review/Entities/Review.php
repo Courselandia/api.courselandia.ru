@@ -9,6 +9,7 @@
 namespace App\Modules\Review\Entities;
 
 use App\Models\Entity;
+use App\Modules\Review\Enums\Status;
 use App\Modules\School\Entities\School;
 use Carbon\Carbon;
 
@@ -62,9 +63,9 @@ class Review extends Entity
     /**
      * Статус.
      *
-     * @var bool|null
+     * @var Status|null
      */
-    public ?bool $status = null;
+    public ?Status $status = null;
 
     /**
      * Школа.

@@ -8,6 +8,7 @@
 
 namespace App\Modules\Review\Filters;
 
+use App\Modules\Review\Enums\Status;
 use EloquentFilter\ModelFilter;
 
 /**
@@ -61,7 +62,7 @@ class ReviewFilter extends ModelFilter
      */
     public function name(string $query): ReviewFilter
     {
-        return $this->whereLike('schools.name', $query);
+        return $this->whereLike('reviews.name', $query);
     }
 
     /**
@@ -73,7 +74,7 @@ class ReviewFilter extends ModelFilter
      */
     public function title(string $query): ReviewFilter
     {
-        return $this->whereLike('schools.title', $query);
+        return $this->whereLike('reviews.title', $query);
     }
 
     /**
@@ -85,18 +86,18 @@ class ReviewFilter extends ModelFilter
      */
     public function text(string $query): ReviewFilter
     {
-        return $this->whereLike('schools.text', $query);
+        return $this->whereLike('reviews.text', $query);
     }
 
     /**
      * Поиск по статусу.
      *
-     * @param bool $status Статус.
+     * @param Status[]|Status|string[]|string  $statuses Статусы.
      *
      * @return ReviewFilter Правила поиска.
      */
-    public function status(bool $status): ReviewFilter
+    public function status(array|Status|string $statuses): ReviewFilter
     {
-        return $this->where('reviews.status', $status);
+        return $this->whereIn('reviews.status', is_array($statuses) ? $statuses : [$statuses]);
     }
 }

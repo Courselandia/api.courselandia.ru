@@ -24,7 +24,7 @@ class CreateTableReviews extends Migration
             $table->text('text');
             $table->float('rating', 3);
 
-            $table->boolean('status')->default(0)->index();
+            $table->string('status', 20)->default('disabled')->index();
 
             $table->timestamps();
             $table->softDeletes()->index();

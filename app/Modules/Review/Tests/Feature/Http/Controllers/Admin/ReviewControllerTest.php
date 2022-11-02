@@ -8,10 +8,10 @@
 
 namespace App\Modules\Review\Tests\Feature\Http\Controllers\Admin;
 
-use App\Modules\Profession\Models\Profession;
-use App\Modules\Review\Enums\Level;
+use App\Modules\Review\Enums\Status;
 use App\Models\Test\TokenTest;
 use App\Modules\Review\Models\Review;
+use App\Modules\School\Models\School;
 use Faker\Factory as Faker;
 use JetBrains\PhpStorm\Pure;
 use Tests\TestCase;
@@ -39,10 +39,10 @@ class ReviewControllerTest extends TestCase
                 'start' => 0,
                 'limit' => 10,
                 'sorts' => [
-                    'level' => 'DESC',
+                    'title' => 'ASC',
                 ],
                 'filters' => [
-                    'review' => $review->review,
+                    'name' => $review->name,
                 ],
             ],
             [
@@ -106,17 +106,19 @@ class ReviewControllerTest extends TestCase
      */
     public function testCreate(): void
     {
-        $profession = Profession::factory()->create();
+        $school = School::factory()->create();
         $faker = Faker::create();
 
         $this->json(
             'POST',
             'api/private/admin/review/create',
             [
-                'level' => Level::JUNIOR,
-                'profession_id' => $profession->id,
-                'review' => $faker->numberBetween(10000, 1000000),
-                'status' => true,
+                'school_id' => $school->id,
+                'name' => $faker->text(191),
+                'title' => $faker->text(191),
+                'text' => $faker->text(65000),
+                'rating' => 4.6,
+                'status' => Status::ACTIVE,
             ],
             [
                 'Authorization' => 'Bearer ' . $this->getAdminToken()
@@ -135,16 +137,18 @@ class ReviewControllerTest extends TestCase
     public function testCreateNotValid(): void
     {
         $faker = Faker::create();
-        $profession = Profession::factory()->create();
+        $school = School::factory()->create();
 
         $this->json(
             'POST',
             'api/private/admin/review/create',
             [
-                'level' => 'TEST',
-                'profession_id' => $profession->id,
-                'review' => $faker->numberBetween(10000, 1000000),
-                'status' => true,
+                'school_id' => $school->id,
+                'name' => $faker->text(191),
+                'title' => $faker->text(191),
+                'text' => $faker->text(65000),
+                'rating' => 4.4,
+                'status' => 'test',
             ],
             [
                 'Authorization' => 'Bearer ' . $this->getAdminToken()
@@ -163,17 +167,19 @@ class ReviewControllerTest extends TestCase
     public function testUpdate(): void
     {
         $review = Review::factory()->create();
-        $profession = Profession::factory()->create();
+        $school = School::factory()->create();
         $faker = Faker::create();
 
         $this->json(
             'PUT',
             'api/private/admin/review/update/' . $review->id,
             [
-                'level' => Level::JUNIOR,
-                'profession_id' => $profession->id,
-                'review' => $faker->numberBetween(10000, 1000000),
-                'status' => true,
+                'school_id' => $school->id,
+                'name' => $faker->text(191),
+                'title' => $faker->text(191),
+                'text' => $faker->text(65000),
+                'rating' => 4.6,
+                'status' => Status::ACTIVE,
             ],
             [
                 'Authorization' => 'Bearer ' . $this->getAdminToken()
@@ -192,17 +198,19 @@ class ReviewControllerTest extends TestCase
     public function testUpdateNotValid(): void
     {
         $review = Review::factory()->create();
-        $profession = Profession::factory()->create();
+        $school = School::factory()->create();
         $faker = Faker::create();
 
         $this->json(
             'PUT',
             'api/private/admin/review/update/' . $review->id,
             [
-                'level' => 'TEST',
-                'profession_id' => $profession->id,
-                'review' => $faker->numberBetween(10000, 1000000),
-                'status' => true,
+                'school_id' => $school->id,
+                'name' => $faker->text(191),
+                'title' => $faker->text(191),
+                'text' => $faker->text(65000),
+                'rating' => 4.6,
+                'status' => 'status',
             ],
             [
                 'Authorization' => 'Bearer ' . $this->getAdminToken()
@@ -221,86 +229,18 @@ class ReviewControllerTest extends TestCase
     public function testUpdateNotExist(): void
     {
         $faker = Faker::create();
-        $profession = Profession::factory()->create();
+        $school = School::factory()->create();
 
         $this->json(
             'PUT',
             'api/private/admin/review/update/1000',
             [
-                'level' => Level::JUNIOR,
-                'profession_id' => $profession->id,
-                'review' => $faker->numberBetween(10000, 1000000),
-                'status' => true,
-            ],
-            [
-                'Authorization' => 'Bearer ' . $this->getAdminToken()
-            ]
-        )->assertStatus(404)->assertJsonStructure([
-            'success',
-            'message',
-        ]);
-    }
-
-    /**
-     * Обновление статуса.
-     *
-     * @return void
-     */
-    public function testUpdateStatus(): void
-    {
-        $review = Review::factory()->create();
-
-        $this->json(
-            'PUT',
-            'api/private/admin/review/update/status/' . $review->id,
-            [
-                'status' => true,
-            ],
-            [
-                'Authorization' => 'Bearer ' . $this->getAdminToken()
-            ]
-        )->assertStatus(200)->assertJsonStructure([
-            'success',
-            'data' => $this->getReviewStructure(),
-        ]);
-    }
-
-    /**
-     * Обновление статуса с ошибкой.
-     *
-     * @return void
-     */
-    public function testUpdateStatusNotValid(): void
-    {
-        $review = Review::factory()->create();
-
-        $this->json(
-            'PUT',
-            'api/private/admin/review/update/status/' . $review->id,
-            [
-                'status' => 'test',
-            ],
-            [
-                'Authorization' => 'Bearer ' . $this->getAdminToken()
-            ]
-        )->assertStatus(400)->assertJsonStructure([
-            'success',
-            'message',
-        ]);
-    }
-
-    /**
-     * Обновление статуса с ошибкой для несуществующей записи.
-     *
-     * @return void
-     */
-    public function testUpdateStatusNotExist(): void
-    {
-        $this->json(
-            'PUT',
-            'api/private/admin/review/update/status/1000',
-            [
-                'status' => true,
+                'school_id' => $school->id,
+                'name' => $faker->text(191),
+                'title' => $faker->text(191),
+                'text' => $faker->text(65000),
+                'rating' => 5,
+                'status' => Status::ACTIVE,
             ],
             [
                 'Authorization' => 'Bearer ' . $this->getAdminToken()
@@ -343,21 +283,27 @@ class ReviewControllerTest extends TestCase
     {
         return [
             'id',
-            'profession_id',
-            'level',
-            'review',
+            'school_id',
+            'name',
+            'title',
+            'text',
+            'rating',
             'status',
             'created_at',
             'updated_at',
             'deleted_at',
-            'profession' => [
+            'school' => [
                 'id',
                 'metatag_id',
                 'name',
                 'header',
                 'link',
                 'text',
+                'rating',
+                'site',
                 'status',
+                'image_logo_id',
+                'image_site_id',
                 'created_at',
                 'updated_at',
                 'deleted_at',

@@ -12,11 +12,8 @@ return [
             'reviewDestroyRequest' => [
                 'ids' => 'ID'
             ],
-            'reviewUpdateStatusRequest' => [
-                'status' => 'Статус',
-            ],
             'reviewCreateRequest' => [
-                'level' => 'Уровень',
+                'status' => 'Статус',
             ],
         ],
     ],

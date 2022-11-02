@@ -2,9 +2,11 @@
 
 return [
     'review' => [
-        'professionId' => 'ID profession',
-        'level' => 'Level',
-        'review' => 'Review',
+        'schoolId' => 'ID school',
+        'name' => 'Name',
+        'title' => 'Title',
+        'text' => 'Text',
+        'rating' => 'Rating',
         'status' => 'Status'
     ],
 ];

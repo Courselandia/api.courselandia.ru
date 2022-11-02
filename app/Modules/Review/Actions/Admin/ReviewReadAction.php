@@ -16,7 +16,6 @@ use App\Models\Rep\RepositoryQueryBuilder;
 use App\Modules\Review\Repositories\Review;
 use Cache;
 use JetBrains\PhpStorm\ArrayShape;
-use ReflectionException;
 use Util;
 
 /**
@@ -73,7 +72,7 @@ class ReviewReadAction extends Action
      * Метод запуска логики.
      *
      * @return mixed Вернет результаты исполнения.
-     * @throws ParameterInvalidException|ReflectionException
+     * @throws ParameterInvalidException
      */
     #[ArrayShape(['data' => 'array', 'total' => 'int'])] public function run(): array
     {
@@ -83,12 +82,12 @@ class ReviewReadAction extends Action
             ->setOffset($this->offset)
             ->setLimit($this->limit)
             ->setRelations([
-                'profession',
+                'school',
             ]);
 
         $cacheKey = Util::getKey('review', 'read', 'count', $query);
 
-        return Cache::tags(['catalog', 'profession', 'review'])->remember(
+        return Cache::tags(['catalog', 'school', 'review'])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
             function () use ($query) {

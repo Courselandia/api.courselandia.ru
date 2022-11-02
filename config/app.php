@@ -271,6 +271,9 @@ return [
 
         App\Modules\Salary\Providers\SalaryServiceProvider::class,
         App\Modules\Salary\Providers\RouteServiceProvider::class,
+
+        App\Modules\Review\Providers\ReviewServiceProvider::class,
+        App\Modules\Review\Providers\RouteServiceProvider::class,
     ],
 
     /*

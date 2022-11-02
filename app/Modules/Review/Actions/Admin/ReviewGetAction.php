@@ -15,7 +15,6 @@ use App\Models\Rep\RepositoryQueryBuilder;
 use App\Modules\Review\Entities\Review as ReviewEntity;
 use App\Modules\Review\Repositories\Review;
 use Cache;
-use ReflectionException;
 use Util;
 
 /**
@@ -58,12 +57,12 @@ class ReviewGetAction extends Action
         $query = new RepositoryQueryBuilder();
         $query->setId($this->id)
             ->setRelations([
-                'profession',
+                'school',
             ]);
 
         $cacheKey = Util::getKey('review', $query);
 
-        return Cache::tags(['catalog', 'profession', 'review'])->remember(
+        return Cache::tags(['catalog', 'school', 'review'])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
             function () use ($query) {
