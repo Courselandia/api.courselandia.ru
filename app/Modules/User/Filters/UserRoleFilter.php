@@ -20,7 +20,7 @@ class UserRoleFilter extends ModelFilter
      *
      * @param string[] $roles Название ролей.
      *
-     * @return UserRoleFilter Правила валидации.
+     * @return UserRoleFilter Правила поиска.
      */
     public function name(array $roles): UserRoleFilter
     {

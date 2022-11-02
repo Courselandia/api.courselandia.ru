@@ -20,7 +20,7 @@ class ToolFilter extends ModelFilter
      *
      * @param int $id ID.
      *
-     * @return ToolFilter Правила валидации.
+     * @return ToolFilter Правила поиска.
      */
     public function id(int $id): ToolFilter
     {
@@ -32,7 +32,7 @@ class ToolFilter extends ModelFilter
      *
      * @param string $query Строка поиска.
      *
-     * @return ToolFilter Правила валидации.
+     * @return ToolFilter Правила поиска.
      */
     public function name(string $query): ToolFilter
     {
@@ -44,7 +44,7 @@ class ToolFilter extends ModelFilter
      *
      * @param bool $status Статус.
      *
-     * @return ToolFilter Правила валидации.
+     * @return ToolFilter Правила поиска.
      */
     public function status(bool $status): ToolFilter
     {

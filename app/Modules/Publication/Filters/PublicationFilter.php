@@ -22,7 +22,7 @@ class PublicationFilter extends ModelFilter
      *
      * @param int $id ID.
      *
-     * @return PublicationFilter Правила валидации.
+     * @return PublicationFilter Правила поиска.
      */
     public function id(int $id): PublicationFilter
     {
@@ -34,7 +34,7 @@ class PublicationFilter extends ModelFilter
      *
      * @param array $dates Даты от и до.
      *
-     * @return PublicationFilter Правила валидации.
+     * @return PublicationFilter Правила поиска.
      */
     public function publishedAt(array $dates): PublicationFilter
     {
@@ -51,7 +51,7 @@ class PublicationFilter extends ModelFilter
      *
      * @param string $query Строка поиска.
      *
-     * @return PublicationFilter Правила валидации.
+     * @return PublicationFilter Правила поиска.
      */
     public function header(string $query): PublicationFilter
     {
@@ -63,7 +63,7 @@ class PublicationFilter extends ModelFilter
      *
      * @param string $query Строка поиска.
      *
-     * @return PublicationFilter Правила валидации.
+     * @return PublicationFilter Правила поиска.
      */
     public function link(string $query): PublicationFilter
     {
@@ -75,7 +75,7 @@ class PublicationFilter extends ModelFilter
      *
      * @param string $query Строка поиска.
      *
-     * @return PublicationFilter Правила валидации.
+     * @return PublicationFilter Правила поиска.
      */
     public function anons(string $query): PublicationFilter
     {
@@ -87,7 +87,7 @@ class PublicationFilter extends ModelFilter
      *
      * @param string $query Строка поиска.
      *
-     * @return PublicationFilter Правила валидации.
+     * @return PublicationFilter Правила поиска.
      */
     public function article(string $query): PublicationFilter
     {
@@ -99,7 +99,7 @@ class PublicationFilter extends ModelFilter
      *
      * @param bool $status Статус.
      *
-     * @return PublicationFilter Правила валидации.
+     * @return PublicationFilter Правила поиска.
      */
     public function status(bool $status): PublicationFilter
     {

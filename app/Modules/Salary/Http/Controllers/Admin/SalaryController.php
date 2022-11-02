@@ -124,16 +124,11 @@ class SalaryController extends Controller
             ];
 
             return response()->json($data);
-        } catch (ValidateException $error) {
+        } catch (ValidateException|RecordExistException $error) {
             return response()->json([
                 'success' => false,
                 'message' => $error->getMessage()
             ])->setStatusCode(400);
-        } catch (RecordExistException $error) {
-            return response()->json([
-                'success' => false,
-                'message' => $error->getMessage()
-            ])->setStatusCode(404);
         }
     }
 

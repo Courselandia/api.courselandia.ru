@@ -30,13 +30,14 @@ class SalaryReadRequest extends FormRequest
     ])] public function rules(): array
     {
         $column = Schema::getColumnListing('salaries');
+        $column[] = 'profession-name';
         $column = implode(',', $column);
 
         return [
-            'sorts' => 'array|sorts:'.$column,
+            'sorts' => 'array|sorts:' . $column,
             'start' => 'integer|digits_between:0,20',
             'limit' => 'integer|digits_between:0,20',
-            'filters' => 'array|filters:'.$column.'|filter_date_range:published_at',
+            'filters' => 'array|filters:' . $column . '|filter_date_range:published_at',
         ];
     }
 

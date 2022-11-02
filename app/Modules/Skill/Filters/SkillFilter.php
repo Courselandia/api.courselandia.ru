@@ -20,7 +20,7 @@ class SkillFilter extends ModelFilter
      *
      * @param int $id ID.
      *
-     * @return SkillFilter Правила валидации.
+     * @return SkillFilter Правила поиска.
      */
     public function id(int $id): SkillFilter
     {
@@ -32,7 +32,7 @@ class SkillFilter extends ModelFilter
      *
      * @param string $query Строка поиска.
      *
-     * @return SkillFilter Правила валидации.
+     * @return SkillFilter Правила поиска.
      */
     public function name(string $query): SkillFilter
     {
@@ -44,7 +44,7 @@ class SkillFilter extends ModelFilter
      *
      * @param bool $status Статус.
      *
-     * @return SkillFilter Правила валидации.
+     * @return SkillFilter Правила поиска.
      */
     public function status(bool $status): SkillFilter
     {

@@ -20,7 +20,7 @@ class ProfessionFilter extends ModelFilter
      *
      * @param int $id ID.
      *
-     * @return ProfessionFilter Правила валидации.
+     * @return ProfessionFilter Правила поиска.
      */
     public function id(int $id): ProfessionFilter
     {
@@ -32,7 +32,7 @@ class ProfessionFilter extends ModelFilter
      *
      * @param string $query Строка поиска.
      *
-     * @return ProfessionFilter Правила валидации.
+     * @return ProfessionFilter Правила поиска.
      */
     public function name(string $query): ProfessionFilter
     {
@@ -44,7 +44,7 @@ class ProfessionFilter extends ModelFilter
      *
      * @param bool $status Статус.
      *
-     * @return ProfessionFilter Правила валидации.
+     * @return ProfessionFilter Правила поиска.
      */
     public function status(bool $status): ProfessionFilter
     {

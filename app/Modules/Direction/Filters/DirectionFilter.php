@@ -20,7 +20,7 @@ class DirectionFilter extends ModelFilter
      *
      * @param int $id ID.
      *
-     * @return DirectionFilter Правила валидации.
+     * @return DirectionFilter Правила поиска.
      */
     public function id(int $id): DirectionFilter
     {
@@ -32,7 +32,7 @@ class DirectionFilter extends ModelFilter
      *
      * @param string $query Строка поиска.
      *
-     * @return DirectionFilter Правила валидации.
+     * @return DirectionFilter Правила поиска.
      */
     public function name(string $query): DirectionFilter
     {
@@ -44,7 +44,7 @@ class DirectionFilter extends ModelFilter
      *
      * @param bool $status Статус.
      *
-     * @return DirectionFilter Правила валидации.
+     * @return DirectionFilter Правила поиска.
      */
     public function status(bool $status): DirectionFilter
     {

@@ -20,7 +20,7 @@ class TeacherFilter extends ModelFilter
      *
      * @param int $id ID.
      *
-     * @return TeacherFilter Правила валидации.
+     * @return TeacherFilter Правила поиска.
      */
     public function id(int $id): TeacherFilter
     {
@@ -32,7 +32,7 @@ class TeacherFilter extends ModelFilter
      *
      * @param string $query Строка поиска.
      *
-     * @return TeacherFilter Правила валидации.
+     * @return TeacherFilter Правила поиска.
      */
     public function name(string $query): TeacherFilter
     {
@@ -44,7 +44,7 @@ class TeacherFilter extends ModelFilter
      *
      * @param bool $status Статус.
      *
-     * @return TeacherFilter Правила валидации.
+     * @return TeacherFilter Правила поиска.
      */
     public function status(bool $status): TeacherFilter
     {

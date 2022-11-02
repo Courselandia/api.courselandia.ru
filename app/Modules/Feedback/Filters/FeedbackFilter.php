@@ -22,7 +22,7 @@ class FeedbackFilter extends ModelFilter
      *
      * @param int $id ID.
      *
-     * @return FeedbackFilter Правила валидации.
+     * @return FeedbackFilter Правила поиска.
      */
     public function id(int $id): FeedbackFilter
     {
@@ -34,7 +34,7 @@ class FeedbackFilter extends ModelFilter
      *
      * @param array $dates Даты от и до.
      *
-     * @return FeedbackFilter Правила валидации.
+     * @return FeedbackFilter Правила поиска.
      */
     public function createdAt(array $dates): FeedbackFilter
     {
@@ -51,7 +51,7 @@ class FeedbackFilter extends ModelFilter
      *
      * @param string $query Строка поиска.
      *
-     * @return FeedbackFilter Правила валидации.
+     * @return FeedbackFilter Правила поиска.
      */
     public function name(string $query): FeedbackFilter
     {
@@ -63,7 +63,7 @@ class FeedbackFilter extends ModelFilter
      *
      * @param string $query Строка поиска.
      *
-     * @return FeedbackFilter Правила валидации.
+     * @return FeedbackFilter Правила поиска.
      */
     public function email(string $query): FeedbackFilter
     {
@@ -75,7 +75,7 @@ class FeedbackFilter extends ModelFilter
      *
      * @param string $query Строка поиска.
      *
-     * @return FeedbackFilter Правила валидации.
+     * @return FeedbackFilter Правила поиска.
      */
     public function phone(string $query): FeedbackFilter
     {
@@ -87,7 +87,7 @@ class FeedbackFilter extends ModelFilter
      *
      * @param string $query Строка поиска.
      *
-     * @return FeedbackFilter Правила валидации.
+     * @return FeedbackFilter Правила поиска.
      */
     public function message(string $query): FeedbackFilter
     {

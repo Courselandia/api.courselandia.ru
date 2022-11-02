@@ -67,7 +67,7 @@ class ProfessionUpdateStatusAction extends Action
         if ($professionEntity) {
             $professionEntity->status = $this->status;
             $this->profession->update($this->id, $professionEntity);
-            Cache::tags(['catalog', 'category', 'direction', 'profession'])->flush();
+            Cache::tags(['catalog', 'category', 'direction', 'salary', 'profession'])->flush();
 
             return $professionEntity;
         }

@@ -33,7 +33,7 @@ class UserFilter extends ModelFilter
      *
      * @param int $id ID.
      *
-     * @return UserFilter Правила валидации.
+     * @return UserFilter Правила поиска.
      */
     public function id(int $id): UserFilter
     {
@@ -45,7 +45,7 @@ class UserFilter extends ModelFilter
      *
      * @param string $query Строка поиска.
      *
-     * @return UserFilter Правила валидации.
+     * @return UserFilter Правила поиска.
      */
     public function login(string $query): UserFilter
     {
@@ -57,7 +57,7 @@ class UserFilter extends ModelFilter
      *
      * @param string $query Строка поиска.
      *
-     * @return UserFilter Правила валидации.
+     * @return UserFilter Правила поиска.
      */
     public function firstName(string $query): UserFilter
     {
@@ -69,7 +69,7 @@ class UserFilter extends ModelFilter
      *
      * @param string $query Строка поиска.
      *
-     * @return UserFilter Правила валидации.
+     * @return UserFilter Правила поиска.
      */
     public function secondName(string $query): UserFilter
     {
@@ -81,7 +81,7 @@ class UserFilter extends ModelFilter
      *
      * @param string $query Строка поиска.
      *
-     * @return UserFilter Правила валидации.
+     * @return UserFilter Правила поиска.
      */
     public function phone(string $query): UserFilter
     {
@@ -93,7 +93,7 @@ class UserFilter extends ModelFilter
      *
      * @param bool $status Статус.
      *
-     * @return UserFilter Правила валидации.
+     * @return UserFilter Правила поиска.
      */
     public function status(bool $status): UserFilter
     {
@@ -105,7 +105,7 @@ class UserFilter extends ModelFilter
      *
      * @param array $dates Даты от и до.
      *
-     * @return UserFilter Правила валидации.
+     * @return UserFilter Правила поиска.
      */
     public function createdAt(array $dates): UserFilter
     {
@@ -122,7 +122,7 @@ class UserFilter extends ModelFilter
      *
      * @param string[]|string $roles Название ролей.
      *
-     * @return UserFilter Правила валидации.
+     * @return UserFilter Правила поиска.
      */
     public function roleName(array|string $roles): UserFilter
     {

@@ -120,7 +120,7 @@ class ProfessionCreateAction extends Action
         $professionEntity->metatag_id = $metatag->id;
 
         $id = $this->profession->create($professionEntity);
-        Cache::tags(['catalog', 'category', 'direction', 'profession'])->flush();
+        Cache::tags(['catalog', 'category', 'direction', 'salary', 'profession'])->flush();
 
         $action = app(ProfessionGetAction::class);
         $action->id = $id;

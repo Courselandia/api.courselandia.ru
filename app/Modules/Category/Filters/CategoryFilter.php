@@ -20,7 +20,7 @@ class CategoryFilter extends ModelFilter
      *
      * @param int $id ID.
      *
-     * @return CategoryFilter Правила валидации.
+     * @return CategoryFilter Правила поиска.
      */
     public function id(int $id): CategoryFilter
     {
@@ -32,7 +32,7 @@ class CategoryFilter extends ModelFilter
      *
      * @param string $query Строка поиска.
      *
-     * @return CategoryFilter Правила валидации.
+     * @return CategoryFilter Правила поиска.
      */
     public function name(string $query): CategoryFilter
     {
@@ -44,7 +44,7 @@ class CategoryFilter extends ModelFilter
      *
      * @param bool $status Статус.
      *
-     * @return CategoryFilter Правила валидации.
+     * @return CategoryFilter Правила поиска.
      */
     public function status(bool $status): CategoryFilter
     {

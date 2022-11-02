@@ -9,6 +9,7 @@
 namespace App\Modules\Profession\Models;
 
 use App\Modules\Category\Models\Category;
+use App\Modules\Salary\Models\Salary;
 use Eloquent;
 use App\Models\Status;
 use App\Models\Delete;
@@ -17,6 +18,7 @@ use App\Models\Sortable;
 use EloquentFilter\Filterable;
 use App\Modules\Metatag\Models\Metatag;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use JetBrains\PhpStorm\ArrayShape;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -38,6 +40,7 @@ use App\Modules\Profession\Filters\ProfessionFilter;
  *
  * @property-read Metatag $metatag
  * @property-read Category[] $categories
+ * @property-read Salary[] $salaries
  */
 class Profession extends Eloquent
 {
@@ -143,5 +146,15 @@ class Profession extends Eloquent
     public function categories(): BelongsToMany
     {
         return $this->belongsToMany(Category::class);
+    }
+
+    /**
+     * Зарплаты этой профессии.
+     *
+     * @return HasMany Модели зарплат.
+     */
+    public function salaries(): HasMany
+    {
+        return $this->hasMany(Salary::class);
     }
 }

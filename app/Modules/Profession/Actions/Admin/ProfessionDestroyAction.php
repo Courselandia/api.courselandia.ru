@@ -55,7 +55,7 @@ class ProfessionDestroyAction extends Action
                 $this->profession->destroy($ids[$i]);
             }
 
-            Cache::tags(['catalog', 'category', 'direction', 'profession'])->flush();
+            Cache::tags(['catalog', 'category', 'direction', 'salary', 'profession'])->flush();
         }
 
         return true;

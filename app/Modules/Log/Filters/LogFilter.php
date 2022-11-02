@@ -22,7 +22,7 @@ class LogFilter extends ModelFilter
      *
      * @param int $id ID.
      *
-     * @return LogFilter Правила валидации.
+     * @return LogFilter Правила поиска.
      */
     public function id(int $id): LogFilter
     {
@@ -34,7 +34,7 @@ class LogFilter extends ModelFilter
      *
      * @param array $dates Даты.
      *
-     * @return LogFilter Правила валидации.
+     * @return LogFilter Правила поиска.
      */
     public function createdAt(array $dates): LogFilter
     {
@@ -51,7 +51,7 @@ class LogFilter extends ModelFilter
      *
      * @param string $query Строка поиска.
      *
-     * @return LogFilter Правила валидации.
+     * @return LogFilter Правила поиска.
      */
     public function message(string $query): LogFilter
     {
@@ -63,7 +63,7 @@ class LogFilter extends ModelFilter
      *
      * @param string $query Строка поиска.
      *
-     * @return LogFilter Правила валидации.
+     * @return LogFilter Правила поиска.
      */
     public function levelName(string $query): LogFilter
     {

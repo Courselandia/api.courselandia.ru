@@ -22,7 +22,7 @@ class SchoolFilter extends ModelFilter
      *
      * @param int $id ID.
      *
-     * @return SchoolFilter Правила валидации.
+     * @return SchoolFilter Правила поиска.
      */
     public function id(int $id): SchoolFilter
     {
@@ -34,7 +34,7 @@ class SchoolFilter extends ModelFilter
      *
      * @param string $query Строка поиска.
      *
-     * @return SchoolFilter Правила валидации.
+     * @return SchoolFilter Правила поиска.
      */
     public function name(string $query): SchoolFilter
     {
@@ -46,7 +46,7 @@ class SchoolFilter extends ModelFilter
      *
      * @param bool $status Статус.
      *
-     * @return SchoolFilter Правила валидации.
+     * @return SchoolFilter Правила поиска.
      */
     public function status(bool $status): SchoolFilter
     {

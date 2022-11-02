@@ -17,11 +17,22 @@ use EloquentFilter\ModelFilter;
 class SalaryFilter extends ModelFilter
 {
     /**
+     * Массив сопоставлений атрибутом поиска отношений с методом его реализации.
+     *
+     * @var array
+     */
+    public $relations = [
+        'profession' => [
+            'profession-name'  => 'professionName',
+        ]
+    ];
+
+    /**
      * Поиск по ID.
      *
      * @param int $id ID.
      *
-     * @return SalaryFilter Правила валидации.
+     * @return SalaryFilter Правила поиска.
      */
     public function id(int $id): SalaryFilter
     {
@@ -31,25 +42,39 @@ class SalaryFilter extends ModelFilter
     /**
      * Поиск по профессии.
      *
-     * @param string $query Строка поиска.
+     * @param array|int $professionIds ID's профессий.
      *
-     * @return SalaryFilter Правила валидации.
+     * @return SalaryFilter Правила поиска.
      */
-    public function professionId(string $query): SalaryFilter
+    public function professionName(array|int $professionIds): SalaryFilter
     {
-        return $this->whereLike('salaries.profession_id', $query);
+        return $this->related('profession', function($query) use ($professionIds) {
+            return $query->whereIn('professions.id', is_array($professionIds) ? $professionIds : [$professionIds]);
+        });
     }
 
     /**
      * Поиск по уровню.
      *
-     * @param Level $query Строка поиска.
+     * @param Level[]|Level|string[]|string $levels Уровни.
      *
-     * @return SalaryFilter Правила валидации.
+     * @return SalaryFilter Правила поиска.
      */
-    public function level(Level $query): SalaryFilter
+    public function level(array|Level|string $levels): SalaryFilter
     {
-        return $this->whereLike('salaries.level', $query);
+        return $this->whereIn('salaries.level', is_array($levels) ? $levels : [$levels]);
+    }
+
+    /**
+     * Поиск по уровню.
+     *
+     * @param int $salary Зарплата.
+     *
+     * @return SalaryFilter Правила поиска.
+     */
+    public function salary(int $salary): SalaryFilter
+    {
+        return $this->where('salaries.salary', $salary);
     }
 
     /**
@@ -57,7 +82,7 @@ class SalaryFilter extends ModelFilter
      *
      * @param bool $status Статус.
      *
-     * @return SalaryFilter Правила валидации.
+     * @return SalaryFilter Правила поиска.
      */
     public function status(bool $status): SalaryFilter
     {
