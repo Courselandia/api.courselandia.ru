@@ -15,6 +15,9 @@ return [
             'skillUpdateStatusRequest' => [
                 'status' => 'Статус',
             ],
+            'skillCreateRequest' => [
+                'status' => 'Статус',
+            ]
         ],
     ],
     'controllers' => [

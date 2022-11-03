@@ -19,8 +19,10 @@ use App\Modules\Profession\Actions\Admin\ProfessionGetAction;
 use App\Modules\Profession\Actions\Admin\ProfessionReadAction;
 use App\Modules\Profession\Actions\Admin\ProfessionUpdateAction;
 use App\Modules\Profession\Actions\Admin\ProfessionUpdateStatusAction;
+use App\Modules\Profession\Http\Requests\Admin\ProfessionCreateRequest;
 use App\Modules\Profession\Http\Requests\Admin\ProfessionDestroyRequest;
 use App\Modules\Profession\Http\Requests\Admin\ProfessionReadRequest;
+use App\Modules\Profession\Http\Requests\Admin\ProfessionUpdateRequest;
 use App\Modules\Profession\Http\Requests\Admin\ProfessionUpdateStatusRequest;
 use Auth;
 use Illuminate\Http\JsonResponse;
@@ -91,12 +93,12 @@ class ProfessionController extends Controller
     /**
      * Добавление данных.
      *
-     * @param Request $request Запрос.
+     * @param ProfessionCreateRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
      * @throws RecordNotExistException|ParameterInvalidException|ReflectionException
      */
-    public function create(Request $request): JsonResponse
+    public function create(ProfessionCreateRequest $request): JsonResponse
     {
         try {
             $action = app(ProfessionCreateAction::class);
@@ -148,7 +150,7 @@ class ProfessionController extends Controller
      * @return JsonResponse Вернет JSON ответ.
      * @throws ParameterInvalidException|ReflectionException
      */
-    public function update(int|string $id, Request $request): JsonResponse
+    public function update(int|string $id, ProfessionUpdateRequest $request): JsonResponse
     {
         try {
             $action = app(ProfessionUpdateAction::class);

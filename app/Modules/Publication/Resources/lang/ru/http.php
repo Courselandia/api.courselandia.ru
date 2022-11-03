@@ -15,6 +15,7 @@ return [
             'publicationCreateRequest' => [
                 'image' => 'Изображение',
                 'publishedAt' => 'Дата публикации',
+                'status' => 'Статус',
             ],
             'publicationUpdateStatusRequest' => [
                 'status' => 'Статус',

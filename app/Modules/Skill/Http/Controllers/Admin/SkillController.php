@@ -19,8 +19,10 @@ use App\Modules\Skill\Actions\Admin\SkillGetAction;
 use App\Modules\Skill\Actions\Admin\SkillReadAction;
 use App\Modules\Skill\Actions\Admin\SkillUpdateAction;
 use App\Modules\Skill\Actions\Admin\SkillUpdateStatusAction;
+use App\Modules\Skill\Http\Requests\Admin\SkillCreateRequest;
 use App\Modules\Skill\Http\Requests\Admin\SkillDestroyRequest;
 use App\Modules\Skill\Http\Requests\Admin\SkillReadRequest;
+use App\Modules\Skill\Http\Requests\Admin\SkillUpdateRequest;
 use App\Modules\Skill\Http\Requests\Admin\SkillUpdateStatusRequest;
 use Auth;
 use Illuminate\Http\JsonResponse;
@@ -91,12 +93,12 @@ class SkillController extends Controller
     /**
      * Добавление данных.
      *
-     * @param Request $request Запрос.
+     * @param SkillCreateRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
      * @throws RecordNotExistException|ParameterInvalidException|ReflectionException
      */
-    public function create(Request $request): JsonResponse
+    public function create(SkillCreateRequest $request): JsonResponse
     {
         try {
             $action = app(SkillCreateAction::class);
@@ -143,12 +145,12 @@ class SkillController extends Controller
      * Обновление данных.
      *
      * @param int|string $id ID навыка.
-     * @param Request $request Запрос.
+     * @param SkillUpdateRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
      * @throws ParameterInvalidException|ReflectionException
      */
-    public function update(int|string $id, Request $request): JsonResponse
+    public function update(int|string $id, SkillUpdateRequest $request): JsonResponse
     {
         try {
             $action = app(SkillUpdateAction::class);

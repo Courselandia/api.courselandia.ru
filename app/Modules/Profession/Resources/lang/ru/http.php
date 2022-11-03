@@ -15,6 +15,9 @@ return [
             'professionUpdateStatusRequest' => [
                 'status' => 'Статус',
             ],
+            'professionCreateRequest' => [
+                'status' => 'Статус',
+            ]
         ],
     ],
     'controllers' => [

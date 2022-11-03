@@ -12,6 +12,10 @@ return [
             'directionDestroyRequest' => [
                 'ids' => 'ID'
             ],
+            'directionCreateRequest' => [
+                'weight' => 'Weight',
+                'status' => 'Status',
+            ]
         ],
     ],
     'controllers' => [

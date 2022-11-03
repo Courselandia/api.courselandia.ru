@@ -12,6 +12,9 @@ return [
             'toolDestroyRequest' => [
                 'ids' => 'ID'
             ],
+            'toolCreateRequest' => [
+                'status' => 'Status',
+            ]
         ],
     ],
     'controllers' => [

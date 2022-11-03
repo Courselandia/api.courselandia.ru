@@ -15,6 +15,7 @@ return [
             'publicationCreateRequest' => [
                 'image' => 'Image',
                 'publishedAt' => 'Date of publication',
+                'status' => 'Status',
             ],
             'publicationUpdateStatusRequest' => [
                 'status' => 'Status',

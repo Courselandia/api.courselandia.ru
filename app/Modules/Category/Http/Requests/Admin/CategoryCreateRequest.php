@@ -25,7 +25,8 @@ class CategoryCreateRequest extends FormRequest
         'directions' => 'string',
         'directions.*' => 'string',
         'professions' => 'string',
-        'professions.*' => 'string'
+        'professions.*' => 'string',
+        'status' => 'boolean',
     ])] public function rules(): array
     {
         return [
@@ -33,6 +34,7 @@ class CategoryCreateRequest extends FormRequest
             'directions.*' => 'integer',
             'professions' => 'array',
             'professions.*' => 'integer',
+            'status' => 'boolean',
         ];
     }
 
@@ -45,7 +47,8 @@ class CategoryCreateRequest extends FormRequest
         'directions' => 'string',
         'directions.*' => 'string',
         'professions' => 'string',
-        'professions.*' => 'string'
+        'professions.*' => 'string',
+        'boolean' => 'string'
     ])] public function attributes(): array
     {
         return [
@@ -53,6 +56,7 @@ class CategoryCreateRequest extends FormRequest
             'directions.*' => trans('category::http.requests.admin.categoryCreateRequest.directions'),
             'professions' => trans('category::http.requests.admin.categoryCreateRequest.professions'),
             'professions.*' => trans('category::http.requests.admin.categoryCreateRequest.professions'),
+            'boolean' => trans('category::http.requests.admin.categoryCreateRequest.boolean'),
         ];
     }
 }

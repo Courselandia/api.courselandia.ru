@@ -18,6 +18,7 @@ return [
             'categoryCreateRequest' => [
                 'directions' => 'Directions',
                 'professions' => 'Professions',
+                'status' => 'Status',
             ]
         ],
     ],

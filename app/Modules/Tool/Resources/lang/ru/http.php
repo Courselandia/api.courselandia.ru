@@ -15,6 +15,9 @@ return [
             'toolUpdateStatusRequest' => [
                 'status' => 'Статус',
             ],
+            'toolCreateRequest' => [
+                'status' => 'Статус',
+            ]
         ],
     ],
     'controllers' => [

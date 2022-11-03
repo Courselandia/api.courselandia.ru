@@ -14,6 +14,9 @@ return [
             ],
             'salaryCreateRequest' => [
                 'level' => 'Level',
+                'status' => 'Status',
+                'professionId' => 'Profession ID',
+                'salary' => 'Salary',
             ],
         ],
     ],

@@ -12,6 +12,9 @@ return [
             'skillDestroyRequest' => [
                 'ids' => 'ID'
             ],
+            'skillCreateRequest' => [
+                'status' => 'Status',
+            ]
         ],
     ],
     'controllers' => [

@@ -20,11 +20,13 @@ class PublicationUpdateRequest extends PublicationCreateRequest
      *
      * @return array Массив правил проверки.
      */
-    #[ArrayShape(['image' => 'string', 'published_at' => 'string'])] public function rules(): array
+    #[ArrayShape(['image' => 'string', 'published_at' => 'string', 'status' => 'string',])] public function rules(
+    ): array
     {
         return [
             'image' => 'nullable|media:jpg,png,gif,webp',
             'published_at' => 'required|date_format:Y-m-d H:i:s O',
+            'status' => 'required|boolean',
         ];
     }
 
@@ -36,11 +38,13 @@ class PublicationUpdateRequest extends PublicationCreateRequest
     #[ArrayShape([
         'image' => 'string',
         'published_at' => 'string',
+        'status' => 'string',
     ])] public function attributes(): array
     {
         return [
             'image' => trans('publication::http.requests.admin.publicationCreateRequest.image'),
             'published_at' => trans('publication::http.requests.admin.publicationCreateRequest.publishedAt'),
+            'status' => trans('publication::http.requests.admin.publicationCreateRequest.status'),
         ];
     }
 }

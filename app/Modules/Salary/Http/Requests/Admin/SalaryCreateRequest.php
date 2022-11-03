@@ -24,11 +24,17 @@ class SalaryCreateRequest extends FormRequest
      * @return array Массив правил проверки.
      */
     #[ArrayShape([
+        'profession_id' => 'string',
         'level' => 'string',
+        'salary' => 'string',
+        'status' => 'string',
     ])] public function rules(): array
     {
         return [
-            'level' => 'in:'.implode(',' , EnumList::getValues(Level::class))
+            'profession_id' => 'integer',
+            'level' => 'in:' . implode(',', EnumList::getValues(Level::class)),
+            'salary' => 'integer',
+            'status' => 'boolean',
         ];
     }
 
@@ -38,11 +44,17 @@ class SalaryCreateRequest extends FormRequest
      * @return array Массив атрибутов.
      */
     #[ArrayShape([
-        'level' => 'string'
+        'profession_id' => 'string',
+        'level' => 'string',
+        'salary' => 'string',
+        'status' => 'string',
     ])] public function attributes(): array
     {
         return [
+            'profession_id' => trans('salary::http.requests.admin.salaryCreateRequest.professionId'),
             'level' => trans('salary::http.requests.admin.salaryCreateRequest.level'),
+            'salary' => trans('salary::http.requests.admin.salaryCreateRequest.salary'),
+            'status' => trans('salary::http.requests.admin.salaryCreateRequest.status'),
         ];
     }
 }

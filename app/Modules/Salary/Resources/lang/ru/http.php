@@ -17,6 +17,9 @@ return [
             ],
             'salaryCreateRequest' => [
                 'level' => 'Уровень',
+                'status' => 'Статус',
+                'professionId' => 'ID профессии',
+                'salary' => 'Зарплата',
             ],
         ],
     ],

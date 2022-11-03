@@ -17,6 +17,9 @@ return [
                     'image' => 'Изображение',
                     'invitation' => 'Приглашение',
                     'role' => 'Роль',
+                    'verified' => 'Верифицирован',
+                    'two_factor' => 'Двухфакторная аутентификация',
+                    'status' => 'Статус',
                 ],
                 'userUpdateStatusRequest' => [
                     'status' => 'Статус'

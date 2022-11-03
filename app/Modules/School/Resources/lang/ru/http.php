@@ -15,6 +15,8 @@ return [
             'schoolCreateRequest' => [
                 'imageLogo' => 'Изображение логотипа',
                 'imageSite' => 'Изображение сайта',
+                'rating' => 'Рейтинг',
+                'status' => 'Статус',
             ],
             'schoolUpdateStatusRequest' => [
                 'status' => 'Статус',

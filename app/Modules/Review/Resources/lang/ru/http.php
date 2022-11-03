@@ -14,6 +14,8 @@ return [
             ],
             'reviewCreateRequest' => [
                 'status' => 'Статус',
+                'rating' => 'Рейтинг',
+                'schoolId' => 'ID школы',
             ],
         ],
     ],

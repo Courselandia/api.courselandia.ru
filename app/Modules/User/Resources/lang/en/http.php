@@ -17,6 +17,9 @@ return [
                     'image' => 'Image',
                     'invitation' => 'Invitation',
                     'role' => 'Role',
+                    'verified' => 'Verified',
+                    'two_factor' => 'Two factor',
+                    'status' => 'Status',
                 ],
                 'userUpdateStatusRequest' => [
                     'status' => 'Status'

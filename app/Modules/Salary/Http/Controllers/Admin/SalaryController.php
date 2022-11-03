@@ -8,6 +8,13 @@
 
 namespace App\Modules\Salary\Http\Controllers\Admin;
 
+use App\Modules\Salary\Http\Requests\Admin\SalaryUpdateRequest;
+use Auth;
+use Log;
+use ReflectionException;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Routing\Controller;
+use App\Modules\Salary\Enums\Level;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordExistException;
 use App\Models\Exceptions\RecordNotExistException;
@@ -19,17 +26,10 @@ use App\Modules\Salary\Actions\Admin\SalaryGetAction;
 use App\Modules\Salary\Actions\Admin\SalaryReadAction;
 use App\Modules\Salary\Actions\Admin\SalaryUpdateAction;
 use App\Modules\Salary\Actions\Admin\SalaryUpdateStatusAction;
-use App\Modules\Salary\Enums\Level;
 use App\Modules\Salary\Http\Requests\Admin\SalaryCreateRequest;
 use App\Modules\Salary\Http\Requests\Admin\SalaryDestroyRequest;
 use App\Modules\Salary\Http\Requests\Admin\SalaryReadRequest;
 use App\Modules\Salary\Http\Requests\Admin\SalaryUpdateStatusRequest;
-use Auth;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
-use Illuminate\Routing\Controller;
-use Log;
-use ReflectionException;
 
 /**
  * Класс контроллер для работы с зарплатами в административной части.
@@ -136,12 +136,12 @@ class SalaryController extends Controller
      * Обновление данных.
      *
      * @param int|string $id ID зарплаты.
-     * @param SalaryCreateRequest $request Запрос.
+     * @param SalaryUpdateRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
      * @throws ParameterInvalidException
      */
-    public function update(int|string $id, SalaryCreateRequest $request): JsonResponse
+    public function update(int|string $id, SalaryUpdateRequest $request): JsonResponse
     {
         try {
             $action = app(SalaryUpdateAction::class);

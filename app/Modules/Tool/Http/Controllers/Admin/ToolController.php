@@ -19,8 +19,10 @@ use App\Modules\Tool\Actions\Admin\ToolGetAction;
 use App\Modules\Tool\Actions\Admin\ToolReadAction;
 use App\Modules\Tool\Actions\Admin\ToolUpdateAction;
 use App\Modules\Tool\Actions\Admin\ToolUpdateStatusAction;
+use App\Modules\Tool\Http\Requests\Admin\ToolCreateRequest;
 use App\Modules\Tool\Http\Requests\Admin\ToolDestroyRequest;
 use App\Modules\Tool\Http\Requests\Admin\ToolReadRequest;
+use App\Modules\Tool\Http\Requests\Admin\ToolUpdateRequest;
 use App\Modules\Tool\Http\Requests\Admin\ToolUpdateStatusRequest;
 use Auth;
 use Illuminate\Http\JsonResponse;
@@ -91,12 +93,12 @@ class ToolController extends Controller
     /**
      * Добавление данных.
      *
-     * @param Request $request Запрос.
+     * @param ToolCreateRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
      * @throws RecordNotExistException|ParameterInvalidException|ReflectionException
      */
-    public function create(Request $request): JsonResponse
+    public function create(ToolCreateRequest $request): JsonResponse
     {
         try {
             $action = app(ToolCreateAction::class);
@@ -143,12 +145,12 @@ class ToolController extends Controller
      * Обновление данных.
      *
      * @param int|string $id ID инструмента.
-     * @param Request $request Запрос.
+     * @param ToolUpdateRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
      * @throws ParameterInvalidException|ReflectionException
      */
-    public function update(int|string $id, Request $request): JsonResponse
+    public function update(int|string $id, ToolUpdateRequest $request): JsonResponse
     {
         try {
             $action = app(ToolUpdateAction::class);

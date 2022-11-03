@@ -15,6 +15,10 @@ return [
             'directionUpdateStatusRequest' => [
                 'status' => 'Статус',
             ],
+            'directionCreateRequest' => [
+                'weight' => 'Вес',
+                'status' => 'Статус',
+            ]
         ],
     ],
     'controllers' => [

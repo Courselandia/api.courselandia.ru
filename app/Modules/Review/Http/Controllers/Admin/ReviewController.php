@@ -10,9 +10,9 @@ namespace App\Modules\Review\Http\Controllers\Admin;
 
 use App\Modules\Review\Enums\Status;
 use App\Modules\Review\Http\Requests\Admin\ReviewCreateRequest;
+use App\Modules\Review\Http\Requests\Admin\ReviewUpdateRequest;
 use Auth;
 use Log;
-use ReflectionException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
 use App\Models\Exceptions\ParameterInvalidException;
@@ -134,12 +134,12 @@ class ReviewController extends Controller
      * Обновление данных.
      *
      * @param int|string $id ID отзывов.
-     * @param ReviewCreateRequest $request Запрос.
+     * @param ReviewUpdateRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
      * @throws ParameterInvalidException
      */
-    public function update(int|string $id, ReviewCreateRequest $request): JsonResponse
+    public function update(int|string $id, ReviewUpdateRequest $request): JsonResponse
     {
         try {
             $action = app(ReviewUpdateAction::class);

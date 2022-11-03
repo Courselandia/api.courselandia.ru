@@ -26,7 +26,9 @@ class TeacherCreateRequest extends FormRequest
         'directions' => 'string',
         'directions.*' => 'string',
         'schools' => 'string',
-        'schools.*' => 'string'
+        'schools.*' => 'string',
+        'rating' => 'string',
+        'status' => 'string'
     ])] public function rules(): array
     {
         return [
@@ -35,6 +37,8 @@ class TeacherCreateRequest extends FormRequest
             'directions.*' => 'integer',
             'schools' => 'array',
             'schools.*' => 'integer',
+            'rating' => 'float',
+            'status' => 'boolean',
         ];
     }
 
@@ -48,7 +52,9 @@ class TeacherCreateRequest extends FormRequest
         'directions' => 'string',
         'directions.*' => 'string',
         'schools' => 'string',
-        'schools.*' => 'string'
+        'schools.*' => 'string',
+        'rating' => 'string',
+        'status' => 'string'
     ])] public function attributes(): array
     {
         return [
@@ -57,6 +63,8 @@ class TeacherCreateRequest extends FormRequest
             'directions.*' => trans('teacher::http.requests.admin.teacherCreateRequest.directions'),
             'schools' => trans('teacher::http.requests.admin.teacherCreateRequest.schools'),
             'schools.*' => trans('teacher::http.requests.admin.teacherCreateRequest.schools'),
+            'rating' => trans('teacher::http.requests.admin.teacherCreateRequest.rating'),
+            'status' => trans('teacher::http.requests.admin.teacherCreateRequest.status'),
         ];
     }
 }

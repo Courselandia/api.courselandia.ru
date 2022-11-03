@@ -23,6 +23,6 @@ class FloatValidator
      */
     public function validate(?string $attribute, mixed $value): bool
     {
-        return is_float($value);
+        return is_float($value) || is_integer($value);
     }
 }

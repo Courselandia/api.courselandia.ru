@@ -24,11 +24,15 @@ class ReviewCreateRequest extends FormRequest
      * @return array Массив правил проверки.
      */
     #[ArrayShape([
+        'school_id' => 'string',
         'status' => 'string',
+        'rating' => 'string',
     ])] public function rules(): array
     {
         return [
-            'status' => 'in:'.implode(',' , EnumList::getValues(Status::class))
+            'school_id' => 'integer',
+            'status' => 'in:' . implode(',', EnumList::getValues(Status::class)),
+            'rating' => 'float',
         ];
     }
 
@@ -38,11 +42,15 @@ class ReviewCreateRequest extends FormRequest
      * @return array Массив атрибутов.
      */
     #[ArrayShape([
-        'status' => 'string'
+        'school_id' => 'string',
+        'status' => 'string',
+        'rating' => 'string'
     ])] public function attributes(): array
     {
         return [
+            'school_id' => trans('review::http.requests.admin.reviewCreateRequest.schoolId'),
             'status' => trans('review::http.requests.admin.reviewCreateRequest.status'),
+            'rating' => trans('review::http.requests.admin.reviewCreateRequest.rating'),
         ];
     }
 }

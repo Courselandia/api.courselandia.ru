@@ -16,6 +16,8 @@ return [
                 'image' => 'Изображение',
                 'directions' => 'Направления',
                 'schools' => 'Школы',
+                'rating' => 'Рейтинг',
+                'status' => 'Статус',
             ],
             'teacherUpdateStatusRequest' => [
                 'status' => 'Статус',

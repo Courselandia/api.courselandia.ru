@@ -27,12 +27,18 @@ class UserCreateRequest extends FormRequest
         'image' => 'string',
         'invitation' => 'string',
         'role' => 'string',
+        'verified' => 'string',
+        'two_factor' => 'string',
+        'status' => 'string',
     ])] public function rules(): array
     {
         return [
             'image' => 'nullable|file|media:jpg,png,gif,webp',
             'invitation' => 'nullable|boolean',
-            'role' => 'in:'.implode(',' , EnumList::getValues(Role::class))
+            'role' => 'in:' . implode(',', EnumList::getValues(Role::class)),
+            'verified' => 'boolean',
+            'two_factor' => 'boolean',
+            'status' => 'boolean',
         ];
     }
 
@@ -44,13 +50,19 @@ class UserCreateRequest extends FormRequest
     #[ArrayShape([
         'image' => 'string',
         'invitation' => 'string',
-        'role' => 'string'
+        'role' => 'string',
+        'verified' => 'string',
+        'two_factor' => 'string',
+        'status' => 'string',
     ])] public function attributes(): array
     {
         return [
             'image' => trans('user::http.requests.admin.user.userCreateRequest.image'),
             'invitation' => trans('user::http.requests.admin.user.userCreateRequest.invitation'),
-            'role' => trans('user::http.requests.admin.user.userCreateRequest.role')
+            'role' => trans('user::http.requests.admin.user.userCreateRequest.role'),
+            'verified' => trans('user::http.requests.admin.user.userCreateRequest.verified'),
+            'two_factor' => trans('user::http.requests.admin.user.userCreateRequest.twoFactor'),
+            'status' => trans('user::http.requests.admin.user.userCreateRequest.status'),
         ];
     }
 }

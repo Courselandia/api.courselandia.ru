@@ -16,6 +16,8 @@ return [
                 'image' => 'Image',
                 'directions' => 'Directions',
                 'schools' => 'Schools',
+                'rating' => 'Rating',
+                'status' => 'Status',
             ],
             'teacherUpdateStatusRequest' => [
                 'status' => 'Status',

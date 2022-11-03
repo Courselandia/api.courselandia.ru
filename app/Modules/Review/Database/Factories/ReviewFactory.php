@@ -36,8 +36,8 @@ class ReviewFactory extends Factory
         'name' => 'string',
         'title' => 'string',
         'text' => 'string',
-        'rating' => 'float',
-        'status' => 'bool'
+        'rating' => 'string',
+        'status' => 'string'
     ])] public function definition(): array
     {
         return [

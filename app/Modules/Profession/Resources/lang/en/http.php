@@ -12,6 +12,9 @@ return [
             'professionDestroyRequest' => [
                 'ids' => 'ID'
             ],
+            'professionCreateRequest' => [
+                'status' => 'Status',
+            ]
         ],
     ],
     'controllers' => [
