@@ -274,6 +274,9 @@ return [
 
         App\Modules\Review\Providers\ReviewServiceProvider::class,
         App\Modules\Review\Providers\RouteServiceProvider::class,
+
+        App\Modules\Faq\Providers\FaqServiceProvider::class,
+        App\Modules\Faq\Providers\RouteServiceProvider::class,
     ],
 
     /*

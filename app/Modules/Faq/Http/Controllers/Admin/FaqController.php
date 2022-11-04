@@ -1,51 +1,50 @@
 <?php
 /**
- * Модуль Навыков.
- * Этот модуль содержит все классы для работы с навыками.
+ * Модуль FAQ's.
+ * Этот модуль содержит все классы для работы с FAQ's.
  *
- * @package App\Modules\Skill
+ * @package App\Modules\Faq
  */
 
-namespace App\Modules\Skill\Http\Controllers\Admin;
+namespace App\Modules\Faq\Http\Controllers\Admin;
 
+use App\Modules\Faq\Actions\Admin\FaqUpdateStatusAction;
+use App\Modules\Faq\Http\Requests\Admin\FaqUpdateStatusRequest;
+use Auth;
+use Log;
+use App\Modules\Faq\Http\Requests\Admin\FaqCreateRequest;
+use App\Modules\Faq\Http\Requests\Admin\FaqUpdateRequest;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Routing\Controller;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordExistException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Models\Exceptions\ValidateException;
-use App\Modules\Skill\Actions\Admin\SkillCreateAction;
-use App\Modules\Skill\Actions\Admin\SkillDestroyAction;
-use App\Modules\Skill\Actions\Admin\SkillGetAction;
-use App\Modules\Skill\Actions\Admin\SkillReadAction;
-use App\Modules\Skill\Actions\Admin\SkillUpdateAction;
-use App\Modules\Skill\Actions\Admin\SkillUpdateStatusAction;
-use App\Modules\Skill\Http\Requests\Admin\SkillCreateRequest;
-use App\Modules\Skill\Http\Requests\Admin\SkillDestroyRequest;
-use App\Modules\Skill\Http\Requests\Admin\SkillReadRequest;
-use App\Modules\Skill\Http\Requests\Admin\SkillUpdateRequest;
-use App\Modules\Skill\Http\Requests\Admin\SkillUpdateStatusRequest;
-use Auth;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
-use Illuminate\Routing\Controller;
-use Log;
+use App\Modules\Faq\Actions\Admin\FaqCreateAction;
+use App\Modules\Faq\Actions\Admin\FaqDestroyAction;
+use App\Modules\Faq\Actions\Admin\FaqGetAction;
+use App\Modules\Faq\Actions\Admin\FaqReadAction;
+use App\Modules\Faq\Actions\Admin\FaqUpdateAction;
+use App\Modules\Faq\Http\Requests\Admin\FaqDestroyRequest;
+use App\Modules\Faq\Http\Requests\Admin\FaqReadRequest;
 use ReflectionException;
 
 /**
- * Класс контроллер для работы с навыками в административной части.
+ * Класс контроллер для работы с FAQ's в административной части.
  */
-class SkillController extends Controller
+class FaqController extends Controller
 {
     /**
-     * Получение навыка.
+     * Получение FAQ.
      *
-     * @param int|string $id ID навыка.
+     * @param int|string $id ID FAQ.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException|ReflectionException
+     * @throws ParameterInvalidException
      */
     public function get(int|string $id): JsonResponse
     {
-        $action = app(SkillGetAction::class);
+        $action = app(FaqGetAction::class);
         $action->id = $id;
         $data = $action->run();
 
@@ -69,14 +68,14 @@ class SkillController extends Controller
     /**
      * Чтение данных.
      *
-     * @param SkillReadRequest $request Запрос.
+     * @param FaqReadRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException|ReflectionException
+     * @throws ParameterInvalidException
      */
-    public function read(SkillReadRequest $request): JsonResponse
+    public function read(FaqReadRequest $request): JsonResponse
     {
-        $action = app(SkillReadAction::class);
+        $action = app(FaqReadAction::class);
         $action->sorts = $request->get('sorts');
         $action->filters = $request->get('filters');
         $action->offset = $request->get('offset');
@@ -92,30 +91,26 @@ class SkillController extends Controller
     /**
      * Добавление данных.
      *
-     * @param SkillCreateRequest $request Запрос.
+     * @param FaqCreateRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws RecordNotExistException|ParameterInvalidException|ReflectionException
+     * @throws ParameterInvalidException
      */
-    public function create(SkillCreateRequest $request): JsonResponse
+    public function create(FaqCreateRequest $request): JsonResponse
     {
         try {
-            $action = app(SkillCreateAction::class);
-            $action->name = $request->get('name');
-            $action->header = $request->get('header');
-            $action->link = $request->get('link');
-            $action->text = $request->get('text');
+            $action = app(FaqCreateAction::class);
+            $action->school_id = $request->get('school_id');
+            $action->question = $request->get('question');
+            $action->answer = $request->get('answer');
             $action->status = $request->get('status');
-            $action->title = $request->get('title');
-            $action->description = $request->get('description');
-            $action->keywords = $request->get('keywords');
 
             $data = $action->run();
 
             Log::info(
-                trans('skill::http.controllers.admin.skillController.create.log'),
+                trans('faq::http.controllers.admin.faqController.create.log'),
                 [
-                    'module' => 'Skill',
+                    'module' => 'Faq',
                     'login' => Auth::getUser()->login,
                     'type' => 'create'
                 ]
@@ -127,47 +122,39 @@ class SkillController extends Controller
             ];
 
             return response()->json($data);
-        } catch (ValidateException $error) {
+        } catch (ValidateException|RecordExistException $error) {
             return response()->json([
                 'success' => false,
                 'message' => $error->getMessage()
             ])->setStatusCode(400);
-        } catch (RecordExistException $error) {
-            return response()->json([
-                'success' => false,
-                'message' => $error->getMessage()
-            ])->setStatusCode(404);
         }
     }
 
     /**
      * Обновление данных.
      *
-     * @param int|string $id ID навыка.
-     * @param SkillUpdateRequest $request Запрос.
+     * @param int|string $id ID FAQ.
+     * @param FaqUpdateRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException|ReflectionException
+     * @throws ParameterInvalidException
      */
-    public function update(int|string $id, SkillUpdateRequest $request): JsonResponse
+    public function update(int|string $id, FaqUpdateRequest $request): JsonResponse
     {
         try {
-            $action = app(SkillUpdateAction::class);
+            $action = app(FaqUpdateAction::class);
             $action->id = $id;
-            $action->name = $request->get('name');
-            $action->header = $request->get('header');
-            $action->link = $request->get('link');
-            $action->text = $request->get('text');
+            $action->school_id = $request->get('school_id');
+            $action->question = $request->get('question');
+            $action->answer = $request->get('answer');
             $action->status = $request->get('status');
-            $action->title = $request->get('title');
-            $action->description = $request->get('description');
-            $action->keywords = $request->get('keywords');
+
             $data = $action->run();
 
             Log::info(
-                trans('skill::http.controllers.admin.skillController.update.log'),
+                trans('faq::http.controllers.admin.faqController.update.log'),
                 [
-                    'module' => 'Skill',
+                    'module' => 'Faq',
                     'login' => Auth::getUser()->login,
                     'type' => 'update'
                 ]
@@ -196,21 +183,21 @@ class SkillController extends Controller
      * Обновление статуса.
      *
      * @param int|string $id ID пользователя.
-     * @param SkillUpdateStatusRequest $request Запрос.
+     * @param FaqUpdateStatusRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
      * @throws ParameterInvalidException|ReflectionException
      */
-    public function updateStatus(int|string $id, SkillUpdateStatusRequest $request): JsonResponse
+    public function updateStatus(int|string $id, FaqUpdateStatusRequest $request): JsonResponse
     {
         try {
-            $action = app(SkillUpdateStatusAction::class);
+            $action = app(FaqUpdateStatusAction::class);
             $action->id = $id;
             $action->status = $request->get('status');
 
             $data = $action->run();
 
-            Log::info(trans('skill::http.controllers.admin.skillController.update.log'), [
+            Log::info(trans('faq::http.controllers.admin.faqController.update.log'), [
                 'module' => 'User',
                 'login' => Auth::getUser()->login,
                 'type' => 'update'
@@ -238,20 +225,21 @@ class SkillController extends Controller
     /**
      * Удаление данных.
      *
-     * @param SkillDestroyRequest $request Запрос.
+     * @param FaqDestroyRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
+     * @throws ParameterInvalidException
      */
-    public function destroy(SkillDestroyRequest $request): JsonResponse
+    public function destroy(FaqDestroyRequest $request): JsonResponse
     {
-        $action = app(SkillDestroyAction::class);
+        $action = app(FaqDestroyAction::class);
         $action->ids = $request->get('ids');
         $action->run();
 
         Log::info(
-            trans('skill::http.controllers.admin.skillController.destroy.log'),
+            trans('faq::http.controllers.admin.faqController.destroy.log'),
             [
-                'module' => 'Skill',
+                'module' => 'Faq',
                 'login' => Auth::getUser()->login,
                 'type' => 'destroy'
             ]

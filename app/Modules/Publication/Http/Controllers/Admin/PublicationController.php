@@ -11,7 +11,6 @@ namespace App\Modules\Publication\Http\Controllers\Admin;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordExistException;
 use App\Models\Exceptions\RecordNotExistException;
-use App\Models\Exceptions\UserNotExistException;
 use App\Models\Exceptions\ValidateException;
 use App\Modules\Publication\Actions\Admin\Publication\PublicationCreateAction;
 use App\Modules\Publication\Actions\Admin\Publication\PublicationDestroyAction;
@@ -246,7 +245,7 @@ class PublicationController extends Controller
                 'success' => false,
                 'message' => $error->getMessage()
             ])->setStatusCode(400);
-        } catch (RecordNotExistException|UserNotExistException $error) {
+        } catch (RecordNotExistException $error) {
             return response()->json([
                 'success' => false,
                 'message' => $error->getMessage()

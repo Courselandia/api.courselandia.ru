@@ -11,7 +11,6 @@ namespace App\Modules\Profession\Http\Controllers\Admin;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordExistException;
 use App\Models\Exceptions\RecordNotExistException;
-use App\Models\Exceptions\UserNotExistException;
 use App\Models\Exceptions\ValidateException;
 use App\Modules\Profession\Actions\Admin\ProfessionCreateAction;
 use App\Modules\Profession\Actions\Admin\ProfessionDestroyAction;
@@ -228,7 +227,7 @@ class ProfessionController extends Controller
                 'success' => false,
                 'message' => $error->getMessage()
             ])->setStatusCode(400);
-        } catch (RecordNotExistException|UserNotExistException $error) {
+        } catch (RecordNotExistException $error) {
             return response()->json([
                 'success' => false,
                 'message' => $error->getMessage()

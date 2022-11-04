@@ -11,7 +11,6 @@ namespace App\Modules\Teacher\Http\Controllers\Admin;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordExistException;
 use App\Models\Exceptions\RecordNotExistException;
-use App\Models\Exceptions\UserNotExistException;
 use App\Models\Exceptions\ValidateException;
 use App\Modules\Teacher\Actions\Admin\Teacher\TeacherCreateAction;
 use App\Modules\Teacher\Actions\Admin\Teacher\TeacherDestroyAction;
@@ -240,7 +239,7 @@ class TeacherController extends Controller
                 'success' => false,
                 'message' => $error->getMessage()
             ])->setStatusCode(400);
-        } catch (RecordNotExistException|UserNotExistException $error) {
+        } catch (RecordNotExistException $error) {
             return response()->json([
                 'success' => false,
                 'message' => $error->getMessage()

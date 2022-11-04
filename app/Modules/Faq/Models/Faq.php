@@ -1,12 +1,12 @@
 <?php
 /**
- * Модуль Отзывов.
- * Этот модуль содержит все классы для работы с отзывовами.
+ * Модуль FAQ's.
+ * Этот модуль содержит все классы для работы с FAQ's.
  *
- * @package App\Modules\Review
+ * @package App\Modules\Faq
  */
 
-namespace App\Modules\Review\Models;
+namespace App\Modules\Faq\Models;
 
 use App\Modules\School\Models\School;
 use Eloquent;
@@ -19,25 +19,21 @@ use JetBrains\PhpStorm\ArrayShape;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use App\Modules\Review\Database\Factories\ReviewFactory;
-use App\Modules\Review\Filters\ReviewFilter;
-use App\Models\Enums\EnumList;
-use App\Modules\Review\Enums\Status;
+use App\Modules\Faq\Database\Factories\FaqFactory;
+use App\Modules\Faq\Filters\FaqFilter;
 
 /**
- * Класс модель для таблицы отзывов на основе Eloquent.
+ * Класс модель для таблицы FAQ на основе Eloquent.
  *
- * @property int|string $id ID школы.
+ * @property int|string $id ID FAQ.
  * @property int|string $school_id ID школы.
- * @property string $name Имя автора.
- * @property string $title Заголовок.
- * @property string $text Текст.
- * @property int $rating Рейтинг.
+ * @property string $question Вопрос.
+ * @property string $answer Ответ.
  * @property string $status Статус.
  *
  * @property-read School $school
  */
-class Review extends Eloquent
+class Faq extends Eloquent
 {
     use Delete;
     use HasFactory;
@@ -54,10 +50,8 @@ class Review extends Eloquent
     protected $fillable = [
         'id',
         'school_id',
-        'name',
-        'title',
-        'text',
-        'rating',
+        'question',
+        'answer',
         'status',
     ];
 
@@ -68,20 +62,16 @@ class Review extends Eloquent
      */
     #[ArrayShape([
         'school_id' => 'string',
-        'name' => 'string',
-        'title' => 'string',
-        'text' => 'string',
-        'rating' => 'string',
+        'question' => 'string',
+        'answer' => 'string',
         'status' => 'string',
     ])] protected function getRules(): array
     {
         return [
             'school_id' => 'required|digits_between:0,20',
-            'name' => 'required|between:1,191',
-            'title' => 'max:191',
-            'text' => 'required|between:1,65000',
-            'rating' => 'integer|between:0,5',
-            'status' => 'required|in:' . implode(',', EnumList::getValues(Status::class)),
+            'question' => 'required|between:1,191',
+            'answer' => 'required|between:1,65000',
+            'status' => 'required|boolean',
         ];
     }
 
@@ -93,12 +83,10 @@ class Review extends Eloquent
     protected function getNames(): array
     {
         return [
-            'school_id' => trans('review::models.review.schoolId'),
-            'name' => trans('review::models.review.name'),
-            'title' => trans('review::models.review.title'),
-            'text' => trans('review::models.review.text'),
-            'rating' => trans('review::models.review.rating'),
-            'status' => trans('review::models.review.status')
+            'school_id' => trans('faq::models.faq.schoolId'),
+            'question' => trans('faq::models.faq.question'),
+            'answer' => trans('faq::models.faq.answer'),
+            'status' => trans('faq::models.faq.status')
         ];
     }
 
@@ -109,7 +97,7 @@ class Review extends Eloquent
      */
     public function modelFilter(): string
     {
-        return $this->provideFilter(ReviewFilter::class);
+        return $this->provideFilter(FaqFilter::class);
     }
 
     /**
@@ -119,7 +107,7 @@ class Review extends Eloquent
      */
     protected static function newFactory(): Factory
     {
-        return ReviewFactory::new();
+        return FaqFactory::new();
     }
 
     /**
