@@ -8,6 +8,7 @@ return [
                 'start' => 'Начало',
                 'limit' => 'Лимит',
                 'filters' => 'Фильтр',
+                'status' => 'Статус',
             ],
             'teacherDestroyRequest' => [
                 'ids' => 'ID'

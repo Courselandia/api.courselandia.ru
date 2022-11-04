@@ -30,11 +30,11 @@ class SalaryFilter extends ModelFilter
     /**
      * Поиск по ID.
      *
-     * @param int $id ID.
+     * @param int|string $id ID.
      *
      * @return SalaryFilter Правила поиска.
      */
-    public function id(int $id): SalaryFilter
+    public function id(int|string $id): SalaryFilter
     {
         return $this->where('salaries.id', $id);
     }
@@ -42,11 +42,11 @@ class SalaryFilter extends ModelFilter
     /**
      * Поиск по профессии.
      *
-     * @param array|int $professionIds ID's профессий.
+     * @param array|int|string $professionIds ID's профессий.
      *
      * @return SalaryFilter Правила поиска.
      */
-    public function professionName(array|int $professionIds): SalaryFilter
+    public function professionName(array|int|string $professionIds): SalaryFilter
     {
         return $this->related('profession', function($query) use ($professionIds) {
             return $query->whereIn('professions.id', is_array($professionIds) ? $professionIds : [$professionIds]);

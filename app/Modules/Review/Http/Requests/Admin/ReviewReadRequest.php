@@ -27,6 +27,8 @@ class ReviewReadRequest extends FormRequest
         'start' => 'string',
         'limit' => 'string',
         'filters' => 'string',
+        'filters.rating' => 'string',
+        'filters.status' => 'string',
     ])] public function rules(): array
     {
         $column = Schema::getColumnListing('reviews');
@@ -38,6 +40,8 @@ class ReviewReadRequest extends FormRequest
             'start' => 'integer|digits_between:0,20',
             'limit' => 'integer|digits_between:0,20',
             'filters' => 'array|filters:' . $column . '|filter_date_range:published_at',
+            'filters.rating' => 'integer',
+            'filters.status' => 'boolean',
         ];
     }
 
@@ -51,6 +55,8 @@ class ReviewReadRequest extends FormRequest
         'start' => 'string',
         'limit' => 'string',
         'filters' => 'string',
+        'filters.rating' => 'string',
+        'filters.status' => 'string',
     ])] public function attributes(): array
     {
         return [
@@ -58,6 +64,8 @@ class ReviewReadRequest extends FormRequest
             'start' => trans('review::http.requests.admin.reviewReadRequest.start'),
             'limit' => trans('review::http.requests.admin.reviewReadRequest.limit'),
             'filters' => trans('review::http.requests.admin.reviewReadRequest.filters'),
+            'filters.rating' => trans('review::http.requests.admin.reviewReadRequest.rating'),
+            'filters.status' => trans('review::http.requests.admin.reviewReadRequest.status'),
         ];
     }
 }

@@ -8,6 +8,9 @@ return [
                 'start' => 'Начало',
                 'limit' => 'Лимит',
                 'filters' => 'Фильтр',
+                'level' => 'Уровень',
+                'salary' => 'Зарплата',
+                'status' => 'Статус',
             ],
             'salaryDestroyRequest' => [
                 'ids' => 'ID'

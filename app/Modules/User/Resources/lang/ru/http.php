@@ -9,6 +9,7 @@ return [
                     'offset' => 'Отступ',
                     'limit' => 'Лимит',
                     'filters' => 'Фильтры',
+                    'status' => 'Статус',
                 ],
                 'userDestroyRequest' => [
                     'ids' => 'ID'

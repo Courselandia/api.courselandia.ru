@@ -27,6 +27,7 @@ class PublicationReadRequest extends FormRequest
         'start' => 'string',
         'limit' => 'string',
         'filters' => 'string',
+        'filters.status' => 'string',
     ])] public function rules(): array
     {
         $columnSorts = Schema::getColumnListing('publications');
@@ -44,10 +45,11 @@ class PublicationReadRequest extends FormRequest
         $columnFilters = implode(',', $columnFilters);
 
         return [
-            'sorts' => 'array|sorts:'.$columnSorts,
+            'sorts' => 'array|sorts:' . $columnSorts,
             'start' => 'integer|digits_between:0,20',
             'limit' => 'integer|digits_between:0,20',
-            'filters' => 'array|filters:'.$columnFilters.'|filter_date_range:published_at',
+            'filters' => 'array|filters:' . $columnFilters . '|filter_date_range:published_at',
+            'filters.status' => 'boolean',
         ];
     }
 
@@ -61,6 +63,7 @@ class PublicationReadRequest extends FormRequest
         'start' => 'string',
         'limit' => 'string',
         'filters' => 'string',
+        'filters.status' => 'string',
     ])] public function attributes(): array
     {
         return [
@@ -68,6 +71,7 @@ class PublicationReadRequest extends FormRequest
             'start' => trans('publication::http.requests.admin.publicationReadRequest.start'),
             'limit' => trans('publication::http.requests.admin.publicationReadRequest.limit'),
             'filters' => trans('publication::http.requests.admin.publicationReadRequest.filters'),
+            'filters.status' => trans('category::http.requests.admin.categoryReadRequest.status'),
         ];
     }
 }

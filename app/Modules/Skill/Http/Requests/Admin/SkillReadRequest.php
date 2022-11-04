@@ -27,6 +27,7 @@ class SkillReadRequest extends FormRequest
         'start' => 'string',
         'limit' => 'string',
         'filters' => 'string',
+        'filters.status' => 'string',
     ])] public function rules(): array
     {
         $column = Schema::getColumnListing('skills');
@@ -37,6 +38,7 @@ class SkillReadRequest extends FormRequest
             'start' => 'integer|digits_between:0,20',
             'limit' => 'integer|digits_between:0,20',
             'filters' => 'array|filters:'.$column.'|filter_date_range:published_at',
+            'filters.status' => 'boolean',
         ];
     }
 
@@ -50,6 +52,7 @@ class SkillReadRequest extends FormRequest
         'start' => 'string',
         'limit' => 'string',
         'filters' => 'string',
+        'filters.status' => 'string',
     ])] public function attributes(): array
     {
         return [
@@ -57,6 +60,7 @@ class SkillReadRequest extends FormRequest
             'start' => trans('skill::http.requests.admin.skillReadRequest.start'),
             'limit' => trans('skill::http.requests.admin.skillReadRequest.limit'),
             'filters' => trans('skill::http.requests.admin.skillReadRequest.filters'),
+            'filters.status' => trans('category::http.requests.admin.categoryReadRequest.status'),
         ];
     }
 }

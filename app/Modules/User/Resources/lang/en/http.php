@@ -9,6 +9,7 @@ return [
                     'offset' => 'Offset',
                     'limit' => 'Limit',
                     'filters' => 'Filters',
+                    'status' => 'Status',
                 ],
                 'userDestroyRequest' => [
                     'ids' => 'ID'

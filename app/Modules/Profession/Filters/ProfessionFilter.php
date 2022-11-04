@@ -18,11 +18,11 @@ class ProfessionFilter extends ModelFilter
     /**
      * Поиск по ID.
      *
-     * @param int $id ID.
+     * @param int|string $id ID.
      *
      * @return ProfessionFilter Правила поиска.
      */
-    public function id(int $id): ProfessionFilter
+    public function id(int|string $id): ProfessionFilter
     {
         return $this->where('professions.id', $id);
     }

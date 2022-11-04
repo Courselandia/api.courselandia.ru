@@ -8,6 +8,8 @@ return [
                 'start' => 'Начало',
                 'limit' => 'Лимит',
                 'filters' => 'Фильтр',
+                'rating' => 'Рейтинг',
+                'status' => 'Статус',
             ],
             'reviewDestroyRequest' => [
                 'ids' => 'ID'

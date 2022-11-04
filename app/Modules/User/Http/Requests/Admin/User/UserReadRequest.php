@@ -22,7 +22,13 @@ class UserReadRequest extends FormRequest
      *
      * @return array Массив правил проверки.
      */
-    #[ArrayShape(['sorts' => 'string', 'offset' => 'string', 'limit' => 'string', 'filters' => 'string'])] public function rules(): array
+    #[ArrayShape([
+        'sorts' => 'string',
+        'offset' => 'string',
+        'limit' => 'string',
+        'filters' => 'string',
+        'filters.status' => 'string',
+    ])] public function rules(): array
     {
         $columnSorts = Schema::getColumnListing('users');
         $columnSorts[] = 'role-name';
@@ -41,10 +47,11 @@ class UserReadRequest extends FormRequest
         $columnFilters = implode(',', $columnFilters);
 
         return [
-            'sorts' => 'array|sorts:'.$columnSorts,
+            'sorts' => 'array|sorts:' . $columnSorts,
             'offset' => 'integer|digits_between:0,20',
             'limit' => 'integer|digits_between:0,20',
-            'filters' => 'array|filters:'.$columnFilters.'|filter_date_range:created_at',
+            'filters' => 'array|filters:' . $columnFilters . '|filter_date_range:created_at',
+            'filters.status' => 'boolean',
         ];
     }
 
@@ -53,13 +60,20 @@ class UserReadRequest extends FormRequest
      *
      * @return array Массив атрибутов.
      */
-    #[ArrayShape(['sorts' => 'string', 'offset' => 'string', 'limit' => 'string', 'filters' => 'string'])] public function attributes(): array
+    #[ArrayShape([
+        'sorts' => 'string',
+        'offset' => 'string',
+        'limit' => 'string',
+        'filters' => 'string',
+        'filters.status' => 'string',
+    ])] public function attributes(): array
     {
         return [
             'sorts' => trans('user::http.requests.admin.user.userReadRequest.sorts'),
             'offset' => trans('user::http.requests.admin.user.userReadRequest.offset'),
             'limit' => trans('user::http.requests.admin.user.userReadRequest.limit'),
             'filters' => trans('user::http.requests.admin.user.userReadRequest.filters'),
+            'filters.status' => trans('category::http.requests.admin.categoryReadRequest.status'),
         ];
     }
 }

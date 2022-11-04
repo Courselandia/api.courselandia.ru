@@ -27,6 +27,7 @@ class SchoolReadRequest extends FormRequest
         'start' => 'string',
         'limit' => 'string',
         'filters' => 'string',
+        'filters.status' => 'string',
     ])] public function rules(): array
     {
         $columnSorts = Schema::getColumnListing('schools');
@@ -44,6 +45,7 @@ class SchoolReadRequest extends FormRequest
             'start' => 'integer|digits_between:0,20',
             'limit' => 'integer|digits_between:0,20',
             'filters' => 'array|filters:' . $columnFilters,
+            'filters.status' => 'boolean',
         ];
     }
 
@@ -57,6 +59,7 @@ class SchoolReadRequest extends FormRequest
         'start' => 'string',
         'limit' => 'string',
         'filters' => 'string',
+        'filters.status' => 'string',
     ])] public function attributes(): array
     {
         return [
@@ -64,6 +67,7 @@ class SchoolReadRequest extends FormRequest
             'start' => trans('school::http.requests.admin.schoolReadRequest.start'),
             'limit' => trans('school::http.requests.admin.schoolReadRequest.limit'),
             'filters' => trans('school::http.requests.admin.schoolReadRequest.filters'),
+            'filters.status' => trans('category::http.requests.admin.categoryReadRequest.status'),
         ];
     }
 }

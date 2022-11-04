@@ -20,11 +20,11 @@ class PublicationFilter extends ModelFilter
     /**
      * Поиск по ID.
      *
-     * @param int $id ID.
+     * @param int|string $id ID.
      *
      * @return PublicationFilter Правила поиска.
      */
-    public function id(int $id): PublicationFilter
+    public function id(int|string $id): PublicationFilter
     {
         return $this->where('publications.id', $id);
     }

@@ -27,6 +27,7 @@ class ToolReadRequest extends FormRequest
         'start' => 'string',
         'limit' => 'string',
         'filters' => 'string',
+        'filters.status' => 'string',
     ])] public function rules(): array
     {
         $column = Schema::getColumnListing('tools');
@@ -37,6 +38,7 @@ class ToolReadRequest extends FormRequest
             'start' => 'integer|digits_between:0,20',
             'limit' => 'integer|digits_between:0,20',
             'filters' => 'array|filters:'.$column.'|filter_date_range:published_at',
+            'filters.status' => 'boolean',
         ];
     }
 
@@ -50,6 +52,7 @@ class ToolReadRequest extends FormRequest
         'start' => 'string',
         'limit' => 'string',
         'filters' => 'string',
+        'filters.status' => 'string',
     ])] public function attributes(): array
     {
         return [
@@ -57,6 +60,7 @@ class ToolReadRequest extends FormRequest
             'start' => trans('tool::http.requests.admin.toolReadRequest.start'),
             'limit' => trans('tool::http.requests.admin.toolReadRequest.limit'),
             'filters' => trans('tool::http.requests.admin.toolReadRequest.filters'),
+            'filters.status' => trans('category::http.requests.admin.categoryReadRequest.status'),
         ];
     }
 }

@@ -20,11 +20,11 @@ class SchoolFilter extends ModelFilter
     /**
      * Поиск по ID.
      *
-     * @param int $id ID.
+     * @param int|string $id ID.
      *
      * @return SchoolFilter Правила поиска.
      */
-    public function id(int $id): SchoolFilter
+    public function id(int|string $id): SchoolFilter
     {
         return $this->where('schools.id', $id);
     }

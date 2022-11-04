@@ -31,11 +31,11 @@ class UserFilter extends ModelFilter
     /**
      * Поиск по ID.
      *
-     * @param int $id ID.
+     * @param int|string $id ID.
      *
      * @return UserFilter Правила поиска.
      */
-    public function id(int $id): UserFilter
+    public function id(int|string $id): UserFilter
     {
         return $this->where('users.id', $id);
     }

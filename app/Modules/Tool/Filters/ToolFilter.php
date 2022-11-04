@@ -18,11 +18,11 @@ class ToolFilter extends ModelFilter
     /**
      * Поиск по ID.
      *
-     * @param int $id ID.
+     * @param int|string $id ID.
      *
      * @return ToolFilter Правила поиска.
      */
-    public function id(int $id): ToolFilter
+    public function id(int|string $id): ToolFilter
     {
         return $this->where('tools.id', $id);
     }

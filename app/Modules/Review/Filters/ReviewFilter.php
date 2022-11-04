@@ -32,11 +32,11 @@ class ReviewFilter extends ModelFilter
     /**
      * Поиск по ID.
      *
-     * @param int $id ID.
+     * @param int|string $id ID.
      *
      * @return ReviewFilter Правила поиска.
      */
-    public function id(int $id): ReviewFilter
+    public function id(int|string $id): ReviewFilter
     {
         return $this->where('reviews.id', $id);
     }
@@ -44,11 +44,11 @@ class ReviewFilter extends ModelFilter
     /**
      * Поиск по школам.
      *
-     * @param array|int $schoolIds ID's школ.
+     * @param array|int|string $schoolIds ID's школ.
      *
      * @return ReviewFilter Правила поиска.
      */
-    public function schoolName(array|int $schoolIds): ReviewFilter
+    public function schoolName(array|int|string $schoolIds): ReviewFilter
     {
         return $this->related('school', function($query) use ($schoolIds) {
             return $query->whereIn('schools.id', is_array($schoolIds) ? $schoolIds : [$schoolIds]);

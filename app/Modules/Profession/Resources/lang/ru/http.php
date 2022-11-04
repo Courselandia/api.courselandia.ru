@@ -8,6 +8,7 @@ return [
                 'start' => 'Начало',
                 'limit' => 'Лимит',
                 'filters' => 'Фильтр',
+                'status' => 'Статус',
             ],
             'professionDestroyRequest' => [
                 'ids' => 'ID'

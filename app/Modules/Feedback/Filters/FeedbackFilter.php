@@ -20,11 +20,11 @@ class FeedbackFilter extends ModelFilter
     /**
      * Поиск по ID.
      *
-     * @param int $id ID.
+     * @param int|string $id ID.
      *
      * @return FeedbackFilter Правила поиска.
      */
-    public function id(int $id): FeedbackFilter
+    public function id(int|string $id): FeedbackFilter
     {
         return $this->where('feedbacks.id', $id);
     }

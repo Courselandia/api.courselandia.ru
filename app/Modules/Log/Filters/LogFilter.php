@@ -20,11 +20,11 @@ class LogFilter extends ModelFilter
     /**
      * Поиск по ID.
      *
-     * @param int $id ID.
+     * @param int|string $id ID.
      *
      * @return LogFilter Правила поиска.
      */
-    public function id(int $id): LogFilter
+    public function id(int|string $id): LogFilter
     {
         return $this->where($this->getKeyName(), $id);
     }

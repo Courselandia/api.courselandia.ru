@@ -18,11 +18,11 @@ class DirectionFilter extends ModelFilter
     /**
      * Поиск по ID.
      *
-     * @param int $id ID.
+     * @param int|string $id ID.
      *
      * @return DirectionFilter Правила поиска.
      */
-    public function id(int $id): DirectionFilter
+    public function id(int|string $id): DirectionFilter
     {
         return $this->where('directions.id', $id);
     }

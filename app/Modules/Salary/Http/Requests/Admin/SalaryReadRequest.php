@@ -8,7 +8,9 @@
 
 namespace App\Modules\Salary\Http\Requests\Admin;
 
+use App\Models\Enums\EnumList;
 use App\Models\FormRequest;
+use App\Modules\Salary\Enums\Level;
 use JetBrains\PhpStorm\ArrayShape;
 use Schema;
 
@@ -27,6 +29,10 @@ class SalaryReadRequest extends FormRequest
         'start' => 'string',
         'limit' => 'string',
         'filters' => 'string',
+        'filters.level' => 'string',
+        'filters.level.*' => 'string',
+        'filters.salary' => 'string',
+        'filters.status' => 'string',
     ])] public function rules(): array
     {
         $column = Schema::getColumnListing('salaries');
@@ -38,6 +44,10 @@ class SalaryReadRequest extends FormRequest
             'start' => 'integer|digits_between:0,20',
             'limit' => 'integer|digits_between:0,20',
             'filters' => 'array|filters:' . $column . '|filter_date_range:published_at',
+            'filters.level' => 'in:' . implode(',', EnumList::getValues(Level::class)),
+            'filters.level.*' => 'in:' . implode(',', EnumList::getValues(Level::class)),
+            'filters.salary' => 'integer',
+            'filters.status' => 'boolean',
         ];
     }
 
@@ -51,6 +61,10 @@ class SalaryReadRequest extends FormRequest
         'start' => 'string',
         'limit' => 'string',
         'filters' => 'string',
+        'filters.level' => 'string',
+        'filters.level.*' => 'string',
+        'filters.salary' => 'string',
+        'filters.status' => 'string',
     ])] public function attributes(): array
     {
         return [
@@ -58,6 +72,10 @@ class SalaryReadRequest extends FormRequest
             'start' => trans('salary::http.requests.admin.salaryReadRequest.start'),
             'limit' => trans('salary::http.requests.admin.salaryReadRequest.limit'),
             'filters' => trans('salary::http.requests.admin.salaryReadRequest.filters'),
+            'filters.level' => trans('salary::http.requests.admin.salaryReadRequest.level'),
+            'filters.level.*' => trans('salary::http.requests.admin.salaryReadRequest.level'),
+            'filters.salary' => trans('salary::http.requests.admin.salaryReadRequest.salary'),
+            'filters.status' => trans('salary::http.requests.admin.salaryReadRequest.status'),
         ];
     }
 }

@@ -8,6 +8,9 @@ return [
                 'start' => 'Start',
                 'limit' => 'Limit',
                 'filters' => 'Filters',
+                'level' => 'Level',
+                'salary' => 'Salary',
+                'status' => 'Status',
             ],
             'salaryDestroyRequest' => [
                 'ids' => 'ID'
