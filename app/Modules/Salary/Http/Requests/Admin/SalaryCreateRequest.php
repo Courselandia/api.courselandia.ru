@@ -31,7 +31,7 @@ class SalaryCreateRequest extends FormRequest
     ])] public function rules(): array
     {
         return [
-            'profession_id' => 'integer',
+            'profession_id' => 'exists:professions,id',
             'level' => 'in:' . implode(',', EnumList::getValues(Level::class)),
             'salary' => 'integer',
             'status' => 'boolean',

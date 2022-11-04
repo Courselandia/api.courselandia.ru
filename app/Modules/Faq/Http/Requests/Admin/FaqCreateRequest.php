@@ -27,7 +27,7 @@ class FaqCreateRequest extends FormRequest
     ])] public function rules(): array
     {
         return [
-            'school_id' => 'integer',
+            'school_id' => 'exists:schools,id',
             'status' => 'boolean',
         ];
     }

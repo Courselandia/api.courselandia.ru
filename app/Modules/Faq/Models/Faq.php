@@ -68,7 +68,7 @@ class Faq extends Eloquent
     ])] protected function getRules(): array
     {
         return [
-            'school_id' => 'required|digits_between:0,20',
+            'school_id' => 'required|digits_between:0,20|exists:schools,id',
             'question' => 'required|between:1,191',
             'answer' => 'required|between:1,65000',
             'status' => 'required|boolean',

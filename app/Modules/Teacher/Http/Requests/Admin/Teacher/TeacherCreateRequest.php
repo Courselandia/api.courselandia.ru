@@ -34,9 +34,9 @@ class TeacherCreateRequest extends FormRequest
         return [
             'image' => 'nullable|media:jpg,png,gif,webp,svg',
             'directions' => 'array',
-            'directions.*' => 'integer',
+            'directions.*' => 'exists:directions,id',
             'schools' => 'array',
-            'schools.*' => 'integer',
+            'schools.*' => 'exists:schools,id',
             'rating' => 'float',
             'status' => 'boolean',
         ];

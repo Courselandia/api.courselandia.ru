@@ -30,7 +30,7 @@ class ReviewCreateRequest extends FormRequest
     ])] public function rules(): array
     {
         return [
-            'school_id' => 'integer',
+            'school_id' => 'exists:schools,id',
             'status' => 'in:' . implode(',', EnumList::getValues(Status::class)),
             'rating' => 'integer',
         ];

@@ -25,7 +25,6 @@ use App\Modules\Category\Http\Requests\Admin\CategoryUpdateRequest;
 use App\Modules\Category\Http\Requests\Admin\CategoryUpdateStatusRequest;
 use Auth;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Log;
 use ReflectionException;
