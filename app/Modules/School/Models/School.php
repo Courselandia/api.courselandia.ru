@@ -8,9 +8,11 @@
 
 namespace App\Modules\School\Models;
 
+use App\Modules\Review\Models\Review;
 use App\Modules\Teacher\Models\Teacher;
 use Exception;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Size;
 use Eloquent;
 use ImageStore;
@@ -51,6 +53,7 @@ use App\Modules\School\Filters\SchoolFilter;
  *
  * @property-read Metatag $metatag
  * @property-read Teacher[] $teachers
+ * @property-read Review[] $reviews
  */
 class School extends Eloquent
 {
@@ -289,5 +292,15 @@ class School extends Eloquent
     public function teachers(): BelongsToMany
     {
         return $this->belongsToMany(Teacher::class);
+    }
+
+    /**
+     * Отзывы этой школы.
+     *
+     * @return HasMany Модели отзывов.
+     */
+    public function reviews(): HasMany
+    {
+        return $this->hasMany(Review::class);
     }
 }

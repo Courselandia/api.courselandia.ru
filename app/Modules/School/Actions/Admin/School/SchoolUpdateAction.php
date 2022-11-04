@@ -171,7 +171,7 @@ class SchoolUpdateAction extends Action
             }
 
             $this->school->update($this->id, $schoolEntity);
-            Cache::tags(['catalog', 'school', 'teacher'])->flush();
+            Cache::tags(['catalog', 'school', 'teacher', 'review'])->flush();
 
             $action = app(SchoolGetAction::class);
             $action->id = $this->id;
