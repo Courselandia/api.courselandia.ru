@@ -36,8 +36,8 @@ enum Status: string implements EnumLabel
     {
         return match ($this) {
             self::ACTIVE => 'Активный',
-            self::DISABLED => 'Неактивный',
-            self::REVIEW => 'Профессионал',
+            self::DISABLED => 'Отключен',
+            self::REVIEW => 'В рассмотрении',
         };
     }
 }

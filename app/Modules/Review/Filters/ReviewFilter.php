@@ -9,6 +9,8 @@
 namespace App\Modules\Review\Filters;
 
 use App\Modules\Review\Enums\Status;
+use Carbon\Carbon;
+use Config;
 use EloquentFilter\ModelFilter;
 
 /**
@@ -87,6 +89,35 @@ class ReviewFilter extends ModelFilter
     public function text(string $query): ReviewFilter
     {
         return $this->whereLike('reviews.text', $query);
+    }
+
+    /**
+     * Поиск по рейтингу.
+     *
+     * @param int $rating Рейтинг.
+     *
+     * @return ReviewFilter Правила поиска.
+     */
+    public function rating(int $rating): ReviewFilter
+    {
+        return $this->where('reviews.rating', $rating);
+    }
+
+    /**
+     * Поиск по дате добавления.
+     *
+     * @param array $dates Даты от и до.
+     *
+     * @return ReviewFilter Правила поиска.
+     */
+    public function createdAt(array $dates): ReviewFilter
+    {
+        $dates = [
+            Carbon::createFromFormat('Y-m-d O', $dates[0])->startOfDay()->setTimezone(Config::get('app.timezone')),
+            Carbon::createFromFormat('Y-m-d O', $dates[1])->endOfDay()->setTimezone(Config::get('app.timezone')),
+        ];
+
+        return $this->whereBetween('reviews.created_at', $dates);
     }
 
     /**

@@ -32,7 +32,7 @@ use App\Modules\Review\Enums\Status;
  * @property string $name Имя автора.
  * @property string $title Заголовок.
  * @property string $text Текст.
- * @property string $rating Рейтинг.
+ * @property int $rating Рейтинг.
  * @property string $status Статус.
  *
  * @property-read Review $school
@@ -80,7 +80,7 @@ class Review extends Eloquent
             'name' => 'required|between:1,191',
             'title' => 'max:191',
             'text' => 'required|between:1,65000',
-            'rating' => 'float|float_between:0,5',
+            'rating' => 'integer|between:0,5',
             'status' => 'required|in:' . implode(',', EnumList::getValues(Status::class)),
         ];
     }

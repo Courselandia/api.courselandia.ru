@@ -32,7 +32,7 @@ class ReviewCreateRequest extends FormRequest
         return [
             'school_id' => 'integer',
             'status' => 'in:' . implode(',', EnumList::getValues(Status::class)),
-            'rating' => 'float',
+            'rating' => 'integer',
         ];
     }
 

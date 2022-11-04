@@ -22,7 +22,7 @@ class CreateTableReviews extends Migration
             $table->string('name', 191);
             $table->string('title', 191)->nullable();
             $table->text('text');
-            $table->float('rating', 3);
+            $table->integer('rating')->unsigned();
 
             $table->string('status', 20)->default('disabled')->index();
 

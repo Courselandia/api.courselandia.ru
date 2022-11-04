@@ -66,9 +66,9 @@ class ReviewUpdateAction extends Action
     /**
      * Рейтинг.
      *
-     * @var float|null
+     * @var int|null
      */
-    public ?float $rating = null;
+    public ?int $rating = null;
 
     /**
      * Статус.

@@ -178,7 +178,7 @@ class ReviewControllerTest extends TestCase
                 'name' => $faker->text(191),
                 'title' => $faker->text(191),
                 'text' => $faker->text(65000),
-                'rating' => 4.6,
+                'rating' => 5,
                 'status' => Status::ACTIVE,
             ],
             [
@@ -209,7 +209,7 @@ class ReviewControllerTest extends TestCase
                 'name' => $faker->text(191),
                 'title' => $faker->text(191),
                 'text' => $faker->text(65000),
-                'rating' => 4.6,
+                'rating' => 4,
                 'status' => 'status',
             ],
             [
@@ -239,7 +239,7 @@ class ReviewControllerTest extends TestCase
                 'name' => $faker->text(191),
                 'title' => $faker->text(191),
                 'text' => $faker->text(65000),
-                'rating' => 4.8,
+                'rating' => 4,
                 'status' => Status::ACTIVE,
             ],
             [

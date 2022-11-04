@@ -30,7 +30,7 @@ class ReviewReadRequest extends FormRequest
     ])] public function rules(): array
     {
         $column = Schema::getColumnListing('reviews');
-        $column[] = 'profession-name';
+        $column[] = 'school-name';
         $column = implode(',', $column);
 
         return [
