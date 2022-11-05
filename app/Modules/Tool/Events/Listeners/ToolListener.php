@@ -25,6 +25,7 @@ class ToolListener
     public function deleting(Tool $tool): bool
     {
         $tool->deleteRelation($tool->metatag(), $tool->isForceDeleting());
+        $tool->courses()->detach();
 
         return true;
     }

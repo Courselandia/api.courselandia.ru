@@ -8,6 +8,7 @@
 
 namespace App\Modules\School\Models;
 
+use App\Modules\Course\Models\Course;
 use App\Modules\Faq\Models\Faq;
 use App\Modules\Review\Models\Review;
 use App\Modules\Teacher\Models\Teacher;
@@ -56,6 +57,7 @@ use App\Modules\School\Filters\SchoolFilter;
  * @property-read Teacher[] $teachers
  * @property-read Review[] $reviews
  * @property-read Faq[] $faqs
+ * @property-read Course[] $courses
  */
 class School extends Eloquent
 {
@@ -314,5 +316,15 @@ class School extends Eloquent
     public function faqs(): HasMany
     {
         return $this->hasMany(Faq::class);
+    }
+
+    /**
+     * Курсы этой школы.
+     *
+     * @return HasMany Модели курсов.
+     */
+    public function courses(): HasMany
+    {
+        return $this->hasMany(Course::class);
     }
 }

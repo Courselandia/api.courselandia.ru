@@ -9,6 +9,7 @@
 namespace App\Modules\Profession\Models;
 
 use App\Modules\Category\Models\Category;
+use App\Modules\Course\Models\Course;
 use App\Modules\Salary\Models\Salary;
 use Eloquent;
 use App\Models\Status;
@@ -41,6 +42,7 @@ use App\Modules\Profession\Filters\ProfessionFilter;
  * @property-read Metatag $metatag
  * @property-read Category[] $categories
  * @property-read Salary[] $salaries
+ * @property-read Course[] $courses
  */
 class Profession extends Eloquent
 {
@@ -156,5 +158,15 @@ class Profession extends Eloquent
     public function salaries(): HasMany
     {
         return $this->hasMany(Salary::class);
+    }
+
+    /**
+     * Курсы этой профессии.
+     *
+     * @return BelongsToMany Модели профессий.
+     */
+    public function courses(): BelongsToMany
+    {
+        return $this->belongsToMany(Course::class);
     }
 }

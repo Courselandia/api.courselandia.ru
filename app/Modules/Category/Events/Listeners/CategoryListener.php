@@ -27,6 +27,7 @@ class CategoryListener
         $category->deleteRelation($category->metatag(), $category->isForceDeleting());
         $category->directions()->detach();
         $category->professions()->detach();
+        $category->courses()->detach();
 
         return true;
     }

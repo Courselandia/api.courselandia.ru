@@ -8,6 +8,7 @@
 
 namespace App\Modules\Category\Models;
 
+use App\Modules\Course\Models\Course;
 use App\Modules\Direction\Models\Direction;
 use App\Modules\Profession\Models\Profession;
 use Eloquent;
@@ -40,6 +41,7 @@ use App\Modules\Category\Filters\CategoryFilter;
  * @property-read Metatag $metatag
  * @property-read Direction[] $directions
  * @property-read Profession[] $professions
+ * @property-read Course[] $courses
  */
 class Category extends Eloquent
 {
@@ -155,5 +157,15 @@ class Category extends Eloquent
     public function professions(): BelongsToMany
     {
         return $this->belongsToMany(Profession::class);
+    }
+
+    /**
+     * Курсы этой категории.
+     *
+     * @return BelongsToMany Модели курсов.
+     */
+    public function courses(): BelongsToMany
+    {
+        return $this->belongsToMany(Course::class);
     }
 }

@@ -8,6 +8,7 @@
 
 namespace App\Modules\Teacher\Models;
 
+use App\Modules\Course\Models\Course;
 use App\Modules\Direction\Models\Direction;
 use App\Modules\School\Models\School;
 use Exception;
@@ -51,6 +52,7 @@ use App\Modules\Teacher\Filters\TeacherFilter;
  * @property-read Metatag $metatag
  * @property-read Direction[] $directions
  * @property-read School[] $schools
+ * @property-read Course[] $courses
  */
 class Teacher extends Eloquent
 {
@@ -282,5 +284,15 @@ class Teacher extends Eloquent
     public function schools(): BelongsToMany
     {
         return $this->belongsToMany(School::class);
+    }
+
+    /**
+     * Курсы этого учителя.
+     *
+     * @return BelongsToMany Модели курсов.
+     */
+    public function courses(): BelongsToMany
+    {
+        return $this->belongsToMany(Course::class);
     }
 }

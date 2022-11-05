@@ -25,6 +25,7 @@ class SkillListener
     public function deleting(Skill $skill): bool
     {
         $skill->deleteRelation($skill->metatag(), $skill->isForceDeleting());
+        $skill->courses()->detach();
 
         return true;
     }

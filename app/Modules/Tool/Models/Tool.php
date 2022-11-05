@@ -9,6 +9,7 @@
 namespace App\Modules\Tool\Models;
 
 use App\Modules\Category\Models\Category;
+use App\Modules\Course\Models\Course;
 use Eloquent;
 use App\Models\Status;
 use App\Models\Delete;
@@ -38,6 +39,7 @@ use App\Modules\Tool\Filters\ToolFilter;
  *
  * @property-read Metatag $metatag
  * @property-read Category[] $categories
+ * @property-read Course[] $courses
  */
 class Tool extends Eloquent
 {
@@ -143,5 +145,15 @@ class Tool extends Eloquent
     public function categories(): BelongsToMany
     {
         return $this->belongsToMany(Category::class);
+    }
+
+    /**
+     * Курсы этого инструмента.
+     *
+     * @return BelongsToMany Модели курсов.
+     */
+    public function courses(): BelongsToMany
+    {
+        return $this->belongsToMany(Course::class);
     }
 }

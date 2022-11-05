@@ -6,7 +6,7 @@ use Illuminate\Database\Schema\Blueprint;
 /**
  * Класс миграции.
  */
-class CreateTableReviews extends Migration
+class CreateTableEmployments extends Migration
 {
     /**
      * Запуск миграции.
@@ -15,16 +15,11 @@ class CreateTableReviews extends Migration
      */
     public function up(): void
     {
-        Schema::create('reviews', function (Blueprint $table) {
+        Schema::create('course_employments', function (Blueprint $table) {
             $table->bigInteger('id', true)->unsigned();
-            $table->bigInteger('school_id')->unsigned()->index('school_id');
+            $table->bigInteger('course_id')->unsigned()->index('course_id');
 
-            $table->string('name', 191);
-            $table->string('title', 191)->nullable();
-            $table->text('text');
-            $table->integer('rating')->unsigned()->default(1);
-
-            $table->string('status', 20)->default('disabled')->index();
+            $table->string('text', 191);
 
             $table->timestamps();
             $table->softDeletes()->index();
@@ -38,6 +33,6 @@ class CreateTableReviews extends Migration
      */
     public function down(): void
     {
-        Schema::drop('reviews');
+        Schema::drop('course_employments');
     }
 }

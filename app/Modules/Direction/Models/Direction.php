@@ -9,6 +9,7 @@
 namespace App\Modules\Direction\Models;
 
 use App\Modules\Category\Models\Category;
+use App\Modules\Course\Models\Course;
 use App\Modules\Teacher\Models\Teacher;
 use Eloquent;
 use App\Models\Status;
@@ -41,6 +42,7 @@ use App\Modules\Direction\Filters\DirectionFilter;
  * @property-read Metatag $metatag
  * @property-read Category[] $categories
  * @property-read Teacher[] $teachers
+ * @property-read Course[] $courses
  */
 class Direction extends Eloquent
 {
@@ -160,5 +162,15 @@ class Direction extends Eloquent
     public function teachers(): BelongsToMany
     {
         return $this->belongsToMany(Teacher::class);
+    }
+
+    /**
+     * Курсы этого направления.
+     *
+     * @return BelongsToMany Модели курсов.
+     */
+    public function courses(): BelongsToMany
+    {
+        return $this->belongsToMany(Course::class);
     }
 }

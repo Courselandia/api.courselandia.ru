@@ -35,6 +35,7 @@ class SchoolListener
         $school->deleteRelation($school->metatag(), $school->isForceDeleting());
         $school->deleteRelation($school->reviews(), $school->isForceDeleting());
         $school->deleteRelation($school->faqs(), $school->isForceDeleting());
+        $school->deleteRelation($school->courses(), $school->isForceDeleting());
         $school->teachers()->detach();
 
         return true;

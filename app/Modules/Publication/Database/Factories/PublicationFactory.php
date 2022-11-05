@@ -45,8 +45,8 @@ class PublicationFactory extends Factory
         return [
             'metatag_id' => Metatag::factory(),
             'published_at' => Carbon::now(),
-            'header' => $this->faker->title,
-            'link' => Util::latin($this->faker->name),
+            'header' => $this->faker->text(191),
+            'link' => Util::latin($this->faker->text(191)),
             'anons' => $this->faker->text(1000),
             'article' => $this->faker->text(5000),
             'status' => true,

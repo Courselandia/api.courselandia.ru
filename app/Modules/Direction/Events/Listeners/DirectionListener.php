@@ -27,6 +27,7 @@ class DirectionListener
         $direction->deleteRelation($direction->metatag(), $direction->isForceDeleting());
         $direction->categories()->detach();
         $direction->teachers()->detach();
+        $direction->courses()->detach();
 
         return true;
     }
