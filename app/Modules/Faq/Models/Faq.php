@@ -70,7 +70,7 @@ class Faq extends Eloquent
         return [
             'school_id' => 'required|digits_between:0,20|exists:schools,id',
             'question' => 'required|between:1,191',
-            'answer' => 'required|between:1,65000',
+            'answer' => 'required|between:1,5000',
             'status' => 'required|boolean',
         ];
     }
