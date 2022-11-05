@@ -154,7 +154,7 @@ class SchoolCreateAction extends Action
         $schoolEntity->metatag_id = $metatag->id;
 
         $id = $this->school->create($schoolEntity);
-        Cache::tags(['catalog', 'school', 'teacher', 'review'])->flush();
+        Cache::tags(['catalog', 'school', 'teacher', 'review', 'faq'])->flush();
 
         $action = app(SchoolGetAction::class);
         $action->id = $id;

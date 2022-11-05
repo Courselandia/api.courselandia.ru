@@ -63,7 +63,7 @@ class SchoolGetAction extends Action
 
         $cacheKey = Util::getKey('school', $query);
 
-        return Cache::tags(['catalog', 'school', 'teacher', 'review'])->remember(
+        return Cache::tags(['catalog', 'school', 'teacher', 'review', 'faq'])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
             function () use ($query) {

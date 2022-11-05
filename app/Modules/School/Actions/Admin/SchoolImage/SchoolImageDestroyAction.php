@@ -67,7 +67,7 @@ class SchoolImageDestroyAction extends Action
         $query = new RepositoryQueryBuilder($this->id);
         $cacheKey = Util::getKey('school', $query);
 
-        $school = Cache::tags(['catalog', 'school'])->remember(
+        $school = Cache::tags(['catalog', 'school', 'faq'])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
             function () use ($query) {
@@ -93,7 +93,7 @@ class SchoolImageDestroyAction extends Action
             }
 
             $this->school->update($this->id, $school);
-            Cache::tags(['catalog', 'school', 'teacher'])->flush();
+            Cache::tags(['catalog', 'school', 'teacher', 'faq'])->flush();
 
             return true;
         }

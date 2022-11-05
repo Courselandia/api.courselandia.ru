@@ -8,6 +8,7 @@
 
 namespace App\Modules\School\Models;
 
+use App\Modules\Faq\Models\Faq;
 use App\Modules\Review\Models\Review;
 use App\Modules\Teacher\Models\Teacher;
 use Exception;
@@ -54,6 +55,7 @@ use App\Modules\School\Filters\SchoolFilter;
  * @property-read Metatag $metatag
  * @property-read Teacher[] $teachers
  * @property-read Review[] $reviews
+ * @property-read Faq[] $faqs
  */
 class School extends Eloquent
 {
@@ -302,5 +304,15 @@ class School extends Eloquent
     public function reviews(): HasMany
     {
         return $this->hasMany(Review::class);
+    }
+
+    /**
+     * FAQ's этой школы.
+     *
+     * @return HasMany Модели FAQ's.
+     */
+    public function faqs(): HasMany
+    {
+        return $this->hasMany(Faq::class);
     }
 }

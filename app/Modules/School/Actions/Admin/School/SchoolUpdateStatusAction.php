@@ -67,7 +67,7 @@ class SchoolUpdateStatusAction extends Action
         if ($schoolEntity) {
             $schoolEntity->status = $this->status;
             $this->school->update($this->id, $schoolEntity);
-            Cache::tags(['catalog', 'school', 'teacher', 'review'])->flush();
+            Cache::tags(['catalog', 'school', 'teacher', 'review', 'faq'])->flush();
 
             return $schoolEntity;
         }
