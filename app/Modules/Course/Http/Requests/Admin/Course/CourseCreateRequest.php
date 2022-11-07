@@ -1,0 +1,179 @@
+<?php
+/**
+ * Модуль Курсов.
+ * Этот модуль содержит все классы для работы с курсами.
+ *
+ * @package App\Modules\Course
+ */
+
+namespace App\Modules\Course\Http\Requests\Admin\Course;
+
+use App\Models\Enums\EnumList;
+use App\Models\FormRequest;
+use App\Modules\Course\Enums\Currency;
+use App\Modules\Course\Enums\Duration;
+use App\Modules\Course\Enums\Language;
+use App\Modules\Salary\Enums\Level;
+use JetBrains\PhpStorm\ArrayShape;
+
+/**
+ * Класс запрос для создания категории.
+ */
+class CourseCreateRequest extends FormRequest
+{
+    /**
+     * Возвращает правила проверки.
+     *
+     * @return array Массив правил проверки.
+     */
+    #[ArrayShape([
+        'image' => 'string',
+        'school_id' => 'string',
+        'directions' => 'string',
+        'directions.*' => 'string',
+        'professions' => 'string',
+        'professions.*' => 'string',
+        'categories' => 'string',
+        'categories.*' => 'string',
+        'skills' => 'string',
+        'skills.*' => 'string',
+        'teachers' => 'string',
+        'teachers.*' => 'string',
+        'tools' => 'string',
+        'tools.*' => 'string',
+        'levels' => 'string',
+        'levels.*' => 'string',
+        'learns' => 'string',
+        'employments' => 'string',
+        'features' => 'string',
+        'features.*' => 'string',
+        'language' => 'string',
+        'rating' => 'string',
+        'price' => 'string',
+        'price_discount' => 'string',
+        'price_recurrent_price' => 'string',
+        'currency' => 'string',
+        'online' => 'string',
+        'employment' => 'string',
+        'duration' => 'string',
+        'duration_unit' => 'duration_unit',
+        'lessons_amount' => 'string',
+        'modules_amount' => 'string',
+        'status' => 'string',
+    ])] public function rules(): array
+    {
+        return [
+            'image' => 'nullable|media:jpg,png,gif,webp,svg',
+            'school_id' => 'exists:schools,id',
+            'directions' => 'array',
+            'directions.*' => 'exists:directions,id',
+            'professions' => 'array',
+            'professions.*' => 'exists:professions,id',
+            'categories' => 'array',
+            'categories.*' => 'exists:categories,id',
+            'skills' => 'array',
+            'skills.*' => 'exists:skills,id',
+            'teachers' => 'array',
+            'teachers.*' => 'exists:teachers,id',
+            'tools' => 'array',
+            'tools.*' => 'exists:tools,id',
+            'levels' => 'array',
+            'levels.*' => 'in:' . implode(',', EnumList::getValues(Level::class)),
+            'learns' => 'array',
+            'employments' => 'array',
+            'features' => 'array',
+            'features.*' => 'array:icon,text',
+            'language' => 'in:' . implode(',', EnumList::getValues(Language::class)),
+            'rating' => 'float',
+            'price' => 'float',
+            'price_discount' => 'float',
+            'price_recurrent_price' => 'float',
+            'currency' => 'in:' . implode(',', EnumList::getValues(Currency::class)),
+            'online' => 'boolean',
+            'employment' => 'boolean',
+            'duration' => 'integer',
+            'duration_unit' => 'in:' . implode(',', EnumList::getValues(Duration::class)),
+            'lessons_amount' => 'integer',
+            'modules_amount' => 'integer',
+            'status' => 'required|in:' . implode(',', EnumList::getValues(Duration::class)),
+        ];
+    }
+
+    /**
+     * Возвращает атрибуты.
+     *
+     * @return array Массив атрибутов.
+     */
+    #[ArrayShape([
+        'image' => 'string',
+        'school_id' => 'string',
+        'directions' => 'string',
+        'directions.*' => 'string',
+        'professions' => 'string',
+        'professions.*' => 'string',
+        'categories' => 'string',
+        'categories.*' => 'string',
+        'skills' => 'string',
+        'skills.*' => 'string',
+        'teachers' => 'string',
+        'teachers.*' => 'string',
+        'tools' => 'string',
+        'tools.*' => 'string',
+        'levels' => 'string',
+        'levels.*' => 'string',
+        'learns' => 'string',
+        'employments' => 'string',
+        'features' => 'string',
+        'features.*' => 'string',
+        'language' => 'string',
+        'rating' => 'string',
+        'price' => 'string',
+        'price_discount' => 'string',
+        'price_recurrent_price' => 'string',
+        'currency' => 'string',
+        'online' => 'string',
+        'employment' => 'string',
+        'duration' => 'string',
+        'duration_unit' => 'string',
+        'lessons_amount' => 'string',
+        'modules_amount' => 'string',
+        'status' => 'string',
+    ])] public function attributes(): array
+    {
+        return [
+            'image' => trans('course::http.requests.admin.courseCreateRequest.image'),
+            'school_id' => trans('course::http.requests.admin.courseCreateRequest.schoolId'),
+            'directions' => trans('course::http.requests.admin.courseCreateRequest.directions'),
+            'directions.*' => trans('course::http.requests.admin.courseCreateRequest.directions'),
+            'professions' => trans('course::http.requests.admin.courseCreateRequest.professions'),
+            'professions.*' => trans('course::http.requests.admin.courseCreateRequest.professions'),
+            'categories' => trans('course::http.requests.admin.courseCreateRequest.categories'),
+            'categories.*' => trans('course::http.requests.admin.courseCreateRequest.categories'),
+            'skills' => trans('course::http.requests.admin.courseCreateRequest.skills'),
+            'skills.*' => trans('course::http.requests.admin.courseCreateRequest.skills'),
+            'teachers' => trans('course::http.requests.admin.courseCreateRequest.teachers'),
+            'teachers.*' => trans('course::http.requests.admin.courseCreateRequest.teachers'),
+            'tools' => trans('course::http.requests.admin.courseCreateRequest.tools'),
+            'tools.*' => trans('course::http.requests.admin.courseCreateRequest.tools'),
+            'levels' => trans('course::http.requests.admin.courseCreateRequest.levels'),
+            'levels.*' => trans('course::http.requests.admin.courseCreateRequest.levels'),
+            'learns' => trans('course::http.requests.admin.courseCreateRequest.learns'),
+            'employments' => trans('course::http.requests.admin.courseCreateRequest.employments'),
+            'features' => trans('course::http.requests.admin.courseCreateRequest.features'),
+            'features.*' => trans('course::http.requests.admin.courseCreateRequest.features'),
+            'language' => trans('course::http.requests.admin.courseCreateRequest.language'),
+            'rating' => trans('course::http.requests.admin.courseCreateRequest.rating'),
+            'price' => trans('course::http.requests.admin.courseCreateRequest.price'),
+            'price_discount' => trans('course::http.requests.admin.courseCreateRequest.priceDiscount'),
+            'price_recurrent_price' => trans('course::http.requests.admin.courseCreateRequest.priceRecurrentPrice'),
+            'currency' => trans('course::http.requests.admin.courseCreateRequest.priceRecurrentPrice'),
+            'online' => trans('course::http.requests.admin.courseCreateRequest.online'),
+            'employment' => trans('course::http.requests.admin.courseCreateRequest.employment'),
+            'duration' => trans('course::http.requests.admin.courseCreateRequest.duration'),
+            'duration_unit' => trans('course::http.requests.admin.courseCreateRequest.durationUnit'),
+            'lessons_amount' => trans('course::http.requests.admin.courseCreateRequest.lessonsAmount'),
+            'modules_amount' => trans('course::http.requests.admin.courseCreateRequest.modulesAmount'),
+            'status' => trans('course::http.requests.admin.courseCreateRequest.status'),
+        ];
+    }
+}
