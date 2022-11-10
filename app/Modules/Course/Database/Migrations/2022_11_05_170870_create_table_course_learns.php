@@ -6,7 +6,7 @@ use Illuminate\Database\Schema\Blueprint;
 /**
  * Класс миграции.
  */
-class CreateTableLearns extends Migration
+class CreateTableCourseLearns extends Migration
 {
     /**
      * Запуск миграции.

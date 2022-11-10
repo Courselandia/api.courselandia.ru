@@ -36,7 +36,7 @@ class CourseImageUpdateRequest extends FormRequest
     #[ArrayShape(['image' => 'string'])] public function attributes(): array
     {
         return [
-            'image' => trans('user::http.requests.admin.courseImageUpdateRequest.image')
+            'image' => trans('course::http.requests.admin.courseImageUpdateRequest.image')
         ];
     }
 }

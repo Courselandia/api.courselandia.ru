@@ -35,7 +35,7 @@ class UserCreateRequest extends FormRequest
         return [
             'image' => 'nullable|file|media:jpg,png,gif,webp',
             'invitation' => 'nullable|boolean',
-            'role' => 'in:' . implode(',', EnumList::getValues(Role::class)),
+            'role' => 'required|in:' . implode(',', EnumList::getValues(Role::class)),
             'verified' => 'boolean',
             'two_factor' => 'boolean',
             'status' => 'boolean',

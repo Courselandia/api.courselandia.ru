@@ -98,7 +98,7 @@ abstract class Entity
                     } elseif ($this->hasType($property, 'Illuminate\Http\UploadedFile')) {
                         $this->{$property->getName()} = $value;
                     } elseif ($this->isEnum($property)) {
-                        $this->{$property->getName()} = $this->getTypeEnum($property, $value);
+                        $this->{$property->getName()} = $value ? $this->getTypeEnum($property, $value) : null;
                     } elseif ($this->isType($property, Entity::class)) {
                         /**
                          * @var Entity $entity

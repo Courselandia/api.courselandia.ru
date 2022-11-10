@@ -12,6 +12,7 @@ use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
@@ -46,8 +47,8 @@ trait Sortable
     /**
      * Должно быть вызвано перед осуществлением запроса.
      *
-     * @param  Builder  $query  Запрос.
-     * @param  array  $data  Данные к запросу.
+     * @param Builder $query Запрос.
+     * @param array $data Данные к запросу.
      *
      * @throws SortException
      */
@@ -69,13 +70,11 @@ trait Sortable
                     if (count($parts) === 2) {
                         try {
                             $table = $this->{$parts[0]}()->getModel()->getTable();
-                            $status = $this->shouldSortByRelation($table, $field);
 
-                            if ($status) {
+                            if ($table) {
                                 $this->sortByRelation($field, $direction);
                             }
                         } catch (Exception $error) {
-
                         }
                     } else {
                         $this->sortNormally($field, $direction);
@@ -98,8 +97,8 @@ trait Sortable
     /**
      * Сортировать записи используя колонки модели.
      *
-     * @param  string  $field  Поле для сортировки.
-     * @param  string  $direction  Направление сортировки.
+     * @param string $field Поле для сортировки.
+     * @param string $direction Направление сортировки.
      *
      * @return void
      */
@@ -111,8 +110,8 @@ trait Sortable
     /**
      * Сортировать записи используя колонки из моделей отношений.
      *
-     * @param  string  $field  Поле для сортировки.
-     * @param  string  $direction  Направление сортировки.
+     * @param string $field Поле для сортировки.
+     * @param string $direction Направление сортировки.
      *
      * @return void
      * @throws SortException
@@ -140,40 +139,61 @@ trait Sortable
 
             $this->checkRelationToSortBy($previousModel, $relation);
 
-            $models[] = $previousModel->{$relation}()->getModel();
+            $relation = $previousModel->{$relation}();
+            $models[] = $relation->getModel();
 
             $modelTable = $previousModel->getTable();
-            $relationTable = $previousModel->{$relation}()->getModel()->getTable();
-            $foreignKey = $previousModel->{$relation}()->getForeignKeyName();
+            $relationTable = $relation->getModel()->getTable();
 
-            if (!$this->alreadyJoinedForSorting($relationTable)) {
-                switch (get_class($previousModel->{$relation}())) {
-                    case BelongsTo::class:
+            if (get_class($relation) === BelongsTo::class || get_class($relation) === HasOne::class) {
+                /**
+                 * @var BelongsTo|HasOne $relation
+                 */
+                $foreignKey = $relation->getForeignKeyName();
+
+                if (!$this->alreadyJoinedForSorting($relationTable)) {
+                    if (get_class($relation) === BelongsTo::class) {
                         $this->sort['query']->leftJoin(
                             $relationTable,
-                            $modelTable.'.'.$foreignKey,
+                            $modelTable . '.' . $foreignKey,
                             '=',
-                            $relationTable.'.id'
+                            $relationTable . '.id'
                         );
-                        break;
-                    case HasOne::class:
+                    } else {
                         $this->sort['query']->leftJoin(
                             $relationTable,
-                            $modelTable.'.id',
+                            $modelTable . '.id',
                             '=',
-                            $relationTable.'.'.$foreignKey
+                            $relationTable . '.' . $foreignKey
                         );
-                        break;
+                    }
+                }
+            } elseif (get_class($relation) === BelongsToMany::class) {
+                /**
+                 * @var BelongsToMany $relation
+                 */
+                if (!$this->alreadyJoinedForSorting($relationTable)) {
+                    $this->sort['query']->leftJoin(
+                        $relation->getTable(),
+                        $relation->getQualifiedParentKeyName(),
+                        '=',
+                        $relation->getTable() . '.' . $relation->getForeignPivotKeyName()
+                    )->leftJoin(
+                        $relationTable,
+                        $relation->getQualifiedRelatedKeyName(),
+                        '=',
+                        $relation->getTable() . '.' . $relation->getRelatedPivotKeyName()
+                    );
                 }
             }
         }
 
-        $alias = implode('_', $relations).'_'.$field;
+        $alias = implode('_', $relations) . '_' . $field;
 
         if (isset($relationTable)) {
             $this->sort['query']->addSelect([
-                $this->getTable().'.*',
-                $relationTable.'.'.$field.' AS '.$alias,
+                $this->getTable() . '.*',
+                $relationTable . '.' . $field . ' AS ' . $alias,
             ]);
         }
 
@@ -181,37 +201,15 @@ trait Sortable
     }
 
     /**
-     * Проверка, стоит ли сортировать по моделям отношений.
-     *
-     * @param  string  $table  Таблица сортировки.
-     * @param  string  $field  Поля по которому должна идти сортировка.
-     *
-     * @return bool Вернет результат проверки.
-     */
-    private function shouldSortByRelation(string $table, string $field): bool
-    {
-        $field = str_replace('-', '.', $field);
-        $status = Str::contains($field, '.');
-
-        if ($status) {
-            $tableBySort = explode('.', $field)[0];
-
-            return $tableBySort !== $table;
-        }
-
-        return false;
-    }
-
-    /**
      * Проверить что желаемый JOIN уже существует.
      *
-     * @param  string  $table  Название таблицы.
+     * @param string $table Название таблицы.
      *
      * @return bool
      */
     private function alreadyJoinedForSorting(string $table): bool
     {
-        return Str::contains(strtolower($this->sort['query']->toSql()), 'join `'.$table.'`');
+        return Str::contains(strtolower($this->sort['query']->toSql()), 'join `' . $table . '`');
     }
 
     /**
@@ -232,15 +230,19 @@ trait Sortable
     /**
      * Определяем является ли отношение верным для желаемой сортировки.
      *
-     * @param  Model  $model  Модель.
-     * @param  string  $relation  Отношение.
+     * @param Model $model Модель.
+     * @param string $relation Отношение.
      *
      * @return void
      * @throws SortException
      */
     private function checkRelationToSortBy(Model $model, string $relation): void
     {
-        if (!($model->{$relation}() instanceof HasOne) && !($model->{$relation}() instanceof BelongsTo)) {
+        if (
+            !($model->{$relation}() instanceof HasOne) &&
+            !($model->{$relation}() instanceof BelongsTo) &&
+            !($model->{$relation}() instanceof BelongsToMany)
+        ) {
             throw new SortException(
                 trans('models.isSort.relation', ['relation' => $relation, 'type' => get_class($model->{$relation}())])
             );

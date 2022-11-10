@@ -42,7 +42,7 @@ class CourseFactory extends Factory
             'metatag_id' => Metatag::factory(),
             'school_id' => School::factory(),
             'header' => $this->faker->text(191),
-            'description' => $this->faker->text(5000),
+            'text' => $this->faker->text(5000),
             'link' => Util::latin($this->faker->text(191)),
             'url' => $this->faker->url(),
             'language' => Language::RU->value,

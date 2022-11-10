@@ -4,7 +4,7 @@
 
 /**
  * A helper file for Laravel, to provide autocomplete information to your IDE
- * Generated for Laravel 9.27.0.
+ * Generated for Laravel 9.37.0.
  *
  * This file should not be included in your code, only analyzed by your IDE!
  *
@@ -1496,6 +1496,52 @@
                         /** @var \Illuminate\Foundation\Application $instance */
                         $instance->offsetUnset($key);
         }
+                    /**
+         * Register a custom macro.
+         *
+         * @param string $name
+         * @param object|callable $macro
+         * @return void 
+         * @static 
+         */ 
+        public static function macro($name, $macro)
+        {
+                        \Illuminate\Foundation\Application::macro($name, $macro);
+        }
+                    /**
+         * Mix another object into the class.
+         *
+         * @param object $mixin
+         * @param bool $replace
+         * @return void 
+         * @throws \ReflectionException
+         * @static 
+         */ 
+        public static function mixin($mixin, $replace = true)
+        {
+                        \Illuminate\Foundation\Application::mixin($mixin, $replace);
+        }
+                    /**
+         * Checks if macro is registered.
+         *
+         * @param string $name
+         * @return bool 
+         * @static 
+         */ 
+        public static function hasMacro($name)
+        {
+                        return \Illuminate\Foundation\Application::hasMacro($name);
+        }
+                    /**
+         * Flush the existing macros.
+         *
+         * @return void 
+         * @static 
+         */ 
+        public static function flushMacros()
+        {
+                        \Illuminate\Foundation\Application::flushMacros();
+        }
          
     }
             /**
@@ -1529,6 +1575,30 @@
         {            //Method inherited from \Illuminate\Foundation\Console\Kernel         
                         /** @var \App\Console\Kernel $instance */
                         $instance->terminate($input, $status);
+        }
+                    /**
+         * Register a callback to be invoked when the command lifecyle duration exceeds a given amount of time.
+         *
+         * @param \DateTimeInterface|\Carbon\CarbonInterval|float|int $threshold
+         * @param callable $handler
+         * @return void 
+         * @static 
+         */ 
+        public static function whenCommandLifecycleIsLongerThan($threshold, $handler)
+        {            //Method inherited from \Illuminate\Foundation\Console\Kernel         
+                        /** @var \App\Console\Kernel $instance */
+                        $instance->whenCommandLifecycleIsLongerThan($threshold, $handler);
+        }
+                    /**
+         * When the command being handled started.
+         *
+         * @return \Illuminate\Support\Carbon|null 
+         * @static 
+         */ 
+        public static function commandStartedAt()
+        {            //Method inherited from \Illuminate\Foundation\Console\Kernel         
+                        /** @var \App\Console\Kernel $instance */
+                        return $instance->commandStartedAt();
         }
                     /**
          * Register a Closure based command with the application.
@@ -1615,6 +1685,17 @@
         {            //Method inherited from \Illuminate\Foundation\Console\Kernel         
                         /** @var \App\Console\Kernel $instance */
                         $instance->bootstrap();
+        }
+                    /**
+         * Bootstrap the application without booting service providers.
+         *
+         * @return void 
+         * @static 
+         */ 
+        public static function bootstrapWithoutBootingProviders()
+        {            //Method inherited from \Illuminate\Foundation\Console\Kernel         
+                        /** @var \App\Console\Kernel $instance */
+                        $instance->bootstrapWithoutBootingProviders();
         }
                     /**
          * Set the Artisan application instance.
@@ -2182,6 +2263,17 @@
         {
                         /** @var \Illuminate\Auth\SessionGuard $instance */
                         return $instance->setRequest($request);
+        }
+                    /**
+         * Get the timebox instance used by the guard.
+         *
+         * @return \Illuminate\Support\Timebox 
+         * @static 
+         */ 
+        public static function getTimebox()
+        {
+                        /** @var \Illuminate\Auth\SessionGuard $instance */
+                        return $instance->getTimebox();
         }
                     /**
          * Determine if the current user is authenticated. If not, throw an exception.
@@ -2768,9 +2860,9 @@
             /**
      * 
      *
-     * @method static \Illuminate\Broadcasting\Broadcasters\Broadcaster channel(string $channel, callable|string  $callback, array $options = [])
+     * @method static \Illuminate\Broadcasting\Broadcasters\Broadcaster channel(string $channel, callable|string $callback, array $options = [])
      * @method static mixed auth(\Illuminate\Http\Request $request)
-     * @method static void resolveAuthenticatedUserUsing(Closure $callback)
+     * @method static void resolveAuthenticatedUserUsing(\Closure $callback)
      * @see \Illuminate\Contracts\Broadcasting\Factory
      */ 
         class Broadcast {
@@ -3137,6 +3229,18 @@
                         return $instance->map($map);
         }
                     /**
+         * Specify the jobs that should be dispatched instead of faked.
+         *
+         * @param array|string $jobsToDispatch
+         * @return void 
+         * @static 
+         */ 
+        public static function except($jobsToDispatch)
+        {
+                        /** @var \Illuminate\Support\Testing\Fakes\BusFake $instance */
+                        $instance->except($jobsToDispatch);
+        }
+                    /**
          * Assert if a job was dispatched based on a truth-test callback.
          *
          * @param string|\Closure $command
@@ -3314,6 +3418,17 @@
                         $instance->assertBatchCount($count);
         }
                     /**
+         * Assert that no batched jobs were dispatched.
+         *
+         * @return void 
+         * @static 
+         */ 
+        public static function assertNothingBatched()
+        {
+                        /** @var \Illuminate\Support\Testing\Fakes\BusFake $instance */
+                        $instance->assertNothingBatched();
+        }
+                    /**
          * Get all of the jobs matching a truth-test callback.
          *
          * @param string $command
@@ -3399,6 +3514,18 @@
         {
                         /** @var \Illuminate\Support\Testing\Fakes\BusFake $instance */
                         return $instance->hasDispatchedAfterResponse($command);
+        }
+                    /**
+         * Dispatch an empty job batch for testing.
+         *
+         * @param string $name
+         * @return \Illuminate\Bus\Batch 
+         * @static 
+         */ 
+        public static function dispatchFakeBatch($name = '')
+        {
+                        /** @var \Illuminate\Support\Testing\Fakes\BusFake $instance */
+                        return $instance->dispatchFakeBatch($name);
         }
                     /**
          * Record the fake pending batch dispatch.
@@ -6201,6 +6328,18 @@
                         \Illuminate\Events\Dispatcher::flushMacros();
         }
                     /**
+         * Specify the events that should be dispatched instead of faked.
+         *
+         * @param array|string $eventsToDispatch
+         * @return \Illuminate\Support\Testing\Fakes\EventFake 
+         * @static 
+         */ 
+        public static function except($eventsToDispatch)
+        {
+                        /** @var \Illuminate\Support\Testing\Fakes\EventFake $instance */
+                        return $instance->except($eventsToDispatch);
+        }
+                    /**
          * Assert if an event has a listener attached to it.
          *
          * @param string $expectedEvent
@@ -7536,7 +7675,7 @@
                     /**
          * Register a stub callable that will intercept requests and be able to return stub responses.
          *
-         * @param callable|array $callback
+         * @param callable|array|null $callback
          * @return \Illuminate\Http\Client\Factory 
          * @static 
          */ 
@@ -8367,7 +8506,6 @@
      * @method static void alwaysReplyTo(string $address, string|null $name = null)
      * @method static void alwaysReturnPath(string $address)
      * @method static void alwaysTo(string $address, string|null $name = null)
-     * @method static \Illuminate\Mail\PendingMail cc($users)
      * @method static \Illuminate\Mail\SentMessage|null plain(string $view, array $data, $callback)
      * @method static \Illuminate\Mail\SentMessage|null html(string $html, $callback)
      * @method static mixed laterOn(string $queue, \DateTimeInterface|\DateInterval|int $delay, \Illuminate\Contracts\Mail\Mailable|string|array $view)
@@ -8654,6 +8792,18 @@
         {
                         /** @var \Illuminate\Support\Testing\Fakes\MailFake $instance */
                         return $instance->to($users);
+        }
+                    /**
+         * Begin the process of mailing a mailable class instance.
+         *
+         * @param mixed $users
+         * @return \Illuminate\Mail\PendingMail 
+         * @static 
+         */ 
+        public static function cc($users)
+        {
+                        /** @var \Illuminate\Support\Testing\Fakes\MailFake $instance */
+                        return $instance->cc($users);
         }
                     /**
          * Begin the process of mailing a mailable class instance.
@@ -9354,6 +9504,18 @@
                         return $instance->setApplication($app);
         }
                     /**
+         * Specify the jobs that should be queued instead of faked.
+         *
+         * @param array|string $jobsToBeQueued
+         * @return \Illuminate\Support\Testing\Fakes\QueueFake 
+         * @static 
+         */ 
+        public static function except($jobsToBeQueued)
+        {
+                        /** @var \Illuminate\Support\Testing\Fakes\QueueFake $instance */
+                        return $instance->except($jobsToBeQueued);
+        }
+                    /**
          * Assert if a job was pushed based on a truth-test callback.
          *
          * @param string|\Closure $job
@@ -9613,6 +9775,236 @@
                         return $instance->setConnectionName($name);
         }
                     /**
+         * 
+         *
+         * @param $delay
+         * @param $payload
+         * @param null $queue
+         * @param int $attempts
+         * @return mixed 
+         * @throws AMQPProtocolChannelException
+         * @static 
+         */ 
+        public static function laterRaw($delay, $payload, $queue = null, $attempts = 0)
+        {
+                        /** @var \VladimirYuldashev\LaravelQueueRabbitMQ\Queue\RabbitMQQueue $instance */
+                        return $instance->laterRaw($delay, $payload, $queue, $attempts);
+        }
+                    /**
+         * 
+         *
+         * @param string $payload
+         * @param null $queue
+         * @param array $options
+         * @return mixed 
+         * @throws AMQPProtocolChannelException
+         * @static 
+         */ 
+        public static function bulkRaw($payload, $queue = null, $options = [])
+        {
+                        /** @var \VladimirYuldashev\LaravelQueueRabbitMQ\Queue\RabbitMQQueue $instance */
+                        return $instance->bulkRaw($payload, $queue, $options);
+        }
+                    /**
+         * 
+         *
+         * @return \VladimirYuldashev\LaravelQueueRabbitMQ\Queue\AbstractConnection 
+         * @static 
+         */ 
+        public static function getConnection()
+        {
+                        /** @var \VladimirYuldashev\LaravelQueueRabbitMQ\Queue\RabbitMQQueue $instance */
+                        return $instance->getConnection();
+        }
+                    /**
+         * 
+         *
+         * @return \VladimirYuldashev\LaravelQueueRabbitMQ\Queue\AMQPChannel 
+         * @static 
+         */ 
+        public static function getChannel()
+        {
+                        /** @var \VladimirYuldashev\LaravelQueueRabbitMQ\Queue\RabbitMQQueue $instance */
+                        return $instance->getChannel();
+        }
+                    /**
+         * Job class to use.
+         *
+         * @return string 
+         * @throws Throwable
+         * @static 
+         */ 
+        public static function getJobClass()
+        {
+                        /** @var \VladimirYuldashev\LaravelQueueRabbitMQ\Queue\RabbitMQQueue $instance */
+                        return $instance->getJobClass();
+        }
+                    /**
+         * Gets a queue/destination, by default the queue option set on the connection.
+         *
+         * @param null $queue
+         * @return string 
+         * @static 
+         */ 
+        public static function getQueue($queue = null)
+        {
+                        /** @var \VladimirYuldashev\LaravelQueueRabbitMQ\Queue\RabbitMQQueue $instance */
+                        return $instance->getQueue($queue);
+        }
+                    /**
+         * Checks if the given exchange already present/defined in RabbitMQ.
+         * 
+         * Returns false when when the exchange is missing.
+         *
+         * @param string $exchange
+         * @return bool 
+         * @throws AMQPProtocolChannelException
+         * @static 
+         */ 
+        public static function isExchangeExists($exchange)
+        {
+                        /** @var \VladimirYuldashev\LaravelQueueRabbitMQ\Queue\RabbitMQQueue $instance */
+                        return $instance->isExchangeExists($exchange);
+        }
+                    /**
+         * Declare a exchange in rabbitMQ, when not already declared.
+         *
+         * @param string $name
+         * @param string $type
+         * @param bool $durable
+         * @param bool $autoDelete
+         * @param array $arguments
+         * @return void 
+         * @static 
+         */ 
+        public static function declareExchange($name, $type = 'direct', $durable = true, $autoDelete = false, $arguments = [])
+        {
+                        /** @var \VladimirYuldashev\LaravelQueueRabbitMQ\Queue\RabbitMQQueue $instance */
+                        $instance->declareExchange($name, $type, $durable, $autoDelete, $arguments);
+        }
+                    /**
+         * Delete a exchange from rabbitMQ, only when present in RabbitMQ.
+         *
+         * @param string $name
+         * @param bool $unused
+         * @return void 
+         * @throws AMQPProtocolChannelException
+         * @static 
+         */ 
+        public static function deleteExchange($name, $unused = false)
+        {
+                        /** @var \VladimirYuldashev\LaravelQueueRabbitMQ\Queue\RabbitMQQueue $instance */
+                        $instance->deleteExchange($name, $unused);
+        }
+                    /**
+         * Checks if the given queue already present/defined in RabbitMQ.
+         * 
+         * Returns false when when the queue is missing.
+         *
+         * @param string|null $name
+         * @return bool 
+         * @throws AMQPProtocolChannelException
+         * @static 
+         */ 
+        public static function isQueueExists($name = null)
+        {
+                        /** @var \VladimirYuldashev\LaravelQueueRabbitMQ\Queue\RabbitMQQueue $instance */
+                        return $instance->isQueueExists($name);
+        }
+                    /**
+         * Declare a queue in rabbitMQ, when not already declared.
+         *
+         * @param string $name
+         * @param bool $durable
+         * @param bool $autoDelete
+         * @param array $arguments
+         * @return void 
+         * @static 
+         */ 
+        public static function declareQueue($name, $durable = true, $autoDelete = false, $arguments = [])
+        {
+                        /** @var \VladimirYuldashev\LaravelQueueRabbitMQ\Queue\RabbitMQQueue $instance */
+                        $instance->declareQueue($name, $durable, $autoDelete, $arguments);
+        }
+                    /**
+         * Delete a queue from rabbitMQ, only when present in RabbitMQ.
+         *
+         * @param string $name
+         * @param bool $if_unused
+         * @param bool $if_empty
+         * @return void 
+         * @throws AMQPProtocolChannelException
+         * @static 
+         */ 
+        public static function deleteQueue($name, $if_unused = false, $if_empty = false)
+        {
+                        /** @var \VladimirYuldashev\LaravelQueueRabbitMQ\Queue\RabbitMQQueue $instance */
+                        $instance->deleteQueue($name, $if_unused, $if_empty);
+        }
+                    /**
+         * Bind a queue to an exchange.
+         *
+         * @param string $queue
+         * @param string $exchange
+         * @param string $routingKey
+         * @return void 
+         * @static 
+         */ 
+        public static function bindQueue($queue, $exchange, $routingKey = '')
+        {
+                        /** @var \VladimirYuldashev\LaravelQueueRabbitMQ\Queue\RabbitMQQueue $instance */
+                        $instance->bindQueue($queue, $exchange, $routingKey);
+        }
+                    /**
+         * Purge the queue of messages.
+         *
+         * @param string|null $queue
+         * @return void 
+         * @static 
+         */ 
+        public static function purge($queue = null)
+        {
+                        /** @var \VladimirYuldashev\LaravelQueueRabbitMQ\Queue\RabbitMQQueue $instance */
+                        $instance->purge($queue);
+        }
+                    /**
+         * Acknowledge the message.
+         *
+         * @param \VladimirYuldashev\LaravelQueueRabbitMQ\Queue\RabbitMQJob $job
+         * @return void 
+         * @static 
+         */ 
+        public static function ack($job)
+        {
+                        /** @var \VladimirYuldashev\LaravelQueueRabbitMQ\Queue\RabbitMQQueue $instance */
+                        $instance->ack($job);
+        }
+                    /**
+         * Reject the message.
+         *
+         * @param \VladimirYuldashev\LaravelQueueRabbitMQ\Queue\RabbitMQJob $job
+         * @param bool $requeue
+         * @return void 
+         * @static 
+         */ 
+        public static function reject($job, $requeue = false)
+        {
+                        /** @var \VladimirYuldashev\LaravelQueueRabbitMQ\Queue\RabbitMQQueue $instance */
+                        $instance->reject($job, $requeue);
+        }
+                    /**
+         * Close the connection to RabbitMQ.
+         *
+         * @return void 
+         * @throws Exception
+         * @static 
+         */ 
+        public static function close()
+        {
+                        /** @var \VladimirYuldashev\LaravelQueueRabbitMQ\Queue\RabbitMQQueue $instance */
+                        $instance->close();
+        }
+                    /**
          * Get the backoff for an object-based queue handler.
          *
          * @param mixed $job
@@ -9621,7 +10013,7 @@
          */ 
         public static function getJobBackoff($job)
         {            //Method inherited from \Illuminate\Queue\Queue         
-                        /** @var \Illuminate\Queue\SyncQueue $instance */
+                        /** @var \VladimirYuldashev\LaravelQueueRabbitMQ\Queue\RabbitMQQueue $instance */
                         return $instance->getJobBackoff($job);
         }
                     /**
@@ -9633,7 +10025,7 @@
          */ 
         public static function getJobExpiration($job)
         {            //Method inherited from \Illuminate\Queue\Queue         
-                        /** @var \Illuminate\Queue\SyncQueue $instance */
+                        /** @var \VladimirYuldashev\LaravelQueueRabbitMQ\Queue\RabbitMQQueue $instance */
                         return $instance->getJobExpiration($job);
         }
                     /**
@@ -9645,7 +10037,7 @@
          */ 
         public static function createPayloadUsing($callback)
         {            //Method inherited from \Illuminate\Queue\Queue         
-                        \Illuminate\Queue\SyncQueue::createPayloadUsing($callback);
+                        \VladimirYuldashev\LaravelQueueRabbitMQ\Queue\RabbitMQQueue::createPayloadUsing($callback);
         }
                     /**
          * Get the container instance being used by the connection.
@@ -9655,7 +10047,7 @@
          */ 
         public static function getContainer()
         {            //Method inherited from \Illuminate\Queue\Queue         
-                        /** @var \Illuminate\Queue\SyncQueue $instance */
+                        /** @var \VladimirYuldashev\LaravelQueueRabbitMQ\Queue\RabbitMQQueue $instance */
                         return $instance->getContainer();
         }
                     /**
@@ -9667,7 +10059,7 @@
          */ 
         public static function setContainer($container)
         {            //Method inherited from \Illuminate\Queue\Queue         
-                        /** @var \Illuminate\Queue\SyncQueue $instance */
+                        /** @var \VladimirYuldashev\LaravelQueueRabbitMQ\Queue\RabbitMQQueue $instance */
                         $instance->setContainer($container);
         }
          
@@ -9909,18 +10301,6 @@
                         return $instance->intended($default, $status, $headers, $secure);
         }
                     /**
-         * Set the intended url.
-         *
-         * @param string $url
-         * @return \Illuminate\Routing\Redirector 
-         * @static 
-         */ 
-        public static function setIntendedUrl($url)
-        {
-                        /** @var \Illuminate\Routing\Redirector $instance */
-                        return $instance->setIntendedUrl($url);
-        }
-                    /**
          * Create a new redirect response to the given path.
          *
          * @param string $path
@@ -10047,6 +10427,29 @@
         {
                         /** @var \Illuminate\Routing\Redirector $instance */
                         $instance->setSession($session);
+        }
+                    /**
+         * Get the "intended" URL from the session.
+         *
+         * @return string|null 
+         * @static 
+         */ 
+        public static function getIntendedUrl()
+        {
+                        /** @var \Illuminate\Routing\Redirector $instance */
+                        return $instance->getIntendedUrl();
+        }
+                    /**
+         * Set the "intended" URL in the session.
+         *
+         * @param string $url
+         * @return \Illuminate\Routing\Redirector 
+         * @static 
+         */ 
+        public static function setIntendedUrl($url)
+        {
+                        /** @var \Illuminate\Routing\Redirector $instance */
+                        return $instance->setIntendedUrl($url);
         }
                     /**
          * Register a custom macro.
@@ -11551,6 +11954,40 @@
                         return $instance->isFromTrustedProxy();
         }
                     /**
+         * Filter the given array of rules into an array of rules that are included in precognitive headers.
+         *
+         * @param array $rules
+         * @return array 
+         * @static 
+         */ 
+        public static function filterPrecognitiveRules($rules)
+        {
+                        /** @var \Illuminate\Http\Request $instance */
+                        return $instance->filterPrecognitiveRules($rules);
+        }
+                    /**
+         * Determine if the request is attempting to be precognitive.
+         *
+         * @return bool 
+         * @static 
+         */ 
+        public static function isAttemptingPrecognition()
+        {
+                        /** @var \Illuminate\Http\Request $instance */
+                        return $instance->isAttemptingPrecognition();
+        }
+                    /**
+         * Determine if the request is precognitive.
+         *
+         * @return bool 
+         * @static 
+         */ 
+        public static function isPrecognitive()
+        {
+                        /** @var \Illuminate\Http\Request $instance */
+                        return $instance->isPrecognitive();
+        }
+                    /**
          * Determine if the request is sending JSON.
          *
          * @return bool 
@@ -11962,12 +12399,39 @@
                         return $instance->boolean($key, $default);
         }
                     /**
+         * Retrieve input as an integer value.
+         *
+         * @param string $key
+         * @param int $default
+         * @return int 
+         * @static 
+         */ 
+        public static function integer($key, $default = 0)
+        {
+                        /** @var \Illuminate\Http\Request $instance */
+                        return $instance->integer($key, $default);
+        }
+                    /**
+         * Retrieve input as a float value.
+         *
+         * @param string $key
+         * @param float $default
+         * @return float 
+         * @static 
+         */ 
+        public static function float($key, $default = 0.0)
+        {
+                        /** @var \Illuminate\Http\Request $instance */
+                        return $instance->float($key, $default);
+        }
+                    /**
          * Retrieve input from the request as a Carbon instance.
          *
          * @param string $key
          * @param string|null $format
          * @param string|null $tz
          * @return \Illuminate\Support\Carbon|null 
+         * @throws \Carbon\Exceptions\InvalidFormatException
          * @static 
          */ 
         public static function date($key, $format = null, $tz = null)
@@ -11978,9 +12442,10 @@
                     /**
          * Retrieve input from the request as an enum.
          *
+         * @template TEnum
          * @param string $key
-         * @param string $enumClass
-         * @return mixed|null 
+         * @param \Illuminate\Http\class-string<TEnum> $enumClass
+         * @return \Illuminate\Http\TEnum|null 
          * @static 
          */ 
         public static function enum($key, $enumClass)
@@ -12513,6 +12978,7 @@
      * @method static \Illuminate\Routing\RouteRegistrar scopeBindings()
      * @method static \Illuminate\Routing\RouteRegistrar where(array $where)
      * @method static \Illuminate\Routing\RouteRegistrar withoutMiddleware(array|string $middleware)
+     * @method static \Illuminate\Routing\RouteRegistrar withoutScopedBindings()
      * @see \Illuminate\Routing\Router
      */ 
         class Route {
@@ -13535,6 +14001,16 @@
                         \Illuminate\Database\Schema\MySqlBuilder::morphUsingUuids();
         }
                     /**
+         * Set the default morph key type for migrations to ULIDs.
+         *
+         * @return void 
+         * @static 
+         */ 
+        public static function morphUsingUlids()
+        {            //Method inherited from \Illuminate\Database\Schema\Builder         
+                        \Illuminate\Database\Schema\MySqlBuilder::morphUsingUlids();
+        }
+                    /**
          * Determine if the given table has a given column.
          *
          * @param string $table
@@ -14508,6 +14984,18 @@
                         return $instance->createS3Driver($config);
         }
                     /**
+         * Create a scoped driver.
+         *
+         * @param array $config
+         * @return \Illuminate\Filesystem\FilesystemAdapter 
+         * @static 
+         */ 
+        public static function createScopedDriver($config)
+        {
+                        /** @var \Illuminate\Filesystem\FilesystemManager $instance */
+                        return $instance->createScopedDriver($config);
+        }
+                    /**
          * Set the given disk instance.
          *
          * @param string $name
@@ -14899,6 +15387,18 @@
         {
                         /** @var \Illuminate\Filesystem\FilesystemAdapter $instance */
                         return $instance->size($path);
+        }
+                    /**
+         * Get the checksum for a file.
+         *
+         * @return string|false 
+         * @throws UnableToProvideChecksum
+         * @static 
+         */ 
+        public static function checksum($path, $options = [])
+        {
+                        /** @var \Illuminate\Filesystem\FilesystemAdapter $instance */
+                        return $instance->checksum($path, $options);
         }
                     /**
          * Get the mime-type of a given file.
@@ -15652,6 +16152,18 @@
         {
                         /** @var \Illuminate\Routing\UrlGenerator $instance */
                         return $instance->setKeyResolver($keyResolver);
+        }
+                    /**
+         * Clone a new instance of the URL generator with a different encryption key resolver.
+         *
+         * @param callable $keyResolver
+         * @return \Illuminate\Routing\UrlGenerator 
+         * @static 
+         */ 
+        public static function withKeyResolver($keyResolver)
+        {
+                        /** @var \Illuminate\Routing\UrlGenerator $instance */
+                        return $instance->withKeyResolver($keyResolver);
         }
                     /**
          * Get the root controller namespace.
@@ -16801,6 +17313,17 @@
      */ 
         class Vite {
                     /**
+         * Get the preloaded assets.
+         *
+         * @var array
+         * @static 
+         */ 
+        public static function preloadedAssets()
+        {
+                        /** @var \Illuminate\Foundation\Vite $instance */
+                        return $instance->preloadedAssets();
+        }
+                    /**
          * Get the Content Security Policy nonce applied to all generated tags.
          *
          * @return string|null 
@@ -16907,6 +17430,18 @@
                         return $instance->useStyleTagAttributes($attributes);
         }
                     /**
+         * Use the given callback to resolve attributes for preload tags.
+         *
+         * @param \Illuminate\Foundation\(callable(string,  string, ?array, ?array): array)|array  $attributes
+         * @return \Illuminate\Foundation\Vite 
+         * @static 
+         */ 
+        public static function usePreloadTagAttributes($attributes)
+        {
+                        /** @var \Illuminate\Foundation\Vite $instance */
+                        return $instance->usePreloadTagAttributes($attributes);
+        }
+                    /**
          * Generate React refresh runtime script.
          *
          * @return \Illuminate\Support\HtmlString|void 
@@ -16931,6 +17466,17 @@
                         return $instance->asset($asset, $buildDirectory);
         }
                     /**
+         * Get a unique hash representing the current manifest, or null if there is no manifest.
+         *
+         * @return string|null 
+         * @static 
+         */ 
+        public static function manifestHash($buildDirectory = null)
+        {
+                        /** @var \Illuminate\Foundation\Vite $instance */
+                        return $instance->manifestHash($buildDirectory);
+        }
+                    /**
          * Get the Vite tag content as a string of HTML.
          *
          * @return string 
@@ -16940,6 +17486,52 @@
         {
                         /** @var \Illuminate\Foundation\Vite $instance */
                         return $instance->toHtml();
+        }
+                    /**
+         * Register a custom macro.
+         *
+         * @param string $name
+         * @param object|callable $macro
+         * @return void 
+         * @static 
+         */ 
+        public static function macro($name, $macro)
+        {
+                        \Illuminate\Foundation\Vite::macro($name, $macro);
+        }
+                    /**
+         * Mix another object into the class.
+         *
+         * @param object $mixin
+         * @param bool $replace
+         * @return void 
+         * @throws \ReflectionException
+         * @static 
+         */ 
+        public static function mixin($mixin, $replace = true)
+        {
+                        \Illuminate\Foundation\Vite::mixin($mixin, $replace);
+        }
+                    /**
+         * Checks if macro is registered.
+         *
+         * @param string $name
+         * @return bool 
+         * @static 
+         */ 
+        public static function hasMacro($name)
+        {
+                        return \Illuminate\Foundation\Vite::hasMacro($name);
+        }
+                    /**
+         * Flush the existing macros.
+         *
+         * @return void 
+         * @static 
+         */ 
+        public static function flushMacros()
+        {
+                        \Illuminate\Foundation\Vite::flushMacros();
         }
          
     }
@@ -18167,6 +18759,342 @@
      
 }
 
+    namespace cijic\phpMorphy\Facade { 
+            /**
+     * 
+     *
+     */ 
+        class Morphy {
+                    /**
+         * 
+         *
+         * @return \phpMorphy_Morphier_Interface 
+         * @static 
+         */ 
+        public static function getCommonMorphier()
+        {            //Method inherited from \phpMorphy         
+                        /** @var \cijic\phpMorphy\Morphy $instance */
+                        return $instance->getCommonMorphier();
+        }
+                    /**
+         * 
+         *
+         * @return \phpMorphy_Morphier_Interface 
+         * @static 
+         */ 
+        public static function getPredictBySuffixMorphier()
+        {            //Method inherited from \phpMorphy         
+                        /** @var \cijic\phpMorphy\Morphy $instance */
+                        return $instance->getPredictBySuffixMorphier();
+        }
+                    /**
+         * 
+         *
+         * @return \phpMorphy_Morphier_Interface 
+         * @static 
+         */ 
+        public static function getPredictByDatabaseMorphier()
+        {            //Method inherited from \phpMorphy         
+                        /** @var \cijic\phpMorphy\Morphy $instance */
+                        return $instance->getPredictByDatabaseMorphier();
+        }
+                    /**
+         * 
+         *
+         * @return \phpMorphy_Morphier_Bulk 
+         * @static 
+         */ 
+        public static function getBulkMorphier()
+        {            //Method inherited from \phpMorphy         
+                        /** @var \cijic\phpMorphy\Morphy $instance */
+                        return $instance->getBulkMorphier();
+        }
+                    /**
+         * 
+         *
+         * @return string 
+         * @static 
+         */ 
+        public static function getEncoding()
+        {            //Method inherited from \phpMorphy         
+                        /** @var \cijic\phpMorphy\Morphy $instance */
+                        return $instance->getEncoding();
+        }
+                    /**
+         * 
+         *
+         * @return string 
+         * @static 
+         */ 
+        public static function getLocale()
+        {            //Method inherited from \phpMorphy         
+                        /** @var \cijic\phpMorphy\Morphy $instance */
+                        return $instance->getLocale();
+        }
+                    /**
+         * 
+         *
+         * @return \phpMorphy_GrammemsProvider_Base 
+         * @static 
+         */ 
+        public static function getGrammemsProvider()
+        {            //Method inherited from \phpMorphy         
+                        /** @var \cijic\phpMorphy\Morphy $instance */
+                        return $instance->getGrammemsProvider();
+        }
+                    /**
+         * 
+         *
+         * @return \phpMorphy_GrammemsProvider_Base 
+         * @static 
+         */ 
+        public static function getDefaultGrammemsProvider()
+        {            //Method inherited from \phpMorphy         
+                        /** @var \cijic\phpMorphy\Morphy $instance */
+                        return $instance->getDefaultGrammemsProvider();
+        }
+                    /**
+         * 
+         *
+         * @return \phpMorphy_Shm_Cache 
+         * @static 
+         */ 
+        public static function getShmCache()
+        {            //Method inherited from \phpMorphy         
+                        /** @var \cijic\phpMorphy\Morphy $instance */
+                        return $instance->getShmCache();
+        }
+                    /**
+         * 
+         *
+         * @return bool 
+         * @static 
+         */ 
+        public static function isLastPredicted()
+        {            //Method inherited from \phpMorphy         
+                        /** @var \cijic\phpMorphy\Morphy $instance */
+                        return $instance->isLastPredicted();
+        }
+                    /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function getLastPredictionType()
+        {            //Method inherited from \phpMorphy         
+                        /** @var \cijic\phpMorphy\Morphy $instance */
+                        return $instance->getLastPredictionType();
+        }
+                    /**
+         * 
+         *
+         * @param mixed $word - string or array of strings
+         * @param mixed $type - prediction managment
+         * @return \phpMorphy_WordDescriptor_Collection 
+         * @static 
+         */ 
+        public static function findWord($word, $type = 0)
+        {            //Method inherited from \phpMorphy         
+                        /** @var \cijic\phpMorphy\Morphy $instance */
+                        return $instance->findWord($word, $type);
+        }
+                    /**
+         * Alias for getBaseForm
+         *
+         * @param mixed $word - string or array of strings
+         * @param mixed $type - prediction managment
+         * @return array 
+         * @static 
+         */ 
+        public static function lemmatize($word, $type = 0)
+        {            //Method inherited from \phpMorphy         
+                        /** @var \cijic\phpMorphy\Morphy $instance */
+                        return $instance->lemmatize($word, $type);
+        }
+                    /**
+         * 
+         *
+         * @param mixed $word - string or array of strings
+         * @param mixed $type - prediction managment
+         * @return array 
+         * @static 
+         */ 
+        public static function getBaseForm($word, $type = 0)
+        {            //Method inherited from \phpMorphy         
+                        /** @var \cijic\phpMorphy\Morphy $instance */
+                        return $instance->getBaseForm($word, $type);
+        }
+                    /**
+         * 
+         *
+         * @param mixed $word - string or array of strings
+         * @param mixed $type - prediction managment
+         * @return array 
+         * @static 
+         */ 
+        public static function getAllForms($word, $type = 0)
+        {            //Method inherited from \phpMorphy         
+                        /** @var \cijic\phpMorphy\Morphy $instance */
+                        return $instance->getAllForms($word, $type);
+        }
+                    /**
+         * 
+         *
+         * @param mixed $word - string or array of strings
+         * @param mixed $type - prediction managment
+         * @return array 
+         * @static 
+         */ 
+        public static function getPseudoRoot($word, $type = 0)
+        {            //Method inherited from \phpMorphy         
+                        /** @var \cijic\phpMorphy\Morphy $instance */
+                        return $instance->getPseudoRoot($word, $type);
+        }
+                    /**
+         * 
+         *
+         * @param mixed $word - string or array of strings
+         * @param mixed $type - prediction managment
+         * @return array 
+         * @static 
+         */ 
+        public static function getPartOfSpeech($word, $type = 0)
+        {            //Method inherited from \phpMorphy         
+                        /** @var \cijic\phpMorphy\Morphy $instance */
+                        return $instance->getPartOfSpeech($word, $type);
+        }
+                    /**
+         * 
+         *
+         * @param mixed $word - string or array of strings
+         * @param mixed $type - prediction managment
+         * @return array 
+         * @static 
+         */ 
+        public static function getAllFormsWithAncodes($word, $type = 0)
+        {            //Method inherited from \phpMorphy         
+                        /** @var \cijic\phpMorphy\Morphy $instance */
+                        return $instance->getAllFormsWithAncodes($word, $type);
+        }
+                    /**
+         * 
+         *
+         * @param mixed $word - string or array of strings
+         * @paradm bool $asText - represent graminfo as text or ancodes
+         * @param mixed $type - prediction managment
+         * @return array 
+         * @static 
+         */ 
+        public static function getAllFormsWithGramInfo($word, $asText = true, $type = 0)
+        {            //Method inherited from \phpMorphy         
+                        /** @var \cijic\phpMorphy\Morphy $instance */
+                        return $instance->getAllFormsWithGramInfo($word, $asText, $type);
+        }
+                    /**
+         * 
+         *
+         * @param mixed $word - string or array of strings
+         * @param mixed $type - prediction managment
+         * @return array 
+         * @static 
+         */ 
+        public static function getAncode($word, $type = 0)
+        {            //Method inherited from \phpMorphy         
+                        /** @var \cijic\phpMorphy\Morphy $instance */
+                        return $instance->getAncode($word, $type);
+        }
+                    /**
+         * 
+         *
+         * @param mixed $word - string or array of strings
+         * @param mixed $type - prediction managment
+         * @return array 
+         * @static 
+         */ 
+        public static function getGramInfo($word, $type = 0)
+        {            //Method inherited from \phpMorphy         
+                        /** @var \cijic\phpMorphy\Morphy $instance */
+                        return $instance->getGramInfo($word, $type);
+        }
+                    /**
+         * 
+         *
+         * @param mixed $word - string or array of strings
+         * @param mixed $type - prediction managment
+         * @return array 
+         * @static 
+         */ 
+        public static function getGramInfoMergeForms($word, $type = 0)
+        {            //Method inherited from \phpMorphy         
+                        /** @var \cijic\phpMorphy\Morphy $instance */
+                        return $instance->getGramInfoMergeForms($word, $type);
+        }
+                    /**
+         * 
+         *
+         * @param string $word
+         * @param mixed $ancode
+         * @param mixed $commonAncode
+         * @param bool $returnOnlyWord
+         * @param mixed $callback
+         * @param mixed $type
+         * @return array 
+         * @static 
+         */ 
+        public static function castFormByAncode($word, $ancode, $commonAncode = null, $returnOnlyWord = false, $callback = null, $type = 0)
+        {            //Method inherited from \phpMorphy         
+                        /** @var \cijic\phpMorphy\Morphy $instance */
+                        return $instance->castFormByAncode($word, $ancode, $commonAncode, $returnOnlyWord, $callback, $type);
+        }
+                    /**
+         * 
+         *
+         * @param string $word
+         * @param mixed $partOfSpeech
+         * @param array $grammems
+         * @param bool $returnOnlyWord
+         * @param mixed $callback
+         * @param mixed $type
+         * @return array 
+         * @static 
+         */ 
+        public static function castFormByGramInfo($word, $partOfSpeech, $grammems, $returnOnlyWord = false, $callback = null, $type = 0)
+        {            //Method inherited from \phpMorphy         
+                        /** @var \cijic\phpMorphy\Morphy $instance */
+                        return $instance->castFormByGramInfo($word, $partOfSpeech, $grammems, $returnOnlyWord, $callback, $type);
+        }
+                    /**
+         * 
+         *
+         * @param string $word
+         * @param string $patternWord
+         * @param mixed $essentialGrammems
+         * @param bool $returnOnlyWord
+         * @param mixed $callback
+         * @param mixed $type
+         * @return array 
+         * @static 
+         */ 
+        public static function castFormByPattern($word, $patternWord, $grammemsProvider = null, $returnOnlyWord = false, $callback = null, $type = 0)
+        {            //Method inherited from \phpMorphy         
+                        /** @var \cijic\phpMorphy\Morphy $instance */
+                        return $instance->castFormByPattern($word, $patternWord, $grammemsProvider, $returnOnlyWord, $callback, $type);
+        }
+                    /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function createGrammemsProvider()
+        {            //Method inherited from \phpMorphy         
+                        /** @var \cijic\phpMorphy\Morphy $instance */
+                        return $instance->createGrammemsProvider();
+        }
+         
+    }
+     
+}
+
     namespace App\Models\Facades { 
             /**
      * Фасад класса для работы с утилитами.
@@ -18347,6 +19275,94 @@
         public static function isJson($string)
         {
                         return \App\Models\Util::isJson($string);
+        }
+         
+    }
+            /**
+     * Морфирование текста.
+     *
+     */ 
+        class Morph {
+                    /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function getDefaultDriver()
+        {
+                        /** @var \App\Models\Morph\MorphManager $instance */
+                        return $instance->getDefaultDriver();
+        }
+                    /**
+         * Get a driver instance.
+         *
+         * @param string|null $driver
+         * @return mixed 
+         * @throws \InvalidArgumentException
+         * @static 
+         */ 
+        public static function driver($driver = null)
+        {            //Method inherited from \Illuminate\Support\Manager         
+                        /** @var \App\Models\Morph\MorphManager $instance */
+                        return $instance->driver($driver);
+        }
+                    /**
+         * Register a custom driver creator Closure.
+         *
+         * @param string $driver
+         * @param \Closure $callback
+         * @return \App\Models\Morph\MorphManager 
+         * @static 
+         */ 
+        public static function extend($driver, $callback)
+        {            //Method inherited from \Illuminate\Support\Manager         
+                        /** @var \App\Models\Morph\MorphManager $instance */
+                        return $instance->extend($driver, $callback);
+        }
+                    /**
+         * Get all of the created "drivers".
+         *
+         * @return array 
+         * @static 
+         */ 
+        public static function getDrivers()
+        {            //Method inherited from \Illuminate\Support\Manager         
+                        /** @var \App\Models\Morph\MorphManager $instance */
+                        return $instance->getDrivers();
+        }
+                    /**
+         * Get the container instance used by the manager.
+         *
+         * @return \Illuminate\Contracts\Container\Container 
+         * @static 
+         */ 
+        public static function getContainer()
+        {            //Method inherited from \Illuminate\Support\Manager         
+                        /** @var \App\Models\Morph\MorphManager $instance */
+                        return $instance->getContainer();
+        }
+                    /**
+         * Set the container instance used by the manager.
+         *
+         * @param \Illuminate\Contracts\Container\Container $container
+         * @return \App\Models\Morph\MorphManager 
+         * @static 
+         */ 
+        public static function setContainer($container)
+        {            //Method inherited from \Illuminate\Support\Manager         
+                        /** @var \App\Models\Morph\MorphManager $instance */
+                        return $instance->setContainer($container);
+        }
+                    /**
+         * Forget all of the resolved driver instances.
+         *
+         * @return \App\Models\Morph\MorphManager 
+         * @static 
+         */ 
+        public static function forgetDrivers()
+        {            //Method inherited from \Illuminate\Support\Manager         
+                        /** @var \App\Models\Morph\MorphManager $instance */
+                        return $instance->forgetDrivers();
         }
          
     }
@@ -18833,7 +19849,7 @@
          *
          * @param string $index Индекс действия.
          * @return \App\Modules\Act\Models\Implement 
-         * @throws ParameterInvalidException
+         * @throws ParameterInvalidException|ReflectionException
          * @static 
          */ 
         public static function delete($index)
@@ -19059,16 +20075,16 @@
          * @param bool $status Если поставить true то будет иметь статус не прочитанного.
          * @param string|null $description Описание.
          * @param string|null $url Ссылка.
-         * @param string|null $icon Иконка.
-         * @param string|null $color Цвет иконки.
+         * @param string|null $tag Тэг.
+         * @param string|null $color Цвет тэга.
          * @return int Вернет ID последней вставленной строки.
          * @throws ParameterInvalidException
          * @static 
          */ 
-        public static function add($title, $status = true, $description = null, $url = null, $icon = null, $color = null)
+        public static function add($title, $status = true, $description = null, $url = null, $tag = null, $color = null)
         {
                         /** @var \App\Modules\Alert\Models\AlertImplement $instance */
-                        return $instance->add($title, $status, $description, $url, $icon, $color);
+                        return $instance->add($title, $status, $description, $url, $tag, $color);
         }
                     /**
          * Удалить предупреждение.
@@ -19102,7 +20118,7 @@
          * Получение предупреждения по его ID.
          *
          * @param int|string $id ID предупреждения.
-         * @return \App\Modules\Alert\Entities\Feedback|null Вернет сущность предупреждения.
+         * @return \App\Modules\Alert\Entities\Alert|null Вернет сущность предупреждения.
          * @throws ParameterInvalidException
          * @throws ReflectionException
          * @static 
@@ -19118,9 +20134,8 @@
          * @param int|null $offset Отступ вывода.
          * @param int|null $limit Лимит вывода.
          * @param bool $status Если установить true, то получит только прочитанные.
-         * @return \App\Modules\Alert\Entities\Feedback[] Вернет массив данных предупреждений.
+         * @return \App\Modules\Alert\Entities\Alert[] Вернет массив данных предупреждений.
          * @throws ParameterInvalidException
-         * @throws ReflectionException
          * @static 
          */ 
         public static function list($offset = null, $limit = null, $status = null)
@@ -19221,6 +20236,18 @@
                         /** @var \App\Modules\OAuth\Models\OAuthDriverManager $instance */
                         return $instance->forgetDrivers();
         }
+         
+    }
+     
+}
+
+    namespace danielme85\LaravelLogToDB { 
+            /**
+     * Class LogToDb
+     *
+     * @package danielme85\LaravelLogToDB
+     */ 
+        class LogToDB {
          
     }
      
@@ -21445,7 +22472,7 @@ namespace  {
                 /**
              * Set the table which the query is targeting.
              *
-             * @param \Closure|\Illuminate\Database\Query\Builder|string $table
+             * @param \Closure|\Illuminate\Database\Query\Builder|\Illuminate\Database\Eloquent\Builder|string $table
              * @param string|null $as
              * @return \Illuminate\Database\Query\Builder 
              * @static 
@@ -22860,7 +23887,7 @@ namespace  {
                 /**
              * Add a union statement to the query.
              *
-             * @param \Illuminate\Database\Query\Builder|\Closure $query
+             * @param \Closure|\Illuminate\Database\Query\Builder|\Illuminate\Database\Eloquent\Builder $query
              * @param bool $all
              * @return \Illuminate\Database\Query\Builder 
              * @static 
@@ -22874,7 +23901,7 @@ namespace  {
                 /**
              * Add a union all statement to the query.
              *
-             * @param \Illuminate\Database\Query\Builder|\Closure $query
+             * @param \Closure|\Illuminate\Database\Query\Builder|\Illuminate\Database\Eloquent\Builder $query
              * @return \Illuminate\Database\Query\Builder 
              * @static 
              */ 
@@ -22956,6 +23983,20 @@ namespace  {
             {
                                 /** @var \Illuminate\Database\Query\Builder $instance */
                                 return $instance->toSql();
+            }
+             
+                /**
+             * Get a single expression value from the first result of a query.
+             *
+             * @param string $expression
+             * @param array $bindings
+             * @return mixed 
+             * @static 
+             */ 
+            public static function rawValue($expression, $bindings = [])
+            {
+                                /** @var \Illuminate\Database\Query\Builder $instance */
+                                return $instance->rawValue($expression, $bindings);
             }
              
                 /**
@@ -23521,7 +24562,9 @@ namespace  {
             class MongoDb extends \Jenssegers\Mongodb\Eloquent\Model {}
             class XmlParser extends \Orchestra\Parser\Xml\Facade {}
             class Size extends \Intervention\Image\Facades\Image {}
+            class Morphy extends \cijic\phpMorphy\Facade\Morphy {}
             class Util extends \App\Models\Facades\Util {}
+            class Morph extends \App\Models\Facades\Morph {}
             class Device extends \App\Models\Facades\Device {}
             class Bot extends \App\Models\Facades\Bot {}
             class Act extends \App\Modules\Act\Facades\Act {}
@@ -23533,6 +24576,7 @@ namespace  {
             class DocumentStore extends \App\Modules\Document\Facades\Document {}
             class Alert extends \App\Modules\Alert\Facades\Alert {}
             class OAuth extends \App\Modules\OAuth\Facades\OAuth {}
+            class LogToDB extends \danielme85\LaravelLogToDB\LogToDB {}
             class Image extends \Intervention\Image\Facades\Image {}
             class Firebase extends \Kreait\Laravel\Firebase\Facades\Firebase {}
             class Flare extends \Spatie\LaravelIgnition\Facades\Flare {}

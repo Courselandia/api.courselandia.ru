@@ -14,6 +14,8 @@ use App\Modules\Course\Enums\Currency;
 use App\Modules\Course\Enums\Duration;
 use App\Modules\Course\Enums\Language;
 use App\Modules\Course\Enums\Status;
+use App\Modules\Metatag\Entities\Metatag;
+use Carbon\Carbon;
 use Illuminate\Http\UploadedFile;
 use App\Modules\Category\Entities\Category;
 use App\Modules\Direction\Entities\Direction;
@@ -89,7 +91,7 @@ class Course extends Entity
      *
      * @var string|null
      */
-    public string|null $description = null;
+    public string|null $text = null;
 
     /**
      * Заголовок морфологизированное.
@@ -103,7 +105,7 @@ class Course extends Entity
      *
      * @var string|null
      */
-    public string|null $description_morphy = null;
+    public string|null $text_morphy = null;
 
     /**
      * Ссылка.
@@ -211,11 +213,39 @@ class Course extends Entity
     public int|null $modules_amount = null;
 
     /**
+     * Дата создания.
+     *
+     * @var ?Carbon
+     */
+    public ?Carbon $created_at = null;
+
+    /**
+     * Дата обновления.
+     *
+     * @var ?Carbon
+     */
+    public ?Carbon $updated_at = null;
+
+    /**
+     * Дата удаления.
+     *
+     * @var ?Carbon
+     */
+    public ?Carbon $deleted_at = null;
+
+    /**
      * Статус.
      *
      * @var Status|null
      */
     public Status|null $status = null;
+
+    /**
+     * Метатеги.
+     *
+     * @var Metatag|null
+     */
+    public ?Metatag $metatag = null;
 
     /**
      * Направления.

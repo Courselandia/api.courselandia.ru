@@ -57,9 +57,9 @@ use cijic\phpMorphy\Morphy;
  * @property int|string|array|UploadedFile|ImageEntity $image_middle_id Средняя картинка.
  * @property int|string|array|UploadedFile|ImageEntity $image_small_id Маленькая картинка.
  * @property string $header Заголовок.
- * @property string $description Описание.
+ * @property string $text Описание.
  * @property string $header_morphy Заголовок морфологизированное.
- * @property string $description_morphy Описание морфологизированное.
+ * @property string $text_morphy Описание морфологизированное.
  * @property string $link Ссылка.
  * @property string $url URL на курс.
  * @property string $language Язык курса.
@@ -113,9 +113,9 @@ class Course extends Eloquent
         'image_middle_id',
         'image_small_id',
         'header',
-        'description',
+        'text',
         'header_morphy',
-        'description_morphy',
+        'text_morphy',
         'link',
         'url',
         'language',
@@ -147,9 +147,9 @@ class Course extends Eloquent
         'image_middle_id' => 'string',
         'image_small_id' => 'string',
         'header' => 'string',
-        'description' => 'string',
+        'text' => 'string',
         'header_morphy' => 'string',
-        'description_morphy' => 'string',
+        'text_morphy' => 'string',
         'link' => 'string',
         'url' => 'string',
         'language' => 'string',
@@ -171,12 +171,12 @@ class Course extends Eloquent
         return [
             'uuid' => 'max:191',
             'metatag_id' => 'digits_between:0,20',
-            'school_id' => 'required|digits_between:0,20|exists:schools,id',
+            'school_id' => 'required|digits_between:0,20|exists_soft:schools,id',
             'header' => 'required|between:1,191',
-            'description' => 'max:5000',
-            'header_morphy' => 'required|between:1,191',
-            'description_morphy' => 'max:5000',
-            'link' => 'required|between:1,191|alpha_dash|unique_soft:countries,link,' . $this->id . ',id',
+            'text' => 'max:5000',
+            'header_morphy' => 'max:191',
+            'text_morphy' => 'max:5000',
+            'link' => 'required|between:1,191|alpha_dash|unique_soft:courses,link,' . $this->id . ',id',
             'url' => 'required|url',
             'language' => 'in:' . implode(',', EnumList::getValues(Language::class)),
             'rating' => 'float|float_between:0,5',
@@ -210,9 +210,9 @@ class Course extends Eloquent
             'image_middle_id' => trans('course::models.course.imageMiddleId'),
             'image_small_id' => trans('course::models.course.imageSmallId'),
             'header' => trans('course::models.course.header'),
-            'description' => trans('course::models.course.description'),
+            'text' => trans('course::models.course.text'),
             'header_morphy' => trans('course::models.course.headerMorphy'),
-            'description_morphy' => trans('course::models.course.descriptionMorphy'),
+            'text_morphy' => trans('course::models.course.textMorphy'),
             'link' => trans('course::models.course.link'),
             'url' => trans('course::models.course.url'),
             'language' => trans('course::models.course.language'),
@@ -540,51 +540,5 @@ class Course extends Eloquent
         }
 
         return $value;
-    }
-
-    /**
-     * Преобразователь атрибута - Заголовок.
-     *
-     * @param  mixed  $value  Значение атрибута.
-     *
-     * @return void
-     */
-    public function setHeaderAttribute(mixed $value): void
-    {
-        $morphy = new Morphy('ru');
-        $this->attributes['header_morphy'] = $morphy->getPseudoRoot($value);
-    }
-
-    /**
-     * Преобразователь атрибута - Описание.
-     *
-     * @param  mixed  $value  Значение атрибута.
-     *
-     * @return void
-     */
-    public function setDescriptionAttribute(mixed $value): void
-    {
-        $morphy = new Morphy('ru');
-        $this->attributes['description_morphy'] = $morphy->getPseudoRoot($value);
-    }
-
-    /**
-     * Преобразователь атрибута - Продолжительность.
-     *
-     * @param  mixed  $value  Значение атрибута.
-     *
-     * @return void
-     */
-    public function setDurationAttribute(mixed $value): void
-    {
-        if ($this->attributes['duration_unit'] === Duration::DAY) {
-            $this->attributes['duration_rate'] = 1 / 30 * $value;
-        } elseif ($this->attributes['duration_unit'] === Duration::WEEK) {
-            $this->attributes['duration_rate'] = 1 / 4 * $value;
-        } elseif ($this->attributes['duration_unit'] === Duration::MONTH) {
-            $this->attributes['duration_rate'] = $value;
-        } elseif ($this->attributes['duration_unit'] === Duration::YEAR) {
-            $this->attributes['duration_rate'] = 12 * $value;
-        }
     }
 }

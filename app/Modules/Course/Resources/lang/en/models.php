@@ -10,9 +10,9 @@ return [
         'image_middle_id' => 'Middle image',
         'image_small_id' => 'Small image',
         'header' => 'Header',
-        'description' => 'Description',
+        'text' => 'Text',
         'header_morphy' => 'Morphy Header',
-        'description_morphy' => 'Morphy Description',
+        'text_morphy' => 'Morphy Description',
         'link' => 'Link',
         'url' => 'URL',
         'language' => 'Language',
@@ -36,6 +36,7 @@ return [
     ],
     'courseFeature' => [
         'course_id' => 'ID course',
+        'icon' => 'Icon',
         'text' => 'Text',
     ],
     'courseLearn' => [

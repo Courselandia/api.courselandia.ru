@@ -9,6 +9,11 @@ return [
                 'limit' => 'Лимит',
                 'filters' => 'Фильтр',
                 'status' => 'Статус',
+                'rating' => 'Рейтинг',
+                'price' => 'Цена',
+                'online' => 'Онлайн',
+                'employment' => 'Трудоустройство',
+                'duration' => 'Продолжительность',
             ],
             'courseDestroyRequest' => [
                 'ids' => 'ID'
@@ -27,6 +32,8 @@ return [
                 'learns' => 'Чему научитесь',
                 'employments' => 'Трудоустройство',
                 'features' => 'Особенности',
+                'icon' => 'Иконка',
+                'text' => 'Текст',
                 'language' => 'Язык',
                 'rating' => 'Рейтинг',
                 'price' => 'Цена',

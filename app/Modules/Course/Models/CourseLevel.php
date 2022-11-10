@@ -63,7 +63,7 @@ class CourseLevel extends Eloquent
     ])] protected function getRules(): array
     {
         return [
-            'course_id' => 'required|digits_between:0,20|exists:courses,id',
+            'course_id' => 'required|digits_between:0,20|exists_soft:courses,id',
             'level' => 'in:' . implode(',', EnumList::getValues(Level::class)),
         ];
     }

@@ -5,6 +5,7 @@
 
 namespace App\Providers;
 
+use App\Models\Validators\ExitSoftValidator;
 use App\Models\Validators\FilterDateRangeValidator;
 use App\Models\Validators\FilterDateValidator;
 use App\Models\Validators\FiltersValidator;
@@ -35,6 +36,7 @@ class ValidatorServiceProvider extends ServiceProvider
     {
         Validator::extend('date_mongo', DateMongoValidator::class);
         Validator::extend('unique_soft', UniqueSoftValidator::class);
+        Validator::extend('exists_soft', ExitSoftValidator::class);
         Validator::extend('float', FloatValidator::class);
         Validator::extend('phone', PhoneValidator::class);
         Validator::extend('float_between', FloatBetweenValidator::class);

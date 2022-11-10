@@ -114,7 +114,7 @@ class FaqControllerTest extends TestCase
             [
                 'school_id' => $school->id,
                 'question' => $faker->text(191),
-                'answer' => $faker->text(65000),
+                'answer' => $faker->text(5000),
                 'status' => true,
             ],
             [
@@ -142,7 +142,7 @@ class FaqControllerTest extends TestCase
             [
                 'school_id' => $school->id,
                 'question' => $faker->text(191),
-                'answer' => $faker->text(65000),
+                'answer' => $faker->text(5000),
                 'status' => 'test',
             ],
             [
@@ -171,7 +171,7 @@ class FaqControllerTest extends TestCase
             [
                 'school_id' => $school->id,
                 'question' => $faker->text(191),
-                'answer' => $faker->text(65000),
+                'answer' => $faker->text(5000),
                 'status' => true,
             ],
             [
@@ -200,7 +200,7 @@ class FaqControllerTest extends TestCase
             [
                 'school_id' => $school->id,
                 'question' => $faker->text(191),
-                'answer' => $faker->text(65000),
+                'answer' => $faker->text(5000),
                 'status' => 'test',
             ],
             [
@@ -228,7 +228,7 @@ class FaqControllerTest extends TestCase
             [
                 'school_id' => $school->id,
                 'question' => $faker->text(191),
-                'answer' => $faker->text(65000),
+                'answer' => $faker->text(5000),
                 'status' => true,
             ],
             [

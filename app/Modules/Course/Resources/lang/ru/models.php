@@ -10,9 +10,9 @@ return [
         'image_middle_id' => 'Средняя картинка',
         'image_small_id' => 'Маленькая картинка',
         'header' => 'Заголовок',
-        'description' => 'Описание',
+        'text' => 'Описание',
         'header_morphy' => 'Заголовок морфологизированное',
-        'description_morphy' => 'Описание морфологизированное',
+        'text_morphy' => 'Описание морфологизированное',
         'link' => 'Ссылка',
         'url' => 'URL на курс',
         'language' => 'Язык курса',
@@ -36,6 +36,7 @@ return [
     ],
     'courseFeature' => [
         'course_id' => 'ID курса',
+        'icon' => 'Иконка',
         'text' => 'Текст',
     ],
     'courseLearn' => [

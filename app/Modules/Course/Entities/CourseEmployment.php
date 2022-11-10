@@ -9,6 +9,7 @@
 namespace App\Modules\Course\Entities;
 
 use App\Models\Entity;
+use Carbon\Carbon;
 
 /**
  * Сущность для трудоустройства после курса.
@@ -35,4 +36,25 @@ class CourseEmployment extends Entity
      * @var string|null
      */
     public ?string $text = null;
+
+    /**
+     * Дата создания.
+     *
+     * @var ?Carbon
+     */
+    public ?Carbon $created_at = null;
+
+    /**
+     * Дата обновления.
+     *
+     * @var ?Carbon
+     */
+    public ?Carbon $updated_at = null;
+
+    /**
+     * Дата удаления.
+     *
+     * @var ?Carbon
+     */
+    public ?Carbon $deleted_at = null;
 }

@@ -10,6 +10,7 @@ namespace App\Modules\Course\Entities;
 
 use App\Models\Entity;
 use App\Modules\Salary\Enums\Level;
+use Carbon\Carbon;
 
 /**
  * Сущность уровней курсов.
@@ -36,4 +37,25 @@ class CourseLevel extends Entity
      * @var Level|null
      */
     public ?Level $level = null;
+
+    /**
+     * Дата создания.
+     *
+     * @var ?Carbon
+     */
+    public ?Carbon $created_at = null;
+
+    /**
+     * Дата обновления.
+     *
+     * @var ?Carbon
+     */
+    public ?Carbon $updated_at = null;
+
+    /**
+     * Дата удаления.
+     *
+     * @var ?Carbon
+     */
+    public ?Carbon $deleted_at = null;
 }

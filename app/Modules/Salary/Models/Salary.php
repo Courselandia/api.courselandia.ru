@@ -72,7 +72,7 @@ class Salary extends Eloquent
     ])] protected function getRules(): array
     {
         return [
-            'profession_id' => 'required|digits_between:0,20|exists:professions,id',
+            'profession_id' => 'required|digits_between:0,20|exists_soft:professions,id',
             'level' => 'required|in:' . implode(',', EnumList::getValues(Level::class)),
             'salary' => 'required|integer',
             'status' => 'required|boolean'

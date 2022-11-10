@@ -76,7 +76,7 @@ class Review extends Eloquent
     ])] protected function getRules(): array
     {
         return [
-            'school_id' => 'required|digits_between:0,20|exists:schools,id',
+            'school_id' => 'required|digits_between:0,20|exists_soft:schools,id',
             'name' => 'required|between:1,191',
             'title' => 'max:191',
             'text' => 'required|between:1,65000',

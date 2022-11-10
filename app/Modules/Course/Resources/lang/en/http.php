@@ -9,6 +9,11 @@ return [
                 'limit' => 'Limit',
                 'filters' => 'Filters',
                 'status' => 'Status',
+                'rating' => 'Rating',
+                'price' => 'Price',
+                'online' => 'Online',
+                'employment' => 'Employment',
+                'duration' => 'Duration',
             ],
             'courseDestroyRequest' => [
                 'ids' => 'ID'
@@ -27,7 +32,8 @@ return [
                 'learns' => 'Learns',
                 'employments' => 'Employments',
                 'features' => 'Features',
-                'features.*' => 'Features',
+                'icon' => 'Icon',
+                'text' => 'Text',
                 'language' => 'Language',
                 'rating' => 'Rating',
                 'price' => 'Price',

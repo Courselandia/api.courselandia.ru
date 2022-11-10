@@ -26,14 +26,28 @@ class CourseFilter extends ModelFilter
     public $relations = [
         'school' => [
             'school-name'  => 'schoolName',
-            'direction-name'  => 'directionName',
-            'profession-name'  => 'professionName',
-            'category-name'  => 'categoryName',
-            'skill-name'  => 'skillName',
-            'teacher-name'  => 'teacherName',
-            'tool-name'  => 'toolName',
-            'level-name'  => 'levelName',
-        ]
+        ],
+        'directions' => [
+            'directions-name'  => 'directionsName',
+        ],
+        'professions' => [
+            'professions-name'  => 'professionsName',
+        ],
+        'categories' => [
+            'categories-name'  => 'categoriesName',
+        ],
+        'skills' => [
+            'skills-name'  => 'skillsName',
+        ],
+        'teachers' => [
+            'teachers-name'  => 'teachersName',
+        ],
+        'tools' => [
+            'tools-name'  => 'toolsName',
+        ],
+        'levels' => [
+            'levels-name'  => 'levelsName',
+        ],
     ];
 
     /**
@@ -55,7 +69,7 @@ class CourseFilter extends ModelFilter
      *
      * @return CourseFilter Правила поиска.
      */
-    public function schoolName(array|int|string $schoolIds): CourseFilter
+    public function schoolId(array|int|string $schoolIds): CourseFilter
     {
         return $this->whereIn('courses.school_id', is_array($schoolIds) ? $schoolIds : [$schoolIds]);
     }
@@ -73,7 +87,7 @@ class CourseFilter extends ModelFilter
         $query = $morphy->getPseudoRoot($query);
 
         return $this->whereRaw(
-            'MATCH(header) AGAINST(? IN BOOLEAN MODE)',
+            'MATCH(header_morphy) AGAINST(? IN BOOLEAN MODE)',
             [$query]
         );
     }
@@ -85,13 +99,13 @@ class CourseFilter extends ModelFilter
      *
      * @return CourseFilter Правила поиска.
      */
-    public function description(string $query): CourseFilter
+    public function text(string $query): CourseFilter
     {
         $morphy = new Morphy('ru');
         $query = $morphy->getPseudoRoot($query);
 
         return $this->whereRaw(
-            'MATCH(description) AGAINST(? IN BOOLEAN MODE)',
+            'MATCH(text_morphy) AGAINST(? IN BOOLEAN MODE)',
             [$query]
         );
     }
@@ -109,7 +123,7 @@ class CourseFilter extends ModelFilter
         $query = $morphy->getPseudoRoot($query);
 
         return $this->whereRaw(
-            'MATCH(header, description) AGAINST(? IN BOOLEAN MODE)',
+            'MATCH(header_morphy, text_morphy) AGAINST(? IN BOOLEAN MODE)',
             [$query]
         );
     }
@@ -193,7 +207,7 @@ class CourseFilter extends ModelFilter
      *
      * @return CourseFilter Правила поиска.
      */
-    public function directionName(array|int|string $ids): CourseFilter
+    public function directionsName(array|int|string $ids): CourseFilter
     {
         return $this->related('directions', function($query) use ($ids) {
             return $query->whereIn('directions.id', is_array($ids) ? $ids : [$ids]);
@@ -207,7 +221,7 @@ class CourseFilter extends ModelFilter
      *
      * @return CourseFilter Правила поиска.
      */
-    public function professionName(array|int|string $ids): CourseFilter
+    public function professionsName(array|int|string $ids): CourseFilter
     {
         return $this->related('professions', function($query) use ($ids) {
             return $query->whereIn('professions.id', is_array($ids) ? $ids : [$ids]);
@@ -221,7 +235,7 @@ class CourseFilter extends ModelFilter
      *
      * @return CourseFilter Правила поиска.
      */
-    public function categoryName(array|int|string $ids): CourseFilter
+    public function categoriesName(array|int|string $ids): CourseFilter
     {
         return $this->related('categories', function($query) use ($ids) {
             return $query->whereIn('categories.id', is_array($ids) ? $ids : [$ids]);
@@ -235,7 +249,7 @@ class CourseFilter extends ModelFilter
      *
      * @return CourseFilter Правила поиска.
      */
-    public function skillName(array|int|string $ids): CourseFilter
+    public function skillsName(array|int|string $ids): CourseFilter
     {
         return $this->related('skills', function($query) use ($ids) {
             return $query->whereIn('skills.id', is_array($ids) ? $ids : [$ids]);
@@ -249,7 +263,7 @@ class CourseFilter extends ModelFilter
      *
      * @return CourseFilter Правила поиска.
      */
-    public function teacherName(array|int|string $ids): CourseFilter
+    public function teachersName(array|int|string $ids): CourseFilter
     {
         return $this->related('teachers', function($query) use ($ids) {
             return $query->whereIn('teachers.id', is_array($ids) ? $ids : [$ids]);
@@ -263,7 +277,7 @@ class CourseFilter extends ModelFilter
      *
      * @return CourseFilter Правила поиска.
      */
-    public function toolName(array|int|string $ids): CourseFilter
+    public function toolsName(array|int|string $ids): CourseFilter
     {
         return $this->related('tools', function($query) use ($ids) {
             return $query->whereIn('tools.id', is_array($ids) ? $ids : [$ids]);
@@ -277,7 +291,7 @@ class CourseFilter extends ModelFilter
      *
      * @return CourseFilter Правила поиска.
      */
-    public function levelName(array|Level|string $levels): CourseFilter
+    public function levelsName(array|Level|string $levels): CourseFilter
     {
         return $this->related('levels', function($query) use ($levels) {
             return $query->whereIn('course_levels.id', is_array($levels) ? $levels : [$levels]);

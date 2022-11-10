@@ -31,9 +31,9 @@ class CategoryCreateRequest extends FormRequest
     {
         return [
             'directions' => 'array',
-            'directions.*' => 'exists:directions,id',
+            'directions.*' => 'exists_soft:directions,id',
             'professions' => 'array',
-            'professions.*' => 'exists:professions,id',
+            'professions.*' => 'exists_soft:professions,id',
             'status' => 'boolean',
         ];
     }

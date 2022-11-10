@@ -198,6 +198,7 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        cijic\phpMorphy\MorphyServiceProvider::class,
 
         //
 
@@ -206,6 +207,7 @@ return [
         App\Providers\GeocoderServiceProvider::class,
         App\Providers\GeoServiceProvider::class,
         App\Providers\SmsServiceProvider::class,
+        App\Providers\MorphServiceProvider::class,
 
         // Modules
 
@@ -277,6 +279,9 @@ return [
 
         App\Modules\Faq\Providers\FaqServiceProvider::class,
         App\Modules\Faq\Providers\RouteServiceProvider::class,
+
+        App\Modules\Course\Providers\CourseServiceProvider::class,
+        App\Modules\Course\Providers\RouteServiceProvider::class,
     ],
 
     /*
@@ -298,9 +303,11 @@ return [
 
         'XmlParser' => Orchestra\Parser\Xml\Facade::class,
         'Size' => Intervention\Image\Facades\Image::class,
+        'Morphy' => cijic\phpMorphy\Facade\Morphy::class,
 
         // Own classes
         'Util' => App\Models\Facades\Util::class,
+        'Morph' => App\Models\Facades\Morph::class,
         'Device' => App\Models\Facades\Device::class,
         'Bot' => App\Models\Facades\Bot::class,
         'Act' => App\Modules\Act\Facades\Act::class,

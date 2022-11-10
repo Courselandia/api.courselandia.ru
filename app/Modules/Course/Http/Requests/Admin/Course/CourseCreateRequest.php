@@ -13,6 +13,7 @@ use App\Models\FormRequest;
 use App\Modules\Course\Enums\Currency;
 use App\Modules\Course\Enums\Duration;
 use App\Modules\Course\Enums\Language;
+use App\Modules\Course\Enums\Status;
 use App\Modules\Salary\Enums\Level;
 use JetBrains\PhpStorm\ArrayShape;
 
@@ -64,19 +65,19 @@ class CourseCreateRequest extends FormRequest
     {
         return [
             'image' => 'nullable|media:jpg,png,gif,webp,svg',
-            'school_id' => 'exists:schools,id',
+            'school_id' => 'exists_soft:schools,id',
             'directions' => 'array',
-            'directions.*' => 'exists:directions,id',
+            'directions.*' => 'exists_soft:directions,id',
             'professions' => 'array',
-            'professions.*' => 'exists:professions,id',
+            'professions.*' => 'exists_soft:professions,id',
             'categories' => 'array',
-            'categories.*' => 'exists:categories,id',
+            'categories.*' => 'exists_soft:categories,id',
             'skills' => 'array',
-            'skills.*' => 'exists:skills,id',
+            'skills.*' => 'exists_soft:skills,id',
             'teachers' => 'array',
-            'teachers.*' => 'exists:teachers,id',
+            'teachers.*' => 'exists_soft:teachers,id',
             'tools' => 'array',
-            'tools.*' => 'exists:tools,id',
+            'tools.*' => 'exists_soft:tools,id',
             'levels' => 'array',
             'levels.*' => 'in:' . implode(',', EnumList::getValues(Level::class)),
             'learns' => 'array',
@@ -95,7 +96,7 @@ class CourseCreateRequest extends FormRequest
             'duration_unit' => 'in:' . implode(',', EnumList::getValues(Duration::class)),
             'lessons_amount' => 'integer',
             'modules_amount' => 'integer',
-            'status' => 'required|in:' . implode(',', EnumList::getValues(Duration::class)),
+            'status' => 'required|in:' . implode(',', EnumList::getValues(Status::class)),
         ];
     }
 

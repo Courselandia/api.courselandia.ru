@@ -30,9 +30,21 @@ class CourseReadRequest extends FormRequest
         'limit' => 'string',
         'filters' => 'string',
         'filters.status' => 'string',
+        'filters.rating' => 'string',
+        'filters.price.*' => 'string',
+        'filters.online' => 'string',
+        'filters.employment' => 'string',
+        'filters.duration.*' => 'string',
     ])] public function rules(): array
     {
         $column = Schema::getColumnListing('categories');
+        $column[] = 'directions-name';
+        $column[] = 'professions-name';
+        $column[] = 'categories-name';
+        $column[] = 'skills-name';
+        $column[] = 'teachers-name';
+        $column[] = 'tools-name';
+        $column[] = 'levels-name';
         $column = implode(',', $column);
 
         return [
@@ -41,6 +53,11 @@ class CourseReadRequest extends FormRequest
             'limit' => 'integer|digits_between:0,20',
             'filters' => 'array|filters:' . $column . '|filter_date_range:published_at',
             'filters.status' => 'in:' . implode(',', EnumList::getValues(Duration::class)),
+            'filters.rating' => 'float',
+            'filters.price.*' => 'float',
+            'filters.online' => 'boolean',
+            'filters.employment' => 'boolean',
+            'filters.duration.*' => 'integer',
         ];
     }
 
@@ -55,6 +72,11 @@ class CourseReadRequest extends FormRequest
         'limit' => 'string',
         'filters' => 'string',
         'filters.status' => 'string',
+        'filters.rating' => 'string',
+        'filters.price.*' => 'string',
+        'filters.online' => 'string',
+        'filters.employment' => 'string',
+        'filters.duration.*' => 'string',
     ])] public function attributes(): array
     {
         return [
@@ -63,6 +85,11 @@ class CourseReadRequest extends FormRequest
             'limit' => trans('course::http.requests.admin.courseReadRequest.limit'),
             'filters' => trans('course::http.requests.admin.courseReadRequest.filters'),
             'filters.status' => trans('course::http.requests.admin.courseReadRequest.status'),
+            'filters.rating' => trans('course::http.requests.admin.courseReadRequest.rating'),
+            'filters.price.*' => trans('course::http.requests.admin.courseReadRequest.price'),
+            'filters.online' => trans('course::http.requests.admin.courseReadRequest.online'),
+            'filters.employment' => trans('course::http.requests.admin.courseReadRequest.employment'),
+            'filters.duration.*' => trans('course::http.requests.admin.courseReadRequest.duration'),
         ];
     }
 }

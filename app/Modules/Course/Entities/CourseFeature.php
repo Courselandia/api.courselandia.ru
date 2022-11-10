@@ -35,4 +35,11 @@ class CourseFeature extends Entity
      * @var string|null
      */
     public ?string $text = null;
+
+    /**
+     * Иконка.
+     *
+     * @var string|null
+     */
+    public ?string $icon = null;
 }
