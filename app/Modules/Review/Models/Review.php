@@ -8,6 +8,7 @@
 
 namespace App\Modules\Review\Models;
 
+use App\Modules\Course\Models\Course;
 use App\Modules\School\Models\School;
 use Eloquent;
 use App\Models\Delete;
@@ -29,6 +30,7 @@ use App\Modules\Review\Enums\Status;
  *
  * @property int|string $id ID школы.
  * @property int|string $school_id ID школы.
+ * @property int|string $course_id ID курса.
  * @property string $name Имя автора.
  * @property string $title Заголовок.
  * @property string $text Текст.
@@ -54,6 +56,7 @@ class Review extends Eloquent
     protected $fillable = [
         'id',
         'school_id',
+        'course_id',
         'name',
         'title',
         'text',
@@ -68,6 +71,7 @@ class Review extends Eloquent
      */
     #[ArrayShape([
         'school_id' => 'string',
+        'course_id' => 'string',
         'name' => 'string',
         'title' => 'string',
         'text' => 'string',
@@ -77,6 +81,7 @@ class Review extends Eloquent
     {
         return [
             'school_id' => 'required|digits_between:0,20|exists_soft:schools,id',
+            'course_id' => 'nullable|digits_between:0,20|exists_soft:courses,id',
             'name' => 'required|between:1,191',
             'title' => 'max:191',
             'text' => 'required|between:1,65000',
@@ -94,6 +99,7 @@ class Review extends Eloquent
     {
         return [
             'school_id' => trans('review::models.review.schoolId'),
+            'course_id' => trans('review::models.review.courseId'),
             'name' => trans('review::models.review.name'),
             'title' => trans('review::models.review.title'),
             'text' => trans('review::models.review.text'),
@@ -130,5 +136,15 @@ class Review extends Eloquent
     public function school(): BelongsTo
     {
         return $this->belongsTo(School::class);
+    }
+
+    /**
+     * Получить курс.
+     *
+     * @return BelongsTo Модель курсов.
+     */
+    public function course(): BelongsTo
+    {
+        return $this->belongsTo(Course::class);
     }
 }

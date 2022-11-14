@@ -11,6 +11,7 @@ namespace App\Modules\Course\Models;
 use App\Modules\Course\Enums\Duration;
 use App\Modules\Course\Enums\Language;
 use App\Modules\Metatag\Models\Metatag;
+use App\Modules\Review\Models\Review;
 use Exception;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Size;
@@ -44,7 +45,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Modules\Course\Database\Factories\CourseFactory;
 use App\Modules\Course\Filters\CourseFilter;
-use cijic\phpMorphy\Morphy;
 
 /**
  * Класс модель для таблицы курсов на основе Eloquent.
@@ -79,6 +79,7 @@ use cijic\phpMorphy\Morphy;
  *
  * @property-read Metatag $metatag
  * @property-read School $school
+ * @property-read Review[] $reviews
  * @property-read Direction[] $directions
  * @property-read Profession[] $professions
  * @property-read Category[] $categories
@@ -370,6 +371,16 @@ class Course extends Eloquent
     public function features(): HasMany
     {
         return $this->hasMany(CourseFeature::class);
+    }
+
+    /**
+     * Отзывы этого курса.
+     *
+     * @return HasMany Модели отзывов.
+     */
+    public function reviews(): HasMany
+    {
+        return $this->hasMany(Review::class);
     }
 
     /**

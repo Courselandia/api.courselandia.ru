@@ -28,6 +28,7 @@ class ReviewListener
     {
         $result = $review->newQuery()
             ->where('school_id', $review->school_id)
+            ->where('course_id', $review->course_id)
             ->where('name', $review->name)
             ->where('title', $review->title)
             ->where('text', $review->text)
@@ -54,6 +55,7 @@ class ReviewListener
         $result = $review->newQuery()
             ->where('id', '!=', $review->id)
             ->where('school_id', $review->school_id)
+            ->where('course_id', $review->course_id)
             ->where('name', $review->name)
             ->where('title', $review->title)
             ->where('text', $review->text)

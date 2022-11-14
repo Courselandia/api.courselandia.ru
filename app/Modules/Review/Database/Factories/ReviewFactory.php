@@ -8,6 +8,7 @@
 
 namespace App\Modules\Review\Database\Factories;
 
+use App\Modules\Course\Models\Course;
 use App\Modules\Review\Enums\Status;
 use App\Modules\School\Models\School;
 use JetBrains\PhpStorm\ArrayShape;
@@ -33,6 +34,7 @@ class ReviewFactory extends Factory
      */
     #[ArrayShape([
         'school_id' => '\Illuminate\Database\Eloquent\Factories\Factory',
+        'course_id' => '\Illuminate\Database\Eloquent\Factories\Factory',
         'name' => 'string',
         'title' => 'string',
         'text' => 'string',
@@ -42,6 +44,7 @@ class ReviewFactory extends Factory
     {
         return [
             'school_id' => School::factory(),
+            'course_id' => Course::factory(),
             'name' => $this->faker->text(191),
             'title' => $this->faker->text(191),
             'text' => $this->faker->text(5000),

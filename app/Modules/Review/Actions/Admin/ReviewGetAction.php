@@ -58,11 +58,12 @@ class ReviewGetAction extends Action
         $query->setId($this->id)
             ->setRelations([
                 'school',
+                'course',
             ]);
 
         $cacheKey = Util::getKey('review', $query);
 
-        return Cache::tags(['catalog', 'school', 'review'])->remember(
+        return Cache::tags(['catalog', 'school', 'review', 'course'])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
             function () use ($query) {

@@ -25,12 +25,14 @@ class ReviewCreateRequest extends FormRequest
      */
     #[ArrayShape([
         'school_id' => 'string',
+        'course_id' => 'string',
         'status' => 'string',
         'rating' => 'string',
     ])] public function rules(): array
     {
         return [
             'school_id' => 'exists_soft:schools,id',
+            'course_id' => 'nullable|exists_soft:courses,id',
             'status' => 'required|in:' . implode(',', EnumList::getValues(Status::class)),
             'rating' => 'integer',
         ];
@@ -43,12 +45,14 @@ class ReviewCreateRequest extends FormRequest
      */
     #[ArrayShape([
         'school_id' => 'string',
+        'course_id' => 'string',
         'status' => 'string',
         'rating' => 'string'
     ])] public function attributes(): array
     {
         return [
             'school_id' => trans('review::http.requests.admin.reviewCreateRequest.schoolId'),
+            'course_id' => trans('review::http.requests.admin.reviewCreateRequest.courseId'),
             'status' => trans('review::http.requests.admin.reviewCreateRequest.status'),
             'rating' => trans('review::http.requests.admin.reviewCreateRequest.rating'),
         ];

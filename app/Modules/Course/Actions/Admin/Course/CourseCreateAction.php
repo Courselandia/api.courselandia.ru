@@ -422,6 +422,7 @@ class CourseCreateAction extends Action
             'skill',
             'teacher',
             'tool',
+            'review',
         ])->flush();
 
         $action = app(CourseGetAction::class);

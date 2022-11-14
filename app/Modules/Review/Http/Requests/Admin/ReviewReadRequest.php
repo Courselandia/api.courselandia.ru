@@ -33,6 +33,7 @@ class ReviewReadRequest extends FormRequest
     {
         $column = Schema::getColumnListing('reviews');
         $column[] = 'school-name';
+        $column[] = 'course-header';
         $column = implode(',', $column);
 
         return [

@@ -8,6 +8,7 @@
 
 namespace App\Modules\Review\Tests\Feature\Http\Controllers\Admin;
 
+use App\Modules\Course\Models\Course;
 use App\Modules\Review\Enums\Status;
 use App\Models\Test\TokenTest;
 use App\Modules\Review\Models\Review;
@@ -107,6 +108,7 @@ class ReviewControllerTest extends TestCase
     public function testCreate(): void
     {
         $school = School::factory()->create();
+        $course = Course::factory()->create();
         $faker = Faker::create();
 
         $this->json(
@@ -114,6 +116,7 @@ class ReviewControllerTest extends TestCase
             'api/private/admin/review/create',
             [
                 'school_id' => $school->id,
+                'course_id' => $course->id,
                 'name' => $faker->text(191),
                 'title' => $faker->text(191),
                 'text' => $faker->text(65000),
@@ -138,12 +141,14 @@ class ReviewControllerTest extends TestCase
     {
         $faker = Faker::create();
         $school = School::factory()->create();
+        $course = Course::factory()->create();
 
         $this->json(
             'POST',
             'api/private/admin/review/create',
             [
                 'school_id' => $school->id,
+                'course_id' => $course->id,
                 'name' => $faker->text(191),
                 'title' => $faker->text(191),
                 'text' => $faker->text(65000),
@@ -168,6 +173,7 @@ class ReviewControllerTest extends TestCase
     {
         $review = Review::factory()->create();
         $school = School::factory()->create();
+        $course = Course::factory()->create();
         $faker = Faker::create();
 
         $this->json(
@@ -175,6 +181,7 @@ class ReviewControllerTest extends TestCase
             'api/private/admin/review/update/' . $review->id,
             [
                 'school_id' => $school->id,
+                'course_id' => $course->id,
                 'name' => $faker->text(191),
                 'title' => $faker->text(191),
                 'text' => $faker->text(65000),
@@ -199,6 +206,7 @@ class ReviewControllerTest extends TestCase
     {
         $review = Review::factory()->create();
         $school = School::factory()->create();
+        $course = Course::factory()->create();
         $faker = Faker::create();
 
         $this->json(
@@ -206,6 +214,7 @@ class ReviewControllerTest extends TestCase
             'api/private/admin/review/update/' . $review->id,
             [
                 'school_id' => $school->id,
+                'course_id' => $course->id,
                 'name' => $faker->text(191),
                 'title' => $faker->text(191),
                 'text' => $faker->text(65000),
@@ -230,12 +239,14 @@ class ReviewControllerTest extends TestCase
     {
         $faker = Faker::create();
         $school = School::factory()->create();
+        $course = Course::factory()->create();
 
         $this->json(
             'PUT',
             'api/private/admin/review/update/1000',
             [
                 'school_id' => $school->id,
+                'course_id' => $course->id,
                 'name' => $faker->text(191),
                 'title' => $faker->text(191),
                 'text' => $faker->text(65000),
@@ -284,6 +295,7 @@ class ReviewControllerTest extends TestCase
         return [
             'id',
             'school_id',
+            'course_id',
             'name',
             'title',
             'text',
@@ -304,6 +316,38 @@ class ReviewControllerTest extends TestCase
                 'status',
                 'image_logo_id',
                 'image_site_id',
+                'created_at',
+                'updated_at',
+                'deleted_at',
+            ],
+            'course' => [
+                'id',
+                'uuid',
+                'metatag_id',
+                'school_id',
+                'image_big_id',
+                'image_middle_id',
+                'image_small_id',
+                'header',
+                'text',
+                'header_morphy',
+                'text_morphy',
+                'link',
+                'url',
+                'language',
+                'rating',
+                'price',
+                'price_discount',
+                'price_recurrent_price',
+                'currency',
+                'online',
+                'employment',
+                'duration',
+                'duration_rate',
+                'duration_unit',
+                'lessons_amount',
+                'modules_amount',
+                'status',
                 'created_at',
                 'updated_at',
                 'deleted_at',

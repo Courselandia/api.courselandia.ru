@@ -99,6 +99,7 @@ class ReviewController extends Controller
         try {
             $action = app(ReviewCreateAction::class);
             $action->school_id = $request->get('school_id');
+            $action->course_id = $request->get('course_id');
             $action->name = $request->get('name');
             $action->title = $request->get('title');
             $action->text = $request->get('text');
@@ -145,6 +146,7 @@ class ReviewController extends Controller
             $action = app(ReviewUpdateAction::class);
             $action->id = $id;
             $action->school_id = $request->get('school_id');
+            $action->course_id = $request->get('course_id');
             $action->name = $request->get('name');
             $action->title = $request->get('title');
             $action->text = $request->get('text');

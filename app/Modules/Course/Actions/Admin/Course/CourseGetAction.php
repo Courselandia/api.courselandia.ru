@@ -80,6 +80,7 @@ class CourseGetAction extends Action
             'skill',
             'teacher',
             'tool',
+            'review',
         ])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,

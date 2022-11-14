@@ -35,6 +35,13 @@ class ReviewCreateAction extends Action
     public ?int $school_id = null;
 
     /**
+     * ID курса.
+     *
+     * @var int|null
+     */
+    public ?int $course_id = null;
+
+    /**
      * Имя автора.
      *
      * @var string|null
@@ -89,6 +96,7 @@ class ReviewCreateAction extends Action
     {
         $reviewEntity = new ReviewEntity();
         $reviewEntity->school_id = $this->school_id;
+        $reviewEntity->course_id = $this->course_id;
         $reviewEntity->name = $this->name;
         $reviewEntity->title = $this->title;
         $reviewEntity->text = $this->text;
@@ -96,7 +104,7 @@ class ReviewCreateAction extends Action
         $reviewEntity->status = $this->status;
 
         $id = $this->review->create($reviewEntity);
-        Cache::tags(['catalog', 'school', 'review'])->flush();
+        Cache::tags(['catalog', 'school', 'review', 'course'])->flush();
 
         $action = app(ReviewGetAction::class);
         $action->id = $id;

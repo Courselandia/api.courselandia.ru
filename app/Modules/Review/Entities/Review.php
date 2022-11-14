@@ -9,6 +9,7 @@
 namespace App\Modules\Review\Entities;
 
 use App\Models\Entity;
+use App\Modules\Course\Entities\Course;
 use App\Modules\Review\Enums\Status;
 use App\Modules\School\Entities\School;
 use Carbon\Carbon;
@@ -26,11 +27,18 @@ class Review extends Entity
     public int|string|null $id = null;
 
     /**
-     * ID профессии.
+     * ID школы.
      *
      * @var int|string|null
      */
     public int|string|null $school_id = null;
+
+    /**
+     * ID курса.
+     *
+     * @var int|string|null
+     */
+    public int|string|null $course_id = null;
 
     /**
      * Имя автора.
@@ -73,6 +81,13 @@ class Review extends Entity
      * @var School|null
      */
     public ?School $school = null;
+
+    /**
+     * Курс.
+     *
+     * @var Course|null
+     */
+    public ?Course $course = null;
 
     /**
      * Дата создания.
