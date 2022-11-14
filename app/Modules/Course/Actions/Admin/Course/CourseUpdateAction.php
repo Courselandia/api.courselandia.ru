@@ -344,15 +344,12 @@ class CourseUpdateAction extends Action
         if ($courseEntity) {
             DB::transaction(function () use ($courseEntity) {
                 $action = app(MetatagSetAction::class);
-                $action->text = $this->text;
+                $action->description = $this->description;
                 $action->keywords = $this->keywords;
                 $action->title = $this->title;
                 $metatag = $action->run();
 
                 $courseEntity->school_id = $this->school_id;
-                $courseEntity->image_small_id = $this->image;
-                $courseEntity->image_middle_id = $this->image;
-                $courseEntity->image_big_id = $this->image;
                 $courseEntity->header = $this->header;
                 $courseEntity->text = $this->text;
                 $courseEntity->link = $this->link;
@@ -372,31 +369,19 @@ class CourseUpdateAction extends Action
                 $courseEntity->status = $this->status;
                 $courseEntity->metatag_id = $metatag->id;
 
+                if ($this->image) {
+                    $courseEntity->image_small_id = $this->image;
+                    $courseEntity->image_middle_id = $this->image;
+                    $courseEntity->image_big_id = $this->image;
+                }
+
                 $id = $this->course->update($this->id, $courseEntity);
-
-                if ($this->directions) {
-                    $this->course->directionSync($id, $this->directions);
-                }
-
-                if ($this->professions) {
-                    $this->course->professionSync($id, $this->professions);
-                }
-
-                if ($this->categories) {
-                    $this->course->categorySync($id, $this->categories);
-                }
-
-                if ($this->skills) {
-                    $this->course->skillSync($id, $this->skills);
-                }
-
-                if ($this->teachers) {
-                    $this->course->teacherSync($id, $this->teachers);
-                }
-
-                if ($this->tools) {
-                    $this->course->toolSync($id, $this->tools);
-                }
+                $this->course->directionSync($id, $this->directions ?: []);
+                $this->course->professionSync($id, $this->professions ?: []);
+                $this->course->categorySync($id, $this->categories ?: []);
+                $this->course->skillSync($id, $this->skills ?: []);
+                $this->course->teacherSync($id, $this->teachers ?: []);
+                $this->course->toolSync($id, $this->tools ?: []);
 
                 $this->level->destroy(collect($courseEntity->levels)->pluck('id')->toArray(), true);
 

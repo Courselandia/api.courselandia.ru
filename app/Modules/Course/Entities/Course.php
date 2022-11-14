@@ -15,6 +15,7 @@ use App\Modules\Course\Enums\Duration;
 use App\Modules\Course\Enums\Language;
 use App\Modules\Course\Enums\Status;
 use App\Modules\Metatag\Entities\Metatag;
+use App\Modules\School\Entities\School;
 use Carbon\Carbon;
 use Illuminate\Http\UploadedFile;
 use App\Modules\Category\Entities\Category;
@@ -246,6 +247,13 @@ class Course extends Entity
      * @var Metatag|null
      */
     public ?Metatag $metatag = null;
+
+    /**
+     * Школа.
+     *
+     * @var School|null
+     */
+    public ?School $school = null;
 
     /**
      * Направления.

@@ -333,7 +333,7 @@ class CourseCreateAction extends Action
     {
         $id = DB::transaction(function () {
             $action = app(MetatagSetAction::class);
-            $action->text = $this->text;
+            $action->description = $this->description;
             $action->keywords = $this->keywords;
             $action->title = $this->title;
             $metatag = $action->run();
@@ -363,30 +363,12 @@ class CourseCreateAction extends Action
             $courseEntity->metatag_id = $metatag->id;
 
             $id = $this->course->create($courseEntity);
-
-            if ($this->directions) {
-                $this->course->directionSync($id, $this->directions);
-            }
-
-            if ($this->professions) {
-                $this->course->professionSync($id, $this->professions);
-            }
-
-            if ($this->categories) {
-                $this->course->categorySync($id, $this->categories);
-            }
-
-            if ($this->skills) {
-                $this->course->skillSync($id, $this->skills);
-            }
-
-            if ($this->teachers) {
-                $this->course->teacherSync($id, $this->teachers);
-            }
-
-            if ($this->tools) {
-                $this->course->toolSync($id, $this->tools);
-            }
+            $this->course->directionSync($id, $this->directions ?: []);
+            $this->course->professionSync($id, $this->professions ?: []);
+            $this->course->categorySync($id, $this->categories ?: []);
+            $this->course->skillSync($id, $this->skills ?: []);
+            $this->course->teacherSync($id, $this->teachers ?: []);
+            $this->course->toolSync($id, $this->tools ?: []);
 
             if ($this->levels) {
                 foreach ($this->levels as $level) {

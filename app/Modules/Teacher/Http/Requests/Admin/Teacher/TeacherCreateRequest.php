@@ -37,7 +37,7 @@ class TeacherCreateRequest extends FormRequest
             'directions.*' => 'exists_soft:directions,id',
             'schools' => 'array',
             'schools.*' => 'exists_soft:schools,id',
-            'rating' => 'float',
+            'rating' => 'nullable|float',
             'status' => 'boolean',
         ];
     }

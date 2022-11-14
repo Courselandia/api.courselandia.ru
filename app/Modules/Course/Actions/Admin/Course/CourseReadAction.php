@@ -82,6 +82,7 @@ class CourseReadAction extends Action
             ->setOffset($this->offset)
             ->setLimit($this->limit)
             ->setRelations([
+                'school',
                 'directions',
                 'professions',
             ]);

@@ -8,6 +8,8 @@
 
 namespace App\Modules\Course\Filters;
 
+use App\Modules\Faq\Filters\FaqFilter;
+use Morph;
 use App\Modules\Course\Enums\Status;
 use App\Modules\Salary\Enums\Level;
 use cijic\phpMorphy\Morphy;
@@ -83,13 +85,14 @@ class CourseFilter extends ModelFilter
      */
     public function header(string $query): CourseFilter
     {
-        $morphy = new Morphy('ru');
-        $query = $morphy->getPseudoRoot($query);
+        $queryMorph = Morph::get($query) ?? $query;
 
-        return $this->whereRaw(
-            'MATCH(header_morphy) AGAINST(? IN BOOLEAN MODE)',
-            [$query]
-        );
+        return $this->where(function ($q) use ($queryMorph, $query) {
+            return $q->whereRaw(
+                'MATCH(header_morphy) AGAINST(? IN BOOLEAN MODE)',
+                [$queryMorph]
+            )->orWhere('header_morphy', 'LIKE', '%' . $query . '%');
+        });
     }
 
     /**
@@ -101,13 +104,14 @@ class CourseFilter extends ModelFilter
      */
     public function text(string $query): CourseFilter
     {
-        $morphy = new Morphy('ru');
-        $query = $morphy->getPseudoRoot($query);
+        $queryMorph = Morph::get($query) ?? $query;
 
-        return $this->whereRaw(
-            'MATCH(text_morphy) AGAINST(? IN BOOLEAN MODE)',
-            [$query]
-        );
+        return $this->where(function ($q) use ($queryMorph, $query) {
+            return $q->whereRaw(
+                'MATCH(text_morphy) AGAINST(? IN BOOLEAN MODE)',
+                [$queryMorph]
+            )->orWhere('text_morphy', 'LIKE', '%' . $query . '%');
+        });
     }
 
     /**
@@ -119,13 +123,16 @@ class CourseFilter extends ModelFilter
      */
     public function search(string $query): CourseFilter
     {
-        $morphy = new Morphy('ru');
-        $query = $morphy->getPseudoRoot($query);
+        $queryMorph = Morph::get($query) ?? $query;
 
-        return $this->whereRaw(
-            'MATCH(header_morphy, text_morphy) AGAINST(? IN BOOLEAN MODE)',
-            [$query]
-        );
+        return $this->where(function ($q) use ($queryMorph, $query) {
+            return $q->whereRaw(
+                'MATCH(header_morphy, text_morphy) AGAINST(? IN BOOLEAN MODE)',
+                [$queryMorph]
+            )
+                ->orWhere('header_morphy', 'LIKE', '%' . $query . '%')
+                ->orWhere('text_morphy', 'LIKE', '%' . $query . '%');
+        });
     }
 
     /**
@@ -149,7 +156,7 @@ class CourseFilter extends ModelFilter
      */
     public function price(array $price): CourseFilter
     {
-        return $this->whereBetween('courses.rating', $price);
+        return $this->whereBetween('courses.price', $price);
     }
 
     /**
@@ -198,6 +205,20 @@ class CourseFilter extends ModelFilter
     public function status(array|Status|string $statuses): CourseFilter
     {
         return $this->whereIn('courses.status', is_array($statuses) ? $statuses : [$statuses]);
+    }
+
+    /**
+     * Поиск по школам.
+     *
+     * @param array|int|string $schoolIds ID's школ.
+     *
+     * @return CourseFilter Правила поиска.
+     */
+    public function schoolName(array|int|string $schoolIds): CourseFilter
+    {
+        return $this->related('school', function($query) use ($schoolIds) {
+            return $query->whereIn('schools.id', is_array($schoolIds) ? $schoolIds : [$schoolIds]);
+        });
     }
 
     /**

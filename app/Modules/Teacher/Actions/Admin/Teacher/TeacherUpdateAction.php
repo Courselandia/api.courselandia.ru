@@ -159,8 +159,15 @@ class TeacherUpdateAction extends Action
             }
 
             $this->teacher->update($this->id, $teacherEntity);
-            $this->teacher->directionSync($this->id, $this->directions);
-            $this->teacher->schoolSync($this->id, $this->schools);
+
+            if ($this->directions) {
+                $this->teacher->directionSync($this->id, $this->directions);
+            }
+
+            if ($this->schools) {
+                $this->teacher->schoolSync($this->id, $this->schools);
+            }
+
             Cache::tags(['catalog', 'teacher', 'direction', 'school'])->flush();
 
             $action = app(TeacherGetAction::class);

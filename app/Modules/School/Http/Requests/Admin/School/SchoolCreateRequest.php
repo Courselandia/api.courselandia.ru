@@ -31,7 +31,7 @@ class SchoolCreateRequest extends FormRequest
         return [
             'imageLogo' => 'nullable|media:jpg,png,gif,webp,svg',
             'imageSite' => 'nullable|media:jpg,png,gif,webp,svg',
-            'rating' => 'float',
+            'rating' => 'nullable|float',
             'status' => 'boolean',
         ];
     }

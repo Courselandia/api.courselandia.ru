@@ -21,6 +21,11 @@ enum Language: string implements EnumLabel
     case RU = 'ru';
 
     /**
+     * Английский.
+     */
+    case EN = 'en';
+
+    /**
      * Получение лейбл перечисления.
      *
      * @return string|int Вернет лейбл перечисления.
@@ -29,6 +34,7 @@ enum Language: string implements EnumLabel
     {
         return match ($this) {
             self::RU => 'Русский',
+            self::EN => 'Английский',
         };
     }
 }

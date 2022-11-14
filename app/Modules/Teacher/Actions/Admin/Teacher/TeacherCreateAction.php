@@ -145,8 +145,9 @@ class TeacherCreateAction extends Action
         $teacherEntity->metatag_id = $metatag->id;
 
         $id = $this->teacher->create($teacherEntity);
-        $this->teacher->directionSync($id, $this->directions);
-        $this->teacher->schoolSync($id, $this->schools);
+        $this->teacher->directionSync($id, $this->directions ?: []);
+        $this->teacher->schoolSync($id, $this->schools ?: []);
+
         Cache::tags(['catalog', 'teacher', 'direction', 'school'])->flush();
 
         $action = app(TeacherGetAction::class);

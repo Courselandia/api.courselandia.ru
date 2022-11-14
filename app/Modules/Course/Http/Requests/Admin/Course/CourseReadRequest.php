@@ -10,7 +10,7 @@ namespace App\Modules\Course\Http\Requests\Admin\Course;
 
 use App\Models\Enums\EnumList;
 use App\Models\FormRequest;
-use App\Modules\Course\Enums\Duration;
+use App\Modules\Course\Enums\Status;
 use JetBrains\PhpStorm\ArrayShape;
 use Schema;
 
@@ -37,7 +37,8 @@ class CourseReadRequest extends FormRequest
         'filters.duration.*' => 'string',
     ])] public function rules(): array
     {
-        $column = Schema::getColumnListing('categories');
+        $column = Schema::getColumnListing('courses');
+        $column[] = 'school-name';
         $column[] = 'directions-name';
         $column[] = 'professions-name';
         $column[] = 'categories-name';
@@ -52,9 +53,9 @@ class CourseReadRequest extends FormRequest
             'start' => 'integer|digits_between:0,20',
             'limit' => 'integer|digits_between:0,20',
             'filters' => 'array|filters:' . $column . '|filter_date_range:published_at',
-            'filters.status' => 'in:' . implode(',', EnumList::getValues(Duration::class)),
-            'filters.rating' => 'float',
-            'filters.price.*' => 'float',
+            'filters.status' => 'in:' . implode(',', EnumList::getValues(Status::class)),
+            'filters.rating' => 'nullable|float',
+            'filters.price.*' => 'nullable|float',
             'filters.online' => 'boolean',
             'filters.employment' => 'boolean',
             'filters.duration.*' => 'integer',

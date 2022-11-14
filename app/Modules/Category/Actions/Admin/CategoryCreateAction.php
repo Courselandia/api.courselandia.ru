@@ -136,8 +136,8 @@ class CategoryCreateAction extends Action
         $categoryEntity->metatag_id = $metatag->id;
 
         $id = $this->category->create($categoryEntity);
-        $this->category->directionSync($id, $this->directions);
-        $this->category->professionSync($id, $this->professions);
+        $this->category->directionSync($id, $this->directions ?: []);
+        $this->category->professionSync($id, $this->professions ?: []);
 
         Cache::tags(['catalog', 'category', 'direction', 'profession'])->flush();
 

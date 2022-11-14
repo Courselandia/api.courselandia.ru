@@ -36,7 +36,7 @@ class TeacherUpdateRequest extends TeacherCreateRequest
             'directions.*' => 'integer',
             'schools' => 'array',
             'schools.*' => 'integer',
-            'rating' => 'float',
+            'rating' => 'nullable|float',
             'status' => 'boolean',
         ];
     }

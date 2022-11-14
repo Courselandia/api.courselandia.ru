@@ -33,7 +33,7 @@ class CreateTableCourses extends Migration
             $table->string('link', 191)->index('link');
             $table->string('url', 191);
             $table->string('language', 20)->nullable();
-            $table->float('rating', 3)->unsigned()->default(1);
+            $table->float('rating', 3)->unsigned()->nullable();
 
             $table->float('price')->unsigned()->nullable()->index('price');
             $table->float('price_discount')->unsigned()->nullable()->index('price_discount');
