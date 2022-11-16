@@ -41,7 +41,7 @@ class PublicationControllerTest extends TestCase
             [
                 'year' => $date->year,
                 'limit' => 10,
-                'page' => 1,
+                'offset' => 0,
             ],
             [
                 'Authorization' => 'Bearer '.$this->getAdminToken()
@@ -51,7 +51,6 @@ class PublicationControllerTest extends TestCase
                 'publications' => [
                     '*' => $this->getPublicationStructure()
                 ],
-                'page',
                 'year',
                 'years' => [
                     '*' => [

@@ -30,11 +30,11 @@ class PublicationRead extends Entity
     public ?int $limit = null;
 
     /**
-     * Страница.
+     * Отступ.
      *
      * @var int|null
      */
-    public ?int $page = null;
+    public ?int $offset = null;
 
     /**
      * ID публикации.

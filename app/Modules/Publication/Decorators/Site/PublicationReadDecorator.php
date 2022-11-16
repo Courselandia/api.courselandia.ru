@@ -34,11 +34,11 @@ class PublicationReadDecorator extends Decorator
     public ?int $limit = null;
 
     /**
-     * Страница.
+     * Отступ.
      *
      * @var int|null
      */
-    public ?int $page = null;
+    public ?int $offset = null;
 
     /**
      * ID публикации.
@@ -64,7 +64,7 @@ class PublicationReadDecorator extends Decorator
         $publicationRead = new PublicationRead();
         $publicationRead->year = $this->year;
         $publicationRead->limit = $this->limit;
-        $publicationRead->page = $this->page;
+        $publicationRead->offset = $this->offset;
         $publicationRead->id = $this->id;
         $publicationRead->link = $this->link;
 

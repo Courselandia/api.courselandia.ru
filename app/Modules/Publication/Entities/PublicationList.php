@@ -37,13 +37,6 @@ class PublicationList extends Entity
     public ?array $publications = null;
 
     /**
-     * Страница.
-     *
-     * @var int|null
-     */
-    public ?int $page = null;
-
-    /**
      * Год.
      *
      * @var int|null

@@ -35,7 +35,6 @@ class PublicationData implements Pipe
         } else {
             $publicationList = new PublicationList();
             $publicationList->publications = $entity->publications;
-            $publicationList->page = $entity->page;
             $publicationList->year = $entity->year;
             $publicationList->years = $entity->years;
             $publicationList->total = $entity->total;

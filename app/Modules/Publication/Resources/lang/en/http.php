@@ -29,7 +29,7 @@ return [
             'publicationReadRequest' => [
                 'year' => 'Year',
                 'limit' => 'Limit',
-                'page' => 'Page',
+                'offset' => 'Offset',
                 'path' => 'Path',
             ],
             'publicationGetRequest' => [

@@ -37,11 +37,11 @@ class PublicationReadAction extends Action
     public ?int $limit = null;
 
     /**
-     * Страница.
+     * Отступ.
      *
      * @var int|null
      */
-    public ?int $page = null;
+    public ?int $offset = null;
 
     /**
      * ID публикации.
@@ -67,7 +67,7 @@ class PublicationReadAction extends Action
         $decorator = app(PublicationReadDecorator::class);
         $decorator->year = $this->year;
         $decorator->limit = $this->limit;
-        $decorator->page = $this->page;
+        $decorator->offset = $this->offset;
         $decorator->id = $this->id;
         $decorator->link = $this->link;
 

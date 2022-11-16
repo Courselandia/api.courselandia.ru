@@ -29,7 +29,7 @@ return [
             'publicationReadRequest' => [
                 'year' => 'Год',
                 'limit' => 'Лимит',
-                'page' => 'Страница',
+                'offset' => 'Отступ',
                 'path' => 'Путь',
             ],
             'publicationGetRequest' => [

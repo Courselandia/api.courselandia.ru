@@ -31,7 +31,8 @@ class PublicationController extends Controller
         $action = app(PublicationReadAction::class);
         $action->year = $request->get('year');
         $action->limit = $request->get('limit');
-        $action->page = $request->get('page');
+        $action->offset = $request->get('offset');
+        $action->offset = $request->get('offset');
 
         $data = $action->run();
 

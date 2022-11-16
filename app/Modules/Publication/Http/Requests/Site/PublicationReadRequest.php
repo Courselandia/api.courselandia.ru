@@ -24,14 +24,14 @@ class PublicationReadRequest extends FormRequest
     #[ArrayShape([
         'year' => 'string',
         'limit' => 'string',
-        'page' => 'string',
+        'offset' => 'string',
         'path' => 'string'
     ])] public function rules(): array
     {
         return [
             'year' => 'integer|digits_between:0,20',
             'limit' => 'integer|digits_between:0,20',
-            'page' => 'integer|digits_between:0,20',
+            'offset' => 'integer|digits_between:0,20',
             'path' => 'max:500',
         ];
     }
@@ -44,14 +44,14 @@ class PublicationReadRequest extends FormRequest
     #[ArrayShape([
         'year' => 'string',
         'limit' => 'string',
-        'page' => 'string',
+        'offset' => 'string',
         'path' => 'string'
     ])] public function attributes(): array
     {
         return [
             'year' => trans('publication::http.requests.site.publicationReadRequest.year'),
             'limit' => trans('publication::http.requests.site.publicationReadRequest.limit'),
-            'page' => trans('publication::http.requests.site.publicationReadRequest.page'),
+            'offset' => trans('publication::http.requests.site.publicationReadRequest.offset'),
             'path' => trans('publication::http.requests.site.publicationReadRequest.path'),
         ];
     }
