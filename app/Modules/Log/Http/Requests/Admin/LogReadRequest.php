@@ -23,7 +23,7 @@ class LogReadRequest extends FormRequest
      */
     #[ArrayShape([
         'sorts' => 'string',
-        'start' => 'string',
+        'offset' => 'string',
         'limit' => 'string',
         'filters' => 'string'
     ])] public function rules(): array
@@ -54,7 +54,7 @@ class LogReadRequest extends FormRequest
         return [
             'sorts' => 'array|sorts:'.$columnsSorts,
             'filters' => 'array|filters:'.$columnFilters.'|filter_date:datetime',
-            'start' => 'integer|digits_between:0,20',
+            'offset' => 'integer|digits_between:0,20',
             'limit' => 'integer|digits_between:0,20'
         ];
     }
@@ -66,14 +66,14 @@ class LogReadRequest extends FormRequest
      */
     #[ArrayShape([
         'sorts' => 'string',
-        'start' => 'string',
+        'offset' => 'string',
         'limit' => 'string',
         'filters' => 'string'
     ])] public function attributes(): array
     {
         return [
             'sorts' => trans('log::http.requests.admin.logReadRequest.sorts'),
-            'start' => trans('log::http.requests.admin.logReadRequest.start'),
+            'offset' => trans('log::http.requests.admin.logReadRequest.offset'),
             'limit' => trans('log::http.requests.admin.logReadRequest.limit'),
             'filters' => trans('log::http.requests.admin.logReadRequest.filters'),
         ];

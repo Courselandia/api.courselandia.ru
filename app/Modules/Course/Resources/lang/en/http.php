@@ -5,7 +5,7 @@ return [
         'admin' => [
             'courseReadRequest' => [
                 'sorts' => 'Sorts',
-                'start' => 'Start',
+                'offset' => 'Offset',
                 'limit' => 'Limit',
                 'filters' => 'Filters',
                 'status' => 'Status',

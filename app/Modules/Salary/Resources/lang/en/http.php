@@ -5,7 +5,7 @@ return [
         'admin' => [
             'salaryReadRequest' => [
                 'sorts' => 'Sorts',
-                'start' => 'Start',
+                'offset' => 'Offset',
                 'limit' => 'Limit',
                 'filters' => 'Filters',
                 'level' => 'Level',

@@ -26,7 +26,7 @@ class CourseReadRequest extends FormRequest
      */
     #[ArrayShape([
         'sorts' => 'string',
-        'start' => 'string',
+        'offset' => 'string',
         'limit' => 'string',
         'filters' => 'string',
         'filters.status' => 'string',
@@ -50,7 +50,7 @@ class CourseReadRequest extends FormRequest
 
         return [
             'sorts' => 'array|sorts:' . $column,
-            'start' => 'integer|digits_between:0,20',
+            'offset' => 'integer|digits_between:0,20',
             'limit' => 'integer|digits_between:0,20',
             'filters' => 'array|filters:' . $column . '|filter_date_range:published_at',
             'filters.status' => 'in:' . implode(',', EnumList::getValues(Status::class)),
@@ -69,7 +69,7 @@ class CourseReadRequest extends FormRequest
      */
     #[ArrayShape([
         'sorts' => 'string',
-        'start' => 'string',
+        'offset' => 'string',
         'limit' => 'string',
         'filters' => 'string',
         'filters.status' => 'string',
@@ -82,7 +82,7 @@ class CourseReadRequest extends FormRequest
     {
         return [
             'sorts' => trans('course::http.requests.admin.courseReadRequest.sorts'),
-            'start' => trans('course::http.requests.admin.courseReadRequest.start'),
+            'offset' => trans('course::http.requests.admin.courseReadRequest.offset'),
             'limit' => trans('course::http.requests.admin.courseReadRequest.limit'),
             'filters' => trans('course::http.requests.admin.courseReadRequest.filters'),
             'filters.status' => trans('course::http.requests.admin.courseReadRequest.status'),

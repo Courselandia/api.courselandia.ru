@@ -5,7 +5,7 @@ return [
         'admin' => [
             'directionReadRequest' => [
                 'sorts' => 'Сортировка',
-                'start' => 'Начало',
+                'offset' => 'Отступ',
                 'limit' => 'Лимит',
                 'filters' => 'Фильтр',
                 'status' => 'Статус',

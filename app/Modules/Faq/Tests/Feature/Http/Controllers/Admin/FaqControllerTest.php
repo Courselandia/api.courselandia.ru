@@ -35,7 +35,7 @@ class FaqControllerTest extends TestCase
             'GET',
             'api/private/admin/faq/read',
             [
-                'start' => 0,
+                'offset' => 0,
                 'limit' => 10,
                 'sorts' => [
                     'question' => 'ASC',

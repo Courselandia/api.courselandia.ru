@@ -5,7 +5,7 @@
 @endsection
 
 @section('content')
-    You have been invited to start your new project.
+    You have been invited to offset your new project.
 @endsection
 
 @section('button')

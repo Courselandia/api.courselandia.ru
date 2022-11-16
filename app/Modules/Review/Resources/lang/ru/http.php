@@ -5,7 +5,7 @@ return [
         'admin' => [
             'reviewReadRequest' => [
                 'sorts' => 'Сортировка',
-                'start' => 'Начало',
+                'offset' => 'Отступ',
                 'limit' => 'Лимит',
                 'filters' => 'Фильтр',
                 'rating' => 'Рейтинг',
@@ -23,7 +23,7 @@ return [
         'site' => [
             'reviewReadRequest' => [
                 'sorts' => 'Сортировка',
-                'start' => 'Начало',
+                'offset' => 'Отступ',
                 'limit' => 'Лимит',
                 'schoolId' => 'ID школы',
             ],

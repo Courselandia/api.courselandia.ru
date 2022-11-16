@@ -30,7 +30,7 @@ class ReviewControllerTest extends TestCase
             'GET',
             'api/private/site/review/read',
             [
-                'start' => 0,
+                'offset' => 0,
                 'limit' => 10,
                 'school_id' => $review->school_id
             ],

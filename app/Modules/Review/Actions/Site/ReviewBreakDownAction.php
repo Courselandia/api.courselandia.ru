@@ -8,6 +8,7 @@
 
 namespace App\Modules\Review\Actions\Site;
 
+use App\Modules\Review\Enums\Status;
 use DB;
 use Util;
 use Cache;
@@ -59,12 +60,12 @@ class ReviewBreakDownAction extends Action
     {
         $query = new RepositoryQueryBuilder();
         $query->addCondition(new RepositoryCondition('school_id', $this->school_id))
+            ->addCondition(new RepositoryCondition('status', Status::ACTIVE->value))
             ->setSelects([
                 DB::raw('ROUND(rating) as rating'),
                 DB::raw('COUNT(rating) as amount'),
             ])
-            ->addGroup('rating')
-            ->setActive(true);
+            ->addGroup('rating');
 
         $cacheKey = Util::getKey('review', 'creakDown', $query);
 

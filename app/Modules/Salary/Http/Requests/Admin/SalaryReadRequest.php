@@ -26,7 +26,7 @@ class SalaryReadRequest extends FormRequest
      */
     #[ArrayShape([
         'sorts' => 'string',
-        'start' => 'string',
+        'offset' => 'string',
         'limit' => 'string',
         'filters' => 'string',
         'filters.level' => 'string',
@@ -41,7 +41,7 @@ class SalaryReadRequest extends FormRequest
 
         return [
             'sorts' => 'array|sorts:' . $column,
-            'start' => 'integer|digits_between:0,20',
+            'offset' => 'integer|digits_between:0,20',
             'limit' => 'integer|digits_between:0,20',
             'filters' => 'array|filters:' . $column . '|filter_date_range:published_at',
             'filters.level' => 'in:' . implode(',', EnumList::getValues(Level::class)),
@@ -58,7 +58,7 @@ class SalaryReadRequest extends FormRequest
      */
     #[ArrayShape([
         'sorts' => 'string',
-        'start' => 'string',
+        'offset' => 'string',
         'limit' => 'string',
         'filters' => 'string',
         'filters.level' => 'string',
@@ -69,7 +69,7 @@ class SalaryReadRequest extends FormRequest
     {
         return [
             'sorts' => trans('salary::http.requests.admin.salaryReadRequest.sorts'),
-            'start' => trans('salary::http.requests.admin.salaryReadRequest.start'),
+            'offset' => trans('salary::http.requests.admin.salaryReadRequest.offset'),
             'limit' => trans('salary::http.requests.admin.salaryReadRequest.limit'),
             'filters' => trans('salary::http.requests.admin.salaryReadRequest.filters'),
             'filters.level' => trans('salary::http.requests.admin.salaryReadRequest.level'),

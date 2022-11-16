@@ -24,7 +24,7 @@ class SkillReadRequest extends FormRequest
      */
     #[ArrayShape([
         'sorts' => 'string',
-        'start' => 'string',
+        'offset' => 'string',
         'limit' => 'string',
         'filters' => 'string',
         'filters.status' => 'string',
@@ -35,7 +35,7 @@ class SkillReadRequest extends FormRequest
 
         return [
             'sorts' => 'array|sorts:'.$column,
-            'start' => 'integer|digits_between:0,20',
+            'offset' => 'integer|digits_between:0,20',
             'limit' => 'integer|digits_between:0,20',
             'filters' => 'array|filters:'.$column.'|filter_date_range:published_at',
             'filters.status' => 'boolean',
@@ -49,7 +49,7 @@ class SkillReadRequest extends FormRequest
      */
     #[ArrayShape([
         'sorts' => 'string',
-        'start' => 'string',
+        'offset' => 'string',
         'limit' => 'string',
         'filters' => 'string',
         'filters.status' => 'string',
@@ -57,7 +57,7 @@ class SkillReadRequest extends FormRequest
     {
         return [
             'sorts' => trans('skill::http.requests.admin.skillReadRequest.sorts'),
-            'start' => trans('skill::http.requests.admin.skillReadRequest.start'),
+            'offset' => trans('skill::http.requests.admin.skillReadRequest.offset'),
             'limit' => trans('skill::http.requests.admin.skillReadRequest.limit'),
             'filters' => trans('skill::http.requests.admin.skillReadRequest.filters'),
             'filters.status' => trans('category::http.requests.admin.categoryReadRequest.status'),

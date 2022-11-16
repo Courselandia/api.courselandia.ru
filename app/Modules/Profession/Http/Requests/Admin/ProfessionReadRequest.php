@@ -24,7 +24,7 @@ class ProfessionReadRequest extends FormRequest
      */
     #[ArrayShape([
         'sorts' => 'string',
-        'start' => 'string',
+        'offset' => 'string',
         'limit' => 'string',
         'filters' => 'string',
         'filters.status' => 'string',
@@ -35,7 +35,7 @@ class ProfessionReadRequest extends FormRequest
 
         return [
             'sorts' => 'array|sorts:' . $column,
-            'start' => 'integer|digits_between:0,20',
+            'offset' => 'integer|digits_between:0,20',
             'limit' => 'integer|digits_between:0,20',
             'filters' => 'array|filters:' . $column . '|filter_date_range:published_at',
             'filters.status' => 'boolean',
@@ -49,7 +49,7 @@ class ProfessionReadRequest extends FormRequest
      */
     #[ArrayShape([
         'sorts' => 'string',
-        'start' => 'string',
+        'offset' => 'string',
         'limit' => 'string',
         'filters' => 'string',
         'filters.status' => 'string',
@@ -57,7 +57,7 @@ class ProfessionReadRequest extends FormRequest
     {
         return [
             'sorts' => trans('profession::http.requests.admin.professionReadRequest.sorts'),
-            'start' => trans('profession::http.requests.admin.professionReadRequest.start'),
+            'offset' => trans('profession::http.requests.admin.professionReadRequest.offset'),
             'limit' => trans('profession::http.requests.admin.professionReadRequest.limit'),
             'filters' => trans('profession::http.requests.admin.professionReadRequest.filters'),
             'filters.status' => trans('category::http.requests.admin.categoryReadRequest.status'),

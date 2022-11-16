@@ -24,7 +24,7 @@ class PublicationReadRequest extends FormRequest
      */
     #[ArrayShape([
         'sorts' => 'string',
-        'start' => 'string',
+        'offset' => 'string',
         'limit' => 'string',
         'filters' => 'string',
         'filters.status' => 'string',
@@ -46,7 +46,7 @@ class PublicationReadRequest extends FormRequest
 
         return [
             'sorts' => 'array|sorts:' . $columnSorts,
-            'start' => 'integer|digits_between:0,20',
+            'offset' => 'integer|digits_between:0,20',
             'limit' => 'integer|digits_between:0,20',
             'filters' => 'array|filters:' . $columnFilters . '|filter_date_range:published_at',
             'filters.status' => 'boolean',
@@ -60,7 +60,7 @@ class PublicationReadRequest extends FormRequest
      */
     #[ArrayShape([
         'sorts' => 'string',
-        'start' => 'string',
+        'offset' => 'string',
         'limit' => 'string',
         'filters' => 'string',
         'filters.status' => 'string',
@@ -68,7 +68,7 @@ class PublicationReadRequest extends FormRequest
     {
         return [
             'sorts' => trans('publication::http.requests.admin.publicationReadRequest.sorts'),
-            'start' => trans('publication::http.requests.admin.publicationReadRequest.start'),
+            'offset' => trans('publication::http.requests.admin.publicationReadRequest.offset'),
             'limit' => trans('publication::http.requests.admin.publicationReadRequest.limit'),
             'filters' => trans('publication::http.requests.admin.publicationReadRequest.filters'),
             'filters.status' => trans('category::http.requests.admin.categoryReadRequest.status'),

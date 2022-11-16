@@ -30,7 +30,7 @@ class SchoolControllerTest extends TestCase
             'GET',
             'api/private/site/school/read',
             [
-                'start' => 0,
+                'offset' => 0,
                 'limit' => 10,
                 'sorts' => [
                     'name' => 'ASC',

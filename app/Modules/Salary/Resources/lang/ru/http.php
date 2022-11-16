@@ -5,7 +5,7 @@ return [
         'admin' => [
             'salaryReadRequest' => [
                 'sorts' => 'Сортировка',
-                'start' => 'Начало',
+                'offset' => 'Отступ',
                 'limit' => 'Лимит',
                 'filters' => 'Фильтр',
                 'level' => 'Уровень',

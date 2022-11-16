@@ -14,6 +14,7 @@ use App\Models\Enums\SortDirection;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Rep\RepositoryCondition;
 use App\Models\Rep\RepositoryQueryBuilder;
+use App\Modules\Review\Enums\Status;
 use App\Modules\Review\Repositories\Review;
 use Cache;
 use JetBrains\PhpStorm\ArrayShape;
@@ -79,13 +80,13 @@ class ReviewReadAction extends Action
     {
         $query = new RepositoryQueryBuilder();
         $query->addCondition(new RepositoryCondition('school_id', $this->school_id))
+            ->addCondition(new RepositoryCondition('status', Status::ACTIVE->value))
             ->setSorts($this->sorts)
             ->setOffset($this->offset)
             ->setLimit($this->limit)
             ->setRelations([
                 'school',
-            ])
-            ->setActive(true);
+            ]);
 
         $cacheKey = Util::getKey('review', 'read', 'count', $query);
 

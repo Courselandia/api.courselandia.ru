@@ -24,7 +24,7 @@ class SchoolReadRequest extends FormRequest
      */
     #[ArrayShape([
         'sorts' => 'string',
-        'start' => 'string',
+        'offset' => 'string',
         'limit' => 'string',
         'filters' => 'string',
         'filters.status' => 'string',
@@ -42,7 +42,7 @@ class SchoolReadRequest extends FormRequest
 
         return [
             'sorts' => 'array|sorts:' . $columnSorts,
-            'start' => 'integer|digits_between:0,20',
+            'offset' => 'integer|digits_between:0,20',
             'limit' => 'integer|digits_between:0,20',
             'filters' => 'array|filters:' . $columnFilters,
             'filters.status' => 'boolean',
@@ -56,7 +56,7 @@ class SchoolReadRequest extends FormRequest
      */
     #[ArrayShape([
         'sorts' => 'string',
-        'start' => 'string',
+        'offset' => 'string',
         'limit' => 'string',
         'filters' => 'string',
         'filters.status' => 'string',
@@ -64,7 +64,7 @@ class SchoolReadRequest extends FormRequest
     {
         return [
             'sorts' => trans('school::http.requests.admin.schoolReadRequest.sorts'),
-            'start' => trans('school::http.requests.admin.schoolReadRequest.start'),
+            'offset' => trans('school::http.requests.admin.schoolReadRequest.offset'),
             'limit' => trans('school::http.requests.admin.schoolReadRequest.limit'),
             'filters' => trans('school::http.requests.admin.schoolReadRequest.filters'),
             'filters.status' => trans('category::http.requests.admin.categoryReadRequest.status'),

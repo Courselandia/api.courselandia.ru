@@ -5,7 +5,7 @@ return [
         'admin' => [
             'professionReadRequest' => [
                 'sorts' => 'Сортировка',
-                'start' => 'Начало',
+                'offset' => 'Отступ',
                 'limit' => 'Лимит',
                 'filters' => 'Фильтр',
                 'status' => 'Статус',

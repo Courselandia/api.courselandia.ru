@@ -33,7 +33,7 @@ class LogControllerTest extends TestCase
             'GET',
             'api/private/admin/log/read',
             [
-                'start' => 0,
+                'offset' => 0,
                 'limit' => 10,
                 'sorts' => [
                     'created_at' => 'DESC',
@@ -67,7 +67,7 @@ class LogControllerTest extends TestCase
             'GET',
             'api/private/admin/log/read',
             [
-                'start' => 0,
+                'offset' => 0,
                 'limit' => 1,
                 'sorts' => [
                     'created_at' => 'DESC',

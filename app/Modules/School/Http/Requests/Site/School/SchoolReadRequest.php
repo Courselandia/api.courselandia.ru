@@ -24,7 +24,7 @@ class SchoolReadRequest extends FormRequest
      */
     #[ArrayShape([
         'sorts' => 'string',
-        'start' => 'string',
+        'offset' => 'string',
         'limit' => 'string',
     ])] public function rules(): array
     {
@@ -33,7 +33,7 @@ class SchoolReadRequest extends FormRequest
 
         return [
             'sorts' => 'array|sorts:' . $columnSorts,
-            'start' => 'integer|digits_between:0,20',
+            'offset' => 'integer|digits_between:0,20',
             'limit' => 'integer|digits_between:0,20',
         ];
     }
@@ -45,13 +45,13 @@ class SchoolReadRequest extends FormRequest
      */
     #[ArrayShape([
         'sorts' => 'string',
-        'start' => 'string',
+        'offset' => 'string',
         'limit' => 'string',
     ])] public function attributes(): array
     {
         return [
             'sorts' => trans('school::http.requests.site.schoolReadRequest.sorts'),
-            'start' => trans('school::http.requests.site.schoolReadRequest.start'),
+            'offset' => trans('school::http.requests.site.schoolReadRequest.offset'),
             'limit' => trans('school::http.requests.site.schoolReadRequest.limit'),
         ];
     }

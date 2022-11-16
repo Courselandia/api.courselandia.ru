@@ -24,7 +24,7 @@ class ReviewReadRequest extends FormRequest
      */
     #[ArrayShape([
         'sorts' => 'string',
-        'start' => 'string',
+        'offset' => 'string',
         'limit' => 'string',
         'filters' => 'string',
         'filters.rating' => 'string',
@@ -38,7 +38,7 @@ class ReviewReadRequest extends FormRequest
 
         return [
             'sorts' => 'array|sorts:' . $column,
-            'start' => 'integer|digits_between:0,20',
+            'offset' => 'integer|digits_between:0,20',
             'limit' => 'integer|digits_between:0,20',
             'filters' => 'array|filters:' . $column . '|filter_date_range:published_at',
             'filters.rating' => 'integer',
@@ -53,7 +53,7 @@ class ReviewReadRequest extends FormRequest
      */
     #[ArrayShape([
         'sorts' => 'string',
-        'start' => 'string',
+        'offset' => 'string',
         'limit' => 'string',
         'filters' => 'string',
         'filters.rating' => 'string',
@@ -62,7 +62,7 @@ class ReviewReadRequest extends FormRequest
     {
         return [
             'sorts' => trans('review::http.requests.admin.reviewReadRequest.sorts'),
-            'start' => trans('review::http.requests.admin.reviewReadRequest.start'),
+            'offset' => trans('review::http.requests.admin.reviewReadRequest.offset'),
             'limit' => trans('review::http.requests.admin.reviewReadRequest.limit'),
             'filters' => trans('review::http.requests.admin.reviewReadRequest.filters'),
             'filters.rating' => trans('review::http.requests.admin.reviewReadRequest.rating'),

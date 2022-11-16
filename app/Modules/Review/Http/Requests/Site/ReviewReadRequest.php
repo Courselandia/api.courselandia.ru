@@ -24,7 +24,7 @@ class ReviewReadRequest extends FormRequest
      */
     #[ArrayShape([
         'sorts' => 'string',
-        'start' => 'string',
+        'offset' => 'string',
         'limit' => 'string',
         'school_id' => 'string',
     ])] public function rules(): array
@@ -34,7 +34,7 @@ class ReviewReadRequest extends FormRequest
 
         return [
             'sorts' => 'array|sorts:' . $column,
-            'start' => 'integer|digits_between:0,20',
+            'offset' => 'integer|digits_between:0,20',
             'limit' => 'integer|digits_between:0,20',
             'school_id' => 'required|exists_soft:schools,id',
         ];
@@ -47,14 +47,14 @@ class ReviewReadRequest extends FormRequest
      */
     #[ArrayShape([
         'sorts' => 'string',
-        'start' => 'string',
+        'offset' => 'string',
         'limit' => 'string',
         'school_id' => 'string',
     ])] public function attributes(): array
     {
         return [
             'sorts' => trans('review::http.requests.site.reviewReadRequest.sorts'),
-            'start' => trans('review::http.requests.site.reviewReadRequest.start'),
+            'offset' => trans('review::http.requests.site.reviewReadRequest.offset'),
             'limit' => trans('review::http.requests.site.reviewReadRequest.limit'),
             'school_id' => trans('review::http.requests.site.reviewReadRequest.schoolId'),
         ];

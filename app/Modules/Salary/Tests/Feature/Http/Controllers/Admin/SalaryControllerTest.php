@@ -36,7 +36,7 @@ class SalaryControllerTest extends TestCase
             'GET',
             'api/private/admin/salary/read',
             [
-                'start' => 0,
+                'offset' => 0,
                 'limit' => 10,
                 'sorts' => [
                     'level' => 'DESC',

@@ -22,7 +22,7 @@ class FeedbackReadRequest extends FormRequest
      *
      * @return array Массив правил проверки.
      */
-    #[ArrayShape(['sorts' => 'string', 'start' => 'string', 'limit' => 'string', 'filters' => 'string'])] public function rules(): array
+    #[ArrayShape(['sorts' => 'string', 'offset' => 'string', 'limit' => 'string', 'filters' => 'string'])] public function rules(): array
     {
         $columnSorts = Schema::getColumnListing('feedbacks');
         $columnSorts = implode(',', $columnSorts);
@@ -39,7 +39,7 @@ class FeedbackReadRequest extends FormRequest
 
         return [
             'sorts' => 'array|sorts:'.$columnSorts,
-            'start' => 'integer|digits_between:0,20',
+            'offset' => 'integer|digits_between:0,20',
             'limit' => 'integer|digits_between:0,20',
             'filters' => 'array|filters:'.$columnFilters.'|filter_date_range:created_at',
         ];
@@ -50,11 +50,11 @@ class FeedbackReadRequest extends FormRequest
      *
      * @return array Массив атрибутов.
      */
-    #[ArrayShape(['sorts' => 'string', 'start' => 'string', 'limit' => 'string', 'filters' => 'string'])] public function attributes(): array
+    #[ArrayShape(['sorts' => 'string', 'offset' => 'string', 'limit' => 'string', 'filters' => 'string'])] public function attributes(): array
     {
         return [
             'sorts' => trans('feedback::http.requests.admin.feedbackReadRequest.sorts'),
-            'start' => trans('feedback::http.requests.admin.feedbackReadRequest.start'),
+            'offset' => trans('feedback::http.requests.admin.feedbackReadRequest.offset'),
             'limit' => trans('feedback::http.requests.admin.feedbackReadRequest.limit'),
             'filters' => trans('feedback::http.requests.admin.feedbackReadRequest.filters')
         ];

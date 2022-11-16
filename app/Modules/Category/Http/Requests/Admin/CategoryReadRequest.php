@@ -24,7 +24,7 @@ class CategoryReadRequest extends FormRequest
      */
     #[ArrayShape([
         'sorts' => 'string',
-        'start' => 'string',
+        'offset' => 'string',
         'limit' => 'string',
         'filters' => 'string',
         'filters.status' => 'string',
@@ -35,7 +35,7 @@ class CategoryReadRequest extends FormRequest
 
         return [
             'sorts' => 'array|sorts:'.$column,
-            'start' => 'integer|digits_between:0,20',
+            'offset' => 'integer|digits_between:0,20',
             'limit' => 'integer|digits_between:0,20',
             'filters' => 'array|filters:'.$column.'|filter_date_range:published_at',
             'filters.status' => 'boolean',
@@ -49,7 +49,7 @@ class CategoryReadRequest extends FormRequest
      */
     #[ArrayShape([
         'sorts' => 'string',
-        'start' => 'string',
+        'offset' => 'string',
         'limit' => 'string',
         'filters' => 'string',
         'filters.status' => 'string',
@@ -57,7 +57,7 @@ class CategoryReadRequest extends FormRequest
     {
         return [
             'sorts' => trans('category::http.requests.admin.categoryReadRequest.sorts'),
-            'start' => trans('category::http.requests.admin.categoryReadRequest.start'),
+            'offset' => trans('category::http.requests.admin.categoryReadRequest.offset'),
             'limit' => trans('category::http.requests.admin.categoryReadRequest.limit'),
             'filters' => trans('category::http.requests.admin.categoryReadRequest.filters'),
             'filters.status' => trans('category::http.requests.admin.categoryReadRequest.status'),

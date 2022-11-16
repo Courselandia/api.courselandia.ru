@@ -37,7 +37,7 @@ class PublicationControllerTest extends TestCase
             'GET',
             'api/private/admin/publication/read',
             [
-                'start' => 0,
+                'offset' => 0,
                 'limit' => 10,
                 'sorts' => [
                     'published_at' => 'DESC',

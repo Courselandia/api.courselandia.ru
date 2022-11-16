@@ -5,7 +5,7 @@ return [
         'admin' => [
             'feedbackReadRequest' => [
                 'sorts' => 'Сортировка',
-                'start' => 'Начало',
+                'offset' => 'Отступ',
                 'limit' => 'Лимит',
                 'filters' => 'Фильтры'
             ],

@@ -5,7 +5,7 @@ return [
         'admin' => [
             'schoolReadRequest' => [
                 'sorts' => 'Сортировка',
-                'start' => 'Начало',
+                'offset' => 'Отступ',
                 'limit' => 'Лимит',
                 'filters' => 'Фильтр',
                 'status' => 'Статус',
@@ -30,7 +30,7 @@ return [
         'site' => [
             'schoolReadRequest' => [
                 'sorts' => 'Сортировка',
-                'start' => 'Начало',
+                'offset' => 'Отступ',
                 'limit' => 'Лимит',
             ]
         ]

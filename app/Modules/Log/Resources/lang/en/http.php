@@ -6,7 +6,7 @@ return [
             'logReadRequest' => [
                 'sorts' => 'Sorts',
                 'filters' => 'Filters',
-                'start' => 'Start',
+                'offset' => 'Offset',
                 'limit' => 'Limit',
             ],
             'logDestroyRequest' => [

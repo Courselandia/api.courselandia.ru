@@ -24,7 +24,7 @@ class FaqReadRequest extends FormRequest
      */
     #[ArrayShape([
         'sorts' => 'string',
-        'start' => 'string',
+        'offset' => 'string',
         'limit' => 'string',
         'filters' => 'string',
         'filters.status' => 'string',
@@ -36,7 +36,7 @@ class FaqReadRequest extends FormRequest
 
         return [
             'sorts' => 'array|sorts:' . $column,
-            'start' => 'integer|digits_between:0,20',
+            'offset' => 'integer|digits_between:0,20',
             'limit' => 'integer|digits_between:0,20',
             'filters' => 'array|filters:' . $column . '|filter_date_range:published_at',
             'filters.status' => 'boolean',
@@ -50,7 +50,7 @@ class FaqReadRequest extends FormRequest
      */
     #[ArrayShape([
         'sorts' => 'string',
-        'start' => 'string',
+        'offset' => 'string',
         'limit' => 'string',
         'filters' => 'string',
         'filters.status' => 'string',
@@ -58,7 +58,7 @@ class FaqReadRequest extends FormRequest
     {
         return [
             'sorts' => trans('faq::http.requests.admin.faqReadRequest.sorts'),
-            'start' => trans('faq::http.requests.admin.faqReadRequest.start'),
+            'offset' => trans('faq::http.requests.admin.faqReadRequest.offset'),
             'limit' => trans('faq::http.requests.admin.faqReadRequest.limit'),
             'filters' => trans('faq::http.requests.admin.faqReadRequest.filters'),
             'filters.status' => trans('faq::http.requests.admin.faqReadRequest.status'),

@@ -5,7 +5,7 @@ return [
         'admin' => [
             'reviewReadRequest' => [
                 'sorts' => 'Sorts',
-                'start' => 'Start',
+                'offset' => 'Offset',
                 'limit' => 'Limit',
                 'filters' => 'Filters',
                 'rating' => 'Rating',
@@ -23,7 +23,7 @@ return [
         'site' => [
             'reviewReadRequest' => [
                 'sorts' => 'Sorts',
-                'start' => 'Start',
+                'offset' => 'Offset',
                 'limit' => 'Limit',
                 'schoolId' => 'ID school',
             ],
