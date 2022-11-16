@@ -37,16 +37,24 @@ class RepositoryCondition
     private OperatorQuery $operator;
 
     /**
+     * Отношение к которому нужно применить условие.
+     *
+     * @var string|null
+     */
+    private ?string $relation = null;
+
+    /**
      * Конструктор.
      *
-     * @param  string|null  $column  Колонка поиска.
-     * @param  mixed|null  $value  Значение поиска.
-     * @param  OperatorQuery  $operator  Оператор поиска.
+     * @param string|null $column Колонка поиска.
+     * @param mixed|null $value Значение поиска.
+     * @param OperatorQuery $operator Оператор поиска.
+     * @param string|null $relation Отношение к которому нужно применить это условие.
      */
-    public function __construct(string $column = null, mixed $value = null, OperatorQuery $operator = OperatorQuery::EQUAL)
+    public function __construct(string $column = null, mixed $value = null, OperatorQuery $operator = OperatorQuery::EQUAL, string $relation = null)
     {
         if ($column) {
-            $this->set($column, $value, $operator);
+            $this->set($column, $value, $operator, $relation);
         }
     }
 
@@ -56,14 +64,16 @@ class RepositoryCondition
      * @param  string  $column  Колонка.
      * @param  mixed  $value  Значение.
      * @param  OperatorQuery  $operator  Оператор сравнения.
+     * @param string|null $relation Отношение к которому нужно применить это условие.
      *
      * @return $this
      */
-    public function set(string $column, mixed $value, OperatorQuery $operator = OperatorQuery::EQUAL): self
+    public function set(string $column, mixed $value, OperatorQuery $operator = OperatorQuery::EQUAL, string $relation = null): self
     {
         $this->column = $column;
         $this->value = $value;
         $this->operator = $operator;
+        $this->relation = $relation;
 
         return $this;
     }
@@ -96,5 +106,15 @@ class RepositoryCondition
     public function getOperator(): OperatorQuery
     {
         return $this->operator;
+    }
+
+    /**
+     * Получение отношение, к которому нужно применить условие.
+     *
+     * @return string|null Название колонки.
+     */
+    public function getRelation(): ?string
+    {
+        return $this->relation;
     }
 }

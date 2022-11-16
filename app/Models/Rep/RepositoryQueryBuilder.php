@@ -8,6 +8,7 @@
 
 namespace App\Models\Rep;
 
+use Util;
 use Illuminate\Database\Query\Expression;
 use App\Models\Enums\SortDirection;
 
@@ -486,8 +487,18 @@ class RepositoryQueryBuilder
     public function setRelations(?array $relations): self
     {
         if ($relations) {
-            foreach ($relations as $relation) {
-                $this->addRelation($relation);
+            if (Util::isAssoc($relations)) {
+                foreach ($relations as $relation => $queryBuilder) {
+                    if ($queryBuilder instanceof RepositoryQueryBuilder) {
+                        $this->addRelation($relation, $queryBuilder);
+                    } else {
+                        $this->addRelation($queryBuilder);
+                    }
+                }
+            } else {
+                foreach ($relations as $relation) {
+                    $this->addRelation($relation);
+                }
             }
         }
 
@@ -497,13 +508,14 @@ class RepositoryQueryBuilder
     /**
      * Добавление отношения.
      *
-     * @param  string  $relation  Отношение.
+     * @param string $relation Отношение.
+     * @param RepositoryQueryBuilder|null $queryBuilder Подзапрос для этого отношения.
      *
      * @return $this
      */
-    public function addRelation(string $relation): self
+    public function addRelation(string $relation, RepositoryQueryBuilder $queryBuilder = null): self
     {
-        $this->relations[] = $relation;
+        $this->relations[] = [$relation, $queryBuilder];
 
         return $this;
     }
@@ -512,13 +524,14 @@ class RepositoryQueryBuilder
      * Правка отношения.
      *
      * @param  string  $relation  Отношение.
+     * @param RepositoryQueryBuilder|null $queryBuilder Подзапрос для этого отношения.
      *
      * @return $this
      */
-    public function editRelation(string $relation): self
+    public function editRelation(string $relation, RepositoryQueryBuilder $queryBuilder = null): self
     {
         if (isset($this->relations[$relation])) {
-            $this->relations[] = $relation;
+            $this->relations[] = [$relation, $queryBuilder];
         }
 
         return $this;

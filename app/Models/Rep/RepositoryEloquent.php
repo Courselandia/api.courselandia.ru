@@ -11,7 +11,6 @@ namespace App\Models\Rep;
 use DB;
 use Eloquent;
 use App\Models\Entity;
-use ReflectionException;
 use Illuminate\Database\Eloquent\Builder;
 use App\Models\Exceptions\RecordNotExistException;
 use Illuminate\Database\Eloquent\Relations\Relation;
@@ -244,18 +243,27 @@ trait RepositoryEloquent
     /**
      * Помощник для формирования стандартных свойств для запроса: Условия.
      *
-     * @param  Builder  $query  Запрос.
+     * @param  Builder|Relation  $query  Запрос.
      * @param  RepositoryCondition[]  $conditions  Условия.
      *
-     * @return Builder Вернет запрос.
+     * @return Builder|Relation Вернет запрос.
      * @throws ParameterInvalidException
      */
-    protected function queryHelperConditions(Builder $query, array $conditions): Builder
+    protected function queryHelperConditions(Builder|Relation $query, array $conditions): Builder|Relation
     {
-        $columns = $this->newInstance()->getFillable();
+        $model = $this->newInstance();
+        $columns = $model->getFillable();
 
         foreach ($conditions as $condition) {
-            if (in_array($condition->getColumn(), $columns)) {
+            if ($condition->getRelation()) {
+                $relationColumns = $model->{$condition->getRelation()}()->getModel()->getFillable();
+
+                if (in_array($condition->getColumn(), $relationColumns)) {
+                    $query->whereHas($condition->getRelation(), function ($q) use ($condition) {
+                        $q->where($condition->getColumn(), $condition->getOperator()->value, $condition->getValue());
+                    });
+                }
+            } elseif (in_array($condition->getColumn(), $columns)) {
                 $query->where($condition->getColumn(), $condition->getOperator()->value, $condition->getValue());
             }
         }
@@ -365,17 +373,23 @@ trait RepositoryEloquent
     protected function queryHelperRelations(Builder $query, array $relations, array $sorts = null): Builder
     {
         for ($i = 0; $i < count($relations); $i++) {
-            $nameTable = $relations[$i];
+            [$nameTable, $queryBuilder] = $relations[$i];
 
             $query->with(
                 [
-                    $nameTable => function ($query) use ($sorts, $nameTable) {
+                    $nameTable => function ($query) use ($sorts, $nameTable, $queryBuilder) {
                         if ($sorts) {
                             $ordersBy = $this->getFieldsForSortingBaseTableName($sorts, $nameTable);
 
                             if ($ordersBy) {
                                 $this->queryHelperSorts($query, $ordersBy);
                             }
+                        }
+
+                        if ($queryBuilder) {
+                            \Illuminate\Database\Eloquent\Relations\BelongsToMany::class;
+
+                            $this->queryHelperConditions($query, $queryBuilder->getConditions());
                         }
                     }
                 ]
@@ -468,7 +482,7 @@ trait RepositoryEloquent
                 $query = $this->queryHelperRelations(
                     $query,
                     $repositoryQueryBuilder->getRelations(),
-                    $repositoryQueryBuilder->getSorts()
+                    $repositoryQueryBuilder->getSorts(),
                 );
             }
 

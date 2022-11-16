@@ -35,3 +35,17 @@ Route::group([
             ->name('destroy');
     }
 );
+
+Route::group([
+    'middleware' => [
+        'locale',
+        'ajax',
+    ],
+    'prefix' => 'private/site/course/',
+    'as' => 'api.private.site.course'
+],
+    function () {
+        Route::get('get/{id}', 'Site\CourseController@get')
+            ->name('get');
+    }
+);

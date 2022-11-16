@@ -8,6 +8,7 @@
 
 namespace App\Modules\Review\Actions\Site;
 
+use App\Models\Enums\OperatorQuery;
 use App\Modules\Review\Enums\Status;
 use DB;
 use Util;
@@ -61,6 +62,7 @@ class ReviewBreakDownAction extends Action
         $query = new RepositoryQueryBuilder();
         $query->addCondition(new RepositoryCondition('school_id', $this->school_id))
             ->addCondition(new RepositoryCondition('status', Status::ACTIVE->value))
+            ->addCondition(new RepositoryCondition('status', true, OperatorQuery::EQUAL, 'school'))
             ->setSelects([
                 DB::raw('ROUND(rating) as rating'),
                 DB::raw('COUNT(rating) as amount'),

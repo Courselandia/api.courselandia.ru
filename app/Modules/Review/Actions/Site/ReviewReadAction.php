@@ -10,6 +10,7 @@ namespace App\Modules\Review\Actions\Site;
 
 use App\Models\Action;
 use App\Models\Enums\CacheTime;
+use App\Models\Enums\OperatorQuery;
 use App\Models\Enums\SortDirection;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Rep\RepositoryCondition;
@@ -81,6 +82,7 @@ class ReviewReadAction extends Action
         $query = new RepositoryQueryBuilder();
         $query->addCondition(new RepositoryCondition('school_id', $this->school_id))
             ->addCondition(new RepositoryCondition('status', Status::ACTIVE->value))
+            ->addCondition(new RepositoryCondition('status', true, OperatorQuery::EQUAL, 'school'))
             ->setSorts($this->sorts)
             ->setOffset($this->offset)
             ->setLimit($this->limit)
