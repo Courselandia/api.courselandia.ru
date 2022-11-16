@@ -48,7 +48,7 @@ class ReviewFactory extends Factory
             'name' => $this->faker->text(191),
             'title' => $this->faker->text(191),
             'text' => $this->faker->text(5000),
-            'rating' => 4,
+            'rating' => rand(1, 5),
             'status' => Status::ACTIVE->value,
         ];
     }

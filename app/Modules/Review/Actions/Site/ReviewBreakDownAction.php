@@ -8,21 +8,22 @@
 
 namespace App\Modules\Review\Actions\Site;
 
-use App\Models\Action;
+use DB;
+use Util;
+use Cache;
 use App\Models\Enums\CacheTime;
-use App\Models\Enums\SortDirection;
+use App\Modules\Review\Entities\ReviewBreakDown;
+use App\Models\Action;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Rep\RepositoryCondition;
 use App\Models\Rep\RepositoryQueryBuilder;
 use App\Modules\Review\Repositories\Review;
-use Cache;
 use JetBrains\PhpStorm\ArrayShape;
-use Util;
 
 /**
- * Класс действия для чтения отзывов.
+ * Класс действия для получения разбивки по рейтингу.
  */
-class ReviewReadAction extends Action
+class ReviewBreakDownAction extends Action
 {
     /**
      * Репозиторий отзывов.
@@ -30,20 +31,6 @@ class ReviewReadAction extends Action
      * @var Review
      */
     private Review $review;
-
-    /**
-     * Начать выборку.
-     *
-     * @var int|null
-     */
-    public ?int $offset = null;
-
-    /**
-     * Лимит выборки выборку.
-     *
-     * @var int|null
-     */
-    public ?int $limit = null;
 
     /**
      * ID школа.
@@ -71,24 +58,20 @@ class ReviewReadAction extends Action
     #[ArrayShape(['data' => 'array', 'total' => 'int'])] public function run(): array
     {
         $query = new RepositoryQueryBuilder();
-        $query->addSort('created_at', SortDirection::DESC)
-            ->addCondition(new RepositoryCondition('school_id', $this->school_id))
-            ->setOffset($this->offset)
-            ->setLimit($this->limit)
-            ->setRelations([
-                'school',
-            ]);
+        $query->addCondition(new RepositoryCondition('school_id', $this->school_id))
+            ->setSelects([
+                DB::raw('ROUND(rating) as rating'),
+                DB::raw('COUNT(rating) as amount'),
+            ])
+            ->addGroup('rating');
 
-        $cacheKey = Util::getKey('review', 'read', 'count', $query);
+        $cacheKey = Util::getKey('review', 'creakDown', $query);
 
         return Cache::tags(['catalog', 'school', 'review', 'course'])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
             function () use ($query) {
-                return [
-                    'data' => $this->review->read($query),
-                    'total' => $this->review->count($query),
-                ];
+                return $this->review->read($query, new ReviewBreakDown());
             }
         );
     }

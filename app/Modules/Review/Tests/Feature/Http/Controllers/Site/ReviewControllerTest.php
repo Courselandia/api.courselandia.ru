@@ -34,14 +34,26 @@ class ReviewControllerTest extends TestCase
                 'limit' => 10,
                 'school_id' => $review->school_id
             ],
-            [
-
-            ]
         )->assertStatus(200)->assertJsonStructure([
             'data' => [
                 '*' => $this->getReviewStructure()
             ],
             'total',
+            'success',
+        ]);
+    }
+
+    public function testBreakDown()
+    {
+        $review = Review::factory()->create();
+
+        $this->json(
+            'GET',
+            'api/private/site/review/break-down/' . $review->school_id,
+        )->assertStatus(200)->assertJsonStructure([
+            'data' => [
+                '*' => $this->getBreakDownStructure()
+            ],
             'success',
         ]);
     }
@@ -81,6 +93,19 @@ class ReviewControllerTest extends TestCase
                 'updated_at',
                 'deleted_at',
             ],
+        ];
+    }
+
+    /**
+     * Получить структуру данных разбивки отзывов.
+     *
+     * @return array Массив структуры данных разбивки.
+     */
+    private function getBreakDownStructure(): array
+    {
+        return [
+            'rating',
+            'amount'
         ];
     }
 }

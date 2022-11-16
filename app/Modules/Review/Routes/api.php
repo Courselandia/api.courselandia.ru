@@ -40,4 +40,7 @@ Route::group([
     function () {
         Route::get('read/', 'Site\ReviewController@read')
             ->name('read');
+
+        Route::get('break-down/{id}', 'Site\ReviewController@breakDown')
+            ->name('breakDown');
     });

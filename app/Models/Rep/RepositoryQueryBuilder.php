@@ -8,6 +8,7 @@
 
 namespace App\Models\Rep;
 
+use Illuminate\Database\Query\Expression;
 use App\Models\Enums\SortDirection;
 
 /**
@@ -370,12 +371,12 @@ class RepositoryQueryBuilder
     /**
      * Добавление сортировки.
      *
-     * @param  string  $column  Колонка.
+     * @param  string|Expression  $column  Колонка.
      * @param  SortDirection  $direction  Направление.
      *
      * @return $this
      */
-    public function addSort(string $column, SortDirection $direction = SortDirection::ASC): self
+    public function addSort(string|Expression $column, SortDirection $direction = SortDirection::ASC): self
     {
         $this->sorts[$column] = $direction;
 
@@ -385,12 +386,12 @@ class RepositoryQueryBuilder
     /**
      * Правка сортировки.
      *
-     * @param  string  $column  Колонка.
+     * @param  string|Expression  $column  Колонка.
      * @param  SortDirection  $direction  Направление.
      *
      * @return $this
      */
-    public function editSorts(string $column, SortDirection $direction): self
+    public function editSorts(string|Expression $column, SortDirection $direction): self
     {
         if (isset($this->sorts[$column])) {
             $this->sorts[$column] = $direction;
@@ -568,11 +569,11 @@ class RepositoryQueryBuilder
     /**
      * Добавление группировки.
      *
-     * @param  string  $group  Группировки.
+     * @param  string|Expression  $group  Группировки.
      *
      * @return $this
      */
-    public function addGroup(string $group): self
+    public function addGroup(string|Expression $group): self
     {
         $this->groups[] = $group;
 
@@ -640,11 +641,11 @@ class RepositoryQueryBuilder
     /**
      * Добавление выборки.
      *
-     * @param  string  $select  Выборка.
+     * @param  string|Expression  $select  Выборка.
      *
      * @return $this
      */
-    public function addSelect(string $select): self
+    public function addSelect(string|Expression $select): self
     {
         $this->selects[] = $select;
 

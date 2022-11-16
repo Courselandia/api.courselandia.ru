@@ -8,6 +8,7 @@
 
 namespace App\Modules\Review\Http\Controllers\Site;
 
+use App\Modules\Review\Actions\Site\ReviewBreakDownAction;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
 use App\Models\Exceptions\ParameterInvalidException;
@@ -39,5 +40,26 @@ class ReviewController extends Controller
         $data['success'] = true;
 
         return response()->json($data);
+    }
+
+    /**
+     * Разбивка отзывов по рейтингу.
+     *
+     * @param int $schoolId ID школы.
+     *
+     * @return JsonResponse Вернет JSON ответ.
+     * @throws ParameterInvalidException
+     */
+    public function breakDown(int $schoolId): JsonResponse
+    {
+        $action = app(ReviewBreakDownAction::class);
+        $action->school_id = $schoolId;
+
+        $data = $action->run();
+
+        return response()->json([
+            'data' => $data,
+            'success' => true,
+        ]);
     }
 }
