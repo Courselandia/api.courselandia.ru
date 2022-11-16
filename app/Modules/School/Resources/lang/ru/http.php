@@ -27,6 +27,13 @@ return [
                 'type' => 'Тип изображения',
             ]
         ],
+        'site' => [
+            'schoolReadRequest' => [
+                'sorts' => 'Сортировка',
+                'start' => 'Начало',
+                'limit' => 'Лимит',
+            ]
+        ]
     ],
     'controllers' => [
         'admin' => [

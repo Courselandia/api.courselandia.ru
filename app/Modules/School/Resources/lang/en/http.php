@@ -27,6 +27,13 @@ return [
                 'type' => 'Type',
             ],
         ],
+        'site' => [
+            'schoolReadRequest' => [
+                'sorts' => 'Sorts',
+                'start' => 'Start',
+                'limit' => 'Limit',
+            ],
+        ]
     ],
     'controllers' => [
         'admin' => [

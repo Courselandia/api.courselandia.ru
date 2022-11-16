@@ -22,6 +22,7 @@ return [
         ],
         'site' => [
             'reviewReadRequest' => [
+                'sorts' => 'Sorts',
                 'start' => 'Start',
                 'limit' => 'Limit',
                 'schoolId' => 'ID school',

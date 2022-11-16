@@ -46,6 +46,13 @@ class ReviewReadAction extends Action
     public ?int $limit = null;
 
     /**
+     * Сортировка данных.
+     *
+     * @var array|null
+     */
+    public ?array $sorts = null;
+
+    /**
      * ID школа.
      *
      * @var int|null
@@ -71,13 +78,14 @@ class ReviewReadAction extends Action
     #[ArrayShape(['data' => 'array', 'total' => 'int'])] public function run(): array
     {
         $query = new RepositoryQueryBuilder();
-        $query->addSort('created_at', SortDirection::DESC)
-            ->addCondition(new RepositoryCondition('school_id', $this->school_id))
+        $query->addCondition(new RepositoryCondition('school_id', $this->school_id))
+            ->setSorts($this->sorts)
             ->setOffset($this->offset)
             ->setLimit($this->limit)
             ->setRelations([
                 'school',
-            ]);
+            ])
+            ->setActive(true);
 
         $cacheKey = Util::getKey('review', 'read', 'count', $query);
 

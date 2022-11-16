@@ -37,3 +37,19 @@ Route::group([
         Route::delete('destroy/image/{id}', 'Admin\SchoolImageController@destroy')
             ->name('destroy');
     });
+
+Route::group([
+    'middleware' => [
+        'locale',
+        'ajax',
+    ],
+    'prefix' => 'private/site/school/',
+    'as' => 'api.private.site.school'
+],
+    function () {
+        Route::get('read/', 'Site\SchoolController@read')
+            ->name('read');
+
+        Route::get('get/{id}', 'Site\SchoolController@get')
+            ->name('get');
+    });

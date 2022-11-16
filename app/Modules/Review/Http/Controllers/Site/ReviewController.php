@@ -32,6 +32,7 @@ class ReviewController extends Controller
     {
         $action = app(ReviewReadAction::class);
         $action->school_id = $request->get('school_id');
+        $action->sorts = $request->get('sorts');
         $action->offset = $request->get('offset');
         $action->limit = $request->get('limit');
 

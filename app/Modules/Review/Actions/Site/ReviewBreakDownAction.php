@@ -63,7 +63,8 @@ class ReviewBreakDownAction extends Action
                 DB::raw('ROUND(rating) as rating'),
                 DB::raw('COUNT(rating) as amount'),
             ])
-            ->addGroup('rating');
+            ->addGroup('rating')
+            ->setActive(true);
 
         $cacheKey = Util::getKey('review', 'creakDown', $query);
 

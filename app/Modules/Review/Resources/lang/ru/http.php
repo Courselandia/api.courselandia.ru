@@ -22,6 +22,7 @@ return [
         ],
         'site' => [
             'reviewReadRequest' => [
+                'sorts' => 'Сортировка',
                 'start' => 'Начало',
                 'limit' => 'Лимит',
                 'schoolId' => 'ID школы',
