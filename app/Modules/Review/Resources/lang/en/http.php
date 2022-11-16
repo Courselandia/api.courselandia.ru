@@ -20,6 +20,13 @@ return [
                 'schoolId' => 'School ID',
             ],
         ],
+        'site' => [
+            'reviewReadRequest' => [
+                'start' => 'Start',
+                'limit' => 'Limit',
+                'schoolId' => 'ID school',
+            ],
+        ]
     ],
     'controllers' => [
         'admin' => [

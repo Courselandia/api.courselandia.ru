@@ -28,3 +28,16 @@ Route::group([
         Route::delete('destroy/', 'Admin\ReviewController@destroy')
             ->name('destroy');
     });
+
+Route::group([
+    'middleware' => [
+        'locale',
+        'ajax',
+    ],
+    'prefix' => 'private/site/review/',
+    'as' => 'api.private.site.review'
+],
+    function () {
+        Route::get('read/', 'Site\ReviewController@read')
+            ->name('read');
+    });
