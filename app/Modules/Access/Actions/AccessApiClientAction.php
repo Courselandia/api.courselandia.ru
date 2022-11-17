@@ -9,16 +9,15 @@
 namespace App\Modules\Access\Actions;
 
 use App\Models\Enums\CacheTime;
+use App\Modules\User\Entities\User as UserEntity;
 use Cache;
 use Config;
 use OAuth;
 use Hash;
 use App\Modules\Access\Entities\AccessApiClient;
 use App\Models\Exceptions\ParameterInvalidException;
-use App\Models\Rep\RepositoryCondition;
-use App\Models\Rep\RepositoryQueryBuilder;
 use App\Models\Action;
-use App\Modules\User\Repositories\User;
+use App\Modules\User\Models\User;
 use App\Models\Exceptions\InvalidPasswordException;
 use App\Models\Exceptions\UserNotExistException;
 use ReflectionException;
@@ -29,13 +28,6 @@ use Util;
  */
 class AccessApiClientAction extends Action
 {
-    /**
-     * Репозиторий для выбранных групп пользователя.
-     *
-     * @var User
-     */
-    private User $user;
-
     /**
      * Логин пользователя.
      *
@@ -65,16 +57,6 @@ class AccessApiClientAction extends Action
     public bool $remember = false;
 
     /**
-     * Конструктор.
-     *
-     * @param  User  $user  Репозиторий пользователей.
-     */
-    public function __construct(User $user)
-    {
-        $this->user = $user;
-    }
-
-    /**
      * Метод запуска логики.
      *
      * @return AccessApiClient Вернет результаты исполнения.
@@ -84,19 +66,25 @@ class AccessApiClientAction extends Action
      */
     public function run(): AccessApiClient
     {
-        $query = new RepositoryQueryBuilder();
-        $query->setActive(true)
-            ->addCondition(new RepositoryCondition('login', $this->login))
-            ->addRelation('role')
-            ->addRelation('verification');
-
-        $cacheKey = Util::getKey('access', 'user', $query);
+        $cacheKey = Util::getKey('access', 'user', 'login', $this->login, 'role', 'verification');
 
         $user = Cache::tags(['access', 'user'])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
-            function () use ($query) {
-                return $this->user->get($query);
+            function () {
+                $user = User::where('login', $this->login)
+                    ->with([
+                        'role',
+                        'verification',
+                    ])
+                    ->active()
+                    ->first();
+
+                if ($user) {
+                    return new UserEntity($user->toArray());
+                }
+
+                return null;
             }
         );
 

@@ -8,16 +8,15 @@
 
 namespace App\Modules\Access\Actions\Site;
 
+use App\Modules\User\Entities\User as UserEntity;
 use Util;
 use Cache;
 use Config;
 use App\Models\Action;
 use App\Models\Exceptions\ParameterInvalidException;
-use App\Models\Rep\RepositoryQueryBuilder;
-use App\Modules\User\Repositories\User;
+use App\Modules\User\Models\User;
 use App\Models\Exceptions\UserNotExistException;
 use App\Models\Exceptions\InvalidCodeException;
-use ReflectionException;
 use App\Models\Enums\CacheTime;
 
 /**
@@ -25,13 +24,6 @@ use App\Models\Enums\CacheTime;
  */
 class AccessCheckCodeResetPasswordAction extends Action
 {
-    /**
-     * Репозиторий пользователей.
-     *
-     * @var User
-     */
-    private User $user;
-
     /**
      * ID пользователя.
      *
@@ -47,38 +39,32 @@ class AccessCheckCodeResetPasswordAction extends Action
     public ?string $code = null;
 
     /**
-     * Конструктор.
-     *
-     * @param  User  $user  Репозиторий пользователей.
-     */
-    public function __construct(User $user)
-    {
-        $this->user = $user;
-    }
-
-    /**
      * Метод запуска логики.
      *
      * @return bool Вернет результаты исполнения.
      * @throws InvalidCodeException
      * @throws UserNotExistException
      * @throws ParameterInvalidException
-     * @throws ReflectionException
      */
     public function run(): bool
     {
-        $query = new RepositoryQueryBuilder();
-        $query->setId($this->id)
-            ->setActive(true)
-            ->addRelation('recovery');
-
-        $cacheKey = Util::getKey('access', 'user', $query);
+        $cacheKey = Util::getKey('access', 'user', 'recovery', $this->id);
 
         $user = Cache::tags(['access', 'user'])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
-            function () use ($query) {
-                return $this->user->get($query);
+            function () {
+                $user = User::where('id', $this->id)
+                    ->active()
+                    ->with([
+                        'recovery'
+                    ])->first();
+
+                if ($user) {
+                    return new UserEntity($user->toArray());
+                }
+
+                return null;
             }
         );
 

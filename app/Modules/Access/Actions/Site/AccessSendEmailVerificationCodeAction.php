@@ -10,14 +10,14 @@ namespace App\Modules\Access\Actions\Site;
 
 use App\Models\Enums\CacheTime;
 use App\Models\Exceptions\UserVerifiedException;
+use App\Modules\User\Entities\User as UserEntity;
 use App\Modules\User\Entities\UserVerification as UserVerificationEntity;
-use App\Modules\User\Repositories\UserVerification;
+use App\Modules\User\Models\UserVerification;
 use Cache;
 use Mail;
 use App\Models\Action;
 use App\Models\Exceptions\ParameterInvalidException;
-use App\Models\Rep\RepositoryQueryBuilder;
-use App\Modules\User\Repositories\User;
+use App\Modules\User\Models\User;
 use App\Modules\Access\Emails\Site\Verification;
 use App\Models\Exceptions\UserNotExistException;
 use ReflectionException;
@@ -36,32 +36,6 @@ class AccessSendEmailVerificationCodeAction extends Action
     public int|string|null $id = null;
 
     /**
-     * Репозиторий пользователей.
-     *
-     * @var User
-     */
-    private User $user;
-
-    /**
-     * Репозиторий верификации пользователя.
-     *
-     * @var UserVerification
-     */
-    private UserVerification $userVerification;
-
-    /**
-     * Конструктор.
-     *
-     * @param  User  $user  Репозиторий пользователей.
-     * @param  UserVerification  $userVerification  Репозиторий верификации пользователя.
-     */
-    public function __construct(User $user, UserVerification $userVerification)
-    {
-        $this->user = $user;
-        $this->userVerification = $userVerification;
-    }
-
-    /**
      * Метод запуска логики.
      *
      * @return bool Вернет результаты исполнения.
@@ -71,18 +45,18 @@ class AccessSendEmailVerificationCodeAction extends Action
      */
     public function run(): bool
     {
-        $query = new RepositoryQueryBuilder();
-        $query->setId($this->id)
-            ->setActive(true)
-            ->addRelation('verification');
-
-        $cacheKey = Util::getKey('access', 'user', $query);
+        $cacheKey = Util::getKey('access', 'user', $this->id, 'verification');
 
         $user = Cache::tags(['access', 'user'])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
-            function () use ($query) {
-                return $this->user->get($query);
+            function () {
+                $user = User::where('id', $this->id)
+                    ->active()
+                    ->with('verification')
+                    ->first();
+
+                return $user ? new UserEntity($user->toArray()) : null;
             }
         );
 
@@ -99,7 +73,8 @@ class AccessSendEmailVerificationCodeAction extends Action
                 $userVerificationEntity->code = UserVerificationEntity::generateCode($this->id);
                 $userVerificationEntity->status = false;
 
-                $this->userVerification->create($userVerificationEntity);
+                UserVerification::create($userVerificationEntity->toArray());
+
                 $code = $userVerificationEntity->code;
                 Cache::tags(['access', 'user'])->flush();
             } else {

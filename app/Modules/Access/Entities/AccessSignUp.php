@@ -18,23 +18,23 @@ class AccessSignUp extends Entity
     /**
      * ID пользователя.
      *
-     * @var string|int
+     * @var string|int|null
      */
-    public string|int $id;
+    public string|int|null $id = null;
 
     /**
      * Логин.
      *
-     * @var string
+     * @var string|null
      */
-    public string $login;
+    public ?string $login = null;
 
     /**
      * Пароль.
      *
-     * @var string
+     * @var string|null
      */
-    public string $password;
+    public ?string $password = null;
 
     /**
      * Имя.

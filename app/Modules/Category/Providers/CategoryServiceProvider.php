@@ -13,7 +13,6 @@ use Config;
 use Illuminate\Support\ServiceProvider;
 
 use App\Modules\Category\Models\Category as CategoryModel;
-use App\Modules\Category\Repositories\Category as CategoryRepository;
 use App\Modules\Category\Entities\Category as CategoryEntity;
 use App\Modules\Category\Events\Listeners\CategoryListener;
 
@@ -45,13 +44,6 @@ class CategoryServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->register(RouteServiceProvider::class);
-
-        App::singleton(
-            CategoryRepository::class,
-            function () {
-                return new CategoryRepository(new CategoryModel(), new CategoryEntity());
-            }
-        );
     }
 
     /**

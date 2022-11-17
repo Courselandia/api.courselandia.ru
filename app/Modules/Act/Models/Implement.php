@@ -16,10 +16,7 @@ use ReflectionException;
 use App\Models\Enums\CacheTime;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
-use App\Models\Rep\RepositoryCondition;
-use App\Models\Rep\RepositoryQueryBuilder;
 use App\Modules\Act\Entities\Act as ActEntity;
-use App\Modules\Act\Repositories\Act;
 
 /**
  * Класс запоминания действий пользователя.
@@ -29,29 +26,12 @@ use App\Modules\Act\Repositories\Act;
 class Implement
 {
     /**
-     * Репозиторий действий.
-     *
-     * @var Act
-     */
-    private Act $act;
-
-    /**
-     * Конструктор.
-     *
-     * @param  Act  $act  Репозиторий действий.
-     */
-    public function __construct(Act $act)
-    {
-        $this->act = $act;
-    }
-
-    /**
      * Проверка статуса действий.
      * Позволяет определить, сколько раз выполнялось действие и может ли действие снова быть осуществлено.
      *
-     * @param  string  $index  Индекс действия.
-     * @param  int  $maxCount  Сколько раз это действий может быть исполнено.
-     * @param  int  $minutes  Через сколько минут это действие будет доступно.
+     * @param string $index Индекс действия.
+     * @param int $maxCount Сколько раз это действий может быть исполнено.
+     * @param int $minutes Через сколько минут это действие будет доступно.
      *
      * @return bool Если вернет true, то действие может быть выполнено еще раз. Если false, то максимальный порог его выполнения достигнут.
      * @throws ParameterInvalidException
@@ -84,9 +64,9 @@ class Implement
     /**
      * Добавление действия.
      *
-     * @param  string  $index  Индекс действия.
-     * @param  int  $to  Добавить к количеству выполненных действий.
-     * @param  int  $minutes  Общее время жизни этой записи в минутах.
+     * @param string $index Индекс действия.
+     * @param int $to Добавить к количеству выполненных действий.
+     * @param int $minutes Общее время жизни этой записи в минутах.
      *
      * @return Implement
      * @throws RecordNotExistException
@@ -113,7 +93,7 @@ class Implement
      * Очистка истории действий.
      * Позволяет удалить всю историю об этом действии, заодно обнулив весь результат.
      *
-     * @param  string  $index  Индекс действия.
+     * @param string $index Индекс действия.
      *
      * @return Implement
      * @throws ParameterInvalidException|ReflectionException
@@ -129,7 +109,7 @@ class Implement
     /**
      * Получение текущего количества выполненных действий.
      *
-     * @param  string  $index  Индекс действия.
+     * @param string $index Индекс действия.
      *
      * @return int Вернет текущее количество.
      * @throws ParameterInvalidException
@@ -146,8 +126,8 @@ class Implement
     /**
      * Получение действия по индексу.
      *
-     * @param  string  $index  Индекс действия.
-     * @param  ActEntity|null  $default  Значение по умолчанию, если значение отсутствует.
+     * @param string $index Индекс действия.
+     * @param ActEntity|null $default Значение по умолчанию, если значение отсутствует.
      *
      * @return ActEntity|null Возвращает сущность действия.
      * @throws ParameterInvalidException
@@ -155,21 +135,18 @@ class Implement
      */
     protected function read(string $index, ?ActEntity $default = null): ?ActEntity
     {
-        $query = new RepositoryQueryBuilder();
-        $query->addCondition(new RepositoryCondition('index', $index));
-
-        $cacheKey = Util::getKey('act', $query);
+        $cacheKey = Util::getKey('act', 'index', $index);
 
         $act = Cache::tags(['act'])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
-            function () use ($query) {
-                return $this->act->get($query);
+            function () use ($index) {
+                return Act::where('index', $index)->first();
             }
         );
 
         if ($act) {
-            return $act;
+            return new ActEntity($act->toArray());
         }
 
         if ($default) {
@@ -182,9 +159,9 @@ class Implement
     /**
      * Запись действия.
      *
-     * @param  string  $index  Индекс действия.
-     * @param  int  $count  Попыток действий.
-     * @param  int  $minutes  Количество минут через которые действие можно будет повторить.
+     * @param string $index Индекс действия.
+     * @param int $count Попыток действий.
+     * @param int $minutes Количество минут через которые действие можно будет повторить.
      *
      * @return Implement
      * @throws RecordNotExistException
@@ -193,16 +170,13 @@ class Implement
      */
     protected function set(string $index, int $count, int $minutes): Implement
     {
-        $query = new RepositoryQueryBuilder();
-        $query->addCondition(new RepositoryCondition('index', $index));
-
-        $cacheKey = Util::getKey('act', $query);
+        $cacheKey = Util::getKey('act', 'index', $index);
 
         $act = Cache::tags(['act'])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
-            function () use ($query) {
-                return $this->act->get($query);
+            function () use ($index) {
+                return Act::where('index', $index)->first();
             }
         );
 
@@ -211,14 +185,14 @@ class Implement
             $act->count = $count;
             $act->minutes = $minutes;
 
-            $this->act->update($act->id, $act);
+            $act->update($act->toArray());
         } else {
             $act = new ActEntity();
             $act->index = $index;
             $act->count = $count;
             $act->minutes = $minutes;
 
-            $this->act->create($act);
+            Act::create($act->toArray());
         }
 
         Cache::tags(['act'])->flush();
@@ -230,7 +204,7 @@ class Implement
      * Очистка истории действий.
      * Позволяет удалить всю историю об этом действии, заодно обнулив весь результат.
      *
-     * @param  string  $index  Индекс действия.
+     * @param string $index Индекс действия.
      *
      * @return Implement
      * @throws ParameterInvalidException
@@ -241,7 +215,7 @@ class Implement
         $actEntity = $this->read($index);
 
         if ($actEntity) {
-            $this->act->destroy($actEntity->id);
+            Act::destroy($actEntity->id);
             Cache::tags(['act'])->flush();
         }
 
@@ -251,13 +225,13 @@ class Implement
     /**
      * Получение ключа по индексу.
      *
-     * @param  string  $index  Индекс действия.
+     * @param string $index Индекс действия.
      *
      * @return string Ключ.
      */
     protected function getKey(string $index): string
     {
-        return md5('action.'.$this->getIp().'.'.$index);
+        return md5('action.' . $this->getIp() . '.' . $index);
     }
 
     /**

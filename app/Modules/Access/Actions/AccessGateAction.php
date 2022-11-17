@@ -9,27 +9,18 @@
 namespace App\Modules\Access\Actions;
 
 use Cache;
-use ReflectionException;
 use Util;
 use App\Models\Action;
 use App\Models\Enums\CacheTime;
 use App\Modules\User\Entities\User as UserEntity;
 use App\Models\Exceptions\ParameterInvalidException;
-use App\Models\Rep\RepositoryQueryBuilder;
-use App\Modules\User\Repositories\User;
+use App\Modules\User\Models\User;
 
 /**
  * Получение всех доступов к разделам.
  */
 class AccessGateAction extends Action
 {
-    /**
-     * Репозиторий пользователей.
-     *
-     * @var User
-     */
-    private User $user;
-
     /**
      * ID пользователя.
      *
@@ -38,41 +29,28 @@ class AccessGateAction extends Action
     public int|string|null $id = null;
 
     /**
-     * Конструктор.
-     *
-     * @param  User  $user  Репозиторий пользователей.
-     */
-    public function __construct(User $user)
-    {
-        $this->user = $user;
-    }
-
-    /**
      * Метод запуска логики.
      *
      * @return UserEntity|null Вернет результаты исполнения.
-     * @throws ParameterInvalidException|ReflectionException
+     * @throws ParameterInvalidException
      */
     public function run(): ?UserEntity
     {
-        $id = $this->id;
-        $query = new RepositoryQueryBuilder($id, true);
-        $query->setId($id)
-            ->setActive(true)
-            ->setRelations([
-                'verification',
-                'role',
-            ]);
-
-        $key = Util::getKey('access', 'gate', $id);
+        $key = Util::getKey('access', 'gate', $this->id);
 
         return Cache::tags(['access', 'user'])->remember(
             $key,
             CacheTime::MONTH->value,
-            function () use ($query) {
-                $userEntity = $this->user->get($query);
+            function () {
+                $user = User::where('id', $this->id)
+                    ->active()
+                    ->with([
+                        'verification',
+                        'role',
+                    ])->first();
 
-                if ($userEntity) {
+                if ($user) {
+                    $userEntity = new UserEntity($user->toArray());
                     $userEntity->password = null;
 
                     return $userEntity;

@@ -12,13 +12,14 @@ use App\Models\Enums\CacheTime;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Models\Rep\RepositoryQueryBuilder;
+use App\Modules\User\Entities\User as UserEntity;
 use Cache;
 use Closure;
 use App\Models\Contracts\Pipe;
 use App\Models\Entity;
 use App\Models\Exceptions\UserNotExistException;
 use App\Modules\Access\Entities\AccessUpdate;
-use App\Modules\User\Repositories\User;
+use App\Modules\User\Models\User;
 use ReflectionException;
 use Util;
 
@@ -27,23 +28,6 @@ use Util;
  */
 class UserPipe implements Pipe
 {
-    /**
-     * Репозиторий пользователей.
-     *
-     * @var User
-     */
-    private User $user;
-
-    /**
-     * Конструктор.
-     *
-     * @param  User  $user  Репозиторий пользователей.
-     */
-    public function __construct(User $user)
-    {
-        $this->user = $user;
-    }
-
     /**
      * Метод, который будет вызван у pipeline.
      *
@@ -58,17 +42,20 @@ class UserPipe implements Pipe
      */
     public function handle(Entity|AccessUpdate $entity, Closure $next): mixed
     {
-        $query = new RepositoryQueryBuilder();
-        $query->setId($entity->id)
-            ->setActive(true);
-
-        $cacheKey = Util::getKey('access', 'user', $query);
+        $id = $entity->id;
+        $cacheKey = Util::getKey('access', 'user', 'model', $id, 'role', 'verification');
 
         $user = Cache::tags(['access', 'user'])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
-            function () use ($query) {
-                return $this->user->get($query);
+            function () use ($id) {
+                return User::where('id', $id)
+                    ->with([
+                        'role',
+                        'verification'
+                    ])
+                    ->active()
+                    ->first();
             }
         );
 
@@ -76,10 +63,10 @@ class UserPipe implements Pipe
             $user->first_name = $entity->first_name;
             $user->second_name = $entity->second_name;
             $user->phone = $entity->phone;
-            $this->user->update($user->id, $user);
+            $user->update($user->toArray());
             Cache::tags(['access', 'user'])->flush();
 
-            $entity->user = $user;
+            $entity->user = new UserEntity($user->toArray());
 
             return $next($entity);
         }

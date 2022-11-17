@@ -9,15 +9,15 @@
 namespace App\Modules\Access\Actions\Site;
 
 use App\Models\Enums\CacheTime;
+use App\Modules\User\Entities\User as UserEntity;
 use Cache;
 use Hash;
 use App\Models\Action;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
-use App\Models\Rep\RepositoryQueryBuilder;
 use App\Models\Exceptions\UserNotExistException;
 use App\Models\Exceptions\InvalidPasswordException;
-use App\Modules\User\Repositories\User;
+use App\Modules\User\Models\User;
 use ReflectionException;
 use Util;
 
@@ -26,13 +26,6 @@ use Util;
  */
 class AccessPasswordAction extends Action
 {
-    /**
-     * Репозиторий пользователей.
-     *
-     * @var User
-     */
-    private User $user;
-
     /**
      * ID пользователя.
      *
@@ -55,16 +48,6 @@ class AccessPasswordAction extends Action
     public ?string $password = null;
 
     /**
-     * Конструктор.
-     *
-     * @param  User  $user  Репозиторий пользователей.
-     */
-    public function __construct(User $user)
-    {
-        $this->user = $user;
-    }
-
-    /**
      * Метод запуска логики.
      *
      * @return bool Вернет результаты исполнения.
@@ -76,14 +59,15 @@ class AccessPasswordAction extends Action
     public function run(): bool
     {
         if ($this->id) {
-            $query = new RepositoryQueryBuilder($this->id, true);
-            $cacheKey = Util::getKey('access', 'user', $query);
+            $cacheKey = Util::getKey('access', 'user', 'model', $this->id);
 
             $user = Cache::tags(['access', 'user'])->remember(
                 $cacheKey,
                 CacheTime::GENERAL->value,
-                function () use ($query) {
-                    return $this->user->get($query);
+                function () {
+                    return User::active()
+                        ->where('id', $this->id)
+                        ->first();
                 }
             );
 
@@ -93,7 +77,7 @@ class AccessPasswordAction extends Action
                 if ($check) {
                     $user->password = bcrypt($this->password);
 
-                    $this->user->update($user->id, $user);
+                    $user->update($user->toArray());
                     Cache::tags(['access', 'user'])->flush();
 
                     return true;

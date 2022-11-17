@@ -9,7 +9,7 @@
 namespace App\Modules\Category\Actions\Admin;
 
 use App\Models\Action;
-use App\Modules\Category\Repositories\Category;
+use App\Modules\Category\Models\Category;
 use Cache;
 
 /**
@@ -18,28 +18,11 @@ use Cache;
 class CategoryDestroyAction extends Action
 {
     /**
-     * Репозиторий категорий.
-     *
-     * @var Category
-     */
-    private Category $category;
-
-    /**
      * Массив ID пользователей.
      *
      * @var int[]|string[]
      */
     public ?array $ids = null;
-
-    /**
-     * Конструктор.
-     *
-     * @param  Category  $category  Репозиторий категорий.
-     */
-    public function __construct(Category $category)
-    {
-        $this->category = $category;
-    }
 
     /**
      * Метод запуска логики.
@@ -49,12 +32,7 @@ class CategoryDestroyAction extends Action
     public function run(): bool
     {
         if ($this->ids) {
-            $ids = $this->ids;
-
-            for ($i = 0; $i < count($ids); $i++) {
-                $this->category->destroy($ids[$i]);
-            }
-
+            Category::destroy($this->ids);
             Cache::tags(['catalog', 'category', 'direction', 'profession'])->flush();
         }
 

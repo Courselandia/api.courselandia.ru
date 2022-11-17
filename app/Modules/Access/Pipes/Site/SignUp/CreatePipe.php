@@ -13,7 +13,7 @@ use App\Models\Entity;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Access\Entities\AccessSignUp;
 use App\Modules\Access\Entities\AccessSocial;
-use App\Modules\User\Repositories\User;
+use App\Modules\User\Models\User;
 use Cache;
 use Closure;
 use App\Modules\User\Entities\User as UserEntity;
@@ -23,23 +23,6 @@ use App\Modules\User\Entities\User as UserEntity;
  */
 class CreatePipe implements Pipe
 {
-    /**
-     * Репозиторий пользователей.
-     *
-     * @var User
-     */
-    private User $user;
-
-    /**
-     * Конструктор.
-     *
-     * @param  User  $user  Репозиторий пользователей.
-     */
-    public function __construct(User $user)
-    {
-        $this->user = $user;
-    }
-
     /**
      * Метод, который будет вызван у pipeline.
      *
@@ -60,7 +43,8 @@ class CreatePipe implements Pipe
             $user->phone = $entity->phone;
             $user->status = true;
 
-            $entity->id = $this->user->create($user);
+            $user = User::create($user->toArray());
+            $entity->id = $user->id;
             Cache::tags(['access', 'user'])->flush();
         } else {
             $entity->id = $entity->user->id;

@@ -12,7 +12,7 @@ use App\Models\Action;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Modules\Category\Entities\Category as CategoryEntity;
-use App\Modules\Category\Repositories\Category;
+use App\Modules\Category\Models\Category;
 use Cache;
 use ReflectionException;
 
@@ -21,13 +21,6 @@ use ReflectionException;
  */
 class CategoryUpdateStatusAction extends Action
 {
-    /**
-     * Репозиторий категорий.
-     *
-     * @var Category
-     */
-    private Category $category;
-
     /**
      * ID категории.
      *
@@ -43,16 +36,6 @@ class CategoryUpdateStatusAction extends Action
     public ?bool $status = null;
 
     /**
-     * Конструктор.
-     *
-     * @param  Category  $category  Репозиторий категорий.
-     */
-    public function __construct(Category $category)
-    {
-        $this->category = $category;
-    }
-
-    /**
      * Метод запуска логики.
      *
      * @return CategoryEntity Вернет результаты исполнения.
@@ -66,7 +49,10 @@ class CategoryUpdateStatusAction extends Action
 
         if ($categoryEntity) {
             $categoryEntity->status = $this->status;
-            $this->category->update($this->id, $categoryEntity);
+
+            $category = Category::find($this->id);
+            $category->update($categoryEntity->toArray());
+
             Cache::tags(['catalog', 'category', 'direction', 'profession'])->flush();
 
             return $categoryEntity;

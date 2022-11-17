@@ -36,7 +36,7 @@ class AccessControllerTest extends TestCase
             'api/private/access/gate',
             [],
             [
-                'Authorization' => 'Bearer '.$this->getAdminToken()
+                'Authorization' => 'Bearer ' . $this->getAdminToken()
             ]
         )->assertStatus(200)->assertJsonStructure([
             'success',
@@ -78,7 +78,7 @@ class AccessControllerTest extends TestCase
             'api/private/access/logout',
             [],
             [
-                'Authorization' => 'Bearer '.$this->getAdminToken()
+                'Authorization' => 'Bearer ' . $this->getAdminToken()
             ]
         )->assertStatus(200)->assertJson([
             'success' => true
@@ -262,7 +262,7 @@ class AccessControllerTest extends TestCase
             'api/private/site/access/verify',
             [],
             [
-                'Authorization' => 'Bearer '.$this->getUnverifiedToken()
+                'Authorization' => 'Bearer ' . $this->getUnverifiedToken()
             ]
         )->assertStatus(200)->assertJson([
             'success' => true
@@ -281,7 +281,7 @@ class AccessControllerTest extends TestCase
             'api/private/site/access/verify',
             [],
             [
-                'Authorization' => 'Bearer '.$this->getAdminToken()
+                'Authorization' => 'Bearer ' . $this->getAdminToken()
             ]
         )->assertStatus(400)->assertJsonStructure([
             'success',
@@ -316,7 +316,7 @@ class AccessControllerTest extends TestCase
 
         $this->json(
             'POST',
-            'api/private/site/access/verify/'.$content['data']['user']['id'],
+            'api/private/site/access/verify/' . $content['data']['user']['id'],
             [
                 'code' => $faker->name
             ]
@@ -404,7 +404,7 @@ class AccessControllerTest extends TestCase
 
         $this->json(
             'GET',
-            'api/private/site/access/reset-check/'.$content['data']['user']['id'],
+            'api/private/site/access/reset-check/' . $content['data']['user']['id'],
             [
                 'code' => $faker->name,
             ]
@@ -449,7 +449,7 @@ class AccessControllerTest extends TestCase
 
         $this->json(
             'POST',
-            'api/private/site/access/reset/'.$content['data']['user']['id'],
+            'api/private/site/access/reset/' . $content['data']['user']['id'],
             [
                 'code' => $faker->name,
                 'password' => $password,
@@ -480,7 +480,7 @@ class AccessControllerTest extends TestCase
                 'two_factor' => false
             ],
             [
-                'Authorization' => 'Bearer '.$this->getUserToken()
+                'Authorization' => 'Bearer ' . $this->getUserToken()
             ]
         )->assertStatus(200)->assertJsonStructure([
             'success',
@@ -504,7 +504,7 @@ class AccessControllerTest extends TestCase
                 'password_confirmation' => $this->getUser('password')
             ],
             [
-                'Authorization' => 'Bearer '.$this->getUserToken()
+                'Authorization' => 'Bearer ' . $this->getUserToken()
             ]
         )->assertStatus(200)->assertJson([
             'success' => true
@@ -527,7 +527,7 @@ class AccessControllerTest extends TestCase
                 'password_confirmation' => $this->getUser('password')
             ],
             [
-                'Authorization' => 'Bearer '.$this->getUserToken()
+                'Authorization' => 'Bearer ' . $this->getUserToken()
             ]
         )->assertStatus(400)->assertJsonStructure([
             'success',
@@ -557,7 +557,7 @@ class AccessControllerTest extends TestCase
             'api/private/access/gate',
             [],
             [
-                'Authorization' => 'Bearer '.$this->getToken($user->login, 'password')
+                'Authorization' => 'Bearer ' . $this->getToken($user->login, 'password')
             ]
         )->assertStatus(200)->assertJsonStructure([
             'success',

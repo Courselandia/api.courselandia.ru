@@ -8,28 +8,19 @@
 
 namespace App\Modules\Category\Actions\Admin;
 
+use Cache;
+use Util;
 use App\Models\Action;
 use App\Models\Enums\CacheTime;
 use App\Models\Exceptions\ParameterInvalidException;
-use App\Models\Rep\RepositoryQueryBuilder;
 use App\Modules\Category\Entities\Category as CategoryEntity;
-use App\Modules\Category\Repositories\Category;
-use Cache;
-use ReflectionException;
-use Util;
+use App\Modules\Category\Models\Category;
 
 /**
  * Класс действия для получения категории.
  */
 class CategoryGetAction extends Action
 {
-    /**
-     * Репозиторий категорий.
-     *
-     * @var Category
-     */
-    private Category $category;
-
     /**
      * ID категории.
      *
@@ -38,38 +29,34 @@ class CategoryGetAction extends Action
     public int|string|null $id = null;
 
     /**
-     * Конструктор.
-     *
-     * @param  Category  $category  Репозиторий категорий.
-     */
-    public function __construct(Category $category)
-    {
-        $this->category = $category;
-    }
-
-    /**
      * Метод запуска логики.
      *
      * @return CategoryEntity|null Вернет результаты исполнения.
-     * @throws ParameterInvalidException|ReflectionException
+     * @throws ParameterInvalidException
      */
     public function run(): ?CategoryEntity
     {
-        $query = new RepositoryQueryBuilder();
-        $query->setId($this->id)
-            ->setRelations([
-                'metatag',
-                'directions',
-                'professions',
-            ]);
-
-        $cacheKey = Util::getKey('category', $query);
+        $cacheKey = Util::getKey('category', 'admin', 'get', $this->id);
 
         return Cache::tags(['catalog', 'category', 'direction', 'profession'])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
-            function () use ($query) {
-                return $this->category->get($query);
+            function () {
+                $result = Category::with([
+                    'metatag',
+                    'directions',
+                    'professions',
+                ])->find($this->id);
+
+                if ($result) {
+                    $item = $result->toArray();
+                    $entity = new CategoryEntity();
+                    $entity->set($item);
+
+                    return $entity;
+                }
+
+                return null;
             }
         );
     }

@@ -13,9 +13,7 @@ use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\UserNotExistException;
 use App\Models\Action;
 use App\Models\Exceptions\UserVerifiedException;
-use App\Models\Rep\RepositoryCondition;
-use App\Models\Rep\RepositoryQueryBuilder;
-use App\Modules\User\Repositories\User;
+use App\Modules\User\Models\User;
 use Cache;
 use ReflectionException;
 use Util;
@@ -26,28 +24,11 @@ use Util;
 class AccessSendEmailVerificationAction extends Action
 {
     /**
-     * Репозиторий пользователей.
-     *
-     * @var User
-     */
-    private User $user;
-
-    /**
      * Логин пользователя.
      *
      * @var string|null
      */
     public ?string $login = null;
-
-    /**
-     * Конструктор.
-     *
-     * @param  User  $user  Репозиторий пользователей.
-     */
-    public function __construct(User $user)
-    {
-        $this->user = $user;
-    }
 
     /**
      * Метод запуска логики.
@@ -58,17 +39,15 @@ class AccessSendEmailVerificationAction extends Action
      */
     public function run(): bool
     {
-        $query = new RepositoryQueryBuilder();
-        $query->addCondition(new RepositoryCondition('login', $this->login))
-            ->setActive(true);
-
-        $cacheKey = Util::getKey('access', 'user', $query);
+        $cacheKey = Util::getKey('access', 'user', 'model', $this->login);
 
         $user = Cache::tags(['access', 'user'])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
-            function () use ($query) {
-                return $this->user->get($query);
+            function () {
+                return User::where('login', $this->login)
+                    ->active()
+                    ->first();
             }
         );
 

@@ -15,8 +15,8 @@ use Closure;
 use App\Models\Entity;
 use App\Modules\Access\Entities\AccessSocial;
 use App\Models\Contracts\Pipe;
-use App\Modules\User\Repositories\User;
-use App\Modules\User\Repositories\UserVerification;
+use App\Modules\User\Models\User;
+use App\Modules\User\Models\UserVerification;
 use App\Modules\Access\Actions\Site\AccessSendEmailVerificationCodeAction;
 use App\Modules\User\Entities\UserVerification as UserVerificationEntity;
 
@@ -25,32 +25,6 @@ use App\Modules\User\Entities\UserVerification as UserVerificationEntity;
  */
 class VerificationPipe implements Pipe
 {
-    /**
-     * Репозиторий пользователей.
-     *
-     * @var User
-     */
-    private User $user;
-
-    /**
-     * Репозиторий верификации пользователя.
-     *
-     * @var UserVerification
-     */
-    private UserVerification $userVerification;
-
-    /**
-     * Конструктор.
-     *
-     * @param  User  $user  Репозиторий пользователей.
-     * @param  UserVerification  $userVerification  Репозиторий верификации пользователя.
-     */
-    public function __construct(User $user, UserVerification $userVerification)
-    {
-        $this->user = $user;
-        $this->userVerification = $userVerification;
-    }
-
     /**
      * Метод, который будет вызван у pipeline.
      *
@@ -68,7 +42,7 @@ class VerificationPipe implements Pipe
             $userVerificationEntity->code = UserVerificationEntity::generateCode($entity->id);
             $userVerificationEntity->status = $entity->verified;
 
-            $this->userVerification->create($userVerificationEntity);
+            UserVerification::create($userVerificationEntity->toArray());
             Cache::tags(['access', 'user'])->flush();
 
             try {
@@ -78,14 +52,14 @@ class VerificationPipe implements Pipe
                         $action->id = $entity->id;
                         $action->run();
                     } catch (Exception $error) {
-                        $this->user->destroy($entity->id);
+                        User::destroy($entity->id);
                         Cache::tags(['access', 'user'])->flush();
 
                         throw $error;
                     }
                 }
             } catch (Exception $error) {
-                $this->user->destroy($entity->id);
+                User::destroy($entity->id);
                 Cache::tags(['access', 'user'])->flush();
 
                 throw $error;

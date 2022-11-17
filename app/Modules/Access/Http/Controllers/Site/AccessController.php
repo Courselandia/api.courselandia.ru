@@ -207,7 +207,7 @@ class AccessController extends Controller
             ];
 
             return response()->json($data)->setStatusCode(401);
-        } catch (UserVerifiedException $error) {
+        } catch (UserVerifiedException|UserNotExistException $error) {
             $data = [
                 'success' => false,
                 'message' => $error->getMessage()
@@ -297,7 +297,7 @@ class AccessController extends Controller
      * @return JsonResponse Вернет JSON ответ.
      * @throws UserNotExistException
      * @throws ParameterInvalidException
-     * @throws UserNotExistException
+     * @throws UserNotExistException|ReflectionException
      */
     public function resetCheck(int|string $id, AccessResetCheckRequest $request): JsonResponse
     {
@@ -330,7 +330,7 @@ class AccessController extends Controller
      * @param  AccessResetRequest  $request  Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException
+     * @throws ParameterInvalidException|ReflectionException
      */
     public function reset(int|string $id, AccessResetRequest $request): JsonResponse
     {

@@ -9,14 +9,13 @@
 namespace App\Modules\Access\Actions\Site;
 
 use App\Models\Enums\CacheTime;
+use App\Modules\User\Entities\User as UserEntity;
 use Cache;
 use Exception;
 use Mail;
-use App\Models\Rep\RepositoryCondition;
-use App\Models\Rep\RepositoryQueryBuilder;
 use App\Models\Action;
-use App\Modules\User\Repositories\User;
-use App\Modules\User\Repositories\UserRecovery;
+use App\Modules\User\Models\User;
+use App\Modules\User\Models\UserRecovery;
 use App\Modules\Access\Emails\Site\Recovery;
 use App\Models\Exceptions\UserNotExistException;
 use App\Modules\User\Entities\UserRecovery as UserRecoveryEntity;
@@ -28,37 +27,11 @@ use Util;
 class AccessForgetAction extends Action
 {
     /**
-     * Репозиторий пользователей.
-     *
-     * @var User
-     */
-    private User $user;
-
-    /**
-     * Репозиторий восстановления пароля пользователя.
-     *
-     * @var UserRecovery
-     */
-    private UserRecovery $userRecovery;
-
-    /**
      * Логин пользователя.
      *
      * @var string|null
      */
     public ?string $login = null;
-
-    /**
-     * Конструктор.
-     *
-     * @param  User  $user  Репозиторий пользователей.
-     * @param  UserRecovery  $userRecovery  Репозиторий восстановления пароля пользователя.
-     */
-    public function __construct(User $user, UserRecovery $userRecovery)
-    {
-        $this->user = $user;
-        $this->userRecovery = $userRecovery;
-    }
 
     /**
      * Метод запуска логики.
@@ -69,44 +42,46 @@ class AccessForgetAction extends Action
      */
     public function run(): bool
     {
-        $query = new RepositoryQueryBuilder();
-        $query->setActive(true)
-            ->addCondition(new RepositoryCondition('login', $this->login));
-
-        $cacheKey = Util::getKey('access', 'user', $query);
+        $cacheKey = Util::getKey('access', 'user', $this->login);
 
         $user = Cache::tags(['access', 'user'])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
-            function () use ($query) {
-                return $this->user->get($query);
+            function () {
+                $user = User::where('login', $this->login)
+                    ->active()
+                    ->first();
+
+                if ($user) {
+                    return new UserEntity($user->toArray());
+                }
+
+                return null;
             }
         );
 
         if ($user) {
             $code = UserRecoveryEntity::generateCode();
 
-            $query = new RepositoryQueryBuilder();
-            $query->addCondition(new RepositoryCondition('user_id', $user->id));
-            $cacheKey = Util::getKey('access', 'userRecovery', $query);
+            $cacheKey = Util::getKey('access', 'userRecovery', 'model', 'user_id', $user->id);
 
             $recovery = Cache::tags(['access', 'user'])->remember(
                 $cacheKey,
                 CacheTime::GENERAL->value,
-                function () use ($query) {
-                    return $this->userRecovery->get($query);
+                function () use ($user) {
+                    return UserRecovery::where('user_id', $user->id)->first();
                 }
             );
 
             if ($recovery) {
                 $recovery->code = $code;
-                $this->userRecovery->update($recovery->id, $recovery);
+                $recovery->save();
             } else {
                 $recovery = new UserRecoveryEntity();
                 $recovery->user_id = $user->id;
                 $recovery->code = $code;
 
-                $this->userRecovery->create($recovery);
+                UserRecovery::create($recovery->toArray());
             }
 
             Cache::tags(['access', 'user'])->flush();

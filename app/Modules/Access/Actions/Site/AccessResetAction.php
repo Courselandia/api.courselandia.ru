@@ -9,14 +9,14 @@
 namespace App\Modules\Access\Actions\Site;
 
 use App\Models\Enums\CacheTime;
+use App\Modules\User\Entities\User as UserEntity;
 use Cache;
 use Mail;
 use App\Models\Action;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
-use App\Models\Rep\RepositoryQueryBuilder;
-use App\Modules\User\Repositories\User;
-use App\Modules\User\Repositories\UserRecovery;
+use App\Modules\User\Models\User;
+use App\Modules\User\Models\UserRecovery;
 use App\Modules\Access\Emails\Site\Reset;
 use App\Models\Exceptions\UserNotExistException;
 use App\Models\Exceptions\InvalidCodeException;
@@ -28,20 +28,6 @@ use Util;
  */
 class AccessResetAction extends Action
 {
-    /**
-     * Репозиторий пользователей.
-     *
-     * @var User
-     */
-    private User $user;
-
-    /**
-     * Репозиторий восстановления пароля пользователя.
-     *
-     * @var UserRecovery
-     */
-    private UserRecovery $userRecovery;
-
     /**
      * ID пользователя.
      *
@@ -64,18 +50,6 @@ class AccessResetAction extends Action
     public ?string $password = null;
 
     /**
-     * Конструктор.
-     *
-     * @param  User  $user  Репозиторий пользователей.
-     * @param  UserRecovery  $userRecovery  Репозиторий восстановления пароля пользователя.
-     */
-    public function __construct(User $user, UserRecovery $userRecovery)
-    {
-        $this->user = $user;
-        $this->userRecovery = $userRecovery;
-    }
-
-    /**
      * Метод запуска логики.
      *
      * @return bool Вернет результаты исполнения.
@@ -92,32 +66,30 @@ class AccessResetAction extends Action
 
         $action->run();
 
-        $query = new RepositoryQueryBuilder();
-        $query->setId($this->id)
-            ->setActive(true)
-            ->addRelation('recovery');
-
-        $cacheKey = Util::getKey('access', 'user', $query);
+        $cacheKey = Util::getKey('access', 'user', 'model', $this->id);
 
         $user = Cache::tags(['access', 'user'])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
-            function () use ($query) {
-                return $this->user->get($query);
+            function () {
+                return User::where('id', $this->id)
+                    ->active()
+                    ->with('recovery')
+                    ->first();
             }
         );
 
         if ($user) {
             $user->password = bcrypt($this->password);
-            $this->user->update($user->id, $user);
+            $user->save();
 
             if ($user->recovery) {
-                $this->userRecovery->destroy($user->recovery->id);
+                UserRecovery::destroy($user->recovery->id);
             }
 
             Cache::tags(['access', 'user'])->flush();
 
-            Mail::to($user->login)->queue(new Reset($user));
+            Mail::to($user->login)->queue(new Reset(new UserEntity($user->toArray())));
 
             return true;
         }

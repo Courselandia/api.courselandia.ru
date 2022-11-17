@@ -13,7 +13,6 @@ use Carbon\Carbon;
 use ReflectionClass;
 use ReflectionProperty;
 use ReflectionUnionType;
-use ReflectionException;
 
 /**
  * Сущность.
@@ -26,7 +25,6 @@ abstract class Entity
      * @param  array|null  $values  Массив значений сущности.
      *
      * @throws ParameterInvalidException
-     * @throws ReflectionException
      */
     public function __construct(array $values = null)
     {
@@ -146,6 +144,26 @@ abstract class Entity
         }
 
         return $this;
+    }
+
+    /**
+     * Перевод массива значений в массив сущностей.
+     *
+     * @param array $items Массив свойств и значений.
+     * @param Entity $entity Сущность для перевода.
+     *
+     * @return Entity[] Массив сущностей
+     * @throws ParameterInvalidException
+     */
+    public static function toEntities(array $items, Entity $entity): array
+    {
+        $result = [];
+
+        foreach ($items as $item) {
+            $result[] = clone $entity->set($item);
+        }
+
+        return $result;
     }
 
     /**

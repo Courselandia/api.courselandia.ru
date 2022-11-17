@@ -15,7 +15,6 @@ use Illuminate\Support\ServiceProvider;
 use App\Modules\Act\Models\Implement as Implement;
 use App\Modules\Act\Models\Act as ActModel;
 use App\Modules\Act\Entities\Act as ActEntity;
-use App\Modules\Act\Repositories\Act as RepositoryAct;
 
 /**
  * Класс сервис-провайдера для настройки этого модуля.
@@ -43,10 +42,6 @@ class ActServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->register(RouteServiceProvider::class);
-
-        App::singleton(RepositoryAct::class, function () {
-            return new RepositoryAct(new ActModel(), new ActEntity());
-        });
 
         App::bind('act', function () {
             return app(Implement::class);

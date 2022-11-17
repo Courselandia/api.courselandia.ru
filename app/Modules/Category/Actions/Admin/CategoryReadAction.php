@@ -9,28 +9,21 @@
 namespace App\Modules\Category\Actions\Admin;
 
 use App\Models\Action;
+use App\Models\Entity;
 use App\Models\Enums\CacheTime;
 use App\Models\Exceptions\ParameterInvalidException;
-use App\Models\Rep\RepositoryFilter;
-use App\Models\Rep\RepositoryQueryBuilder;
-use App\Modules\Category\Repositories\Category;
+use App\Modules\Category\Models\Category;
 use Cache;
 use JetBrains\PhpStorm\ArrayShape;
 use ReflectionException;
 use Util;
+use App\Modules\Category\Entities\Category as CategoryEntity;
 
 /**
  * Класс действия для чтения категорий.
  */
 class CategoryReadAction extends Action
 {
-    /**
-     * Репозиторий категорий.
-     *
-     * @var Category
-     */
-    private Category $category;
-
     /**
      * Сортировка данных.
      *
@@ -60,16 +53,6 @@ class CategoryReadAction extends Action
     public ?int $limit = null;
 
     /**
-     * Конструктор.
-     *
-     * @param  Category  $category  Репозиторий категорий.
-     */
-    public function __construct(Category $category)
-    {
-        $this->category = $category;
-    }
-
-    /**
      * Метод запуска логики.
      *
      * @return mixed Вернет результаты исполнения.
@@ -77,24 +60,42 @@ class CategoryReadAction extends Action
      */
     #[ArrayShape(['data' => 'array', 'total' => 'int'])] public function run(): array
     {
-        $query = new RepositoryQueryBuilder();
-        $query->setFilters(RepositoryFilter::getFilters($this->filters))
-            ->setSorts($this->sorts)
-            ->setOffset($this->offset)
-            ->setLimit($this->limit)
-            ->setRelations([
+        $cacheKey = Util::getKey(
+            'category',
+            'admin',
+            'read',
+            'count',
+            $this->filters,
+            $this->offset,
+            $this->limit,
+            [
                 'metatag',
-            ]);
-
-        $cacheKey = Util::getKey('category', 'read', 'count', $query);
+            ]
+        );
 
         return Cache::tags(['catalog', 'category', 'direction', 'profession'])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
-            function () use ($query) {
+            function () {
+                $query = Category::filter($this->filters ?: [])
+                    ->sorted($this->sorts ?: [])
+                    ->with([
+                        'metatag',
+                    ]);
+
+                if ($this->offset) {
+                    $query->offset($this->offset);
+                }
+
+                if ($this->limit) {
+                    $query->limit($this->limit);
+                }
+
+                $items = $query->get()->toArray();
+
                 return [
-                    'data' => $this->category->read($query),
-                    'total' => $this->category->count($query),
+                    'data' => Entity::toEntities($items, new CategoryEntity()),
+                    'total' => $query->count(),
                 ];
             }
         );

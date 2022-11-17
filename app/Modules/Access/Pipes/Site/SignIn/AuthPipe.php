@@ -20,7 +20,7 @@ use App\Modules\Access\Entities\AccessSignUp;
 use App\Models\Entity;
 use App\Models\Contracts\Pipe;
 use App\Modules\Access\Entities\AccessSignIn;
-use App\Modules\User\Repositories\UserAuth;
+use App\Modules\User\Models\UserAuth;
 use App\Modules\User\Entities\UserAuth as UserAuthEntity;
 
 /**
@@ -28,23 +28,6 @@ use App\Modules\User\Entities\UserAuth as UserAuthEntity;
  */
 class AuthPipe implements Pipe
 {
-    /**
-     * Репозиторий авторизаций пользователя.
-     *
-     * @var UserAuth
-     */
-    private UserAuth $userAuth;
-
-    /**
-     * Конструктор.
-     *
-     * @param  UserAuth  $userAuth  Репозиторий авторизаций пользователя.
-     */
-    public function __construct(UserAuth $userAuth)
-    {
-        $this->userAuth = $userAuth;
-    }
-
     /**
      * Метод, который будет вызван у pipeline.
      *
@@ -74,7 +57,7 @@ class AuthPipe implements Pipe
                 Log::alert('The GEO for the IP '.Request::ip().' is undetectable ('.$error->getMessage().').');
             }
 
-            $this->userAuth->create($userAuth);
+            // UserAuth::create($userAuth->toArray());
             Cache::tags(['access', 'user'])->flush();
         }
 

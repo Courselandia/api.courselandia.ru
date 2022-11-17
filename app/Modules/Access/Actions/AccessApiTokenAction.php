@@ -9,15 +9,15 @@
 namespace App\Modules\Access\Actions;
 
 use App\Models\Enums\CacheTime;
+use App\Modules\User\Entities\User as UserEntity;
 use Cache;
 use OAuth;
 use Config;
-use App\Modules\Access\Entities\AccessApiClient;
 use App\Modules\Access\Entities\AccessApiToken;
 use App\Modules\OAuth\Entities\Token;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Rep\RepositoryQueryBuilder;
-use App\Modules\User\Repositories\User;
+use App\Modules\User\Models\User;
 use App\Models\Action;
 use ReflectionException;
 use Util;
@@ -27,13 +27,6 @@ use Util;
  */
 class AccessApiTokenAction extends Action
 {
-    /**
-     * Репозиторий пользователя.
-     *
-     * @var User
-     */
-    private User $user;
-
     /**
      * Запомнить пользователя.
      *
@@ -47,16 +40,6 @@ class AccessApiTokenAction extends Action
      * @var string|null
      */
     public ?string $secret = null;
-
-    /**
-     * Конструктор.
-     *
-     * @param  User  $user  Репозиторий пользователей.
-     */
-    public function __construct(User $user)
-    {
-        $this->user = $user;
-    }
 
     /**
      * Метод запуска логики.
@@ -82,14 +65,20 @@ class AccessApiTokenAction extends Action
         $accessApiToken->accessToken = $token->accessToken;
         $accessApiToken->refreshToken = $token->refreshToken;
 
-        $query = new RepositoryQueryBuilder($data->user, true);
-        $cacheKey = Util::getKey('access', 'user', $query);
+        $id = $data->user;
+        $cacheKey = Util::getKey('access', 'user', $id, 'role');
 
         $accessApiToken->user = Cache::tags(['access', 'user'])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
-            function () use ($query) {
-                return $this->user->get($query);
+            function () use ($id) {
+                $user = User::where('id', $id)->with('role')->active()->first();
+
+                if ($user) {
+                    return new UserEntity($user->toArray());
+                }
+
+                return null;
             }
         );
 

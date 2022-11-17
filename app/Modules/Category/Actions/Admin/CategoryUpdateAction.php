@@ -12,12 +12,9 @@ use App\Models\Action;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Modules\Category\Entities\Category as CategoryEntity;
-use App\Modules\Category\Repositories\Category;
-use App\Modules\Image\Entities\Image;
+use App\Modules\Category\Models\Category;
 use App\Modules\Metatag\Actions\MetatagSetAction;
 use Cache;
-use Carbon\Carbon;
-use Illuminate\Http\UploadedFile;
 use ReflectionException;
 
 /**
@@ -25,13 +22,6 @@ use ReflectionException;
  */
 class CategoryUpdateAction extends Action
 {
-    /**
-     * Репозиторий категорий.
-     *
-     * @var Category
-     */
-    private Category $category;
-
     /**
      * ID категории.
      *
@@ -110,16 +100,6 @@ class CategoryUpdateAction extends Action
     public ?array $professions = null;
 
     /**
-     * Конструктор.
-     *
-     * @param  Category  $category  Репозиторий категорий.
-     */
-    public function __construct(Category $category)
-    {
-        $this->category = $category;
-    }
-
-    /**
      * Метод запуска логики.
      *
      * @return CategoryEntity Вернет результаты исполнения.
@@ -148,9 +128,11 @@ class CategoryUpdateAction extends Action
             $categoryEntity->text = $this->text;
             $categoryEntity->status = $this->status;
 
-            $this->category->update($this->id, $categoryEntity);
-            $this->category->directionSync($this->id, $this->directions);
-            $this->category->professionSync($this->id, $this->professions);
+            $category = Category::find($this->id);
+            $category->update($categoryEntity->toArray());
+
+            $category->directions()->sync($this->directions);
+            $category->professions()->sync($this->professions);
             Cache::tags(['catalog', 'category', 'direction', 'profession'])->flush();
 
             $action = app(CategoryGetAction::class);

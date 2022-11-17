@@ -19,8 +19,8 @@ use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Rep\RepositoryCondition;
 use App\Models\Rep\RepositoryQueryBuilder;
 use App\Modules\Access\Entities\AccessVerify;
-use App\Modules\User\Repositories\User;
-use App\Modules\User\Repositories\UserVerification;
+use App\Modules\User\Models\User;
+use App\Modules\User\Models\UserVerification;
 use App\Models\Exceptions\UserNotExistException;
 use App\Models\Exceptions\UserVerifiedException;
 use App\Models\Exceptions\InvalidCodeException;
@@ -32,32 +32,6 @@ use Util;
  */
 class CheckPipe implements Pipe
 {
-    /**
-     * Репозиторий пользователей.
-     *
-     * @var User
-     */
-    private User $user;
-
-    /**
-     * Репозиторий верификации пользователя.
-     *
-     * @var UserVerification
-     */
-    private UserVerification $userVerification;
-
-    /**
-     * Конструктор.
-     *
-     * @param  User  $user  Репозиторий пользователей.
-     * @param  UserVerification  $userVerification  Репозиторий верификации пользователя.
-     */
-    public function __construct(User $user, UserVerification $userVerification)
-    {
-        $this->user = $user;
-        $this->userVerification = $userVerification;
-    }
-
     /**
      * Метод, который будет вызван у pipeline.
      *
@@ -73,39 +47,36 @@ class CheckPipe implements Pipe
      */
     public function handle(AccessVerify|Entity $entity, Closure $next): mixed
     {
-        $query = new RepositoryQueryBuilder();
-        $query->setId($entity->id)
-            ->setActive(true);
-
-        $cacheKey = Util::getKey('access', 'user', $query);
+        $id = $entity->id;
+        $cacheKey = Util::getKey('access', 'user', 'model', $id);
 
         $user = Cache::tags(['access', 'user'])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
-            function () use ($query) {
-                return $this->user->get($query);
+            function () use ($id) {
+                return User::where('id', $id)
+                    ->active()
+                    ->first();
             }
         );
 
         if ($user) {
-            $query = new RepositoryQueryBuilder();
-            $query->addCondition(new RepositoryCondition('user_id', $entity->id));
-
-            $cacheKey = Util::getKey('access', 'userVerification', $query);
+            $cacheKey = Util::getKey('access', 'userVerification', 'model', $id);
 
             $verification = Cache::tags(['access', 'user'])->remember(
                 $cacheKey,
                 CacheTime::GENERAL->value,
-                function () use ($query) {
-                    return $this->userVerification->get($query);
+                function () use ($id) {
+                    return UserVerification::where('user_id', $id)->first();
                 }
             );
 
             if ($verification) {
                 if (Config::get('app.env') === 'testing' || Config::get('app.env') === 'local' || $verification->code === $entity->code) {
-                    if ($verification->status === false) {
+                    if ((bool)$verification->status === false) {
                         $verification->status = true;
-                        $this->userVerification->update($verification->id, $verification);
+
+                        $verification->update($verification->toArray());
 
                         return $next($entity);
                     }

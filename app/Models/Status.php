@@ -12,6 +12,11 @@ use Illuminate\Database\Eloquent\Builder;
 
 /**
  * Трейт для модели которая поддерживает систему статусов.
+ *
+ * @method static Builder active()
+ * @method static Builder disabled()
+ * @method static Builder is(bool $status = true)
+ * @method static bool check()
  */
 trait Status
 {
@@ -49,7 +54,7 @@ trait Status
      *
      * @return Builder Построитель запросов.
      */
-    public function scopeNotActive(Builder $query): Builder
+    public function scopeDisabled(Builder $query): Builder
     {
         return $this->statusIs($query, false);
     }
