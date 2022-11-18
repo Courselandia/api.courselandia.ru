@@ -10,28 +10,19 @@ namespace App\Modules\Publication\Actions\Admin\Publication;
 
 use App\Models\Action;
 use App\Models\Exceptions\ParameterInvalidException;
-use App\Models\Exceptions\RecordNotExistException;
 use App\Modules\Image\Entities\Image;
 use App\Modules\Metatag\Actions\MetatagSetAction;
 use App\Modules\Publication\Entities\Publication as PublicationEntity;
-use App\Modules\Publication\Repositories\Publication;
+use App\Modules\Publication\Models\Publication;
 use Cache;
 use Carbon\Carbon;
 use Illuminate\Http\UploadedFile;
-use ReflectionException;
 
 /**
  * Класс действия для создания публикации.
  */
 class PublicationCreateAction extends Action
 {
-    /**
-     * Репозиторий публикаций.
-     *
-     * @var Publication
-     */
-    private Publication $publication;
-
     /**
      * Дата добавления.
      *
@@ -103,22 +94,10 @@ class PublicationCreateAction extends Action
     public ?string $title = null;
 
     /**
-     * Конструктор.
-     *
-     * @param  Publication  $publication  Репозиторий публикаций.
-     */
-    public function __construct(Publication $publication)
-    {
-        $this->publication = $publication;
-    }
-
-    /**
      * Метод запуска логики.
      *
      * @return PublicationEntity Вернет результаты исполнения.
-     * @throws RecordNotExistException
      * @throws ParameterInvalidException
-     * @throws ReflectionException
      */
     public function run(): PublicationEntity
     {
@@ -140,11 +119,11 @@ class PublicationCreateAction extends Action
         $publicationEntity->status = $this->status;
         $publicationEntity->metatag_id = $metatag->id;
 
-        $id = $this->publication->create($publicationEntity);
+        $publication = Publication::create($publicationEntity->toArray());
         Cache::tags(['publication'])->flush();
 
         $action = app(PublicationGetAction::class);
-        $action->id = $id;
+        $action->id = $publication->id;
 
         return $action->run();
     }

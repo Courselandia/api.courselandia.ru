@@ -11,9 +11,6 @@ namespace App\Modules\Feedback\Providers;
 use App;
 use Config;
 use Illuminate\Support\ServiceProvider;
-use App\Modules\Feedback\Models\Feedback as FeedbackModel;
-use App\Modules\Feedback\Entities\Feedback as FeedbackEntity;
-use App\Modules\Feedback\Repositories\Feedback as FeedbackRepository;
 
 /**
  * Класс сервис-провайдера для настройки этого модуля.
@@ -42,10 +39,6 @@ class FeedbackServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->register(RouteServiceProvider::class);
-
-        App::singleton(FeedbackRepository::class, function () {
-            return new FeedbackRepository(new FeedbackModel(), new FeedbackEntity());
-        });
     }
 
     /**

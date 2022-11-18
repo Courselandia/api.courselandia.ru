@@ -12,7 +12,7 @@ use App\Models\Action;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Modules\Faq\Entities\Faq as FaqEntity;
-use App\Modules\Faq\Repositories\Faq;
+use App\Modules\Faq\Models\Faq;
 use Cache;
 
 /**
@@ -20,13 +20,6 @@ use Cache;
  */
 class FaqUpdateAction extends Action
 {
-    /**
-     * Репозиторий FAQ.
-     *
-     * @var Faq
-     */
-    private Faq $faq;
-
     /**
      * ID FAQ.
      *
@@ -63,16 +56,6 @@ class FaqUpdateAction extends Action
     public ?bool $status = null;
 
     /**
-     * Конструктор.
-     *
-     * @param  Faq  $faq  Репозиторий FAQ.
-     */
-    public function __construct(Faq $faq)
-    {
-        $this->faq = $faq;
-    }
-
-    /**
      * Метод запуска логики.
      *
      * @return FaqEntity Вернет результаты исполнения.
@@ -92,7 +75,7 @@ class FaqUpdateAction extends Action
             $faqEntity->answer = $this->answer;
             $faqEntity->status = $this->status;
 
-            $this->faq->update($this->id, $faqEntity);
+            Faq::find($this->id)->update($faqEntity->toArray());
             Cache::tags(['catalog', 'school', 'faq'])->flush();
 
             $action = app(FaqGetAction::class);

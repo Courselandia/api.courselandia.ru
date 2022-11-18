@@ -13,7 +13,6 @@ use Cache;
 use Config;
 use stdClass;
 use Carbon\Carbon;
-use ReflectionException;
 use App\Models\Enums\CacheTime;
 use App\Modules\OAuth\Entities\OAuthClient;
 use App\Models\Enums\OperatorQuery;
@@ -22,7 +21,7 @@ use App\Models\Rep\RepositoryCondition;
 use App\Models\Rep\RepositoryQueryBuilder;
 use App\Modules\OAuth\Entities\OAuthRefresh;
 use App\Modules\OAuth\Entities\OAuthToken;
-use App\Modules\User\Repositories\User;
+use App\Modules\User\Models\User;
 use App\Modules\OAuth\Contracts\OAuthDriver;
 use App\Modules\OAuth\Repositories\OAuthClientEloquent;
 use App\Modules\OAuth\Repositories\OAuthTokenEloquent;
@@ -37,13 +36,6 @@ use App\Modules\OAuth\Entities\Token;
  */
 class OAuthDriverDatabase extends OAuthDriver
 {
-    /**
-     * Репозиторий пользователей.
-     *
-     * @var User
-     */
-    private User $user;
-
     /**
      * Репозиторий клиентов.
      *
@@ -89,18 +81,15 @@ class OAuthDriverDatabase extends OAuthDriver
     /**
      * Конструктор.
      *
-     * @param  User  $user  Репозиторий пользователей.
      * @param  OAuthClientEloquent  $oAuthClientEloquent  Репозиторий клиентов.
      * @param  OAuthTokenEloquent  $oAuthTokenEloquent  Репозиторий токенов.
      * @param  OAuthRefreshTokenEloquent  $oAuthRefreshTokenEloquent  Репозиторий токенов обновления.
      */
     public function __construct(
-        User $user,
         OAuthClientEloquent $oAuthClientEloquent,
         OAuthTokenEloquent $oAuthTokenEloquent,
         OAuthRefreshTokenEloquent $oAuthRefreshTokenEloquent
     ) {
-        $this->user = $user;
         $this->oAuthClientEloquent = $oAuthClientEloquent;
         $this->oAuthTokenEloquent = $oAuthTokenEloquent;
         $this->oAuthRefreshTokenEloquent = $oAuthRefreshTokenEloquent;
@@ -188,7 +177,7 @@ class OAuthDriverDatabase extends OAuthDriver
      *
      * @return string Вернет секретный ключ клиента.
      * ParameterInvalidException|ReflectionException
-     * @throws RecordNotExistException|ReflectionException|ParameterInvalidException
+     * @throws RecordNotExistException|ParameterInvalidException
      */
     public function secret(int $userId): string
     {
@@ -241,14 +230,24 @@ class OAuthDriverDatabase extends OAuthDriver
      * @throws RecordNotExistException
      * @throws UserNotExistException
      * @throws InvalidFormatException
-     * @throws ParameterInvalidException|ReflectionException
+     * @throws ParameterInvalidException
      */
     public function token(string $secret): Token
     {
         $value = $this->decode($secret, 'accessToken');
-        $userEntity = $this->user->get(new RepositoryQueryBuilder($value->user));
 
-        if ($userEntity) {
+        $userId = $value->user;
+        $cacheKey = Util::getKey('user', 'model', $value->user);
+
+        $user = Cache::tags(['user'])->remember(
+            $cacheKey,
+            CacheTime::GENERAL->value,
+            function () use ($userId) {
+                return User::find($userId);
+            }
+        );
+
+        if ($user) {
             $query = new RepositoryQueryBuilder();
             $query->addCondition(new RepositoryCondition('secret', $secret))
                 ->addCondition(new RepositoryCondition('user_id', $value->user));
@@ -350,14 +349,23 @@ class OAuthDriverDatabase extends OAuthDriver
      * @throws RecordNotExistException
      * @throws UserNotExistException
      * @throws InvalidFormatException
-     * @throws ParameterInvalidException|ReflectionException
+     * @throws ParameterInvalidException
      */
     public function refresh(string $refreshToken): Token
     {
         $value = $this->decode($refreshToken, 'refreshToken');
-        $userEntity = $this->user->get(new RepositoryQueryBuilder($value->user));
+        $userId = $value->user;
+        $cacheKey = Util::getKey('user', 'model', $value->user);
 
-        if ($userEntity) {
+        $user = Cache::tags(['user'])->remember(
+            $cacheKey,
+            CacheTime::GENERAL->value,
+            function () use ($userId) {
+                return User::find($userId);
+            }
+        );
+
+        if ($user) {
             $query = new RepositoryQueryBuilder($value->client);
             $cacheKey = Util::getKey('oAuth', 'client', $query);
 
@@ -476,14 +484,22 @@ class OAuthDriverDatabase extends OAuthDriver
      * @throws InvalidFormatException
      * @throws UserNotExistException
      * @throws ParameterInvalidException
-     * @throws ReflectionException
      */
     public function check(string $token): bool
     {
         $value = $this->decode($token, 'accessToken');
-        $userEntity = $this->user->get(new RepositoryQueryBuilder($value->user));
+        $userId = $value->user;
+        $cacheKey = Util::getKey('user', 'model', $value->user);
 
-        if ($userEntity) {
+        $user = Cache::tags(['user'])->remember(
+            $cacheKey,
+            CacheTime::GENERAL->value,
+            function () use ($userId) {
+                return User::find($userId);
+            }
+        );
+
+        if ($user) {
             $query = new RepositoryQueryBuilder($value->client);
             $cacheKey = Util::getKey('oAuth', 'client', $query);
 
@@ -524,7 +540,7 @@ class OAuthDriverDatabase extends OAuthDriver
      * Очистка системы от старых токенов.
      *
      * @return void
-     * @throws ParameterInvalidException|ReflectionException
+     * @throws ParameterInvalidException
      */
     public function clean(): void
     {

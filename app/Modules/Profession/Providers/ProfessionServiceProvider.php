@@ -8,13 +8,10 @@
 
 namespace App\Modules\Profession\Providers;
 
-use App;
 use Config;
 use Illuminate\Support\ServiceProvider;
 
 use App\Modules\Profession\Models\Profession as ProfessionModel;
-use App\Modules\Profession\Repositories\Profession as ProfessionRepository;
-use App\Modules\Profession\Entities\Profession as ProfessionEntity;
 use App\Modules\Profession\Events\Listeners\ProfessionListener;
 
 /**
@@ -45,13 +42,6 @@ class ProfessionServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->register(RouteServiceProvider::class);
-
-        App::singleton(
-            ProfessionRepository::class,
-            function () {
-                return new ProfessionRepository(new ProfessionModel(), new ProfessionEntity());
-            }
-        );
     }
 
     /**

@@ -12,7 +12,7 @@ use App\Models\Action;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Modules\Direction\Entities\Direction as DirectionEntity;
-use App\Modules\Direction\Repositories\Direction;
+use App\Modules\Direction\Models\Direction;
 use Cache;
 use ReflectionException;
 
@@ -21,13 +21,6 @@ use ReflectionException;
  */
 class DirectionUpdateStatusAction extends Action
 {
-    /**
-     * Репозиторий направлений.
-     *
-     * @var Direction
-     */
-    private Direction $direction;
-
     /**
      * ID направления.
      *
@@ -66,7 +59,8 @@ class DirectionUpdateStatusAction extends Action
 
         if ($directionEntity) {
             $directionEntity->status = $this->status;
-            $this->direction->update($this->id, $directionEntity);
+
+            Direction::find($this->id)->update($directionEntity->toArray());
             Cache::tags(['catalog', 'category', 'direction', 'profession', 'teacher'])->flush();
 
             return $directionEntity;

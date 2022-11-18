@@ -13,7 +13,6 @@ use App;
 use Illuminate\Support\ServiceProvider;
 use App\Modules\Alert\Models\AlertImplement;
 use App\Modules\Alert\Models\Alert as AlertModel;
-use App\Modules\Alert\Repositories\Alert as AlertRepository;
 use App\Modules\Alert\Entities\Alert as AlertEntity;
 
 /**
@@ -43,14 +42,10 @@ class AlertServiceProvider extends ServiceProvider
     {
         $this->app->register(RouteServiceProvider::class);
 
-        App::singleton(AlertRepository::class, function () {
-            return new AlertRepository(new AlertModel(), new AlertEntity());
-        });
-
         App::singleton(
             'alert',
             function ($app) {
-                return new AlertImplement($app->make(AlertRepository::class));
+                return new AlertImplement();
             }
         );
     }

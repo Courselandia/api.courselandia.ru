@@ -12,22 +12,14 @@ use App\Models\Action;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Modules\Publication\Entities\Publication as PublicationEntity;
-use App\Modules\Publication\Repositories\Publication;
+use App\Modules\Publication\Models\Publication;
 use Cache;
-use ReflectionException;
 
 /**
  * Класс действия для обновления статуса публикаций.
  */
 class PublicationUpdateStatusAction extends Action
 {
-    /**
-     * Репозиторий публикаций.
-     *
-     * @var Publication
-     */
-    private Publication $publication;
-
     /**
      * ID публикации.
      *
@@ -43,20 +35,10 @@ class PublicationUpdateStatusAction extends Action
     public ?bool $status = null;
 
     /**
-     * Конструктор.
-     *
-     * @param  Publication  $publication  Репозиторий публикаций.
-     */
-    public function __construct(Publication $publication)
-    {
-        $this->publication = $publication;
-    }
-
-    /**
      * Метод запуска логики.
      *
      * @return PublicationEntity Вернет результаты исполнения.
-     * @throws RecordNotExistException|ParameterInvalidException|ReflectionException
+     * @throws RecordNotExistException|ParameterInvalidException
      */
     public function run(): PublicationEntity
     {
@@ -66,7 +48,7 @@ class PublicationUpdateStatusAction extends Action
 
         if ($publicationEntity) {
             $publicationEntity->status = $this->status;
-            $this->publication->update($this->id, $publicationEntity);
+            Publication::find($this->id)->update($publicationEntity->toArray());
             Cache::tags(['publication'])->flush();
 
             return $publicationEntity;

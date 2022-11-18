@@ -10,27 +10,18 @@ namespace App\Modules\User\Actions\Admin\UserImage;
 
 use App\Models\Action;
 use App\Models\Exceptions\ParameterInvalidException;
-use App\Models\Exceptions\RecordNotExistException;
 use App\Models\Exceptions\UserNotExistException;
 use App\Modules\User\Actions\Admin\User\UserGetAction;
 use App\Modules\User\Entities\User as UserEntity;
-use App\Modules\User\Repositories\User;
+use App\Modules\User\Models\User;
 use Cache;
 use Illuminate\Http\UploadedFile;
-use ReflectionException;
 
 /**
  * Обновление изображения пользователя.
  */
 class UserImageUpdateAction extends Action
 {
-    /**
-     * Репозиторий пользователя.
-     *
-     * @var User
-     */
-    private User $user;
-
     /**
      * ID пользователей.
      *
@@ -46,23 +37,11 @@ class UserImageUpdateAction extends Action
     public ?UploadedFile $image = null;
 
     /**
-     * Конструктор.
-     *
-     * @param  User  $user  Репозиторий пользователей.
-     */
-    public function __construct(User $user)
-    {
-        $this->user = $user;
-    }
-
-    /**
      * Метод запуска логики.
      *
      * @return UserEntity Вернет результаты исполнения.
      * @throws UserNotExistException
-     * @throws RecordNotExistException
      * @throws ParameterInvalidException
-     * @throws ReflectionException
      */
     public function run(): UserEntity
     {
@@ -75,7 +54,8 @@ class UserImageUpdateAction extends Action
                 $user->image_small_id = $this->image;
                 $user->image_middle_id = $this->image;
                 $user->image_big_id = $this->image;
-                $this->user->update($this->id, $user);
+
+                User::find($this->id)->update($user->toArray());
                 Cache::tags(['user'])->flush();
 
                 return $action->run();

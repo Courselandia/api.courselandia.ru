@@ -12,8 +12,7 @@ use App\Models\Action;
 use App\Models\Enums\CacheTime;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
-use App\Modules\Publication\Repositories\Publication;
-use App\Modules\Publication\Repositories\RepositoryQueryBuilderPublication;
+use App\Modules\Publication\Models\Publication;
 use Cache;
 use ImageStore;
 use ReflectionException;
@@ -25,28 +24,11 @@ use Util;
 class PublicationImageDestroyAction extends Action
 {
     /**
-     * Репозиторий публикаций.
-     *
-     * @var Publication
-     */
-    private Publication $publication;
-
-    /**
      * ID публикации.
      *
      * @var int|string|null
      */
     public int|string|null $id = null;
-
-    /**
-     * Конструктор.
-     *
-     * @param  Publication  $publication  Репозиторий публикаций.
-     */
-    public function __construct(Publication $publication)
-    {
-        $this->publication = $publication;
-    }
 
     /**
      * Метод запуска логики.
@@ -57,14 +39,13 @@ class PublicationImageDestroyAction extends Action
      */
     public function run(): bool
     {
-        $query = new RepositoryQueryBuilderPublication($this->id);
-        $cacheKey = Util::getKey('publication', $query);
+        $cacheKey = Util::getKey('publication', 'model', $this->id);
 
         $publication = Cache::tags(['publication'])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
-            function () use ($query) {
-                return $this->publication->get($query);
+            function ()  {
+                return Publication::find($this->id);
             }
         );
 
@@ -85,7 +66,7 @@ class PublicationImageDestroyAction extends Action
             $publication->image_middle_id = null;
             $publication->image_big_id = null;
 
-            $this->publication->update($this->id, $publication);
+            $publication->save();
             Cache::tags(['publication'])->flush();
 
             return true;

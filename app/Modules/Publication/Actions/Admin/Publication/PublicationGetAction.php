@@ -12,10 +12,8 @@ use App\Models\Action;
 use App\Models\Enums\CacheTime;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Publication\Entities\Publication as PublicationEntity;
-use App\Modules\Publication\Repositories\Publication;
-use App\Modules\Publication\Repositories\RepositoryQueryBuilderPublication;
+use App\Modules\Publication\Models\Publication;
 use Cache;
-use ReflectionException;
 use Util;
 
 /**
@@ -24,13 +22,6 @@ use Util;
 class PublicationGetAction extends Action
 {
     /**
-     * Репозиторий публикаций.
-     *
-     * @var Publication
-     */
-    private Publication $publication;
-
-    /**
      * ID публикации.
      *
      * @var int|string|null
@@ -38,36 +29,24 @@ class PublicationGetAction extends Action
     public int|string|null $id = null;
 
     /**
-     * Конструктор.
-     *
-     * @param  Publication  $publication  Репозиторий публикаций.
-     */
-    public function __construct(Publication $publication)
-    {
-        $this->publication = $publication;
-    }
-
-    /**
      * Метод запуска логики.
      *
      * @return PublicationEntity|null Вернет результаты исполнения.
-     * @throws ParameterInvalidException|ReflectionException
+     * @throws ParameterInvalidException
      */
     public function run(): ?PublicationEntity
     {
-        $query = new RepositoryQueryBuilderPublication();
-        $query->setId($this->id)
-            ->setRelations([
-                'metatag',
-            ]);
-
-        $cacheKey = Util::getKey('publication', $query);
+        $cacheKey = Util::getKey('publication', $this->id, 'metatag');
 
         return Cache::tags(['publication'])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
-            function () use ($query) {
-                return $this->publication->get($query);
+            function () {
+                $publication = Publication::where('id', $this->id)
+                    ->with('metatag')
+                    ->first();
+
+                return $publication ? new PublicationEntity($publication->toArray()) : null;
             }
         );
     }

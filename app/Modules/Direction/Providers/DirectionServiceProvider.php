@@ -13,8 +13,6 @@ use Config;
 use Illuminate\Support\ServiceProvider;
 
 use App\Modules\Direction\Models\Direction as DirectionModel;
-use App\Modules\Direction\Repositories\Direction as DirectionRepository;
-use App\Modules\Direction\Entities\Direction as DirectionEntity;
 use App\Modules\Direction\Events\Listeners\DirectionListener;
 
 /**
@@ -45,13 +43,6 @@ class DirectionServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->register(RouteServiceProvider::class);
-
-        App::singleton(
-            DirectionRepository::class,
-            function () {
-                return new DirectionRepository(new DirectionModel(), new DirectionEntity());
-            }
-        );
     }
 
     /**

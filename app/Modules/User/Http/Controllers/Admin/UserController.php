@@ -315,45 +315,4 @@ class UserController extends Controller
 
         return response()->json($data);
     }
-
-    /**
-     * Получить статистку новых пользователей.
-     *
-     * @param  UserAnalyticsNewUsersRequest  $request  Запрос.
-     *
-     * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException|ReflectionException
-     */
-    public function analyticsNew(UserAnalyticsNewUsersRequest $request): JsonResponse
-    {
-        $dateFrom = $request->get('dateFrom')
-            ? Carbon::createFromFormat('Y-m-d', $request->get('dateFrom'))
-            : null;
-
-        $dateTo = $request->get('dateTo')
-            ? Carbon::createFromFormat('Y-m-d', $request->get('dateTo'))
-            : null;
-
-        $action = app(UserAnalyticsNewUsersAction::class);
-
-        if ($request->get('group')) {
-            $action->group = DateGroup::from($request->get('group'));
-        }
-
-        if ($request->get('datePeriod')) {
-            $action->datePeriod = DatePeriod::from($request->get('datePeriod'));
-        }
-
-        $action->dateFrom = $dateFrom;
-        $action->dateTo = $dateTo;
-
-        $data = $action->run();
-
-        $data = [
-            'data' => $data,
-            'success' => true,
-        ];
-
-        return response()->json($data);
-    }
 }

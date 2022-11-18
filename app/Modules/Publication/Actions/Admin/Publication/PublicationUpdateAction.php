@@ -14,24 +14,16 @@ use App\Models\Exceptions\RecordNotExistException;
 use App\Modules\Image\Entities\Image;
 use App\Modules\Metatag\Actions\MetatagSetAction;
 use App\Modules\Publication\Entities\Publication as PublicationEntity;
-use App\Modules\Publication\Repositories\Publication;
+use App\Modules\Publication\Models\Publication;
 use Cache;
 use Carbon\Carbon;
 use Illuminate\Http\UploadedFile;
-use ReflectionException;
 
 /**
  * Класс действия для обновления публикаций.
  */
 class PublicationUpdateAction extends Action
 {
-    /**
-     * Репозиторий публикаций.
-     *
-     * @var Publication
-     */
-    private Publication $publication;
-
     /**
      * ID публикации.
      *
@@ -110,22 +102,11 @@ class PublicationUpdateAction extends Action
     public ?string $title = null;
 
     /**
-     * Конструктор.
-     *
-     * @param  Publication  $publication  Репозиторий публикаций.
-     */
-    public function __construct(Publication $publication)
-    {
-        $this->publication = $publication;
-    }
-
-    /**
      * Метод запуска логики.
      *
      * @return PublicationEntity Вернет результаты исполнения.
      * @throws RecordNotExistException
      * @throws ParameterInvalidException
-     * @throws ReflectionException
      */
     public function run(): PublicationEntity
     {
@@ -154,7 +135,7 @@ class PublicationUpdateAction extends Action
                 $publicationEntity->image_big_id = $this->image;
             }
 
-            $this->publication->update($this->id, $publicationEntity);
+            Publication::find($this->id)->update($publicationEntity->toArray());
             Cache::tags(['publication'])->flush();
 
             $action = app(PublicationGetAction::class);

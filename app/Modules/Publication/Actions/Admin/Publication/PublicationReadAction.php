@@ -9,13 +9,12 @@
 namespace App\Modules\Publication\Actions\Admin\Publication;
 
 use App\Models\Action;
+use App\Models\Entity;
 use App\Models\Enums\CacheTime;
 use App\Models\Exceptions\ParameterInvalidException;
-use App\Models\Rep\RepositoryFilter;
-use App\Modules\Publication\Repositories\Publication;
-use App\Modules\Publication\Repositories\RepositoryQueryBuilderPublication;
+use App\Modules\Publication\Entities\Publication as PublicationEntity;
+use App\Modules\Publication\Models\Publication;
 use Cache;
-use Illuminate\Cache\Events\CacheHit;
 use JetBrains\PhpStorm\ArrayShape;
 use ReflectionException;
 use Util;
@@ -25,13 +24,6 @@ use Util;
  */
 class PublicationReadAction extends Action
 {
-    /**
-     * Репозиторий публикаций.
-     *
-     * @var Publication
-     */
-    private Publication $publication;
-
     /**
      * Сортировка данных.
      *
@@ -61,16 +53,6 @@ class PublicationReadAction extends Action
     public ?int $limit = null;
 
     /**
-     * Конструктор.
-     *
-     * @param  Publication  $publication  Репозиторий публикаций.
-     */
-    public function __construct(Publication $publication)
-    {
-        $this->publication = $publication;
-    }
-
-    /**
      * Метод запуска логики.
      *
      * @return mixed Вернет результаты исполнения.
@@ -78,24 +60,42 @@ class PublicationReadAction extends Action
      */
     #[ArrayShape(['data' => 'array', 'total' => 'int'])] public function run(): array
     {
-        $query = new RepositoryQueryBuilderPublication();
-        $query->setFilters(RepositoryFilter::getFilters($this->filters))
-            ->setSorts($this->sorts)
-            ->setOffset($this->offset)
-            ->setLimit($this->limit)
-            ->setRelations([
+        $cacheKey = Util::getKey(
+            'publication',
+            'admin',
+            'read',
+            'count',
+            $this->filters,
+            $this->offset,
+            $this->limit,
+            [
                 'metatag',
-            ]);
-
-        $cacheKey = Util::getKey('publication', 'read', 'count', $query);
+            ]
+        );
 
         return Cache::tags(['publication'])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
-            function () use ($query) {
+            function () {
+                $query = Publication::filter($this->filters ?: [])
+                    ->sorted($this->sorts ?: [])
+                    ->with([
+                        'metatag',
+                    ]);
+
+                if ($this->offset) {
+                    $query->offset($this->offset);
+                }
+
+                if ($this->limit) {
+                    $query->limit($this->limit);
+                }
+
+                $items = $query->get()->toArray();
+
                 return [
-                    'data' => $this->publication->read($query),
-                    'total' => $this->publication->count($query),
+                    'data' => Entity::toEntities($items, new PublicationEntity()),
+                    'total' => $query->count(),
                 ];
             }
         );

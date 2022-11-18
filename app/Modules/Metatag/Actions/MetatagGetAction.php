@@ -8,25 +8,16 @@
 
 namespace App\Modules\Metatag\Actions;
 
-use ReflectionException;
 use App\Models\Action;
 use App\Models\Exceptions\ParameterInvalidException;
-use App\Models\Rep\RepositoryQueryBuilder;
 use App\Modules\Metatag\Entities\Metatag as MetatagEntity;
-use App\Modules\Metatag\Repositories\Metatag;
+use App\Modules\Metatag\Models\Metatag;
 
 /**
  * Класс для получения метатэгов.
  */
 class MetatagGetAction extends Action
 {
-    /**
-     * Репозиторий для метатэгов.
-     *
-     * @var Metatag
-     */
-    private Metatag $metatag;
-
     /**
      * ID метатэга.
      *
@@ -35,23 +26,15 @@ class MetatagGetAction extends Action
     public int|string|null $id = null;
 
     /**
-     * Конструктор.
-     *
-     * @param  Metatag  $metatag  Репозиторий метатэгов.
-     */
-    public function __construct(Metatag $metatag)
-    {
-        $this->metatag = $metatag;
-    }
-
-    /**
      * Метод запуска логики.
      *
      * @return MetatagEntity|null Вернет результаты исполнения.
-     * @throws ParameterInvalidException|ReflectionException
+     * @throws ParameterInvalidException
      */
     public function run(): ?MetatagEntity
     {
-        return $this->metatag->get(new RepositoryQueryBuilder($this->id));
+        $metatag = Metatag::find($this->id);
+
+        return $metatag ? new MetatagEntity($metatag->toArray()) : null;
     }
 }

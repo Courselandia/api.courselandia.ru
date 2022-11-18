@@ -15,7 +15,7 @@ use App\Models\Action;
 use App\Models\Enums\CacheTime;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Rep\RepositoryQueryBuilder;
-use App\Modules\Feedback\Repositories\Feedback;
+use App\Modules\Feedback\Models\Feedback;
 use App\Modules\Feedback\Entities\Feedback as FeedbackEntity;
 
 /**
@@ -24,13 +24,6 @@ use App\Modules\Feedback\Entities\Feedback as FeedbackEntity;
 class FeedbackGetAction extends Action
 {
     /**
-     * Репозиторий обратной связи.
-     *
-     * @var Feedback
-     */
-    private Feedback $feedback;
-
-    /**
      * ID пользователей.
      *
      * @var int|string|null
@@ -38,33 +31,23 @@ class FeedbackGetAction extends Action
     public int|string|null $id = null;
 
     /**
-     * Конструктор.
-     *
-     * @param  Feedback  $feedback  Репозиторий обратной связи.
-     */
-    public function __construct(Feedback $feedback)
-    {
-        $this->feedback = $feedback;
-    }
-
-    /**
      * Метод запуска логики.
      *
      * @return FeedbackEntity|null Вернет результаты исполнения.
      * @throws ParameterInvalidException
-     * @throws ReflectionException
      */
     public function run(): ?FeedbackEntity
     {
         if ($this->id) {
-            $query = new RepositoryQueryBuilder($this->id);
-            $cacheKey = Util::getKey('feedback', $query);
+            $cacheKey = Util::getKey('feedback', $this->id);
 
             return Cache::tags(['feedback'])->remember(
                 $cacheKey,
                 CacheTime::GENERAL->value,
-                function () use ($query) {
-                    return $this->feedback->get($query);
+                function () {
+                    $feedback = Feedback::find($this->id);
+
+                    return $feedback ? new FeedbackEntity($feedback->toArray()) : null;
                 }
             );
         }

@@ -30,9 +30,7 @@ trait Status
      */
     private function statusIs(Builder $query, bool $status = true): Builder
     {
-        $query->where($this->getTable().'.status', $status);
-
-        return $query;
+        return $query->where($this->getTable().'.status', $status);
     }
 
     /**

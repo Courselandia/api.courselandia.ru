@@ -12,8 +12,7 @@ use App\Models\Action;
 use App\Models\Enums\CacheTime;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\UserNotExistException;
-use App\Models\Rep\RepositoryQueryBuilder;
-use App\Modules\User\Repositories\User;
+use App\Modules\User\Models\User;
 use Cache;
 use ReflectionException;
 use Util;
@@ -24,28 +23,11 @@ use Util;
 class UserConfigGetAction extends Action
 {
     /**
-     * Репозиторий для выбранных групп пользователя.
-     *
-     * @var User
-     */
-    private User $user;
-
-    /**
      * ID пользователей.
      *
      * @var int|string|null
      */
     public int|string|null $id = null;
-
-    /**
-     * Конструктор.
-     *
-     * @param  User  $user  Репозиторий пользователей.
-     */
-    public function __construct(User $user)
-    {
-        $this->user = $user;
-    }
 
     /**
      * Метод запуска логики.
@@ -56,26 +38,24 @@ class UserConfigGetAction extends Action
     public function run(): array
     {
         if ($this->id) {
-            $query = new RepositoryQueryBuilder($this->id);
-
-            $cacheKey = Util::getKey('user', $query);
+            $cacheKey = Util::getKey('user', 'model', $this->id);
 
             $user = Cache::tags(['user'])->remember(
                 $cacheKey,
                 CacheTime::GENERAL->value,
-                function () use ($query) {
-                    return $this->user->get($query);
+                function () {
+                    return User::find($this->id);
                 }
             );
 
             if ($user) {
-                $cacheKey = Util::getKey('user', 'flags', $query);
+                $cacheKey = Util::getKey('user', 'flags', $this->id);
 
                 return Cache::tags(['user'])->remember(
                     $cacheKey,
                     CacheTime::GENERAL->value,
-                    function () use ($query) {
-                        return $this->user->flags($query);
+                    function () use ($user) {
+                        return $user->flags ?: [];
                     }
                 );
             }

@@ -11,7 +11,7 @@ namespace App\Modules\Faq\Actions\Admin;
 use App\Models\Action;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Faq\Entities\Faq as FaqEntity;
-use App\Modules\Faq\Repositories\Faq;
+use App\Modules\Faq\Models\Faq;
 use Cache;
 
 /**
@@ -19,13 +19,6 @@ use Cache;
  */
 class FaqCreateAction extends Action
 {
-    /**
-     * Репозиторий FAQ.
-     *
-     * @var Faq
-     */
-    private Faq $faq;
-
     /**
      * ID школы.
      *
@@ -78,11 +71,11 @@ class FaqCreateAction extends Action
         $faqEntity->answer = $this->answer;
         $faqEntity->status = $this->status;
 
-        $id = $this->faq->create($faqEntity);
+        $faq = Faq::create($faqEntity->toArray());
         Cache::tags(['catalog', 'school', 'faq'])->flush();
 
         $action = app(FaqGetAction::class);
-        $action->id = $id;
+        $action->id = $faq->id;
 
         return $action->run();
     }

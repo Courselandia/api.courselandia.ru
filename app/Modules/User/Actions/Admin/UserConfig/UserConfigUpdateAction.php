@@ -11,7 +11,7 @@ namespace App\Modules\User\Actions\Admin\UserConfig;
 use Cache;
 use ReflectionException;
 use App\Models\Action;
-use App\Modules\User\Repositories\User;
+use App\Modules\User\Models\User;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\UserNotExistException;
 use App\Modules\User\Actions\Admin\User\UserGetAction;
@@ -22,13 +22,6 @@ use App\Models\Exceptions\RecordNotExistException;
  */
 class UserConfigUpdateAction extends Action
 {
-    /**
-     * Репозиторий для выбранных групп пользователя.
-     *
-     * @var User
-     */
-    private User $user;
-
     /**
      * ID пользователей.
      *
@@ -42,16 +35,6 @@ class UserConfigUpdateAction extends Action
      * @var array|null
      */
     public ?array $data = null;
-
-    /**
-     * Конструктор.
-     *
-     * @param  User  $user  Репозиторий пользователей.
-     */
-    public function __construct(User $user)
-    {
-        $this->user = $user;
-    }
 
     /**
      * Метод запуска логики.
@@ -70,7 +53,10 @@ class UserConfigUpdateAction extends Action
             $user = $action->run();
 
             if ($user) {
-                $this->user->setFlags($this->id, $this->data);
+                User::find($this->id)
+                    ->setFlags($this->data)
+                    ->save();
+
                 Cache::tags(['user'])->flush();
 
                 $action = app(UserConfigGetAction::class);

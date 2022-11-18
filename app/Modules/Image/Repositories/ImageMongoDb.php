@@ -18,7 +18,6 @@ use App\Modules\Image\Models\ImageMongoDb as ImageMongoDbModel;
 use App\Modules\Image\Entities\Image as ImageEntity;
 use App\Models\Rep\RepositoryMongoDb;
 use Generator;
-use ReflectionException;
 
 /**
  * Класс репозитория изображений на основе MongoDb.
@@ -30,9 +29,10 @@ class ImageMongoDb extends Image
     /**
      * Создание.
      *
-     * @param  Entity|ImageEntity  $entity  Данные для добавления.
+     * @param Entity|ImageEntity $entity Данные для добавления.
      *
      * @return int|string Вернет ID последней вставленной строки.
+     * @throws ParameterInvalidException
      */
     public function create(Entity|ImageEntity $entity): int|string
     {
@@ -57,11 +57,11 @@ class ImageMongoDb extends Image
     /**
      * Обновление.
      *
-     * @param  int|string  $id  Id записи для обновления.
-     * @param  Entity|ImageEntity  $entity  Данные для добавления.
+     * @param int|string $id Id записи для обновления.
+     * @param Entity|ImageEntity $entity Данные для добавления.
      *
      * @return int|string Вернет ID вставленной строки.
-     * @throws RecordNotExistException
+     * @throws RecordNotExistException|ParameterInvalidException
      */
     public function update(int|string $id, Entity|ImageEntity $entity): int|string
     {
@@ -85,16 +85,17 @@ class ImageMongoDb extends Image
             return $id;
         }
 
-        throw new RecordNotExistException('The image #'.$id.' does not exist.');
+        throw new RecordNotExistException('The image #' . $id . ' does not exist.');
     }
 
     /**
      * Обновление байт кода картинки.
      *
-     * @param  int|string  $id  Id записи для обновления.
-     * @param  string  $byte  Байт код картинки.
+     * @param int|string $id Id записи для обновления.
+     * @param string $byte Байт код картинки.
      *
      * @return bool Вернет булево значение успешности операции.
+     * @throws ParameterInvalidException
      */
     public function updateByte(int|string $id, string $byte): bool
     {
@@ -107,12 +108,11 @@ class ImageMongoDb extends Image
     /**
      * Получить по первичному ключу.
      *
-     * @param  RepositoryQueryBuilder|null  $repositoryQueryBuilder  Запрос к репозиторию.
-     * @param  Entity|ImageEntity|null  $entity  Сущность.
+     * @param RepositoryQueryBuilder|null $repositoryQueryBuilder Запрос к репозиторию.
+     * @param Entity|ImageEntity|null $entity Сущность.
      *
      * @return Entity|ImageEntity|null Данные.
      * @throws ParameterInvalidException
-     * @throws ReflectionException
      */
     public function get(
         RepositoryQueryBuilder $repositoryQueryBuilder = null,
@@ -134,7 +134,9 @@ class ImageMongoDb extends Image
         $image = $query->first();
 
         if ($image) {
-            $entity = $entity ? clone $entity->set($image->toArray()) : clone $this->getEntity()->set($image->toArray());
+            $entity = $entity ? clone $entity->set($image->toArray()) : clone $this->getEntity()->set(
+                $image->toArray()
+            );
 
             $entity->id = $image->_id;
             $entity->path = $image->path;
@@ -153,9 +155,10 @@ class ImageMongoDb extends Image
     /**
      * Получение байт кода картинки.
      *
-     * @param  int|string  $id  Id записи для обновления.
+     * @param int|string $id Id записи для обновления.
      *
      * @return string|null Вернет байт код изображения.
+     * @throws ParameterInvalidException
      */
     public function getByte(int|string $id): ?string
     {
@@ -175,11 +178,10 @@ class ImageMongoDb extends Image
     /**
      * Получение всех записей.
      *
-     * @param  Entity|ImageEntity|null  $entity  Сущность.
+     * @param Entity|ImageEntity|null $entity Сущность.
      *
      * @return Generator|ImageEntity|null Генератор.
      * @throws ParameterInvalidException
-     * @throws ReflectionException
      */
     public function all(Entity|ImageEntity $entity = null): Generator|ImageEntity|null
     {
@@ -219,6 +221,7 @@ class ImageMongoDb extends Image
      * Получить количество всех изображений.
      *
      * @return int Количество записей.
+     * @throws ParameterInvalidException
      */
     public function count(): int
     {
@@ -228,9 +231,10 @@ class ImageMongoDb extends Image
     /**
      * Удаление.
      *
-     * @param  int|string|array|null  $id  Id записи для удаления.
+     * @param int|string|array|null $id Id записи для удаления.
      *
      * @return bool Вернет булево значение успешности операции.
+     * @throws ParameterInvalidException
      */
     public function destroy(int|string|array $id = null): bool
     {

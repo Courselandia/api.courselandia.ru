@@ -8,7 +8,9 @@
 
 namespace App\Modules\Publication\Models;
 
+use DB;
 use Exception;
+use Illuminate\Database\Eloquent\Builder;
 use Size;
 use Eloquent;
 use ImageStore;
@@ -110,7 +112,7 @@ class Publication extends Eloquent
             'metatag_id' => 'digits_between:0,20',
             'published_at' => 'required|date',
             'header' => 'required|between:1,191',
-            'link' => 'required|between:1,191|alpha_dash|unique_soft:publications,link,'.$this->id.',id',
+            'link' => 'required|between:1,191|alpha_dash|unique_soft:publications,link,' . $this->id . ',id',
             'anons' => 'max:1000',
             'article' => 'max:65000',
             'status' => 'required|boolean'
@@ -161,7 +163,7 @@ class Publication extends Eloquent
     /**
      * Преобразователь атрибута - запись: маленькое изображение.
      *
-     * @param  mixed  $value  Значение атрибута.
+     * @param mixed $value Значение атрибута.
      *
      * @return void
      * @throws FileNotFoundException|Exception
@@ -197,7 +199,7 @@ class Publication extends Eloquent
     /**
      * Преобразователь атрибута - получение: маленькое изображение.
      *
-     * @param  mixed  $value  Значение атрибута.
+     * @param mixed $value Значение атрибута.
      *
      * @return ImageEntity|null Маленькое изображение.
      */
@@ -213,7 +215,7 @@ class Publication extends Eloquent
     /**
      * Преобразователь атрибута - запись: среднее изображение.
      *
-     * @param  mixed  $value  Значение атрибута.
+     * @param mixed $value Значение атрибута.
      *
      * @return void
      * @throws FileNotFoundException|Exception
@@ -256,7 +258,7 @@ class Publication extends Eloquent
     /**
      * Преобразователь атрибута - получение: среднее изображение.
      *
-     * @param  mixed  $value  Значение атрибута.
+     * @param mixed $value Значение атрибута.
      *
      * @return ImageEntity|null Среднее изображение.
      */
@@ -272,7 +274,7 @@ class Publication extends Eloquent
     /**
      * Преобразователь атрибута - запись: большое изображение.
      *
-     * @param  mixed  $value  Значение атрибута.
+     * @param mixed $value Значение атрибута.
      *
      * @return void
      * @throws FileNotFoundException|Exception
@@ -315,7 +317,7 @@ class Publication extends Eloquent
     /**
      * Преобразователь атрибута - получение: большое изображение.
      *
-     * @param  mixed  $value  Значение атрибута.
+     * @param mixed $value Значение атрибута.
      *
      * @return ImageEntity|null Большое изображение.
      */
@@ -336,5 +338,44 @@ class Publication extends Eloquent
     public function metatag(): BelongsTo
     {
         return $this->belongsTo(Metatag::class);
+    }
+
+    /**
+     * Заготовка запроса для указания года.
+     *
+     * @param Builder $query Запрос.
+     * @param int|null $year Год.
+     *
+     * @return Builder Построитель запросов.
+     */
+    public function scopeYear(Builder $query, ?int $year = null): Builder
+    {
+        return $year ? $query->where(DB::raw("DATE_FORMAT(published_at, '%Y')"), $year) : $query;
+    }
+
+    /**
+     * Заготовка запроса для указания ссылки.
+     *
+     * @param Builder $query Запрос.
+     * @param string|null $link Ссылка.
+     *
+     * @return Builder Построитель запросов.
+     */
+    public function scopeLink(Builder $query, ?string $link = null): Builder
+    {
+        return $link ? $query->where('link', $link) : $query;
+    }
+
+    /**
+     * Заготовка запроса для указания ID.
+     *
+     * @param Builder $query Запрос.
+     * @param int|null $id ID.
+     *
+     * @return Builder Построитель запросов.
+     */
+    public function scopeId(Builder $query, ?int $id = null): Builder
+    {
+        return $id ? $query->where('id', $id) : $query;
     }
 }

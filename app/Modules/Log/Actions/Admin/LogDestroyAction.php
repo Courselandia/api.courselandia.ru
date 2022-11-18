@@ -9,6 +9,7 @@
 namespace App\Modules\Log\Actions\Admin;
 
 use App\Models\Action;
+use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Log\Repositories\Log;
 
 /**
@@ -44,6 +45,7 @@ class LogDestroyAction extends Action
      * Метод запуска логики.
      *
      * @return bool Вернет результаты исполнения.
+     * @throws ParameterInvalidException
      */
     public function run(): bool
     {

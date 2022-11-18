@@ -8,7 +8,7 @@
 
 namespace App\Modules\Feedback\Actions\Admin;
 
-use App\Modules\Feedback\Repositories\Feedback;
+use App\Modules\Feedback\Models\Feedback;
 use App\Models\Action;
 use Cache;
 
@@ -18,28 +18,11 @@ use Cache;
 class FeedbackDestroyAction extends Action
 {
     /**
-     * Репозиторий обратной связи.
-     *
-     * @var Feedback
-     */
-    private Feedback $feedback;
-
-    /**
      * Массив ID пользователей.
      *
      * @var int[]|string[]
      */
     public ?array $ids = null;
-
-    /**
-     * Конструктор.
-     *
-     * @param  Feedback  $feedback  Репозиторий обратной связи.
-     */
-    public function __construct(Feedback $feedback)
-    {
-        $this->feedback = $feedback;
-    }
 
     /**
      * Метод запуска логики.
@@ -49,9 +32,7 @@ class FeedbackDestroyAction extends Action
     public function run(): bool
     {
         if ($this->ids) {
-            for ($i = 0; $i < count($this->ids); $i++) {
-                $this->feedback->destroy($this->ids[$i]);
-            }
+            Feedback::destroy($this->ids);
         }
 
         Cache::tags(['feedback'])->flush();

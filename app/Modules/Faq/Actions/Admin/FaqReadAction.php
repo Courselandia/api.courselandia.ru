@@ -9,11 +9,13 @@
 namespace App\Modules\Faq\Actions\Admin;
 
 use App\Models\Action;
+use App\Models\Entity;
 use App\Models\Enums\CacheTime;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Rep\RepositoryFilter;
 use App\Models\Rep\RepositoryQueryBuilder;
-use App\Modules\Faq\Repositories\Faq;
+use App\Modules\Faq\Entities\Faq as FaqEntity;
+use App\Modules\Faq\Models\Faq;
 use Cache;
 use JetBrains\PhpStorm\ArrayShape;
 use Util;
@@ -23,13 +25,6 @@ use Util;
  */
 class FaqReadAction extends Action
 {
-    /**
-     * Репозиторий FAQ.
-     *
-     * @var Faq
-     */
-    private Faq $faq;
-
     /**
      * Сортировка данных.
      *
@@ -76,24 +71,42 @@ class FaqReadAction extends Action
      */
     #[ArrayShape(['data' => 'array', 'total' => 'int'])] public function run(): array
     {
-        $query = new RepositoryQueryBuilder();
-        $query->setFilters(RepositoryFilter::getFilters($this->filters))
-            ->setSorts($this->sorts)
-            ->setOffset($this->offset)
-            ->setLimit($this->limit)
-            ->setRelations([
+        $cacheKey = Util::getKey(
+            'faq',
+            'admin',
+            'read',
+            'count',
+            $this->filters,
+            $this->offset,
+            $this->limit,
+            [
                 'school',
-            ]);
-
-        $cacheKey = Util::getKey('faq', 'read', 'count', $query);
+            ]
+        );
 
         return Cache::tags(['catalog', 'school', 'faq'])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
-            function () use ($query) {
+            function () {
+                $query = Faq::filter($this->filters ?: [])
+                    ->sorted($this->sorts ?: [])
+                    ->with([
+                        'school',
+                    ]);
+
+                if ($this->offset) {
+                    $query->offset($this->offset);
+                }
+
+                if ($this->limit) {
+                    $query->limit($this->limit);
+                }
+
+                $items = $query->get()->toArray();
+
                 return [
-                    'data' => $this->faq->read($query),
-                    'total' => $this->faq->count($query),
+                    'data' => Entity::toEntities($items, new FaqEntity()),
+                    'total' => $query->count(),
                 ];
             }
         );

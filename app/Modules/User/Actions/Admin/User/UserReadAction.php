@@ -9,13 +9,12 @@
 namespace App\Modules\User\Actions\Admin\User;
 
 use App\Models\Action;
+use App\Models\Entity;
 use App\Models\Enums\CacheTime;
 use App\Models\Exceptions\ParameterInvalidException;
-use App\Models\Rep\RepositoryFilter;
-use App\Models\Rep\RepositoryQueryBuilder;
-use App\Modules\User\Repositories\User;
+use App\Modules\User\Entities\User as UserEntity;
+use App\Modules\User\Models\User;
 use Cache;
-use Illuminate\Cache\HasCacheLock;
 use ReflectionException;
 use Util;
 
@@ -24,13 +23,6 @@ use Util;
  */
 class UserReadAction extends Action
 {
-    /**
-     * Репозиторий пользователей.
-     *
-     * @var User
-     */
-    private User $user;
-
     /**
      * Сортировка данных.
      *
@@ -60,16 +52,6 @@ class UserReadAction extends Action
     public ?int $limit = null;
 
     /**
-     * Конструктор.
-     *
-     * @param  User  $user  Репозиторий пользователей.
-     */
-    public function __construct(User $user)
-    {
-        $this->user = $user;
-    }
-
-    /**
      * Метод запуска логики.
      *
      * @return array Вернет результаты исполнения.
@@ -77,25 +59,43 @@ class UserReadAction extends Action
      */
     public function run(): array
     {
-        $query = new RepositoryQueryBuilder();
-        $query->setFilters(RepositoryFilter::getFilters($this->filters))
-            ->setSorts($this->sorts)
-            ->setOffset($this->offset)
-            ->setLimit($this->limit)
-            ->setRelations([
-                'verification',
-                'role',
-            ]);
-
-        $cacheKey = Util::getKey('user', 'read', 'count', $query);
+        $cacheKey = Util::getKey(
+            'user',
+            'admin',
+            'read',
+            'count',
+            $this->filters,
+            $this->offset,
+            $this->limit,
+            [
+                'metatag',
+            ]
+        );
 
         return Cache::tags(['user'])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
-            function () use ($query) {
+            function () {
+                $query = User::filter($this->filters ?: [])
+                    ->sorted($this->sorts ?: [])
+                    ->with([
+                        'verification',
+                        'role',
+                    ]);
+
+                if ($this->offset) {
+                    $query->offset($this->offset);
+                }
+
+                if ($this->limit) {
+                    $query->limit($this->limit);
+                }
+
+                $items = $query->get()->toArray();
+
                 return [
-                    'data' => $this->user->read($query),
-                    'total' => $this->user->count($query),
+                    'data' => Entity::toEntities($items, new UserEntity()),
+                    'total' => $query->count(),
                 ];
             }
         );

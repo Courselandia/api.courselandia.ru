@@ -13,7 +13,6 @@ use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Rep\RepositoryQueryBuilder;
 use App\Modules\Log\Entities\Log as LogEntity;
 use App\Modules\Log\Repositories\Log;
-use ReflectionException;
 
 /**
  * Класс действия для получения лога.
@@ -49,7 +48,6 @@ class LogGetAction extends Action
      *
      * @return LogEntity|null Вернет результаты исполнения.
      * @throws ParameterInvalidException
-     * @throws ReflectionException
      */
     public function run(): ?LogEntity
     {

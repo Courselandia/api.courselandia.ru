@@ -13,8 +13,9 @@ use App\Models\Entity;
 use App\Models\Enums\CacheTime;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Rep\RepositoryQueryBuilder;
+use App\Modules\User\Entities\User as UserEntity;
 use App\Modules\User\Entities\UserCreate;
-use App\Modules\User\Repositories\User;
+use App\Modules\User\Models\User;
 use Cache;
 use Closure;
 use ReflectionException;
@@ -25,23 +26,6 @@ use Util;
  */
 class GetPipe implements Pipe
 {
-    /**
-     * Репозиторий пользователей.
-     *
-     * @var User
-     */
-    private User $user;
-
-    /**
-     * Конструктор.
-     *
-     * @param  User  $user  Репозиторий пользователей.
-     */
-    public function __construct(User $user)
-    {
-        $this->user = $user;
-    }
-
     /**
      * Метод, который будет вызван у pipeline.
      *
@@ -61,18 +45,25 @@ class GetPipe implements Pipe
                 'role',
             ]);
 
-        $cacheKey = Util::getKey('user', $query);
+        $id = $entity->id;
+        $cacheKey = Util::getKey('user', $id, 'verification', 'auths', 'role');
 
         $user = Cache::tags(['user'])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
-            function () use ($query) {
-                return $this->user->get($query);
+            function () use ($id) {
+                $user = User::where('id', $id)
+                    ->with([
+                        'verification',
+                        'auths',
+                        'role',
+                    ])->first();
+
+                return $user ? new UserEntity($user->toArray()) : null;
             }
         );
 
         $user->password = null;
-
         unset($user->image);
 
         return $next($user);

@@ -13,7 +13,7 @@ use App\Models\Enums\CacheTime;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Rep\RepositoryQueryBuilder;
 use App\Modules\Faq\Entities\Faq as FaqEntity;
-use App\Modules\Faq\Repositories\Faq;
+use App\Modules\Faq\Models\Faq;
 use Cache;
 use Util;
 
@@ -23,28 +23,11 @@ use Util;
 class FaqGetAction extends Action
 {
     /**
-     * Репозиторий FAQ.
-     *
-     * @var Faq
-     */
-    private Faq $faq;
-
-    /**
      * ID FAQ.
      *
      * @var int|string|null
      */
     public int|string|null $id = null;
-
-    /**
-     * Конструктор.
-     *
-     * @param  Faq  $faq  Репозиторий FAQ.
-     */
-    public function __construct(Faq $faq)
-    {
-        $this->faq = $faq;
-    }
 
     /**
      * Метод запуска логики.
@@ -66,7 +49,11 @@ class FaqGetAction extends Action
             $cacheKey,
             CacheTime::GENERAL->value,
             function () use ($query) {
-                return $this->faq->get($query);
+                $faq = Faq::where('id', $this->id)
+                    ->with('school')
+                    ->first();
+
+                return $faq ? new FaqEntity($faq->toArray()) : null;
             }
         );
     }

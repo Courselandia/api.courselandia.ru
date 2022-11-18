@@ -8,13 +8,10 @@
 
 namespace App\Modules\Publication\Providers;
 
-use App;
 use Config;
 use Illuminate\Support\ServiceProvider;
 
 use App\Modules\Publication\Models\Publication as PublicationModel;
-use App\Modules\Publication\Repositories\Publication as PublicationRepository;
-use App\Modules\Publication\Entities\Publication as PublicationEntity;
 use App\Modules\Publication\Events\Listeners\PublicationListener;
 
 /**
@@ -45,13 +42,6 @@ class PublicationServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->register(RouteServiceProvider::class);
-
-        App::singleton(
-            PublicationRepository::class,
-            function () {
-                return new PublicationRepository(new PublicationModel(), new PublicationEntity());
-            }
-        );
     }
 
     /**

@@ -16,7 +16,7 @@ use App\Modules\User\Actions\Admin\User\UserGetAction;
 use App\Modules\User\Entities\User as UserEntity;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Models\Exceptions\UserNotExistException;
-use App\Modules\User\Repositories\User;
+use App\Modules\User\Models\User;
 use ReflectionException;
 
 /**
@@ -25,28 +25,11 @@ use ReflectionException;
 class UserImageDestroyAction extends Action
 {
     /**
-     * Репозиторий пользователя.
-     *
-     * @var User
-     */
-    private User $user;
-
-    /**
      * ID пользователей.
      *
      * @var int|string|null
      */
     public int|string|null $id = null;
-
-    /**
-     * Конструктор.
-     *
-     * @param  User  $user  Репозиторий пользователей.
-     */
-    public function __construct(User $user)
-    {
-        $this->user = $user;
-    }
 
     /**
      * Метод запуска логики.
@@ -79,7 +62,7 @@ class UserImageDestroyAction extends Action
                 $user->image_middle_id = null;
                 $user->image_big_id = null;
 
-                $this->user->update($this->id, $user);
+                User::find($this->id)->update($user->toArray());
                 Cache::tags(['user'])->flush();
 
                 return $user;

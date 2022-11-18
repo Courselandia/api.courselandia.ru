@@ -13,7 +13,7 @@ use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Modules\Publication\Actions\Admin\Publication\PublicationGetAction;
 use App\Modules\Publication\Entities\Publication as PublicationEntity;
-use App\Modules\Publication\Repositories\Publication;
+use App\Modules\Publication\Models\Publication;
 use Cache;
 use Illuminate\Http\UploadedFile;
 use ReflectionException;
@@ -23,13 +23,6 @@ use ReflectionException;
  */
 class PublicationImageUpdateAction extends Action
 {
-    /**
-     * Репозиторий публикации.
-     *
-     * @var Publication
-     */
-    private Publication $publication;
-
     /**
      * ID пользователей.
      *
@@ -73,7 +66,9 @@ class PublicationImageUpdateAction extends Action
                 $publication->image_small_id = $this->image;
                 $publication->image_middle_id = $this->image;
                 $publication->image_big_id = $this->image;
-                $this->publication->update($this->id, $publication);
+
+                Publication::find($this->id)->update($publication->toArray());
+                
                 Cache::tags(['publication'])->flush();
 
                 return $action->run();

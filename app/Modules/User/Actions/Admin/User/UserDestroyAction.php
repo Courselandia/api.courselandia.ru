@@ -9,7 +9,7 @@
 namespace App\Modules\User\Actions\Admin\User;
 
 use App\Models\Action;
-use App\Modules\User\Repositories\User;
+use App\Modules\User\Models\User;
 use Cache;
 
 /**
@@ -17,12 +17,6 @@ use Cache;
  */
 class UserDestroyAction extends Action
 {
-    /**
-     * Репозиторий пользователей.
-     *
-     * @var User
-     */
-    private User $user;
 
     /**
      * Массив ID пользователей.
@@ -32,16 +26,6 @@ class UserDestroyAction extends Action
     public ?array $ids = null;
 
     /**
-     * Конструктор.
-     *
-     * @param  User  $user  Репозиторий пользователей.
-     */
-    public function __construct(User $user)
-    {
-        $this->user = $user;
-    }
-
-    /**
      * Метод запуска логики.
      *
      * @return bool Вернет результаты исполнения.
@@ -49,12 +33,7 @@ class UserDestroyAction extends Action
     public function run(): bool
     {
         if ($this->ids) {
-            $ids = $this->ids;
-
-            for ($i = 0; $i < count($ids); $i++) {
-                $this->user->destroy($ids[$i]);
-            }
-
+            User::destroy($this->ids);
             Cache::tags(['user'])->flush();
         }
 

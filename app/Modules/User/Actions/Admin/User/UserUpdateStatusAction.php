@@ -13,22 +13,13 @@ use App\Models\Action;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\UserNotExistException;
 use App\Modules\User\Entities\User as UserEntity;
-use App\Modules\User\Repositories\User;
-use App\Models\Exceptions\RecordNotExistException;
-use ReflectionException;
+use App\Modules\User\Models\User;
 
 /**
  * Обновление статуса пользователя.
  */
 class UserUpdateStatusAction extends Action
 {
-    /**
-     * Репозиторий пользователей.
-     *
-     * @var User
-     */
-    private User $user;
-
     /**
      * ID пользователя.
      *
@@ -44,23 +35,11 @@ class UserUpdateStatusAction extends Action
     public ?bool $status = null;
 
     /**
-     * Конструктор.
-     *
-     * @param  User  $user  Репозиторий пользователей.
-     */
-    public function __construct(User $user)
-    {
-        $this->user = $user;
-    }
-
-    /**
      * Метод запуска логики.
      *
      * @return UserEntity Вернет результаты исполнения.
-     * @throws RecordNotExistException
      * @throws UserNotExistException
      * @throws ParameterInvalidException
-     * @throws ReflectionException
      */
     public function run(): UserEntity
     {
@@ -70,7 +49,7 @@ class UserUpdateStatusAction extends Action
 
         if ($user) {
             $user->status = $this->status;
-            $this->user->update($this->id, $user);
+            User::find($this->id)->update($user->toArray());
 
             Cache::tags(['user'])->flush();
 

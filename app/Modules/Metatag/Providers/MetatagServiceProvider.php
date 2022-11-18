@@ -8,12 +8,8 @@
 
 namespace App\Modules\Metatag\Providers;
 
-use App;
 use Config;
 use Illuminate\Support\ServiceProvider;
-use App\Modules\Metatag\Models\Metatag as MetatagModel;
-use App\Modules\Metatag\Entities\Metatag as MetatagEntity;
-use App\Modules\Metatag\Repositories\Metatag as MetatagRepository;
 
 /**
  * Класс сервис-провайдера для настройки этого модуля.
@@ -41,10 +37,6 @@ class MetatagServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->register(RouteServiceProvider::class);
-
-        App::singleton(MetatagRepository::class, function () {
-            return new MetatagRepository(new MetatagModel(), new MetatagEntity());
-        });
     }
 
     /**

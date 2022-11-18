@@ -10,25 +10,16 @@ namespace App\Modules\User\Actions\Admin\User;
 
 use App\Models\Action;
 use App\Models\Exceptions\ParameterInvalidException;
-use App\Models\Exceptions\RecordNotExistException;
 use App\Models\Exceptions\UserNotExistException;
 use App\Modules\User\Entities\User as UserEntity;
-use App\Modules\User\Repositories\User;
+use App\Modules\User\Models\User;
 use Cache;
-use ReflectionException;
 
 /**
  * Обновление пароля.
  */
 class UserPasswordAction extends Action
 {
-    /**
-     * Репозиторий пользователей.
-     *
-     * @var User
-     */
-    private User $user;
-
     /**
      * ID пользователей.
      *
@@ -44,23 +35,11 @@ class UserPasswordAction extends Action
     public ?string $password = null;
 
     /**
-     * Конструктор.
-     *
-     * @param  User  $user  Репозиторий пользователей.
-     */
-    public function __construct(User $user)
-    {
-        $this->user = $user;
-    }
-
-    /**
      * Метод запуска логики.
      *
      * @return UserEntity Вернет результаты исполнения.
      * @throws UserNotExistException
-     * @throws RecordNotExistException
      * @throws ParameterInvalidException
-     * @throws ReflectionException
      */
     public function run(): UserEntity
     {
@@ -71,12 +50,13 @@ class UserPasswordAction extends Action
 
             if($user) {
                 $user->password = bcrypt($this->password);
-                $this->user->update($this->id, $user);
+
+                User::find($this->id)->update($user->toArray());
                 $user->password = null;
 
                 Cache::tags(['user'])->flush();
 
-                return $user;
+                return new UserEntity($user->toArray());
             }
         }
 

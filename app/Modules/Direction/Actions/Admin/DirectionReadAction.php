@@ -8,29 +8,22 @@
 
 namespace App\Modules\Direction\Actions\Admin;
 
+use Cache;
+use Util;
 use App\Models\Action;
+use App\Models\Entity;
 use App\Models\Enums\CacheTime;
 use App\Models\Exceptions\ParameterInvalidException;
-use App\Models\Rep\RepositoryFilter;
-use App\Models\Rep\RepositoryQueryBuilder;
-use App\Modules\Direction\Repositories\Direction;
-use Cache;
+use App\Modules\Direction\Models\Direction;
 use JetBrains\PhpStorm\ArrayShape;
 use ReflectionException;
-use Util;
+use App\Modules\Direction\Entities\Direction as DirectionEntity;
 
 /**
  * Класс действия для чтения направлений.
  */
 class DirectionReadAction extends Action
 {
-    /**
-     * Репозиторий направлений.
-     *
-     * @var Direction
-     */
-    private Direction $direction;
-
     /**
      * Сортировка данных.
      *
@@ -60,16 +53,6 @@ class DirectionReadAction extends Action
     public ?int $limit = null;
 
     /**
-     * Конструктор.
-     *
-     * @param  Direction  $direction  Репозиторий направлений.
-     */
-    public function __construct(Direction $direction)
-    {
-        $this->direction = $direction;
-    }
-
-    /**
      * Метод запуска логики.
      *
      * @return mixed Вернет результаты исполнения.
@@ -77,24 +60,42 @@ class DirectionReadAction extends Action
      */
     #[ArrayShape(['data' => 'array', 'total' => 'int'])] public function run(): array
     {
-        $query = new RepositoryQueryBuilder();
-        $query->setFilters(RepositoryFilter::getFilters($this->filters))
-            ->setSorts($this->sorts)
-            ->setOffset($this->offset)
-            ->setLimit($this->limit)
-            ->setRelations([
+        $cacheKey = Util::getKey(
+            'direction',
+            'admin',
+            'read',
+            'count',
+            $this->filters,
+            $this->offset,
+            $this->limit,
+            [
                 'metatag',
-            ]);
-
-        $cacheKey = Util::getKey('direction', 'read', 'count', $query);
+            ]
+        );
 
         return Cache::tags(['catalog', 'category', 'direction', 'profession', 'teacher'])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
-            function () use ($query) {
+            function () {
+                $query = Direction::filter($this->filters ?: [])
+                    ->sorted($this->sorts ?: [])
+                    ->with([
+                        'metatag',
+                    ]);
+
+                if ($this->offset) {
+                    $query->offset($this->offset);
+                }
+
+                if ($this->limit) {
+                    $query->limit($this->limit);
+                }
+
+                $items = $query->get()->toArray();
+
                 return [
-                    'data' => $this->direction->read($query),
-                    'total' => $this->direction->count($query),
+                    'data' => Entity::toEntities($items, new DirectionEntity()),
+                    'total' => $query->count(),
                 ];
             }
         );

@@ -11,11 +11,9 @@ namespace App\Modules\Profession\Actions\Admin;
 use App\Models\Action;
 use App\Models\Enums\CacheTime;
 use App\Models\Exceptions\ParameterInvalidException;
-use App\Models\Rep\RepositoryQueryBuilder;
 use App\Modules\Profession\Entities\Profession as ProfessionEntity;
-use App\Modules\Profession\Repositories\Profession;
+use App\Modules\Profession\Models\Profession;
 use Cache;
-use ReflectionException;
 use Util;
 
 /**
@@ -24,13 +22,6 @@ use Util;
 class ProfessionGetAction extends Action
 {
     /**
-     * Репозиторий профессий.
-     *
-     * @var Profession
-     */
-    private Profession $profession;
-
-    /**
      * ID профессии.
      *
      * @var int|string|null
@@ -38,36 +29,26 @@ class ProfessionGetAction extends Action
     public int|string|null $id = null;
 
     /**
-     * Конструктор.
-     *
-     * @param  Profession  $profession  Репозиторий профессий.
-     */
-    public function __construct(Profession $profession)
-    {
-        $this->profession = $profession;
-    }
-
-    /**
      * Метод запуска логики.
      *
      * @return ProfessionEntity|null Вернет результаты исполнения.
-     * @throws ParameterInvalidException|ReflectionException
+     * @throws ParameterInvalidException
      */
     public function run(): ?ProfessionEntity
     {
-        $query = new RepositoryQueryBuilder();
-        $query->setId($this->id)
-            ->setRelations([
-                'metatag',
-            ]);
-
-        $cacheKey = Util::getKey('profession', $query);
+        $id = $this->id;
+        $cacheKey = Util::getKey('profession', $id, 'metatag');
 
         return Cache::tags(['catalog', 'category', 'direction', 'salary', 'profession'])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
-            function () use ($query) {
-                return $this->profession->get($query);
+            function () use ($id) {
+                $profession = Profession::where('id', $id)
+                    ->with([
+                        'metatag',
+                    ])->first();
+
+                return $profession ? new ProfessionEntity($profession->toArray()) : null;
             }
         );
     }

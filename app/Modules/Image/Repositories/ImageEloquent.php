@@ -10,7 +10,6 @@ namespace App\Modules\Image\Repositories;
 
 use DB;
 use Generator;
-use ReflectionException;
 use App\Models\Entity;
 use App\Models\Rep\RepositoryEloquent;
 use App\Models\Rep\RepositoryQueryBuilder;
@@ -30,14 +29,15 @@ class ImageEloquent extends Image
     /**
      * Создание.
      *
-     * @param  Entity|ImageEntity  $entity  Данные для добавления.
+     * @param Entity|ImageEntity $entity Данные для добавления.
      *
      * @return int|string Вернет ID последней вставленной строки.
+     * @throws ParameterInvalidException
      */
     public function create(Entity|ImageEntity $entity): int|string
     {
         /**
-         * @var \App\Modules\Image\Models\ImageEloquent $model
+         * @var ImageEloquentModel $model
          */
         $model = $this->newInstance();
         $pro = getImageSize($entity->path);
@@ -57,8 +57,8 @@ class ImageEloquent extends Image
     /**
      * Обновление.
      *
-     * @param  int|string  $id  Id записи для обновления.
-     * @param  Entity|ImageEntity  $entity  Данные для добавления.
+     * @param int|string $id Id записи для обновления.
+     * @param Entity|ImageEntity $entity Данные для добавления.
      *
      * @return int|string Вернет ID вставленной строки.
      * @throws RecordNotExistException
@@ -66,7 +66,7 @@ class ImageEloquent extends Image
     public function update(int|string $id, Entity|ImageEntity $entity): int|string
     {
         /**
-         * @var \App\Modules\Image\Models\ImageEloquent $model
+         * @var ImageEloquentModel $model
          */
         $model = $this->newInstance()->find($id);
 
@@ -85,14 +85,14 @@ class ImageEloquent extends Image
             return $id;
         }
 
-        throw new RecordNotExistException('The image #'.$id.' does not exist.');
+        throw new RecordNotExistException('The image #' . $id . ' does not exist.');
     }
 
     /**
      * Обновление байт кода картинки.
      *
-     * @param  int|string  $id  Id записи для обновления.
-     * @param  string  $byte  Байт код картинки.
+     * @param int|string $id Id записи для обновления.
+     * @param string $byte Байт код картинки.
      *
      * @return bool Вернет булево значение успешности операции.
      */
@@ -107,11 +107,10 @@ class ImageEloquent extends Image
      * Получить по первичному ключу.
      *
      * @param RepositoryQueryBuilder|null $repositoryQueryBuilder Запрос к репозиторию.
-     * @param  Entity|ImageEntity|null  $entity  Сущность.
+     * @param Entity|ImageEntity|null $entity Сущность.
      *
      * @return Entity|ImageEntity|null Данные.
      * @throws ParameterInvalidException
-     * @throws ReflectionException
      */
     public function get(
         RepositoryQueryBuilder $repositoryQueryBuilder = null,
@@ -133,7 +132,9 @@ class ImageEloquent extends Image
         $image = $query->first();
 
         if ($image) {
-            $entity = $entity ? clone $entity->set($image->toArray()) : clone $this->getEntity()->set($image->toArray());
+            $entity = $entity ? clone $entity->set($image->toArray()) : clone $this->getEntity()->set(
+                $image->toArray()
+            );
 
             $entity->path = $image->path;
             $entity->pathCache = $image->pathCache;
@@ -151,9 +152,10 @@ class ImageEloquent extends Image
     /**
      * Получение байт кода картинки.
      *
-     * @param  int|string  $id  Id записи для обновления.
+     * @param int|string $id Id записи для обновления.
      *
      * @return string|null Вернет байт код изображения.
+     * @throws ParameterInvalidException
      */
     public function getByte(int|string $id): ?string
     {
@@ -173,11 +175,10 @@ class ImageEloquent extends Image
     /**
      * Получение всех записей.
      *
-     * @param  Entity|ImageEntity|null  $entity  Сущность.
+     * @param Entity|ImageEntity|null $entity Сущность.
      *
      * @return Generator|ImageEntity|null Генератор.
      * @throws ParameterInvalidException
-     * @throws ReflectionException
      */
     public function all(Entity|ImageEntity $entity = null): Generator|ImageEntity|null
     {
@@ -216,6 +217,7 @@ class ImageEloquent extends Image
      * Получить количество всех изображений.
      *
      * @return int Количество записей.
+     * @throws ParameterInvalidException
      */
     public function count(): int
     {
@@ -225,9 +227,10 @@ class ImageEloquent extends Image
     /**
      * Удаление.
      *
-     * @param  int|string|array|null  $id  Id записи для удаления.
+     * @param int|string|array|null $id Id записи для удаления.
      *
      * @return bool Вернет булево значение успешности операции.
+     * @throws ParameterInvalidException
      */
     public function destroy(int|string|array $id = null): bool
     {

@@ -11,11 +11,9 @@ namespace App\Modules\Direction\Actions\Admin;
 use App\Models\Action;
 use App\Models\Enums\CacheTime;
 use App\Models\Exceptions\ParameterInvalidException;
-use App\Models\Rep\RepositoryQueryBuilder;
 use App\Modules\Direction\Entities\Direction as DirectionEntity;
-use App\Modules\Direction\Repositories\Direction;
+use App\Modules\Direction\Models\Direction;
 use Cache;
-use ReflectionException;
 use Util;
 
 /**
@@ -24,13 +22,6 @@ use Util;
 class DirectionGetAction extends Action
 {
     /**
-     * Репозиторий направлений.
-     *
-     * @var Direction
-     */
-    private Direction $direction;
-
-    /**
      * ID направления.
      *
      * @var int|string|null
@@ -38,36 +29,24 @@ class DirectionGetAction extends Action
     public int|string|null $id = null;
 
     /**
-     * Конструктор.
-     *
-     * @param  Direction  $direction  Репозиторий направлений.
-     */
-    public function __construct(Direction $direction)
-    {
-        $this->direction = $direction;
-    }
-
-    /**
      * Метод запуска логики.
      *
      * @return DirectionEntity|null Вернет результаты исполнения.
-     * @throws ParameterInvalidException|ReflectionException
+     * @throws ParameterInvalidException
      */
     public function run(): ?DirectionEntity
     {
-        $query = new RepositoryQueryBuilder();
-        $query->setId($this->id)
-            ->setRelations([
-                'metatag',
-            ]);
-
-        $cacheKey = Util::getKey('direction', $query);
+        $cacheKey = Util::getKey('direction', $this->id);
 
         return Cache::tags(['catalog', 'category', 'direction', 'profession', 'teacher'])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
-            function () use ($query) {
-                return $this->direction->get($query);
+            function () {
+                $direction = Direction::where('id', $this->id)
+                    ->with('metatag')
+                    ->first();
+
+                return $direction ? new DirectionEntity($direction->toArray()) : null;
             }
         );
     }

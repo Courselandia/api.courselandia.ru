@@ -77,13 +77,4 @@ Route::group([
             Route::delete('destroy/{id}', 'Admin\UserImageController@destroy')
                 ->name('destroy');
         });
-
-    Route::group([
-        'prefix' => 'analytics/',
-        'as' => '.analytics'
-    ],
-        function () {
-            Route::get('new/', 'Admin\UserController@analyticsNew')
-                ->name('read');
-        });
 });

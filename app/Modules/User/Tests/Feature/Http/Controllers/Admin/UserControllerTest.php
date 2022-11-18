@@ -430,60 +430,6 @@ class UserControllerTest extends TestCase
     }
 
     /**
-     * Получение статистики новых пользователей.
-     *
-     * @return void
-     */
-    public function testAnalyticsNew(): void
-    {
-        User::factory()->create();
-
-        $this->json(
-            'GET',
-            'api/private/admin/user/analytics/new',
-            [
-                'dateFrom' => Carbon::now()->addMonths(-10)->format('Y-m-d'),
-                'dateTo' => Carbon::now()->addMonths(10)->format('Y-m-d'),
-                'group' => DateGroup::MONTH,
-            ],
-            [
-                'Authorization' => 'Bearer '.$this->getAdminToken()
-            ]
-        )->assertStatus(200)->assertJsonStructure([
-            'data' => [
-                '*' => $this->getAnalyticsNewUsersStructure()
-            ],
-            'success',
-        ]);
-    }
-
-    /**
-     * Получение статистики новых пользователей с ошибкой валидации.
-     *
-     * @return void
-     */
-    public function testAnalyticsNewNotValid(): void
-    {
-        User::factory()->create();
-
-        $this->json(
-            'GET',
-            'api/private/admin/user/analytics/new',
-            [
-                'dateFrom' => Carbon::now()->addMonths(-10)->format('d.m.Y'),
-                'dateTo' => Carbon::now()->addMonths(10)->format('Y-m-d'),
-                'group' => DateGroup::MONTH,
-            ],
-            [
-                'Authorization' => 'Bearer '.$this->getAdminToken()
-            ]
-        )->assertStatus(400)->assertJsonStructure([
-            'success',
-            'message',
-        ]);
-    }
-
-    /**
      * Получить структуру данных псевдонима системы.
      *
      * @return array Массив структуры данных псевдонима.

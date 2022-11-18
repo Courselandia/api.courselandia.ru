@@ -14,7 +14,7 @@ use Closure;
 use App\Models\Contracts\Pipe;
 use App\Models\Entity;
 use App\Modules\Publication\Entities\PublicationRead as PublicationReadEntity;
-use App\Modules\Publication\Repositories\Publication;
+use App\Modules\Publication\Models\Publication;
 use Util;
 
 /**
@@ -22,23 +22,6 @@ use Util;
  */
 class PublicationTotal implements Pipe
 {
-    /**
-     * Репозиторий публикаций.
-     *
-     * @var Publication
-     */
-    private Publication $publication;
-
-    /**
-     * Конструктор.
-     *
-     * @param  Publication  $publication  Репозиторий публикаций.
-     */
-    public function __construct(Publication $publication)
-    {
-        $this->publication = $publication;
-    }
-
     /**
      * Метод, который будет вызван у pipeline.
      *
@@ -50,16 +33,14 @@ class PublicationTotal implements Pipe
     public function handle(Entity|PublicationReadEntity $entity, Closure $next): mixed
     {
         if ($entity->limit) {
-            $query = PublicationCondition::get($entity->year)
-                ->setActive(true);
-
-            $cacheKey = Util::getKey('publication', 'count', $query);
+            $year = $entity->year;
+            $cacheKey = Util::getKey('publication', 'count', $year, 'active');
 
             $entity->total = Cache::tags(['publication'])->remember(
                 $cacheKey,
                 CacheTime::GENERAL->value,
-                function () use ($query) {
-                    return $this->publication->count($query);
+                function () use ($year) {
+                    return Publication::year($year)->active()->count();
                 }
             );
         }

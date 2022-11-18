@@ -14,7 +14,6 @@ use App\Models\Rep\RepositoryFilter;
 use App\Models\Rep\RepositoryQueryBuilder;
 use App\Modules\Log\Repositories\Log;
 use JetBrains\PhpStorm\ArrayShape;
-use ReflectionException;
 
 /**
  * Класс действия для чтения логов.
@@ -70,7 +69,7 @@ class LogReadAction extends Action
      * Метод запуска логики.
      *
      * @return array Вернет результаты исполнения.
-     * @throws ParameterInvalidException|ReflectionException
+     * @throws ParameterInvalidException
      */
     #[ArrayShape(['data' => 'array', 'total' => 'int'])] public function run(): array
     {

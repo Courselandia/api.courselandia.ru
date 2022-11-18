@@ -9,11 +9,11 @@
 namespace App\Modules\Profession\Actions\Admin;
 
 use App\Models\Action;
+use App\Models\Entity;
 use App\Models\Enums\CacheTime;
 use App\Models\Exceptions\ParameterInvalidException;
-use App\Models\Rep\RepositoryFilter;
-use App\Models\Rep\RepositoryQueryBuilder;
-use App\Modules\Profession\Repositories\Profession;
+use App\Modules\Profession\Entities\Profession as ProfessionEntity;
+use App\Modules\Profession\Models\Profession;
 use Cache;
 use JetBrains\PhpStorm\ArrayShape;
 use ReflectionException;
@@ -24,13 +24,6 @@ use Util;
  */
 class ProfessionReadAction extends Action
 {
-    /**
-     * Репозиторий профессий.
-     *
-     * @var Profession
-     */
-    private Profession $profession;
-
     /**
      * Сортировка данных.
      *
@@ -60,16 +53,6 @@ class ProfessionReadAction extends Action
     public ?int $limit = null;
 
     /**
-     * Конструктор.
-     *
-     * @param  Profession  $profession  Репозиторий профессий.
-     */
-    public function __construct(Profession $profession)
-    {
-        $this->profession = $profession;
-    }
-
-    /**
      * Метод запуска логики.
      *
      * @return mixed Вернет результаты исполнения.
@@ -77,24 +60,42 @@ class ProfessionReadAction extends Action
      */
     #[ArrayShape(['data' => 'array', 'total' => 'int'])] public function run(): array
     {
-        $query = new RepositoryQueryBuilder();
-        $query->setFilters(RepositoryFilter::getFilters($this->filters))
-            ->setSorts($this->sorts)
-            ->setOffset($this->offset)
-            ->setLimit($this->limit)
-            ->setRelations([
+        $cacheKey = Util::getKey(
+            'profession',
+            'admin',
+            'read',
+            'count',
+            $this->filters,
+            $this->offset,
+            $this->limit,
+            [
                 'metatag',
-            ]);
-
-        $cacheKey = Util::getKey('profession', 'read', 'count', $query);
+            ]
+        );
 
         return Cache::tags(['catalog', 'category', 'direction', 'salary', 'profession'])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
-            function () use ($query) {
+            function () {
+                $query = Profession::filter($this->filters ?: [])
+                    ->sorted($this->sorts ?: [])
+                    ->with([
+                        'metatag',
+                    ]);
+
+                if ($this->offset) {
+                    $query->offset($this->offset);
+                }
+
+                if ($this->limit) {
+                    $query->limit($this->limit);
+                }
+
+                $items = $query->get()->toArray();
+
                 return [
-                    'data' => $this->profession->read($query),
-                    'total' => $this->profession->count($query),
+                    'data' => Entity::toEntities($items, new ProfessionEntity()),
+                    'total' => $query->count(),
                 ];
             }
         );

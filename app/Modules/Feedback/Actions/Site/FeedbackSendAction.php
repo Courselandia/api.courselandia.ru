@@ -14,9 +14,8 @@ use Mail;
 use Alert;
 use Util;
 use App\Models\Action;
-use ReflectionException;
 use App\Modules\Feedback\Emails\Feedback as FeedbackMail;
-use App\Modules\Feedback\Repositories\Feedback;
+use App\Modules\Feedback\Models\Feedback;
 use App\Modules\Feedback\Entities\Feedback as FeedbackEntity;
 use App\Modules\Feedback\Actions\Admin\FeedbackGetAction;
 use App\Models\Exceptions\ParameterInvalidException;
@@ -26,13 +25,6 @@ use App\Models\Exceptions\ParameterInvalidException;
  */
 class FeedbackSendAction extends Action
 {
-    /**
-     * Репозиторий обратной связи.
-     *
-     * @var Feedback
-     */
-    private Feedback $feedback;
-
     /**
      * Имя.
      *
@@ -62,21 +54,10 @@ class FeedbackSendAction extends Action
     public ?string $message = null;
 
     /**
-     * Конструктор.
-     *
-     * @param  Feedback  $feedback  Репозиторий обратной связи.
-     */
-    public function __construct(Feedback $feedback)
-    {
-        $this->feedback = $feedback;
-    }
-
-    /**
      * Метод запуска логики.
      *
      * @return FeedbackEntity Вернет результаты исполнения.
      * @throws ParameterInvalidException
-     * @throws ReflectionException
      */
     public function run(): FeedbackEntity
     {
@@ -90,20 +71,20 @@ class FeedbackSendAction extends Action
         $feedbackEntity->phone = $this->phone;
         $feedbackEntity->message = Util::getText($this->message);
 
-        $id = $this->feedback->create($feedbackEntity);
+        $feedback = Feedback::create($feedbackEntity->toArray());
         Cache::tags(['feedback'])->flush();
 
         Alert::add(
-            trans('feedback::actions.site.feedbackSendAction.alert', ['id' => $id]),
+            trans('feedback::actions.site.feedbackSendAction.alert', ['id' => $feedback->id]),
             true,
             null,
-            '/dashboard/feedbacks/'.$id,
+            '/dashboard/feedbacks/' . $feedback->id,
             'Отправил',
             'green'
         );
 
         $action = app(FeedbackGetAction::class);
-        $action->id = $id;
+        $action->id = $feedback->id;
 
         return $action->run();
     }

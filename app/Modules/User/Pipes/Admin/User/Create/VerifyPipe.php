@@ -15,7 +15,7 @@ use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Rep\RepositoryCondition;
 use App\Models\Rep\RepositoryQueryBuilder;
 use App\Modules\User\Entities\UserCreate;
-use App\Modules\User\Repositories\UserVerification;
+use App\Modules\User\Models\UserVerification;
 use App\Modules\User\Entities\UserVerification as UserVerificationEntity;
 use Cache;
 use Closure;
@@ -29,23 +29,6 @@ use Util;
 class VerifyPipe implements Pipe
 {
     /**
-     * Репозиторий верификации пользователя.
-     *
-     * @var UserVerification
-     */
-    private UserVerification $userVerification;
-
-    /**
-     * Конструктор.
-     *
-     * @param  UserVerification  $userVerification  Репозиторий верификации пользователя.
-     */
-    public function __construct(UserVerification $userVerification)
-    {
-        $this->userVerification = $userVerification;
-    }
-
-    /**
      * Метод, который будет вызван у pipeline.
      *
      * @param  Entity|UserCreate  $entity  Сущность для создания пользователя.
@@ -57,22 +40,22 @@ class VerifyPipe implements Pipe
      */
     public function handle(Entity|UserCreate $entity, Closure $next): mixed
     {
-        $query = new RepositoryQueryBuilder();
-        $query->addCondition(new RepositoryCondition('user_id', $entity->id));
-
-        $cacheKey = Util::getKey('user', 'verification', $query);
+        $id = $entity->id;
+        $cacheKey = Util::getKey('user', 'verification', 'model', $id);
 
         $userVerification = Cache::tags(['user'])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
-            function () use ($query) {
-                return $this->userVerification->get($query);
+            function () use ($id) {
+                return UserVerification::where('user_id', $id)
+                    ->first();
             }
         );
 
         if ($userVerification) {
             $userVerification->status = $entity->verified;
-            $this->userVerification->update($userVerification->id, $userVerification);
+            $userVerification->update($userVerification->toArray());
+
             Cache::tags(['user'])->flush();
         } else {
             $userVerification = new UserVerificationEntity();
@@ -80,7 +63,7 @@ class VerifyPipe implements Pipe
             $userVerification->code = UserVerificationEntity::generateCode($entity->id);
             $userVerification->status = $entity->verified;
 
-            $this->userVerification->create($userVerification);
+            UserVerification::create($userVerification->toArray());
             Cache::tags(['user'])->flush();
         }
 

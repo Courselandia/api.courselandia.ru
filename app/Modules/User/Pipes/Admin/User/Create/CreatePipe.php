@@ -12,7 +12,7 @@ use App\Models\Contracts\Pipe;
 use App\Models\Entity;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\User\Entities\UserCreate;
-use App\Modules\User\Repositories\User;
+use App\Modules\User\Models\User;
 use Cache;
 use Closure;
 
@@ -21,23 +21,6 @@ use Closure;
  */
 class CreatePipe implements Pipe
 {
-    /**
-     * Репозиторий пользователей.
-     *
-     * @var User
-     */
-    private User $user;
-
-    /**
-     * Конструктор.
-     *
-     * @param  User  $user  Репозиторий пользователей.
-     */
-    public function __construct(User $user)
-    {
-        $this->user = $user;
-    }
-
     /**
      * Метод, который будет вызван у pipeline.
      *
@@ -50,9 +33,9 @@ class CreatePipe implements Pipe
     public function handle(Entity|UserCreate $entity, Closure $next): mixed
     {
         $entity->password = bcrypt($entity->password);
-        $id = $this->user->create($entity);
+        $user = User::create($entity->toArray());
         Cache::tags(['user'])->flush();
-        $entity->id = $id;
+        $entity->id = $user->id;
 
         return $next($entity);
     }

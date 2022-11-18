@@ -12,7 +12,7 @@ use App\Models\Action;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Modules\Direction\Entities\Direction as DirectionEntity;
-use App\Modules\Direction\Repositories\Direction;
+use App\Modules\Direction\Models\Direction;
 use App\Modules\Metatag\Actions\MetatagSetAction;
 use Cache;
 use ReflectionException;
@@ -22,13 +22,6 @@ use ReflectionException;
  */
 class DirectionCreateAction extends Action
 {
-    /**
-     * Репозиторий направлений.
-     *
-     * @var Direction
-     */
-    private Direction $direction;
-
     /**
      * Название.
      *
@@ -93,16 +86,6 @@ class DirectionCreateAction extends Action
     public ?string $title = null;
 
     /**
-     * Конструктор.
-     *
-     * @param Direction $direction Репозиторий направлений.
-     */
-    public function __construct(Direction $direction)
-    {
-        $this->direction = $direction;
-    }
-
-    /**
      * Метод запуска логики.
      *
      * @return DirectionEntity Вернет результаты исполнения.
@@ -127,11 +110,12 @@ class DirectionCreateAction extends Action
         $directionEntity->status = $this->status;
         $directionEntity->metatag_id = $metatag->id;
 
-        $id = $this->direction->create($directionEntity);
+        $direction = Direction::create($directionEntity->toArray());
+
         Cache::tags(['catalog', 'category', 'direction', 'profession', 'teacher'])->flush();
 
         $action = app(DirectionGetAction::class);
-        $action->id = $id;
+        $action->id = $direction->id;
 
         return $action->run();
     }

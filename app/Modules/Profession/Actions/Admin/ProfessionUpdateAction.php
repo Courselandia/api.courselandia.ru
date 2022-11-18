@@ -12,12 +12,9 @@ use App\Models\Action;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Modules\Profession\Entities\Profession as ProfessionEntity;
-use App\Modules\Profession\Repositories\Profession;
-use App\Modules\Image\Entities\Image;
+use App\Modules\Profession\Models\Profession;
 use App\Modules\Metatag\Actions\MetatagSetAction;
 use Cache;
-use Carbon\Carbon;
-use Illuminate\Http\UploadedFile;
 use ReflectionException;
 
 /**
@@ -25,13 +22,6 @@ use ReflectionException;
  */
 class ProfessionUpdateAction extends Action
 {
-    /**
-     * Репозиторий профессий.
-     *
-     * @var Profession
-     */
-    private Profession $profession;
-
     /**
      * ID профессии.
      *
@@ -96,22 +86,11 @@ class ProfessionUpdateAction extends Action
     public ?string $title = null;
 
     /**
-     * Конструктор.
-     *
-     * @param  Profession  $profession  Репозиторий профессий.
-     */
-    public function __construct(Profession $profession)
-    {
-        $this->profession = $profession;
-    }
-
-    /**
      * Метод запуска логики.
      *
      * @return ProfessionEntity Вернет результаты исполнения.
      * @throws RecordNotExistException
      * @throws ParameterInvalidException
-     * @throws ReflectionException
      */
     public function run(): ProfessionEntity
     {
@@ -134,7 +113,7 @@ class ProfessionUpdateAction extends Action
             $professionEntity->text = $this->text;
             $professionEntity->status = $this->status;
 
-            $this->profession->update($this->id, $professionEntity);
+            Profession::find($this->id)->update($professionEntity->toArray());
             Cache::tags(['catalog', 'category', 'direction', 'salary', 'profession'])->flush();
 
             $action = app(ProfessionGetAction::class);

@@ -15,7 +15,7 @@ use App\Models\Contracts\Pipe;
 use App\Models\Entity;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\User\Entities\UserCreate;
-use App\Modules\User\Repositories\UserRole;
+use App\Modules\User\Models\UserRole;
 use App\Modules\User\Entities\UserRole as UserRoleEntity;
 
 /**
@@ -23,23 +23,6 @@ use App\Modules\User\Entities\UserRole as UserRoleEntity;
  */
 class RolePipe implements Pipe
 {
-    /**
-     * Репозиторий ролей пользователя.
-     *
-     * @var UserRole
-     */
-    private UserRole $userRole;
-
-    /**
-     * Конструктор.
-     *
-     * @param  UserRole  $userRole  Репозиторий пользователей.
-     */
-    public function __construct(UserRole $userRole)
-    {
-        $this->userRole = $userRole;
-    }
-
     /**
      * Метод, который будет вызван у pipeline.
      *
@@ -58,10 +41,10 @@ class RolePipe implements Pipe
                 $userRoleEntity->user_id = $entity->id;
                 $userRoleEntity->name = $entity->role;
 
-                $this->userRole->create($userRoleEntity);
+                UserRole::create($userRoleEntity->toArray());
                 Cache::tags(['user'])->flush();
             } catch (Exception $error) {
-                $this->userRole->destroy($entity->role);
+                UserRole::destroy($entity->role);
                 Cache::tags(['user'])->flush();
 
                 throw $error;

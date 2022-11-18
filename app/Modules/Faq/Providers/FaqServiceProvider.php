@@ -8,13 +8,10 @@
 
 namespace App\Modules\Faq\Providers;
 
-use App;
 use Config;
 use Illuminate\Support\ServiceProvider;
 
 use App\Modules\Faq\Models\Faq as FaqModel;
-use App\Modules\Faq\Repositories\Faq as FaqRepository;
-use App\Modules\Faq\Entities\Faq as FaqEntity;
 use App\Modules\Faq\Events\Listeners\FaqListener;
 
 /**
@@ -45,13 +42,6 @@ class FaqServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->register(RouteServiceProvider::class);
-
-        App::singleton(
-            FaqRepository::class,
-            function () {
-                return new FaqRepository(new FaqModel(), new FaqEntity());
-            }
-        );
     }
 
     /**

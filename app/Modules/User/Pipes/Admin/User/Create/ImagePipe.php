@@ -15,7 +15,7 @@ use App\Models\Exceptions\RecordNotExistException;
 use App\Models\Exceptions\UserNotExistException;
 use App\Modules\User\Actions\Admin\User\UserGetAction;
 use App\Modules\User\Entities\UserCreate;
-use App\Modules\User\Repositories\User;
+use App\Modules\User\Models\User;
 use Cache;
 use Closure;
 use Exception;
@@ -26,22 +26,6 @@ use ReflectionException;
  */
 class ImagePipe implements Pipe
 {
-    /**
-     * Репозиторий пользователей.
-     *
-     * @var User
-     */
-    private User $user;
-
-    /**
-     * Конструктор.
-     *
-     * @param  User  $user  Репозиторий пользователей.
-     */
-    public function __construct(User $user)
-    {
-        $this->user = $user;
-    }
 
     /**
      * Метод, который будет вызван у pipeline.
@@ -51,7 +35,6 @@ class ImagePipe implements Pipe
      *
      * @return mixed Вернет значение полученное после выполнения следующего pipe.
      * @throws ParameterInvalidException
-     * @throws RecordNotExistException|ReflectionException
      */
     public function handle(Entity|UserCreate $entity, Closure $next): mixed
     {
@@ -65,13 +48,14 @@ class ImagePipe implements Pipe
                     $user->image_small_id = $entity->image;
                     $user->image_middle_id = $entity->image;
                     $user->image_big_id = $entity->image;
-                    $this->user->update($entity->id, $user);
+
+                    User::find($entity->id)->update($user->toArray());
                     Cache::tags(['user'])->flush();
                 } else {
                     new UserNotExistException(trans('access::http.actions.site.userConfigUpdateAction.notExistUser'));
                 }
             } catch (Exception $error) {
-                $this->user->destroy($entity->id);
+                User::destroy($entity->id);
                 Cache::tags(['user'])->flush();
 
                 throw $error;

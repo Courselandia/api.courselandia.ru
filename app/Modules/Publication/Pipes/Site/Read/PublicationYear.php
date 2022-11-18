@@ -13,15 +13,11 @@ use Cache;
 use Closure;
 use Carbon\Carbon;
 use App\Models\Entity;
-use ReflectionException;
 use App\Models\Contracts\Pipe;
 use App\Models\Enums\CacheTime;
-use App\Models\Enums\SortDirection;
-use App\Models\Exceptions\ParameterInvalidException;
-use App\Modules\Publication\Repositories\Publication;
+use App\Modules\Publication\Models\Publication;
 use App\Modules\Publication\Entities\PublicationRead as PublicationReadEntity;
 use App\Modules\Publication\Entities\PublicationYear as PublicationYearEntity;
-use App\Modules\Publication\Repositories\RepositoryQueryBuilderPublication;
 
 /**
  * Класс пайплайн для разбивки публикаций по годам.
@@ -29,47 +25,27 @@ use App\Modules\Publication\Repositories\RepositoryQueryBuilderPublication;
 class PublicationYear implements Pipe
 {
     /**
-     * Репозиторий публикаций.
-     *
-     * @var Publication
-     */
-    private Publication $publication;
-
-    /**
-     * Конструктор.
-     *
-     * @param  Publication  $publication  Репозиторий публикаций.
-     */
-    public function __construct(Publication $publication)
-    {
-        $this->publication = $publication;
-    }
-
-    /**
      * Метод, который будет вызван у pipeline.
      *
      * @param  Entity|PublicationReadEntity  $entity  Сущность для чтения публикаций.
      * @param  Closure  $next  Ссылка на следующий pipe.
      *
      * @return mixed Вернет значение полученное после выполнения следующего pipe.
-     * @throws ParameterInvalidException|ReflectionException
      */
     public function handle(Entity|PublicationReadEntity $entity, Closure $next): mixed
     {
         if ($entity->limit) {
-            $query = new RepositoryQueryBuilderPublication();
-
-            $query->setActive(true)
-                ->addSort('published_at', SortDirection::DESC)
-                ->addSort('id');
-
-            $cacheKey = Util::getKey('publication', $query);
+            $cacheKey = Util::getKey('publication', 'model');
 
             $publications = Cache::tags(['publication'])->remember(
                 $cacheKey,
                 CacheTime::GENERAL->value,
-                function () use ($query) {
-                    return $this->publication->read($query);
+                function () {
+                    return Publication::active()
+                        ->select('published_at')
+                        ->orderBy('published_at', 'desc')
+                        ->orderBy('id', 'desc')
+                        ->get();
                 }
             );
 

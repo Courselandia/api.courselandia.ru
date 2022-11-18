@@ -11,7 +11,6 @@ namespace App\Modules\OAuth\Providers;
 use Config;
 use App;
 use Illuminate\Support\ServiceProvider;
-use App\Modules\User\Repositories\User;
 
 use App\Modules\OAuth\Models\OAuthClientEloquent as ModelOAuthClientEloquent;
 use App\Modules\OAuth\Repositories\OAuthClientEloquent as RepositoryOAuthClientEloquent;
@@ -47,7 +46,7 @@ class OAuthServiceProvider extends ServiceProvider
         $this->registerTranslations();
         $this->registerConfig();
 
-        $this->loadMigrationsFrom(__DIR__.'/../Database/Migrations');
+        $this->loadMigrationsFrom(__DIR__ . '/../Database/Migrations');
 
         ModelOAuthClientEloquent::observe(OAuthClientEloquentListener::class);
         ModelOAuthTokenEloquent::observe(OAuthTokenEloquentListener::class);
@@ -92,7 +91,6 @@ class OAuthServiceProvider extends ServiceProvider
             'database',
             function () {
                 return new OAuthDriverDatabase(
-                    app(User::class),
                     app(RepositoryOAuthClientEloquent::class),
                     app(RepositoryOAuthTokenEloquent::class),
                     app(RepositoryOAuthRefreshTokenEloquent::class)
@@ -109,10 +107,10 @@ class OAuthServiceProvider extends ServiceProvider
     protected function registerConfig(): void
     {
         $this->publishes([
-            __DIR__.'/../Config/config.php' => config_path('oauth.php'),
+            __DIR__ . '/../Config/config.php' => config_path('oauth.php'),
         ]);
         $this->mergeConfigFrom(
-            __DIR__.'/../Config/config.php',
+            __DIR__ . '/../Config/config.php',
             'oauth'
         );
     }
@@ -126,7 +124,7 @@ class OAuthServiceProvider extends ServiceProvider
     {
         $viewPath = base_path('resources/views/modules/oauth');
 
-        $sourcePath = __DIR__.'/../Resources/views';
+        $sourcePath = __DIR__ . '/../Resources/views';
 
         $this->publishes([
             $sourcePath => $viewPath
@@ -135,7 +133,7 @@ class OAuthServiceProvider extends ServiceProvider
         $this->loadViewsFrom(
             array_merge(
                 array_map(function ($path) {
-                    return $path.'/modules/oauth';
+                    return $path . '/modules/oauth';
                 }, Config::get('view.paths')),
                 [$sourcePath]
             ),
@@ -155,7 +153,7 @@ class OAuthServiceProvider extends ServiceProvider
         if (is_dir($langPath)) {
             $this->loadTranslationsFrom($langPath, 'oauth');
         } else {
-            $this->loadTranslationsFrom(__DIR__.'/../Resources/lang', 'oauth');
+            $this->loadTranslationsFrom(__DIR__ . '/../Resources/lang', 'oauth');
         }
     }
 

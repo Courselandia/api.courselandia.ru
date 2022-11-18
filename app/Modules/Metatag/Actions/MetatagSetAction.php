@@ -10,24 +10,14 @@ namespace App\Modules\Metatag\Actions;
 
 use App\Models\Action;
 use App\Models\Exceptions\ParameterInvalidException;
-use App\Models\Exceptions\RecordNotExistException;
-use App\Models\Rep\RepositoryQueryBuilder;
-use App\Modules\Metatag\Repositories\Metatag;
+use App\Modules\Metatag\Models\Metatag;
 use App\Modules\Metatag\Entities\Metatag as MetatagEntity;
-use ReflectionException;
 
 /**
  * Класс для установки метатэгов.
  */
 class MetatagSetAction extends Action
 {
-    /**
-     * Репозиторий для метатэгов.
-     *
-     * @var Metatag
-     */
-    private Metatag $metatag;
-
     /**
      * ID записи.
      *
@@ -57,20 +47,10 @@ class MetatagSetAction extends Action
     public ?string $title = null;
 
     /**
-     * Конструктор.
-     *
-     * @param  Metatag  $metatag  Репозиторий метатэгов.
-     */
-    public function __construct(Metatag $metatag)
-    {
-        $this->metatag = $metatag;
-    }
-
-    /**
      * Метод запуска логики.
      *
      * @return MetatagEntity|null Вернет результаты исполнения.
-     * @throws RecordNotExistException|ParameterInvalidException|ReflectionException
+     * @throws ParameterInvalidException
      */
     public function run(): ?MetatagEntity
     {
@@ -80,18 +60,17 @@ class MetatagSetAction extends Action
         $metatagEntity->title = $this->title;
 
         if ($this->id) {
-            $metatag = $this->metatag->get(new RepositoryQueryBuilder($this->id));
+            $metatag = Metatag::find($this->id);
 
             if ($metatag) {
-                $metatagEntity->id = $this->id;
-                $id = $this->metatag->update($this->id, $metatagEntity);
+                $metatag->update($metatagEntity->toArray());
 
-                return $this->metatag->get(new RepositoryQueryBuilder($id));
+                return new MetatagEntity($metatagEntity->toArray());
             }
         } else {
-            $id = $this->metatag->create($metatagEntity);
+            $metatag = Metatag::create($metatagEntity->toArray());
 
-            return $this->metatag->get(new RepositoryQueryBuilder($id));
+            return new MetatagEntity($metatag->toArray());
         }
 
         return null;

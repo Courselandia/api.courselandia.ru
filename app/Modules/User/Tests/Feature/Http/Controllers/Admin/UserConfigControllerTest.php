@@ -30,7 +30,7 @@ class UserConfigControllerTest extends TestCase
             'api/private/admin/user/config/get',
             [],
             [
-                'Authorization' => 'Bearer '.$this->getAdminToken()
+                'Authorization' => 'Bearer ' . $this->getAdminToken()
             ]
         )->assertStatus(200)->assertJsonStructure([
             'data',
@@ -60,7 +60,7 @@ class UserConfigControllerTest extends TestCase
                 ])
             ],
             [
-                'Authorization' => 'Bearer '.$this->getAdminToken()
+                'Authorization' => 'Bearer ' . $this->getAdminToken()
             ]
         )->assertStatus(200)->assertExactJson([
             'data' => $data,
@@ -81,7 +81,7 @@ class UserConfigControllerTest extends TestCase
             [
             ],
             [
-                'Authorization' => 'Bearer '.$this->getAdminToken()
+                'Authorization' => 'Bearer ' . $this->getAdminToken()
             ]
         )->assertStatus(400)->assertJsonStructure([
             'success',
