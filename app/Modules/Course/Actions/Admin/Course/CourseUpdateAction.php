@@ -20,18 +20,18 @@ use App\Modules\Course\Enums\Status;
 use App\Modules\Image\Entities\Image;
 use App\Modules\Metatag\Actions\MetatagSetAction;
 use App\Modules\Course\Entities\Course as CourseEntity;
-use App\Modules\Course\Repositories\Course;
-use App\Modules\Course\Repositories\CourseLevel;
-use App\Modules\Course\Repositories\CourseLearn;
-use App\Modules\Course\Repositories\CourseEmployment;
-use App\Modules\Course\Repositories\CourseFeature;
+use App\Modules\Course\Models\Course;
+use App\Modules\Course\Models\CourseLevel;
+use App\Modules\Course\Models\CourseLearn;
+use App\Modules\Course\Models\CourseEmployment;
+use App\Modules\Course\Models\CourseFeature;
 use App\Modules\Course\Entities\CourseLevel as CourseLevelEntity;
 use App\Modules\Course\Entities\CourseLearn as CourseLearnEntity;
 use App\Modules\Course\Entities\CourseEmployment as CourseEmploymentEntity;
 use App\Modules\Course\Entities\CourseFeature as CourseFeatureEntity;
 use App\Modules\Salary\Enums\Level;
 use Illuminate\Http\UploadedFile;
-use ReflectionException;
+use Throwable;
 
 /**
  * Класс действия для обновления курса.
@@ -39,46 +39,11 @@ use ReflectionException;
 class CourseUpdateAction extends Action
 {
     /**
-     * Репозиторий публикаций.
-     *
-     * @var Course
-     */
-    private Course $course;
-
-    /**
      * ID курса.
      *
      * @var int|string|null
      */
     public int|string|null $id = null;
-
-    /**
-     * Репозиторий уровней.
-     *
-     * @var CourseLevel
-     */
-    private CourseLevel $level;
-
-    /**
-     * Репозиторий тому что вы изучите на курсе.
-     *
-     * @var CourseLearn
-     */
-    private CourseLearn $learn;
-
-    /**
-     * Репозиторий помощи трудоустройства.
-     *
-     * @var CourseEmployment
-     */
-    private CourseEmployment $employmentRep;
-
-    /**
-     * Репозиторий особенностей курса.
-     *
-     * @var CourseFeature
-     */
-    private CourseFeature $feature;
 
     /**
      * ID школы.
@@ -305,35 +270,11 @@ class CourseUpdateAction extends Action
     public ?array $features = null;
 
     /**
-     * Конструктор.
-     *
-     * @param Course $course Репозиторий публикаций.
-     * @param CourseLevel $level Репозиторий уровней.
-     * @param CourseLearn $learn Репозиторий тому что вы изучите на курсе.
-     * @param CourseEmployment $employmentRep Репозиторий помощи трудоустройства.
-     * @param CourseFeature $feature Репозиторий особенностей курса.
-     */
-    public function __construct(
-        Course $course,
-        CourseLevel $level,
-        CourseLearn $learn,
-        CourseEmployment $employmentRep,
-        CourseFeature $feature
-    ) {
-        $this->course = $course;
-        $this->level = $level;
-        $this->learn = $learn;
-        $this->employmentRep = $employmentRep;
-        $this->feature = $feature;
-    }
-
-    /**
      * Метод запуска логики.
      *
      * @return CourseEntity Вернет результаты исполнения.
      * @throws RecordNotExistException
-     * @throws ParameterInvalidException
-     * @throws ReflectionException
+     * @throws ParameterInvalidException|Throwable
      */
     public function run(): CourseEntity
     {
@@ -375,60 +316,65 @@ class CourseUpdateAction extends Action
                     $courseEntity->image_big_id = $this->image;
                 }
 
-                $id = $this->course->update($this->id, $courseEntity);
-                $this->course->directionSync($id, $this->directions ?: []);
-                $this->course->professionSync($id, $this->professions ?: []);
-                $this->course->categorySync($id, $this->categories ?: []);
-                $this->course->skillSync($id, $this->skills ?: []);
-                $this->course->teacherSync($id, $this->teachers ?: []);
-                $this->course->toolSync($id, $this->tools ?: []);
+                $course = Course::find($this->id);
+                $course->update($courseEntity->toArray());
+                $course->directions()->sync($this->directions ?: []);
+                $course->professions()->sync($this->professions ?: []);
+                $course->categories()->sync($this->categories ?: []);
+                $course->skills()->sync($this->skills ?: []);
+                $course->teachers()->sync($this->teachers ?: []);
+                $course->tools()->sync($this->tools ?: []);
 
-                $this->level->destroy(collect($courseEntity->levels)->pluck('id')->toArray(), true);
+                CourseLevel::whereIn('id', collect($courseEntity->levels)->pluck('id')->toArray())
+                    ->forceDelete();
 
                 if ($this->levels) {
                     foreach ($this->levels as $level) {
                         $entity = new CourseLevelEntity();
-                        $entity->course_id = $id;
+                        $entity->course_id = $this->id;
                         $entity->level = Level::from($level);
 
-                        $this->level->create($entity);
+                        CourseLevel::create($entity->toArray());
                     }
                 }
 
-                $this->learn->destroy(collect($courseEntity->learns)->pluck('id')->toArray(), true);
+                CourseLearn::whereIn('id', collect($courseEntity->learns)->pluck('id')->toArray())
+                    ->forceDelete();
 
                 if ($this->learns) {
                     foreach ($this->learns as $learn) {
                         $entity = new CourseLearnEntity();
-                        $entity->course_id = $id;
+                        $entity->course_id = $this->id;
                         $entity->text = $learn;
 
-                        $this->learn->create($entity);
+                        CourseLearn::create($entity->toArray());
                     }
                 }
 
-                $this->employmentRep->destroy(collect($courseEntity->employments)->pluck('id')->toArray(), true);
+                CourseEmployment::whereIn('id', collect($courseEntity->employments)->pluck('id')->toArray())
+                    ->forceDelete();
 
                 if ($this->employments) {
                     foreach ($this->employments as $employment) {
                         $entity = new CourseEmploymentEntity();
-                        $entity->course_id = $id;
+                        $entity->course_id = $this->id;
                         $entity->text = $employment;
 
-                        $this->employmentRep->create($entity);
+                        CourseEmployment::create($entity->toArray());
                     }
                 }
 
-                $this->feature->destroy(collect($courseEntity->features)->pluck('id')->toArray(), true);
+                CourseFeature::whereIn('id', collect($courseEntity->features)->pluck('id')->toArray())
+                    ->forceDelete();
 
                 if ($this->features) {
                     foreach ($this->features as $feature) {
                         $entity = new CourseFeatureEntity();
-                        $entity->course_id = $id;
+                        $entity->course_id = $this->id;
                         $entity->text = $feature['text'];
                         $entity->icon = $feature['icon'];
 
-                        $this->feature->create($entity);
+                        CourseFeature::create($entity->toArray());
                     }
                 }
             });

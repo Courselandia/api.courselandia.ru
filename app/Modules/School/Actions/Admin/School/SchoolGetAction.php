@@ -11,7 +11,6 @@ namespace App\Modules\School\Actions\Admin\School;
 use App\Models\Action;
 use App\Models\Enums\CacheTime;
 use App\Models\Exceptions\ParameterInvalidException;
-use App\Models\Rep\RepositoryQueryBuilder;
 use App\Modules\School\Entities\School as SchoolEntity;
 use App\Modules\School\Models\School;
 use Cache;
@@ -37,18 +36,12 @@ class SchoolGetAction extends Action
      */
     public function run(): ?SchoolEntity
     {
-        $query = new RepositoryQueryBuilder();
-        $query->setId($this->id)
-            ->setRelations([
-                'metatag',
-            ]);
-
-        $cacheKey = Util::getKey('school', $query, $this->id, 'metatag');
+        $cacheKey = Util::getKey('school', $this->id, 'metatag');
 
         return Cache::tags(['catalog', 'school', 'teacher', 'review', 'faq'])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
-            function () use ($query) {
+            function () {
                 $school = School::where('id', $this->id)->first();
 
                 return $school ? new SchoolEntity($school->toArray()) : null;

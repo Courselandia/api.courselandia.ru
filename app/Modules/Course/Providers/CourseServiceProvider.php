@@ -8,30 +8,11 @@
 
 namespace App\Modules\Course\Providers;
 
-use App;
 use Config;
 use Illuminate\Support\ServiceProvider;
 
 use App\Modules\Course\Models\Course as CourseModel;
-use App\Modules\Course\Repositories\Course as CourseRepository;
-use App\Modules\Course\Entities\Course as CourseEntity;
 use App\Modules\Course\Events\Listeners\CourseListener;
-
-use App\Modules\Course\Models\CourseEmployment as CourseEmploymentModel;
-use App\Modules\Course\Repositories\CourseEmployment as CourseEmploymentRepository;
-use App\Modules\Course\Entities\CourseEmployment as CourseEmploymentEntity;
-
-use App\Modules\Course\Models\CourseFeature as CourseFeatureModel;
-use App\Modules\Course\Repositories\CourseFeature as CourseFeatureRepository;
-use App\Modules\Course\Entities\CourseFeature as CourseFeatureEntity;
-
-use App\Modules\Course\Models\CourseLearn as CourseLearnModel;
-use App\Modules\Course\Repositories\CourseLearn as CourseLearnRepository;
-use App\Modules\Course\Entities\CourseLearn as CourseLearnEntity;
-
-use App\Modules\Course\Models\CourseLevel as CourseLevelModel;
-use App\Modules\Course\Repositories\CourseLevel as CourseLevelRepository;
-use App\Modules\Course\Entities\CourseLevel as CourseLevelEntity;
 
 /**
  * Класс сервис-провайдера для настройки этого модуля.
@@ -61,41 +42,6 @@ class CourseServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->register(RouteServiceProvider::class);
-
-        App::singleton(
-            CourseRepository::class,
-            function () {
-                return new CourseRepository(new CourseModel(), new CourseEntity());
-            }
-        );
-
-        App::singleton(
-            CourseEmploymentRepository::class,
-            function () {
-                return new CourseEmploymentRepository(new CourseEmploymentModel(), new CourseEmploymentEntity());
-            }
-        );
-
-        App::singleton(
-            CourseFeatureRepository::class,
-            function () {
-                return new CourseFeatureRepository(new CourseFeatureModel(), new CourseFeatureEntity());
-            }
-        );
-
-        App::singleton(
-            CourseLearnRepository::class,
-            function () {
-                return new CourseLearnRepository(new CourseLearnModel(), new CourseLearnEntity());
-            }
-        );
-
-        App::singleton(
-            CourseLevelRepository::class,
-            function () {
-                return new CourseLevelRepository(new CourseLevelModel(), new CourseLevelEntity());
-            }
-        );
     }
 
     /**

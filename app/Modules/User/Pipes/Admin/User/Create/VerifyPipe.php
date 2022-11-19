@@ -12,8 +12,6 @@ use App\Models\Contracts\Pipe;
 use App\Models\Entity;
 use App\Models\Enums\CacheTime;
 use App\Models\Exceptions\ParameterInvalidException;
-use App\Models\Rep\RepositoryCondition;
-use App\Models\Rep\RepositoryQueryBuilder;
 use App\Modules\User\Entities\UserCreate;
 use App\Modules\User\Models\UserVerification;
 use App\Modules\User\Entities\UserVerification as UserVerificationEntity;

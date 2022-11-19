@@ -14,7 +14,7 @@ use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Modules\Course\Actions\Admin\Course\CourseGetAction;
 use App\Modules\Course\Entities\Course as CourseEntity;
-use App\Modules\Course\Repositories\Course;
+use App\Modules\Course\Models\Course;
 use Illuminate\Http\UploadedFile;
 
 /**
@@ -22,13 +22,6 @@ use Illuminate\Http\UploadedFile;
  */
 class CourseImageUpdateAction extends Action
 {
-    /**
-     * Репозиторий курсов.
-     *
-     * @var Course
-     */
-    private Course $course;
-
     /**
      * ID пользователей.
      *
@@ -42,16 +35,6 @@ class CourseImageUpdateAction extends Action
      * @var UploadedFile|null
      */
     public ?UploadedFile $image = null;
-
-    /**
-     * Конструктор.
-     *
-     * @param  Course  $course  Репозиторий курсов.
-     */
-    public function __construct(Course $course)
-    {
-        $this->course = $course;
-    }
 
     /**
      * Метод запуска логики.
@@ -71,7 +54,8 @@ class CourseImageUpdateAction extends Action
                 $course->image_small_id = $this->image;
                 $course->image_middle_id = $this->image;
                 $course->image_big_id = $this->image;
-                $this->course->update($this->id, $course);
+
+                Course::find($this->id)->update($course->toArray());
                 Cache::tags(['course'])->flush();
 
                 return $action->run();

@@ -16,8 +16,6 @@ use ReflectionException;
 use App\Models\Contracts\Pipe;
 use App\Models\Entity;
 use App\Models\Exceptions\ParameterInvalidException;
-use App\Models\Rep\RepositoryCondition;
-use App\Models\Rep\RepositoryQueryBuilder;
 use App\Modules\Access\Entities\AccessVerify;
 use App\Modules\User\Models\User;
 use App\Modules\User\Models\UserVerification;

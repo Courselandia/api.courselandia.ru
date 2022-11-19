@@ -8,14 +8,14 @@
 
 namespace App\Modules\Course\Actions\Admin\Course;
 
+use App\Models\Entity;
+use App\Modules\Course\Entities\Course as CourseEntity;
 use Cache;
 use Util;
 use App\Models\Action;
 use App\Models\Enums\CacheTime;
 use App\Models\Exceptions\ParameterInvalidException;
-use App\Models\Rep\RepositoryFilter;
-use App\Models\Rep\RepositoryQueryBuilder;
-use App\Modules\Course\Repositories\Course;
+use App\Modules\Course\Models\Course;
 use JetBrains\PhpStorm\ArrayShape;
 
 /**
@@ -23,13 +23,6 @@ use JetBrains\PhpStorm\ArrayShape;
  */
 class CourseReadAction extends Action
 {
-    /**
-     * Репозиторий курсов.
-     *
-     * @var Course
-     */
-    private Course $course;
-
     /**
      * Сортировка данных.
      *
@@ -59,16 +52,6 @@ class CourseReadAction extends Action
     public ?int $limit = null;
 
     /**
-     * Конструктор.
-     *
-     * @param  Course  $course  Репозиторий курсов.
-     */
-    public function __construct(Course $course)
-    {
-        $this->course = $course;
-    }
-
-    /**
      * Метод запуска логики.
      *
      * @return mixed Вернет результаты исполнения.
@@ -76,18 +59,19 @@ class CourseReadAction extends Action
      */
     #[ArrayShape(['data' => 'array', 'total' => 'int'])] public function run(): array
     {
-        $query = new RepositoryQueryBuilder();
-        $query->setFilters(RepositoryFilter::getFilters($this->filters))
-            ->setSorts($this->sorts)
-            ->setOffset($this->offset)
-            ->setLimit($this->limit)
-            ->setRelations([
-                'school',
-                'directions',
-                'professions',
-            ]);
-
-        $cacheKey = Util::getKey('course', 'read', 'count', $query);
+        $cacheKey = Util::getKey(
+            'course',
+            'admin',
+            'read',
+            'count',
+            $this->sorts,
+            $this->filters,
+            $this->offset,
+            $this->limit,
+            'school',
+            'directions',
+            'professions',
+        );
 
         return Cache::tags([
             'course',
@@ -101,10 +85,28 @@ class CourseReadAction extends Action
         ])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
-            function () use ($query) {
+            function () {
+                $query = Course::filter($this->filters ?: [])
+                    ->sorted($this->sorts ?: [])
+                    ->with([
+                        'school',
+                        'directions',
+                        'professions',
+                    ]);
+
+                if ($this->offset) {
+                    $query->offset($this->offset);
+                }
+
+                if ($this->limit) {
+                    $query->limit($this->limit);
+                }
+
+                $items = $query->get()->toArray();
+
                 return [
-                    'data' => $this->course->read($query),
-                    'total' => $this->course->count($query),
+                    'data' => Entity::toEntities($items, new CourseEntity()),
+                    'total' => $query->count(),
                 ];
             }
         );

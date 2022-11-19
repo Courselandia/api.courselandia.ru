@@ -12,8 +12,6 @@ use App\Models\Action;
 use App\Models\Entity;
 use App\Models\Enums\CacheTime;
 use App\Models\Exceptions\ParameterInvalidException;
-use App\Models\Rep\RepositoryFilter;
-use App\Models\Rep\RepositoryQueryBuilder;
 use App\Modules\Faq\Entities\Faq as FaqEntity;
 use App\Modules\Faq\Models\Faq;
 use Cache;

@@ -8,16 +8,13 @@
 
 namespace App\Modules\Course\Actions\Site\Course;
 
-use App\Models\Enums\OperatorQuery;
 use Cache;
 use Util;
 use App\Models\Action;
 use App\Models\Enums\CacheTime;
 use App\Models\Exceptions\ParameterInvalidException;
-use App\Models\Rep\RepositoryQueryBuilder;
 use App\Modules\Course\Entities\Course as CourseEntity;
-use App\Modules\Course\Repositories\Course;
-use App\Models\Rep\RepositoryCondition;
+use App\Modules\Course\Models\Course;
 use App\Modules\Course\Enums\Status;
 
 /**
@@ -26,28 +23,11 @@ use App\Modules\Course\Enums\Status;
 class CourseGetAction extends Action
 {
     /**
-     * Репозиторий курсов.
-     *
-     * @var Course
-     */
-    private Course $course;
-
-    /**
      * ID курса.
      *
      * @var int|string|null
      */
     public int|string|null $id = null;
-
-    /**
-     * Конструктор.
-     *
-     * @param Course $course Репозиторий курсов.
-     */
-    public function __construct(Course $course)
-    {
-        $this->course = $course;
-    }
 
     /**
      * Метод запуска логики.
@@ -57,31 +37,7 @@ class CourseGetAction extends Action
      */
     public function run(): ?CourseEntity
     {
-        $query = new RepositoryQueryBuilder();
-        $subQueryActive = new RepositoryQueryBuilder();
-        $subQueryActive->addCondition(new RepositoryCondition('status', true));
-
-        $query->setId($this->id)
-            ->addCondition(new RepositoryCondition('status', Status::ACTIVE->value))
-            ->addCondition(new RepositoryCondition('status', true, OperatorQuery::EQUAL, 'school'))
-            ->setRelations([
-                'metatag',
-                'professions' => $subQueryActive,
-                'professions.salaries' => $subQueryActive,
-                'categories' => $subQueryActive,
-                'skills' => $subQueryActive,
-                'teachers' => $subQueryActive,
-                'tools' => $subQueryActive,
-                'school' => $subQueryActive,
-                'school.faqs' => $subQueryActive,
-                'directions' => $subQueryActive,
-                'levels',
-                'learns',
-                'employments',
-                'features',
-            ]);
-
-        $cacheKey = Util::getKey('course', $query);
+        $cacheKey = Util::getKey('course', 'site', $this->id);
 
         return Cache::tags([
             'course',
@@ -95,8 +51,49 @@ class CourseGetAction extends Action
         ])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
-            function () use ($query) {
-                return $this->course->get($query);
+            function () {
+                $course = Course::where('id', $this->id)
+                    ->with([
+                        'metatag',
+                        'professions' => function ($query) {
+                            $query->where('status', true);
+                        },
+                        'professions.salaries' => function ($query) {
+                            $query->where('status', true);
+                        },
+                        'categories' => function ($query) {
+                            $query->where('status', true);
+                        },
+                        'skills' => function ($query) {
+                            $query->where('status', true);
+                        },
+                        'teachers' => function ($query) {
+                            $query->where('status', true);
+                        },
+                        'tools' => function ($query) {
+                            $query->where('status', true);
+                        },
+                        'school' => function ($query) {
+                            $query->where('status', true);
+                        },
+                        'school.faqs' => function ($query) {
+                            $query->where('status', true);
+                        },
+                        'directions' => function ($query) {
+                            $query->where('status', true);
+                        },
+                        'levels',
+                        'learns',
+                        'employments',
+                        'features',
+                    ])
+                    ->where('status', Status::ACTIVE->value)
+                    ->whereHas('school', function ($query) {
+                        $query->where('status', true);
+                    })
+                    ->first();
+
+                return $course ? new CourseEntity($course->toArray()) : null;
             }
         );
     }

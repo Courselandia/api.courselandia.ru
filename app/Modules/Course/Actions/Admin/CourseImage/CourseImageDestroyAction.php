@@ -16,8 +16,7 @@ use App\Models\Action;
 use App\Models\Enums\CacheTime;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
-use App\Models\Rep\RepositoryQueryBuilder;
-use App\Modules\Course\Repositories\Course;
+use App\Modules\Course\Models\Course;
 
 /**
  * Класс действия для удаления изображения курса.
@@ -25,28 +24,11 @@ use App\Modules\Course\Repositories\Course;
 class CourseImageDestroyAction extends Action
 {
     /**
-     * Репозиторий курсов.
-     *
-     * @var Course
-     */
-    private Course $course;
-
-    /**
      * ID курса.
      *
      * @var int|string|null
      */
     public int|string|null $id = null;
-
-    /**
-     * Конструктор.
-     *
-     * @param  Course  $course  Репозиторий курсов.
-     */
-    public function __construct(Course $course)
-    {
-        $this->course = $course;
-    }
 
     /**
      * Метод запуска логики.
@@ -57,14 +39,13 @@ class CourseImageDestroyAction extends Action
      */
     public function run(): bool
     {
-        $query = new RepositoryQueryBuilder($this->id);
-        $cacheKey = Util::getKey('course', $query);
+        $cacheKey = Util::getKey('course', 'model', $this->id);
 
         $course = Cache::tags(['course'])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
-            function () use ($query) {
-                return $this->course->get($query);
+            function () {
+                return Course::find($this->id);
             }
         );
 
@@ -85,7 +66,7 @@ class CourseImageDestroyAction extends Action
             $course->image_middle_id = null;
             $course->image_big_id = null;
 
-            $this->course->update($this->id, $course);
+            $course->save();
             Cache::tags(['course'])->flush();
 
             return true;

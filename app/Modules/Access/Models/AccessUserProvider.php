@@ -8,14 +8,11 @@
 
 namespace App\Modules\Access\Models;
 
-use App\Models\Exceptions\ParameterInvalidException;
-use App\Models\Rep\RepositoryCondition;
-use App\Models\Rep\RepositoryQueryBuilder;
 use Eloquent;
 use Illuminate\Support\Str;
 use Illuminate\Contracts\Auth\UserProvider;
 use Illuminate\Contracts\Auth\Authenticatable as UserContract;
-use App\Modules\User\Repositories\User as UserRepository;
+use App\Modules\User\Models\User;
 
 /**
  * Класс драйвер для проверки аутентификации.
@@ -23,70 +20,37 @@ use App\Modules\User\Repositories\User as UserRepository;
 class AccessUserProvider implements UserProvider
 {
     /**
-     * Репозиторий пользователей.
-     *
-     * @var UserRepository
-     */
-    private UserRepository $user;
-
-    /**
-     * Конструктор.
-     *
-     * @param  UserRepository  $user  Репозиторий для таблицы пользователей.
-     */
-    public function __construct(UserRepository $user)
-    {
-        $this->user = $user;
-    }
-
-    /**
      * Возвращение пользователя по его уникальному идентификатору.
      *
-     * @param  mixed  $identifier  ID пользователя.
+     * @param mixed $identifier ID пользователя.
      *
-     * @return Eloquent|null
-     * @throws ParameterInvalidException
+     * @return Eloquent|UserContract|null
      */
-    public function retrieveById($identifier): ?Eloquent
+    public function retrieveById($identifier): Eloquent|UserContract|null
     {
-        $user = $this->user->get(new RepositoryQueryBuilder($identifier));
-
-        if ($user) {
-            return $this->user->newInstance($user, true);
-        }
-
-        return null;
+        return User::find($identifier);
     }
 
     /**
      * Возвращение пользователя через уникальный идентификатор и токен помнить меня.
      *
-     * @param  mixed  $identifier  ID пользователя.
-     * @param  string  $token  Токен.
+     * @param mixed $identifier ID пользователя.
+     * @param string $token Токен.
      *
-     * @return Eloquent|null
-     * @throws ParameterInvalidException
+     * @return Eloquent|UserContract|null
      */
-    public function retrieveByToken($identifier, $token): ?Eloquent
+    public function retrieveByToken($identifier, $token): Eloquent|UserContract|null
     {
-        $query = new RepositoryQueryBuilder($identifier);
-        $query->addCondition(new RepositoryCondition($this->user->getAuthIdentifierName(), $identifier));
-        $query->addCondition(new RepositoryCondition($this->user->getRememberTokenName(), $token));
-
-        $user = $this->user->get($query);
-
-        if ($user) {
-            return $this->user->newInstance($user, true);
-        }
-
-        return null;
+        return User::where(User::getAuthIdentifierName(), $identifier)
+            ->where(User::getAuthIdentifierName(), $token)
+            ->first();
     }
 
     /**
      * Обновление токена "запомнить меня" через указание пользователя.
      *
-     * @param  UserContract  $user
-     * @param  string  $token  Токен.
+     * @param UserContract $user
+     * @param string $token Токен.
      *
      * @return void
      */
@@ -99,39 +63,32 @@ class AccessUserProvider implements UserProvider
     /**
      * Возвращение пользователя по заданным параметрам.
      *
-     * @param  array  $credentials  Параметры.
+     * @param array $credentials Параметры.
      *
-     * @return Eloquent|null
-     * @throws ParameterInvalidException
+     * @return Eloquent|UserContract|null
      */
-    public function retrieveByCredentials(array $credentials): ?Eloquent
+    public function retrieveByCredentials(array $credentials): Eloquent|UserContract|null
     {
         if (empty($credentials)) {
             return null;
         }
 
-        $query = new RepositoryQueryBuilder();
+        $user = new User();
 
         foreach ($credentials as $key => $value) {
             if (!Str::contains($key, 'password')) {
-                $query->addCondition(new RepositoryCondition($key, $value));
+                $user->where($key, $value);
             }
         }
 
-        $user = $this->user->get($query);
-
-        if ($user) {
-            return $this->user->newInstance($user, true);
-        }
-
-        return null;
+        return $user->first();
     }
 
     /**
      * Сравнение пользователя по заданным параметрам.
      *
-     * @param  UserContract  $user
-     * @param  array  $credentials
+     * @param UserContract $user
+     * @param array $credentials
      *
      * @return bool Вернет true если есть совпадение.
      */

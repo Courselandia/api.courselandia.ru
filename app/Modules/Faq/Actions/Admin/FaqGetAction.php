@@ -11,7 +11,6 @@ namespace App\Modules\Faq\Actions\Admin;
 use App\Models\Action;
 use App\Models\Enums\CacheTime;
 use App\Models\Exceptions\ParameterInvalidException;
-use App\Models\Rep\RepositoryQueryBuilder;
 use App\Modules\Faq\Entities\Faq as FaqEntity;
 use App\Modules\Faq\Models\Faq;
 use Cache;
@@ -37,18 +36,12 @@ class FaqGetAction extends Action
      */
     public function run(): ?FaqEntity
     {
-        $query = new RepositoryQueryBuilder();
-        $query->setId($this->id)
-            ->setRelations([
-                'school',
-            ]);
-
-        $cacheKey = Util::getKey('faq', $query);
+        $cacheKey = Util::getKey('faq', $this->id, 'school');
 
         return Cache::tags(['catalog', 'school', 'faq'])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
-            function () use ($query) {
+            function () {
                 $faq = Faq::where('id', $this->id)
                     ->with('school')
                     ->first();

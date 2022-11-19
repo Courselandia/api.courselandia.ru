@@ -13,9 +13,8 @@ use Util;
 use App\Models\Action;
 use App\Models\Enums\CacheTime;
 use App\Models\Exceptions\ParameterInvalidException;
-use App\Models\Rep\RepositoryQueryBuilder;
 use App\Modules\Course\Entities\Course as CourseEntity;
-use App\Modules\Course\Repositories\Course;
+use App\Modules\Course\Models\Course;
 
 /**
  * Класс действия для получения курса.
@@ -23,28 +22,11 @@ use App\Modules\Course\Repositories\Course;
 class CourseGetAction extends Action
 {
     /**
-     * Репозиторий курсов.
-     *
-     * @var Course
-     */
-    private Course $course;
-
-    /**
      * ID курса.
      *
      * @var int|string|null
      */
     public int|string|null $id = null;
-
-    /**
-     * Конструктор.
-     *
-     * @param Course $course Репозиторий курсов.
-     */
-    public function __construct(Course $course)
-    {
-        $this->course = $course;
-    }
 
     /**
      * Метод запуска логики.
@@ -54,23 +36,7 @@ class CourseGetAction extends Action
      */
     public function run(): ?CourseEntity
     {
-        $query = new RepositoryQueryBuilder();
-        $query->setId($this->id)
-            ->setRelations([
-                'metatag',
-                'directions',
-                'professions',
-                'categories',
-                'skills',
-                'teachers',
-                'tools',
-                'levels',
-                'learns',
-                'employments',
-                'features',
-            ]);
-
-        $cacheKey = Util::getKey('course', $query);
+        $cacheKey = Util::getKey('course', 'admin', $this->id);
 
         return Cache::tags([
             'course',
@@ -84,8 +50,24 @@ class CourseGetAction extends Action
         ])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
-            function () use ($query) {
-                return $this->course->get($query);
+            function () {
+                $course = Course::where('id', $this->id)
+                    ->with([
+                        'metatag',
+                        'directions',
+                        'professions',
+                        'categories',
+                        'skills',
+                        'teachers',
+                        'tools',
+                        'levels',
+                        'learns',
+                        'employments',
+                        'features',
+                    ])
+                    ->first();
+
+                return $course ? new CourseEntity($course->toArray()) : null;
             }
         );
     }
