@@ -20,7 +20,6 @@ use App\Modules\Access\Entities\AccessSignUp;
 use App\Models\Entity;
 use App\Models\Contracts\Pipe;
 use App\Modules\Access\Entities\AccessSignIn;
-use App\Modules\User\Models\UserAuth;
 use App\Modules\User\Entities\UserAuth as UserAuthEntity;
 
 /**
@@ -57,7 +56,7 @@ class AuthPipe implements Pipe
                 Log::alert('The GEO for the IP '.Request::ip().' is undetectable ('.$error->getMessage().').');
             }
 
-            // UserAuth::create($userAuth->toArray());
+            UserAuth::create($userAuth->toArray());
             Cache::tags(['access', 'user'])->flush();
         }
 

@@ -8,7 +8,6 @@
 
 namespace App\Modules\School\Providers;
 
-use App;
 use Config;
 use Illuminate\Support\ServiceProvider;
 

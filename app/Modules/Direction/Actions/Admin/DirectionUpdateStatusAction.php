@@ -14,7 +14,6 @@ use App\Models\Exceptions\RecordNotExistException;
 use App\Modules\Direction\Entities\Direction as DirectionEntity;
 use App\Modules\Direction\Models\Direction;
 use Cache;
-use ReflectionException;
 
 /**
  * Класс действия для обновления статуса направлений.
@@ -49,7 +48,7 @@ class DirectionUpdateStatusAction extends Action
      * Метод запуска логики.
      *
      * @return DirectionEntity Вернет результаты исполнения.
-     * @throws RecordNotExistException|ParameterInvalidException|ReflectionException
+     * @throws RecordNotExistException|ParameterInvalidException
      */
     public function run(): DirectionEntity
     {

@@ -10,12 +10,10 @@ namespace App\Modules\Direction\Actions\Admin;
 
 use App\Models\Action;
 use App\Models\Exceptions\ParameterInvalidException;
-use App\Models\Exceptions\RecordNotExistException;
 use App\Modules\Direction\Entities\Direction as DirectionEntity;
 use App\Modules\Direction\Models\Direction;
 use App\Modules\Metatag\Actions\MetatagSetAction;
 use Cache;
-use ReflectionException;
 
 /**
  * Класс действия для создания направления.
@@ -89,9 +87,7 @@ class DirectionCreateAction extends Action
      * Метод запуска логики.
      *
      * @return DirectionEntity Вернет результаты исполнения.
-     * @throws RecordNotExistException
      * @throws ParameterInvalidException
-     * @throws ReflectionException
      */
     public function run(): DirectionEntity
     {

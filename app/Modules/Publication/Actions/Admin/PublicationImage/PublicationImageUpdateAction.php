@@ -16,7 +16,6 @@ use App\Modules\Publication\Entities\Publication as PublicationEntity;
 use App\Modules\Publication\Models\Publication;
 use Cache;
 use Illuminate\Http\UploadedFile;
-use ReflectionException;
 
 /**
  * Обновление изображения публикации.
@@ -53,7 +52,6 @@ class PublicationImageUpdateAction extends Action
      * @return PublicationEntity Вернет результаты исполнения.
      * @throws RecordNotExistException
      * @throws ParameterInvalidException
-     * @throws ReflectionException
      */
     public function run(): PublicationEntity
     {
@@ -68,7 +66,7 @@ class PublicationImageUpdateAction extends Action
                 $publication->image_big_id = $this->image;
 
                 Publication::find($this->id)->update($publication->toArray());
-                
+
                 Cache::tags(['publication'])->flush();
 
                 return $action->run();

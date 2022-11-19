@@ -14,7 +14,6 @@ use App\Models\Exceptions\RecordNotExistException;
 use App\Modules\Faq\Entities\Faq as FaqEntity;
 use App\Modules\Faq\Models\Faq;
 use Cache;
-use ReflectionException;
 
 /**
  * Класс действия для обновления статуса FAQ's.
@@ -39,7 +38,7 @@ class FaqUpdateStatusAction extends Action
      * Метод запуска логики.
      *
      * @return FaqEntity Вернет результаты исполнения.
-     * @throws RecordNotExistException|ParameterInvalidException|ReflectionException
+     * @throws RecordNotExistException|ParameterInvalidException
      */
     public function run(): FaqEntity
     {

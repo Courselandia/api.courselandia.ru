@@ -13,7 +13,6 @@ use Auth;
 use Illuminate\Routing\Controller;
 use Illuminate\Http\JsonResponse;
 use App\Modules\Access\Actions\AccessGateAction;
-use ReflectionException;
 
 /**
  * Класс контроллер для авторизации и аутентификации.
@@ -24,7 +23,7 @@ class AccessController extends Controller
      * Получение данных авторизованного пользователя.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException|ReflectionException
+     * @throws ParameterInvalidException
      */
     public function gate(): JsonResponse
     {

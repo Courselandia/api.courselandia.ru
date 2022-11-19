@@ -10,14 +10,12 @@ namespace App\Modules\School\Actions\Admin\School;
 
 use App\Models\Action;
 use App\Models\Exceptions\ParameterInvalidException;
-use App\Models\Exceptions\RecordNotExistException;
 use App\Modules\Image\Entities\Image;
 use App\Modules\Metatag\Actions\MetatagSetAction;
 use App\Modules\School\Entities\School as SchoolEntity;
 use App\Modules\School\Models\School;
 use Cache;
 use Illuminate\Http\UploadedFile;
-use ReflectionException;
 
 /**
  * Класс действия для создания школы.
@@ -112,9 +110,7 @@ class SchoolCreateAction extends Action
      * Метод запуска логики.
      *
      * @return SchoolEntity Вернет результаты исполнения.
-     * @throws RecordNotExistException
      * @throws ParameterInvalidException
-     * @throws ReflectionException
      */
     public function run(): SchoolEntity
     {

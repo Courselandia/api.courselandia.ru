@@ -41,7 +41,7 @@ class SalaryController extends Controller
      * @param int|string $id ID зарплаты.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException|ReflectionException
+     * @throws ParameterInvalidException
      */
     public function get(int|string $id): JsonResponse
     {
@@ -95,7 +95,7 @@ class SalaryController extends Controller
      * @param SalaryCreateRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException|ReflectionException
+     * @throws ParameterInvalidException
      */
     public function create(SalaryCreateRequest $request): JsonResponse
     {
@@ -186,7 +186,7 @@ class SalaryController extends Controller
      * @param SalaryUpdateStatusRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException|ReflectionException
+     * @throws ParameterInvalidException
      */
     public function updateStatus(int|string $id, SalaryUpdateStatusRequest $request): JsonResponse
     {
@@ -228,7 +228,6 @@ class SalaryController extends Controller
      * @param SalaryDestroyRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException
      */
     public function destroy(SalaryDestroyRequest $request): JsonResponse
     {

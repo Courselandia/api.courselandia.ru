@@ -36,7 +36,6 @@ class FeedbackController extends Controller
      *
      * @return JsonResponse Вернет JSON ответ.
      * @throws ParameterInvalidException
-     * @throws ReflectionException
      */
     public function get(int|string $id): JsonResponse
     {

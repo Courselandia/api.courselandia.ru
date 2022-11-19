@@ -27,7 +27,7 @@ class SchoolController extends Controller
      * @param int|string $id ID школы.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException|ReflectionException
+     * @throws ParameterInvalidException
      */
     public function get(int|string $id): JsonResponse
     {

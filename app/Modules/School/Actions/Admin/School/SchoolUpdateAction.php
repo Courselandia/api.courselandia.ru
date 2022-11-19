@@ -17,7 +17,6 @@ use App\Modules\School\Entities\School as SchoolEntity;
 use App\Modules\School\Models\School;
 use Cache;
 use Illuminate\Http\UploadedFile;
-use ReflectionException;
 
 /**
  * Класс действия для обновления школ.
@@ -121,7 +120,6 @@ class SchoolUpdateAction extends Action
      * @return SchoolEntity Вернет результаты исполнения.
      * @throws RecordNotExistException
      * @throws ParameterInvalidException
-     * @throws ReflectionException
      */
     public function run(): SchoolEntity
     {

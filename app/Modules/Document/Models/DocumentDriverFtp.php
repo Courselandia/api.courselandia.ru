@@ -12,7 +12,6 @@ use App\Modules\Document\Contracts\DocumentDriver;
 use Config;
 use App\Models\Exceptions\FtpException;
 use Storage;
-use Illuminate\Contracts\Filesystem\FileNotFoundException;
 
 /**
  * Класс драйвер хранения документов с использованием FTP протокола.

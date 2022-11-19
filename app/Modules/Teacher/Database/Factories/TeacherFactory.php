@@ -10,7 +10,6 @@ namespace App\Modules\Teacher\Database\Factories;
 
 use App\Modules\Metatag\Models\Metatag;
 use Util;
-use Carbon\Carbon;
 use JetBrains\PhpStorm\ArrayShape;
 use App\Modules\Teacher\Models\Teacher;
 use Illuminate\Database\Eloquent\Factories\Factory;

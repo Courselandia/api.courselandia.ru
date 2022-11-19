@@ -11,7 +11,6 @@ namespace App\Modules\Access\Models;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Access\Actions\AccessGateAction;
 use App\Modules\User\Models\User;
-use ReflectionException;
 
 /**
  * Класс для определения доступа к страницам сайта через роль.
@@ -25,7 +24,7 @@ class GateRole
      * @param  string  $nameRoles  Название роли.
      *
      * @return bool Вернет результат проверки.
-     * @throws ParameterInvalidException|ReflectionException
+     * @throws ParameterInvalidException
      */
     public function check(User $user, string $nameRoles): bool
     {

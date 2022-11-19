@@ -9,7 +9,6 @@
 namespace App\Modules\Access\Actions\Site;
 
 use App\Models\Enums\CacheTime;
-use App\Modules\User\Entities\User as UserEntity;
 use Cache;
 use Hash;
 use App\Models\Action;

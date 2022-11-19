@@ -10,7 +10,6 @@ namespace App\Modules\Course\Http\Controllers\Admin;
 
 use Auth;
 use Log;
-use Morphy;
 use ReflectionException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
@@ -31,6 +30,7 @@ use App\Modules\Course\Http\Requests\Admin\Course\CourseCreateRequest;
 use App\Modules\Course\Http\Requests\Admin\Course\CourseDestroyRequest;
 use App\Modules\Course\Http\Requests\Admin\Course\CourseReadRequest;
 use App\Modules\Course\Http\Requests\Admin\Course\CourseUpdateRequest;
+use Throwable;
 
 /**
  * Класс контроллер для работы с курсами в административной части.
@@ -97,7 +97,7 @@ class CourseController extends Controller
      * @param CourseCreateRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws RecordNotExistException|ParameterInvalidException|ReflectionException
+     * @throws RecordNotExistException|ParameterInvalidException|ReflectionException|Throwable
      */
     public function create(CourseCreateRequest $request): JsonResponse
     {
@@ -180,7 +180,7 @@ class CourseController extends Controller
      * @param CourseUpdateRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException|ReflectionException
+     * @throws ParameterInvalidException|ReflectionException|Throwable
      */
     public function update(int|string $id, CourseUpdateRequest $request): JsonResponse
     {
@@ -263,7 +263,6 @@ class CourseController extends Controller
      * @param CourseDestroyRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException
      */
     public function destroy(CourseDestroyRequest $request): JsonResponse
     {

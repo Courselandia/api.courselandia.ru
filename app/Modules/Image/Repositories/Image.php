@@ -243,34 +243,20 @@ abstract class Image extends Repository
      */
     public function getFormatText(int $format): ?string
     {
-        switch ($format) {
-            case 1:
-                return 'gif';
-            case 2:
-                return 'jpg';
-            case 3:
-                return 'png';
-            case 13:
-            case 4:
-                return 'swf';
-            case 5:
-                return 'psd';
-            case 6:
-                return 'bmp';
-            case 8:
-            case 7:
-                return 'tiff';
-            case 9:
-                return 'jpc';
-            case 10:
-                return 'jp2';
-            case 11:
-                return 'jpx';
-            case 18:
-                return 'webp';
-        }
-
-        return null;
+        return match ($format) {
+            1 => 'gif',
+            2 => 'jpg',
+            3 => 'png',
+            13, 4 => 'swf',
+            5 => 'psd',
+            6 => 'bmp',
+            8, 7 => 'tiff',
+            9 => 'jpc',
+            10 => 'jp2',
+            11 => 'jpx',
+            18 => 'webp',
+            default => null,
+        };
     }
 
     /**

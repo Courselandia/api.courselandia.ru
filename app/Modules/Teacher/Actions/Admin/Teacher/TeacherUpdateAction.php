@@ -17,7 +17,6 @@ use App\Modules\Teacher\Entities\Teacher as TeacherEntity;
 use App\Modules\Teacher\Models\Teacher;
 use Cache;
 use Illuminate\Http\UploadedFile;
-use ReflectionException;
 
 /**
  * Класс действия для обновления учителя.
@@ -114,7 +113,6 @@ class TeacherUpdateAction extends Action
      * @return TeacherEntity Вернет результаты исполнения.
      * @throws RecordNotExistException
      * @throws ParameterInvalidException
-     * @throws ReflectionException
      */
     public function run(): TeacherEntity
     {

@@ -25,7 +25,6 @@ use App\Modules\Tool\Http\Requests\Admin\ToolUpdateRequest;
 use App\Modules\Tool\Http\Requests\Admin\ToolUpdateStatusRequest;
 use Auth;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Log;
 use ReflectionException;
@@ -41,7 +40,7 @@ class ToolController extends Controller
      * @param int|string $id ID инструмента.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException|ReflectionException
+     * @throws ParameterInvalidException
      */
     public function get(int|string $id): JsonResponse
     {
@@ -95,7 +94,7 @@ class ToolController extends Controller
      * @param ToolCreateRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws RecordNotExistException|ParameterInvalidException|ReflectionException
+     * @throws ParameterInvalidException
      */
     public function create(ToolCreateRequest $request): JsonResponse
     {
@@ -147,7 +146,7 @@ class ToolController extends Controller
      * @param ToolUpdateRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException|ReflectionException
+     * @throws ParameterInvalidException
      */
     public function update(int|string $id, ToolUpdateRequest $request): JsonResponse
     {
@@ -199,7 +198,7 @@ class ToolController extends Controller
      * @param ToolUpdateStatusRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException|ReflectionException
+     * @throws ParameterInvalidException
      */
     public function updateStatus(int|string $id, ToolUpdateStatusRequest $request): JsonResponse
     {

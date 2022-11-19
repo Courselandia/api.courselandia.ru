@@ -12,7 +12,6 @@ use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Access\Actions\AccessGateAction;
 use App\Modules\Access\Entities\AccessSignIn;
 use Closure;
-use ReflectionException;
 
 /**
  * Авторизация пользователя: Получение данных о пользователя.
@@ -27,7 +26,6 @@ class GatePipe implements Pipe
      *
      * @return mixed Вернет значение полученное после выполнения следующего pipe.
      * @throws ParameterInvalidException
-     * @throws ReflectionException
      */
     public function handle(Entity|AccessSignIn $entity, Closure $next): mixed
     {

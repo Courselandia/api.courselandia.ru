@@ -84,7 +84,7 @@ class UserProfileController extends Controller
      * @param  Request  $request  Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException|ReflectionException
+     * @throws ParameterInvalidException
      */
     public function password(Request $request): JsonResponse
     {
@@ -153,7 +153,7 @@ class UserProfileController extends Controller
      * @param  UserProfileUpdateImageRequest  $request  Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException|ReflectionException
+     * @throws ParameterInvalidException
      */
     public function updateImage(UserProfileUpdateImageRequest $request): JsonResponse
     {

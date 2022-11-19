@@ -18,7 +18,6 @@ use App\Modules\Access\Actions\AccessApiTokenAction;
 use App\Modules\Access\Actions\AccessGateAction;
 use App\Modules\Access\Entities\AccessSocial;
 use Closure;
-use Exception;
 use ReflectionException;
 
 /**

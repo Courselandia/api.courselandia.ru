@@ -8,12 +8,9 @@
 
 namespace App\Modules\User\Http\Controllers\Admin;
 
-use App\Models\Enums\DateGroup;
-use App\Models\Enums\DatePeriod;
 use App\Models\Exceptions\ParameterInvalidException;
 use Auth;
 use Log;
-use Carbon\Carbon;
 
 use App\Modules\User\Actions\Admin\User\UserUpdateStatusAction;
 use App\Modules\User\Http\Requests\Admin\User\UserUpdateStatusRequest;
@@ -40,7 +37,6 @@ use App\Modules\User\Http\Requests\Admin\User\UserReadRequest;
 use App\Modules\User\Http\Requests\Admin\User\UserDestroyRequest;
 use App\Modules\User\Http\Requests\Admin\User\UserCreateRequest;
 use App\Modules\User\Http\Requests\Admin\User\UserUpdateRequest;
-use App\Modules\User\Http\Requests\Admin\User\UserAnalyticsNewUsersRequest;
 
 use App\Modules\User\Enums\Role;
 use ReflectionException;
@@ -56,7 +52,7 @@ class UserController extends Controller
      * @param  int|string  $id  ID пользователя.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException|ReflectionException
+     * @throws ParameterInvalidException
      */
     public function get(int|string $id): JsonResponse
     {
@@ -215,7 +211,6 @@ class UserController extends Controller
      *
      * @return JsonResponse Вернет JSON ответ.
      * @throws ParameterInvalidException
-     * @throws ReflectionException
      */
     public function updateStatus(int|string $id, UserUpdateStatusRequest $request): JsonResponse
     {
@@ -259,7 +254,6 @@ class UserController extends Controller
      *
      * @return JsonResponse Вернет JSON ответ.
      * @throws ParameterInvalidException
-     * @throws ReflectionException
      */
     public function password(int|string $id, Request $request): JsonResponse
     {

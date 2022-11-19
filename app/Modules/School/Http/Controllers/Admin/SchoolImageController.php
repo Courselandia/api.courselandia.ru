@@ -35,7 +35,6 @@ class SchoolImageController extends Controller
      *
      * @return JsonResponse Вернет JSON ответ.
      * @throws ParameterInvalidException
-     * @throws ReflectionException
      */
     public function update(int|string $id, SchoolImageUpdateRequest $request): JsonResponse
     {

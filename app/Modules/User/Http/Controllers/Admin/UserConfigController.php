@@ -22,7 +22,6 @@ use App\Models\Exceptions\ParameterInvalidException;
 
 use Illuminate\Routing\Controller;
 use Illuminate\Http\JsonResponse;
-use ReflectionException;
 
 /**
  * Класс контроллер для работы с конфигурациями пользователя.
@@ -33,7 +32,6 @@ class UserConfigController extends Controller
      * Получение конфигурации.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException|ReflectionException
      */
     public function get(): JsonResponse
     {
@@ -63,7 +61,6 @@ class UserConfigController extends Controller
      *
      * @return JsonResponse Вернет JSON ответ.
      * @throws ParameterInvalidException
-     * @throws ReflectionException
      */
     public function update(UserConfigUpdateRequest $request): JsonResponse
     {

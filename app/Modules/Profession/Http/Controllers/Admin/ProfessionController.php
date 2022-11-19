@@ -25,7 +25,6 @@ use App\Modules\Profession\Http\Requests\Admin\ProfessionUpdateRequest;
 use App\Modules\Profession\Http\Requests\Admin\ProfessionUpdateStatusRequest;
 use Auth;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Log;
 use ReflectionException;
@@ -41,7 +40,7 @@ class ProfessionController extends Controller
      * @param int|string $id ID профессии.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException|ReflectionException
+     * @throws ParameterInvalidException
      */
     public function get(int|string $id): JsonResponse
     {
@@ -95,7 +94,7 @@ class ProfessionController extends Controller
      * @param ProfessionCreateRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws RecordNotExistException|ParameterInvalidException|ReflectionException
+     * @throws ParameterInvalidException
      */
     public function create(ProfessionCreateRequest $request): JsonResponse
     {
@@ -144,10 +143,10 @@ class ProfessionController extends Controller
      * Обновление данных.
      *
      * @param int|string $id ID профессии.
-     * @param Request $request Запрос.
+     * @param ProfessionUpdateRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException|ReflectionException
+     * @throws ParameterInvalidException
      */
     public function update(int|string $id, ProfessionUpdateRequest $request): JsonResponse
     {
@@ -199,7 +198,7 @@ class ProfessionController extends Controller
      * @param ProfessionUpdateStatusRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException|ReflectionException
+     * @throws ParameterInvalidException
      */
     public function updateStatus(int|string $id, ProfessionUpdateStatusRequest $request): JsonResponse
     {

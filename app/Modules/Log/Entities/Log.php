@@ -10,7 +10,6 @@ namespace App\Modules\Log\Entities;
 
 use App\Models\Entity;
 use Carbon\Carbon;
-use App\Modules\User\Enums\Role;
 
 /**
  * Сущность для логов.

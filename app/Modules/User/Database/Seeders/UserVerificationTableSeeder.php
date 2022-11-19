@@ -10,7 +10,6 @@ namespace App\Modules\User\Database\Seeders;
 
 use DB;
 use Illuminate\Database\Seeder;
-use Crypt;
 use Carbon\Carbon;
 use App\Modules\User\Entities\UserVerification;
 

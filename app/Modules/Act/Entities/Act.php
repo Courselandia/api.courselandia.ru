@@ -40,7 +40,7 @@ class Act extends Entity
     /**
      * Минут.
      *
-     * @var int
+     * @var int|null
      */
     public ?int $minutes = null;
 

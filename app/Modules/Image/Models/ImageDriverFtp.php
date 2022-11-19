@@ -12,7 +12,6 @@ use App\Modules\Image\Contracts\ImageDriver;
 use Config;
 use App\Models\Exceptions\FtpException;
 use Storage;
-use Illuminate\Contracts\Filesystem\FileNotFoundException;
 
 /**
  * Класс драйвер хранения изображений с использованием FTP протокола.

@@ -25,7 +25,6 @@ use App\Modules\Direction\Http\Requests\Admin\DirectionUpdateRequest;
 use App\Modules\Direction\Http\Requests\Admin\DirectionUpdateStatusRequest;
 use Auth;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Log;
 use ReflectionException;
@@ -41,7 +40,7 @@ class DirectionController extends Controller
      * @param int|string $id ID направления.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException|ReflectionException
+     * @throws ParameterInvalidException
      */
     public function get(int|string $id): JsonResponse
     {
@@ -95,7 +94,7 @@ class DirectionController extends Controller
      * @param DirectionCreateRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws RecordNotExistException|ParameterInvalidException|ReflectionException
+     * @throws ParameterInvalidException
      */
     public function create(DirectionCreateRequest $request): JsonResponse
     {
@@ -148,7 +147,7 @@ class DirectionController extends Controller
      * @param DirectionUpdateRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException|ReflectionException
+     * @throws ParameterInvalidException
      */
     public function update(int|string $id, DirectionUpdateRequest $request): JsonResponse
     {
@@ -201,7 +200,7 @@ class DirectionController extends Controller
      * @param DirectionUpdateStatusRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException|ReflectionException
+     * @throws ParameterInvalidException
      */
     public function updateStatus(int|string $id, DirectionUpdateStatusRequest $request): JsonResponse
     {

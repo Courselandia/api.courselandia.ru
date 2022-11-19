@@ -189,7 +189,6 @@ class ReviewController extends Controller
      * @param ReviewDestroyRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException
      */
     public function destroy(ReviewDestroyRequest $request): JsonResponse
     {

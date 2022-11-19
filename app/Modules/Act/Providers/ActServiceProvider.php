@@ -11,10 +11,7 @@ namespace App\Modules\Act\Providers;
 use Config;
 use App;
 use Illuminate\Support\ServiceProvider;
-
 use App\Modules\Act\Models\Implement as Implement;
-use App\Modules\Act\Models\Act as ActModel;
-use App\Modules\Act\Entities\Act as ActEntity;
 
 /**
  * Класс сервис-провайдера для настройки этого модуля.

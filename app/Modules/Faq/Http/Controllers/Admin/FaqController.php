@@ -27,7 +27,6 @@ use App\Modules\Faq\Actions\Admin\FaqReadAction;
 use App\Modules\Faq\Actions\Admin\FaqUpdateAction;
 use App\Modules\Faq\Http\Requests\Admin\FaqDestroyRequest;
 use App\Modules\Faq\Http\Requests\Admin\FaqReadRequest;
-use ReflectionException;
 
 /**
  * Класс контроллер для работы с FAQ's в административной части.
@@ -186,7 +185,7 @@ class FaqController extends Controller
      * @param FaqUpdateStatusRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException|ReflectionException
+     * @throws ParameterInvalidException
      */
     public function updateStatus(int|string $id, FaqUpdateStatusRequest $request): JsonResponse
     {
@@ -228,7 +227,6 @@ class FaqController extends Controller
      * @param FaqDestroyRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException
      */
     public function destroy(FaqDestroyRequest $request): JsonResponse
     {

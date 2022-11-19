@@ -10,12 +10,10 @@ namespace App\Modules\Tool\Actions\Admin;
 
 use App\Models\Action;
 use App\Models\Exceptions\ParameterInvalidException;
-use App\Models\Exceptions\RecordNotExistException;
 use App\Modules\Tool\Entities\Tool as ToolEntity;
 use App\Modules\Tool\Models\Tool;
 use App\Modules\Metatag\Actions\MetatagSetAction;
 use Cache;
-use ReflectionException;
 
 /**
  * Класс действия для создания инструмента.
@@ -83,7 +81,6 @@ class ToolCreateAction extends Action
      *
      * @return ToolEntity Вернет результаты исполнения.
      * @throws ParameterInvalidException
-     * @throws ReflectionException
      */
     public function run(): ToolEntity
     {

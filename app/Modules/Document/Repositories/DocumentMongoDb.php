@@ -18,7 +18,6 @@ use App\Modules\Document\Models\DocumentMongoDb as DocumentMongoDbModel;
 use App\Modules\Document\Entities\Document as DocumentEntity;
 use App\Models\Rep\RepositoryMongoDb;
 use Generator;
-use ReflectionException;
 
 /**
  * Класс репозитория документов на основе MongoDb.
@@ -30,9 +29,10 @@ class DocumentMongoDb extends Document
     /**
      * Создание.
      *
-     * @param  Entity|DocumentEntity  $entity  Данные для добавления.
+     * @param Entity|DocumentEntity $entity Данные для добавления.
      *
      * @return int|string Вернет ID последней вставленной строки.
+     * @throws ParameterInvalidException
      */
     public function create(Entity|DocumentEntity $entity): int|string
     {
@@ -58,7 +58,7 @@ class DocumentMongoDb extends Document
      * @param  Entity|DocumentEntity  $entity  Данные для добавления.
      *
      * @return int|string Вернет ID вставленной строки.
-     * @throws RecordNotExistException
+     * @throws RecordNotExistException|ParameterInvalidException
      */
     public function update(int|string $id, Entity|DocumentEntity $entity): int|string
     {
@@ -84,10 +84,11 @@ class DocumentMongoDb extends Document
     /**
      * Обновление байт кода картинки.
      *
-     * @param  int|string  $id  Id записи для обновления.
-     * @param  string  $byte  Байт код картинки.
+     * @param int|string $id Id записи для обновления.
+     * @param string $byte Байт код картинки.
      *
      * @return bool Вернет булево значение успешности операции.
+     * @throws ParameterInvalidException
      */
     public function updateByte(int|string $id, string $byte): bool
     {
@@ -105,7 +106,6 @@ class DocumentMongoDb extends Document
      *
      * @return Entity|DocumentEntity|null Данные.
      * @throws ParameterInvalidException
-     * @throws ReflectionException
      */
     public function get(
         RepositoryQueryBuilder $repositoryQueryBuilder = null,
@@ -146,9 +146,10 @@ class DocumentMongoDb extends Document
     /**
      * Получение байт кода картинки.
      *
-     * @param  int|string  $id  Id записи для обновления.
+     * @param int|string $id Id записи для обновления.
      *
      * @return string|null Вернет байт код документа.
+     * @throws ParameterInvalidException
      */
     public function getByte(int|string $id): ?string
     {
@@ -172,7 +173,6 @@ class DocumentMongoDb extends Document
      *
      * @return Generator|DocumentEntity|null Генератор.
      * @throws ParameterInvalidException
-     * @throws ReflectionException
      */
     public function all(Entity|DocumentEntity $entity = null): Generator|DocumentEntity|null
     {
@@ -212,6 +212,7 @@ class DocumentMongoDb extends Document
      * Получить количество всех документов.
      *
      * @return int Количество записей.
+     * @throws ParameterInvalidException
      */
     public function count(): int
     {
@@ -221,9 +222,10 @@ class DocumentMongoDb extends Document
     /**
      * Удаление.
      *
-     * @param  int|string|array|null  $id  Id записи для удаления.
+     * @param int|string|array|null $id Id записи для удаления.
      *
      * @return bool Вернет булево значение успешности операции.
+     * @throws ParameterInvalidException
      */
     public function destroy(int|string|array $id = null): bool
     {

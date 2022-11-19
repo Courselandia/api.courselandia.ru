@@ -61,7 +61,7 @@ class ImageEloquent extends Image
      * @param Entity|ImageEntity $entity Данные для добавления.
      *
      * @return int|string Вернет ID вставленной строки.
-     * @throws RecordNotExistException
+     * @throws RecordNotExistException|ParameterInvalidException
      */
     public function update(int|string $id, Entity|ImageEntity $entity): int|string
     {
@@ -95,6 +95,7 @@ class ImageEloquent extends Image
      * @param string $byte Байт код картинки.
      *
      * @return bool Вернет булево значение успешности операции.
+     * @throws ParameterInvalidException
      */
     public function updateByte(int|string $id, string $byte): bool
     {

@@ -8,12 +8,10 @@
 
 namespace App\Modules\Category\Providers;
 
-use App;
 use Config;
 use Illuminate\Support\ServiceProvider;
 
 use App\Modules\Category\Models\Category as CategoryModel;
-use App\Modules\Category\Entities\Category as CategoryEntity;
 use App\Modules\Category\Events\Listeners\CategoryListener;
 
 /**

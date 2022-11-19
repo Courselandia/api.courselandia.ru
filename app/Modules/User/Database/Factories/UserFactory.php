@@ -9,7 +9,6 @@
 namespace App\Modules\User\Database\Factories;
 
 use App\Modules\User\Models\User;
-use App\Modules\User\Models\UserRole;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use JetBrains\PhpStorm\ArrayShape;
 

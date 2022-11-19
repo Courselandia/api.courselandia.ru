@@ -9,7 +9,6 @@
 namespace App\Modules\Skill\Actions\Admin;
 
 use App\Models\Action;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Skill\Models\Skill;
 use Cache;
 
@@ -29,7 +28,6 @@ class SkillDestroyAction extends Action
      * Метод запуска логики.
      *
      * @return bool Вернет результаты исполнения.
-     * @throws ParameterInvalidException
      */
     public function run(): bool
     {

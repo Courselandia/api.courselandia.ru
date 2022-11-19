@@ -8,7 +8,6 @@
 
 namespace App\Modules\Log\Http\Controllers\Admin;
 
-use ReflectionException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
 
@@ -32,7 +31,7 @@ class LogController extends Controller
      * @param  string|int  $id  ID лога.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException|ReflectionException
+     * @throws ParameterInvalidException
      */
     public function get(string|int $id): JsonResponse
     {
@@ -63,9 +62,10 @@ class LogController extends Controller
     /**
      * Чтение данных.
      *
-     * @param  LogReadRequest  $request  Запрос.
+     * @param LogReadRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
+     * @throws ParameterInvalidException
      */
     public function read(LogReadRequest $request): JsonResponse
     {
@@ -88,9 +88,10 @@ class LogController extends Controller
     /**
      * Удаление данных.
      *
-     * @param  LogDestroyRequest  $request  Запрос.
+     * @param LogDestroyRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
+     * @throws ParameterInvalidException
      */
     public function destroy(LogDestroyRequest $request): JsonResponse
     {

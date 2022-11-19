@@ -9,6 +9,7 @@
 namespace App\Modules\OAuth\Repositories;
 
 use App\Models\Entity;
+use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Rep\Repository;
 use App\Models\Rep\RepositoryQueryBuilder;
 use App\Models\Rep\RepositoryEloquent;
@@ -28,9 +29,10 @@ class OAuthRefreshTokenEloquent extends Repository
     /**
      * Получение запроса на выборку.
      *
-     * @param  RepositoryQueryBuilder|null  $repositoryQueryBuilder  Конструктор запроса к репозиторию.
+     * @param RepositoryQueryBuilder|null $repositoryQueryBuilder Конструктор запроса к репозиторию.
      *
      * @return Builder Запрос.
+     * @throws ParameterInvalidException
      */
     protected function query(RepositoryQueryBuilder $repositoryQueryBuilder = null): Builder
     {

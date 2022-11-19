@@ -15,7 +15,6 @@ use App\Modules\Skill\Entities\Skill as SkillEntity;
 use App\Modules\Skill\Models\Skill;
 use App\Modules\Metatag\Actions\MetatagSetAction;
 use Cache;
-use ReflectionException;
 
 /**
  * Класс действия для обновления навыков.

@@ -20,7 +20,6 @@ use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\User\Models\User;
 use App\Modules\Access\Emails\Site\Verification;
 use App\Models\Exceptions\UserNotExistException;
-use ReflectionException;
 use Util;
 
 /**
@@ -40,7 +39,7 @@ class AccessSendEmailVerificationCodeAction extends Action
      *
      * @return bool Вернет результаты исполнения.
      * @throws UserNotExistException
-     * @throws ParameterInvalidException|ReflectionException
+     * @throws ParameterInvalidException
      * @throws UserVerifiedException
      */
     public function run(): bool

@@ -10,9 +10,7 @@ namespace App\Modules\Tool\Entities;
 
 use App\Models\Entity;
 use Carbon\Carbon;
-use App\Modules\Image\Entities\Image;
 use App\Modules\Metatag\Entities\Metatag;
-use Illuminate\Http\UploadedFile;
 
 /**
  * Сущность для инструментов.

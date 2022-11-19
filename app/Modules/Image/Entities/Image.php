@@ -9,8 +9,6 @@
 namespace App\Modules\Image\Entities;
 
 use App\Models\Entity;
-use Carbon\Carbon;
-use Str;
 
 /**
  * Сущность для изображения.

@@ -10,12 +10,10 @@ namespace App\Modules\Category\Actions\Admin;
 
 use App\Models\Action;
 use App\Models\Exceptions\ParameterInvalidException;
-use App\Models\Exceptions\RecordNotExistException;
 use App\Modules\Category\Entities\Category as CategoryEntity;
 use App\Modules\Category\Models\Category;
 use App\Modules\Metatag\Actions\MetatagSetAction;
 use Cache;
-use ReflectionException;
 
 /**
  * Класс действия для создания категории.
@@ -96,9 +94,7 @@ class CategoryCreateAction extends Action
      * Метод запуска логики.
      *
      * @return CategoryEntity Вернет результаты исполнения.
-     * @throws RecordNotExistException
      * @throws ParameterInvalidException
-     * @throws ReflectionException
      */
     public function run(): CategoryEntity
     {

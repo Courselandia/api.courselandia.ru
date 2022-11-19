@@ -9,8 +9,6 @@
 namespace App\Modules\Document\Entities;
 
 use App\Models\Entity;
-use Carbon\Carbon;
-use Str;
 
 /**
  * Сущность для документа.

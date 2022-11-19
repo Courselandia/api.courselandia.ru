@@ -15,7 +15,6 @@ use App\Modules\Category\Entities\Category as CategoryEntity;
 use App\Modules\Category\Models\Category;
 use App\Modules\Metatag\Actions\MetatagSetAction;
 use Cache;
-use ReflectionException;
 
 /**
  * Класс действия для обновления категорий.
@@ -105,7 +104,6 @@ class CategoryUpdateAction extends Action
      * @return CategoryEntity Вернет результаты исполнения.
      * @throws RecordNotExistException
      * @throws ParameterInvalidException
-     * @throws ReflectionException
      */
     public function run(): CategoryEntity
     {

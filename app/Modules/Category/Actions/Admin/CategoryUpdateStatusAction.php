@@ -14,7 +14,6 @@ use App\Models\Exceptions\RecordNotExistException;
 use App\Modules\Category\Entities\Category as CategoryEntity;
 use App\Modules\Category\Models\Category;
 use Cache;
-use ReflectionException;
 
 /**
  * Класс действия для обновления статуса категорий.
@@ -39,7 +38,7 @@ class CategoryUpdateStatusAction extends Action
      * Метод запуска логики.
      *
      * @return CategoryEntity Вернет результаты исполнения.
-     * @throws RecordNotExistException|ParameterInvalidException|ReflectionException
+     * @throws RecordNotExistException|ParameterInvalidException
      */
     public function run(): CategoryEntity
     {

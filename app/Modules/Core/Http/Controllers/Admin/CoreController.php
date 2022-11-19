@@ -90,6 +90,6 @@ class CoreController extends Controller
             ];
         }
 
-        return response()->json($data)->setStatusCode($data['success'] == true ? 200 : 400);
+        return response()->json($data)->setStatusCode($data['success'] ? 200 : 400);
     }
 }

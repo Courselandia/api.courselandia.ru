@@ -221,7 +221,7 @@ class AccessController extends Controller
      * Отправка e-mail сообщения на верификацию.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws UserNotExistException|ParameterInvalidException|ReflectionException
+     * @throws UserNotExistException|ParameterInvalidException
      */
     public function verify(): JsonResponse
     {
@@ -297,7 +297,7 @@ class AccessController extends Controller
      * @return JsonResponse Вернет JSON ответ.
      * @throws UserNotExistException
      * @throws ParameterInvalidException
-     * @throws UserNotExistException|ReflectionException
+     * @throws UserNotExistException
      */
     public function resetCheck(int|string $id, AccessResetCheckRequest $request): JsonResponse
     {

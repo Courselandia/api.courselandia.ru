@@ -8,6 +8,9 @@
 
 namespace App\Models\Test;
 
+use Facebook\WebDriver\Exception\ElementClickInterceptedException;
+use Facebook\WebDriver\Exception\NoSuchElementException;
+use Facebook\WebDriver\Exception\UnknownErrorException;
 use Facebook\WebDriver\WebDriverBy;
 use Laravel\Dusk\Browser;
 use Facebook\WebDriver\Exception\TimeOutException;
@@ -52,11 +55,12 @@ trait HelpAdminBrowser
     /**
      * Ввод в CKEDITOR.
      *
-     * @param  Browser  $browser  Браузер.
-     * @param  string  $selector  Селектор.
-     * @param  string  $text  Текст ввода.
+     * @param Browser $browser Браузер.
+     * @param string $selector Селектор.
+     * @param string $text Текст ввода.
      *
      * @return Browser Вернет браузер.
+     * @throws UnknownErrorException
      */
     public function typeInCKEditor(Browser $browser, string $selector, string $text): Browser
     {
@@ -77,6 +81,7 @@ trait HelpAdminBrowser
      * @param  int  $index  Индекс.
      *
      * @return Browser Вернет браузер.
+     * @throws ElementClickInterceptedException|NoSuchElementException
      */
     public function selectAutocomplete(Browser $browser, string $selector, int $index = 0): Browser
     {
@@ -96,7 +101,7 @@ trait HelpAdminBrowser
      * @param  string  $value  Значение.
      *
      * @return int|null Вернет индекс.
-     * @throws TimeOutException
+     * @throws TimeOutException|ElementClickInterceptedException|NoSuchElementException
      */
     public function getSelectAutocompleteIndex(Browser $browser, string $selector, string $value): ?int
     {
@@ -123,6 +128,7 @@ trait HelpAdminBrowser
      * @param  int  $td  Индекс положения даты по горизонтали.
      *
      * @return Browser Вернет браузер.
+     * @throws ElementClickInterceptedException|NoSuchElementException
      */
     public function selectDatePicker(Browser $browser, string $selector, int $tr = 2, int $td = 1): Browser
     {
@@ -146,6 +152,7 @@ trait HelpAdminBrowser
      * @param  bool  $selectMinutes  Выбрать только минуты.
      *
      * @return Browser Вернет браузер.
+     * @throws ElementClickInterceptedException|NoSuchElementException
      */
     public function selectTimePicker(
         Browser $browser,
@@ -158,7 +165,7 @@ trait HelpAdminBrowser
             ->click($selector)
             ->pause(1000 * 3);
 
-        if ($selectMinutes == false) {
+        if (!$selectMinutes) {
             $browser->elements(
                 '.v-time-picker-clock__container .v-time-picker-clock .v-time-picker-clock__inner .v-time-picker-clock__item'
             )[$hours]->click();

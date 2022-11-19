@@ -10,7 +10,6 @@ namespace App\Modules\Feedback\Http\Controllers\Site;
 
 use Log;
 use Act;
-use ReflectionException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
 use App\Models\Exceptions\ParameterInvalidException;
@@ -29,7 +28,6 @@ class FeedbackController extends Controller
      *
      * @return JsonResponse Вернет JSON ответ.
      * @throws ParameterInvalidException
-     * @throws ReflectionException
      */
     public function send(FeedbackSendRequest $request): JsonResponse
     {

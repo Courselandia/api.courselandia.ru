@@ -14,7 +14,6 @@ use App\Models\Exceptions\RecordNotExistException;
 use App\Modules\Tool\Entities\Tool as ToolEntity;
 use App\Modules\Tool\Models\Tool;
 use Cache;
-use ReflectionException;
 
 /**
  * Класс действия для обновления статуса инструментов.
@@ -39,7 +38,7 @@ class ToolUpdateStatusAction extends Action
      * Метод запуска логики.
      *
      * @return ToolEntity Вернет результаты исполнения.
-     * @throws RecordNotExistException|ParameterInvalidException|ReflectionException
+     * @throws RecordNotExistException|ParameterInvalidException
      */
     public function run(): ToolEntity
     {

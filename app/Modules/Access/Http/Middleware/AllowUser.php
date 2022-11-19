@@ -33,8 +33,7 @@ class AllowUser
      */
     public function handle(
         Request $request,
-        Closure $next,
-        ...$params
+        Closure $next
     ): ResponseFactory|RedirectResponse|Application|Redirector|JsonResponse|Response|Request {
         if (Gate::allows('user')) {
             return $next($request);

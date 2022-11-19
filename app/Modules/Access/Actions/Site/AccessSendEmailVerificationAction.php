@@ -15,7 +15,6 @@ use App\Models\Action;
 use App\Models\Exceptions\UserVerifiedException;
 use App\Modules\User\Models\User;
 use Cache;
-use ReflectionException;
 use Util;
 
 /**
@@ -35,7 +34,7 @@ class AccessSendEmailVerificationAction extends Action
      *
      * @return bool Вернет результаты исполнения.
      * @throws UserNotExistException
-     * @throws ParameterInvalidException|ReflectionException|UserVerifiedException
+     * @throws ParameterInvalidException|UserVerifiedException
      */
     public function run(): bool
     {

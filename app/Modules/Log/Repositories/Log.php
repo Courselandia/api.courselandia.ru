@@ -13,7 +13,6 @@ use App\Models\Rep\Repository;
 use App\Models\Rep\RepositoryQueryBuilder;
 use App\Models\Rep\RepositoryMongoDb;
 use App\Modules\Log\Entities\Log as LogEntity;
-use Illuminate\Database\Eloquent\Builder;
 
 /**
  * Класс репозитория для логирования.

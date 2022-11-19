@@ -8,13 +8,11 @@
 
 namespace App\Modules\User\Tests\Feature\Http\Controllers\Admin;
 
-use App\Models\Enums\DateGroup;
 use App\Models\Test\TokenTest;
 use App\Modules\User\Enums\Role;
 use App\Modules\User\Models\User;
 use App\Modules\User\Models\UserRole;
 use App\Modules\User\Models\UserVerification;
-use Carbon\Carbon;
 use Faker\Factory as Faker;
 use Illuminate\Http\UploadedFile;
 use JetBrains\PhpStorm\Pure;
@@ -468,19 +466,6 @@ class UserControllerTest extends TestCase
             'created_at',
             'updated_at',
             'deleted_at'
-        ];
-    }
-
-    /**
-     * Получить структуру данных по аналитики новых пользователей.
-     *
-     * @return array Массив структуры данных аналитики новых пользователей.
-     */
-    #[Pure] private function getAnalyticsNewUsersStructure(): array
-    {
-        return [
-            'date_group',
-            'amount'
         ];
     }
 }

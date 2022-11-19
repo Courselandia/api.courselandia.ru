@@ -10,14 +10,12 @@ namespace App\Modules\Teacher\Actions\Admin\Teacher;
 
 use App\Models\Action;
 use App\Models\Exceptions\ParameterInvalidException;
-use App\Models\Exceptions\RecordNotExistException;
 use App\Modules\Image\Entities\Image;
 use App\Modules\Metatag\Actions\MetatagSetAction;
 use App\Modules\Teacher\Entities\Teacher as TeacherEntity;
 use App\Modules\Teacher\Models\Teacher;
 use Cache;
 use Illuminate\Http\UploadedFile;
-use ReflectionException;
 
 /**
  * Класс действия для создания учителя.
@@ -105,9 +103,7 @@ class TeacherCreateAction extends Action
      * Метод запуска логики.
      *
      * @return TeacherEntity Вернет результаты исполнения.
-     * @throws RecordNotExistException
      * @throws ParameterInvalidException
-     * @throws ReflectionException
      */
     public function run(): TeacherEntity
     {

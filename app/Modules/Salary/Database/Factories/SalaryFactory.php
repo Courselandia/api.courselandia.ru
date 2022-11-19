@@ -8,10 +8,8 @@
 
 namespace App\Modules\Salary\Database\Factories;
 
-use App\Modules\Metatag\Models\Metatag;
 use App\Modules\Profession\Models\Profession;
 use App\Modules\Salary\Enums\Level;
-use Util;
 use JetBrains\PhpStorm\ArrayShape;
 use App\Modules\Salary\Models\Salary;
 use Illuminate\Database\Eloquent\Factories\Factory;

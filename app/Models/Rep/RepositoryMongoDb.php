@@ -8,11 +8,6 @@
 
 namespace App\Models\Rep;
 
-use App\Models\Entity;
-use App\Models\Exceptions\ParameterInvalidException;
-use Illuminate\Database\Eloquent\Builder;
-use ReflectionException;
-
 /**
  * Трейт репозитория работающий с MongoDb.
  */

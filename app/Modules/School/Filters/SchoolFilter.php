@@ -8,8 +8,6 @@
 
 namespace App\Modules\School\Filters;
 
-use Config;
-use Carbon\Carbon;
 use EloquentFilter\ModelFilter;
 
 /**

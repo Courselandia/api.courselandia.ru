@@ -68,6 +68,7 @@ class AllowMiddlewareTest extends TestCase
      * Проверка пользователя, что он может выполнить действие с ошибкой.
      *
      * @return void
+     * @throws ParameterInvalidException|RecordNotExistException|ReflectionException
      */
     public function testActNotValid(): void
     {

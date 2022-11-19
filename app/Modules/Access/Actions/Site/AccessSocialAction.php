@@ -19,9 +19,6 @@ use App\Modules\Access\Pipes\Site\Social\ClientPipe;
 use App\Modules\Access\Pipes\Site\Social\DataPipe;
 use App\Modules\Access\Pipes\Site\SignUp\DataPipe as DataPipeSignUp;
 use App\Modules\Access\Pipes\Site\SignUp\CreatePipe;
-use App\Modules\User\Enums\Role;
-
-use App\Models\Enums\EnumList;
 
 /**
  * Регистрация нового пользователя через социальные сети.

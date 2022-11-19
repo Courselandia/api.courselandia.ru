@@ -28,7 +28,7 @@ class UniqueSoftValidator
     {
         $value = strtolower(trim($value));
         $queries = DB::table($parameters[0])
-            ->selectRaw($parameters[0].".*, LOWER(TRIM(`{$parameters[1]}`)) as `{$parameters[1]}`");
+            ->selectRaw($parameters[0].".*, LOWER(TRIM(`$parameters[1]`)) as `$parameters[1]`");
 
         for ($i = 3; $i < count($parameters); $i = $i + 2) {
             if (isset($parameters[$i + 1])) {

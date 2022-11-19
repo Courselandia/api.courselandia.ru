@@ -35,7 +35,6 @@ class PublicationImageController extends Controller
      *
      * @return JsonResponse Вернет JSON ответ.
      * @throws ParameterInvalidException
-     * @throws ReflectionException
      */
     public function update(int|string $id, PublicationImageUpdateRequest $request): JsonResponse
     {

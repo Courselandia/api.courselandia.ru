@@ -44,7 +44,7 @@ class CreateTableCourses extends Migration
             $table->boolean('employment')->default(0)->index();
 
             $table->integer('duration')->unsigned()->index('duration')->nullable();
-            $table->float('duration_rate', 5, 2)->unsigned()->index('duration_rate')->nullable();
+            $table->float('duration_rate', 5)->unsigned()->index('duration_rate')->nullable();
             $table->string('duration_unit', 20)->nullable();
 
             $table->integer('lessons_amount')->unsigned()->nullable();

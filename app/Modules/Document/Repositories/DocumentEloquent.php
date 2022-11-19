@@ -10,7 +10,6 @@ namespace App\Modules\Document\Repositories;
 
 use DB;
 use Generator;
-use ReflectionException;
 use App\Models\Entity;
 use App\Models\Rep\RepositoryEloquent;
 use App\Models\Rep\RepositoryQueryBuilder;
@@ -30,14 +29,15 @@ class DocumentEloquent extends Document
     /**
      * Создание.
      *
-     * @param  Entity|DocumentEntity  $entity  Данные для добавления.
+     * @param Entity|DocumentEntity $entity Данные для добавления.
      *
      * @return int|string Вернет ID последней вставленной строки.
+     * @throws ParameterInvalidException
      */
     public function create(Entity|DocumentEntity $entity): int|string
     {
         /**
-         * @var \App\Modules\Document\Models\DocumentEloquent $model
+         * @var DocumentEloquentModel $model
          */
         $model = $this->newInstance();
 
@@ -58,12 +58,12 @@ class DocumentEloquent extends Document
      * @param  Entity|DocumentEntity  $entity  Данные для добавления.
      *
      * @return int|string Вернет ID вставленной строки.
-     * @throws RecordNotExistException
+     * @throws RecordNotExistException|ParameterInvalidException
      */
     public function update(int|string $id, Entity|DocumentEntity $entity): int|string
     {
         /**
-         * @var \App\Modules\Document\Models\DocumentEloquent $model
+         * @var DocumentEloquentModel $model
          */
         $model = $this->newInstance()->find($id);
 
@@ -85,10 +85,11 @@ class DocumentEloquent extends Document
     /**
      * Обновление байт кода картинки.
      *
-     * @param  int|string  $id  Id записи для обновления.
-     * @param  string  $byte  Байт код картинки.
+     * @param int|string $id Id записи для обновления.
+     * @param string $byte Байт код картинки.
      *
      * @return bool Вернет булево значение успешности операции.
+     * @throws ParameterInvalidException
      */
     public function updateByte(int|string $id, string $byte): bool
     {
@@ -105,7 +106,6 @@ class DocumentEloquent extends Document
      *
      * @return Entity|DocumentEntity|null Данные.
      * @throws ParameterInvalidException
-     * @throws ReflectionException
      */
     public function get(
         RepositoryQueryBuilder $repositoryQueryBuilder = null,
@@ -145,9 +145,10 @@ class DocumentEloquent extends Document
     /**
      * Получение байт кода картинки.
      *
-     * @param  int|string  $id  Id записи для обновления.
+     * @param int|string $id Id записи для обновления.
      *
      * @return string|null Вернет байт код документа.
+     * @throws ParameterInvalidException
      */
     public function getByte(int|string $id): ?string
     {
@@ -171,7 +172,6 @@ class DocumentEloquent extends Document
      *
      * @return Generator|DocumentEntity|null Генератор.
      * @throws ParameterInvalidException
-     * @throws ReflectionException
      */
     public function all(Entity|DocumentEntity $entity = null): Generator|DocumentEntity|null
     {
@@ -210,6 +210,7 @@ class DocumentEloquent extends Document
      * Получить количество всех документов.
      *
      * @return int Количество записей.
+     * @throws ParameterInvalidException
      */
     public function count(): int
     {
@@ -219,9 +220,10 @@ class DocumentEloquent extends Document
     /**
      * Удаление.
      *
-     * @param  int|string|array|null  $id  Id записи для удаления.
+     * @param int|string|array|null $id Id записи для удаления.
      *
      * @return bool Вернет булево значение успешности операции.
+     * @throws ParameterInvalidException
      */
     public function destroy(int|string|array $id = null): bool
     {

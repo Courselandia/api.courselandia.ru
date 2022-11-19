@@ -10,12 +10,10 @@ namespace App\Modules\Profession\Actions\Admin;
 
 use App\Models\Action;
 use App\Models\Exceptions\ParameterInvalidException;
-use App\Models\Exceptions\RecordNotExistException;
 use App\Modules\Profession\Entities\Profession as ProfessionEntity;
 use App\Modules\Profession\Models\Profession;
 use App\Modules\Metatag\Actions\MetatagSetAction;
 use Cache;
-use ReflectionException;
 
 /**
  * Класс действия для создания профессии.
@@ -83,7 +81,6 @@ class ProfessionCreateAction extends Action
      *
      * @return ProfessionEntity Вернет результаты исполнения.
      * @throws ParameterInvalidException
-     * @throws ReflectionException
      */
     public function run(): ProfessionEntity
     {

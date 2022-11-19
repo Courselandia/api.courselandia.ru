@@ -15,7 +15,6 @@ use App\Modules\Profession\Entities\Profession as ProfessionEntity;
 use App\Modules\Profession\Models\Profession;
 use App\Modules\Metatag\Actions\MetatagSetAction;
 use Cache;
-use ReflectionException;
 
 /**
  * Класс действия для обновления профессий.

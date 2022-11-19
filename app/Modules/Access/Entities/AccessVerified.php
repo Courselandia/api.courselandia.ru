@@ -8,10 +8,6 @@
 
 namespace App\Modules\Access\Entities;
 
-use App\Models\Entity;
-use App\Modules\OAuth\Entities\Token;
-use App\Modules\User\Entities\User;
-
 /**
  * Сущность для авторизации пользователя.
  */

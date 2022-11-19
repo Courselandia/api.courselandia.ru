@@ -15,7 +15,6 @@ use App\Modules\Direction\Entities\Direction as DirectionEntity;
 use App\Modules\Direction\Models\Direction;
 use App\Modules\Metatag\Actions\MetatagSetAction;
 use Cache;
-use ReflectionException;
 
 /**
  * Класс действия для обновления направлений.
@@ -108,7 +107,6 @@ class DirectionUpdateAction extends Action
      * @return DirectionEntity Вернет результаты исполнения.
      * @throws RecordNotExistException
      * @throws ParameterInvalidException
-     * @throws ReflectionException
      */
     public function run(): DirectionEntity
     {

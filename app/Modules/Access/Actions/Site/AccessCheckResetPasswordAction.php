@@ -12,7 +12,6 @@ use App\Models\Action;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\UserNotExistException;
 use App\Models\Exceptions\InvalidCodeException;
-use ReflectionException;
 
 /**
  * Проверка верности кода восстановления пароля.
@@ -37,7 +36,7 @@ class AccessCheckResetPasswordAction extends Action
      * Метод запуска логики.
      *
      * @return mixed Вернет результаты исполнения.
-     * @throws UserNotExistException|InvalidCodeException|ParameterInvalidException|ReflectionException
+     * @throws UserNotExistException|InvalidCodeException|ParameterInvalidException
      */
     public function run(): mixed
     {

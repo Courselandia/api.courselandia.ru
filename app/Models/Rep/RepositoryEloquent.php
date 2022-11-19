@@ -387,8 +387,6 @@ trait RepositoryEloquent
                         }
 
                         if ($queryBuilder) {
-                            \Illuminate\Database\Eloquent\Relations\BelongsToMany::class;
-
                             $this->queryHelperConditions($query, $queryBuilder->getConditions());
                         }
                     }

@@ -42,7 +42,7 @@ class PublicationController extends Controller
      * @param int|string $id ID публикации.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException|ReflectionException
+     * @throws ParameterInvalidException
      */
     public function get(int|string $id): JsonResponse
     {
@@ -96,7 +96,7 @@ class PublicationController extends Controller
      * @param PublicationCreateRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws RecordNotExistException|ParameterInvalidException|ReflectionException
+     * @throws ParameterInvalidException
      */
     public function create(PublicationCreateRequest $request): JsonResponse
     {
@@ -156,7 +156,7 @@ class PublicationController extends Controller
      * @param PublicationUpdateRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException|ReflectionException
+     * @throws ParameterInvalidException
      */
     public function update(int|string $id, PublicationUpdateRequest $request): JsonResponse
     {
@@ -217,7 +217,7 @@ class PublicationController extends Controller
      * @param PublicationUpdateStatusRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException|ReflectionException
+     * @throws ParameterInvalidException
      */
     public function updateStatus(int|string $id, PublicationUpdateStatusRequest $request): JsonResponse
     {

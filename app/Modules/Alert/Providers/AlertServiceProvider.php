@@ -12,8 +12,6 @@ use Config;
 use App;
 use Illuminate\Support\ServiceProvider;
 use App\Modules\Alert\Models\AlertImplement;
-use App\Modules\Alert\Models\Alert as AlertModel;
-use App\Modules\Alert\Entities\Alert as AlertEntity;
 
 /**
  * Класс сервис-провайдера для настройки этого модуля.
@@ -44,7 +42,7 @@ class AlertServiceProvider extends ServiceProvider
 
         App::singleton(
             'alert',
-            function ($app) {
+            function () {
                 return new AlertImplement();
             }
         );

@@ -10,12 +10,10 @@ namespace App\Modules\Skill\Actions\Admin;
 
 use App\Models\Action;
 use App\Models\Exceptions\ParameterInvalidException;
-use App\Models\Exceptions\RecordNotExistException;
 use App\Modules\Skill\Entities\Skill as SkillEntity;
 use App\Modules\Skill\Models\Skill;
 use App\Modules\Metatag\Actions\MetatagSetAction;
 use Cache;
-use ReflectionException;
 
 /**
  * Класс действия для создания навыка.
@@ -82,9 +80,7 @@ class SkillCreateAction extends Action
      * Метод запуска логики.
      *
      * @return SkillEntity Вернет результаты исполнения.
-     * @throws RecordNotExistException
      * @throws ParameterInvalidException
-     * @throws ReflectionException
      */
     public function run(): SkillEntity
     {

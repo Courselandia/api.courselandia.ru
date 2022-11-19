@@ -9,13 +9,11 @@
 namespace App\Modules\User\Actions\Admin\UserConfig;
 
 use Cache;
-use ReflectionException;
 use App\Models\Action;
 use App\Modules\User\Models\User;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\UserNotExistException;
 use App\Modules\User\Actions\Admin\User\UserGetAction;
-use App\Models\Exceptions\RecordNotExistException;
 
 /**
  * Обновление конфигураций пользователя.
@@ -41,9 +39,7 @@ class UserConfigUpdateAction extends Action
      *
      * @return array Вернет результаты исполнения.
      * @throws UserNotExistException
-     * @throws RecordNotExistException
      * @throws ParameterInvalidException
-     * @throws ReflectionException
      */
     public function run(): array
     {

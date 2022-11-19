@@ -18,8 +18,8 @@ class CreateTableActs extends Migration
         Schema::create('acts', function (Blueprint $table) {
             $table->bigInteger('id', true)->unsigned();
             $table->string('index', 191)->index();
-            $table->bigInteger('count', false)->unsigned();
-            $table->bigInteger('minutes', false)->unsigned();
+            $table->bigInteger('count')->unsigned();
+            $table->bigInteger('minutes')->unsigned();
             $table->timestamps();
         });
     }

@@ -40,7 +40,7 @@ class TeacherController extends Controller
      * @param int|string $id ID учителя.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException|ReflectionException
+     * @throws ParameterInvalidException
      */
     public function get(int|string $id): JsonResponse
     {
@@ -94,7 +94,7 @@ class TeacherController extends Controller
      * @param TeacherCreateRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws RecordNotExistException|ParameterInvalidException|ReflectionException
+     * @throws ParameterInvalidException
      */
     public function create(TeacherCreateRequest $request): JsonResponse
     {
@@ -152,7 +152,7 @@ class TeacherController extends Controller
      * @param TeacherUpdateRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException|ReflectionException
+     * @throws ParameterInvalidException
      */
     public function update(int|string $id, TeacherUpdateRequest $request): JsonResponse
     {
@@ -211,7 +211,7 @@ class TeacherController extends Controller
      * @param TeacherUpdateStatusRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException|ReflectionException
+     * @throws ParameterInvalidException
      */
     public function updateStatus(int|string $id, TeacherUpdateStatusRequest $request): JsonResponse
     {
@@ -253,7 +253,6 @@ class TeacherController extends Controller
      * @param TeacherDestroyRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException
      */
     public function destroy(TeacherDestroyRequest $request): JsonResponse
     {

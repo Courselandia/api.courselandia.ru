@@ -8,9 +8,6 @@
 
 namespace App\Modules\Access\Entities;
 
-use App\Models\Entity;
-use App\Modules\User\Entities\User;
-
 /**
  * Сущность для хранения API токена.
  */

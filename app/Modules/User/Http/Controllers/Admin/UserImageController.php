@@ -38,8 +38,7 @@ class UserImageController extends Controller
      * @param  UserImageUpdateRequest  $request  Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException
-     * @throws ReflectionException
+     * @throws ParameterInvalidException|ParameterInvalidException
      */
     public function update(int|string $id, UserImageUpdateRequest $request): JsonResponse
     {
@@ -81,6 +80,7 @@ class UserImageController extends Controller
      * @param  int|string  $id  ID пользователя.
      *
      * @return JsonResponse Вернет JSON ответ.
+     * @throws ParameterInvalidException|ParameterInvalidException|ReflectionException
      */
     public function destroy(int|string $id): JsonResponse
     {

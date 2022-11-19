@@ -65,7 +65,7 @@ trait Flags
      */
     protected function addFlagValue(string $name, mixed $value): static
     {
-        $this->setAttribute("flags->{$name}", $value);
+        $this->setAttribute("flags->$name", $value);
 
         return $this;
     }

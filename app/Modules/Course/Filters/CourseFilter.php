@@ -8,11 +8,9 @@
 
 namespace App\Modules\Course\Filters;
 
-use App\Modules\Faq\Filters\FaqFilter;
 use Morph;
 use App\Modules\Course\Enums\Status;
 use App\Modules\Salary\Enums\Level;
-use cijic\phpMorphy\Morphy;
 use EloquentFilter\ModelFilter;
 
 /**

@@ -10,11 +10,9 @@ namespace App\Modules\User\Actions\Admin\UserConfig;
 
 use App\Models\Action;
 use App\Models\Enums\CacheTime;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\UserNotExistException;
 use App\Modules\User\Models\User;
 use Cache;
-use ReflectionException;
 use Util;
 
 /**
@@ -33,7 +31,7 @@ class UserConfigGetAction extends Action
      * Метод запуска логики.
      *
      * @return array Вернет результаты исполнения.
-     * @throws UserNotExistException|ParameterInvalidException|ReflectionException
+     * @throws UserNotExistException
      */
     public function run(): array
     {

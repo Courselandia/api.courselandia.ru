@@ -32,6 +32,7 @@ use App\Modules\Course\Entities\CourseFeature as CourseFeatureEntity;
 use App\Modules\Salary\Enums\Level;
 use Illuminate\Http\UploadedFile;
 use ReflectionException;
+use Throwable;
 
 /**
  * Класс действия для создания курса.
@@ -268,7 +269,7 @@ class CourseCreateAction extends Action
      * @return CourseEntity Вернет результаты исполнения.
      * @throws RecordNotExistException
      * @throws ParameterInvalidException
-     * @throws ReflectionException
+     * @throws ReflectionException|Throwable
      */
     public function run(): CourseEntity
     {
