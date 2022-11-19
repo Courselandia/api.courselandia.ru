@@ -8,7 +8,7 @@
 
 namespace App\Modules\Review\Actions\Site;
 
-use App\Models\Enums\OperatorQuery;
+use App\Models\Entity;
 use App\Modules\Review\Enums\Status;
 use DB;
 use Util;
@@ -17,9 +17,7 @@ use App\Models\Enums\CacheTime;
 use App\Modules\Review\Entities\ReviewBreakDown;
 use App\Models\Action;
 use App\Models\Exceptions\ParameterInvalidException;
-use App\Models\Rep\RepositoryCondition;
-use App\Models\Rep\RepositoryQueryBuilder;
-use App\Modules\Review\Repositories\Review;
+use App\Modules\Review\Models\Review;
 use JetBrains\PhpStorm\ArrayShape;
 
 /**
@@ -28,28 +26,11 @@ use JetBrains\PhpStorm\ArrayShape;
 class ReviewBreakDownAction extends Action
 {
     /**
-     * Репозиторий отзывов.
-     *
-     * @var Review
-     */
-    private Review $review;
-
-    /**
      * ID школа.
      *
      * @var int|null
      */
     public ?int $school_id = null;
-
-    /**
-     * Конструктор.
-     *
-     * @param  Review  $review  Репозиторий отзывов.
-     */
-    public function __construct(Review $review)
-    {
-        $this->review = $review;
-    }
 
     /**
      * Метод запуска логики.
@@ -59,23 +40,25 @@ class ReviewBreakDownAction extends Action
      */
     #[ArrayShape(['data' => 'array', 'total' => 'int'])] public function run(): array
     {
-        $query = new RepositoryQueryBuilder();
-        $query->addCondition(new RepositoryCondition('school_id', $this->school_id))
-            ->addCondition(new RepositoryCondition('status', Status::ACTIVE->value))
-            ->addCondition(new RepositoryCondition('status', true, OperatorQuery::EQUAL, 'school'))
-            ->setSelects([
-                DB::raw('ROUND(rating) as rating'),
-                DB::raw('COUNT(rating) as amount'),
-            ])
-            ->addGroup('rating');
-
-        $cacheKey = Util::getKey('review', 'creakDown', $query);
+        $cacheKey = Util::getKey('review', 'site', 'breakDown');
 
         return Cache::tags(['catalog', 'school', 'review', 'course'])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
-            function () use ($query) {
-                return $this->review->read($query, new ReviewBreakDown());
+            function () {
+                $reviews = Review::where('school_id', $this->school_id)
+                    ->where('status', Status::ACTIVE->value)
+                    ->whereHas('school', function ($query) {
+                        $query->where('schools.status', true);
+                    })
+                    ->select([
+                        DB::raw('ROUND(rating) as rating'),
+                        DB::raw('COUNT(rating) as amount'),
+                    ])
+                    ->groupBy('rating')
+                    ->get();
+
+                return Entity::toEntities($reviews->toArray(), new ReviewBreakDown());
             }
         );
     }

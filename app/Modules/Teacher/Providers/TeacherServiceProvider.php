@@ -13,8 +13,6 @@ use Config;
 use Illuminate\Support\ServiceProvider;
 
 use App\Modules\Teacher\Models\Teacher as TeacherModel;
-use App\Modules\Teacher\Repositories\Teacher as TeacherRepository;
-use App\Modules\Teacher\Entities\Teacher as TeacherEntity;
 use App\Modules\Teacher\Events\Listeners\TeacherListener;
 
 /**
@@ -45,13 +43,6 @@ class TeacherServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->register(RouteServiceProvider::class);
-
-        App::singleton(
-            TeacherRepository::class,
-            function () {
-                return new TeacherRepository(new TeacherModel(), new TeacherEntity());
-            }
-        );
     }
 
     /**

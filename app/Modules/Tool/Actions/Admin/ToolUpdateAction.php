@@ -12,26 +12,15 @@ use App\Models\Action;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Modules\Tool\Entities\Tool as ToolEntity;
-use App\Modules\Tool\Repositories\Tool;
-use App\Modules\Image\Entities\Image;
+use App\Modules\Tool\Models\Tool;
 use App\Modules\Metatag\Actions\MetatagSetAction;
 use Cache;
-use Carbon\Carbon;
-use Illuminate\Http\UploadedFile;
-use ReflectionException;
 
 /**
  * Класс действия для обновления инструментов.
  */
 class ToolUpdateAction extends Action
 {
-    /**
-     * Репозиторий инструментов.
-     *
-     * @var Tool
-     */
-    private Tool $tool;
-
     /**
      * ID инструмента.
      *
@@ -96,22 +85,11 @@ class ToolUpdateAction extends Action
     public ?string $title = null;
 
     /**
-     * Конструктор.
-     *
-     * @param  Tool  $tool  Репозиторий инструментов.
-     */
-    public function __construct(Tool $tool)
-    {
-        $this->tool = $tool;
-    }
-
-    /**
      * Метод запуска логики.
      *
      * @return ToolEntity Вернет результаты исполнения.
      * @throws RecordNotExistException
      * @throws ParameterInvalidException
-     * @throws ReflectionException
      */
     public function run(): ToolEntity
     {
@@ -134,7 +112,7 @@ class ToolUpdateAction extends Action
             $toolEntity->text = $this->text;
             $toolEntity->status = $this->status;
 
-            $this->tool->update($this->id, $toolEntity);
+            Tool::find($this->id)->update($toolEntity->toArray());
             Cache::tags(['catalog', 'tool'])->flush();
 
             $action = app(ToolGetAction::class);

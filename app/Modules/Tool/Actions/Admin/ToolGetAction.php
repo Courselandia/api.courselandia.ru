@@ -11,11 +11,9 @@ namespace App\Modules\Tool\Actions\Admin;
 use App\Models\Action;
 use App\Models\Enums\CacheTime;
 use App\Models\Exceptions\ParameterInvalidException;
-use App\Models\Rep\RepositoryQueryBuilder;
 use App\Modules\Tool\Entities\Tool as ToolEntity;
-use App\Modules\Tool\Repositories\Tool;
+use App\Modules\Tool\Models\Tool;
 use Cache;
-use ReflectionException;
 use Util;
 
 /**
@@ -23,13 +21,6 @@ use Util;
  */
 class ToolGetAction extends Action
 {
-    /**
-     * Репозиторий инструментов.
-     *
-     * @var Tool
-     */
-    private Tool $tool;
-
     /**
      * ID инструмента.
      *
@@ -51,23 +42,21 @@ class ToolGetAction extends Action
      * Метод запуска логики.
      *
      * @return ToolEntity|null Вернет результаты исполнения.
-     * @throws ParameterInvalidException|ReflectionException
+     * @throws ParameterInvalidException
      */
     public function run(): ?ToolEntity
     {
-        $query = new RepositoryQueryBuilder();
-        $query->setId($this->id)
-            ->setRelations([
-                'metatag',
-            ]);
-
-        $cacheKey = Util::getKey('tool', $query);
+        $cacheKey = Util::getKey('tool', $this->id, 'metatag');
 
         return Cache::tags(['catalog', 'tool'])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
-            function () use ($query) {
-                return $this->tool->get($query);
+            function () {
+                $tool = Tool::where('id', $this->id)
+                    ->with('metatag')
+                    ->first();
+
+                return $tool ? new ToolEntity($tool->toArray()) : null;
             }
         );
     }

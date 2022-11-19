@@ -9,11 +9,11 @@
 namespace App\Modules\Tool\Actions\Admin;
 
 use App\Models\Action;
+use App\Models\Entity;
 use App\Models\Enums\CacheTime;
 use App\Models\Exceptions\ParameterInvalidException;
-use App\Models\Rep\RepositoryFilter;
-use App\Models\Rep\RepositoryQueryBuilder;
-use App\Modules\Tool\Repositories\Tool;
+use App\Modules\Tool\Entities\Tool as ToolEntity;
+use App\Modules\Tool\Models\Tool;
 use Cache;
 use JetBrains\PhpStorm\ArrayShape;
 use ReflectionException;
@@ -24,13 +24,6 @@ use Util;
  */
 class ToolReadAction extends Action
 {
-    /**
-     * Репозиторий инструментов.
-     *
-     * @var Tool
-     */
-    private Tool $tool;
-
     /**
      * Сортировка данных.
      *
@@ -60,16 +53,6 @@ class ToolReadAction extends Action
     public ?int $limit = null;
 
     /**
-     * Конструктор.
-     *
-     * @param  Tool  $tool  Репозиторий инструментов.
-     */
-    public function __construct(Tool $tool)
-    {
-        $this->tool = $tool;
-    }
-
-    /**
      * Метод запуска логики.
      *
      * @return mixed Вернет результаты исполнения.
@@ -77,24 +60,41 @@ class ToolReadAction extends Action
      */
     #[ArrayShape(['data' => 'array', 'total' => 'int'])] public function run(): array
     {
-        $query = new RepositoryQueryBuilder();
-        $query->setFilters(RepositoryFilter::getFilters($this->filters))
-            ->setSorts($this->sorts)
-            ->setOffset($this->offset)
-            ->setLimit($this->limit)
-            ->setRelations([
-                'metatag',
-            ]);
-
-        $cacheKey = Util::getKey('tool', 'read', 'count', $query);
+        $cacheKey = Util::getKey(
+            'tool',
+            'admin',
+            'read',
+            'count',
+            $this->sorts,
+            $this->filters,
+            $this->offset,
+            $this->limit,
+            'metatag'
+        );
 
         return Cache::tags(['catalog', 'tool'])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
-            function () use ($query) {
+            function () {
+                $query = Tool::filter($this->filters ?: [])
+                    ->sorted($this->sorts ?: [])
+                    ->with([
+                        'metatag',
+                    ]);
+
+                if ($this->offset) {
+                    $query->offset($this->offset);
+                }
+
+                if ($this->limit) {
+                    $query->limit($this->limit);
+                }
+
+                $items = $query->get()->toArray();
+
                 return [
-                    'data' => $this->tool->read($query),
-                    'total' => $this->tool->count($query),
+                    'data' => Entity::toEntities($items, new ToolEntity()),
+                    'total' => $query->count(),
                 ];
             }
         );

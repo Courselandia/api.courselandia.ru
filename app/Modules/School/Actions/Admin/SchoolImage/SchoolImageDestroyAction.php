@@ -12,8 +12,7 @@ use App\Models\Action;
 use App\Models\Enums\CacheTime;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
-use App\Models\Rep\RepositoryQueryBuilder;
-use App\Modules\School\Repositories\School;
+use App\Modules\School\Models\School;
 use Cache;
 use ImageStore;
 use ReflectionException;
@@ -24,13 +23,6 @@ use Util;
  */
 class SchoolImageDestroyAction extends Action
 {
-    /**
-     * Репозиторий школ.
-     *
-     * @var School
-     */
-    private School $school;
-
     /**
      * ID школы.
      *
@@ -46,16 +38,6 @@ class SchoolImageDestroyAction extends Action
     public string|null $type = null;
 
     /**
-     * Конструктор.
-     *
-     * @param  School  $school  Репозиторий школ.
-     */
-    public function __construct(School $school)
-    {
-        $this->school = $school;
-    }
-
-    /**
      * Метод запуска логики.
      *
      * @return bool Вернет результаты исполнения.
@@ -64,14 +46,13 @@ class SchoolImageDestroyAction extends Action
      */
     public function run(): bool
     {
-        $query = new RepositoryQueryBuilder($this->id);
-        $cacheKey = Util::getKey('school', $query);
+        $cacheKey = Util::getKey('school', 'model', $this->id);
 
         $school = Cache::tags(['catalog', 'school', 'faq'])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
-            function () use ($query) {
-                return $this->school->get($query);
+            function () {
+                return School::find($this->id);
             }
         );
 
@@ -92,7 +73,7 @@ class SchoolImageDestroyAction extends Action
                 $school->image_site_id = null;
             }
 
-            $this->school->update($this->id, $school);
+            $school->save();
             Cache::tags(['catalog', 'school', 'teacher', 'faq'])->flush();
 
             return true;

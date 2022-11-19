@@ -64,12 +64,12 @@ class UserReadAction extends Action
             'admin',
             'read',
             'count',
+            $this->sorts,
             $this->filters,
             $this->offset,
             $this->limit,
-            [
-                'metatag',
-            ]
+            'verification',
+            'role',
         );
 
         return Cache::tags(['user'])->remember(

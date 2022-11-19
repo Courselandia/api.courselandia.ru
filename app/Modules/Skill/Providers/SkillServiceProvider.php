@@ -8,13 +8,10 @@
 
 namespace App\Modules\Skill\Providers;
 
-use App;
 use Config;
 use Illuminate\Support\ServiceProvider;
 
 use App\Modules\Skill\Models\Skill as SkillModel;
-use App\Modules\Skill\Repositories\Skill as SkillRepository;
-use App\Modules\Skill\Entities\Skill as SkillEntity;
 use App\Modules\Skill\Events\Listeners\SkillListener;
 
 /**
@@ -45,13 +42,6 @@ class SkillServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->register(RouteServiceProvider::class);
-
-        App::singleton(
-            SkillRepository::class,
-            function () {
-                return new SkillRepository(new SkillModel(), new SkillEntity());
-            }
-        );
     }
 
     /**

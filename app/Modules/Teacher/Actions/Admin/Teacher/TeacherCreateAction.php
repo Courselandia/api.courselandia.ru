@@ -14,7 +14,7 @@ use App\Models\Exceptions\RecordNotExistException;
 use App\Modules\Image\Entities\Image;
 use App\Modules\Metatag\Actions\MetatagSetAction;
 use App\Modules\Teacher\Entities\Teacher as TeacherEntity;
-use App\Modules\Teacher\Repositories\Teacher;
+use App\Modules\Teacher\Models\Teacher;
 use Cache;
 use Illuminate\Http\UploadedFile;
 use ReflectionException;
@@ -24,13 +24,6 @@ use ReflectionException;
  */
 class TeacherCreateAction extends Action
 {
-    /**
-     * Репозиторий учителя.
-     *
-     * @var Teacher
-     */
-    private Teacher $teacher;
-
     /**
      * Название.
      *
@@ -109,16 +102,6 @@ class TeacherCreateAction extends Action
     public ?array $schools = null;
 
     /**
-     * Конструктор.
-     *
-     * @param  Teacher  $teacher  Репозиторий учителя.
-     */
-    public function __construct(Teacher $teacher)
-    {
-        $this->teacher = $teacher;
-    }
-
-    /**
      * Метод запуска логики.
      *
      * @return TeacherEntity Вернет результаты исполнения.
@@ -144,14 +127,14 @@ class TeacherCreateAction extends Action
         $teacherEntity->status = $this->status;
         $teacherEntity->metatag_id = $metatag->id;
 
-        $id = $this->teacher->create($teacherEntity);
-        $this->teacher->directionSync($id, $this->directions ?: []);
-        $this->teacher->schoolSync($id, $this->schools ?: []);
+        $teacher = Teacher::create($teacherEntity->toArray());
+        $teacher->directions()->sync($this->directions ?: []);
+        $teacher->schools()->sync($this->schools ?: []);
 
         Cache::tags(['catalog', 'teacher', 'direction', 'school'])->flush();
 
         $action = app(TeacherGetAction::class);
-        $action->id = $id;
+        $action->id = $teacher->id;
 
         return $action->run();
     }

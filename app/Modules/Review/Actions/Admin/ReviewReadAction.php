@@ -9,11 +9,11 @@
 namespace App\Modules\Review\Actions\Admin;
 
 use App\Models\Action;
+use App\Models\Entity;
 use App\Models\Enums\CacheTime;
 use App\Models\Exceptions\ParameterInvalidException;
-use App\Models\Rep\RepositoryFilter;
-use App\Models\Rep\RepositoryQueryBuilder;
-use App\Modules\Review\Repositories\Review;
+use App\Modules\Review\Entities\Review as ReviewEntity;
+use App\Modules\Review\Models\Review;
 use Cache;
 use JetBrains\PhpStorm\ArrayShape;
 use Util;
@@ -23,13 +23,6 @@ use Util;
  */
 class ReviewReadAction extends Action
 {
-    /**
-     * Репозиторий отзывов.
-     *
-     * @var Review
-     */
-    private Review $review;
-
     /**
      * Сортировка данных.
      *
@@ -59,16 +52,6 @@ class ReviewReadAction extends Action
     public ?int $limit = null;
 
     /**
-     * Конструктор.
-     *
-     * @param  Review  $review  Репозиторий отзывов.
-     */
-    public function __construct(Review $review)
-    {
-        $this->review = $review;
-    }
-
-    /**
      * Метод запуска логики.
      *
      * @return mixed Вернет результаты исполнения.
@@ -76,25 +59,43 @@ class ReviewReadAction extends Action
      */
     #[ArrayShape(['data' => 'array', 'total' => 'int'])] public function run(): array
     {
-        $query = new RepositoryQueryBuilder();
-        $query->setFilters(RepositoryFilter::getFilters($this->filters))
-            ->setSorts($this->sorts)
-            ->setOffset($this->offset)
-            ->setLimit($this->limit)
-            ->setRelations([
-                'school',
-                'course',
-            ]);
-
-        $cacheKey = Util::getKey('review', 'read', 'count', $query);
+        $cacheKey = Util::getKey(
+            'review',
+            'admin',
+            'read',
+            'count',
+            $this->sorts,
+            $this->filters,
+            $this->offset,
+            $this->limit,
+            'school',
+            'course',
+        );
 
         return Cache::tags(['catalog', 'school', 'review', 'course'])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
-            function () use ($query) {
+            function () {
+                $query = Review::filter($this->filters ?: [])
+                    ->sorted($this->sorts ?: [])
+                    ->with([
+                        'school',
+                        'course',
+                    ]);
+
+                if ($this->offset) {
+                    $query->offset($this->offset);
+                }
+
+                if ($this->limit) {
+                    $query->limit($this->limit);
+                }
+
+                $items = $query->get()->toArray();
+
                 return [
-                    'data' => $this->review->read($query),
-                    'total' => $this->review->count($query),
+                    'data' => Entity::toEntities($items, new ReviewEntity()),
+                    'total' => $query->count(),
                 ];
             }
         );

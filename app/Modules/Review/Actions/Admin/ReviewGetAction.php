@@ -11,9 +11,8 @@ namespace App\Modules\Review\Actions\Admin;
 use App\Models\Action;
 use App\Models\Enums\CacheTime;
 use App\Models\Exceptions\ParameterInvalidException;
-use App\Models\Rep\RepositoryQueryBuilder;
 use App\Modules\Review\Entities\Review as ReviewEntity;
-use App\Modules\Review\Repositories\Review;
+use App\Modules\Review\Models\Review;
 use Cache;
 use Util;
 
@@ -23,28 +22,11 @@ use Util;
 class ReviewGetAction extends Action
 {
     /**
-     * Репозиторий отзывов.
-     *
-     * @var Review
-     */
-    private Review $review;
-
-    /**
      * ID отзывов.
      *
      * @var int|string|null
      */
     public int|string|null $id = null;
-
-    /**
-     * Конструктор.
-     *
-     * @param  Review  $review  Репозиторий отзывов.
-     */
-    public function __construct(Review $review)
-    {
-        $this->review = $review;
-    }
 
     /**
      * Метод запуска логики.
@@ -54,20 +36,19 @@ class ReviewGetAction extends Action
      */
     public function run(): ?ReviewEntity
     {
-        $query = new RepositoryQueryBuilder();
-        $query->setId($this->id)
-            ->setRelations([
-                'school',
-                'course',
-            ]);
-
-        $cacheKey = Util::getKey('review', $query);
+        $cacheKey = Util::getKey('review', $this->id, 'school', 'course');
 
         return Cache::tags(['catalog', 'school', 'review', 'course'])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
-            function () use ($query) {
-                return $this->review->get($query);
+            function () {
+                $review = Review::where('id', $this->id)
+                    ->with([
+                        'school',
+                        'course',
+                    ])->first();
+
+                return $review ? new ReviewEntity($review->toArray()) : null;
             }
         );
     }

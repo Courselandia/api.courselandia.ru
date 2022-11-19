@@ -13,26 +13,14 @@ use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Modules\Salary\Entities\Salary as SalaryEntity;
 use App\Modules\Salary\Enums\Level;
-use App\Modules\Salary\Repositories\Salary;
-use App\Modules\Image\Entities\Image;
-use App\Modules\Metatag\Actions\MetatagSetAction;
+use App\Modules\Salary\Models\Salary;
 use Cache;
-use Carbon\Carbon;
-use Illuminate\Http\UploadedFile;
-use ReflectionException;
 
 /**
  * Класс действия для обновления зарплат.
  */
 class SalaryUpdateAction extends Action
 {
-    /**
-     * Репозиторий зарплат.
-     *
-     * @var Salary
-     */
-    private Salary $salaryRep;
-
     /**
      * ID зарплаты.
      *
@@ -69,16 +57,6 @@ class SalaryUpdateAction extends Action
     public ?bool $status = null;
 
     /**
-     * Конструктор.
-     *
-     * @param  Salary  $salary  Репозиторий зарплат.
-     */
-    public function __construct(Salary $salary)
-    {
-        $this->salaryRep = $salary;
-    }
-
-    /**
      * Метод запуска логики.
      *
      * @return SalaryEntity Вернет результаты исполнения.
@@ -98,7 +76,7 @@ class SalaryUpdateAction extends Action
             $salaryEntity->profession_id = $this->profession_id;
             $salaryEntity->status = $this->status;
 
-            $this->salaryRep->update($this->id, $salaryEntity);
+            Salary::find($this->id)->update($salaryEntity->toArray());
             Cache::tags(['catalog', 'profession', 'salary'])->flush();
 
             $action = app(SalaryGetAction::class);

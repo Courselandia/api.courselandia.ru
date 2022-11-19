@@ -9,10 +9,11 @@
 namespace App\Modules\School\Actions\Site\School;
 
 use App\Models\Action;
+use App\Models\Entity;
 use App\Models\Enums\CacheTime;
 use App\Models\Exceptions\ParameterInvalidException;
-use App\Models\Rep\RepositoryQueryBuilder;
-use App\Modules\School\Repositories\School;
+use App\Modules\School\Entities\School as SchoolEntity;
+use App\Modules\School\Models\School;
 use Cache;
 use JetBrains\PhpStorm\ArrayShape;
 use ReflectionException;
@@ -23,13 +24,6 @@ use Util;
  */
 class SchoolReadAction extends Action
 {
-    /**
-     * Репозиторий школ.
-     *
-     * @var School
-     */
-    private School $school;
-
     /**
      * Сортировка данных.
      *
@@ -52,16 +46,6 @@ class SchoolReadAction extends Action
     public ?int $limit = null;
 
     /**
-     * Конструктор.
-     *
-     * @param  School  $school  Репозиторий школ.
-     */
-    public function __construct(School $school)
-    {
-        $this->school = $school;
-    }
-
-    /**
      * Метод запуска логики.
      *
      * @return mixed Вернет результаты исполнения.
@@ -69,24 +53,40 @@ class SchoolReadAction extends Action
      */
     #[ArrayShape(['data' => 'array', 'total' => 'int'])] public function run(): array
     {
-        $query = new RepositoryQueryBuilder();
-        $query->setSorts($this->sorts)
-            ->setOffset($this->offset)
-            ->setLimit($this->limit)
-            ->setActive(true)
-            ->setRelations([
-                'metatag',
-            ]);
-
-        $cacheKey = Util::getKey('school', 'read', 'count', $query);
+        $cacheKey = Util::getKey(
+            'school',
+            'site',
+            'read',
+            'count',
+            $this->sorts,
+            $this->offset,
+            $this->limit,
+            'metatag'
+        );
 
         return Cache::tags(['catalog', 'school', 'teacher', 'review', 'faq'])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
-            function () use ($query) {
+            function () {
+                $query = School::sorted($this->sorts ?: [])
+                    ->active()
+                    ->with([
+                        'metatag',
+                    ]);
+
+                if ($this->offset) {
+                    $query->offset($this->offset);
+                }
+
+                if ($this->limit) {
+                    $query->limit($this->limit);
+                }
+
+                $items = $query->get()->toArray();
+
                 return [
-                    'data' => $this->school->read($query),
-                    'total' => $this->school->count($query),
+                    'data' => Entity::toEntities($items, new SchoolEntity()),
+                    'total' => $query->count(),
                 ];
             }
         );

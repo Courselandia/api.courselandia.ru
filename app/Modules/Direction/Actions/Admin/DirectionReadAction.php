@@ -65,12 +65,11 @@ class DirectionReadAction extends Action
             'admin',
             'read',
             'count',
+            $this->sorts,
             $this->filters,
             $this->offset,
             $this->limit,
-            [
-                'metatag',
-            ]
+            'metatag',
         );
 
         return Cache::tags(['catalog', 'category', 'direction', 'profession', 'teacher'])->remember(

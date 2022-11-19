@@ -12,22 +12,14 @@ use App\Models\Action;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Salary\Entities\Salary as SalaryEntity;
 use App\Modules\Salary\Enums\Level;
-use App\Modules\Salary\Repositories\Salary;
+use App\Modules\Salary\Models\Salary;
 use Cache;
-use ReflectionException;
 
 /**
  * Класс действия для создания зарплаты.
  */
 class SalaryCreateAction extends Action
 {
-    /**
-     * Репозиторий зарплат.
-     *
-     * @var Salary
-     */
-    private Salary $salaryRep;
-
     /**
      * ID профессии.
      *
@@ -57,21 +49,10 @@ class SalaryCreateAction extends Action
     public ?bool $status = null;
 
     /**
-     * Конструктор.
-     *
-     * @param  Salary  $salary  Репозиторий зарплат.
-     */
-    public function __construct(Salary $salary)
-    {
-        $this->salaryRep = $salary;
-    }
-
-    /**
      * Метод запуска логики.
      *
      * @return SalaryEntity Вернет результаты исполнения.
      * @throws ParameterInvalidException
-     * @throws ReflectionException
      */
     public function run(): SalaryEntity
     {
@@ -81,11 +62,11 @@ class SalaryCreateAction extends Action
         $salaryEntity->profession_id = $this->profession_id;
         $salaryEntity->status = $this->status;
 
-        $id = $this->salaryRep->create($salaryEntity);
+        $salary = Salary::create($salaryEntity->toArray());
         Cache::tags(['catalog', 'profession', 'salary'])->flush();
 
         $action = app(SalaryGetAction::class);
-        $action->id = $id;
+        $action->id = $salary->id;
 
         return $action->run();
     }

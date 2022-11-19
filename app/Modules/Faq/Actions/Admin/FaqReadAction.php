@@ -76,12 +76,11 @@ class FaqReadAction extends Action
             'admin',
             'read',
             'count',
+            $this->sorts,
             $this->filters,
             $this->offset,
             $this->limit,
-            [
-                'school',
-            ]
+            'school',
         );
 
         return Cache::tags(['catalog', 'school', 'faq'])->remember(

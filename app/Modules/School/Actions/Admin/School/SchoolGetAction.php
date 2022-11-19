@@ -13,9 +13,8 @@ use App\Models\Enums\CacheTime;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Rep\RepositoryQueryBuilder;
 use App\Modules\School\Entities\School as SchoolEntity;
-use App\Modules\School\Repositories\School;
+use App\Modules\School\Models\School;
 use Cache;
-use ReflectionException;
 use Util;
 
 /**
@@ -24,13 +23,6 @@ use Util;
 class SchoolGetAction extends Action
 {
     /**
-     * Репозиторий школ.
-     *
-     * @var School
-     */
-    private School $school;
-
-    /**
      * ID школы.
      *
      * @var int|string|null
@@ -38,20 +30,10 @@ class SchoolGetAction extends Action
     public int|string|null $id = null;
 
     /**
-     * Конструктор.
-     *
-     * @param  School  $school  Репозиторий школ.
-     */
-    public function __construct(School $school)
-    {
-        $this->school = $school;
-    }
-
-    /**
      * Метод запуска логики.
      *
      * @return SchoolEntity|null Вернет результаты исполнения.
-     * @throws ParameterInvalidException|ReflectionException
+     * @throws ParameterInvalidException
      */
     public function run(): ?SchoolEntity
     {
@@ -61,13 +43,15 @@ class SchoolGetAction extends Action
                 'metatag',
             ]);
 
-        $cacheKey = Util::getKey('school', $query);
+        $cacheKey = Util::getKey('school', $query, $this->id, 'metatag');
 
         return Cache::tags(['catalog', 'school', 'teacher', 'review', 'faq'])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
             function () use ($query) {
-                return $this->school->get($query);
+                $school = School::where('id', $this->id)->first();
+
+                return $school ? new SchoolEntity($school->toArray()) : null;
             }
         );
     }

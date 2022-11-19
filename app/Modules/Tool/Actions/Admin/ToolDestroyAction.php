@@ -9,8 +9,7 @@
 namespace App\Modules\Tool\Actions\Admin;
 
 use App\Models\Action;
-use App\Models\Exceptions\ParameterInvalidException;
-use App\Modules\Tool\Repositories\Tool;
+use App\Modules\Tool\Models\Tool;
 use Cache;
 
 /**
@@ -19,13 +18,6 @@ use Cache;
 class ToolDestroyAction extends Action
 {
     /**
-     * Репозиторий инструментов.
-     *
-     * @var Tool
-     */
-    private Tool $tool;
-
-    /**
      * Массив ID пользователей.
      *
      * @var int[]|string[]
@@ -33,30 +25,14 @@ class ToolDestroyAction extends Action
     public ?array $ids = null;
 
     /**
-     * Конструктор.
-     *
-     * @param  Tool  $tool  Репозиторий инструментов.
-     */
-    public function __construct(Tool $tool)
-    {
-        $this->tool = $tool;
-    }
-
-    /**
      * Метод запуска логики.
      *
      * @return bool Вернет результаты исполнения.
-     * @throws ParameterInvalidException
      */
     public function run(): bool
     {
         if ($this->ids) {
-            $ids = $this->ids;
-
-            for ($i = 0; $i < count($ids); $i++) {
-                $this->tool->destroy($ids[$i]);
-            }
-
+            Tool::destroy($this->ids);
             Cache::tags(['catalog', 'tool'])->flush();
         }
 

@@ -8,13 +8,10 @@
 
 namespace App\Modules\Review\Providers;
 
-use App;
 use Config;
 use Illuminate\Support\ServiceProvider;
 
 use App\Modules\Review\Models\Review as ReviewModel;
-use App\Modules\Review\Repositories\Review as ReviewRepository;
-use App\Modules\Review\Entities\Review as ReviewEntity;
 use App\Modules\Review\Events\Listeners\ReviewListener;
 
 /**
@@ -45,13 +42,6 @@ class ReviewServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->register(RouteServiceProvider::class);
-
-        App::singleton(
-            ReviewRepository::class,
-            function () {
-                return new ReviewRepository(new ReviewModel(), new ReviewEntity());
-            }
-        );
     }
 
     /**

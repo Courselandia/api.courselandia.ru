@@ -14,7 +14,7 @@ use App\Models\Exceptions\RecordNotExistException;
 use App\Modules\Image\Entities\Image;
 use App\Modules\Metatag\Actions\MetatagSetAction;
 use App\Modules\School\Entities\School as SchoolEntity;
-use App\Modules\School\Repositories\School;
+use App\Modules\School\Models\School;
 use Cache;
 use Illuminate\Http\UploadedFile;
 use ReflectionException;
@@ -24,13 +24,6 @@ use ReflectionException;
  */
 class SchoolCreateAction extends Action
 {
-    /**
-     * Репозиторий школ.
-     *
-     * @var School
-     */
-    private School $school;
-
     /**
      * Название.
      *
@@ -116,16 +109,6 @@ class SchoolCreateAction extends Action
     public ?string $title = null;
 
     /**
-     * Конструктор.
-     *
-     * @param  School  $school  Репозиторий школ.
-     */
-    public function __construct(School $school)
-    {
-        $this->school = $school;
-    }
-
-    /**
      * Метод запуска логики.
      *
      * @return SchoolEntity Вернет результаты исполнения.
@@ -153,11 +136,11 @@ class SchoolCreateAction extends Action
         $schoolEntity->status = $this->status;
         $schoolEntity->metatag_id = $metatag->id;
 
-        $id = $this->school->create($schoolEntity);
+        $school = School::create($schoolEntity->toArray());
         Cache::tags(['catalog', 'school', 'teacher', 'review', 'faq'])->flush();
 
         $action = app(SchoolGetAction::class);
-        $action->id = $id;
+        $action->id = $school->id;
 
         return $action->run();
     }

@@ -12,7 +12,7 @@ use App\Models\Action;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Modules\Tool\Entities\Tool as ToolEntity;
-use App\Modules\Tool\Repositories\Tool;
+use App\Modules\Tool\Models\Tool;
 use App\Modules\Metatag\Actions\MetatagSetAction;
 use Cache;
 use ReflectionException;
@@ -22,13 +22,6 @@ use ReflectionException;
  */
 class ToolCreateAction extends Action
 {
-    /**
-     * Репозиторий инструментов.
-     *
-     * @var Tool
-     */
-    private Tool $tool;
-
     /**
      * Название.
      *
@@ -86,20 +79,9 @@ class ToolCreateAction extends Action
     public ?string $title = null;
 
     /**
-     * Конструктор.
-     *
-     * @param  Tool  $tool  Репозиторий инструментов.
-     */
-    public function __construct(Tool $tool)
-    {
-        $this->tool = $tool;
-    }
-
-    /**
      * Метод запуска логики.
      *
      * @return ToolEntity Вернет результаты исполнения.
-     * @throws RecordNotExistException
      * @throws ParameterInvalidException
      * @throws ReflectionException
      */
@@ -119,11 +101,11 @@ class ToolCreateAction extends Action
         $toolEntity->status = $this->status;
         $toolEntity->metatag_id = $metatag->id;
 
-        $id = $this->tool->create($toolEntity);
+        $tool = Tool::create($toolEntity->toArray());
         Cache::tags(['catalog', 'tool'])->flush();
 
         $action = app(ToolGetAction::class);
-        $action->id = $id;
+        $action->id = $tool->id;
 
         return $action->run();
     }

@@ -9,8 +9,7 @@
 namespace App\Modules\Review\Actions\Admin;
 
 use App\Models\Action;
-use App\Models\Exceptions\ParameterInvalidException;
-use App\Modules\Review\Repositories\Review;
+use App\Modules\Review\Models\Review;
 use Cache;
 
 /**
@@ -19,13 +18,6 @@ use Cache;
 class ReviewDestroyAction extends Action
 {
     /**
-     * Репозиторий отзывов.
-     *
-     * @var Review
-     */
-    private Review $review;
-
-    /**
      * Массив ID пользователей.
      *
      * @var int[]|string[]
@@ -33,30 +25,14 @@ class ReviewDestroyAction extends Action
     public ?array $ids = null;
 
     /**
-     * Конструктор.
-     *
-     * @param  Review  $review  Репозиторий отзывов.
-     */
-    public function __construct(Review $review)
-    {
-        $this->review = $review;
-    }
-
-    /**
      * Метод запуска логики.
      *
      * @return bool Вернет результаты исполнения.
-     * @throws ParameterInvalidException
      */
     public function run(): bool
     {
         if ($this->ids) {
-            $ids = $this->ids;
-
-            for ($i = 0; $i < count($ids); $i++) {
-                $this->review->destroy($ids[$i]);
-            }
-
+            Review::destroy($this->ids);
             Cache::tags(['catalog', 'school', 'review', 'course'])->flush();
         }
 

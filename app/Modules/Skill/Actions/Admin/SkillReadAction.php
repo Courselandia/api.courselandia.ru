@@ -9,11 +9,11 @@
 namespace App\Modules\Skill\Actions\Admin;
 
 use App\Models\Action;
+use App\Models\Entity;
 use App\Models\Enums\CacheTime;
 use App\Models\Exceptions\ParameterInvalidException;
-use App\Models\Rep\RepositoryFilter;
-use App\Models\Rep\RepositoryQueryBuilder;
-use App\Modules\Skill\Repositories\Skill;
+use App\Modules\Skill\Entities\Skill as SkillEntity;
+use App\Modules\Skill\Models\Skill;
 use Cache;
 use JetBrains\PhpStorm\ArrayShape;
 use ReflectionException;
@@ -24,13 +24,6 @@ use Util;
  */
 class SkillReadAction extends Action
 {
-    /**
-     * Репозиторий навыков.
-     *
-     * @var Skill
-     */
-    private Skill $skill;
-
     /**
      * Сортировка данных.
      *
@@ -60,16 +53,6 @@ class SkillReadAction extends Action
     public ?int $limit = null;
 
     /**
-     * Конструктор.
-     *
-     * @param  Skill  $skill  Репозиторий навыков.
-     */
-    public function __construct(Skill $skill)
-    {
-        $this->skill = $skill;
-    }
-
-    /**
      * Метод запуска логики.
      *
      * @return mixed Вернет результаты исполнения.
@@ -77,24 +60,41 @@ class SkillReadAction extends Action
      */
     #[ArrayShape(['data' => 'array', 'total' => 'int'])] public function run(): array
     {
-        $query = new RepositoryQueryBuilder();
-        $query->setFilters(RepositoryFilter::getFilters($this->filters))
-            ->setSorts($this->sorts)
-            ->setOffset($this->offset)
-            ->setLimit($this->limit)
-            ->setRelations([
-                'metatag',
-            ]);
-
-        $cacheKey = Util::getKey('skill', 'read', 'count', $query);
+        $cacheKey = Util::getKey(
+            'skill',
+            'admin',
+            'read',
+            'count',
+            $this->sorts,
+            $this->filters,
+            $this->offset,
+            $this->limit,
+            'metatag'
+        );
 
         return Cache::tags(['catalog', 'skill'])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
-            function () use ($query) {
+            function () {
+                $query = Skill::filter($this->filters ?: [])
+                    ->sorted($this->sorts ?: [])
+                    ->with([
+                        'metatag',
+                    ]);
+
+                if ($this->offset) {
+                    $query->offset($this->offset);
+                }
+
+                if ($this->limit) {
+                    $query->limit($this->limit);
+                }
+
+                $items = $query->get()->toArray();
+
                 return [
-                    'data' => $this->skill->read($query),
-                    'total' => $this->skill->count($query),
+                    'data' => Entity::toEntities($items, new SkillEntity()),
+                    'total' => $query->count(),
                 ];
             }
         );

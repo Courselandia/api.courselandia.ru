@@ -13,8 +13,6 @@ use Config;
 use Illuminate\Support\ServiceProvider;
 
 use App\Modules\Tool\Models\Tool as ToolModel;
-use App\Modules\Tool\Repositories\Tool as ToolRepository;
-use App\Modules\Tool\Entities\Tool as ToolEntity;
 use App\Modules\Tool\Events\Listeners\ToolListener;
 
 /**
@@ -45,13 +43,6 @@ class ToolServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->register(RouteServiceProvider::class);
-
-        App::singleton(
-            ToolRepository::class,
-            function () {
-                return new ToolRepository(new ToolModel(), new ToolEntity());
-            }
-        );
     }
 
     /**

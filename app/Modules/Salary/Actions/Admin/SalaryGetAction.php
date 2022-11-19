@@ -11,11 +11,9 @@ namespace App\Modules\Salary\Actions\Admin;
 use App\Models\Action;
 use App\Models\Enums\CacheTime;
 use App\Models\Exceptions\ParameterInvalidException;
-use App\Models\Rep\RepositoryQueryBuilder;
 use App\Modules\Salary\Entities\Salary as SalaryEntity;
-use App\Modules\Salary\Repositories\Salary;
+use App\Modules\Salary\Models\Salary;
 use Cache;
-use ReflectionException;
 use Util;
 
 /**
@@ -24,28 +22,11 @@ use Util;
 class SalaryGetAction extends Action
 {
     /**
-     * Репозиторий зарплат.
-     *
-     * @var Salary
-     */
-    private Salary $salary;
-
-    /**
      * ID зарплаты.
      *
      * @var int|string|null
      */
     public int|string|null $id = null;
-
-    /**
-     * Конструктор.
-     *
-     * @param  Salary  $salary  Репозиторий зарплат.
-     */
-    public function __construct(Salary $salary)
-    {
-        $this->salary = $salary;
-    }
 
     /**
      * Метод запуска логики.
@@ -55,19 +36,17 @@ class SalaryGetAction extends Action
      */
     public function run(): ?SalaryEntity
     {
-        $query = new RepositoryQueryBuilder();
-        $query->setId($this->id)
-            ->setRelations([
-                'profession',
-            ]);
-
-        $cacheKey = Util::getKey('salary', $query);
+        $cacheKey = Util::getKey('salary', $this->id, 'profession');
 
         return Cache::tags(['catalog', 'profession', 'salary'])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
-            function () use ($query) {
-                return $this->salary->get($query);
+            function () {
+                $salary = Salary::where('id', $this->id)
+                    ->with('profession')
+                    ->first();
+
+                return $salary ? new SalaryEntity($salary->toArray()) : null;
             }
         );
     }

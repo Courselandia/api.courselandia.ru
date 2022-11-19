@@ -10,7 +10,7 @@ namespace App\Modules\Skill\Actions\Admin;
 
 use App\Models\Action;
 use App\Models\Exceptions\ParameterInvalidException;
-use App\Modules\Skill\Repositories\Skill;
+use App\Modules\Skill\Models\Skill;
 use Cache;
 
 /**
@@ -19,28 +19,11 @@ use Cache;
 class SkillDestroyAction extends Action
 {
     /**
-     * Репозиторий навыков.
-     *
-     * @var Skill
-     */
-    private Skill $skill;
-
-    /**
      * Массив ID пользователей.
      *
      * @var int[]|string[]
      */
     public ?array $ids = null;
-
-    /**
-     * Конструктор.
-     *
-     * @param  Skill  $skill  Репозиторий навыков.
-     */
-    public function __construct(Skill $skill)
-    {
-        $this->skill = $skill;
-    }
 
     /**
      * Метод запуска логики.
@@ -51,12 +34,7 @@ class SkillDestroyAction extends Action
     public function run(): bool
     {
         if ($this->ids) {
-            $ids = $this->ids;
-
-            for ($i = 0; $i < count($ids); $i++) {
-                $this->skill->destroy($ids[$i]);
-            }
-
+            Skill::destroy($this->ids);
             Cache::tags(['catalog', 'skill'])->flush();
         }
 

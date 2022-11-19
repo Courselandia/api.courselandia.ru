@@ -12,7 +12,7 @@ use App\Models\Action;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Modules\Salary\Entities\Salary as SalaryEntity;
-use App\Modules\Salary\Repositories\Salary;
+use App\Modules\Salary\Models\Salary;
 use Cache;
 
 /**
@@ -20,13 +20,6 @@ use Cache;
  */
 class SalaryUpdateStatusAction extends Action
 {
-    /**
-     * Репозиторий зарплат.
-     *
-     * @var Salary
-     */
-    private Salary $salary;
-
     /**
      * ID зарплаты.
      *
@@ -42,16 +35,6 @@ class SalaryUpdateStatusAction extends Action
     public ?bool $status = null;
 
     /**
-     * Конструктор.
-     *
-     * @param  Salary  $salary  Репозиторий зарплат.
-     */
-    public function __construct(Salary $salary)
-    {
-        $this->salary = $salary;
-    }
-
-    /**
      * Метод запуска логики.
      *
      * @return SalaryEntity Вернет результаты исполнения.
@@ -65,7 +48,7 @@ class SalaryUpdateStatusAction extends Action
 
         if ($salaryEntity) {
             $salaryEntity->status = $this->status;
-            $this->salary->update($this->id, $salaryEntity);
+            Salary::find($this->id)->update($salaryEntity->toArray());
             Cache::tags(['catalog', 'profession', 'salary'])->flush();
 
             return $salaryEntity;

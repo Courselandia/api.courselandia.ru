@@ -8,28 +8,20 @@
 
 namespace App\Modules\School\Actions\Admin\SchoolImage;
 
+use Cache;
 use App\Models\Action;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Modules\School\Actions\Admin\School\SchoolGetAction;
 use App\Modules\School\Entities\School as SchoolEntity;
-use App\Modules\School\Repositories\School;
-use Cache;
+use App\Modules\School\Models\School;
 use Illuminate\Http\UploadedFile;
-use ReflectionException;
 
 /**
  * Обновление изображения школы.
  */
 class SchoolImageUpdateAction extends Action
 {
-    /**
-     * Репозиторий школы.
-     *
-     * @var School
-     */
-    private School $school;
-
     /**
      * ID школы.
      *
@@ -52,22 +44,11 @@ class SchoolImageUpdateAction extends Action
     public ?UploadedFile $image = null;
 
     /**
-     * Конструктор.
-     *
-     * @param  School  $school  Репозиторий школы.
-     */
-    public function __construct(School $school)
-    {
-        $this->school = $school;
-    }
-
-    /**
      * Метод запуска логики.
      *
      * @return SchoolEntity Вернет результаты исполнения.
      * @throws RecordNotExistException
      * @throws ParameterInvalidException
-     * @throws ReflectionException
      */
     public function run(): SchoolEntity
     {
@@ -85,7 +66,7 @@ class SchoolImageUpdateAction extends Action
                     $school->image_site_id = $this->image;
                 }
 
-                $this->school->update($this->id, $school);
+                School::find($this->id)->update($school->toArray());
                 Cache::tags(['catalog', 'school', 'teacher', 'faq'])->flush();
 
                 return $action->run();

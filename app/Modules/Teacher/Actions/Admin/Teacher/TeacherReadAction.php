@@ -9,11 +9,11 @@
 namespace App\Modules\Teacher\Actions\Admin\Teacher;
 
 use App\Models\Action;
+use App\Models\Entity;
 use App\Models\Enums\CacheTime;
 use App\Models\Exceptions\ParameterInvalidException;
-use App\Models\Rep\RepositoryFilter;
-use App\Models\Rep\RepositoryQueryBuilder;
-use App\Modules\Teacher\Repositories\Teacher;
+use App\Modules\Teacher\Entities\Teacher as TeacherEntity;
+use App\Modules\Teacher\Models\Teacher;
 use Cache;
 use JetBrains\PhpStorm\ArrayShape;
 use ReflectionException;
@@ -24,13 +24,6 @@ use Util;
  */
 class TeacherReadAction extends Action
 {
-    /**
-     * Репозиторий учителя.
-     *
-     * @var Teacher
-     */
-    private Teacher $teacher;
-
     /**
      * Сортировка данных.
      *
@@ -60,16 +53,6 @@ class TeacherReadAction extends Action
     public ?int $limit = null;
 
     /**
-     * Конструктор.
-     *
-     * @param  Teacher  $teacher  Репозиторий учителя.
-     */
-    public function __construct(Teacher $teacher)
-    {
-        $this->teacher = $teacher;
-    }
-
-    /**
      * Метод запуска логики.
      *
      * @return mixed Вернет результаты исполнения.
@@ -77,24 +60,41 @@ class TeacherReadAction extends Action
      */
     #[ArrayShape(['data' => 'array', 'total' => 'int'])] public function run(): array
     {
-        $query = new RepositoryQueryBuilder();
-        $query->setFilters(RepositoryFilter::getFilters($this->filters))
-            ->setSorts($this->sorts)
-            ->setOffset($this->offset)
-            ->setLimit($this->limit)
-            ->setRelations([
-                'metatag',
-            ]);
-
-        $cacheKey = Util::getKey('teacher', 'read', 'count', $query);
+        $cacheKey = Util::getKey(
+            'teacher',
+            'admin',
+            'read',
+            'count',
+            $this->sorts,
+            $this->filters,
+            $this->offset,
+            $this->limit,
+            'metatag'
+        );
 
         return Cache::tags(['catalog', 'teacher', 'direction', 'school'])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
-            function () use ($query) {
+            function () {
+                $query = Teacher::filter($this->filters ?: [])
+                    ->sorted($this->sorts ?: [])
+                    ->with([
+                        'metatag',
+                    ]);
+
+                if ($this->offset) {
+                    $query->offset($this->offset);
+                }
+
+                if ($this->limit) {
+                    $query->limit($this->limit);
+                }
+
+                $items = $query->get()->toArray();
+
                 return [
-                    'data' => $this->teacher->read($query),
-                    'total' => $this->teacher->count($query),
+                    'data' => Entity::toEntities($items, new TeacherEntity()),
+                    'total' => $query->count(),
                 ];
             }
         );

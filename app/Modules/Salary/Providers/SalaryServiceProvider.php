@@ -8,13 +8,10 @@
 
 namespace App\Modules\Salary\Providers;
 
-use App;
 use Config;
 use Illuminate\Support\ServiceProvider;
 
 use App\Modules\Salary\Models\Salary as SalaryModel;
-use App\Modules\Salary\Repositories\Salary as SalaryRepository;
-use App\Modules\Salary\Entities\Salary as SalaryEntity;
 use App\Modules\Salary\Events\Listeners\SalaryListener;
 
 /**
@@ -45,13 +42,6 @@ class SalaryServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->register(RouteServiceProvider::class);
-
-        App::singleton(
-            SalaryRepository::class,
-            function () {
-                return new SalaryRepository(new SalaryModel(), new SalaryEntity());
-            }
-        );
     }
 
     /**

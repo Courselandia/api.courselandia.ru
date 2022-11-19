@@ -11,11 +11,9 @@ namespace App\Modules\Skill\Actions\Admin;
 use App\Models\Action;
 use App\Models\Enums\CacheTime;
 use App\Models\Exceptions\ParameterInvalidException;
-use App\Models\Rep\RepositoryQueryBuilder;
 use App\Modules\Skill\Entities\Skill as SkillEntity;
-use App\Modules\Skill\Repositories\Skill;
+use App\Modules\Skill\Models\Skill;
 use Cache;
-use ReflectionException;
 use Util;
 
 /**
@@ -24,13 +22,6 @@ use Util;
 class SkillGetAction extends Action
 {
     /**
-     * Репозиторий навыков.
-     *
-     * @var Skill
-     */
-    private Skill $skill;
-
-    /**
      * ID навыка.
      *
      * @var int|string|null
@@ -38,36 +29,24 @@ class SkillGetAction extends Action
     public int|string|null $id = null;
 
     /**
-     * Конструктор.
-     *
-     * @param  Skill  $skill  Репозиторий навыков.
-     */
-    public function __construct(Skill $skill)
-    {
-        $this->skill = $skill;
-    }
-
-    /**
      * Метод запуска логики.
      *
      * @return SkillEntity|null Вернет результаты исполнения.
-     * @throws ParameterInvalidException|ReflectionException
+     * @throws ParameterInvalidException
      */
     public function run(): ?SkillEntity
     {
-        $query = new RepositoryQueryBuilder();
-        $query->setId($this->id)
-            ->setRelations([
-                'metatag',
-            ]);
-
-        $cacheKey = Util::getKey('skill', $query);
+        $cacheKey = Util::getKey('skill', $this->id);
 
         return Cache::tags(['catalog', 'skill'])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
-            function () use ($query) {
-                return $this->skill->get($query);
+            function () {
+                $skill = Skill::where('id', $this->id)
+                    ->with('metatag')
+                    ->first();
+
+                return $skill ? new SkillEntity($skill->toArray()) : null;
             }
         );
     }

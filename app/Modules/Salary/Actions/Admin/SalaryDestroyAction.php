@@ -9,8 +9,7 @@
 namespace App\Modules\Salary\Actions\Admin;
 
 use App\Models\Action;
-use App\Models\Exceptions\ParameterInvalidException;
-use App\Modules\Salary\Repositories\Salary;
+use App\Modules\Salary\Models\Salary;
 use Cache;
 
 /**
@@ -19,13 +18,6 @@ use Cache;
 class SalaryDestroyAction extends Action
 {
     /**
-     * Репозиторий зарплат.
-     *
-     * @var Salary
-     */
-    private Salary $salary;
-
-    /**
      * Массив ID пользователей.
      *
      * @var int[]|string[]
@@ -33,30 +25,14 @@ class SalaryDestroyAction extends Action
     public ?array $ids = null;
 
     /**
-     * Конструктор.
-     *
-     * @param  Salary  $salary  Репозиторий зарплат.
-     */
-    public function __construct(Salary $salary)
-    {
-        $this->salary = $salary;
-    }
-
-    /**
      * Метод запуска логики.
      *
      * @return bool Вернет результаты исполнения.
-     * @throws ParameterInvalidException
      */
     public function run(): bool
     {
         if ($this->ids) {
-            $ids = $this->ids;
-
-            for ($i = 0; $i < count($ids); $i++) {
-                $this->salary->destroy($ids[$i]);
-            }
-
+            Salary::destroy($this->ids);
             Cache::tags(['catalog', 'profession', 'salary'])->flush();
         }
 

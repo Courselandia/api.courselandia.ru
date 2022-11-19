@@ -12,12 +12,9 @@ use App\Models\Action;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Modules\Skill\Entities\Skill as SkillEntity;
-use App\Modules\Skill\Repositories\Skill;
-use App\Modules\Image\Entities\Image;
+use App\Modules\Skill\Models\Skill;
 use App\Modules\Metatag\Actions\MetatagSetAction;
 use Cache;
-use Carbon\Carbon;
-use Illuminate\Http\UploadedFile;
 use ReflectionException;
 
 /**
@@ -25,13 +22,6 @@ use ReflectionException;
  */
 class SkillUpdateAction extends Action
 {
-    /**
-     * Репозиторий навыков.
-     *
-     * @var Skill
-     */
-    private Skill $skill;
-
     /**
      * ID навыка.
      *
@@ -96,22 +86,11 @@ class SkillUpdateAction extends Action
     public ?string $title = null;
 
     /**
-     * Конструктор.
-     *
-     * @param  Skill  $skill  Репозиторий навыков.
-     */
-    public function __construct(Skill $skill)
-    {
-        $this->skill = $skill;
-    }
-
-    /**
      * Метод запуска логики.
      *
      * @return SkillEntity Вернет результаты исполнения.
      * @throws RecordNotExistException
      * @throws ParameterInvalidException
-     * @throws ReflectionException
      */
     public function run(): SkillEntity
     {
@@ -134,7 +113,7 @@ class SkillUpdateAction extends Action
             $skillEntity->text = $this->text;
             $skillEntity->status = $this->status;
 
-            $this->skill->update($this->id, $skillEntity);
+            Skill::find($this->id)->update($skillEntity->toArray());
             Cache::tags(['catalog', 'skill'])->flush();
 
             $action = app(SkillGetAction::class);

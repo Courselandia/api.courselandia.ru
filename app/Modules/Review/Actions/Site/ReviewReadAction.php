@@ -9,14 +9,12 @@
 namespace App\Modules\Review\Actions\Site;
 
 use App\Models\Action;
+use App\Models\Entity;
 use App\Models\Enums\CacheTime;
-use App\Models\Enums\OperatorQuery;
-use App\Models\Enums\SortDirection;
 use App\Models\Exceptions\ParameterInvalidException;
-use App\Models\Rep\RepositoryCondition;
-use App\Models\Rep\RepositoryQueryBuilder;
+use App\Modules\Review\Entities\Review as ReviewEntity;
 use App\Modules\Review\Enums\Status;
-use App\Modules\Review\Repositories\Review;
+use App\Modules\Review\Models\Review;
 use Cache;
 use JetBrains\PhpStorm\ArrayShape;
 use Util;
@@ -26,13 +24,6 @@ use Util;
  */
 class ReviewReadAction extends Action
 {
-    /**
-     * Репозиторий отзывов.
-     *
-     * @var Review
-     */
-    private Review $review;
-
     /**
      * Начать выборку.
      *
@@ -79,26 +70,42 @@ class ReviewReadAction extends Action
      */
     #[ArrayShape(['data' => 'array', 'total' => 'int'])] public function run(): array
     {
-        $query = new RepositoryQueryBuilder();
-        $query->addCondition(new RepositoryCondition('school_id', $this->school_id))
-            ->addCondition(new RepositoryCondition('status', Status::ACTIVE->value))
-            ->addCondition(new RepositoryCondition('status', true, OperatorQuery::EQUAL, 'school'))
-            ->setSorts($this->sorts)
-            ->setOffset($this->offset)
-            ->setLimit($this->limit)
-            ->setRelations([
-                'school',
-            ]);
-
-        $cacheKey = Util::getKey('review', 'read', 'count', $query);
+        $cacheKey = Util::getKey(
+            'review',
+            'site',
+            'read',
+            'count',
+            $this->sorts,
+            $this->offset,
+            $this->limit,
+            'school',
+        );
 
         return Cache::tags(['catalog', 'school', 'review', 'course'])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
-            function () use ($query) {
+            function () {
+                $query = Review::where('school_id', $this->school_id)
+                    ->where('status', Status::ACTIVE->value)
+                    ->whereHas('school', function ($query) {
+                        $query->where('schools.status', true);
+                    })
+                    ->sorted($this->sorts ?: [])
+                    ->with('school');
+
+                if ($this->offset) {
+                    $query->offset($this->offset);
+                }
+
+                if ($this->limit) {
+                    $query->limit($this->limit);
+                }
+
+                $items = $query->get()->toArray();
+
                 return [
-                    'data' => $this->review->read($query),
-                    'total' => $this->review->count($query),
+                    'data' => Entity::toEntities($items, new ReviewEntity()),
+                    'total' => $query->count(),
                 ];
             }
         );

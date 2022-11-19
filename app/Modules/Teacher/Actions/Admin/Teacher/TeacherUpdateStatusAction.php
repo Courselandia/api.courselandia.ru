@@ -12,22 +12,14 @@ use App\Models\Action;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Modules\Teacher\Entities\Teacher as TeacherEntity;
-use App\Modules\Teacher\Repositories\Teacher;
+use App\Modules\Teacher\Models\Teacher;
 use Cache;
-use ReflectionException;
 
 /**
  * Класс действия для обновления статуса учителя.
  */
 class TeacherUpdateStatusAction extends Action
 {
-    /**
-     * Репозиторий учителя.
-     *
-     * @var Teacher
-     */
-    private Teacher $teacher;
-
     /**
      * ID учителя.
      *
@@ -43,20 +35,10 @@ class TeacherUpdateStatusAction extends Action
     public ?bool $status = null;
 
     /**
-     * Конструктор.
-     *
-     * @param  Teacher  $teacher  Репозиторий учителя.
-     */
-    public function __construct(Teacher $teacher)
-    {
-        $this->teacher = $teacher;
-    }
-
-    /**
      * Метод запуска логики.
      *
      * @return TeacherEntity Вернет результаты исполнения.
-     * @throws RecordNotExistException|ParameterInvalidException|ReflectionException
+     * @throws RecordNotExistException|ParameterInvalidException
      */
     public function run(): TeacherEntity
     {
@@ -66,7 +48,7 @@ class TeacherUpdateStatusAction extends Action
 
         if ($teacherEntity) {
             $teacherEntity->status = $this->status;
-            $this->teacher->update($this->id, $teacherEntity);
+            Teacher::find($this->id)->update($teacherEntity->toArray());
             Cache::tags(['catalog', 'teacher', 'direction', 'school'])->flush();
 
             return $teacherEntity;

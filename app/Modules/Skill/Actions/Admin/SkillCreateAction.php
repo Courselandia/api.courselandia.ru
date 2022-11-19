@@ -12,7 +12,7 @@ use App\Models\Action;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Modules\Skill\Entities\Skill as SkillEntity;
-use App\Modules\Skill\Repositories\Skill;
+use App\Modules\Skill\Models\Skill;
 use App\Modules\Metatag\Actions\MetatagSetAction;
 use Cache;
 use ReflectionException;
@@ -22,13 +22,6 @@ use ReflectionException;
  */
 class SkillCreateAction extends Action
 {
-    /**
-     * Репозиторий навыков.
-     *
-     * @var Skill
-     */
-    private Skill $skill;
-
     /**
      * Название.
      *
@@ -86,16 +79,6 @@ class SkillCreateAction extends Action
     public ?string $title = null;
 
     /**
-     * Конструктор.
-     *
-     * @param  Skill  $skill  Репозиторий навыков.
-     */
-    public function __construct(Skill $skill)
-    {
-        $this->skill = $skill;
-    }
-
-    /**
      * Метод запуска логики.
      *
      * @return SkillEntity Вернет результаты исполнения.
@@ -119,11 +102,11 @@ class SkillCreateAction extends Action
         $skillEntity->status = $this->status;
         $skillEntity->metatag_id = $metatag->id;
 
-        $id = $this->skill->create($skillEntity);
+        $skill = Skill::create($skillEntity->toArray());
         Cache::tags(['catalog', 'skill'])->flush();
 
         $action = app(SkillGetAction::class);
-        $action->id = $id;
+        $action->id = $skill->id;
 
         return $action->run();
     }

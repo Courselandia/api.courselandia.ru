@@ -11,11 +11,9 @@ namespace App\Modules\Teacher\Actions\Admin\Teacher;
 use App\Models\Action;
 use App\Models\Enums\CacheTime;
 use App\Models\Exceptions\ParameterInvalidException;
-use App\Models\Rep\RepositoryQueryBuilder;
 use App\Modules\Teacher\Entities\Teacher as TeacherEntity;
-use App\Modules\Teacher\Repositories\Teacher;
+use App\Modules\Teacher\Models\Teacher;
 use Cache;
-use ReflectionException;
 use Util;
 
 /**
@@ -24,13 +22,6 @@ use Util;
 class TeacherGetAction extends Action
 {
     /**
-     * Репозиторий учителя.
-     *
-     * @var Teacher
-     */
-    private Teacher $teacher;
-
-    /**
      * ID учителя.
      *
      * @var int|string|null
@@ -38,40 +29,28 @@ class TeacherGetAction extends Action
     public int|string|null $id = null;
 
     /**
-     * Конструктор.
-     *
-     * @param  Teacher  $teacher  Репозиторий учителя.
-     */
-    public function __construct(Teacher $teacher)
-    {
-        $this->teacher = $teacher;
-    }
-
-    /**
      * Метод запуска логики.
      *
      * @return TeacherEntity|null Вернет результаты исполнения.
-     * @throws ParameterInvalidException|ReflectionException
+     * @throws ParameterInvalidException
      */
     public function run(): ?TeacherEntity
     {
-        $query = new RepositoryQueryBuilder();
-        $query->setId($this->id)
-            ->setRelations([
-                'metatag',
-                'directions',
-                'schools'
-            ]);
-
-        $cacheKey = Util::getKey('teacher', $query);
-
-        Cache::flush();
+        $cacheKey = Util::getKey('teacher', $this->id, 'metatag', 'directions', 'schools');
 
         return Cache::tags(['catalog', 'teacher', 'direction', 'school'])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
-            function () use ($query) {
-                return $this->teacher->get($query);
+            function () {
+                $teacher = Teacher::where('id', $this->id)
+                    ->with([
+                        'metatag',
+                        'directions',
+                        'schools'
+                    ])
+                    ->first();
+
+                return $teacher ? new TeacherEntity($teacher->toArray()) : null;
             }
         );
     }

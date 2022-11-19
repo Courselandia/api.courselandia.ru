@@ -9,11 +9,11 @@
 namespace App\Modules\Salary\Actions\Admin;
 
 use App\Models\Action;
+use App\Models\Entity;
 use App\Models\Enums\CacheTime;
 use App\Models\Exceptions\ParameterInvalidException;
-use App\Models\Rep\RepositoryFilter;
-use App\Models\Rep\RepositoryQueryBuilder;
-use App\Modules\Salary\Repositories\Salary;
+use App\Modules\Salary\Entities\Salary as SalaryEntity;
+use App\Modules\Salary\Models\Salary;
 use Cache;
 use JetBrains\PhpStorm\ArrayShape;
 use ReflectionException;
@@ -24,13 +24,6 @@ use Util;
  */
 class SalaryReadAction extends Action
 {
-    /**
-     * Репозиторий зарплат.
-     *
-     * @var Salary
-     */
-    private Salary $salary;
-
     /**
      * Сортировка данных.
      *
@@ -60,16 +53,6 @@ class SalaryReadAction extends Action
     public ?int $limit = null;
 
     /**
-     * Конструктор.
-     *
-     * @param  Salary  $salary  Репозиторий зарплат.
-     */
-    public function __construct(Salary $salary)
-    {
-        $this->salary = $salary;
-    }
-
-    /**
      * Метод запуска логики.
      *
      * @return mixed Вернет результаты исполнения.
@@ -77,24 +60,41 @@ class SalaryReadAction extends Action
      */
     #[ArrayShape(['data' => 'array', 'total' => 'int'])] public function run(): array
     {
-        $query = new RepositoryQueryBuilder();
-        $query->setFilters(RepositoryFilter::getFilters($this->filters))
-            ->setSorts($this->sorts)
-            ->setOffset($this->offset)
-            ->setLimit($this->limit)
-            ->setRelations([
-                'profession',
-            ]);
-
-        $cacheKey = Util::getKey('salary', 'read', 'count', $query);
+        $cacheKey = Util::getKey(
+            'salary',
+            'admin',
+            'read',
+            'count',
+            $this->sorts,
+            $this->filters,
+            $this->offset,
+            $this->limit,
+            'profession'
+        );
 
         return Cache::tags(['catalog', 'profession', 'salary'])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
-            function () use ($query) {
+            function () {
+                $query = Salary::filter($this->filters ?: [])
+                    ->sorted($this->sorts ?: [])
+                    ->with([
+                        'profession',
+                    ]);
+
+                if ($this->offset) {
+                    $query->offset($this->offset);
+                }
+
+                if ($this->limit) {
+                    $query->limit($this->limit);
+                }
+
+                $items = $query->get()->toArray();
+
                 return [
-                    'data' => $this->salary->read($query),
-                    'total' => $this->salary->count($query),
+                    'data' => Entity::toEntities($items, new SalaryEntity()),
+                    'total' => $query->count(),
                 ];
             }
         );

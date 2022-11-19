@@ -12,7 +12,7 @@ use App\Models\Action;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Modules\Tool\Entities\Tool as ToolEntity;
-use App\Modules\Tool\Repositories\Tool;
+use App\Modules\Tool\Models\Tool;
 use Cache;
 use ReflectionException;
 
@@ -21,13 +21,6 @@ use ReflectionException;
  */
 class ToolUpdateStatusAction extends Action
 {
-    /**
-     * Репозиторий инструментов.
-     *
-     * @var Tool
-     */
-    private Tool $tool;
-
     /**
      * ID инструмента.
      *
@@ -43,16 +36,6 @@ class ToolUpdateStatusAction extends Action
     public ?bool $status = null;
 
     /**
-     * Конструктор.
-     *
-     * @param  Tool  $tool  Репозиторий инструментов.
-     */
-    public function __construct(Tool $tool)
-    {
-        $this->tool = $tool;
-    }
-
-    /**
      * Метод запуска логики.
      *
      * @return ToolEntity Вернет результаты исполнения.
@@ -66,7 +49,7 @@ class ToolUpdateStatusAction extends Action
 
         if ($toolEntity) {
             $toolEntity->status = $this->status;
-            $this->tool->update($this->id, $toolEntity);
+            Tool::find($this->id)->update($toolEntity->toArray());
             Cache::tags(['catalog', 'tool'])->flush();
 
             return $toolEntity;

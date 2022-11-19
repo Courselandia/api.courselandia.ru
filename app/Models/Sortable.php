@@ -20,6 +20,8 @@ use App\Models\Exceptions\SortException;
 
 /**
  * Система сортировки с возможностью сортировать даже поля в таблицах отношений.
+ *
+ * @method static Builder sorted(array $sorts):
  */
 trait Sortable
 {

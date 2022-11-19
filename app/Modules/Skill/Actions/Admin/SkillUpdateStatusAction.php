@@ -12,22 +12,14 @@ use App\Models\Action;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Modules\Skill\Entities\Skill as SkillEntity;
-use App\Modules\Skill\Repositories\Skill;
+use App\Modules\Skill\Models\Skill;
 use Cache;
-use ReflectionException;
 
 /**
  * Класс действия для обновления статуса навыков.
  */
 class SkillUpdateStatusAction extends Action
 {
-    /**
-     * Репозиторий навыков.
-     *
-     * @var Skill
-     */
-    private Skill $skill;
-
     /**
      * ID навыка.
      *
@@ -43,20 +35,10 @@ class SkillUpdateStatusAction extends Action
     public ?bool $status = null;
 
     /**
-     * Конструктор.
-     *
-     * @param  Skill  $skill  Репозиторий навыков.
-     */
-    public function __construct(Skill $skill)
-    {
-        $this->skill = $skill;
-    }
-
-    /**
      * Метод запуска логики.
      *
      * @return SkillEntity Вернет результаты исполнения.
-     * @throws RecordNotExistException|ParameterInvalidException|ReflectionException
+     * @throws RecordNotExistException|ParameterInvalidException
      */
     public function run(): SkillEntity
     {
@@ -66,7 +48,7 @@ class SkillUpdateStatusAction extends Action
 
         if ($skillEntity) {
             $skillEntity->status = $this->status;
-            $this->skill->update($this->id, $skillEntity);
+            Skill::find($this->id)->update($skillEntity->toArray());
             Cache::tags(['catalog', 'skill'])->flush();
 
             return $skillEntity;

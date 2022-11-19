@@ -13,7 +13,7 @@ use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Modules\Review\Entities\Review as ReviewEntity;
 use App\Modules\Review\Enums\Status;
-use App\Modules\Review\Repositories\Review;
+use App\Modules\Review\Models\Review;
 use Cache;
 
 /**
@@ -21,13 +21,6 @@ use Cache;
  */
 class ReviewUpdateAction extends Action
 {
-    /**
-     * Репозиторий отзывов.
-     *
-     * @var Review
-     */
-    private Review $review;
-
     /**
      * ID отзывов.
      *
@@ -85,16 +78,6 @@ class ReviewUpdateAction extends Action
     public ?Status $status = null;
 
     /**
-     * Конструктор.
-     *
-     * @param  Review  $review  Репозиторий отзывов.
-     */
-    public function __construct(Review $review)
-    {
-        $this->review = $review;
-    }
-
-    /**
      * Метод запуска логики.
      *
      * @return ReviewEntity Вернет результаты исполнения.
@@ -117,7 +100,7 @@ class ReviewUpdateAction extends Action
             $reviewEntity->rating = $this->rating;
             $reviewEntity->status = $this->status;
 
-            $this->review->update($this->id, $reviewEntity);
+            Review::find($this->id)->update($reviewEntity->toArray());
             Cache::tags(['catalog', 'school', 'review', 'course'])->flush();
 
             $action = app(ReviewGetAction::class);
