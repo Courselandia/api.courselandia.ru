@@ -21,6 +21,7 @@ use App\Models\Entity;
 use App\Models\Contracts\Pipe;
 use App\Modules\Access\Entities\AccessSignIn;
 use App\Modules\User\Entities\UserAuth as UserAuthEntity;
+use App\Modules\User\Models\UserAuth;
 
 /**
  * Авторизация пользователя: Запись об авторизации пользователя.
