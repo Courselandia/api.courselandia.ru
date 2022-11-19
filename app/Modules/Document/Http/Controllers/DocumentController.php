@@ -12,11 +12,9 @@ use App\Models\Rep\RepositoryQueryBuilder;
 use Util;
 use DocumentStore;
 use Storage;
-
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
-
 use App\Modules\Document\Http\Requests\DocumentCreateRequest;
 use App\Modules\Document\Http\Requests\DocumentUpdateRequest;
 use App\Modules\Document\Http\Requests\DocumentDestroyRequest;

@@ -13,18 +13,14 @@ use App\Modules\User\Actions\Admin\UserImage\UserImageUpdateAction;
 use App\Modules\User\Http\Requests\Admin\Profile\UserProfileUpdateImageRequest;
 use Auth;
 use Log;
-
 use App\Modules\User\Actions\Admin\User\UserPasswordAction;
 use Illuminate\Http\Request;
-
 use Illuminate\Routing\Controller;
 use Illuminate\Http\JsonResponse;
-
 use App\Models\Exceptions\RecordExistException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Models\Exceptions\UserNotExistException;
 use App\Models\Exceptions\ValidateException;
-
 use App\Modules\User\Actions\Admin\Profile\UserProfileUpdateAction;
 use App\Modules\User\Actions\Admin\UserImage\UserImageDestroyAction;
 use App\Modules\User\Http\Requests\Admin\Profile\UserProfileUpdateRequest;

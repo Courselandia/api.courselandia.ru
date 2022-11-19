@@ -11,11 +11,9 @@ namespace App\Modules\Alert\Http\Controllers\Admin;
 use Alert;
 use Log;
 use Auth;
-
 use App\Models\Exceptions\RecordNotExistException;
 use App\Modules\Alert\Actions\Admin\AlertReadAction;
 use Illuminate\Routing\Controller;
-
 use Illuminate\Http\JsonResponse;
 use App\Modules\Alert\Http\Requests\Admin\AlertReadRequest;
 use App\Modules\Alert\Http\Requests\Admin\AlertDestroyRequest;

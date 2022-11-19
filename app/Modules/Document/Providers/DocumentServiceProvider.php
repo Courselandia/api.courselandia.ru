@@ -11,26 +11,19 @@ namespace App\Modules\Document\Providers;
 use Config;
 use App;
 use DocumentStore;
-
 use Illuminate\Support\ServiceProvider;
-
 use App\Modules\Document\Models\DocumentEloquent as DocumentEloquentModel;
 use App\Modules\Document\Repositories\DocumentEloquent;
-
 use App\Modules\Document\Models\DocumentMongoDb as DocumentMongoDbModel;
 use App\Modules\Document\Repositories\DocumentMongoDb;
-
 use App\Modules\Document\Events\Listeners\DocumentListener;
-
 use App\Modules\Document\Models\DocumentManager;
 use App\Modules\Document\Models\DocumentDriverManager;
 use App\Modules\Document\Models\DocumentDriverBase;
 use App\Modules\Document\Models\DocumentDriverFtp;
 use App\Modules\Document\Models\DocumentDriverHttp;
 use App\Modules\Document\Models\DocumentDriverLocal;
-
 use App\Modules\Document\Entities\Document;
-
 use App\Modules\Document\Commands\DocumentMigrateCommand;
 
 /**

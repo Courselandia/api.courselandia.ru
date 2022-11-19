@@ -10,16 +10,12 @@ namespace App\Modules\User\Http\Controllers\Admin;
 
 use Log;
 use Auth;
-
 use App\Modules\User\Http\Requests\Admin\Config\UserConfigUpdateRequest;
-
 use App\Modules\User\Actions\Admin\UserConfig\UserConfigGetAction;
 use App\Modules\User\Actions\Admin\UserConfig\UserConfigUpdateAction;
-
 use App\Models\Exceptions\RecordNotExistException;
 use App\Models\Exceptions\UserNotExistException;
 use App\Models\Exceptions\ParameterInvalidException;
-
 use Illuminate\Routing\Controller;
 use Illuminate\Http\JsonResponse;
 

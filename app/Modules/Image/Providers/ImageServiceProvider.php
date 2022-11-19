@@ -11,26 +11,19 @@ namespace App\Modules\Image\Providers;
 use Config;
 use App;
 use ImageStore;
-
 use Illuminate\Support\ServiceProvider;
-
 use App\Modules\Image\Models\ImageEloquent as ImageEloquentModel;
 use App\Modules\Image\Repositories\ImageEloquent;
-
 use App\Modules\Image\Models\ImageMongoDb as ImageMongoDbModel;
 use App\Modules\Image\Repositories\ImageMongoDb;
-
 use App\Modules\Image\Events\Listeners\ImageListener;
-
 use App\Modules\Image\Models\ImageManager;
 use App\Modules\Image\Models\ImageDriverManager;
 use App\Modules\Image\Models\ImageDriverBase;
 use App\Modules\Image\Models\ImageDriverFtp;
 use App\Modules\Image\Models\ImageDriverHttp;
 use App\Modules\Image\Models\ImageDriverLocal;
-
 use App\Modules\Image\Entities\Image;
-
 use App\Modules\Image\Commands\ImageMigrateCommand;
 
 /**

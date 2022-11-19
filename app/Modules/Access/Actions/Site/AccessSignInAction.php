@@ -10,7 +10,6 @@ namespace App\Modules\Access\Actions\Site;
 
 use App\Models\Action;
 use App\Modules\Access\Decorators\Site\AccessSignInDecorator;
-
 use App\Modules\Access\Entities\AccessSignedIn;
 use App\Modules\Access\Pipes\Site\SignIn\LoginPipe;
 use App\Modules\Access\Pipes\Site\SignIn\GatePipe;

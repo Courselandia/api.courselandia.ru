@@ -15,19 +15,15 @@ use Illuminate\Support\ServiceProvider;
 use App\Modules\OAuth\Models\OAuthClientEloquent as ModelOAuthClientEloquent;
 use App\Modules\OAuth\Repositories\OAuthClientEloquent as RepositoryOAuthClientEloquent;
 use App\Modules\OAuth\Events\Listeners\OAuthClientEloquentListener;
-
 use App\Modules\OAuth\Models\OAuthTokenEloquent as ModelOAuthTokenEloquent;
 use App\Modules\OAuth\Repositories\OAuthTokenEloquent as RepositoryOAuthTokenEloquent;
 use App\Modules\OAuth\Events\Listeners\OAuthTokenEloquentListener;
-
 use App\Modules\OAuth\Models\OAuthRefreshTokenEloquent as ModelOAuthRefreshTokenEloquent;
 use App\Modules\OAuth\Repositories\OAuthRefreshTokenEloquent as RepositoryOAuthRefreshTokenEloquent;
 use App\Modules\OAuth\Events\Listeners\OAuthRefreshTokenEloquentListener;
-
 use App\Modules\OAuth\Entities\OAuthClient;
 use App\Modules\OAuth\Entities\OAuthRefresh;
 use App\Modules\OAuth\Entities\OAuthToken;
-
 use App\Modules\OAuth\Models\OAuthDriverManager;
 use App\Modules\OAuth\Models\OAuthDriverDatabase;
 

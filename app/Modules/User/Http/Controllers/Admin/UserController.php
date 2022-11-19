@@ -11,33 +11,26 @@ namespace App\Modules\User\Http\Controllers\Admin;
 use App\Models\Exceptions\ParameterInvalidException;
 use Auth;
 use Log;
-
 use App\Modules\User\Actions\Admin\User\UserUpdateStatusAction;
 use App\Modules\User\Http\Requests\Admin\User\UserUpdateStatusRequest;
-
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Http\JsonResponse;
-
 use App\Modules\User\Actions\Admin\User\UserGetAction;
 use App\Modules\User\Actions\Admin\User\UserReadAction;
 use App\Modules\User\Actions\Admin\User\UserCreateAction;
 use App\Modules\User\Actions\Admin\User\UserUpdateAction;
 use App\Modules\User\Actions\Admin\User\UserPasswordAction;
 use App\Modules\User\Actions\Admin\User\UserDestroyAction;
-use App\Modules\User\Actions\Admin\User\UserAnalyticsNewUsersAction;
-
 use App\Models\Exceptions\RecordExistException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Models\Exceptions\UserNotExistException;
 use App\Models\Exceptions\ValidateException;
 use App\Models\Exceptions\UserExistException;
-
 use App\Modules\User\Http\Requests\Admin\User\UserReadRequest;
 use App\Modules\User\Http\Requests\Admin\User\UserDestroyRequest;
 use App\Modules\User\Http\Requests\Admin\User\UserCreateRequest;
 use App\Modules\User\Http\Requests\Admin\User\UserUpdateRequest;
-
 use App\Modules\User\Enums\Role;
 use ReflectionException;
 

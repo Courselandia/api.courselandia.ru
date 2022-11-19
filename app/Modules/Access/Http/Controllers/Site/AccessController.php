@@ -11,18 +11,15 @@ namespace App\Modules\Access\Http\Controllers\Site;
 use Auth;
 use Log;
 use Exception;
-
 use App\Models\Exceptions\InvalidCodeException;
 use App\Models\Exceptions\InvalidPasswordException;
 use App\Models\Exceptions\UserExistException;
 use App\Models\Exceptions\UserNotExistException;
 use App\Models\Exceptions\UserVerifiedException;
 use App\Models\Exceptions\ValidateException;
-
 use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
-
 use App\Modules\Access\Actions\Site\AccessCheckResetPasswordAction;
 use App\Modules\Access\Actions\Site\AccessForgetAction;
 use App\Modules\Access\Actions\Site\AccessResetAction;
@@ -33,7 +30,6 @@ use App\Modules\Access\Actions\Site\AccessSocialAction;
 use App\Modules\Access\Actions\Site\AccessUpdateAction;
 use App\Modules\Access\Actions\Site\AccessVerifyAction;
 use App\Modules\Access\Actions\Site\AccessPasswordAction;
-
 use App\Modules\Access\Http\Requests\Site\AccessForgetRequest;
 use App\Modules\Access\Http\Requests\Site\AccessPasswordRequest;
 use App\Modules\Access\Http\Requests\Site\AccessResetCheckRequest;
@@ -42,7 +38,6 @@ use App\Modules\Access\Http\Requests\Site\AccessSignInRequest;
 use App\Modules\Access\Http\Requests\Site\AccessSignUpRequest;
 use App\Modules\Access\Http\Requests\Site\AccessSocialRequest;
 use App\Modules\Access\Http\Requests\Site\AccessVerifiedRequest;
-
 use App\Models\Exceptions\InvalidFormatException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Models\Exceptions\ParameterInvalidException;
