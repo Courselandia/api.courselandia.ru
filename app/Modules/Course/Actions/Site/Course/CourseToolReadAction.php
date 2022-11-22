@@ -19,9 +19,9 @@ use App\Modules\Course\Models\Course;
 use App\Modules\Course\Enums\Status;
 
 /**
- * Класс действия для получения категорий.
+ * Класс действия для получения инструмента.
  */
-class CourseCategoryReadAction extends Action
+class CourseToolReadAction extends Action
 {
     /**
      * Фильтрация данных.
@@ -54,7 +54,7 @@ class CourseCategoryReadAction extends Action
     {
         $cacheKey = Util::getKey(
             'course',
-            'categories',
+            'tools',
             'site',
             'read',
             $this->filters,
@@ -62,7 +62,7 @@ class CourseCategoryReadAction extends Action
             $this->limit,
         );
 
-        unset($this->filters['categories-name']);
+        unset($this->filters['tools-name']);
 
         return Cache::tags([
             'course',
@@ -79,10 +79,10 @@ class CourseCategoryReadAction extends Action
                 $query = Course::select('id')
                     ->filter($this->filters ?: [])
                     ->with([
-                        'categories' => function ($query) {
+                        'tools' => function ($query) {
                             $query->select([
-                                'categories.id',
-                                'categories.name',
+                                'tools.id',
+                                'tools.name',
                             ])->where('status', true);
                         }
                     ])
@@ -95,11 +95,11 @@ class CourseCategoryReadAction extends Action
                 $result = [];
 
                 foreach ($items as $item) {
-                    foreach ($item->categories as $category) {
-                        if (!isset($result[$category->id])) {
-                            $result[$category->id] = [
-                                'id' => $category->id,
-                                'name' => $category->name,
+                    foreach ($item->tools as $tool) {
+                        if (!isset($result[$tool->id])) {
+                            $result[$tool->id] = [
+                                'id' => $tool->id,
+                                'name' => $tool->name,
                             ];
                         }
                     }
@@ -107,8 +107,8 @@ class CourseCategoryReadAction extends Action
 
                 $result = collect($result)
                     ->values()
-                    ->sortBy(function ($category) {
-                        return $category['name'];
+                    ->sortBy(function ($tool) {
+                        return $tool['name'];
                     })
                     ->slice($this->offset ?: 0, $this->limit ?: null)
                     ->toArray();

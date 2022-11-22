@@ -59,5 +59,8 @@ Route::group([
 
         Route::get('schools', 'Site\CourseController@schools')
             ->name('schools');
+
+        Route::get('tools', 'Site\CourseController@tools')
+            ->name('tools');
     }
 );
