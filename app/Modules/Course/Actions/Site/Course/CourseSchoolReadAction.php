@@ -19,9 +19,9 @@ use App\Modules\Course\Models\Course;
 use App\Modules\Course\Enums\Status;
 
 /**
- * Класс действия для получения категорий.
+ * Класс действия для получения направлений.
  */
-class CourseCategoryReadAction extends Action
+class CourseSchoolReadAction extends Action
 {
     /**
      * Фильтрация данных.
@@ -54,7 +54,7 @@ class CourseCategoryReadAction extends Action
     {
         $cacheKey = Util::getKey(
             'course',
-            'categories',
+            'schools',
             'site',
             'read',
             $this->filters,
@@ -62,7 +62,7 @@ class CourseCategoryReadAction extends Action
             $this->limit,
         );
 
-        unset($this->filters['categories']);
+        unset($this->filters['schools']);
 
         return Cache::tags([
             'course',
@@ -76,39 +76,44 @@ class CourseCategoryReadAction extends Action
             $cacheKey,
             CacheTime::GENERAL->value,
             function () {
-                $query = Course::select('id')
+                $query = Course::select([
+                    'id',
+                    'school_id'
+                ])
                     ->filter($this->filters ?: [])
                     ->with([
-                        'categories' => function ($query) {
+                        'school' => function ($query) {
                             $query->select([
-                                'categories.id',
-                                'categories.name',
+                                'schools.id',
+                                'schools.name',
                             ])->where('status', true);
                         }
                     ])
                     ->where('status', Status::ACTIVE->value)
                     ->whereHas('school', function ($query) {
                         $query->where('status', true);
-                    });
+                    })
+                    ->groupBy([
+                        'id',
+                        'school_id'
+                    ]);
 
                 $items = $query->get();
                 $result = [];
 
                 foreach ($items as $item) {
-                    foreach ($item->categories as $category) {
-                        if (!isset($result[$category->id])) {
-                            $result[$category->id] = [
-                                'id' => $category->id,
-                                'name' => $category->name,
-                            ];
-                        }
+                    if (!isset($result[$item->school->id])) {
+                        $result[$item->school->id] = [
+                            'id' => $item->school->id,
+                            'name' => $item->school->name,
+                        ];
                     }
                 }
 
                 $result = collect($result)
                     ->values()
-                    ->sortBy(function ($category) {
-                        return $category['name'];
+                    ->sortBy(function ($school) {
+                        return $school['name'];
                     })
                     ->slice($this->offset ?: 0, $this->limit ?: null)
                     ->toArray();

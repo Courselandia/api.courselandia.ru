@@ -56,5 +56,8 @@ Route::group([
 
         Route::get('professions', 'Site\CourseController@professions')
             ->name('professions');
+
+        Route::get('schools', 'Site\CourseController@schools')
+            ->name('schools');
     }
 );

@@ -79,7 +79,6 @@ class CourseProfessionReadAction extends Action
                 $query = Course::select('id')
                     ->filter($this->filters ?: [])
                     ->with([
-                        'skills',
                         'professions' => function ($query) {
                             $query->select([
                                 'professions.id',
