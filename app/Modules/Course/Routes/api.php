@@ -47,5 +47,8 @@ Route::group([
     function () {
         Route::get('get/{id}', 'Site\CourseController@get')
             ->name('get');
+
+        Route::get('directions', 'Site\CourseController@directions')
+            ->name('directions');
     }
 );
