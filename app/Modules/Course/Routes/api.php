@@ -50,5 +50,8 @@ Route::group([
 
         Route::get('directions', 'Site\CourseController@directions')
             ->name('directions');
+
+        Route::get('categories', 'Site\CourseController@categories')
+            ->name('categories');
     }
 );

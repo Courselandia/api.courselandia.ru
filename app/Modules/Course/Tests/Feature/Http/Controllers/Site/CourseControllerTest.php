@@ -59,6 +59,38 @@ class CourseControllerTest extends TestCase
         ]);
     }
 
+    public function testDirections(): void
+    {
+        $this->createCourse();
+        $this->createCourse();
+
+        $this->json(
+            'GET',
+            'api/private/site/course/directions',
+        )->assertStatus(200)->assertJsonStructure([
+            'data' => [
+                '*' => $this->getCourseFilterItem()
+            ],
+            'success',
+        ]);
+    }
+
+    public function testCategories(): void
+    {
+        $this->createCourse();
+        $this->createCourse();
+
+        $this->json(
+            'GET',
+            'api/private/site/course/categories',
+        )->assertStatus(200)->assertJsonStructure([
+            'data' => [
+                '*' => $this->getCourseFilterItem()
+            ],
+            'success',
+        ]);
+    }
+
     /**
      * Создание курса.
      *
@@ -86,6 +118,19 @@ class CourseControllerTest extends TestCase
         CourseLevel::factory()->count(3)->for($course)->create();
 
         return $course;
+    }
+
+    /**
+     * Получить структуру данных пункта фильтров.
+     *
+     * @return array Массив структуры данных фильтра.
+     */
+    private function getCourseFilterItem(): array
+    {
+        return [
+            'id',
+            'name',
+        ];
     }
 
     /**
