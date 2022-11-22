@@ -91,6 +91,22 @@ class CourseControllerTest extends TestCase
         ]);
     }
 
+    public function testProfessions(): void
+    {
+        $this->createCourse();
+        $this->createCourse();
+
+        $this->json(
+            'GET',
+            'api/private/site/course/professions',
+        )->assertStatus(200)->assertJsonStructure([
+            'data' => [
+                '*' => $this->getCourseFilterItem()
+            ],
+            'success',
+        ]);
+    }
+
     /**
      * Создание курса.
      *
