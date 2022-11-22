@@ -19,7 +19,7 @@ use App\Modules\Course\Models\Course;
 use App\Modules\Course\Enums\Status;
 
 /**
- * Класс действия для получения направлений.
+ * Класс действия для получения школ.
  */
 class CourseSchoolReadAction extends Action
 {

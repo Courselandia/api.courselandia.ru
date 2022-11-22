@@ -19,9 +19,9 @@ use App\Modules\Course\Models\Course;
 use App\Modules\Course\Enums\Status;
 
 /**
- * Класс действия для получения профессий.
+ * Класс действия для получения навыков.
  */
-class CourseProfessionReadAction extends Action
+class CourseSkillReadAction extends Action
 {
     /**
      * Фильтрация данных.
@@ -54,7 +54,7 @@ class CourseProfessionReadAction extends Action
     {
         $cacheKey = Util::getKey(
             'course',
-            'professions',
+            'skills',
             'site',
             'read',
             $this->filters,
@@ -62,7 +62,7 @@ class CourseProfessionReadAction extends Action
             $this->limit,
         );
 
-        unset($this->filters['professions-name']);
+        unset($this->filters['skills-name']);
 
         return Cache::tags([
             'course',
@@ -79,10 +79,10 @@ class CourseProfessionReadAction extends Action
                 $query = Course::select('id')
                     ->filter($this->filters ?: [])
                     ->with([
-                        'professions' => function ($query) {
+                        'skills' => function ($query) {
                             $query->select([
-                                'professions.id',
-                                'professions.name',
+                                'skills.id',
+                                'skills.name',
                             ])->where('status', true);
                         }
                     ])
@@ -95,11 +95,11 @@ class CourseProfessionReadAction extends Action
                 $result = [];
 
                 foreach ($items as $item) {
-                    foreach ($item->professions as $profession) {
-                        if (!isset($result[$profession->id])) {
-                            $result[$profession->id] = [
-                                'id' => $profession->id,
-                                'name' => $profession->name,
+                    foreach ($item->skills as $skill) {
+                        if (!isset($result[$skill->id])) {
+                            $result[$skill->id] = [
+                                'id' => $skill->id,
+                                'name' => $skill->name,
                             ];
                         }
                     }
@@ -107,8 +107,8 @@ class CourseProfessionReadAction extends Action
 
                 $result = collect($result)
                     ->values()
-                    ->sortBy(function ($profession) {
-                        return $profession['name'];
+                    ->sortBy(function ($skill) {
+                        return $skill['name'];
                     })
                     ->slice($this->offset ?: 0, $this->limit ?: null)
                     ->toArray();
