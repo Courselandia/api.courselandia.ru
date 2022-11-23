@@ -22,7 +22,7 @@ class FaqFilter extends ModelFilter
      */
     public $relations = [
         'school' => [
-            'school-name'  => 'schoolName',
+            'school-id'  => 'schoolId',
         ]
     ];
 
@@ -45,11 +45,9 @@ class FaqFilter extends ModelFilter
      *
      * @return FaqFilter Правила поиска.
      */
-    public function schoolName(array|int|string $schoolIds): FaqFilter
+    public function schoolId(array|int|string $schoolIds): FaqFilter
     {
-        return $this->related('school', function($query) use ($schoolIds) {
-            return $query->whereIn('schools.id', is_array($schoolIds) ? $schoolIds : [$schoolIds]);
-        });
+        return $this->whereIn('school_id', is_array($schoolIds) ? $schoolIds : [$schoolIds]);
     }
 
     /**

@@ -23,7 +23,7 @@ class SalaryFilter extends ModelFilter
      */
     public $relations = [
         'profession' => [
-            'profession-name'  => 'professionName',
+            'profession-id'  => 'professionId',
         ]
     ];
 
@@ -46,11 +46,9 @@ class SalaryFilter extends ModelFilter
      *
      * @return SalaryFilter Правила поиска.
      */
-    public function professionName(array|int|string $professionIds): SalaryFilter
+    public function professionId(array|int|string $professionIds): SalaryFilter
     {
-        return $this->related('profession', function($query) use ($professionIds) {
-            return $query->whereIn('professions.id', is_array($professionIds) ? $professionIds : [$professionIds]);
-        });
+        return $this->whereIn('profession_id', is_array($professionIds) ? $professionIds : [$professionIds]);
     }
 
     /**

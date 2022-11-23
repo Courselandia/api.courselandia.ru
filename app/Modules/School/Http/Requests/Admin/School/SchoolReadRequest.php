@@ -30,21 +30,21 @@ class SchoolReadRequest extends FormRequest
         'filters.status' => 'string',
     ])] public function rules(): array
     {
-        $columnSorts = Schema::getColumnListing('schools');
-        $columnSorts = implode(',', $columnSorts);
+        $columnsSorts = Schema::getColumnListing('schools');
+        $columnsSorts = implode(',', $columnsSorts);
 
-        $columnFilters = [
+        $columnsFilters = [
             'id',
             'name',
             'status',
         ];
-        $columnFilters = implode(',', $columnFilters);
+        $columnsFilters = implode(',', $columnsFilters);
 
         return [
-            'sorts' => 'array|sorts:' . $columnSorts,
+            'sorts' => 'array|sorts:' . $columnsSorts,
             'offset' => 'integer|digits_between:0,20',
             'limit' => 'integer|digits_between:0,20',
-            'filters' => 'array|filters:' . $columnFilters,
+            'filters' => 'array|filters:' . $columnsFilters,
             'filters.status' => 'boolean',
         ];
     }

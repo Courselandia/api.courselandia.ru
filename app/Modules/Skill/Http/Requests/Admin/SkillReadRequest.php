@@ -30,14 +30,14 @@ class SkillReadRequest extends FormRequest
         'filters.status' => 'string',
     ])] public function rules(): array
     {
-        $column = Schema::getColumnListing('skills');
-        $column = implode(',', $column);
+        $columns = Schema::getColumnListing('skills');
+        $columns = implode(',', $columns);
 
         return [
-            'sorts' => 'array|sorts:'.$column,
+            'sorts' => 'array|sorts:' . $columns,
             'offset' => 'integer|digits_between:0,20',
             'limit' => 'integer|digits_between:0,20',
-            'filters' => 'array|filters:'.$column.'|filter_date_range:published_at',
+            'filters' => 'array|filters:' . $columns . '|filter_date_range:published_at',
             'filters.status' => 'boolean',
         ];
     }

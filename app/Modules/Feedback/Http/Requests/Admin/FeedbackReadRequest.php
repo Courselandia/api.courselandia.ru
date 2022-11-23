@@ -22,12 +22,17 @@ class FeedbackReadRequest extends FormRequest
      *
      * @return array Массив правил проверки.
      */
-    #[ArrayShape(['sorts' => 'string', 'offset' => 'string', 'limit' => 'string', 'filters' => 'string'])] public function rules(): array
+    #[ArrayShape([
+        'sorts' => 'string',
+        'offset' => 'string',
+        'limit' => 'string',
+        'filters' => 'string'
+    ])] public function rules(): array
     {
-        $columnSorts = Schema::getColumnListing('feedbacks');
-        $columnSorts = implode(',', $columnSorts);
+        $columnsSorts = Schema::getColumnListing('feedbacks');
+        $columnsSorts = implode(',', $columnsSorts);
 
-        $columnFilters = [
+        $columnsFilters = [
             'id',
             'name',
             'email',
@@ -35,13 +40,13 @@ class FeedbackReadRequest extends FormRequest
             'message',
             'created_at',
         ];
-        $columnFilters = implode(',', $columnFilters);
+        $columnsFilters = implode(',', $columnsFilters);
 
         return [
-            'sorts' => 'array|sorts:'.$columnSorts,
+            'sorts' => 'array|sorts:' . $columnsSorts,
             'offset' => 'integer|digits_between:0,20',
             'limit' => 'integer|digits_between:0,20',
-            'filters' => 'array|filters:'.$columnFilters.'|filter_date_range:created_at',
+            'filters' => 'array|filters:' . $columnsFilters . '|filter_date_range:created_at',
         ];
     }
 
@@ -50,7 +55,12 @@ class FeedbackReadRequest extends FormRequest
      *
      * @return array Массив атрибутов.
      */
-    #[ArrayShape(['sorts' => 'string', 'offset' => 'string', 'limit' => 'string', 'filters' => 'string'])] public function attributes(): array
+    #[ArrayShape([
+        'sorts' => 'string',
+        'offset' => 'string',
+        'limit' => 'string',
+        'filters' => 'string'
+    ])] public function attributes(): array
     {
         return [
             'sorts' => trans('feedback::http.requests.admin.feedbackReadRequest.sorts'),

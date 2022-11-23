@@ -62,7 +62,7 @@ class CourseToolReadAction extends Action
             $this->limit,
         );
 
-        unset($this->filters['tools-name']);
+        unset($this->filters['tools-id']);
 
         return Cache::tags([
             'course',

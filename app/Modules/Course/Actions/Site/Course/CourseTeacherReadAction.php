@@ -62,7 +62,7 @@ class CourseTeacherReadAction extends Action
             $this->limit,
         );
 
-        unset($this->filters['teachers-name']);
+        unset($this->filters['teachers-id']);
 
         return Cache::tags([
             'course',

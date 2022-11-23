@@ -30,15 +30,27 @@ class FaqReadRequest extends FormRequest
         'filters.status' => 'string',
     ])] public function rules(): array
     {
-        $column = Schema::getColumnListing('faqs');
-        $column[] = 'school-name';
-        $column = implode(',', $column);
+        $columns = Schema::getColumnListing('faqs');
+
+        $columnsFilter = array_merge(
+            $columns,
+            [
+                'school-id'
+            ]
+        );
+
+        $columnsSort = array_merge(
+            $columns,
+            [
+                'school-name'
+            ]
+        );
 
         return [
-            'sorts' => 'array|sorts:' . $column,
+            'sorts' => 'array|sorts:' . implode(',', $columnsSort),
             'offset' => 'integer|digits_between:0,20',
             'limit' => 'integer|digits_between:0,20',
-            'filters' => 'array|filters:' . $column . '|filter_date_range:published_at',
+            'filters' => 'array|filters:' . implode(',', $columnsFilter) . '|filter_date_range:published_at',
             'filters.status' => 'boolean',
         ];
     }

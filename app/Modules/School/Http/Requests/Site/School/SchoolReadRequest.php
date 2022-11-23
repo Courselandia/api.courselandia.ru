@@ -28,11 +28,11 @@ class SchoolReadRequest extends FormRequest
         'limit' => 'string',
     ])] public function rules(): array
     {
-        $columnSorts = Schema::getColumnListing('schools');
-        $columnSorts = implode(',', $columnSorts);
+        $columnsSorts = Schema::getColumnListing('schools');
+        $columnsSorts = implode(',', $columnsSorts);
 
         return [
-            'sorts' => 'array|sorts:' . $columnSorts,
+            'sorts' => 'array|sorts:' . $columnsSorts,
             'offset' => 'integer|digits_between:0,20',
             'limit' => 'integer|digits_between:0,20',
         ];

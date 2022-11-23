@@ -62,7 +62,7 @@ class CourseCategoryReadAction extends Action
             $this->limit,
         );
 
-        unset($this->filters['categories-name']);
+        unset($this->filters['categories-id']);
 
         return Cache::tags([
             'course',

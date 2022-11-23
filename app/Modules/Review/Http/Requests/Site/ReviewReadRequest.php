@@ -29,11 +29,11 @@ class ReviewReadRequest extends FormRequest
         'school_id' => 'string',
     ])] public function rules(): array
     {
-        $column = Schema::getColumnListing('reviews');
-        $column = implode(',', $column);
+        $columns = Schema::getColumnListing('reviews');
+        $columns = implode(',', $columns);
 
         return [
-            'sorts' => 'array|sorts:' . $column,
+            'sorts' => 'array|sorts:' . $columns,
             'offset' => 'integer|digits_between:0,20',
             'limit' => 'integer|digits_between:0,20',
             'school_id' => 'required|exists_soft:schools,id',

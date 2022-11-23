@@ -25,10 +25,10 @@ class ReviewFilter extends ModelFilter
      */
     public $relations = [
         'school' => [
-            'school-name'  => 'schoolName',
+            'school-id'  => 'schoolId',
         ],
         'course' => [
-            'course-header'  => 'courseHeader',
+            'course-Id'  => 'courseId',
         ]
     ];
 
@@ -51,11 +51,9 @@ class ReviewFilter extends ModelFilter
      *
      * @return ReviewFilter Правила поиска.
      */
-    public function schoolName(array|int|string $schoolIds): ReviewFilter
+    public function schoolId(array|int|string $schoolIds): ReviewFilter
     {
-        return $this->related('school', function($query) use ($schoolIds) {
-            return $query->whereIn('schools.id', is_array($schoolIds) ? $schoolIds : [$schoolIds]);
-        });
+        return $this->whereIn('school_id', is_array($schoolIds) ? $schoolIds : [$schoolIds]);
     }
 
     /**
@@ -65,11 +63,9 @@ class ReviewFilter extends ModelFilter
      *
      * @return ReviewFilter Правила поиска.
      */
-    public function courseHeader(array|int|string $courseIds): ReviewFilter
+    public function courseId(array|int|string $courseIds): ReviewFilter
     {
-        return $this->related('course', function($query) use ($courseIds) {
-            return $query->whereIn('courses.id', is_array($courseIds) ? $courseIds : [$courseIds]);
-        });
+        return $this->whereIn('course_id', is_array($courseIds) ? $courseIds : [$courseIds]);
     }
 
     /**

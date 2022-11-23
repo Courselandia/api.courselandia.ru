@@ -34,20 +34,23 @@ class CourseReadRequest extends CourseFilterItemReadRequest
         'filters.duration.*' => 'string',
     ])] public function rules(): array
     {
-        $column = Schema::getColumnListing('courses');
-        $column[] = 'school-name';
-        $column[] = 'directions-name';
-        $column[] = 'professions-name';
-        $column[] = 'categories-name';
-        $column[] = 'skills-name';
-        $column[] = 'teachers-name';
-        $column[] = 'tools-name';
-        $column[] = 'levels-name';
-        $column = implode(',', $column);
+        $columns = Schema::getColumnListing('courses');
+        $columnsSort = array_merge($columns,
+            [
+                'school-name',
+                'directions-name',
+                'professions-name',
+                'categories-name',
+                'skills-name',
+                'teachers-name',
+                'tools-name',
+                'levels-name',
+            ]
+        );
 
         return array_merge(parent::rules(),
             [
-                'sorts' => 'array|sorts:' . $column,
+                'sorts' => 'array|sorts:' . implode(',', $columnsSort),
                 'offset' => 'integer|digits_between:0,20',
                 'limit' => 'integer|digits_between:0,20',
             ]

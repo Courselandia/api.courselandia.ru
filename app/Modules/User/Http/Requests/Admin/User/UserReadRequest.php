@@ -30,11 +30,11 @@ class UserReadRequest extends FormRequest
         'filters.status' => 'string',
     ])] public function rules(): array
     {
-        $columnSorts = Schema::getColumnListing('users');
-        $columnSorts[] = 'role-name';
-        $columnSorts = implode(',', $columnSorts);
+        $columnsSort = Schema::getColumnListing('users');
+        $columnsSort[] = 'role-name';
+        $columnsSort = implode(',', $columnsSort);
 
-        $columnFilters = [
+        $columnsFilter = [
             'id',
             'login',
             'first_name',
@@ -44,13 +44,13 @@ class UserReadRequest extends FormRequest
             'created_at',
             'role-name'
         ];
-        $columnFilters = implode(',', $columnFilters);
+        $columnsFilter = implode(',', $columnsFilter);
 
         return [
-            'sorts' => 'array|sorts:' . $columnSorts,
+            'sorts' => 'array|sorts:' . $columnsSort,
             'offset' => 'integer|digits_between:0,20',
             'limit' => 'integer|digits_between:0,20',
-            'filters' => 'array|filters:' . $columnFilters . '|filter_date_range:created_at',
+            'filters' => 'array|filters:' . $columnsFilter . '|filter_date_range:created_at',
             'filters.status' => 'boolean',
         ];
     }

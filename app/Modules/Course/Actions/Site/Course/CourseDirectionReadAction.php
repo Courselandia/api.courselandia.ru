@@ -62,7 +62,7 @@ class CourseDirectionReadAction extends Action
             $this->limit,
         );
 
-        unset($this->filters['directions-name']);
+        unset($this->filters['directions-id']);
 
         return Cache::tags([
             'course',

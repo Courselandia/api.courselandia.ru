@@ -25,28 +25,28 @@ class CourseFilter extends ModelFilter
      */
     public $relations = [
         'school' => [
-            'school-name'  => 'schoolName',
+            'school-id'  => 'schoolId',
         ],
         'directions' => [
-            'directions-name'  => 'directionsName',
+            'directions-id'  => 'directionsId',
         ],
         'professions' => [
-            'professions-name'  => 'professionsName',
+            'professions-id'  => 'professionsId',
         ],
         'categories' => [
-            'categories-name'  => 'categoriesName',
+            'categories-id'  => 'categoriesId',
         ],
         'skills' => [
-            'skills-name'  => 'skillsName',
+            'skills-id'  => 'skillsId',
         ],
         'teachers' => [
-            'teachers-name'  => 'teachersName',
+            'teachers-id'  => 'teachersId',
         ],
         'tools' => [
-            'tools-name'  => 'toolsName',
+            'tools-id'  => 'toolsId',
         ],
         'levels' => [
-            'levels-name'  => 'levelsName',
+            'levels-id'  => 'levelsId',
         ],
     ];
 
@@ -206,27 +206,13 @@ class CourseFilter extends ModelFilter
     }
 
     /**
-     * Поиск по школам.
-     *
-     * @param array|int|string $schoolIds ID's школ.
-     *
-     * @return CourseFilter Правила поиска.
-     */
-    public function schoolName(array|int|string $schoolIds): CourseFilter
-    {
-        return $this->related('school', function($query) use ($schoolIds) {
-            return $query->whereIn('schools.id', is_array($schoolIds) ? $schoolIds : [$schoolIds]);
-        });
-    }
-
-    /**
      * Поиск по направлениям.
      *
      * @param array|int|string $ids ID's направлений.
      *
      * @return CourseFilter Правила поиска.
      */
-    public function directionsName(array|int|string $ids): CourseFilter
+    public function directionsId(array|int|string $ids): CourseFilter
     {
         return $this->related('directions', function($query) use ($ids) {
             return $query->whereIn('directions.id', is_array($ids) ? $ids : [$ids]);
@@ -240,7 +226,7 @@ class CourseFilter extends ModelFilter
      *
      * @return CourseFilter Правила поиска.
      */
-    public function professionsName(array|int|string $ids): CourseFilter
+    public function professionsId(array|int|string $ids): CourseFilter
     {
         return $this->related('professions', function($query) use ($ids) {
             return $query->whereIn('professions.id', is_array($ids) ? $ids : [$ids]);
@@ -254,7 +240,7 @@ class CourseFilter extends ModelFilter
      *
      * @return CourseFilter Правила поиска.
      */
-    public function categoriesName(array|int|string $ids): CourseFilter
+    public function categoriesId(array|int|string $ids): CourseFilter
     {
         return $this->related('categories', function($query) use ($ids) {
             return $query->whereIn('categories.id', is_array($ids) ? $ids : [$ids]);
@@ -268,7 +254,7 @@ class CourseFilter extends ModelFilter
      *
      * @return CourseFilter Правила поиска.
      */
-    public function skillsName(array|int|string $ids): CourseFilter
+    public function skillsId(array|int|string $ids): CourseFilter
     {
         return $this->related('skills', function($query) use ($ids) {
             return $query->whereIn('skills.id', is_array($ids) ? $ids : [$ids]);
@@ -282,7 +268,7 @@ class CourseFilter extends ModelFilter
      *
      * @return CourseFilter Правила поиска.
      */
-    public function teachersName(array|int|string $ids): CourseFilter
+    public function teachersId(array|int|string $ids): CourseFilter
     {
         return $this->related('teachers', function($query) use ($ids) {
             return $query->whereIn('teachers.id', is_array($ids) ? $ids : [$ids]);
@@ -296,7 +282,7 @@ class CourseFilter extends ModelFilter
      *
      * @return CourseFilter Правила поиска.
      */
-    public function toolsName(array|int|string $ids): CourseFilter
+    public function toolsId(array|int|string $ids): CourseFilter
     {
         return $this->related('tools', function($query) use ($ids) {
             return $query->whereIn('tools.id', is_array($ids) ? $ids : [$ids]);
@@ -310,7 +296,7 @@ class CourseFilter extends ModelFilter
      *
      * @return CourseFilter Правила поиска.
      */
-    public function levelsName(array|Level|string $levels): CourseFilter
+    public function levelsId(array|Level|string $levels): CourseFilter
     {
         return $this->related('levels', function($query) use ($levels) {
             return $query->whereIn('course_levels.id', is_array($levels) ? $levels : [$levels]);

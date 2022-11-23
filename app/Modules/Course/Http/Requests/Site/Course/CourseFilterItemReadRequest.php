@@ -34,19 +34,23 @@ class CourseFilterItemReadRequest extends FormRequest
         'filters.duration.*' => 'string',
     ])] public function rules(): array
     {
-        $column = Schema::getColumnListing('courses');
-        $column[] = 'school-name';
-        $column[] = 'directions-name';
-        $column[] = 'professions-name';
-        $column[] = 'categories-name';
-        $column[] = 'skills-name';
-        $column[] = 'teachers-name';
-        $column[] = 'tools-name';
-        $column[] = 'levels-name';
-        $column = implode(',', $column);
+        $columns = Schema::getColumnListing('courses');
+        $columnsFilter = array_merge(
+            $columns,
+            [
+                'school-id',
+                'directions-id',
+                'professions-id',
+                'categories-id',
+                'skills-id',
+                'teachers-id',
+                'tools-id',
+                'levels-id',
+            ]
+        );
 
         return [
-            'filters' => 'array|filters:' . $column . '|filter_date_range:published_at',
+            'filters' => 'array|filters:' . implode(',', $columnsFilter) . '|filter_date_range:published_at',
             'filters.status' => 'in:' . implode(',', EnumList::getValues(Status::class)),
             'filters.rating' => 'nullable|float',
             'filters.price.*' => 'nullable|float',

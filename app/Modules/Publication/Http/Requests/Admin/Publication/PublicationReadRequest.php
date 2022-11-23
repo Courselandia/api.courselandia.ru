@@ -30,10 +30,10 @@ class PublicationReadRequest extends FormRequest
         'filters.status' => 'string',
     ])] public function rules(): array
     {
-        $columnSorts = Schema::getColumnListing('publications');
-        $columnSorts = implode(',', $columnSorts);
+        $columnsSorts = Schema::getColumnListing('publications');
+        $columnsSorts = implode(',', $columnsSorts);
 
-        $columnFilters = [
+        $columnsFilters = [
             'id',
             'published_at',
             'header',
@@ -42,13 +42,13 @@ class PublicationReadRequest extends FormRequest
             'article',
             'status',
         ];
-        $columnFilters = implode(',', $columnFilters);
+        $columnsFilters = implode(',', $columnsFilters);
 
         return [
-            'sorts' => 'array|sorts:' . $columnSorts,
+            'sorts' => 'array|sorts:' . $columnsSorts,
             'offset' => 'integer|digits_between:0,20',
             'limit' => 'integer|digits_between:0,20',
-            'filters' => 'array|filters:' . $columnFilters . '|filter_date_range:published_at',
+            'filters' => 'array|filters:' . $columnsFilters . '|filter_date_range:published_at',
             'filters.status' => 'boolean',
         ];
     }
