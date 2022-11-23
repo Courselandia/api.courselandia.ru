@@ -65,5 +65,8 @@ Route::group([
 
         Route::get('skills', 'Site\CourseController@skills')
             ->name('skills');
+
+        Route::get('teachers', 'Site\CourseController@teachers')
+            ->name('teachers');
     }
 );

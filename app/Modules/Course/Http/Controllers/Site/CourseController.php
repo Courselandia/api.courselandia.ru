@@ -15,6 +15,7 @@ use App\Modules\Course\Actions\Site\Course\CourseProfessionReadAction;
 use App\Modules\Course\Actions\Site\Course\CourseSchoolReadAction;
 use App\Modules\Course\Actions\Site\Course\CourseToolReadAction;
 use App\Modules\Course\Actions\Site\Course\CourseSkillReadAction;
+use App\Modules\Course\Actions\Site\Course\CourseTeacherReadAction;
 use App\Modules\Course\Actions\Site\Course\CourseGetAction;
 use App\Modules\Course\Http\Requests\Site\Course\CourseFilterItemReadRequest;
 use Illuminate\Http\JsonResponse;
@@ -159,7 +160,7 @@ class CourseController extends Controller
     }
 
     /**
-     * Получение категорий.
+     * Получение школ.
      *
      * @param CourseFilterItemReadRequest $request Запрос.
      *
@@ -227,7 +228,7 @@ class CourseController extends Controller
     }
 
     /**
-     * Получение инструментов.
+     * Получение навыков.
      *
      * @param CourseFilterItemReadRequest $request Запрос.
      *
@@ -237,6 +238,40 @@ class CourseController extends Controller
     public function skills(CourseFilterItemReadRequest $request): JsonResponse
     {
         $action = app(CourseSkillReadAction::class);
+        $action->filters = $request->get('filters');
+        $action->offset = $request->get('offset');
+        $action->limit = $request->get('limit');
+
+        $data = $action->run();
+
+        if ($data) {
+            $data = [
+                'data' => $data,
+                'success' => true,
+            ];
+
+            return response()->json($data);
+        } else {
+            $data = [
+                'data' => null,
+                'success' => false,
+            ];
+
+            return response()->json($data)->setStatusCode(404);
+        }
+    }
+
+    /**
+     * Получение учителей.
+     *
+     * @param CourseFilterItemReadRequest $request Запрос.
+     *
+     * @return JsonResponse Вернет JSON ответ.
+     * @throws ParameterInvalidException
+     */
+    public function teachers(CourseFilterItemReadRequest $request): JsonResponse
+    {
+        $action = app(CourseTeacherReadAction::class);
         $action->filters = $request->get('filters');
         $action->offset = $request->get('offset');
         $action->limit = $request->get('limit');
