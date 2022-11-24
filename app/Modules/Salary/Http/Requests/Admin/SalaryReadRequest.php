@@ -56,7 +56,6 @@ class SalaryReadRequest extends FormRequest
             'offset' => 'integer|digits_between:0,20',
             'limit' => 'integer|digits_between:0,20',
             'filters' => 'array|filters:' . implode(',', $columnsFilter) . '|filter_date_range:published_at',
-            'filters.level' => 'in:' . implode(',', EnumList::getValues(Level::class)),
             'filters.level.*' => 'in:' . implode(',', EnumList::getValues(Level::class)),
             'filters.salary' => 'integer',
             'filters.status' => 'boolean',
