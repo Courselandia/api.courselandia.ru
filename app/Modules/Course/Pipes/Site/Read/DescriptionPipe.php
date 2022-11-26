@@ -103,7 +103,8 @@ class DescriptionPipe implements Pipe
             ) {
                 $model = $item['model'];
                 $modelEntity = $item['entity'];
-                $id = $entity->filters[$filterName][0];
+                $filters = is_array($entity->filters[$filterName]) ? $entity->filters[$filterName] : [$entity->filters[$filterName]];
+                $id = $filters[0];
                 $descriptionName = $item['name'];
                 $matches++;
             }

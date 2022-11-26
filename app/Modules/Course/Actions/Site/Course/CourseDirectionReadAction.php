@@ -114,7 +114,7 @@ class CourseDirectionReadAction extends Action
                     }
                 }
 
-                $result = SortFilter::run($result, $currentFilters);
+                $result = SortFilter::run($result, $currentFilters, $this->offset, $this->limit);
 
                 return Entity::toEntities($result, new CourseItemFilter());
             }

@@ -316,7 +316,7 @@ class CourseController extends Controller
 
         return response()->json([
             'data' => $entityCourseRead,
-            'status' => true,
+            'success' => true,
         ]);
     }
 }

@@ -18,10 +18,12 @@ class SortFilter
      *
      * @param array $filters Общий список фильтров.
      * @param array $currentFilters Текущие фильтры.
+     * @param int|null $offset Отступ.
+     * @param int|null $limit Лимит.
      *
      * @return array Вернет отсортированный список.
      */
-    public static function run(array $filters, array $currentFilters, int $offset = 0, $limit = null): array
+    public static function run(array $filters, array $currentFilters, ?int $offset = 0, ?int $limit = null): array
     {
         $filters = collect($filters);
 

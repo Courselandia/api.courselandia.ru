@@ -44,6 +44,79 @@ class CourseControllerTest extends TestCase
     }
 
     /**
+     * Чтение записей.
+     *
+     * @return void
+     */
+    public function testRead(): void
+    {
+        $course = $this->createCourse();
+        $this->createCourse();
+        $this->createCourse();
+
+        $this->json(
+            'GET',
+            'api/private/site/course/read',
+            [
+                'offset' => 0,
+                'limit' => 10,
+                'sorts' => [
+                    'header' => 'ASC',
+                ],
+                'filters' => [
+                    'school-id' => $course->school_id,
+                ],
+            ],
+        )->assertStatus(200)->assertJsonStructure([
+            'data' => [
+                'courses' => [
+                    '*' => $this->getCoursesStructure()
+                ],
+                'description' => $this->getDescriptionStructure(),
+                'filter' => [
+                    'directions' => [
+                        '*' => $this->getFilterStructure()
+                    ],
+                    'categories' => [
+                        '*' => $this->getFilterStructure()
+                    ],
+                    'professions' => [
+                        '*' => $this->getFilterStructure()
+                    ],
+                    'schools' => [
+                        '*' => $this->getFilterStructure()
+                    ],
+                    'tools' => [
+                        '*' => $this->getFilterStructure()
+                    ],
+                    'skills' => [
+                        '*' => $this->getFilterStructure()
+                    ],
+                    'teachers' => [
+                        '*' => $this->getFilterStructure()
+                    ],
+                    'ratings',
+                    'price' => [
+                        'min',
+                        'max',
+                    ],
+                    'duration' => [
+                        'min',
+                        'max',
+                    ],
+                    'credit',
+                    'free',
+                    'online',
+                    'levels',
+                ],
+                'section',
+                'total'
+            ],
+            'success',
+        ]);
+    }
+
+    /**
      * Получение записи с ошибкой при отсутствии записи.
      *
      * @return void
@@ -214,9 +287,9 @@ class CourseControllerTest extends TestCase
     }
 
     /**
-     * Получить структуру данных публикации.
+     * Получить структуру данных курса.
      *
-     * @return array Массив структуры данных публикации.
+     * @return array Массив структуры данных курса.
      */
     #[Pure] private function getCourseStructure(): array
     {
@@ -376,6 +449,123 @@ class CourseControllerTest extends TestCase
                     'text',
                 ]
             ]
-         ];
+        ];
+    }
+
+    /**
+     * Получить структуру данных курсов.
+     *
+     * @return array Массив структуры данных курса.
+     */
+    #[Pure] private function getCoursesStructure(): array
+    {
+        return [
+            'id',
+            'school_id',
+            'image_big_id',
+            'image_middle_id',
+            'image_small_id',
+            'header',
+            'link',
+            'url',
+            'language',
+            'rating',
+            'price',
+            'price_discount',
+            'price_recurrent_price',
+            'currency',
+            'online',
+            'employment',
+            'duration',
+            'duration_rate',
+            'duration_unit',
+            'lessons_amount',
+            'modules_amount',
+            'directions' => [
+                '*' => [
+                    'id',
+                    'name',
+                    'header',
+                    'link',
+                ]
+            ],
+            'professions' => [
+                '*' => [
+                    'id',
+                    'name',
+                    'header',
+                    'link',
+                ]
+            ],
+            'categories' => [
+                '*' => [
+                    'id',
+                    'name',
+                    'header',
+                    'link',
+                ]
+            ],
+            'skills' => [
+                '*' => [
+                    'id',
+                    'name',
+                    'header',
+                    'link',
+                ]
+            ],
+            'teachers' => [
+                '*' => [
+                    'id',
+                    'name',
+                    'link',
+                    'rating',
+                    'image_small_id',
+                    'image_middle_id',
+                ]
+            ],
+            'tools' => [
+                '*' => [
+                    'id',
+                    'name',
+                    'header',
+                    'link',
+                ]
+            ],
+            'levels' => [
+                '*' => [
+                    'id',
+                    'course_id',
+                    'level',
+                ]
+            ]
+        ];
+    }
+
+    /**
+     * Получить структуру описания раздела курсов.
+     *
+     * @return array Массив структуры описания.
+     */
+    #[Pure] private function getDescriptionStructure(): array
+    {
+        return [
+            'id',
+            'name',
+            'header',
+            'link'
+        ];
+    }
+
+    /**
+     * Получить структуру фильтра.
+     *
+     * @return array Массив структуры фильтра.
+     */
+    #[Pure] private function getFilterStructure(): array
+    {
+        return [
+            'id',
+            'name',
+        ];
     }
 }
