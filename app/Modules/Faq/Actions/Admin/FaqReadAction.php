@@ -91,6 +91,8 @@ class FaqReadAction extends Action
                         'school',
                     ]);
 
+                $queryCount = $query->clone();
+
                 if ($this->offset) {
                     $query->offset($this->offset);
                 }
@@ -103,7 +105,7 @@ class FaqReadAction extends Action
 
                 return [
                     'data' => Entity::toEntities($items, new FaqEntity()),
-                    'total' => $query->count(),
+                    'total' => $queryCount->count(),
                 ];
             }
         );

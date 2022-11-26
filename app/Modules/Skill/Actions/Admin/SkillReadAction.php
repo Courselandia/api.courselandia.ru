@@ -82,6 +82,8 @@ class SkillReadAction extends Action
                         'metatag',
                     ]);
 
+                $queryCount = $query->clone();
+
                 if ($this->offset) {
                     $query->offset($this->offset);
                 }
@@ -94,7 +96,7 @@ class SkillReadAction extends Action
 
                 return [
                     'data' => Entity::toEntities($items, new SkillEntity()),
-                    'total' => $query->count(),
+                    'total' => $queryCount->count(),
                 ];
             }
         );

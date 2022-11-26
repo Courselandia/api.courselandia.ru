@@ -82,6 +82,8 @@ class ToolReadAction extends Action
                         'metatag',
                     ]);
 
+                $queryCount = $query->clone();
+
                 if ($this->offset) {
                     $query->offset($this->offset);
                 }
@@ -94,7 +96,7 @@ class ToolReadAction extends Action
 
                 return [
                     'data' => Entity::toEntities($items, new ToolEntity()),
-                    'total' => $query->count(),
+                    'total' => $queryCount->count(),
                 ];
             }
         );

@@ -93,6 +93,8 @@ class ReviewReadAction extends Action
                     ->sorted($this->sorts ?: [])
                     ->with('school');
 
+                $queryCount = $query->clone();
+
                 if ($this->offset) {
                     $query->offset($this->offset);
                 }
@@ -105,7 +107,7 @@ class ReviewReadAction extends Action
 
                 return [
                     'data' => Entity::toEntities($items, new ReviewEntity()),
-                    'total' => $query->count(),
+                    'total' => $queryCount->count(),
                 ];
             }
         );

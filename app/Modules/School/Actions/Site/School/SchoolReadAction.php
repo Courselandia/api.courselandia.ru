@@ -74,6 +74,8 @@ class SchoolReadAction extends Action
                         'metatag',
                     ]);
 
+                $queryCount = $query->clone();
+
                 if ($this->offset) {
                     $query->offset($this->offset);
                 }
@@ -86,7 +88,7 @@ class SchoolReadAction extends Action
 
                 return [
                     'data' => Entity::toEntities($items, new SchoolEntity()),
-                    'total' => $query->count(),
+                    'total' => $queryCount->count(),
                 ];
             }
         );

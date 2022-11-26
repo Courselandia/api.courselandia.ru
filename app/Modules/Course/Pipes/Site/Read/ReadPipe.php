@@ -50,8 +50,6 @@ class ReadPipe implements Pipe
             $entity->limit
         );
 
-        Cache::flush();
-
         $result = Cache::tags([
             'course',
             'direction',

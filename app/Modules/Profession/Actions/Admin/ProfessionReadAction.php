@@ -82,6 +82,8 @@ class ProfessionReadAction extends Action
                         'metatag',
                     ]);
 
+                $queryCount = $query->clone();
+
                 if ($this->offset) {
                     $query->offset($this->offset);
                 }
@@ -94,7 +96,7 @@ class ProfessionReadAction extends Action
 
                 return [
                     'data' => Entity::toEntities($items, new ProfessionEntity()),
-                    'total' => $query->count(),
+                    'total' => $queryCount->count(),
                 ];
             }
         );

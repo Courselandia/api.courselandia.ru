@@ -82,6 +82,8 @@ class SalaryReadAction extends Action
                         'profession',
                     ]);
 
+                $queryCount = $query->clone();
+
                 if ($this->offset) {
                     $query->offset($this->offset);
                 }
@@ -94,7 +96,7 @@ class SalaryReadAction extends Action
 
                 return [
                     'data' => Entity::toEntities($items, new SalaryEntity()),
-                    'total' => $query->count(),
+                    'total' => $queryCount->count(),
                 ];
             }
         );

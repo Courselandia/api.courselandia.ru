@@ -94,6 +94,8 @@ class CourseReadAction extends Action
                         'professions',
                     ]);
 
+                $queryCount = $query->clone();
+
                 if ($this->offset) {
                     $query->offset($this->offset);
                 }
@@ -106,7 +108,7 @@ class CourseReadAction extends Action
 
                 return [
                     'data' => Entity::toEntities($items, new CourseEntity()),
-                    'total' => $query->count(),
+                    'total' => $queryCount->count(),
                 ];
             }
         );

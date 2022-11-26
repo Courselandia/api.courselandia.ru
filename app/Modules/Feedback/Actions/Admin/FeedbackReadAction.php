@@ -78,6 +78,8 @@ class FeedbackReadAction extends Action
                 $query = Feedback::filter($this->filters ?: [])
                     ->sorted($this->sorts ?: []);
 
+                $queryCount = $query->clone();
+
                 if ($this->offset) {
                     $query->offset($this->offset);
                 }
@@ -90,7 +92,7 @@ class FeedbackReadAction extends Action
 
                 return [
                     'data' => Entity::toEntities($items, new FeedbackEntity()),
-                    'total' => $query->count(),
+                    'total' => $queryCount->count(),
                 ];
             }
         );
