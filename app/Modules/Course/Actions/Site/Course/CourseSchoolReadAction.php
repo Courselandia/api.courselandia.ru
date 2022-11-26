@@ -10,6 +10,7 @@ namespace App\Modules\Course\Actions\Site\Course;
 
 use App\Models\Entity;
 use App\Models\Exceptions\ParameterInvalidException;
+use App\Modules\Course\Helpers\SortFilter;
 use Cache;
 use Util;
 use App\Models\Action;
@@ -52,6 +53,13 @@ class CourseSchoolReadAction extends Action
      */
     public function run(): array
     {
+        if (isset($this->filters['schools-id'])) {
+            $currentFilters = is_array($this->filters['schools-id']) ? $this->filters['schools-id'] : [$this->filters['schools-id']];
+            unset($this->filters['schools-id']);
+        } else {
+            $currentFilters = [];
+        }
+
         $cacheKey = Util::getKey(
             'course',
             'schools',
@@ -60,9 +68,8 @@ class CourseSchoolReadAction extends Action
             $this->filters,
             $this->offset,
             $this->limit,
+            $currentFilters,
         );
-
-        unset($this->filters['schools-id']);
 
         return Cache::tags([
             'course',
@@ -75,7 +82,7 @@ class CourseSchoolReadAction extends Action
         ])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
-            function () {
+            function () use ($currentFilters) {
                 $query = Course::select([
                     'id',
                     'school_id'
@@ -110,13 +117,7 @@ class CourseSchoolReadAction extends Action
                     }
                 }
 
-                $result = collect($result)
-                    ->values()
-                    ->sortBy(function ($school) {
-                        return $school['name'];
-                    })
-                    ->slice($this->offset ?: 0, $this->limit ?: null)
-                    ->toArray();
+                $result = SortFilter::run($result, $currentFilters);
 
                 return Entity::toEntities($result, new CourseItemFilter());
             }

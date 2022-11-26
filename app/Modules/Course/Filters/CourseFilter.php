@@ -46,7 +46,7 @@ class CourseFilter extends ModelFilter
             'tools-id'  => 'toolsId',
         ],
         'levels' => [
-            'levels-id'  => 'levelsId',
+            'levels-level'  => 'levelsLevel',
         ],
     ];
 
@@ -296,10 +296,10 @@ class CourseFilter extends ModelFilter
      *
      * @return CourseFilter Правила поиска.
      */
-    public function levelsId(array|Level|string $levels): CourseFilter
+    public function levelsLevel(array|Level|string $levels): CourseFilter
     {
         return $this->related('levels', function($query) use ($levels) {
-            return $query->whereIn('course_levels.id', is_array($levels) ? $levels : [$levels]);
+            return $query->whereIn('course_levels.level', is_array($levels) ? $levels : [$levels]);
         });
     }
 }

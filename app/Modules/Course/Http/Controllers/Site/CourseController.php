@@ -18,8 +18,10 @@ use App\Modules\Course\Actions\Site\Course\CourseSkillReadAction;
 use App\Modules\Course\Actions\Site\Course\CourseTeacherReadAction;
 use App\Modules\Course\Actions\Site\Course\CourseGetAction;
 use App\Modules\Course\Http\Requests\Site\Course\CourseFilterItemReadRequest;
+use App\Modules\Course\Http\Requests\Site\Course\CourseReadRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
+use App\Modules\Course\Actions\Site\Course\CourseReadAction;
 
 /**
  * Класс контроллер для работы с курсами в публичной части.
@@ -293,5 +295,28 @@ class CourseController extends Controller
 
             return response()->json($data)->setStatusCode(404);
         }
+    }
+
+    /**
+     * Получение курсы.
+     *
+     * @param CourseReadRequest $request Запрос.
+     *
+     * @return JsonResponse Вернет JSON ответ.
+     */
+    public function read(CourseReadRequest $request): JsonResponse
+    {
+        $action = app(CourseReadAction::class);
+        $action->sorts = $request->get('sorts');
+        $action->filters = $request->get('filters');
+        $action->offset = $request->get('offset');
+        $action->limit = $request->get('limit');
+
+        $entityCourseRead = $action->run();
+
+        return response()->json([
+            'data' => $entityCourseRead,
+            'status' => true,
+        ]);
     }
 }

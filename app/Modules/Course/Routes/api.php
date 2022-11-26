@@ -68,5 +68,8 @@ Route::group([
 
         Route::get('teachers', 'Site\CourseController@teachers')
             ->name('teachers');
+
+        Route::get('read', 'Site\CourseController@read')
+            ->name('read');
     }
 );

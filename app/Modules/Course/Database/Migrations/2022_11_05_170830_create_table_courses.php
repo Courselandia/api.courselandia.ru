@@ -40,8 +40,8 @@ class CreateTableCourses extends Migration
             $table->float('price_recurrent_price')->unsigned()->nullable()->index('price_recurrent_price');
             $table->string('currency', 10)->nullable();
 
-            $table->boolean('online')->default(0)->index();
-            $table->boolean('employment')->default(0)->index();
+            $table->boolean('online')->default(0)->index()->nullable();
+            $table->boolean('employment')->default(0)->index()->nullable();
 
             $table->integer('duration')->unsigned()->index('duration')->nullable();
             $table->float('duration_rate', 5)->unsigned()->index('duration_rate')->nullable();
