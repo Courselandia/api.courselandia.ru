@@ -90,6 +90,7 @@ class CourseToolReadAction extends Action
                             $query->select([
                                 'tools.id',
                                 'tools.name',
+                                'tools.link',
                             ])->where('status', true);
                         }
                     ])
@@ -107,6 +108,7 @@ class CourseToolReadAction extends Action
                             $result[$tool->id] = [
                                 'id' => $tool->id,
                                 'name' => $tool->name,
+                                'link' => $tool->link,
                             ];
                         }
                     }

@@ -93,15 +93,27 @@ class ReviewFilter extends ModelFilter
     }
 
     /**
-     * Поиск по тексту.
+     * Поиск по достоинствам.
      *
      * @param string $query Строка поиска.
      *
      * @return ReviewFilter Правила поиска.
      */
-    public function text(string $query): ReviewFilter
+    public function advantages(string $query): ReviewFilter
     {
-        return $this->whereLike('reviews.text', $query);
+        return $this->whereLike('reviews.advantages', $query);
+    }
+
+    /**
+     * Поиск по недостаткам.
+     *
+     * @param string $query Строка поиска.
+     *
+     * @return ReviewFilter Правила поиска.
+     */
+    public function disadvantages(string $query): ReviewFilter
+    {
+        return $this->whereLike('reviews.disadvantages', $query);
     }
 
     /**

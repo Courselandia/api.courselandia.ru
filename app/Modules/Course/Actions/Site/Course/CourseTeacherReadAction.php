@@ -90,6 +90,7 @@ class CourseTeacherReadAction extends Action
                             $query->select([
                                 'teachers.id',
                                 'teachers.name',
+                                'teachers.link',
                             ])->where('status', true);
                         }
                     ])
@@ -107,6 +108,7 @@ class CourseTeacherReadAction extends Action
                             $result[$teacher->id] = [
                                 'id' => $teacher->id,
                                 'name' => $teacher->name,
+                                'link' => $teacher->link,
                             ];
                         }
                     }

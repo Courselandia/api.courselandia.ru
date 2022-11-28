@@ -5,7 +5,8 @@ return [
         'schoolId' => 'ID школы',
         'name' => 'Имя автора',
         'title' => 'Заголовок',
-        'text' => 'Текст',
+        'advantages' => 'Достоинства',
+        'disadvantages' => 'Недостатки',
         'rating' => 'Рейтинг',
         'status' => 'Статус'
     ],

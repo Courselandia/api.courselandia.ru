@@ -90,6 +90,7 @@ class CourseDirectionReadAction extends Action
                             $query->select([
                                 'directions.id',
                                 'directions.name',
+                                'directions.link',
                                 'directions.weight',
                             ])->where('status', true);
                         }
@@ -108,6 +109,7 @@ class CourseDirectionReadAction extends Action
                             $result[$direction->id] = [
                                 'id' => $direction->id,
                                 'name' => $direction->name,
+                                'link' => $direction->link,
                                 'weight' => $direction->weight
                             ];
                         }

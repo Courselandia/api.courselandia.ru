@@ -90,6 +90,7 @@ class CourseSkillReadAction extends Action
                             $query->select([
                                 'skills.id',
                                 'skills.name',
+                                'skills.link',
                             ])->where('status', true);
                         }
                     ])
@@ -107,6 +108,7 @@ class CourseSkillReadAction extends Action
                             $result[$skill->id] = [
                                 'id' => $skill->id,
                                 'name' => $skill->name,
+                                'link' => $skill->link,
                             ];
                         }
                     }

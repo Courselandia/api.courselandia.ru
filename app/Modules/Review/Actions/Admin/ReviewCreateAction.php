@@ -49,11 +49,18 @@ class ReviewCreateAction extends Action
     public ?string $title = null;
 
     /**
-     * Текст.
+     * Достоинства.
      *
      * @var string|null
      */
-    public ?string $text = null;
+    public ?string $advantages = null;
+
+    /**
+     * Недостатки.
+     *
+     * @var string|null
+     */
+    public ?string $disadvantages = null;
 
     /**
      * Рейтинг.
@@ -82,7 +89,8 @@ class ReviewCreateAction extends Action
         $reviewEntity->course_id = $this->course_id;
         $reviewEntity->name = $this->name;
         $reviewEntity->title = $this->title;
-        $reviewEntity->text = $this->text;
+        $reviewEntity->advantages = $this->advantages;
+        $reviewEntity->disadvantages = $this->disadvantages;
         $reviewEntity->rating = $this->rating;
         $reviewEntity->status = $this->status;
 

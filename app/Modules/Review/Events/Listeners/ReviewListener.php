@@ -30,8 +30,6 @@ class ReviewListener
             ->where('school_id', $review->school_id)
             ->where('course_id', $review->course_id)
             ->where('name', $review->name)
-            ->where('title', $review->title)
-            ->where('text', $review->text)
             ->where('rating', $review->rating)
             ->first();
 
@@ -57,8 +55,6 @@ class ReviewListener
             ->where('school_id', $review->school_id)
             ->where('course_id', $review->course_id)
             ->where('name', $review->name)
-            ->where('title', $review->title)
-            ->where('text', $review->text)
             ->where('rating', $review->rating)
             ->first();
 

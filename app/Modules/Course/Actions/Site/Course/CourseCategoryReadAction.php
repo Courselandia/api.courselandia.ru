@@ -89,6 +89,7 @@ class CourseCategoryReadAction extends Action
                         'categories' => function ($query) {
                             $query->select([
                                 'categories.id',
+                                'categories.link',
                                 'categories.name',
                             ])->where('status', true);
                         }
@@ -106,6 +107,7 @@ class CourseCategoryReadAction extends Action
                         if (!isset($result[$category->id])) {
                             $result[$category->id] = [
                                 'id' => $category->id,
+                                'link' => $category->link,
                                 'name' => $category->name,
                             ];
                         }

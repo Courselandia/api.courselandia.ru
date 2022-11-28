@@ -5,7 +5,8 @@ return [
         'schoolId' => 'ID school',
         'name' => 'Name',
         'title' => 'Title',
-        'text' => 'Text',
+        'advantages' => 'Advantages',
+        'disadvantages' => 'Disadvantages',
         'rating' => 'Rating',
         'status' => 'Status'
     ],

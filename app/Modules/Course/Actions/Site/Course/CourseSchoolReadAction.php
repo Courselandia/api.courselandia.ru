@@ -93,6 +93,7 @@ class CourseSchoolReadAction extends Action
                             $query->select([
                                 'schools.id',
                                 'schools.name',
+                                'schools.link',
                             ])->where('status', true);
                         }
                     ])
@@ -113,6 +114,7 @@ class CourseSchoolReadAction extends Action
                         $result[$item->school->id] = [
                             'id' => $item->school->id,
                             'name' => $item->school->name,
+                            'link' => $item->school->link,
                         ];
                     }
                 }

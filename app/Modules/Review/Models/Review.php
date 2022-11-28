@@ -33,7 +33,8 @@ use App\Modules\Review\Enums\Status;
  * @property int|string $course_id ID курса.
  * @property string $name Имя автора.
  * @property string $title Заголовок.
- * @property string $text Текст.
+ * @property string $advantages Достоинства.
+ * @property string $disadvantages Недостатки.
  * @property int $rating Рейтинг.
  * @property string $status Статус.
  *
@@ -59,7 +60,8 @@ class Review extends Eloquent
         'course_id',
         'name',
         'title',
-        'text',
+        'advantages',
+        'disadvantages',
         'rating',
         'status',
     ];
@@ -74,7 +76,8 @@ class Review extends Eloquent
         'course_id' => 'string',
         'name' => 'string',
         'title' => 'string',
-        'text' => 'string',
+        'advantages' => 'string',
+        'disadvantages' => 'string',
         'rating' => 'string',
         'status' => 'string',
     ])] protected function getRules(): array
@@ -84,7 +87,8 @@ class Review extends Eloquent
             'course_id' => 'nullable|digits_between:0,20|exists_soft:courses,id',
             'name' => 'required|between:1,191',
             'title' => 'max:191',
-            'text' => 'required|between:1,65000',
+            'advantages' => 'max:65000',
+            'disadvantages' => 'max:65000',
             'rating' => 'integer|between:0,5',
             'status' => 'required|in:' . implode(',', EnumList::getValues(Status::class)),
         ];
@@ -102,7 +106,8 @@ class Review extends Eloquent
             'course_id' => trans('review::models.review.courseId'),
             'name' => trans('review::models.review.name'),
             'title' => trans('review::models.review.title'),
-            'text' => trans('review::models.review.text'),
+            'advantages' => trans('review::models.review.advantages'),
+            'disadvantages' => trans('review::models.review.disadvantages'),
             'rating' => trans('review::models.review.rating'),
             'status' => trans('review::models.review.status')
         ];

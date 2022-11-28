@@ -566,6 +566,7 @@ class CourseControllerTest extends TestCase
         return [
             'id',
             'name',
+            'link',
         ];
     }
 }

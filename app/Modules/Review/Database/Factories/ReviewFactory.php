@@ -37,7 +37,8 @@ class ReviewFactory extends Factory
         'course_id' => '\Illuminate\Database\Eloquent\Factories\Factory',
         'name' => 'string',
         'title' => 'string',
-        'text' => 'string',
+        'advantages' => 'string',
+        'disadvantages' => 'string',
         'rating' => 'string',
         'status' => 'string'
     ])] public function definition(): array
@@ -47,7 +48,8 @@ class ReviewFactory extends Factory
             'course_id' => Course::factory(),
             'name' => $this->faker->text(191),
             'title' => $this->faker->text(191),
-            'text' => $this->faker->text(5000),
+            'advantages' => $this->faker->text(5000),
+            'disadvantages' => $this->faker->text(5000),
             'rating' => rand(1, 5),
             'status' => Status::ACTIVE->value,
         ];

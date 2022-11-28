@@ -101,8 +101,8 @@ class ReviewController extends Controller
             $action->school_id = $request->get('school_id');
             $action->course_id = $request->get('course_id');
             $action->name = $request->get('name');
-            $action->title = $request->get('title');
-            $action->text = $request->get('text');
+            $action->advantages = $request->get('advantages');
+            $action->disadvantages = $request->get('disadvantages');
             $action->rating = $request->get('rating');
             $action->status = Status::from($request->get('status'));
 
@@ -149,7 +149,8 @@ class ReviewController extends Controller
             $action->course_id = $request->get('course_id');
             $action->name = $request->get('name');
             $action->title = $request->get('title');
-            $action->text = $request->get('text');
+            $action->advantages = $request->get('advantages');
+            $action->disadvantages = $request->get('disadvantages');
             $action->rating = $request->get('rating');
             $action->status = Status::from($request->get('status'));
 

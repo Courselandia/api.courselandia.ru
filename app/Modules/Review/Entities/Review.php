@@ -55,11 +55,18 @@ class Review extends Entity
     public ?string $title = null;
 
     /**
-     * Текст.
+     * Достоинства.
      *
      * @var string|null
      */
-    public ?string $text = null;
+    public ?string $advantages = null;
+
+    /**
+     * Недостатки.
+     *
+     * @var string|null
+     */
+    public ?string $disadvantages = null;
 
     /**
      * Рейтинг.

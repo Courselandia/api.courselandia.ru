@@ -90,6 +90,7 @@ class CourseProfessionReadAction extends Action
                             $query->select([
                                 'professions.id',
                                 'professions.name',
+                                'professions.link',
                             ])->where('status', true);
                         }
                     ])
@@ -107,6 +108,7 @@ class CourseProfessionReadAction extends Action
                             $result[$profession->id] = [
                                 'id' => $profession->id,
                                 'name' => $profession->name,
+                                'link' => $profession->link,
                             ];
                         }
                     }
