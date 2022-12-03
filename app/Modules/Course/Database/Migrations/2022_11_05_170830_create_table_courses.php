@@ -18,7 +18,7 @@ class CreateTableCourses extends Migration
         Schema::create('courses', function (Blueprint $table) {
             $table->bigInteger('id', true)->unsigned();
             $table->string('uuid', 191)->nullable()->index('uuid');
-            $table->bigInteger('metatag_id')->unsigned()->index('metatag_id');
+            $table->bigInteger('metatag_id')->unsigned()->index('metatag_id')->nullable();
             $table->bigInteger('school_id')->unsigned()->index('school_id');
 
             $table->string('image_big_id')->nullable()->index();

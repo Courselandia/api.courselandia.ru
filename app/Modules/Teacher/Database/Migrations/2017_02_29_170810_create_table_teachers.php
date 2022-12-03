@@ -17,7 +17,7 @@ class CreateTableTeachers extends Migration
     {
         Schema::create('teachers', function (Blueprint $table) {
             $table->bigInteger('id', true)->unsigned();
-            $table->bigInteger('metatag_id')->unsigned()->index('metatag_id');
+            $table->bigInteger('metatag_id')->unsigned()->index('metatag_id')->nullable();
 
             $table->string('name', 191);
             $table->string('link', 191)->index('link');
@@ -27,7 +27,7 @@ class CreateTableTeachers extends Migration
             $table->string('image_small_id')->nullable()->index();
             $table->string('image_middle_id')->nullable()->index();
 
-            $table->boolean('status')->default(0)->index();
+            $table->boolean('status')->default(1)->index();
 
             $table->timestamps();
             $table->softDeletes()->index();

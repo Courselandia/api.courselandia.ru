@@ -8,6 +8,7 @@
 
 namespace App\Modules\Course\Providers;
 
+use App\Modules\Course\Commands\CourseImportCommand;
 use Config;
 use Illuminate\Support\ServiceProvider;
 
@@ -42,6 +43,10 @@ class CourseServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->register(RouteServiceProvider::class);
+
+        $this->commands([
+            CourseImportCommand::class,
+        ]);
     }
 
     /**

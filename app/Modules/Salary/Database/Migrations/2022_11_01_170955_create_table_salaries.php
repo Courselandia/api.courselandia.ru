@@ -22,7 +22,7 @@ class CreateTableSalaries extends Migration
             $table->string('level', 191);
             $table->integer('salary')->unsigned();
 
-            $table->boolean('status')->default(0)->index();
+            $table->boolean('status')->default(1)->index();
 
             $table->timestamps();
             $table->softDeletes()->index();

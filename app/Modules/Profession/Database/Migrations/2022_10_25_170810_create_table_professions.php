@@ -17,14 +17,14 @@ class CreateTableProfessions extends Migration
     {
         Schema::create('professions', function (Blueprint $table) {
             $table->bigInteger('id', true)->unsigned();
-            $table->bigInteger('metatag_id')->unsigned()->index('metatag_id');
+            $table->bigInteger('metatag_id')->unsigned()->index('metatag_id')->nullable();
 
             $table->string('name', 191);
             $table->string('header', 191)->nullable();
             $table->string('link', 191)->index('link');
             $table->text('text')->nullable();
 
-            $table->boolean('status')->default(0)->index();
+            $table->boolean('status')->default(1)->index();
 
             $table->timestamps();
             $table->softDeletes()->index();

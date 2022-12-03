@@ -17,7 +17,7 @@ class CreateTableDirections extends Migration
     {
         Schema::create('directions', function (Blueprint $table) {
             $table->bigInteger('id', true)->unsigned();
-            $table->bigInteger('metatag_id')->unsigned()->index('metatag_id');
+            $table->bigInteger('metatag_id')->unsigned()->index('metatag_id')->nullable();
 
             $table->string('name', 191);
             $table->string('header', 191)->nullable();
@@ -25,7 +25,7 @@ class CreateTableDirections extends Migration
             $table->text('text')->nullable();
             $table->integer('weight')->nullable()->unsigned()->default(0)->index();
 
-            $table->boolean('status')->default(0)->index();
+            $table->boolean('status')->default(1)->index();
 
             $table->timestamps();
             $table->softDeletes()->index();

@@ -17,7 +17,7 @@ class CreateTablePublications extends Migration
     {
         Schema::create('publications', function (Blueprint $table) {
             $table->bigInteger('id', true)->unsigned();
-            $table->bigInteger('metatag_id')->unsigned()->index('metatag_id');
+            $table->bigInteger('metatag_id')->unsigned()->index('metatag_id')->nullable();
 
             $table->datetime('published_at')->index('publishedAt');
             $table->string('header', 191);
@@ -29,7 +29,7 @@ class CreateTablePublications extends Migration
             $table->string('image_middle_id')->nullable()->index();
             $table->string('image_small_id')->nullable()->index();
 
-            $table->boolean('status')->default(0)->index();
+            $table->boolean('status')->default(1)->index();
 
             $table->timestamps();
             $table->softDeletes()->index();

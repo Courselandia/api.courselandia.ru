@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Modules\Direction\Database\Seeders\DirectionTableSeeder;
+use App\Modules\School\Database\Seeders\SchoolTableSeeder;
 use App\Modules\User\Database\Seeders\UserDatabaseSeeder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Seeder;
@@ -18,6 +20,8 @@ class DatabaseSeeder extends Seeder
         Model::unguard();
 
         $this->call(UserDatabaseSeeder::class);
+        $this->call(DirectionTableSeeder::class);
+        $this->call(SchoolTableSeeder::class);
 
         Model::reguard();
     }

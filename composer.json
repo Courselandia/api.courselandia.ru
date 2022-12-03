@@ -15,6 +15,7 @@
         "ext-mongodb": "*",
         "ext-pdo": "*",
         "ext-zip": "*",
+        "ext-xmlreader": "*",
         "cijic/phpmorphy": "^0.3.1",
         "ckfinder/ckfinder-laravel-package": "^4.0",
         "codebuds/webp-converter": "^0.5.1",

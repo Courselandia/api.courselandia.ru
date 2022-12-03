@@ -17,7 +17,7 @@ class CreateTableSchools extends Migration
     {
         Schema::create('schools', function (Blueprint $table) {
             $table->bigInteger('id', true)->unsigned();
-            $table->bigInteger('metatag_id')->unsigned()->index('metatag_id');
+            $table->bigInteger('metatag_id')->unsigned()->index('metatag_id')->nullable();
 
             $table->string('name', 191);
             $table->string('header', 191);
@@ -29,7 +29,7 @@ class CreateTableSchools extends Migration
             $table->string('image_logo_id')->nullable()->index();
             $table->string('image_site_id')->nullable()->index();
 
-            $table->boolean('status')->default(0)->index();
+            $table->boolean('status')->default(1)->index();
 
             $table->timestamps();
             $table->softDeletes()->index();

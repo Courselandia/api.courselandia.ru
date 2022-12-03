@@ -19,16 +19,16 @@ trait Error
     /**
      * Массив ошибок.
      *
-     * @var array
+     * @var Exception[]
      */
-    private array $errors = [];
+    public array $errors = [];
 
     /**
-     * Очистить ошибку.
+     * Очистить ошибки.
      *
      * @return Error
      */
-    public function cleanError(): static
+    public function cleanErrors(): static
     {
         $this->errors = [];
 
@@ -42,7 +42,7 @@ trait Error
      */
     public function hasError(): bool
     {
-        return count($this->errors) === 0;
+        return count($this->errors) !== 0;
     }
 
     /**
@@ -63,13 +63,13 @@ trait Error
     /**
      * Добавление ошибки.
      *
-     * @param  Exception  $error  Ошибка.
+     * @param Exception|string $error Ошибка.
      *
      * @return Error
      */
-    public function addError(Exception $error): static
+    public function addError(Exception|string $error): static
     {
-        $this->errors[] = $error;
+        $this->errors[] = is_string($error) ? new Exception($error) : $error;
 
         return $this;
     }
@@ -77,7 +77,7 @@ trait Error
     /**
      * Получение ошибки по номеру.
      *
-     * @param  int  $index  Номер ошибки.
+     * @param int $index Номер ошибки.
      *
      * @return Exception|null Вернет исключение.
      */
@@ -93,9 +93,7 @@ trait Error
     /**
      * Получение всех ошибок.
      *
-     * @return array Вернет массив всех ошибок с исключениями.
-     *
-
+     * @return Exception[] Вернет массив всех ошибок с исключениями.
      */
     #[Pure] public function getErrors(): array
     {
@@ -109,7 +107,7 @@ trait Error
     /**
      * Установка всех ошибок.
      *
-     * @param  array  $errors  Массив ошибок.
+     * @param Exception[] $errors Массив ошибок.
      *
      * @return Error
      */

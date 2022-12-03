@@ -41,7 +41,7 @@ abstract class Image extends Repository
     /**
      * Получение изображения по ее ID из базы ранее полученных изображений.
      *
-     * @param  int|string  $id  ID изображения.
+     * @param int|string $id ID изображения.
      *
      * @return ImageEntity|null Сущность изображения.
      */
@@ -53,8 +53,8 @@ abstract class Image extends Repository
     /**
      * Установка данных изображения по ее ID в базу ранее полученных изображений.
      *
-     * @param  int|string  $id  ID изображения.
-     * @param  ImageEntity  $image  Сущность изображения.
+     * @param int|string $id ID изображения.
+     * @param ImageEntity $image Сущность изображения.
      *
      * @return void
      */
@@ -66,7 +66,7 @@ abstract class Image extends Repository
     /**
      * Получение всех записей.
      *
-     * @param  Entity|ImageEntity|null  $entity  Сущность.
+     * @param Entity|ImageEntity|null $entity Сущность.
      *
      * @return Generator|ImageEntity|null Генератор.
      */
@@ -82,7 +82,7 @@ abstract class Image extends Repository
     /**
      * Создание.
      *
-     * @param  Entity|ImageEntity  $entity  Данные для добавления.
+     * @param Entity|ImageEntity $entity Данные для добавления.
      *
      * @return int|string Вернет ID последней вставленной строки.
      */
@@ -91,8 +91,8 @@ abstract class Image extends Repository
     /**
      * Обновление.
      *
-     * @param  int|string  $id  Id записи для обновления.
-     * @param  Entity|ImageEntity  $entity  Данные для добавления.
+     * @param int|string $id Id записи для обновления.
+     * @param Entity|ImageEntity $entity Данные для добавления.
      *
      * @return int|string Вернет ID вставленной строки.
      */
@@ -101,8 +101,8 @@ abstract class Image extends Repository
     /**
      * Обновление байт кода картинки.
      *
-     * @param  int|string  $id  Id записи для обновления.
-     * @param  string  $byte  Байт код картинки.
+     * @param int|string $id Id записи для обновления.
+     * @param string $byte Байт код картинки.
      *
      * @return bool Вернет булево значение успешности операции.
      */
@@ -111,7 +111,7 @@ abstract class Image extends Repository
     /**
      * Удаление.
      *
-     * @param  int|string|array|null  $id  Id записи для удаления.
+     * @param int|string|array|null $id Id записи для удаления.
      *
      * @return bool Вернет булево значение успешности операции.
      */
@@ -121,7 +121,7 @@ abstract class Image extends Repository
      * Создание копии изображения.
      * Копия создается во временной папке с псевдослучайным названием.
      *
-     * @param  string  $path  Путь к изображению из которого нужно сделать копию.
+     * @param string $path Путь к изображению из которого нужно сделать копию.
      *
      * @return string Возвращает путь к копии.
      * @throws Exception
@@ -138,8 +138,8 @@ abstract class Image extends Repository
     /**
      * Производит конвертирования изображения из одного формата в другой.
      *
-     * @param  string  $path  Путь к изображению.
-     * @param  string  $formatTo  Новый формат для изображения.
+     * @param string $path Путь к изображению.
+     * @param string $formatTo Новый формат для изображения.
      *
      * @return string Возвращает путь к новому изображению.
      * @throws Exception
@@ -159,7 +159,7 @@ abstract class Image extends Repository
     /**
      * Проверяет растровое ли изображение, с которым может работать библиотека GD2.
      *
-     * @param  string  $path  Путь к изображению.
+     * @param string $path Путь к изображению.
      *
      * @return bool Возвращает true если изображение растровое.
      */
@@ -174,7 +174,7 @@ abstract class Image extends Repository
     /**
      * Проверка векторное ли изображение.
      *
-     * @param  string  $path  Путь к изображению.
+     * @param string $path Путь к изображению.
      *
      * @return bool Возвращает true если изображение векторное.
      */
@@ -189,7 +189,7 @@ abstract class Image extends Repository
     /**
      * Проверка является ли файл изображением.
      *
-     * @param  string  $path  Путь к изображению.
+     * @param string $path Путь к изображению.
      *
      * @return bool Возвращает true если файл изображение.
      */
@@ -201,7 +201,7 @@ abstract class Image extends Repository
     /**
      * Проверка является ли расширение изображением.
      *
-     * @param  string  $extension  Расширение без точки.
+     * @param string $extension Расширение без точки.
      *
      * @return bool Возвращает true если расширение относиться к изображению.
      */
@@ -213,7 +213,7 @@ abstract class Image extends Repository
     /**
      * Проверка является ли расширение растровым.
      *
-     * @param  string  $extension  Расширение без точки.
+     * @param string $extension Расширение без точки.
      *
      * @return bool Возвращает true если расширение растровое.
      */
@@ -225,7 +225,7 @@ abstract class Image extends Repository
     /**
      * Проверка является ли расширение векторным.
      *
-     * @param  string  $extension  Расширение без точки.
+     * @param string $extension Расширение без точки.
      *
      * @return bool Возвращает true если расширение векторное.
      */
@@ -237,7 +237,7 @@ abstract class Image extends Repository
     /**
      * Переводит нумерованный формат в текстовый формат.
      *
-     * @param  int  $format  Нумерованный формат.
+     * @param int $format Нумерованный формат.
      *
      * @return string|null Текстовый формат.
      */
@@ -262,7 +262,7 @@ abstract class Image extends Repository
     /**
      * Получение пути к файлу для временного изображения.
      *
-     * @param  string|int  $format  Формат изображения в нумерованном виде или текстовом.
+     * @param string|int $format Формат изображения в нумерованном виде или текстовом.
      *
      * @return string Путь к временному изображению.
      * @throws Exception
@@ -272,16 +272,16 @@ abstract class Image extends Repository
         $format = is_numeric($format) ? $this->getFormatText($format) : $format;
 
         if ($format) {
-            return storage_path('app/tmp/img_'.time().mt_rand(1, 100000).'.'.$format);
+            return storage_path('app/tmp/img_' . time() . mt_rand(1, 100000) . '.' . $format);
         }
 
-        throw new InvalidFormatException('The *.'.$format.' format is not allowed.');
+        throw new InvalidFormatException('The *.' . $format . ' format is not allowed.');
     }
 
     /**
      * Установка папки хранения.
      *
-     * @param  string  $folder  Название папки.
+     * @param string $folder Название папки.
      *
      * @return $this Вернет текущий объект.
      */
@@ -299,6 +299,6 @@ abstract class Image extends Repository
      */
     public function getFolder(): string
     {
-        return Config::get('app.env') === 'testing' ? 'test/'.$this->folder : $this->folder;
+        return Config::get('app.env') === 'testing' ? 'test/' . $this->folder : $this->folder;
     }
 }

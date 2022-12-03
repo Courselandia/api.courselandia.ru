@@ -22,7 +22,7 @@ class CreateTableFaqs extends Migration
             $table->string('question', 191);
             $table->text('answer');
 
-            $table->boolean('status')->default(0)->index();
+            $table->boolean('status')->default(1)->index();
 
             $table->timestamps();
             $table->softDeletes()->index();
