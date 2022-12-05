@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<yml_catalog date="2022-12-05 22:47">
+    <shop>
+        <name>(Россия) Общий товарный фид Skillbox</name>
+        <company>Skillbox</company>
+        <url>https://skillbox.ru/</url>
+        <enable_auto_discounts>yes</enable_auto_discounts>
+        <currencies>
+            <currency id="RUR" rate="1"/>
+        </currencies>
+        <categories>
+            <category id="18">Для бизнеса</category>
+            <category id="28">Английский язык</category>
+            <category id="3">Маркетинг</category>
+            <category id="2">Дизайн</category>
+            <category id="5">Игры</category>
+            <category id="1">Программирование</category>
+            <category id="4">Управление</category>
+            <category id="17">Кино и Музыка</category>
+            <category id="24">Общее развитие</category>
+            <category id="25">Психология</category>
+            <category id="26">Инженерия</category>
+            <category id="23">Архитектура</category>
+            <category id="6">Другое</category>
+        </categories>
+        <offers>
+            <offer id="118" available="true">
+                <url>https://skillbox.ru/course/profession-c-plus-plus/</url>
+                <price>132660</price>
+                <categoryId>1</categoryId>
+                <name>Разработчик на C++</name>
+                <oldprice>221100</oldprice>
+                <currencyId>RUR</currencyId>
+                <vendor>Skillbox</vendor>
+                <description>Программисты на C++ создают сложные программы и сервисы. Они разрабатывают
+                    высоконагруженные сетевые приложения, игры, графические движки, компоненты для операционных систем и
+                    железа. На этом языке написаны Windows, Linux и macOS, Android, Chrome, Counter-Strike, StarCraft и
+                    Diablo.Вы освоите легендарный язык программирования с нуля: напишете поисковый движок, собственный
+                    Booking.com и получите навыки работы в команде.
+                </description>
+                <credit_price>6030</credit_price>
+                <with_employment>1</with_employment>
+                <duration unit="month">7</duration>
+            </offer>
+            <offer id="734" available="true">
+                <url>https://skillbox.ru/course/frontend-pro-expert/</url>
+                <price>170100</price>
+                <categoryId>1</categoryId>
+                <name>Frontend-разработчик с нуля до PRO</name>
+                <oldprice>309273</oldprice>
+                <currencyId>RUR</currencyId>
+                <vendor>Skillbox</vendor>
+                <description>Благодаря frontend-разработчикам мы оставляем лайки и комментарии, добавляем товары в
+                    корзину и быстро разбираемся в онлайн-картах.На курсе вы научитесь создавать интерфейсы веб-сервисов
+                    с помощью языков программирования и дополнительных технологий. Сможете разрабатывать планировщики
+                    задач, мессенджеры, интернет-магазины.
+                </description>
+                <credit_price>5003</credit_price>
+                <with_employment>1</with_employment>
+                <duration unit="month">10</duration>
+            </offer>
+        </offers>
+    </shop>
+</yml_catalog>

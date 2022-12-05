@@ -26,9 +26,13 @@ abstract class ParserYml extends Parser
 
     /**
      * Конструктор.
+     *
+     * @param string $source URL источника.
      */
-    public function __construct()
+    public function __construct(string $source)
     {
+        parent::__construct($source);
+
         $this->categories = $this->readCategories();
     }
 
@@ -77,7 +81,7 @@ abstract class ParserYml extends Parser
      *
      * @return array<int, string> Массив категорий источника, где ключ, это ID категории.
      */
-    protected function getCategories(): array
+    private function getCategories(): array
     {
         return $this->categories;
     }

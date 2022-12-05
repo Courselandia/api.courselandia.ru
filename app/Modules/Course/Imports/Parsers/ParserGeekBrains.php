@@ -22,16 +22,6 @@ use App\Modules\Direction\Enums\Direction;
 class ParserGeekBrains extends ParserYml
 {
     /**
-     * Вернет источник.
-     *
-     * @return string URL источника.
-     */
-    public function getSource(): string
-    {
-        return 'https://feeds.advcake.com/feed/download/07d89f2e6d9a92a355caa2d4db424cfd';
-    }
-
-    /**
      * Вернет школу.
      *
      * @return School Школа.
@@ -86,7 +76,7 @@ class ParserGeekBrains extends ParserYml
             $course->school = $this->getSchool();
             $course->url = $offer['url'];
             $course->price = $offer['price'];
-            $course->image = $offer['picture'];
+            $course->image = $offer['picture'] ?? null;
             $course->header = $offer['name'];
             $course->text = $offer['description'];
             $course->status = true;

@@ -22,16 +22,6 @@ use App\Modules\Direction\Enums\Direction;
 class ParserSkillbox extends ParserYml
 {
     /**
-     * Вернет источник.
-     *
-     * @return string URL источника.
-     */
-    public function getSource(): string
-    {
-        return 'https://feeds.advcake.com/feed/download/e77ebb28c278d755a0d7f5b6aeaa2674';
-    }
-
-    /**
      * Вернет школу.
      *
      * @return School Школа.
@@ -80,7 +70,7 @@ class ParserSkillbox extends ParserYml
             $course->text = $offer['description'];
             $course->status = $offer['attributes']['available'] === 'true';
             $course->url = $offer['url'];
-            $course->image = $offer['picture'];
+            $course->image = $offer['picture'] ?? null;
             $course->price = $offer['price'];
             $course->price_recurrent_price = $offer['credit_price'] ?? null;
             $course->currency = Currency::RUB;

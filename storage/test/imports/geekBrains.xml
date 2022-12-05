@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<yml_catalog date="2022-12-05 22:43">
+    <shop>
+        <name>Общий фид с курсами</name>
+        <company>GeekBrains</company>
+        <url>gb.ru</url>
+        <enable_auto_discounts>yes</enable_auto_discounts>
+        <currencies>
+            <currency id="RUR" rate="1"/>
+        </currencies>
+        <categories>
+            <category id="2">Разработка игр</category>
+            <category id="1">Программирование</category>
+            <category id="3">Дизайн</category>
+            <category id="4">Маркетинг</category>
+            <category id="6">Школа креативных профессий</category>
+            <category id="7">Бизнес-образование</category>
+            <category id="8">Другое</category>
+            <category id="5">Аналитика</category>
+            <category id="9">ИТ-инфрастуктура</category>
+            <category id="10">Разработка</category>
+            <category id="11">Аналитика и Data Science</category>
+            <category id="12">Дизайн</category>
+            <category id="13">Менеджмент</category>
+            <category id="14">GeekSchool</category>
+            <category id="15">translation missing: ru.product_feed.categories.design_old</category>
+            <category id="16">translation missing: ru.product_feed.categories.design_new</category>
+            <category id="17">translation missing: ru.product_feed.categories.it_old</category>
+            <category id="18">translation missing: ru.product_feed.categories.it_new</category>
+            <category id="19">translation missing: ru.product_feed.categories.marketing_old</category>
+            <category id="20">translation missing: ru.product_feed.categories.marketing_new</category>
+            <category id="21">translation missing: ru.product_feed.categories.management_old</category>
+            <category id="22">translation missing: ru.product_feed.categories.management_new</category>
+        </categories>
+        <offers>
+            <offer id="26a42a467b1e59c85b77">
+                <url>https://gb.ru/courses/528</url>
+                <pricing>Платный</pricing>
+                <price>7970.0</price>
+                <categoryId>1</categoryId>
+                <name>Курс С++. ООП</name>
+                <vendor>GeekBrains</vendor>
+                <typePrefix>Курс</typePrefix>
+                <product_kind>Курс</product_kind>
+                <model>Курс С++. ООП</model>
+                <description>ООП на примере C++</description>
+                <currencyId>RUB</currencyId>
+            </offer>
+            <offer id="ba6b845f0a0223d90c2c">
+                <url>https://gb.ru/courses/836</url>
+                <pricing>Платный</pricing>
+                <price>11970.0</price>
+                <categoryId>1</categoryId>
+                <name>Алгоритмы, архитектура и паттерны на PHP</name>
+                <vendor>GeekBrains</vendor>
+                <typePrefix>Курс</typePrefix>
+                <product_kind>Курс</product_kind>
+                <model>Алгоритмы, архитектура и паттерны на PHP</model>
+                <description>Алгоритмы, архитектура и паттерны на PHP</description>
+                <currencyId>RUB</currencyId>
+                <param name="Продолжительность обучения, месяцев">1</param>
+            </offer>
+        </offers>
+    </shop>
+</yml_catalog>

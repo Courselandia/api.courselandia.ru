@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<yml_catalog date="2022-12-05 21:33">
+    <shop>
+        <name>Общий товарный фид</name>
+        <company>Нетология</company>
+        <url>https://netology.ru</url>
+        <enable_auto_discounts>yes</enable_auto_discounts>
+        <currencies>
+            <currency id="RUR" rate="1"/>
+        </currencies>
+        <categories>
+            <category id="136">Онлайн Открытое занятие HR</category>
+            <category id="134">Онлайн Открытое занятие Программирование</category>
+            <category id="111">Онлайн Курс Маркетинг</category>
+            <category id="112">Онлайн Курс Бизнес и управление</category>
+            <category id="113">Онлайн Курс Дизайн и UX</category>
+            <category id="114">Онлайн Курс Программирование</category>
+            <category id="115">Онлайн Курс Аналитика</category>
+            <category id="116">Онлайн Курс HR</category>
+            <category id="131">Онлайн Открытое занятие Маркетинг</category>
+            <category id="135">Онлайн Открытое занятие Аналитика</category>
+            <category id="1">Видеокурсы</category>
+            <category id="119">Онлайн Курс B2B</category>
+            <category id="117">Онлайн Курс EdMarket</category>
+            <category id="127">Онлайн Модульный набор EdMarket</category>
+            <category id="1119">Онлайн Курс Хобби</category>
+            <category id="121">Онлайн Модульный набор Маркетинг</category>
+            <category id="123">Онлайн Модульный набор Дизайн и UX</category>
+            <category id="124">Онлайн Модульный набор Программирование</category>
+            <category id="125">Онлайн Модульный набор Аналитика</category>
+            <category id="122">Онлайн Модульный набор Бизнес и управление</category>
+            <category id="118">Онлайн Курс Прочее</category>
+            <category id="133">Онлайн Открытое занятие Дизайн и UX</category>
+        </categories>
+        <offers>
+            <offer id="1170" available="true">
+                <url>https://netology.ru/programs/data-engineering</url>
+                <price>64800</price>
+                <categoryId>125</categoryId>
+                <name>DataOps-инженер</name>
+                <description></description>
+                <oldprice>108000</oldprice>
+                <currencyId>RUR</currencyId>
+                <vendor>Нетология</vendor>
+                <param name="Дата старта ближайшего набора">2022-12-12</param>
+                <param name="Сертификат по завершении">true</param>
+                <param name="Ближайшая дата">2022-12-12</param>
+                <param name="Продолжительность">11 месяцев</param>
+                <param name="Количество занятий">11 занятий</param>
+                <param name="Дата ближайшего повышения цены"></param>
+                <param name="Необходимость оплаты">Платный</param>
+                <min_credit_payment_sum>2700</min_credit_payment_sum>
+            </offer>
+            <offer id="1966" available="true">
+                <url>https://netology.ru/programs/copywriter-cwf</url>
+                <price>44700</price>
+                <categoryId>111</categoryId>
+                <name>Копирайтер</name>
+                <description></description>
+                <oldprice>74500</oldprice>
+                <currencyId>RUR</currencyId>
+                <vendor>Нетология</vendor>
+                <param name="Дата старта ближайшего набора">2022-12-12</param>
+                <param name="Сертификат по завершении">true</param>
+                <param name="Ближайшая дата">2022-12-12</param>
+                <param name="Продолжительность">7 месяцев</param>
+                <param name="Количество занятий">45 занятий</param>
+                <param name="Дата ближайшего повышения цены"></param>
+                <param name="Необходимость оплаты">Платный</param>
+                <min_credit_payment_sum>2483</min_credit_payment_sum>
+            </offer>
+        </offers>
+    </shop>
+</yml_catalog>

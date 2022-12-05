@@ -22,16 +22,6 @@ use App\Modules\Direction\Enums\Direction;
 class ParserNetology extends ParserYml
 {
     /**
-     * Вернет источник.
-     *
-     * @return string URL источника.
-     */
-    public function getSource(): string
-    {
-        return 'https://feeds.advcake.com/feed/download/54321b01372443d9902b3387dd154c8f';
-    }
-
-    /**
      * Вернет школу.
      *
      * @return School Школа.
@@ -89,7 +79,7 @@ class ParserNetology extends ParserYml
             $course->text = $offer['description'];
             $course->status = $offer['attributes']['available'] === 'true';
             $course->url = $offer['url'];
-            $course->image = $offer['picture'];
+            $course->image = $offer['picture'] ?? null;
             $course->price = $offer['price'];
             $course->price_recurrent_price = $offer['min_credit_payment_sum'] ?? null;
             $course->currency = Currency::RUB;

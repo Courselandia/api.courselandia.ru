@@ -21,6 +21,18 @@ abstract class Parser
 {
     use Error;
 
+    private string $source;
+
+    /**
+     * Конструктор.
+     *
+     * @param string $source URL источника.
+     */
+    public function __construct(string $source)
+    {
+        $this->source = $source;
+    }
+
     /**
      * Абстрактный класс для получения курса.
      *
@@ -36,17 +48,34 @@ abstract class Parser
     abstract public function getSchool(): School;
 
     /**
-     * Вернет источник.
-     *
-     * @return string URL источника.
-     */
-    abstract public function getSource(): string;
-
-    /**
      * Вернет массив сопоставлений между названиями категорий из источника и их направлениями в системе.
      *
      * @return array<string, Direction> Массив, где ключ это название категории из источника, а значение, это направление в системе.
      * @example ['Онлайн Открытое занятие HR' => Direction::OTHER, 'Онлайн Открытое занятие Программирование' => Direction::PROGRAMMING]
      */
     abstract public function getDirections(): array;
+
+    /**
+     * Вернет источник.
+     *
+     * @return string URL источника.
+     */
+    public function getSource(): string
+    {
+        return $this->source;
+    }
+
+    /**
+     * Установит источник.
+     *
+     * @param string $source URL источника.
+     *
+     * @return $this
+     */
+    public function setSource(string $source): self
+    {
+        $this->source = $source;
+
+        return $this;
+    }
 }
