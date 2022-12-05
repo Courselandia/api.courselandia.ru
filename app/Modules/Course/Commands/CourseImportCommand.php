@@ -69,5 +69,6 @@ class CourseImportCommand extends Command
         }
 
         $this->info("\n\nИмпортирование курсов завершено: " . $this->amount . " шт.");
+        Log::info('Импортирование курсов.');
     }
 }

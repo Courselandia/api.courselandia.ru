@@ -101,7 +101,7 @@ class ParserNetology extends ParserYml
 
             if (isset($offer['params']['Продолжительность']) && $offer['params']['Продолжительность']) {
                 $course->duration = $this->getDuration($offer['params']['Продолжительность']);
-                $course->duration_unit = self::getDurationUnit($offer['params']['Продолжительность']);
+                $course->duration_unit = $this->getDurationUnit($offer['params']['Продолжительность']);
 
                 if (!$course->duration_unit) {
                     $this->addError(
@@ -127,7 +127,7 @@ class ParserNetology extends ParserYml
      *
      * @return int Вернет продолжительность.
      */
-    public static function getDuration(string $duration): int
+    public function getDuration(string $duration): int
     {
         [$value] = explode(' ', $duration);
 
@@ -141,7 +141,7 @@ class ParserNetology extends ParserYml
      *
      * @return Duration|null Вернет единицу измерения продолжительности курса.
      */
-    public static function getDurationUnit(string $duration): ?Duration
+    public function getDurationUnit(string $duration): ?Duration
     {
         [, $duration] = explode(' ', $duration);
         $duration = trim($duration);
@@ -166,7 +166,7 @@ class ParserNetology extends ParserYml
      *
      * @return int|null Вернет количество уроков.
      */
-    public static function getLessonsAmount(string $value): ?int
+    public function getLessonsAmount(string $value): ?int
     {
         [$value] = explode(' ', $value);
 

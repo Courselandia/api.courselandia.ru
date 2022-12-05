@@ -123,4 +123,11 @@ class ParserCourse extends Entity
      * @var Direction|null
      */
     public Direction|null $direction = null;
+
+    /**
+     * С трудоустройством.
+     *
+     * @var bool|null
+     */
+    public bool|null $employment = null;
 }

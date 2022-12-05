@@ -181,8 +181,27 @@ abstract class ParserYml extends Parser
                 $reader->read();
             } elseif ($reader->nodeType === XMLReader::ELEMENT) {
                 $name = $reader->name;
+                $attributes = [];
+
+                if ($reader->hasAttributes) {
+                    $attributeCount = $reader->attributeCount;
+
+                    for ($i = 0; $i < $attributeCount; $i++) {
+                        $reader->moveToAttributeNo($i);
+                        $attributes[$reader->name] = $reader->value;
+                    }
+                }
+
                 $reader->read();
-                $offer[$name] = $reader->value;
+
+                if (count($attributes)) {
+                    $offer[$name] = [
+                        'value' => $reader->value,
+                        'attributes' => $attributes,
+                    ];
+                } else {
+                    $offer[$name] = $reader->value;
+                }
             }
         }
 

@@ -9,6 +9,7 @@
 namespace App\Modules\Course\Imports;
 
 use App\Modules\Course\Imports\Parsers\ParserGeekBrains;
+use App\Modules\Course\Imports\Parsers\ParserSkillbox;
 use Cache;
 use Throwable;
 use Util;
@@ -50,7 +51,8 @@ class Import
     public function __construct()
     {
         $this->addParser(new ParserNetology())
-            ->addParser(new ParserGeekBrains());
+            ->addParser(new ParserGeekBrains())
+            ->addParser(new ParserSkillbox());
     }
 
     /**
@@ -90,10 +92,13 @@ class Import
                 }
             }
 
-            Course::whereNotIn('id', $this->getIds())
+            Course::where('school_id', $parser->getSchool()->value)
+                ->whereNotIn('id', $this->getIds())
                 ->update([
                     'status' => Status::DISABLED->value
                 ]);
+
+            $this->clearIds();
         }
 
         Cache::tags([
@@ -117,7 +122,7 @@ class Import
      */
     private function save(ParserCourse $courseEntity): int|string|null
     {
-        //try {
+        try {
             $course = Course::where('uuid', $courseEntity->uuid)
                 ->first();
 
@@ -135,6 +140,7 @@ class Import
                     'duration' => $courseEntity->duration,
                     'duration_unit' => $courseEntity->duration_unit?->value,
                     'lessons_amount' => $courseEntity->lessons_amount,
+                    'employment' => $courseEntity->employment,
                 ]);
             } else {
                 $image = $courseEntity->image ? $this->getImage($courseEntity->image) : null;
@@ -157,6 +163,7 @@ class Import
                     'duration' => $courseEntity->duration,
                     'duration_unit' => $courseEntity->duration_unit?->value,
                     'lessons_amount' => $courseEntity->lessons_amount,
+                    'employment' => $courseEntity->employment,
                 ]);
             }
 
@@ -167,13 +174,13 @@ class Import
             }
 
             return $course->id;
-        /*} catch (Throwable $error) {
+        } catch (Throwable $error) {
             $this->addError(
                 $courseEntity->school->getLabel()
                 . ' | ' . $courseEntity->header
                 . ' | ' . $error->getMessage()
             );
-        }*/
+        }
 
         return null;
     }
