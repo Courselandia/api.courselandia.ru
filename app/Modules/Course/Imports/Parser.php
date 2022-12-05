@@ -24,7 +24,7 @@ abstract class Parser
     /**
      * Абстрактный класс для получения курса.
      *
-     * @return Generator<ParserCourse> Вернет один считанный курс. Если вернет false, то остановка считывания.
+     * @return Generator<ParserCourse> Вернет один считанный курс.
      */
     abstract public function read(): Generator;
 

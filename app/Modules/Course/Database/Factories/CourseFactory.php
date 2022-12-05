@@ -48,7 +48,7 @@ class CourseFactory extends Factory
             'language' => Language::RU->value,
             'rating' => 3.14,
             'price' => $this->faker->numberBetween(10000, 1000000),
-            'price_discount' => $this->faker->numberBetween(10000, 1000000),
+            'price_old' => $this->faker->numberBetween(10000, 1000000),
             'price_recurrent_price' => $this->faker->numberBetween(10000, 9000),
             'currency' => Currency::RUB->value,
             'online' => true,

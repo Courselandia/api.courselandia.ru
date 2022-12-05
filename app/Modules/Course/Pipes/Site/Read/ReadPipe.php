@@ -76,7 +76,7 @@ class ReadPipe implements Pipe
                     'language',
                     'rating',
                     'price',
-                    'price_discount',
+                    'price_old',
                     'price_recurrent_price',
                     'currency',
                     'online',

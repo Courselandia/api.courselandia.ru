@@ -18,7 +18,7 @@ return [
         'language' => 'Language',
         'rating' => 'Rating',
         'price' => 'Price',
-        'price_discount' => 'Rating with discount',
+        'price_old' => 'Rating with discount',
         'price_recurrent_price' => 'Price with subscription',
         'currency' => 'Currency',
         'online' => 'Online',

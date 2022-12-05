@@ -36,7 +36,7 @@ class CreateTableCourses extends Migration
             $table->float('rating', 3)->unsigned()->nullable();
 
             $table->float('price')->unsigned()->nullable()->index('price');
-            $table->float('price_discount')->unsigned()->nullable()->index('price_discount');
+            $table->float('price_old')->unsigned()->nullable()->index('price_old');
             $table->float('price_recurrent_price')->unsigned()->nullable()->index('price_recurrent_price');
             $table->string('currency', 10)->nullable();
 

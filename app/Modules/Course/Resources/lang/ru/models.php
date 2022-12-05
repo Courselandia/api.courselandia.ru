@@ -18,7 +18,7 @@ return [
         'language' => 'Язык курса',
         'rating' => 'Рейтинг',
         'price' => 'Цена',
-        'price_discount' => 'Цена со скидкой',
+        'price_old' => 'Старая цена',
         'price_recurrent_price' => 'Цена по кредиту',
         'currency' => 'Валюта',
         'online' => 'Онлайн',

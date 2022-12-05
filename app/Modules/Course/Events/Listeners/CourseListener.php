@@ -29,14 +29,6 @@ class CourseListener
      */
     public function creating(Course $course): bool
     {
-        $result = $course->newQuery()
-            ->where('link', $course->link)
-            ->first();
-
-        if ($result) {
-            throw new RecordExistException(trans('course::events.listeners.courseListener.existError'));
-        }
-
         if ($course->duration_unit === Duration::DAY->value) {
             $course->duration_rate = 1 / 30 * $course->duration;
         } elseif ($course->duration_unit === Duration::WEEK->value) {
@@ -63,15 +55,6 @@ class CourseListener
      */
     public function updating(Course $course): bool
     {
-        $result = $course->newQuery()
-            ->where('id', '!=', $course->id)
-            ->where('link', $course->link)
-            ->first();
-
-        if ($result) {
-            throw new RecordExistException(trans('course::events.listeners.courseListener.existError'));
-        }
-
         if ($course->duration_unit === Duration::DAY->value) {
             $course->duration_rate = 1 / 30 * $course->duration;
         } elseif ($course->duration_unit === Duration::WEEK->value) {

@@ -37,7 +37,7 @@ return [
                 'language' => 'Язык',
                 'rating' => 'Рейтинг',
                 'price' => 'Цена',
-                'priceDiscount' => 'Цена со скидкой',
+                'priceOld' => 'Старая цена',
                 'priceRecurrentPrice' => 'Цена по кредиту',
                 'currency' => 'Валюта',
                 'online' => 'Онлайн',

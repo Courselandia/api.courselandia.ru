@@ -37,7 +37,7 @@ return [
                 'language' => 'Language',
                 'rating' => 'Rating',
                 'price' => 'Price',
-                'priceDiscount' => 'Discount price',
+                'priceOld' => 'Discount price',
                 'priceRecurrentPrice' => 'Price with subscription',
                 'currency' => 'Currency',
                 'online' => 'Online',

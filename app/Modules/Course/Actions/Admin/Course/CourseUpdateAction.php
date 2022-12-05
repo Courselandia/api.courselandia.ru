@@ -109,11 +109,11 @@ class CourseUpdateAction extends Action
     public float|null $price = null;
 
     /**
-     * Цена со скидкой.
+     * Старая цена.
      *
      * @var float|null
      */
-    public float|null $price_discount = null;
+    public float|null $price_old = null;
 
     /**
      * Цена по кредиту.
@@ -298,7 +298,7 @@ class CourseUpdateAction extends Action
                 $courseEntity->language = $this->language;
                 $courseEntity->rating = $this->rating;
                 $courseEntity->price = $this->price;
-                $courseEntity->price_discount = $this->price_discount;
+                $courseEntity->price_old = $this->price_old;
                 $courseEntity->price_recurrent_price = $this->price_recurrent_price;
                 $courseEntity->currency = $this->currency;
                 $courseEntity->online = $this->online;

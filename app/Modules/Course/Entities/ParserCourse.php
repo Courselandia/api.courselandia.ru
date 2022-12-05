@@ -31,7 +31,7 @@ class ParserCourse extends Entity
      *
      * @var string|null
      */
-    public string|null $name = null;
+    public string|null $header = null;
 
     /**
      * Описание.
@@ -67,6 +67,27 @@ class ParserCourse extends Entity
      * @var float|null
      */
     public float|null $price = null;
+
+    /**
+     * Старая цена.
+     *
+     * @var float|null
+     */
+    public float|null $price_old = null;
+
+    /**
+     * Цена по кредиту.
+     *
+     * @var float|null
+     */
+    public float|null $price_recurrent_price = null;
+
+    /**
+     * Количество уроков.
+     *
+     * @var int|null
+     */
+    public int|null $lessons_amount = null;
 
     /**
      * Валюта.

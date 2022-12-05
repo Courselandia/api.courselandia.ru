@@ -144,11 +144,11 @@ class Course extends Entity
     public float|null $price = null;
 
     /**
-     * Цена со скидкой.
+     * Старая цена.
      *
      * @var float|null
      */
-    public float|null $price_discount = null;
+    public float|null $price_old = null;
 
     /**
      * Цена по кредиту.

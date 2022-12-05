@@ -1,5 +1,6 @@
 <?php
 
+use App\Modules\Course\Imports\Import;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -11,3 +12,10 @@ Route::any('/ckfinder/connector', '\CKSource\CKFinderBridge\Controller\CKFinderC
 
 Route::any('/ckfinder/browser', '\CKSource\CKFinderBridge\Controller\CKFinderController@browserAction')
     ->name('ckfinder_browser');
+
+Route::get('/import', function () {
+    $import = new Import();
+    $import->run();
+
+    return '';
+});

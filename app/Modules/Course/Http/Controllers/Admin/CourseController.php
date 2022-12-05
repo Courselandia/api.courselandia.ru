@@ -111,7 +111,7 @@ class CourseController extends Controller
             $action->language = $request->get('language') ? Language::from($request->get('language')) : null;
             $action->rating = $request->get('rating');
             $action->price = $request->get('price');
-            $action->price_discount = $request->get('price_discount');
+            $action->price_old = $request->get('price_old');
             $action->price_recurrent_price = $request->get('price_recurrent_price');
             $action->currency = $request->get('currency') ? Currency::from($request->get('currency')) : null;
             $action->online = $request->get('online');
@@ -195,7 +195,7 @@ class CourseController extends Controller
             $action->language = $request->get('language') ? Language::from($request->get('language')) : null;
             $action->rating = $request->get('rating');
             $action->price = $request->get('price');
-            $action->price_discount = $request->get('price_discount');
+            $action->price_old = $request->get('price_old');
             $action->price_recurrent_price = $request->get('price_recurrent_price');
             $action->currency = $request->get('currency') ? Currency::from($request->get('currency')) : null;
             $action->online = $request->get('online');

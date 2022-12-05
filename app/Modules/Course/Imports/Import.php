@@ -8,7 +8,9 @@
 
 namespace App\Modules\Course\Imports;
 
+use App\Modules\Course\Imports\Parsers\ParserGeekBrains;
 use Cache;
+use Throwable;
 use Util;
 use File;
 use ImageStore;
@@ -29,6 +31,13 @@ class Import
     use Error;
 
     /**
+     * ID обновленных курсов.
+     *
+     * @var int[]|string[]
+     */
+    private array $ids = [];
+
+    /**
      * Парсеры курсов.
      *
      * @var Parser[]
@@ -40,7 +49,8 @@ class Import
      */
     public function __construct()
     {
-        $this->addParser(new ParserNetology());
+        $this->addParser(new ParserNetology())
+            ->addParser(new ParserGeekBrains());
     }
 
     /**
@@ -57,18 +67,19 @@ class Import
         $parsers = $this->getParsers();
 
         foreach ($parsers as $parser) {
-            $this->disableCourses($parser->getSchool()->value);
-
             foreach ($parser->read() as $courseEntity) {
-                $create = $this->save($courseEntity);
+                $id = $this->save($courseEntity);
 
-                $this->fireEvent(
-                    'read',
-                    [
-                        $courseEntity,
-                        $create
-                    ]
-                );
+                if ($id) {
+                    $this->addId($id);
+
+                    $this->fireEvent(
+                        'read',
+                        [
+                            $courseEntity
+                        ]
+                    );
+                }
             }
 
             if ($parser->hasError()) {
@@ -78,6 +89,11 @@ class Import
                     $this->addError($error);
                 }
             }
+
+            Course::whereNotIn('id', $this->getIds())
+                ->update([
+                    'status' => Status::DISABLED->value
+                ]);
         }
 
         Cache::tags([
@@ -93,43 +109,56 @@ class Import
     }
 
     /**
-     * Отключение курсов школы.
-     *
-     * @param int|string $schoolId ID школы.
-     * @return void
-     */
-    private function disableCourses(int|string $schoolId): void
-    {
-        Course::select('id')
-            ->where('school_id', $schoolId)
-            ->update([
-                'status' => Status::DISABLED->value
-            ]);
-    }
-
-    /**
      * Сохранение курса.
      *
      * @param ParserCourse $courseEntity Курс.
      *
-     * @return bool Вернет true, если сохранение, или false, если обновление.
+     * @return int|string|null Вернет ID курса.
      */
-    private function save(ParserCourse $courseEntity): bool
+    private function save(ParserCourse $courseEntity): int|string|null
     {
-        $course = Course::where('uuid', $courseEntity->uuid)
-            ->first();
+        //try {
+            $course = Course::where('uuid', $courseEntity->uuid)
+                ->first();
 
-        if ($course) {
-            $course->update([
-                'name' => $courseEntity->name,
-                'status' => $courseEntity->status ? Status::ACTIVE->value : Status::DISABLED->value,
-                'url' => $courseEntity->url,
-                'price' => $courseEntity->price,
-                'currency' => $courseEntity->currency?->value,
-                'school' => $courseEntity->school?->value,
-                'duration' => $courseEntity->duration,
-                'duration_unit' => $courseEntity->duration_unit?->value,
-            ]);
+            if ($course) {
+                $course->update([
+                    'header' => $courseEntity->header,
+                    'link' => Util::latin(strtolower($courseEntity->header)),
+                    'status' => $courseEntity->status ? $course->status : Status::DISABLED->value,
+                    'url' => $courseEntity->url,
+                    'price' => $courseEntity->price,
+                    'price_old' => $courseEntity->price_old,
+                    'price_recurrent_price' => $courseEntity->price_recurrent_price,
+                    'currency' => $courseEntity->currency?->value,
+                    'school' => $courseEntity->school?->value,
+                    'duration' => $courseEntity->duration,
+                    'duration_unit' => $courseEntity->duration_unit?->value,
+                    'lessons_amount' => $courseEntity->lessons_amount,
+                ]);
+            } else {
+                $image = $courseEntity->image ? $this->getImage($courseEntity->image) : null;
+
+                $course = Course::create([
+                    'uuid' => $courseEntity->uuid,
+                    'header' => $courseEntity->header,
+                    'link' => Util::latin(strtolower($courseEntity->header)),
+                    'text' => $courseEntity->text,
+                    'status' => $courseEntity->status ? Status::DRAFT->value : Status::DISABLED->value,
+                    'url' => $courseEntity->url,
+                    'image_small_id' => $image,
+                    'image_middle_id' => $image,
+                    'image_big_id' => $image,
+                    'price' => $courseEntity->price,
+                    'price_old' => $courseEntity->price_old,
+                    'price_recurrent_price' => $courseEntity->price_recurrent_price,
+                    'currency' => $courseEntity->currency?->value,
+                    'school_id' => $courseEntity->school?->value,
+                    'duration' => $courseEntity->duration,
+                    'duration_unit' => $courseEntity->duration_unit?->value,
+                    'lessons_amount' => $courseEntity->lessons_amount,
+                ]);
+            }
 
             if (count($course->directions) === 0 && $courseEntity->direction) {
                 $course->directions()->sync(
@@ -137,36 +166,16 @@ class Import
                 );
             }
 
-            return false;
-        } else {
-            $image = $courseEntity->image ? $this->getImage($courseEntity->image) : null;
+            return $course->id;
+        /*} catch (Throwable $error) {
+            $this->addError(
+                $courseEntity->school->getLabel()
+                . ' | ' . $courseEntity->header
+                . ' | ' . $error->getMessage()
+            );
+        }*/
 
-            $course = Course::create([
-                'uuid' => $courseEntity->uuid,
-                'name' => $courseEntity->name,
-                'link' => Util::latin($courseEntity->name),
-                'header' => $courseEntity->name,
-                'text' => $courseEntity->text,
-                'status' => $courseEntity->status ? Status::DRAFT->value : Status::DISABLED->value,
-                'url' => $courseEntity->url,
-                'image_small_id' => $image,
-                'image_middle_id' => $image,
-                'image_big_id' => $image,
-                'price' => $courseEntity->price,
-                'currency' => $courseEntity->currency?->value,
-                'school_id' => $courseEntity->school?->value,
-                'duration' => $courseEntity->duration,
-                'duration_unit' => $courseEntity->duration_unit?->value,
-            ]);
-
-            if ($courseEntity->direction) {
-                $course->directions()->sync(
-                    $courseEntity->direction->value ? [$courseEntity->direction->value] : []
-                );
-            }
-
-            return true;
-        }
+        return null;
     }
 
     /**
@@ -218,5 +227,40 @@ class Import
     public function getParsers(): array
     {
         return $this->parsers;
+    }
+
+    /**
+     * Добавление ID обновленного курса.
+     *
+     * @param int|string $id ID курса.
+     * @return $this
+     */
+    public function addId(int|string $id): self
+    {
+        $this->ids[] = $id;
+
+        return $this;
+    }
+
+    /**
+     * Удаление всех ID обновленных курса.
+     *
+     * @return $this
+     */
+    public function clearIds(): self
+    {
+        $this->ids = [];
+
+        return $this;
+    }
+
+    /**
+     * Получение всех ID обновленных курсов.
+     *
+     * @return Parser[]
+     */
+    public function getIds(): array
+    {
+        return $this->ids;
     }
 }

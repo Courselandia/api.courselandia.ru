@@ -33,18 +33,27 @@ class CourseImportCommand extends Command
     protected $description = 'Импортирование курсов.';
 
     /**
+     * Количество импортированных курсов.
+     *
+     * @var int
+     */
+    private int $amount = 0;
+
+    /**
      * Выполнение команды.
      *
      * @return void
      */
     public function handle(): void
     {
-        $this->line('Importing courses from the sources...');
+        $this->line('Импортирование курсов с источников...');
 
         $import = new Import();
+        $this->amount = 0;
 
         $import->addEvent('read', function (Import $imp, ParserCourse $course) {
-            $this->line('Импортирован курс: ' . $course->school->getLabel() . ' | ' . $course->name);
+            $this->line('Импортирован курс: ' . $course->school->getLabel() . ' | ' . $course->header);
+            $this->amount++;
         });
 
         $import->run();
@@ -57,8 +66,8 @@ class CourseImportCommand extends Command
                 Log::error($message);
                 $this->error($message);
             }
-        } else {
-            $this->info("\n\nИмпортирование курса завершено.");
         }
+
+        $this->info("\n\nИмпортирование курсов завершено: " . $this->amount . " шт.");
     }
 }

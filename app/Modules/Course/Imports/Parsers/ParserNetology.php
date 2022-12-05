@@ -77,7 +77,7 @@ class ParserNetology extends ParserYml
     /**
      * Получение курса.
      *
-     * @return Generator<ParserCourse> Вернет один считанный курс. Если false, то остановит считывание.
+     * @return Generator<ParserCourse> Вернет один считанный курс.
      */
     public function read(): Generator
     {
@@ -85,26 +85,35 @@ class ParserNetology extends ParserYml
             $course = new ParserCourse();
             $course->school = $this->getSchool();
             $course->uuid = $offer['attributes']['id'];
-            $course->name = $offer['name'];
+            $course->header = $offer['name'];
             $course->text = $offer['description'];
             $course->status = $offer['attributes']['available'] === 'true';
             $course->url = $offer['url'];
             $course->image = $offer['picture'];
             $course->price = $offer['price'];
+            $course->price_recurrent_price = $offer['min_credit_payment_sum'] ?? null;
             $course->currency = Currency::RUB;
             $course->direction = $offer['direction'];
 
+            if (isset($offer['oldprice']) && $offer['oldprice']) {
+                $course->price_old = $offer['oldprice'];
+            }
+
             if (isset($offer['params']['Продолжительность']) && $offer['params']['Продолжительность']) {
                 $course->duration = $this->getDuration($offer['params']['Продолжительность']);
-                $duration = self::getDurationUnit($offer['params']['Продолжительность']);
+                $course->duration_unit = self::getDurationUnit($offer['params']['Продолжительность']);
 
-                if (!$duration) {
+                if (!$course->duration_unit) {
                     $this->addError(
                         $this->getSchool()->getLabel()
                         . ' | ' . $offer['name']
                         . ' | Не удалось получить единицу продолжительности: "' . $offer['params']['Продолжительность'] . '".'
                     );
                 }
+            }
+
+            if (isset($offer['params']['Количество занятий']) && $offer['params']['Количество занятий']) {
+                $course->lessons_amount = $this->getLessonsAmount($offer['params']['Количество занятий']);
             }
 
             yield $course;
@@ -118,7 +127,7 @@ class ParserNetology extends ParserYml
      *
      * @return int Вернет продолжительность.
      */
-    public function getDuration(string $duration): int
+    public static function getDuration(string $duration): int
     {
         [$value] = explode(' ', $duration);
 
@@ -148,5 +157,19 @@ class ParserNetology extends ParserYml
         }
 
         return null;
+    }
+
+    /**
+     * Получить количество уроков.
+     *
+     * @param string $value Количество уроков из источника.
+     *
+     * @return int|null Вернет количество уроков.
+     */
+    public static function getLessonsAmount(string $value): ?int
+    {
+        [$value] = explode(' ', $value);
+
+        return (int)$value;
     }
 }

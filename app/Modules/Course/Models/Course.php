@@ -8,6 +8,7 @@
 
 namespace App\Modules\Course\Models;
 
+use SVG\SVG;
 use App\Modules\Course\Enums\Duration;
 use App\Modules\Course\Enums\Language;
 use App\Modules\Metatag\Models\Metatag;
@@ -65,7 +66,7 @@ use App\Modules\Course\Filters\CourseFilter;
  * @property string $language Язык курса.
  * @property float $rating Рейтинг.
  * @property float $price Цена.
- * @property float $price_discount Цена со скидкой.
+ * @property float $price_old Старая цена.
  * @property float $price_recurrent_price Цена по кредиту.
  * @property string $currency Валюта.
  * @property boolean $online Онлайн.
@@ -122,7 +123,7 @@ class Course extends Eloquent
         'language',
         'rating',
         'price',
-        'price_discount',
+        'price_old',
         'price_recurrent_price',
         'currency',
         'online',
@@ -156,7 +157,7 @@ class Course extends Eloquent
         'language' => 'string',
         'rating' => 'string',
         'price' => 'string',
-        'price_discount' => 'string',
+        'price_old' => 'string',
         'price_recurrent_price' => 'string',
         'currency' => 'string',
         'online' => 'string',
@@ -177,12 +178,12 @@ class Course extends Eloquent
             'text' => 'max:5000',
             'header_morphy' => 'max:191',
             'text_morphy' => 'max:5000',
-            'link' => 'required|between:1,191|alpha_dash|unique_soft:courses,link,' . $this->id . ',id',
+            'link' => 'required|between:1,191|alpha_dash',
             'url' => 'required|url',
             'language' => 'in:' . implode(',', EnumList::getValues(Language::class)),
             'rating' => 'nullable|float|float_between:0,5',
             'price' => 'nullable|float|float_between:0,999999',
-            'price_discount' => 'nullable|float|float_between:0,999999',
+            'price_old' => 'nullable|float|float_between:0,999999',
             'price_recurrent_price' => 'nullable|float|float_between:0,999999',
             'currency' => 'in:' . implode(',', EnumList::getValues(Currency::class)),
             'online' => 'boolean',
@@ -219,7 +220,7 @@ class Course extends Eloquent
             'language' => trans('course::models.course.language'),
             'rating' => trans('course::models.course.rating'),
             'price' => trans('course::models.course.price'),
-            'price_discount' => trans('course::models.course.priceDiscount'),
+            'price_old' => trans('course::models.course.priceOld'),
             'price_recurrent_price' => trans('course::models.course.priceRecurrentPrice'),
             'currency' => trans('course::models.course.currency'),
             'online' => trans('course::models.course.online'),
@@ -400,9 +401,19 @@ class Course extends Eloquent
             $name,
             $value,
             function (string $name, UploadedFile $value) use ($folder) {
-                $path = ImageStore::tmp($value->getClientOriginalExtension());
+                if ($value->getClientOriginalExtension() === 'svg') {
+                    $imageSvg = SVG::fromFile($value->path());
+                    $imageRaster = $imageSvg->toRasterImage(600, 600);
+                    $path = ImageStore::tmp('png');
+                    imagepng($imageRaster, $path);
 
-                Size::make($value)->fit(150, 150)->save($path);
+                    $image = Size::make($path);
+                } else {
+                    $path = ImageStore::tmp($value->getClientOriginalExtension());
+                    $image = Size::make($value);
+                }
+
+                $image->fit(150, 150)->save($path);
 
                 $imageWebp = WebPConverter::createWebpImage($path, ['saveFile' => true]);
 
@@ -452,9 +463,19 @@ class Course extends Eloquent
             $name,
             $value,
             function (string $name, UploadedFile $value) use ($folder) {
-                $path = ImageStore::tmp($value->getClientOriginalExtension());
+                if ($value->getClientOriginalExtension() === 'svg') {
+                    $imageSvg = SVG::fromFile($value->path());
+                    $imageRaster = $imageSvg->toRasterImage(600, 600);
+                    $path = ImageStore::tmp('png');
+                    imagepng($imageRaster, $path);
 
-                Size::make($value)->resize(
+                    $image = Size::make($path);
+                } else {
+                    $path = ImageStore::tmp($value->getClientOriginalExtension());
+                    $image = Size::make($value);
+                }
+
+                $image->resize(
                     350,
                     null,
                     function ($constraint) {
@@ -511,9 +532,19 @@ class Course extends Eloquent
             $name,
             $value,
             function (string $name, UploadedFile $value) use ($folder) {
-                $path = ImageStore::tmp($value->getClientOriginalExtension());
+                if ($value->getClientOriginalExtension() === 'svg') {
+                    $imageSvg = SVG::fromFile($value->path());
+                    $imageRaster = $imageSvg->toRasterImage(600, 600);
+                    $path = ImageStore::tmp('png');
+                    imagepng($imageRaster, $path);
 
-                Size::make($value)->resize(
+                    $image = Size::make($path);
+                } else {
+                    $path = ImageStore::tmp($value->getClientOriginalExtension());
+                    $image = Size::make($value);
+                }
+
+                $image->resize(
                     600,
                     null,
                     function ($constraint) {
