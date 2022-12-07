@@ -101,6 +101,35 @@ class ReviewControllerTest extends TestCase
     }
 
     /**
+     * Создание данных: упрощенный вариант.
+     *
+     * @return void
+     */
+    public function testCreateSimple(): void
+    {
+        $school = School::factory()->create();
+        $faker = Faker::create();
+
+        $this->json(
+            'POST',
+            'api/private/admin/review/create',
+            [
+                'school_id' => $school->id,
+                'name' => $faker->text(191),
+                'title' => $faker->text(191),
+                'rating' => 4,
+                'status' => Status::ACTIVE,
+            ],
+            [
+                'Authorization' => 'Bearer ' . $this->getAdminToken()
+            ]
+        )->assertStatus(200)->assertJsonStructure([
+            'success',
+            'data' => $this->getReviewStructure(false),
+        ]);
+    }
+
+    /**
      * Создание данных.
      *
      * @return void
@@ -295,9 +324,9 @@ class ReviewControllerTest extends TestCase
      *
      * @return array Массив структуры данных отзывов.
      */
-    #[Pure] private function getReviewStructure(): array
+    #[Pure] private function getReviewStructure($full = true): array
     {
-        return [
+        $structure = [
             'id',
             'school_id',
             'course_id',
@@ -310,7 +339,10 @@ class ReviewControllerTest extends TestCase
             'created_at',
             'updated_at',
             'deleted_at',
-            'school' => [
+        ];
+
+        if ($full) {
+            $structure['school'] = [
                 'id',
                 'metatag_id',
                 'name',
@@ -325,8 +357,9 @@ class ReviewControllerTest extends TestCase
                 'created_at',
                 'updated_at',
                 'deleted_at',
-            ],
-            'course' => [
+            ];
+
+            $structure['course'] = [
                 'id',
                 'uuid',
                 'metatag_id',
@@ -357,7 +390,9 @@ class ReviewControllerTest extends TestCase
                 'created_at',
                 'updated_at',
                 'deleted_at',
-            ]
-        ];
+            ];
+        }
+
+        return $structure;
     }
 }

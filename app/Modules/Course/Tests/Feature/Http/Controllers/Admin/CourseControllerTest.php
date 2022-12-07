@@ -143,6 +143,35 @@ class CourseControllerTest extends TestCase
     }
 
     /**
+     * Создание данных: упрощенный вариант.
+     *
+     * @return void
+     */
+    public function testCreateSimple(): void
+    {
+        $faker = Faker::create();
+        $school = School::factory()->create();
+
+        $this->json(
+            'POST',
+            'api/private/admin/course/create',
+            [
+                'school_id' => $school->id,
+                'header' => $faker->text(191),
+                'link' => Util::latin($faker->text(191)),
+                'url' => $faker->url(),
+                'status' => Status::ACTIVE,
+            ],
+            [
+                'Authorization' => 'Bearer ' . $this->getAdminToken()
+            ]
+        )->assertStatus(200)->assertJsonStructure([
+            'success',
+            'data' => $this->getCourseStructure(),
+        ]);
+    }
+
+    /**
      * Создание данных.
      *
      * @return void
@@ -398,8 +427,17 @@ class CourseControllerTest extends TestCase
             'status',
             'created_at',
             'updated_at',
-            'deleted_at',
-            'directions' => [
+            'deleted_at'
+        ];
+
+        if ($image) {
+            $structure['image_big_id'] = $this->getImageStructure();
+            $structure['image_middle_id'] = $this->getImageStructure();
+            $structure['image_small_id'] = $this->getImageStructure();
+        }
+
+        if ($full) {
+            $structure['directions'] = [
                 '*' => [
                     'id',
                     'name',
@@ -412,8 +450,9 @@ class CourseControllerTest extends TestCase
                     'updated_at',
                     'deleted_at',
                 ]
-            ],
-            'professions' => [
+            ];
+
+            $structure['professions'] = [
                 '*' => [
                     'id',
                     'name',
@@ -425,16 +464,8 @@ class CourseControllerTest extends TestCase
                     'updated_at',
                     'deleted_at',
                 ]
-            ],
-        ];
+            ];
 
-        if ($image) {
-            $structure['image_big_id'] = $this->getImageStructure();
-            $structure['image_middle_id'] = $this->getImageStructure();
-            $structure['image_small_id'] = $this->getImageStructure();
-        }
-
-        if ($full) {
             $structure['metatag'] = [
                 'id',
                 'description',

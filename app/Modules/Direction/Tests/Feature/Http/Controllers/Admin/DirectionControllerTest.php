@@ -99,6 +99,34 @@ class DirectionControllerTest extends TestCase
     }
 
     /**
+     * Создание данных: упрощенный вариант.
+     *
+     * @return void
+     */
+    public function testCreateSimple(): void
+    {
+        $faker = Faker::create();
+
+        $this->json(
+            'POST',
+            'api/private/admin/direction/create',
+            [
+                'name' => $faker->text(150),
+                'header' => $faker->text(150),
+                'weight' => $faker->numberBetween(1, 500),
+                'link' => Util::latin($faker->text(150)),
+                'status' => true,
+            ],
+            [
+                'Authorization' => 'Bearer ' . $this->getAdminToken()
+            ]
+        )->assertStatus(200)->assertJsonStructure([
+            'success',
+            'data' => $this->getDirectionStructure(),
+        ]);
+    }
+
+    /**
      * Создание данных.
      *
      * @return void

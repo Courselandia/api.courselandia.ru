@@ -111,6 +111,32 @@ class CategoryControllerTest extends TestCase
     }
 
     /**
+     * Создание данных: упрощенный вариант.
+     *
+     * @return void
+     */
+    public function testCreateSimple(): void
+    {
+        $faker = Faker::create();
+
+        $this->json(
+            'POST',
+            'api/private/admin/category/create',
+            [
+                'name' => $faker->text(150),
+                'link' => Util::latin($faker->text(150)),
+                'status' => true,
+            ],
+            [
+                'Authorization' => 'Bearer ' . $this->getAdminToken()
+            ]
+        )->assertStatus(200)->assertJsonStructure([
+            'success',
+            'data' => $this->getCategoryStructure(true, true),
+        ]);
+    }
+
+    /**
      * Создание данных.
      *
      * @return void

@@ -116,6 +116,35 @@ class UserControllerTest extends TestCase
     }
 
     /**
+     * Создание данных: упрощенный вариант.
+     *
+     * @return void
+     */
+    public function testCreateSimple(): void
+    {
+        $faker = Faker::create();
+
+        $this->json(
+            'POST',
+            'api/private/admin/user/create',
+            [
+                'login' => $faker->email,
+                'password' => $faker->password,
+                'status' => true,
+                'verified' => true,
+                'role' => Role::ADMIN->value,
+                'invitation' => true
+            ],
+            [
+                'Authorization' => 'Bearer '.$this->getAdminToken()
+            ]
+        )->assertStatus(200)->assertJsonStructure([
+            'success',
+            'data' => $this->getUserStructure(),
+        ]);
+    }
+
+    /**
      * Создание данных.
      *
      * @return void

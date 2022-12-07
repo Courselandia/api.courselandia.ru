@@ -137,10 +137,10 @@ class Import
                     'price_recurrent_price' => $courseEntity->price_recurrent_price,
                     'currency' => $courseEntity->currency?->value,
                     'school' => $courseEntity->school?->value,
-                    'duration' => $courseEntity->duration,
-                    'duration_unit' => $courseEntity->duration_unit?->value,
-                    'lessons_amount' => $courseEntity->lessons_amount,
-                    'employment' => $courseEntity->employment,
+                    'duration' => $courseEntity->duration ?: $course->duration,
+                    'duration_unit' => $courseEntity->duration_unit?->value ?: $course->duration_unit,
+                    'lessons_amount' => $courseEntity->lessons_amount ?: $course->lessons_amount,
+                    'employment' => $courseEntity->employment ?: $course->employment,
                 ]);
             } else {
                 $image = $courseEntity->image ? $this->getImage($courseEntity->image) : null;

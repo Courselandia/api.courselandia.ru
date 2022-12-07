@@ -112,6 +112,32 @@ class TeacherControllerTest extends TestCase
     }
 
     /**
+     * Создание данных: упрощенный вариант.
+     *
+     * @return void
+     */
+    public function testCreateSimple(): void
+    {
+        $faker = Faker::create();
+
+        $this->json(
+            'POST',
+            'api/private/admin/teacher/create',
+            [
+                'name' => $faker->text(191),
+                'link' => Util::latin($faker->text(191)),
+                'status' => true,
+            ],
+            [
+                'Authorization' => 'Bearer ' . $this->getAdminToken()
+            ]
+        )->assertStatus(200)->assertJsonStructure([
+            'success',
+            'data' => $this->getTeacherStructure(),
+        ]);
+    }
+
+    /**
      * Создание данных.
      *
      * @return void
