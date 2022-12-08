@@ -44,7 +44,28 @@ class DataPipe implements Pipe
         'format',
         'cache',
         'pathCache',
-        'pathSource'
+        'pathSource',
+        'header',
+        'image_logo_id',
+        'image_site_id',
+        'site',
+        'course_id',
+    ];
+
+    /**
+     * Массив ключей подлежащих удалению если значение содержит NULL.
+     *
+     * @var array
+     */
+    private const REMOVES_IF_NULL = [
+        'link',
+        'rating',
+        'directions',
+        'professions',
+        'image_small_id',
+        'image_middle_id',
+        'image_big_id',
+        'schools'
     ];
 
     /**
@@ -63,6 +84,7 @@ class DataPipe implements Pipe
         unset($entity->limit);
 
         $entity = $this->clean($entity, self::REMOVES);
+        $entity = $this->clean($entity, self::REMOVES_IF_NULL, true);
 
         return $next($entity);
     }
@@ -72,10 +94,11 @@ class DataPipe implements Pipe
      *
      * @param Entity $entity Сущность для очистки.
      * @param array $removes Массив ключей, которые подлежат очистки.
+     * @param bool $ifNull Только удалять если равен null.
      *
      * @return Entity Вернет очищенную сущность.
      */
-    private function clean(Entity $entity, array $removes): Entity
+    private function clean(Entity $entity, array $removes, bool $ifNull = false): Entity
     {
         foreach ($entity as $key => $value) {
             if (is_array($entity->$key)) {
@@ -87,7 +110,11 @@ class DataPipe implements Pipe
             } elseif ($entity->$key instanceof Entity) {
                 $entity->$key = $this->clean($entity->$key, $removes);
             } elseif (in_array($key, $removes)) {
-                unset($entity->$key);
+                if ($ifNull === false) {
+                    unset($entity->$key);
+                } else if ($ifNull === true && $entity->$key === null) {
+                    unset($entity->$key);
+                }
             }
         }
 

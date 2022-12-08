@@ -19,7 +19,7 @@ class CreateTableSchools extends Migration
             $table->bigInteger('id', true)->unsigned();
             $table->bigInteger('metatag_id')->unsigned()->index('metatag_id')->nullable();
 
-            $table->string('name', 191);
+            $table->string('name', 191)->index('name');
             $table->string('header', 191);
             $table->string('link', 191)->index('link');
             $table->text('text')->nullable();

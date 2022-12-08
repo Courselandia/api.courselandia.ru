@@ -61,13 +61,13 @@ class FilterDurationPipe implements Pipe
                 $durationMin = Course::select([
                     DB::raw('MIN(duration_rate) as duration'),
                 ])
-                    ->filter($filters ?: [])
-                    ->where('status', Status::ACTIVE->value)
-                    ->whereHas('school', function ($query) {
-                        $query->where('status', true);
-                    })
-                    ->first()
-                    ->toArray();
+                ->filter($filters ?: [])
+                ->where('status', Status::ACTIVE->value)
+                ->whereHas('school', function ($query) {
+                    $query->where('status', true);
+                })
+                ->first()
+                ->toArray();
 
                 if ($durationMin) {
                     $min = $durationMin['duration'] < 1 ? 0 : $durationMin['duration'];

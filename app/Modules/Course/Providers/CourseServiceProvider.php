@@ -8,6 +8,7 @@
 
 namespace App\Modules\Course\Providers;
 
+use App\Modules\Course\Commands\CourseFillCommand;
 use App\Modules\Course\Commands\CourseImportCommand;
 use Config;
 use Illuminate\Support\ServiceProvider;
@@ -46,6 +47,7 @@ class CourseServiceProvider extends ServiceProvider
 
         $this->commands([
             CourseImportCommand::class,
+            CourseFillCommand::class,
         ]);
     }
 

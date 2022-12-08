@@ -44,10 +44,10 @@ class SchoolFactory extends Factory
     {
         return [
             'metatag_id' => Metatag::factory(),
-            'name' => $this->faker->text(191),
-            'header' => $this->faker->text(191),
-            'link' => Util::latin($this->faker->name),
-            'text' => $this->faker->text(5000),
+            'name' => $this->faker->text(20),
+            'header' => $this->faker->text(50),
+            'link' => Util::latin($this->faker->text(60)),
+            'text' => $this->faker->text(1000),
             'rating' => 4.27,
             'site' => $this->faker->url(),
             'status' => true,

@@ -92,25 +92,46 @@ class ReadPipe implements Pipe
                 ->sorted($entity->sorts ?: [])
                 ->with([
                     'professions' => function ($query) {
-                        $query->where('status', true);
+                        $query->select([
+                            'professions.id',
+                            'professions.name',
+                        ])->where('status', true);
                     },
                     'categories' => function ($query) {
-                        $query->where('status', true);
+                        $query->select([
+                            'categories.id',
+                            'categories.name',
+                        ])->where('status', true);
                     },
                     'skills' => function ($query) {
-                        $query->where('status', true);
+                        $query->select([
+                            'skills.id',
+                            'skills.name',
+                        ])->where('status', true);
                     },
                     'teachers' => function ($query) {
-                        $query->where('status', true);
+                        $query->select([
+                            'teachers.id',
+                            'teachers.name',
+                        ])->where('status', true);
                     },
                     'tools' => function ($query) {
-                        $query->where('status', true);
+                        $query->select([
+                            'tools.id',
+                            'tools.name',
+                        ])->where('status', true);
                     },
                     'school' => function ($query) {
-                        $query->where('status', true);
+                        $query->select([
+                            'schools.id',
+                            'schools.name',
+                        ])->where('status', true);
                     },
                     'directions' => function ($query) {
-                        $query->where('status', true);
+                        $query->select([
+                            'directions.id',
+                            'directions.name',
+                        ])->where('status', true);
                     },
                     'levels'
                 ])

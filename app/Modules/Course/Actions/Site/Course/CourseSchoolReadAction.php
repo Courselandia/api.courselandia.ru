@@ -8,15 +8,15 @@
 
 namespace App\Modules\Course\Actions\Site\Course;
 
+use DB;
 use App\Models\Entity;
 use App\Models\Exceptions\ParameterInvalidException;
-use App\Modules\Course\Helpers\SortFilter;
+use App\Modules\School\Models\School;
 use Cache;
 use Util;
 use App\Models\Action;
 use App\Models\Enums\CacheTime;
 use App\Modules\Course\Entities\CourseItemFilter;
-use App\Modules\Course\Models\Course;
 use App\Modules\Course\Enums\Status;
 
 /**
@@ -83,43 +83,32 @@ class CourseSchoolReadAction extends Action
             $cacheKey,
             CacheTime::GENERAL->value,
             function () use ($currentFilters) {
-                $query = Course::select([
-                    'id',
-                    'school_id'
+                $query = School::select([
+                    'schools.id',
+                    'schools.link',
+                    'schools.name',
                 ])
-                    ->filter($this->filters ?: [])
-                    ->with([
-                        'school' => function ($query) {
-                            $query->select([
-                                'schools.id',
-                                'schools.name',
-                                'schools.link',
-                            ])->where('status', true);
-                        }
-                    ])
-                    ->where('status', Status::ACTIVE->value)
-                    ->whereHas('school', function ($query) {
-                        $query->where('status', true);
-                    })
-                    ->groupBy([
-                        'id',
-                        'school_id'
-                    ]);
+                ->whereHas('courses', function ($query) {
+                    $query->filter($this->filters ?: [])
+                        ->where('status', Status::ACTIVE->value);
+                })
+                ->where('status', true);
 
-                $items = $query->get();
-                $result = [];
-
-                foreach ($items as $item) {
-                    if (!isset($result[$item->school->id])) {
-                        $result[$item->school->id] = [
-                            'id' => $item->school->id,
-                            'name' => $item->school->name,
-                            'link' => $item->school->link,
-                        ];
-                    }
+                if (count($currentFilters)) {
+                    $query->orderBy(DB::raw('FIELD(id, ' . implode(', ', array_reverse($currentFilters)) . ')'), 'DESC');
                 }
 
-                $result = SortFilter::run($result, $currentFilters, $this->offset, $this->limit);
+                $query->orderBy('name');
+
+                if ($this->offset) {
+                    $query->offset($this->offset);
+                }
+
+                if ($this->limit) {
+                    $query->limit($this->limit);
+                }
+
+                $result = $query->get()->toArray();
 
                 return Entity::toEntities($result, new CourseItemFilter());
             }
