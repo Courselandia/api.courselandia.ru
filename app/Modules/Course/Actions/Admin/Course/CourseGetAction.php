@@ -64,6 +64,7 @@ class CourseGetAction extends Action
                         'learns',
                         'employments',
                         'features',
+                        'school',
                     ])
                     ->first();
 
