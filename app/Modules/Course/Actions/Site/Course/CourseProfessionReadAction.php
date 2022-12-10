@@ -8,15 +8,15 @@
 
 namespace App\Modules\Course\Actions\Site\Course;
 
+use DB;
 use App\Models\Entity;
 use App\Models\Exceptions\ParameterInvalidException;
-use App\Modules\Course\Helpers\SortFilter;
+use App\Modules\Profession\Models\Profession;
 use Cache;
 use Util;
 use App\Models\Action;
 use App\Models\Enums\CacheTime;
 use App\Modules\Course\Entities\CourseItemFilter;
-use App\Modules\Course\Models\Course;
 use App\Modules\Course\Enums\Status;
 
 /**
@@ -83,38 +83,38 @@ class CourseProfessionReadAction extends Action
             $cacheKey,
             CacheTime::GENERAL->value,
             function () use ($currentFilters) {
-                $query = Course::select('id')
-                    ->filter($this->filters ?: [])
-                    ->with([
-                        'professions' => function ($query) {
-                            $query->select([
-                                'professions.id',
-                                'professions.name',
-                                'professions.link',
-                            ])->where('status', true);
-                        }
+                $query = Profession::select([
+                    'professions.id',
+                    'professions.link',
+                    'professions.name',
+                ])
+                ->whereHas('courses', function ($query) {
+                    $query->select([
+                        'courses.id',
                     ])
+                    ->filter($this->filters ?: [])
                     ->where('status', Status::ACTIVE->value)
                     ->whereHas('school', function ($query) {
                         $query->where('status', true);
                     });
+                })
+                ->where('status', true);
 
-                $items = $query->get();
-                $result = [];
-
-                foreach ($items as $item) {
-                    foreach ($item->professions as $profession) {
-                        if (!isset($result[$profession->id])) {
-                            $result[$profession->id] = [
-                                'id' => $profession->id,
-                                'name' => $profession->name,
-                                'link' => $profession->link,
-                            ];
-                        }
-                    }
+                if (count($currentFilters)) {
+                    $query->orderBy(DB::raw('FIELD(id, ' . implode(', ', array_reverse($currentFilters)) . ')'), 'DESC');
                 }
 
-                $result = SortFilter::run($result, $currentFilters, $this->offset, $this->limit);
+                $query->orderBy('name');
+
+                if ($this->offset) {
+                    $query->offset($this->offset);
+                }
+
+                if ($this->limit) {
+                    $query->limit($this->limit);
+                }
+
+                $result = $query->get()->toArray();
 
                 return Entity::toEntities($result, new CourseItemFilter());
             }

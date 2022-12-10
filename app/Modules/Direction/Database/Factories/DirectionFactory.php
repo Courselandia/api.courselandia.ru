@@ -43,11 +43,11 @@ class DirectionFactory extends Factory
     {
         return [
             'metatag_id' => Metatag::factory(),
-            'name' => $this->faker->text(191),
-            'header' => $this->faker->text(191),
+            'name' => $this->faker->text(20),
+            'header' => $this->faker->text(50),
             'weight' => $this->faker->numberBetween(1, 1000),
-            'link' => Util::latin($this->faker->text(191)),
-            'text' => $this->faker->text(5000),
+            'link' => Util::latin($this->faker->text(60)),
+            'text' => $this->faker->text(1000),
             'status' => true,
         ];
     }

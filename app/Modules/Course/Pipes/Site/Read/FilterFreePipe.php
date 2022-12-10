@@ -55,13 +55,16 @@ class FilterFreePipe implements Pipe
             $cacheKey,
             CacheTime::GENERAL->value,
             function () use ($filters) {
-                return !!Course::filter($filters ?: [])
-                    ->where('price', '=', null)
-                    ->where('status', Status::ACTIVE->value)
-                    ->whereHas('school', function ($query) {
-                        $query->where('status', true);
-                    })
-                    ->count();
+                return !!Course::select([
+                    'id'
+                ])
+                ->filter($filters ?: [])
+                ->where('price', '=', null)
+                ->where('status', Status::ACTIVE->value)
+                ->whereHas('school', function ($query) {
+                    $query->where('status', true);
+                })
+                ->count();
             }
         );
 

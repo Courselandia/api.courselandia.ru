@@ -36,9 +36,9 @@ class MetatagFactory extends Factory
     ])] public function definition(): array
     {
         return [
-            'description' => $this->faker->text(1000),
-            'keywords' => $this->faker->text(1000),
-            'title' => $this->faker->text(500),
+            'description' => $this->faker->text(250),
+            'keywords' => $this->faker->text(50),
+            'title' => $this->faker->text(100),
         ];
     }
 }

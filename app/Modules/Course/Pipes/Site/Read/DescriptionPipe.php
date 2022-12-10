@@ -110,36 +110,38 @@ class DescriptionPipe implements Pipe
             }
         }
 
-        $cacheKey = Util::getKey(
-            'course',
-            'site',
-            'description',
-            $descriptionName,
-            $id,
-        );
+        if ($model) {
+            $cacheKey = Util::getKey(
+                'course',
+                'site',
+                'description',
+                $descriptionName,
+                $id,
+            );
 
-        $record = Cache::tags([
-            'course',
-            'direction',
-            'profession',
-            'category',
-            'skill',
-            'teacher',
-            'tool',
-            'review',
-        ])->remember(
-            $cacheKey,
-            CacheTime::GENERAL->value,
-            function () use ($model, $id) {
-                /**
-                 * @var $model Eloquent
-                 */
-                return $model::find($id)->toArray();
-            }
-        );
+            $record = Cache::tags([
+                'course',
+                'direction',
+                'profession',
+                'category',
+                'skill',
+                'teacher',
+                'tool',
+                'review',
+            ])->remember(
+                $cacheKey,
+                CacheTime::GENERAL->value,
+                function () use ($model, $id) {
+                    /**
+                     * @var $model Eloquent
+                     */
+                    return $model::find($id)->toArray();
+                }
+            );
 
-        $entity->description = new $modelEntity($record);
-        $entity->section = $descriptionName;
+            $entity->description = new $modelEntity($record);
+            $entity->section = $descriptionName;
+        }
 
         return $next($entity);
     }

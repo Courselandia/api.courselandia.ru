@@ -8,15 +8,15 @@
 
 namespace App\Modules\Course\Actions\Site\Course;
 
+use DB;
 use App\Models\Entity;
 use App\Models\Exceptions\ParameterInvalidException;
-use App\Modules\Course\Helpers\SortFilter;
+use App\Modules\Direction\Models\Direction;
 use Cache;
 use Util;
 use App\Models\Action;
 use App\Models\Enums\CacheTime;
 use App\Modules\Course\Entities\CourseItemFilter;
-use App\Modules\Course\Models\Course;
 use App\Modules\Course\Enums\Status;
 
 /**
@@ -54,7 +54,9 @@ class CourseDirectionReadAction extends Action
     public function run(): array
     {
         if (isset($this->filters['directions-id'])) {
-            $currentFilters = is_array($this->filters['directions-id']) ? $this->filters['directions-id'] : [$this->filters['directions-id']];
+            $currentFilters = is_array(
+                $this->filters['directions-id']
+            ) ? $this->filters['directions-id'] : [$this->filters['directions-id']];
             unset($this->filters['directions-id']);
         } else {
             $currentFilters = [];
@@ -83,40 +85,42 @@ class CourseDirectionReadAction extends Action
             $cacheKey,
             CacheTime::GENERAL->value,
             function () use ($currentFilters) {
-                $query = Course::select('id')
-                    ->filter($this->filters ?: [])
-                    ->with([
-                        'directions' => function ($query) {
-                            $query->select([
-                                'directions.id',
-                                'directions.name',
-                                'directions.link',
-                                'directions.weight',
-                            ])->where('status', true);
-                        }
+                $query = Direction::select([
+                    'directions.id',
+                    'directions.name',
+                    'directions.link',
+                    'directions.weight',
+                ])
+                ->whereHas('courses', function ($query) {
+                    $query->select([
+                        'courses.id',
                     ])
+                    ->filter($this->filters ?: [])
                     ->where('status', Status::ACTIVE->value)
                     ->whereHas('school', function ($query) {
                         $query->where('status', true);
                     });
+                })
+                ->where('status', true);
 
-                $items = $query->get();
-                $result = [];
-
-                foreach ($items as $item) {
-                    foreach ($item->directions as $direction) {
-                        if (!isset($result[$direction->id])) {
-                            $result[$direction->id] = [
-                                'id' => $direction->id,
-                                'name' => $direction->name,
-                                'link' => $direction->link,
-                                'weight' => $direction->weight
-                            ];
-                        }
-                    }
+                if (count($currentFilters)) {
+                    $query->orderBy(
+                        DB::raw('FIELD(id, ' . implode(', ', array_reverse($currentFilters)) . ')'),
+                        'DESC'
+                    );
                 }
 
-                $result = SortFilter::run($result, $currentFilters, $this->offset, $this->limit);
+                $query->orderBy('weight');
+
+                if ($this->offset) {
+                    $query->offset($this->offset);
+                }
+
+                if ($this->limit) {
+                    $query->limit($this->limit);
+                }
+
+                $result = $query->get()->toArray();
 
                 return Entity::toEntities($result, new CourseItemFilter());
             }

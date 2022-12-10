@@ -8,6 +8,7 @@
 
 namespace App\Modules\Course\Pipes\Site\Read;
 
+use App\Modules\Course\Models\CourseLevel;
 use Cache;
 use Util;
 use Closure;
@@ -58,32 +59,24 @@ class FilterLevelPipe implements Pipe
             $cacheKey,
             CacheTime::GENERAL->value,
             function () use ($filters) {
-                $items = Course::select('id')
-                    ->filter($filters ?: [])
-                    ->with([
-                        'levels' => function ($query) {
-                            $query->select([
-                                'course_id',
-                                'level',
-                            ])->where('id', '!=', null);
-                        }
+                $result = CourseLevel::select([
+                    'level',
+                ])
+                ->distinct()
+                ->where('id', '!=', null)
+                ->whereHas('course', function ($query) use ($filters) {
+                    $query->select([
+                        'courses.id',
                     ])
+                    ->filter($filters ?: [])
                     ->where('status', Status::ACTIVE->value)
                     ->whereHas('school', function ($query) {
                         $query->where('status', true);
-                    })->get();
+                    });
+                })
+                ->get();
 
-                $result = [];
-
-                foreach ($items as $item) {
-                    foreach ($item->levels as $level) {
-                        if (!isset($result[$level->level])) {
-                            $result[$level->level] = Level::from($level->level);
-                        }
-                    }
-                }
-
-                return collect($result)->values()->toArray();
+                return $result->pluck('level')->toArray();
             }
         );
 

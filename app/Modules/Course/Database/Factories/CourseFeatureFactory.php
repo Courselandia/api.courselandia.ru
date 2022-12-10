@@ -36,7 +36,7 @@ class CourseFeatureFactory extends Factory
     {
         return [
             'icon' => 'brief',
-            'text' => $this->faker->text(191),
+            'text' => $this->faker->text(80),
         ];
     }
 }

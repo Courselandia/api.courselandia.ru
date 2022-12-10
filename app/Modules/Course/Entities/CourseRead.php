@@ -51,13 +51,6 @@ class CourseRead extends Entity
     public ?array $courses = null;
 
     /**
-     * Сущность описания.
-     *
-     * @var Entity|null
-     */
-    public ?Entity $description = null;
-
-    /**
      * Сущность фильтров.
      *
      * @var CourseFilter|null
@@ -70,6 +63,13 @@ class CourseRead extends Entity
      * @var string|null
      */
     public ?string $section = null;
+
+    /**
+     * Сущность описания.
+     *
+     * @var Entity|null
+     */
+    public ?Entity $description = null;
 
     /**
      * Количество.

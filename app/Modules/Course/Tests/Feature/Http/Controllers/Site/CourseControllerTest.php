@@ -462,9 +462,6 @@ class CourseControllerTest extends TestCase
         return [
             'id',
             'school_id',
-            'image_big_id',
-            'image_middle_id',
-            'image_small_id',
             'header',
             'link',
             'url',
@@ -485,56 +482,41 @@ class CourseControllerTest extends TestCase
                 '*' => [
                     'id',
                     'name',
-                    'header',
-                    'link',
                 ]
             ],
             'professions' => [
                 '*' => [
                     'id',
                     'name',
-                    'header',
-                    'link',
                 ]
             ],
             'categories' => [
                 '*' => [
                     'id',
                     'name',
-                    'header',
-                    'link',
                 ]
             ],
             'skills' => [
                 '*' => [
                     'id',
                     'name',
-                    'header',
-                    'link',
                 ]
             ],
             'teachers' => [
                 '*' => [
                     'id',
                     'name',
-                    'link',
-                    'rating',
-                    'image_small_id',
-                    'image_middle_id',
                 ]
             ],
             'tools' => [
                 '*' => [
                     'id',
                     'name',
-                    'header',
-                    'link',
                 ]
             ],
             'levels' => [
                 '*' => [
                     'id',
-                    'course_id',
                     'level',
                 ]
             ]
@@ -551,7 +533,6 @@ class CourseControllerTest extends TestCase
         return [
             'id',
             'name',
-            'header',
             'link'
         ];
     }
