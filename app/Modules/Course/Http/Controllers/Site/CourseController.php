@@ -310,7 +310,7 @@ class CourseController extends Controller
         $action->sorts = $request->get('sorts');
         $action->filters = $request->get('filters');
         $action->offset = $request->get('offset');
-        $action->limit = $request->get('limit');
+        $action->limit = $request->get('limit', 30);
 
         $entityCourseRead = $action->run();
 

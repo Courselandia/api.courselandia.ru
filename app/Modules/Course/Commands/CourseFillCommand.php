@@ -75,6 +75,8 @@ class CourseFillCommand extends Command
 
             $this->line('Создание атрибутов направлений.');
 
+            $amount = $this->option('amount');
+
             $directionAmount = 7;
             $directions = Direction::factory()->count($directionAmount)->create();
 
@@ -95,7 +97,7 @@ class CourseFillCommand extends Command
 
             $this->line('Создание атрибутов учителей.');
 
-            $teacherAmount = 1300;
+            $teacherAmount = $amount * 3;
             $teachers = Teacher::factory()->count($teacherAmount)->create();
 
             $this->line('Создание атрибутов инструментов.');
@@ -109,7 +111,6 @@ class CourseFillCommand extends Command
             $schools = School::factory()->count($schoolAmount)->create();
 
             $this->line('Генерация курсов.');
-            $amount = $this->option('amount');
             $bar = $this->output->createProgressBar($amount);
             $bar->start();
 

@@ -45,7 +45,6 @@ class DataPipe implements Pipe
         'cache',
         'pathCache',
         'pathSource',
-        'header',
         'image_logo_id',
         'image_site_id',
         'site',
@@ -65,7 +64,8 @@ class DataPipe implements Pipe
         'image_small_id',
         'image_middle_id',
         'image_big_id',
-        'schools'
+        'schools',
+        'header',
     ];
 
     /**
@@ -104,11 +104,11 @@ class DataPipe implements Pipe
             if (is_array($entity->$key)) {
                 for ($i = 0; $i < count($entity->$key); $i++) {
                     if ($entity->$key[$i] instanceof Entity) {
-                        $entity->$key[$i] = $this->clean($entity->$key[$i], $removes);
+                        $entity->$key[$i] = $this->clean($entity->$key[$i], $removes, $ifNull);
                     }
                 }
             } elseif ($entity->$key instanceof Entity) {
-                $entity->$key = $this->clean($entity->$key, $removes);
+                $entity->$key = $this->clean($entity->$key, $removes, $ifNull);
             } elseif (in_array($key, $removes)) {
                 if ($ifNull === false) {
                     unset($entity->$key);
