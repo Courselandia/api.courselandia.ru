@@ -27,7 +27,7 @@
         "kalnoy/nestedset": "^6.0",
         "kix/mdash": "^0.5.5",
         "kreait/laravel-firebase": "^4.2",
-        "laravel/framework": "^9.19",
+        "laravel/framework": "9.41",
         "laravel/sanctum": "^2.15.1",
         "laravel/tinker": "^2.7",
         "menarasolutions/geographer-laravel": "^0.2.1",

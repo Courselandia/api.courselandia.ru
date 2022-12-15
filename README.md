@@ -10,6 +10,7 @@ Installation process:
 
 Connection to the app in the container
 - docker exec -it api-courselandia-ru-app bash
+- docker exec -u root -it api-courselandia-ru-app /bin/bash
 
 Connection to the database in the container
 - docker exec -it db bash

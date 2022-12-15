@@ -5,6 +5,7 @@
 /vendor
 .env
 .env.backup
+.env.production
 .env.dusk.local
 .env.testing
 .phpunit.result.cache
