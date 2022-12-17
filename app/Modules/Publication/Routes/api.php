@@ -10,7 +10,7 @@ Route::group([
         'auth.role:' . Role::ADMIN->value . ',' . Role::MANAGER->value
     ],
     'prefix' => 'private/admin/publication/',
-    'as' => 'api.private.admin.publication'
+    'as' => 'api.private.admin.publication.'
 ],
     function () {
         Route::get('read/', 'Admin\PublicationController@read')
@@ -32,10 +32,10 @@ Route::group([
             ->name('destroy');
 
         Route::put('update/image/{id}', 'Admin\PublicationImageController@update')
-            ->name('destroy');
+            ->name('update.image');
 
         Route::delete('destroy/image/{id}', 'Admin\PublicationImageController@destroy')
-            ->name('destroy');
+            ->name('destroy.image');
     });
 
 Route::group([

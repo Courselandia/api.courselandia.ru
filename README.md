@@ -5,7 +5,9 @@ Installation process:
 - docker-compose exec app php artisan migrate
 - docker-compose exec app php artisan db:seed
 - docker-compose exec app php artisan config:clear
+- docker-compose exec app php artisan config:cache
 - docker-compose exec app php artisan view:clear
+- docker-compose exec app php artisan route:clear
 - docker-compose exec app php artisan route:cache
 
 Connection to the app in the container

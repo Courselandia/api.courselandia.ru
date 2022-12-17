@@ -29,10 +29,10 @@ Route::group([
             ->name('destroy');
 
         Route::put('update/image/{id}', 'Admin\CourseImageController@update')
-            ->name('destroy');
+            ->name('update.image');
 
         Route::delete('destroy/image/{id}', 'Admin\CourseImageController@destroy')
-            ->name('destroy');
+            ->name('destroy.image');
     }
 );
 

@@ -32,8 +32,8 @@ Route::group([
             ->name('destroy');
 
         Route::put('update/image/{id}', 'Admin\TeacherImageController@update')
-            ->name('destroy');
+            ->name('update.image');
 
         Route::delete('destroy/image/{id}', 'Admin\TeacherImageController@destroy')
-            ->name('destroy');
+            ->name('destroy.image');
     });
