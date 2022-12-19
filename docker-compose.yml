@@ -27,6 +27,25 @@ services:
             - smtp
             - rabbitmq
 
+    queue:
+        build:
+            args:
+                user: courselandia.ru
+                uid: 1000
+            context: docker/app
+            dockerfile: Dockerfile
+        image: api-courselandia-queue
+        container_name: api-courselandia-ru-queue
+        restart: unless-stopped
+        working_dir: /var/www
+        volumes:
+            - ./:/var/www
+        command: "php artisan queue:work"
+        networks:
+            - network
+        depends_on:
+            - app
+
     db:
         image: mysql:8.0.30
         container_name: api-courselandia-ru-db
