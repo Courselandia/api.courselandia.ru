@@ -34,7 +34,11 @@ class CoreController extends Controller
         Cache::flush();
 
         Artisan::call('view:clear');
+        Artisan::call('config:clear');
+        Artisan::call('route:clear');
+
         Artisan::call('config:cache');
+        Artisan::call('route:cache');
 
         Log::info(trans('core::http.controllers.admin.coreController.clean.log'), [
             'login' => $login,

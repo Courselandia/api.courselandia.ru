@@ -72,7 +72,6 @@ class Feedback extends Mailable
         $this->email = $email;
         $this->phone = $phone;
         $this->msg = Util::getText($msg);
-        $this->site = Config::get('app.url');
     }
 
     /**
