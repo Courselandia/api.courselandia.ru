@@ -2,7 +2,6 @@
 
 namespace App\Http;
 
-use App\Http\Middleware\AllowOnlyAjaxRequests;
 use App\Http\Middleware\Locale;
 use App\Modules\Access\Http\Middleware\AllowGuest;
 use App\Modules\Access\Http\Middleware\AllowOAuth;
@@ -54,7 +53,6 @@ class Kernel extends HttpKernel
         ],
 
         'ajax' => [
-            AllowOnlyAjaxRequests::class
         ],
 
         'locale' => [
