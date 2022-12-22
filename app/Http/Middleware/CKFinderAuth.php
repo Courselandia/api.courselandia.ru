@@ -27,8 +27,8 @@ class CKFinderAuth
     public function handle(Request $request, Closure $next): mixed
     {
         config([
-            'ckfinder.authentication' => function () use ($request) {
-                return $request->get('_key') === Config::get('ckfinder.key');
+            'ckfinder.authentication' => function () {
+                return true;
             }
         ]);
 
