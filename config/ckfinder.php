@@ -153,7 +153,7 @@ $config['forceAscii'] = false;
 $config['xSendfile'] = false;
 
 // http://docs.cksource.com/ckfinder3-php/configuration.html#configuration_options_debug
-$config['debug'] = false;
+$config['debug'] = true;
 
 /*==================================== Plugins ========================================*/
 // http://docs.cksource.com/ckfinder3-php/configuration.html#configuration_options_plugins
