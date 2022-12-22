@@ -24,6 +24,8 @@ $config = array();
 
 $config['loadRoutes'] = true;
 
+$config['key'] = env('CKFINDER_KEY');
+
 $config['authentication'] = '\App\Http\Middleware\CKFinderAuth';
 
 /*============================ License Key ============================================*/
@@ -153,7 +155,7 @@ $config['forceAscii'] = false;
 $config['xSendfile'] = false;
 
 // http://docs.cksource.com/ckfinder3-php/configuration.html#configuration_options_debug
-$config['debug'] = true;
+$config['debug'] = false;
 
 /*==================================== Plugins ========================================*/
 // http://docs.cksource.com/ckfinder3-php/configuration.html#configuration_options_plugins

@@ -7,6 +7,7 @@
 
 namespace App\Http\Middleware;
 
+use Config;
 use Closure;
 use Illuminate\Http\Request;
 
@@ -26,8 +27,8 @@ class CKFinderAuth
     public function handle(Request $request, Closure $next): mixed
     {
         config([
-            'ckfinder.authentication' => function () {
-                return true;
+            'ckfinder.authentication' => function () use ($request) {
+                return $request->get('_key') === Config::get('ckfinder.key');
             }
         ]);
 
