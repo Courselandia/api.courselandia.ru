@@ -61,7 +61,7 @@ class FeedbackSendAction extends Action
      */
     public function run(): FeedbackEntity
     {
-        Mail::to(Config::get('mail.to.address'))->queue(
+        Mail::to(Config::get('mail.admin'))->queue(
             new FeedbackMail($this->name, $this->email, $this->phone, $this->message)
         );
 
