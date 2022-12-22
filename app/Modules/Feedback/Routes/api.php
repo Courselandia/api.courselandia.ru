@@ -31,6 +31,6 @@ Route::group([
     'as' => 'api.private.site.feedback'
 ], function () {
     Route::post('send/', 'Site\FeedbackController@send')
-        ->middleware('act:feedback,2,60')
+        ->middleware('act:feedback,5,60')
         ->name('send');
 });
