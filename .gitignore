@@ -25,5 +25,6 @@ package-lock.json
 /public/css
 /public/fonts
 /public/images
-/public/js
+/public/js/*
+!/public/js/ckfinder
 /resources/views/tmp
