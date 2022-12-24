@@ -1,6 +1,4 @@
 <?php
-// Test 2
-
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
