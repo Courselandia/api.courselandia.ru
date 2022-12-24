@@ -1,5 +1,5 @@
 <?php
-// Test 1
+// Test 2
 
 use Illuminate\Support\Facades\Route;
 
