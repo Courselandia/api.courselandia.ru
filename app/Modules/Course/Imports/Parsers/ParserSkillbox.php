@@ -40,6 +40,7 @@ class ParserSkillbox extends ParserYml
     {
         return [
             'Для бизнеса' => Direction::BUSINESS,
+            'Бизнес-школа' => Direction::BUSINESS,
             'Английский язык' => Direction::OTHER,
             'Маркетинг' => Direction::MARKETING,
             'Дизайн' => Direction::DESIGN,
