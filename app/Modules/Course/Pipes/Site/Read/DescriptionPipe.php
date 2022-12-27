@@ -135,12 +135,16 @@ class DescriptionPipe implements Pipe
                     /**
                      * @var $model Eloquent
                      */
-                    return $model::find($id)->toArray();
+                    $item = $model::find($id);
+
+                    return $item ? $item->toArray() : null;
                 }
             );
 
-            $entity->description = new $modelEntity($record);
-            $entity->section = $descriptionName;
+            if ($record) {
+                $entity->description = new $modelEntity($record);
+                $entity->section = $descriptionName;
+            }
         }
 
         return $next($entity);
