@@ -76,21 +76,12 @@ class CourseController extends Controller
 
         $data = $action->run();
 
-        if ($data) {
-            $data = [
-                'data' => $data,
-                'success' => true,
-            ];
+        $data = [
+            'data' => $data,
+            'success' => true,
+        ];
 
-            return response()->json($data);
-        } else {
-            $data = [
-                'data' => null,
-                'success' => false,
-            ];
-
-            return response()->json($data)->setStatusCode(404);
-        }
+        return response()->json($data);
     }
 
     /**
@@ -110,21 +101,12 @@ class CourseController extends Controller
 
         $data = $action->run();
 
-        if ($data) {
-            $data = [
-                'data' => $data,
-                'success' => true,
-            ];
+        $data = [
+            'data' => $data,
+            'success' => true,
+        ];
 
-            return response()->json($data);
-        } else {
-            $data = [
-                'data' => null,
-                'success' => false,
-            ];
-
-            return response()->json($data)->setStatusCode(404);
-        }
+        return response()->json($data);
     }
 
     /**
@@ -144,21 +126,12 @@ class CourseController extends Controller
 
         $data = $action->run();
 
-        if ($data) {
-            $data = [
-                'data' => $data,
-                'success' => true,
-            ];
+        $data = [
+            'data' => $data,
+            'success' => true,
+        ];
 
-            return response()->json($data);
-        } else {
-            $data = [
-                'data' => null,
-                'success' => false,
-            ];
-
-            return response()->json($data)->setStatusCode(404);
-        }
+        return response()->json($data);
     }
 
     /**
@@ -178,21 +151,12 @@ class CourseController extends Controller
 
         $data = $action->run();
 
-        if ($data) {
-            $data = [
-                'data' => $data,
-                'success' => true,
-            ];
+        $data = [
+            'data' => $data,
+            'success' => true,
+        ];
 
-            return response()->json($data);
-        } else {
-            $data = [
-                'data' => null,
-                'success' => false,
-            ];
-
-            return response()->json($data)->setStatusCode(404);
-        }
+        return response()->json($data);
     }
 
     /**
@@ -212,21 +176,12 @@ class CourseController extends Controller
 
         $data = $action->run();
 
-        if ($data) {
-            $data = [
-                'data' => $data,
-                'success' => true,
-            ];
+        $data = [
+            'data' => $data,
+            'success' => true,
+        ];
 
-            return response()->json($data);
-        } else {
-            $data = [
-                'data' => null,
-                'success' => false,
-            ];
-
-            return response()->json($data)->setStatusCode(404);
-        }
+        return response()->json($data);
     }
 
     /**
@@ -246,21 +201,12 @@ class CourseController extends Controller
 
         $data = $action->run();
 
-        if ($data) {
-            $data = [
-                'data' => $data,
-                'success' => true,
-            ];
+        $data = [
+            'data' => $data,
+            'success' => true,
+        ];
 
-            return response()->json($data);
-        } else {
-            $data = [
-                'data' => null,
-                'success' => false,
-            ];
-
-            return response()->json($data)->setStatusCode(404);
-        }
+        return response()->json($data);
     }
 
     /**
@@ -280,21 +226,12 @@ class CourseController extends Controller
 
         $data = $action->run();
 
-        if ($data) {
-            $data = [
-                'data' => $data,
-                'success' => true,
-            ];
+        $data = [
+            'data' => $data,
+            'success' => true,
+        ];
 
-            return response()->json($data);
-        } else {
-            $data = [
-                'data' => null,
-                'success' => false,
-            ];
-
-            return response()->json($data)->setStatusCode(404);
-        }
+        return response()->json($data);
     }
 
     /**
