@@ -135,9 +135,7 @@ class DescriptionPipe implements Pipe
                     /**
                      * @var $model Eloquent
                      */
-                    $item = $model::find($id);
-
-                    return $item ? $item->toArray() : null;
+                    return $model::find($id)?->toArray();
                 }
             );
 
