@@ -20,8 +20,8 @@ class GateRole
     /**
      * Метод для определения доступа.
      *
-     * @param  User  $user  Данные пользователя.
-     * @param  string  $nameRoles  Название роли.
+     * @param User $user Данные пользователя.
+     * @param string $nameRoles Название роли.
      *
      * @return bool Вернет результат проверки.
      * @throws ParameterInvalidException

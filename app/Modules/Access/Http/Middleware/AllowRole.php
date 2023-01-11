@@ -39,7 +39,7 @@ class AllowRole
         ...$params
     ): ResponseFactory|RedirectResponse|Application|Redirector|JsonResponse|Response|Request {
         if (!empty($params)) {
-            if (Gate::allows('role', $params)) {
+            if (Gate::allows('role', implode(':', $params))) {
                 return $next($request);
             }
 

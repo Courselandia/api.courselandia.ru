@@ -7,7 +7,7 @@ Route::group([
         'locale',
         'ajax',
         'auth.api',
-        'auth.role:'.Role::ADMIN->value.','.Role::MANAGER->value
+        'auth.role:' . Role::ADMIN->value . ',' . Role::MANAGER->value
     ],
     'prefix' => 'private/admin/alert/',
     'as' => 'api.private.admin.alert'
