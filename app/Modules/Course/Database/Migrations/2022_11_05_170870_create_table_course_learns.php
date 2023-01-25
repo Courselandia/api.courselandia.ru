@@ -19,7 +19,7 @@ class CreateTableCourseLearns extends Migration
             $table->bigInteger('id', true)->unsigned();
             $table->bigInteger('course_id')->unsigned()->index('course_id');
 
-            $table->string('text', 191);
+            $table->text('text');
 
             $table->timestamps();
             $table->softDeletes()->index();

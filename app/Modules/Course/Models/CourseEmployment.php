@@ -62,7 +62,7 @@ class CourseEmployment extends Eloquent
     {
         return [
             'course_id' => 'required|digits_between:0,20|exists_soft:courses,id',
-            'text' => 'required|between:1,191',
+            'text' => 'required|between:1,1000',
         ];
     }
 
