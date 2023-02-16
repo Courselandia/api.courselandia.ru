@@ -23,11 +23,9 @@ use App\Modules\Course\Entities\Course as CourseEntity;
 use App\Modules\Course\Models\Course;
 use App\Modules\Course\Models\CourseLevel;
 use App\Modules\Course\Models\CourseLearn;
-use App\Modules\Course\Models\CourseEmployment;
 use App\Modules\Course\Models\CourseFeature;
 use App\Modules\Course\Entities\CourseLevel as CourseLevelEntity;
 use App\Modules\Course\Entities\CourseLearn as CourseLearnEntity;
-use App\Modules\Course\Entities\CourseEmployment as CourseEmploymentEntity;
 use App\Modules\Course\Entities\CourseFeature as CourseFeatureEntity;
 use App\Modules\Salary\Enums\Level;
 use Illuminate\Http\UploadedFile;
@@ -311,6 +309,7 @@ class CourseCreateAction extends Action
             $course->skills()->sync($this->skills ?: []);
             $course->teachers()->sync($this->teachers ?: []);
             $course->tools()->sync($this->tools ?: []);
+            $course->employments()->sync($this->employments ?: []);
 
             if ($this->levels) {
                 foreach ($this->levels as $level) {
@@ -329,16 +328,6 @@ class CourseCreateAction extends Action
                     $entity->text = $learn;
 
                     CourseLearn::create($entity->toArray());
-                }
-            }
-
-            if ($this->employments) {
-                foreach ($this->employments as $employment) {
-                    $entity = new CourseEmploymentEntity();
-                    $entity->course_id = $course->id;
-                    $entity->text = $employment;
-
-                    CourseEmployment::create($entity->toArray());
                 }
             }
 

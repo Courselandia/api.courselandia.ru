@@ -14,6 +14,7 @@ use App\Modules\Course\Enums\Currency;
 use App\Modules\Course\Enums\Duration;
 use App\Modules\Course\Enums\Language;
 use App\Modules\Course\Enums\Status;
+use App\Modules\Employment\Entities\Employment;
 use App\Modules\Metatag\Entities\Metatag;
 use App\Modules\School\Entities\School;
 use Carbon\Carbon;
@@ -322,9 +323,9 @@ class Course extends Entity
     /**
      * Трудоустройство.
      *
-     * @var CourseEmployment[]
+     * @var Employment[]
      */
-    #[Entities(CourseEmployment::class)]
+    #[Entities(Employment::class)]
     public ?array $employments = null;
 
     /**

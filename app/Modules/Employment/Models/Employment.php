@@ -1,41 +1,46 @@
 <?php
 /**
- * Модуль Курсов.
- * Этот модуль содержит все классы для работы с курсами.
+ * Модуль Трудоустройство.
+ * Этот модуль содержит все классы для работы с трудоустройствами.
  *
- * @package App\Modules\Course
+ * @package App\Modules\Employment
  */
 
-namespace App\Modules\Course\Models;
+namespace App\Modules\Employment\Models;
 
-use App\Modules\Course\Database\Factories\CourseEmploymentFactory;
 use Eloquent;
+use App\Models\Status;
 use App\Models\Delete;
 use App\Models\Validate;
 use App\Models\Sortable;
 use EloquentFilter\Filterable;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use JetBrains\PhpStorm\ArrayShape;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use App\Modules\Course\Filters\CourseEmploymentFilter;
+use App\Modules\Employment\Database\Factories\EmploymentFactory;
+use App\Modules\Employment\Filters\EmploymentFilter;
+use App\Modules\Course\Models\Course;
 
 /**
- * Класс модель для таблицы помощь трудоустройства после курса на основе Eloquent.
+ * Класс модель для таблицы трудоустройства на основе Eloquent.
  *
- * @property int|string $id ID уровня.
- * @property int|string $course_id ID курса.
- * @property string $text Описание.
+ * @property int|string $id ID трудоустройства.
+
+ * @property string $name Название.
+ * @property string $text Текст.
+ * @property string $status Статус.
  *
- * @property-read Course $course
+ * @property-read Course[] $courses
  */
-class CourseEmployment extends Eloquent
+class Employment extends Eloquent
 {
     use Delete;
     use HasFactory;
     use Sortable;
     use SoftDeletes;
+    use Status;
     use Validate;
     use Filterable;
 
@@ -46,8 +51,9 @@ class CourseEmployment extends Eloquent
      */
     protected $fillable = [
         'id',
-        'course_id',
+        'name',
         'text',
+        'status',
     ];
 
     /**
@@ -56,13 +62,15 @@ class CourseEmployment extends Eloquent
      * @return array Вернет массив правил.
      */
     #[ArrayShape([
-        'course_id' => 'string',
+        'name' => 'string',
         'text' => 'string',
+        'status' => 'string'
     ])] protected function getRules(): array
     {
         return [
-            'course_id' => 'required|digits_between:0,20|exists_soft:courses,id',
-            'text' => 'required|between:1,1000',
+            'name' => 'required|between:1,191|unique_soft:employments,name,' . $this->id . ',id',
+            'text' => 'max:65000',
+            'status' => 'required|boolean'
         ];
     }
 
@@ -74,8 +82,9 @@ class CourseEmployment extends Eloquent
     protected function getNames(): array
     {
         return [
-            'course_id' => trans('course::models.courseEmployment.courseId'),
-            'text' => trans('course::models.courseEmployment.text'),
+            'name' => trans('employment::models.employment.name'),
+            'text' => trans('employment::models.employment.text'),
+            'status' => trans('employment::models.employment.status')
         ];
     }
 
@@ -86,7 +95,7 @@ class CourseEmployment extends Eloquent
      */
     public function modelFilter(): string
     {
-        return $this->provideFilter(CourseEmploymentFilter::class);
+        return $this->provideFilter(EmploymentFilter::class);
     }
 
     /**
@@ -96,16 +105,16 @@ class CourseEmployment extends Eloquent
      */
     protected static function newFactory(): Factory
     {
-        return CourseEmploymentFactory::new();
+        return EmploymentFactory::new();
     }
 
     /**
-     * Получить курс.
+     * Курсы этого трудоустройства.
      *
-     * @return BelongsTo Модель курса.
+     * @return BelongsToMany Модели курсов.
      */
-    public function course(): BelongsTo
+    public function courses(): BelongsToMany
     {
-        return $this->belongsTo(Course::class);
+        return $this->belongsToMany(Course::class);
     }
 }

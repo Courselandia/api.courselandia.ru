@@ -1,20 +1,21 @@
 <?php
 /**
- * Модуль Курсов.
- * Этот модуль содержит все классы для работы с курсами.
+ * Модуль Трудоустройство.
+ * Этот модуль содержит все классы для работы с трудоустройствами.
  *
- * @package App\Modules\Course
+ * @package App\Modules\Employment
  */
 
-namespace App\Modules\Course\Entities;
+namespace App\Modules\Employment\Entities;
 
 use App\Models\Entity;
 use Carbon\Carbon;
+use App\Modules\Metatag\Entities\Metatag;
 
 /**
- * Сущность для трудоустройства после курса.
+ * Сущность для трудоустройства.
  */
-class CourseEmployment extends Entity
+class Employment extends Entity
 {
     /**
      * ID записи.
@@ -24,18 +25,25 @@ class CourseEmployment extends Entity
     public int|string|null $id = null;
 
     /**
-     * ID курса.
+     * Название.
      *
-     * @var int|string|null
+     * @var string|null
      */
-    public int|string|null $course_id = null;
+    public ?string $name = null;
 
     /**
-     * Текст.
+     * Текстz.
      *
      * @var string|null
      */
     public ?string $text = null;
+
+    /**
+     * Статус.
+     *
+     * @var bool|null
+     */
+    public ?bool $status = null;
 
     /**
      * Дата создания.

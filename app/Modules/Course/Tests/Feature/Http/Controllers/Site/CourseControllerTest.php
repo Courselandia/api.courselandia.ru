@@ -9,11 +9,11 @@
 namespace App\Modules\Course\Tests\Feature\Http\Controllers\Site;
 
 use App\Modules\Category\Models\Category;
-use App\Modules\Course\Models\CourseEmployment;
 use App\Modules\Course\Models\CourseFeature;
 use App\Modules\Course\Models\CourseLearn;
 use App\Modules\Course\Models\CourseLevel;
 use App\Modules\Direction\Models\Direction;
+use App\Modules\Employment\Models\Employment;
 use App\Modules\Profession\Models\Profession;
 use App\Modules\Skill\Models\Skill;
 use App\Modules\Teacher\Models\Teacher;
@@ -257,6 +257,7 @@ class CourseControllerTest extends TestCase
         $skills = Skill::factory()->count(2)->create();
         $teachers = Teacher::factory()->count(2)->create();
         $tools = Tool::factory()->count(2)->create();
+        $employments = Employment::factory()->count(5)->create();
 
         $course->directions()->sync($directions);
         $course->professions()->sync($professions);
@@ -264,8 +265,8 @@ class CourseControllerTest extends TestCase
         $course->skills()->sync($skills);
         $course->teachers()->sync($teachers);
         $course->tools()->sync($tools);
+        $course->employments()->sync($employments);
 
-        CourseEmployment::factory()->count(2)->for($course)->create();
         CourseFeature::factory()->count(4)->for($course)->create();
         CourseLearn::factory()->count(3)->for($course)->create();
         CourseLevel::factory()->count(3)->for($course)->create();
@@ -438,7 +439,7 @@ class CourseControllerTest extends TestCase
             'employments' => [
                 '*' => [
                     'id',
-                    'course_id',
+                    'name',
                     'text',
                 ]
             ],

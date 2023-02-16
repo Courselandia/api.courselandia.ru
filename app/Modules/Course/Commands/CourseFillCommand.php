@@ -8,10 +8,10 @@
 
 namespace App\Modules\Course\Commands;
 
+use App\Modules\Employment\Models\Employment;
 use Config;
 use Illuminate\Console\Command;
 use App\Modules\Course\Models\Course;
-use App\Modules\Course\Models\CourseEmployment;
 use App\Modules\Course\Models\CourseFeature;
 use App\Modules\Course\Models\CourseLearn;
 use App\Modules\Course\Models\CourseLevel;
@@ -61,7 +61,6 @@ class CourseFillCommand extends Command
             $this->line('Удаление курсов в базе данных.');
 
             Course::truncate();
-            CourseEmployment::truncate();
             CourseFeature::truncate();
             CourseLearn::truncate();
             CourseLevel::truncate();
@@ -105,6 +104,9 @@ class CourseFillCommand extends Command
             $toolAmount = 1000;
             $tools = Tool::factory()->count($toolAmount)->create();
 
+            $employmentAmount = 1000;
+            $tools = Employment::factory()->count($employmentAmount)->create();
+
             $this->line('Создание атрибутов школ.');
 
             $schoolAmount = 35;
@@ -139,7 +141,9 @@ class CourseFillCommand extends Command
                 $toolStart = rand(0, $toolAmount);
                 $course->tools()->sync($tools->slice($toolStart, rand(1, 10)));
 
-                CourseEmployment::factory()->count(6)->for($course)->create();
+                $employmentStart = rand(0, $employmentAmount);
+                $course->employments()->sync($tools->slice($employmentStart, rand(1, 10)));
+
                 CourseFeature::factory()->count(4)->for($course)->create();
                 CourseLearn::factory()->count(3)->for($course)->create();
                 CourseLevel::factory()->count(2)->for($course)->create();

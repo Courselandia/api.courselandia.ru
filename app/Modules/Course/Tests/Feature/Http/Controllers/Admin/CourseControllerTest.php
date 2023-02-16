@@ -8,13 +8,13 @@
 
 namespace App\Modules\Course\Tests\Feature\Http\Controllers\Admin;
 
+use App\Modules\Employment\Models\Employment;
 use Util;
 use App\Modules\Category\Models\Category;
 use App\Modules\Course\Enums\Currency;
 use App\Modules\Course\Enums\Duration;
 use App\Modules\Course\Enums\Language;
 use App\Modules\Course\Enums\Status;
-use App\Modules\Course\Models\CourseEmployment;
 use App\Modules\Course\Models\CourseFeature;
 use App\Modules\Course\Models\CourseLearn;
 use App\Modules\Course\Models\CourseLevel;
@@ -106,6 +106,7 @@ class CourseControllerTest extends TestCase
         $skills = Skill::factory()->count(2)->create();
         $teachers = Teacher::factory()->count(2)->create();
         $tools = Tool::factory()->count(2)->create();
+        $employments = Employment::factory()->count(5)->create();
 
         $course->directions()->sync($directions);
         $course->professions()->sync($professions);
@@ -113,8 +114,8 @@ class CourseControllerTest extends TestCase
         $course->skills()->sync($skills);
         $course->teachers()->sync($teachers);
         $course->tools()->sync($tools);
+        $course->employments()->sync($employments);
 
-        CourseEmployment::factory()->count(2)->for($course)->create();
         CourseFeature::factory()->count(4)->for($course)->create();
         CourseLearn::factory()->count(3)->for($course)->create();
         CourseLevel::factory()->count(3)->for($course)->create();
@@ -249,9 +250,8 @@ class CourseControllerTest extends TestCase
                 Tool::factory()->create()->id,
             ],
             'employments' => [
-                $faker->text(191),
-                $faker->text(191),
-                $faker->text(191)
+                Employment::factory()->create()->id,
+                Employment::factory()->create()->id,
             ],
             'levels' => [
                 Level::JUNIOR->value,
@@ -560,7 +560,7 @@ class CourseControllerTest extends TestCase
             $structure['employments'] = [
                 '*' => [
                     'id',
-                    'course_id',
+                    'name',
                     'text',
                 ]
             ];

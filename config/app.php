@@ -226,6 +226,9 @@ return [
         App\Modules\Document\Providers\DocumentServiceProvider::class,
         App\Modules\Document\Providers\RouteServiceProvider::class,
 
+        App\Modules\Employment\Providers\EmploymentServiceProvider::class,
+        App\Modules\Employment\Providers\RouteServiceProvider::class,
+
         App\Modules\Feedback\Providers\FeedbackServiceProvider::class,
         App\Modules\Feedback\Providers\RouteServiceProvider::class,
 

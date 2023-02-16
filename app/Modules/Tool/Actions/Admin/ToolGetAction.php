@@ -29,16 +29,6 @@ class ToolGetAction extends Action
     public int|string|null $id = null;
 
     /**
-     * Конструктор.
-     *
-     * @param  Tool  $tool  Репозиторий инструментов.
-     */
-    public function __construct(Tool $tool)
-    {
-        $this->tool = $tool;
-    }
-
-    /**
      * Метод запуска логики.
      *
      * @return ToolEntity|null Вернет результаты исполнения.

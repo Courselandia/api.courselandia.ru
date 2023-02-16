@@ -30,6 +30,7 @@ use App\Modules\School\Models\School;
 use App\Modules\Skill\Models\Skill;
 use App\Modules\Teacher\Models\Teacher;
 use App\Modules\Tool\Models\Tool;
+use App\Modules\Employment\Models\Employment;
 use CodeBuds\WebPConverter\WebPConverter;
 use Eloquent;
 use App\Models\Delete;
@@ -87,9 +88,9 @@ use App\Modules\Course\Filters\CourseFilter;
  * @property-read Skill[] $skills
  * @property-read Teacher[] $teachers
  * @property-read Tool[] $tools
+ * @property-read Employment[] $employments
  * @property-read CourseLevel[] $levels
  * @property-read CourseLearn[] $learns
- * @property-read CourseEmployment[] $employments
  * @property-read CourseFeature[] $features
  */
 class Course extends Eloquent
@@ -335,6 +336,16 @@ class Course extends Eloquent
     }
 
     /**
+     * Трудоустройство для этого курса.
+     *
+     * @return BelongsToMany Модели трудоустройства.
+     */
+    public function employments(): BelongsToMany
+    {
+        return $this->belongsToMany(Employment::class);
+    }
+
+    /**
      * Уровни этого курса.
      *
      * @return HasMany Модели уровня.
@@ -352,16 +363,6 @@ class Course extends Eloquent
     public function learns(): HasMany
     {
         return $this->hasMany(CourseLearn::class);
-    }
-
-    /**
-     * Трудоустройство после курса.
-     *
-     * @return HasMany Модели чему научитесь.
-     */
-    public function employments(): HasMany
-    {
-        return $this->hasMany(CourseEmployment::class);
     }
 
     /**

@@ -23,11 +23,9 @@ use App\Modules\Course\Entities\Course as CourseEntity;
 use App\Modules\Course\Models\Course;
 use App\Modules\Course\Models\CourseLevel;
 use App\Modules\Course\Models\CourseLearn;
-use App\Modules\Course\Models\CourseEmployment;
 use App\Modules\Course\Models\CourseFeature;
 use App\Modules\Course\Entities\CourseLevel as CourseLevelEntity;
 use App\Modules\Course\Entities\CourseLearn as CourseLearnEntity;
-use App\Modules\Course\Entities\CourseEmployment as CourseEmploymentEntity;
 use App\Modules\Course\Entities\CourseFeature as CourseFeatureEntity;
 use App\Modules\Salary\Enums\Level;
 use Illuminate\Http\UploadedFile;
@@ -324,6 +322,7 @@ class CourseUpdateAction extends Action
                 $course->skills()->sync($this->skills ?: []);
                 $course->teachers()->sync($this->teachers ?: []);
                 $course->tools()->sync($this->tools ?: []);
+                $course->employments()->sync($this->employments ?: []);
 
                 CourseLevel::whereIn('id', collect($courseEntity->levels)->pluck('id')->toArray())
                     ->forceDelete();
@@ -348,19 +347,6 @@ class CourseUpdateAction extends Action
                         $entity->text = $learn;
 
                         CourseLearn::create($entity->toArray());
-                    }
-                }
-
-                CourseEmployment::whereIn('id', collect($courseEntity->employments)->pluck('id')->toArray())
-                    ->forceDelete();
-
-                if ($this->employments) {
-                    foreach ($this->employments as $employment) {
-                        $entity = new CourseEmploymentEntity();
-                        $entity->course_id = $this->id;
-                        $entity->text = $employment;
-
-                        CourseEmployment::create($entity->toArray());
                     }
                 }
 

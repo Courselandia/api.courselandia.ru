@@ -30,10 +30,6 @@ return [
         'modules_amount' => 'Modules amount',
         'status' => 'Status',
     ],
-    'courseEmployment' => [
-        'course_id' => 'ID course',
-        'text' => 'Text',
-    ],
     'courseFeature' => [
         'course_id' => 'ID course',
         'icon' => 'Icon',
