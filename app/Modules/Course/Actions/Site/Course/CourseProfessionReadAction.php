@@ -79,6 +79,8 @@ class CourseProfessionReadAction extends Action
             'skill',
             'teacher',
             'tool',
+            'process',
+            'employment',
         ])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,

@@ -127,6 +127,8 @@ class DescriptionPipe implements Pipe
                 'skill',
                 'teacher',
                 'tool',
+                'process',
+                'employment',
                 'review',
             ])->remember(
                 $cacheKey,

@@ -138,7 +138,7 @@ class EmploymentControllerTest extends TestCase
             [
                 'name' => $faker->text(300),
                 'text' => $faker->text(10000),
-                'status' => true,
+                'status' => 'TEST',
             ],
             [
                 'Authorization' => 'Bearer ' . $this->getAdminToken()

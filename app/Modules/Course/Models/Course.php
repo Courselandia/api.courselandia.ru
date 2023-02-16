@@ -30,6 +30,7 @@ use App\Modules\School\Models\School;
 use App\Modules\Skill\Models\Skill;
 use App\Modules\Teacher\Models\Teacher;
 use App\Modules\Tool\Models\Tool;
+use App\Modules\Process\Models\Process;
 use App\Modules\Employment\Models\Employment;
 use CodeBuds\WebPConverter\WebPConverter;
 use Eloquent;
@@ -88,6 +89,7 @@ use App\Modules\Course\Filters\CourseFilter;
  * @property-read Skill[] $skills
  * @property-read Teacher[] $teachers
  * @property-read Tool[] $tools
+ * @property-read Process[] $processes
  * @property-read Employment[] $employments
  * @property-read CourseLevel[] $levels
  * @property-read CourseLearn[] $learns
@@ -333,6 +335,16 @@ class Course extends Eloquent
     public function tools(): BelongsToMany
     {
         return $this->belongsToMany(Tool::class);
+    }
+
+    /**
+     * Как проходит обучение на курсе.
+     *
+     * @return BelongsToMany Модели как проходит обучение.
+     */
+    public function processes(): BelongsToMany
+    {
+        return $this->belongsToMany(Process::class);
     }
 
     /**

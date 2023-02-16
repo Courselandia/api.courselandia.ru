@@ -46,6 +46,8 @@ class CourseGetAction extends Action
             'skill',
             'teacher',
             'tool',
+            'process',
+            'employment',
             'review',
         ])->remember(
             $cacheKey,
@@ -60,6 +62,7 @@ class CourseGetAction extends Action
                         'skills',
                         'teachers',
                         'tools',
+                        'processes',
                         'levels',
                         'learns',
                         'employments',

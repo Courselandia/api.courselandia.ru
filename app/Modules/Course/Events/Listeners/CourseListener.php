@@ -91,6 +91,7 @@ class CourseListener
         $course->skills()->detach();
         $course->teachers()->detach();
         $course->tools()->detach();
+        $course->processes()->detach();
 
         if ($course->image_small_id) {
             ImageStore::destroy($course->image_small_id->id);

@@ -51,6 +51,8 @@ class FilterOnlinePipe implements Pipe
             'skill',
             'teacher',
             'tool',
+            'processes',
+            'employment',
         ])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,

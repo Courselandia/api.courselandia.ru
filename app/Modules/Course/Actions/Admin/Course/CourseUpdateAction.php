@@ -240,6 +240,13 @@ class CourseUpdateAction extends Action
     public ?array $tools = null;
 
     /**
+     * ID как проходит обучение.
+     *
+     * @var int[]
+     */
+    public ?array $processes = null;
+
+    /**
      * Уровни.
      *
      * @var Level[]
@@ -256,7 +263,7 @@ class CourseUpdateAction extends Action
     /**
      * Помощь в трудоустройстве.
      *
-     * @var string[]
+     * @var int[]
      */
     public ?array $employments = null;
 
@@ -322,6 +329,7 @@ class CourseUpdateAction extends Action
                 $course->skills()->sync($this->skills ?: []);
                 $course->teachers()->sync($this->teachers ?: []);
                 $course->tools()->sync($this->tools ?: []);
+                $course->processes()->sync($this->processes ?: []);
                 $course->employments()->sync($this->employments ?: []);
 
                 CourseLevel::whereIn('id', collect($courseEntity->levels)->pluck('id')->toArray())
@@ -373,6 +381,8 @@ class CourseUpdateAction extends Action
                 'skill',
                 'teacher',
                 'tool',
+                'process',
+                'employment',
                 'review',
             ])->flush();
 

@@ -22,6 +22,7 @@ use App\Modules\School\Models\School;
 use App\Modules\Skill\Models\Skill;
 use App\Modules\Teacher\Models\Teacher;
 use App\Modules\Tool\Models\Tool;
+use App\Modules\Process\Models\Process;
 
 /**
  * Заполнение тестовыми курсами базу данных.
@@ -71,6 +72,7 @@ class CourseFillCommand extends Command
             Skill::truncate();
             Teacher::truncate();
             Tool::truncate();
+            Process::truncate();
 
             $this->line('Создание атрибутов направлений.');
 
@@ -104,8 +106,11 @@ class CourseFillCommand extends Command
             $toolAmount = 1000;
             $tools = Tool::factory()->count($toolAmount)->create();
 
-            $employmentAmount = 1000;
-            $tools = Employment::factory()->count($employmentAmount)->create();
+            $employmentAmount = 10;
+            $employments = Employment::factory()->count($employmentAmount)->create();
+
+            $processAmount = 1000;
+            $processes = Process::factory()->count($processAmount)->create();
 
             $this->line('Создание атрибутов школ.');
 
@@ -142,7 +147,10 @@ class CourseFillCommand extends Command
                 $course->tools()->sync($tools->slice($toolStart, rand(1, 10)));
 
                 $employmentStart = rand(0, $employmentAmount);
-                $course->employments()->sync($tools->slice($employmentStart, rand(1, 10)));
+                $course->employments()->sync($employments->slice($employmentStart, rand(1, 10)));
+
+                $processStart = rand(0, $processAmount);
+                $course->processs()->sync($processes->slice($processStart, rand(1, 10)));
 
                 CourseFeature::factory()->count(4)->for($course)->create();
                 CourseLearn::factory()->count(3)->for($course)->create();

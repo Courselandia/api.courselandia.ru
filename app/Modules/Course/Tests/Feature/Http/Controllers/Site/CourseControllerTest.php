@@ -14,6 +14,7 @@ use App\Modules\Course\Models\CourseLearn;
 use App\Modules\Course\Models\CourseLevel;
 use App\Modules\Direction\Models\Direction;
 use App\Modules\Employment\Models\Employment;
+use App\Modules\Process\Models\Process;
 use App\Modules\Profession\Models\Profession;
 use App\Modules\Skill\Models\Skill;
 use App\Modules\Teacher\Models\Teacher;
@@ -257,6 +258,7 @@ class CourseControllerTest extends TestCase
         $skills = Skill::factory()->count(2)->create();
         $teachers = Teacher::factory()->count(2)->create();
         $tools = Tool::factory()->count(2)->create();
+        $processes = Process::factory()->count(2)->create();
         $employments = Employment::factory()->count(5)->create();
 
         $course->directions()->sync($directions);
@@ -265,6 +267,7 @@ class CourseControllerTest extends TestCase
         $course->skills()->sync($skills);
         $course->teachers()->sync($teachers);
         $course->tools()->sync($tools);
+        $course->processes()->sync($processes);
         $course->employments()->sync($employments);
 
         CourseFeature::factory()->count(4)->for($course)->create();
@@ -409,6 +412,17 @@ class CourseControllerTest extends TestCase
                     'name',
                     'header',
                     'link',
+                    'text',
+                    'status',
+                    'created_at',
+                    'updated_at',
+                    'deleted_at',
+                ]
+            ],
+            'processes' => [
+                '*' => [
+                    'id',
+                    'name',
                     'text',
                     'status',
                     'created_at',

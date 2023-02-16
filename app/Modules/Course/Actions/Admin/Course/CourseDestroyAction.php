@@ -42,6 +42,8 @@ class CourseDestroyAction extends Action
                 'skill',
                 'teacher',
                 'tool',
+                'process',
+                'employment',
                 'review',
             ])->flush();
         }

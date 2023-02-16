@@ -28,6 +28,7 @@ return [
                 'skills' => 'Skills',
                 'teachers' => 'Teachers',
                 'tools' => 'Tools',
+                'processes' => 'Processes',
                 'levels' => 'Levels',
                 'learns' => 'Learns',
                 'employments' => 'Employments',

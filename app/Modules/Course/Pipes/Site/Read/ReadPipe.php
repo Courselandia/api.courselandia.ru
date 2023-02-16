@@ -58,6 +58,8 @@ class ReadPipe implements Pipe
             'skill',
             'teacher',
             'tool',
+            'processes',
+            'employment',
             'review',
         ])->remember(
             $cacheKey,

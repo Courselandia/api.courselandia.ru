@@ -81,6 +81,8 @@ class CourseReadAction extends Action
             'skill',
             'teacher',
             'tool',
+            'process',
+            'employment',
             'review',
         ])->remember(
             $cacheKey,

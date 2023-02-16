@@ -17,6 +17,7 @@ use App\Modules\School\Entities\School;
 use App\Modules\Skill\Entities\Skill;
 use App\Modules\Teacher\Entities\Teacher;
 use App\Modules\Tool\Entities\Tool;
+use App\Modules\Process\Entities\Process;
 
 /**
  * Сущность фильтров курсов для чтения.
@@ -57,6 +58,13 @@ class CourseFilter extends Entity
      * @var Tool[]
      */
     public ?array $tools = null;
+
+    /**
+     * КАк проходит обучение.
+     *
+     * @var Process[]
+     */
+    public ?array $processes = null;
 
     /**
      * Навыки.

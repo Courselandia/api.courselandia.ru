@@ -130,6 +130,7 @@ class CourseController extends Controller
             $action->skills = $request->get('skills');
             $action->teachers = $request->get('teachers');
             $action->tools = $request->get('tools');
+            $action->processes = $request->get('processes');
             $action->levels = $request->get('levels');
             $action->learns = $request->get('learns');
             $action->employments = $request->get('employments');
@@ -214,6 +215,7 @@ class CourseController extends Controller
             $action->skills = $request->get('skills');
             $action->teachers = $request->get('teachers');
             $action->tools = $request->get('tools');
+            $action->processes = $request->get('processes');
             $action->levels = $request->get('levels');
             $action->learns = $request->get('learns');
             $action->employments = $request->get('employments');

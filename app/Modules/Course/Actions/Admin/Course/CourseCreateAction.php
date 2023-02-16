@@ -234,6 +234,13 @@ class CourseCreateAction extends Action
     public ?array $tools = null;
 
     /**
+     * ID как проходит обучение.
+     *
+     * @var int[]
+     */
+    public ?array $processes = null;
+
+    /**
      * Уровни.
      *
      * @var Level[]
@@ -250,7 +257,7 @@ class CourseCreateAction extends Action
     /**
      * Помощь в трудоустройстве.
      *
-     * @var string[]
+     * @var int[]
      */
     public ?array $employments = null;
 
@@ -309,6 +316,7 @@ class CourseCreateAction extends Action
             $course->skills()->sync($this->skills ?: []);
             $course->teachers()->sync($this->teachers ?: []);
             $course->tools()->sync($this->tools ?: []);
+            $course->processes()->sync($this->processes ?: []);
             $course->employments()->sync($this->employments ?: []);
 
             if ($this->levels) {
@@ -353,6 +361,8 @@ class CourseCreateAction extends Action
             'skill',
             'teacher',
             'tool',
+            'process',
+            'employment',
             'review',
         ])->flush();
 

@@ -47,6 +47,8 @@ class CourseGetAction extends Action
             'skill',
             'teacher',
             'tool',
+            'process',
+            'employment',
             'review',
         ])->remember(
             $cacheKey,
@@ -71,6 +73,9 @@ class CourseGetAction extends Action
                             $query->where('status', true);
                         },
                         'tools' => function ($query) {
+                            $query->where('status', true);
+                        },
+                        'processes' => function ($query) {
                             $query->where('status', true);
                         },
                         'school' => function ($query) {

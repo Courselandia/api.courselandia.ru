@@ -109,6 +109,8 @@ class Import
             'skill',
             'teacher',
             'tool',
+            'processes',
+            'employment',
             'review',
         ])->flush();
     }

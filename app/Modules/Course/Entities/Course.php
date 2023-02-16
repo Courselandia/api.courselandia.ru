@@ -26,6 +26,7 @@ use App\Modules\Profession\Entities\Profession;
 use App\Modules\Skill\Entities\Skill;
 use App\Modules\Teacher\Entities\Teacher;
 use App\Modules\Tool\Entities\Tool;
+use App\Modules\Process\Entities\Process;
 
 /**
  * Сущность для курсов.
@@ -303,6 +304,14 @@ class Course extends Entity
      */
     #[Entities(Tool::class)]
     public ?array $tools = null;
+
+    /**
+     * Как проходит обучение.
+     *
+     * @var Process[]
+     */
+    #[Entities(Process::class)]
+    public ?array $processes = null;
 
     /**
      * Уровни.
