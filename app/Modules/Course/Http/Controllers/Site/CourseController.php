@@ -72,7 +72,9 @@ class CourseController extends Controller
         $action = app(CourseDirectionReadAction::class);
         $action->filters = $request->get('filters');
         $action->offset = $request->get('offset');
-        $action->limit = $request->get('limit');
+        $action->limit = $request->get('limit', false);
+        $action->withCategories = $request->get('withCategories', false);
+        $action->withCount = $request->get('withCount');
 
         $data = $action->run();
 

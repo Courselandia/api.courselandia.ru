@@ -35,4 +35,11 @@ class CourseItemFilter extends Entity
      * @var string|null
      */
     public ?string $link = null;
+
+    /**
+     * Количество.
+     *
+     * @var int|null
+     */
+    public ?int $count = null;
 }

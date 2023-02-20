@@ -60,6 +60,8 @@ return [
                 'limit' => 'Limit',
                 'page' => 'Page',
                 'path' => 'Path',
+                'withCategories' => 'With categories',
+                'withCount' => 'Amount',
             ],
             'courseGetRequest' => [
                 'id' => 'ID',

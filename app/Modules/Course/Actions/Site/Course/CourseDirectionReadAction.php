@@ -8,6 +8,7 @@
 
 namespace App\Modules\Course\Actions\Site\Course;
 
+use App\Modules\Course\Entities\CourseItemDirectionFilter;
 use DB;
 use App\Models\Entity;
 use App\Models\Exceptions\ParameterInvalidException;
@@ -46,6 +47,20 @@ class CourseDirectionReadAction extends Action
     public ?int $limit = null;
 
     /**
+     * Добавить ли категории к направлениям.
+     *
+     * @var bool
+     */
+    public ?bool $withCategories = false;
+
+    /**
+     * Добавить информацию о количестве курсов в направлении.
+     *
+     * @var bool
+     */
+    public ?bool $withCount = false;
+
+    /**
      * Метод запуска логики.
      *
      * @return CourseItemFilter[] Вернет результаты исполнения.
@@ -71,6 +86,8 @@ class CourseDirectionReadAction extends Action
             $this->offset,
             $this->limit,
             $currentFilters,
+            $this->withCategories,
+            $this->withCount,
         );
 
         return Cache::tags([
@@ -122,7 +139,36 @@ class CourseDirectionReadAction extends Action
                     $query->limit($this->limit);
                 }
 
+                if ($this->withCategories) {
+                    $query->with('categories');
+                }
+
+                if ($this->withCount) {
+                    $query->withCount([
+                        'courses' => function ($query) {
+                            $query
+                            ->filter($this->filters ?: [])
+                            ->where('courses.status', Status::ACTIVE->value)
+                            ->whereHas('school', function ($query) {
+                                $query->where('schools.status', true);
+                            });
+                        }
+                    ]);
+                }
+
                 $result = $query->get()->toArray();
+
+                if ($this->withCount) {
+                    foreach ($result as $key => $value) {
+                        $result[$key]['count'] = $value['courses_count'];
+
+                        unset($result[$key]['courses_count']);
+                    }
+                }
+
+                if ($this->withCategories) {
+                    return Entity::toEntities($result, new CourseItemDirectionFilter());
+                }
 
                 return Entity::toEntities($result, new CourseItemFilter());
             }

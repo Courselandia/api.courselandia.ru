@@ -25,6 +25,10 @@ class CourseFilterItemReadRequest extends FormRequest
      * @return array Массив правил проверки.
      */
     #[ArrayShape([
+        'offset' => 'string',
+        'limit' => 'string',
+        'withCategories' => 'string',
+        'withCount' => 'string',
         'filters' => 'string',
         'filters.status' => 'string',
         'filters.rating' => 'string',
@@ -50,6 +54,10 @@ class CourseFilterItemReadRequest extends FormRequest
         );
 
         return [
+            'offset' => 'integer|digits_between:0,20',
+            'limit' => 'integer|digits_between:0,20',
+            'withCategories' => 'boolean',
+            'withCount' => 'boolean',
             'filters' => 'array|filters:' . implode(',', $columnsFilter) . '|filter_date_range:published_at',
             'filters.status' => 'in:' . implode(',', EnumList::getValues(Status::class)),
             'filters.rating' => 'nullable|float',
@@ -66,6 +74,10 @@ class CourseFilterItemReadRequest extends FormRequest
      * @return array Массив атрибутов.
      */
     #[ArrayShape([
+        'offset' => 'string',
+        'limit' => 'string',
+        'withCategories' => 'string',
+        'withCount' => 'string',
         'filters' => 'string',
         'filters.status' => 'string',
         'filters.rating' => 'string',
@@ -76,6 +88,10 @@ class CourseFilterItemReadRequest extends FormRequest
     ])] public function attributes(): array
     {
         return [
+            'offset' => trans('course::http.requests.admin.courseReadRequest.offset'),
+            'limit' => trans('course::http.requests.admin.courseReadRequest.limit'),
+            'withCategories' => trans('course::http.requests.admin.courseReadRequest.withCategories'),
+            'withCount' => trans('course::http.requests.admin.courseReadRequest.withCount'),
             'filters' => trans('course::http.requests.admin.courseReadRequest.filters'),
             'filters.status' => trans('course::http.requests.admin.courseReadRequest.status'),
             'filters.rating' => trans('course::http.requests.admin.courseReadRequest.rating'),

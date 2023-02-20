@@ -60,6 +60,8 @@ return [
                 'limit' => 'Лимит',
                 'page' => 'Страница',
                 'path' => 'Путь',
+                'withCategories' => 'С категориями',
+                'withCount' => 'Количество',
             ],
             'courseGetRequest' => [
                 'id' => 'ID',
