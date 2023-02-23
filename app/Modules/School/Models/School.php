@@ -180,7 +180,7 @@ class School extends Eloquent
                 $path = ImageStore::tmp($value->getClientOriginalExtension());
 
                 Size::make($value)->resize(
-                    150,
+                    200,
                     null,
                     function ($constraint) {
                         $constraint->aspectRatio();

@@ -127,6 +127,8 @@ class ReadPipe implements Pipe
                         $query->select([
                             'schools.id',
                             'schools.name',
+                            'schools.link',
+                            'schools.image_logo_id',
                         ])->where('status', true);
                     },
                     'directions' => function ($query) {

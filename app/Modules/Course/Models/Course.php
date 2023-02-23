@@ -478,7 +478,7 @@ class Course extends Eloquent
             function (string $name, UploadedFile $value) use ($folder) {
                 if ($value->getClientOriginalExtension() === 'svg') {
                     $imageSvg = SVG::fromFile($value->path());
-                    $imageRaster = $imageSvg->toRasterImage(600, 600);
+                    $imageRaster = $imageSvg->toRasterImage(500, 500);
                     $path = ImageStore::tmp('png');
                     imagepng($imageRaster, $path);
 
@@ -488,14 +488,7 @@ class Course extends Eloquent
                     $image = Size::make($value);
                 }
 
-                $image->resize(
-                    350,
-                    null,
-                    function ($constraint) {
-                        $constraint->aspectRatio();
-                        $constraint->upsize();
-                    }
-                )->save($path);
+                $image->fit(500, 500)->save($path);
 
                 $imageWebp = WebPConverter::createWebpImage($path, ['saveFile' => true]);
 

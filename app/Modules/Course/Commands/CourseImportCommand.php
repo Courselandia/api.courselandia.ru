@@ -23,7 +23,9 @@ class CourseImportCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'course:import';
+    protected $signature = 'course:import
+        {--reload-images : Перезагрузить все изображения}
+    ';
 
     /**
      * Описание консольной команды.
@@ -49,6 +51,7 @@ class CourseImportCommand extends Command
         $this->line('Импортирование курсов с источников...');
 
         $import = new Import();
+        $import->setReloadImages($this->option('reload-images'));
         $this->amount = 0;
 
         $import->addEvent('read', function (Import $imp, ParserCourse $course) {

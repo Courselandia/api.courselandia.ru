@@ -49,6 +49,7 @@ class DataPipe implements Pipe
         'image_site_id',
         'site',
         'course_id',
+        'processes',
     ];
 
     /**

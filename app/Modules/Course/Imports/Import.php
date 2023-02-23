@@ -46,6 +46,13 @@ class Import
     private array $parsers = [];
 
     /**
+     * Свойство определяющее нужно ли перезагружать все изображения.
+     *
+     * @var bool
+     */
+    private bool $reloadImages = false;
+
+    /**
      * Конструктор.
      */
     public function __construct()
@@ -116,6 +123,30 @@ class Import
     }
 
     /**
+     * Установка свойства нужно ли перезагружать все изображения.
+     *
+     * @param bool $status Статус.
+     *
+     * @return $this
+     */
+    public function setReloadImages(bool $status): self
+    {
+        $this->reloadImages = $status;
+
+        return $this;
+    }
+
+    /**
+     * Получения свойства нужно ли перезагружать все изображения.
+     *
+     * @return bool Вернет статус.
+     */
+    public function getReloadImages(): bool
+    {
+        return $this->reloadImages;
+    }
+
+    /**
      * Сохранение курса.
      *
      * @param ParserCourse $courseEntity Курс.
@@ -129,7 +160,7 @@ class Import
                 ->first();
 
             if ($course) {
-                $course->update([
+                $data = [
                     'header' => $courseEntity->header,
                     'link' => Util::latin(strtolower($courseEntity->header)),
                     'status' => $courseEntity->status ? $course->status : Status::DISABLED->value,
@@ -143,7 +174,17 @@ class Import
                     'duration_unit' => $courseEntity->duration_unit?->value ?: $course->duration_unit,
                     'lessons_amount' => $courseEntity->lessons_amount ?: $course->lessons_amount,
                     'employment' => $courseEntity->employment ?: $course->employment,
-                ]);
+                ];
+
+                if ($this->getReloadImages()) {
+                    $image = $courseEntity->image ? $this->getImage($courseEntity->image) : null;
+
+                    $data['image_small_id'] = $image;
+                    $data['image_middle_id'] = $image;
+                    $data['image_big_id'] = $image;
+                }
+
+                $course->update($data);
             } else {
                 $image = $courseEntity->image ? $this->getImage($courseEntity->image) : null;
 

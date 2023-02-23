@@ -21,6 +21,11 @@ abstract class Parser
 {
     use Error;
 
+    /**
+     * Источник.
+     *
+     * @var string
+     */
     private string $source;
 
     /**
