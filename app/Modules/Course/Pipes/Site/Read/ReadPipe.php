@@ -8,6 +8,8 @@
 
 namespace App\Modules\Course\Pipes\Site\Read;
 
+use Morph;
+use DB;
 use App\Modules\Course\Entities\CourseFilter;
 use App\Modules\Course\Entities\CourseFilterDuration;
 use App\Modules\Course\Entities\CourseFilterPrice;
@@ -143,6 +145,15 @@ class ReadPipe implements Pipe
                 ->whereHas('school', function ($query) {
                     $query->where('status', true);
                 });
+
+                if (isset($entity->filters['search']) && $entity->filters['search']) {
+                    $search = Morph::get($entity->filters['search']);
+                    $search = DB::getPdo()->quote($search);
+
+                    $query->addSelect(
+                        DB::raw('MATCH(header_morphy, text_morphy) AGAINST(' . $search . ' IN BOOLEAN MODE) AS relevance')
+                    );
+                }
 
                 $queryCount = $query->clone();
 

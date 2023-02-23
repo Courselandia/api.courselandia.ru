@@ -121,16 +121,16 @@ class CourseFilter extends ModelFilter
      */
     public function search(string $query): CourseFilter
     {
-        $queryMorph = Morph::get($query) ?? $query;
+        $queryMorph = Morph::get($query);
 
         return $this->where(function ($q) use ($queryMorph, $query) {
-            return $q->whereRaw(
-                'MATCH(header_morphy, text_morphy) AGAINST(? IN BOOLEAN MODE)',
-                [$queryMorph]
-            )
-                ->orWhere('header_morphy', 'LIKE', '%' . $query . '%')
-                ->orWhere('text_morphy', 'LIKE', '%' . $query . '%');
-        });
+            return $q
+                ->whereRaw(
+                    'MATCH(header_morphy, text_morphy) AGAINST(? IN BOOLEAN MODE)',
+                    [$queryMorph]
+                );
+            }
+        );
     }
 
     /**

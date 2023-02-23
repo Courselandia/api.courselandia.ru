@@ -45,6 +45,7 @@ class CourseReadRequest extends CourseFilterItemReadRequest
                 'teachers-name',
                 'tools-name',
                 'levels-name',
+                'relevance'
             ]
         );
 

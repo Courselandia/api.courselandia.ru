@@ -162,7 +162,7 @@ class Import
             if ($course) {
                 $data = [
                     'header' => $courseEntity->header,
-                    'link' => Util::latin(strtolower($courseEntity->header)),
+                    'link' => strtolower(Util::latin(strtolower($courseEntity->header))),
                     'status' => $courseEntity->status ? $course->status : Status::DISABLED->value,
                     'url' => $courseEntity->url,
                     'price' => $courseEntity->price,
@@ -174,6 +174,9 @@ class Import
                     'duration_unit' => $courseEntity->duration_unit?->value ?: $course->duration_unit,
                     'lessons_amount' => $courseEntity->lessons_amount ?: $course->lessons_amount,
                     'employment' => $courseEntity->employment ?: $course->employment,
+
+                    'header_morphy' => \Morph::get($courseEntity->header),
+                    'text_morphy' => \Morph::get($courseEntity->header),
                 ];
 
                 if ($this->getReloadImages()) {
@@ -191,7 +194,7 @@ class Import
                 $course = Course::create([
                     'uuid' => $courseEntity->uuid,
                     'header' => $courseEntity->header,
-                    'link' => Util::latin(strtolower($courseEntity->header)),
+                    'link' => strtolower(Util::latin(strtolower($courseEntity->header))),
                     'text' => $courseEntity->text,
                     'status' => $courseEntity->status ? Status::DRAFT->value : Status::DISABLED->value,
                     'url' => $courseEntity->url,

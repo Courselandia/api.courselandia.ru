@@ -8,8 +8,9 @@
 
 namespace App\Models\Morph;
 
-use Morphy;
 use App\Models\Contracts\Morph;
+use Wamania\Snowball\NotFoundException;
+use Wamania\Snowball\StemmerFactory;
 
 /**
  * Класс драйвер морфирования на основе PhpMorphy.
@@ -19,14 +20,22 @@ class PhpMorphy extends Morph
     /**
      * Метод для получения геообъекта.
      *
-     * @param  string|null  $value  Строка для морфирования.
+     * @param string|null $value Строка для морфирования.
      *
      * @return string|null Вернет отморфированный текст.
+     * @throws NotFoundException
      */
     public function get(string $value = null): ?string
     {
-        $result = Morphy::getPseudoRoot(mb_strtoupper($value));
+        $stemmer = StemmerFactory::create('ru');
+        $words = explode(' ', $value);
 
-        return $result[0] ?? null;
+        for ($i = 0; $i < count($words); $i++) {
+            $words[$i] = $stemmer->stem($words[$i]);
+        }
+
+        $value = implode(' ', $words);
+
+        return mb_strtoupper($value);
     }
 }

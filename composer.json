@@ -16,7 +16,6 @@
         "ext-pdo": "*",
         "ext-xmlreader": "*",
         "ext-zip": "*",
-        "cijic/phpmorphy": "^0.3.1",
         "ckfinder/ckfinder-laravel-package": "^4.0",
         "codebuds/webp-converter": "^0.5.1",
         "danielme85/laravel-log-to-db": "^3.0",
@@ -35,7 +34,8 @@
         "orchestra/parser": "^7.0",
         "predis/predis": "^2.0",
         "tucker-eric/eloquentfilter": "^3.1",
-        "vladimir-yuldashev/laravel-queue-rabbitmq": "^13.0"
+        "vladimir-yuldashev/laravel-queue-rabbitmq": "^13.0",
+        "wamania/php-stemmer": "^3.0"
     },
     "require-dev": {
         "fakerphp/faker": "^1.19.0",

@@ -61,7 +61,6 @@ class FilterPricePipe implements Pipe
                 return Course::select([
                     DB::raw('MIN(price) as price_min'),
                     DB::raw('MAX(price) as price_max'),
-
                 ])
                 ->filter($filters ?: [])
                 ->where('status', Status::ACTIVE->value)
