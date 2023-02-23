@@ -309,7 +309,6 @@ return [
 
         'XmlParser' => Orchestra\Parser\Xml\Facade::class,
         'Size' => Intervention\Image\Facades\Image::class,
-        'Morphy' => cijic\phpMorphy\Facade\Morphy::class,
 
         // Own classes
         'Util' => App\Models\Facades\Util::class,
