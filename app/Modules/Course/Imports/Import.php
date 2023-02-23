@@ -174,9 +174,6 @@ class Import
                     'duration_unit' => $courseEntity->duration_unit?->value ?: $course->duration_unit,
                     'lessons_amount' => $courseEntity->lessons_amount ?: $course->lessons_amount,
                     'employment' => $courseEntity->employment ?: $course->employment,
-
-                    'header_morphy' => \Morph::get($courseEntity->header),
-                    'text_morphy' => \Morph::get($courseEntity->header),
                 ];
 
                 if ($this->getReloadImages()) {
