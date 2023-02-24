@@ -28,7 +28,7 @@ class PhpMorphy extends Morph
     public function get(string $value = null): ?string
     {
         $stemmer = StemmerFactory::create('ru');
-        $words = explode(' ', $value);
+        $words = explode(' ', strip_tags($value));
 
         for ($i = 0; $i < count($words); $i++) {
             $words[$i] = $stemmer->stem($words[$i]);
