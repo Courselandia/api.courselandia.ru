@@ -488,7 +488,14 @@ class Course extends Eloquent
                     $image = Size::make($value);
                 }
 
-                $image->fit(500, 500)->save($path);
+                $image->resize(
+                    500,
+                    null,
+                    function ($constraint) {
+                        $constraint->aspectRatio();
+                        $constraint->upsize();
+                    }
+                )->save($path);
 
                 $imageWebp = WebPConverter::createWebpImage($path, ['saveFile' => true]);
 

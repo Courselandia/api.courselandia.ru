@@ -31,3 +31,17 @@ Route::group([
         Route::put('update/status/{id}', 'Admin\FaqController@updateStatus')
             ->name('update.status');
     });
+
+Route::group([
+    'middleware' => [
+        'locale',
+        'ajax',
+    ],
+    'prefix' => 'private/site/faq/',
+    'as' => 'api.private.site.faq'
+],
+    function () {
+        Route::get('read/{school}', 'Site\FaqController@read')
+            ->name('read');
+    }
+);

@@ -6,7 +6,7 @@
  * @package App\Modules\Faq
  */
 
-namespace App\Modules\Faq\Actions\Admin;
+namespace App\Modules\Faq\Actions\Site;
 
 use App\Models\Action;
 use App\Models\Entity;
@@ -24,32 +24,11 @@ use Util;
 class FaqReadAction extends Action
 {
     /**
-     * Сортировка данных.
-     *
-     * @var array|null
-     */
-    public ?array $sorts = null;
-
-    /**
-     * Фильтрация данных.
-     *
-     * @var array|null
-     */
-    public ?array $filters = null;
-
-    /**
-     * Начать выборку.
+     * ID школы.
      *
      * @var int|null
      */
-    public ?int $offset = null;
-
-    /**
-     * Лимит выборки выборку.
-     *
-     * @var int|null
-     */
-    public ?int $limit = null;
+    public ?int $school = null;
 
     /**
      * Метод запуска логики.
@@ -64,10 +43,7 @@ class FaqReadAction extends Action
             'admin',
             'read',
             'count',
-            $this->sorts,
-            $this->filters,
-            $this->offset,
-            $this->limit,
+            $this->school,
             'school',
         );
 
@@ -75,27 +51,14 @@ class FaqReadAction extends Action
             $cacheKey,
             CacheTime::GENERAL->value,
             function () {
-                $query = Faq::filter($this->filters ?: [])
-                    ->sorted($this->sorts ?: [])
-                    ->with([
-                        'school',
-                    ]);
-
-                $queryCount = $query->clone();
-
-                if ($this->offset) {
-                    $query->offset($this->offset);
-                }
-
-                if ($this->limit) {
-                    $query->limit($this->limit);
-                }
+                $query = Faq::where('school_id', $this->school)
+                    ->where('status', 1)
+                    ->orderBy('question', 'ASC');
 
                 $items = $query->get()->toArray();
 
                 return [
                     'data' => Entity::toEntities($items, new FaqEntity()),
-                    'total' => $queryCount->count(),
                 ];
             }
         );

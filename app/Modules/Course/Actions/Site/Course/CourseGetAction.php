@@ -23,11 +23,18 @@ use App\Modules\Course\Enums\Status;
 class CourseGetAction extends Action
 {
     /**
-     * ID курса.
+     * Ссылка школы.
      *
-     * @var int|string|null
+     * @var string|null
      */
-    public int|string|null $id = null;
+    public string|null $school = null;
+
+    /**
+     * Ссылка курса.
+     *
+     * @var string|null
+     */
+    public string|null $course = null;
 
     /**
      * Метод запуска логики.
@@ -37,7 +44,7 @@ class CourseGetAction extends Action
      */
     public function run(): ?CourseEntity
     {
-        $cacheKey = Util::getKey('course', 'site', $this->id);
+        $cacheKey = Util::getKey('course', 'site', $this->school, $this->course);
 
         return Cache::tags([
             'course',
@@ -54,7 +61,7 @@ class CourseGetAction extends Action
             $cacheKey,
             CacheTime::GENERAL->value,
             function () {
-                $course = Course::where('id', $this->id)
+                $course = Course::where('link', $this->course)
                     ->with([
                         'metatag',
                         'professions' => function ($query) {
@@ -94,7 +101,8 @@ class CourseGetAction extends Action
                     ])
                     ->where('status', Status::ACTIVE->value)
                     ->whereHas('school', function ($query) {
-                        $query->where('status', true);
+                        $query->where('status', true)
+                            ->where('link', $this->school);
                     })
                     ->first();
 

@@ -35,9 +35,11 @@ class CourseControllerTest extends TestCase
      */
     public function testGet(): void
     {
+        $course = $this->createCourse();
+
         $this->json(
             'GET',
-            'api/private/site/course/get/' . $this->createCourse()->id,
+            'api/private/site/course/get/' . $course->school->link . '/' . $course->link,
         )->assertStatus(200)->assertJsonStructure([
             'data' => $this->getCourseStructure(),
             'success',
@@ -126,7 +128,7 @@ class CourseControllerTest extends TestCase
     {
         $this->json(
             'GET',
-            'api/private/site/course/get/1000',
+            'api/private/site/course/get/school-link/course-link',
         )->assertStatus(404)->assertJsonStructure([
             'data',
             'success',

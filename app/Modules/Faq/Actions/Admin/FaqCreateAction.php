@@ -48,16 +48,6 @@ class FaqCreateAction extends Action
     public ?bool $status = null;
 
     /**
-     * Конструктор.
-     *
-     * @param  Faq  $faq  Репозиторий FAQ.
-     */
-    public function __construct(Faq $faq)
-    {
-        $this->faq = $faq;
-    }
-
-    /**
      * Метод запуска логики.
      *
      * @return FaqEntity Вернет результаты исполнения.

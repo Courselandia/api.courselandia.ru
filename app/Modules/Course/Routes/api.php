@@ -45,7 +45,7 @@ Route::group([
     'as' => 'api.private.site.course'
 ],
     function () {
-        Route::get('get/{id}', 'Site\CourseController@get')
+        Route::get('get/{school}/{course}', 'Site\CourseController@get')
             ->name('get');
 
         Route::get('directions', 'Site\CourseController@directions')

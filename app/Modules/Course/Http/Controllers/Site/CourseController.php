@@ -31,15 +31,17 @@ class CourseController extends Controller
     /**
      * Получение курса.
      *
-     * @param int|string $id ID курса.
+     * @param string $school Ссылка школы.
+     * @param string $course Ссылка курса.
      *
      * @return JsonResponse Вернет JSON ответ.
      * @throws ParameterInvalidException
      */
-    public function get(int|string $id): JsonResponse
+    public function get(string $school, string $course): JsonResponse
     {
         $action = app(CourseGetAction::class);
-        $action->id = $id;
+        $action->school = $school;
+        $action->course = $course;
         $data = $action->run();
 
         if ($data) {
