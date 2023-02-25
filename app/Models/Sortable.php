@@ -60,6 +60,7 @@ trait Sortable
         $this->sort['data'] = $data;
 
         if ($this->isValidSort()) {
+            $sortedByRelation = false;
             $this->checkSortingDirection();
 
             foreach ($this->sort['data'] as $field => $direction) {
@@ -75,6 +76,7 @@ trait Sortable
 
                             if ($table) {
                                 $this->sortByRelation($field, $direction);
+                                $sortedByRelation = true;
                             }
                         } catch (Exception $error) {
                         }
@@ -82,6 +84,10 @@ trait Sortable
                         $this->sortNormally($field, $direction);
                     }
                 }
+            }
+
+            if ($sortedByRelation) {
+                $this->sort['query']->groupBy($this->getTable() . '.' . $this->getKeyName());
             }
         }
     }

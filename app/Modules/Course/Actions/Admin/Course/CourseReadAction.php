@@ -59,6 +59,8 @@ class CourseReadAction extends Action
      */
     #[ArrayShape(['data' => 'array', 'total' => 'int'])] public function run(): array
     {
+        Cache::flush();
+
         $cacheKey = Util::getKey(
             'course',
             'admin',
@@ -89,7 +91,6 @@ class CourseReadAction extends Action
             CacheTime::GENERAL->value,
             function () {
                 $query = Course::filter($this->filters ?: [])
-                    ->sorted($this->sorts ?: [])
                     ->with([
                         'school',
                         'directions',
@@ -97,6 +98,8 @@ class CourseReadAction extends Action
                     ]);
 
                 $queryCount = $query->clone();
+
+                $query->sorted($this->sorts ?: []);
 
                 if ($this->offset) {
                     $query->offset($this->offset);
