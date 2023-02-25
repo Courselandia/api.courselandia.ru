@@ -28,7 +28,7 @@ class FaqControllerTest extends TestCase
 
         $this->json(
             'GET',
-            'api/private/site/faq/read/' . $faq->school->id,
+            'api/private/site/faq/read/' . $faq->school->link,
         )->assertStatus(200)->assertJsonStructure([
             'data' => [
                 '*' => $this->getFaqStructure()

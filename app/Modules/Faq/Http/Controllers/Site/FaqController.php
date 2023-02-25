@@ -21,12 +21,12 @@ class FaqController extends Controller
     /**
      * Чтение данных.
      *
-     * @param int $school ID школы.
+     * @param string $school ID школы.
      *
      * @return JsonResponse Вернет JSON ответ.
      * @throws ParameterInvalidException
      */
-    public function read(int $school): JsonResponse
+    public function read(string $school): JsonResponse
     {
         $action = app(FaqReadAction::class);
         $action->school = $school;

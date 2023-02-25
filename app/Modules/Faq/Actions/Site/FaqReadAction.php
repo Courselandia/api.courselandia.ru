@@ -24,11 +24,11 @@ use Util;
 class FaqReadAction extends Action
 {
     /**
-     * ID школы.
+     * Ссылка на школу.
      *
-     * @var int|null
+     * @var string
      */
-    public ?int $school = null;
+    public ?string $school = null;
 
     /**
      * Метод запуска логики.
@@ -51,9 +51,11 @@ class FaqReadAction extends Action
             $cacheKey,
             CacheTime::GENERAL->value,
             function () {
-                $query = Faq::where('school_id', $this->school)
-                    ->where('status', 1)
-                    ->orderBy('question', 'ASC');
+                $query = Faq::whereHas('school', function ($query) {
+                    $query->where('link', $this->school);
+                })
+                ->where('status', 1)
+                ->orderBy('question', 'ASC');
 
                 $items = $query->get()->toArray();
 
