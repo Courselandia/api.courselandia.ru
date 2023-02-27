@@ -76,12 +76,13 @@ class FaqReadAction extends Action
             CacheTime::GENERAL->value,
             function () {
                 $query = Faq::filter($this->filters ?: [])
-                    ->sorted($this->sorts ?: [])
                     ->with([
                         'school',
                     ]);
 
                 $queryCount = $query->clone();
+
+                $query->sorted($this->sorts ?: []);
 
                 if ($this->offset) {
                     $query->offset($this->offset);

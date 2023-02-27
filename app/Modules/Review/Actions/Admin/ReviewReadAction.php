@@ -77,13 +77,14 @@ class ReviewReadAction extends Action
             CacheTime::GENERAL->value,
             function () {
                 $query = Review::filter($this->filters ?: [])
-                    ->sorted($this->sorts ?: [])
                     ->with([
                         'school',
                         'course',
                     ]);
 
                 $queryCount = $query->clone();
+
+                $query->sorted($this->sorts ?: []);
 
                 if ($this->offset) {
                     $query->offset($this->offset);

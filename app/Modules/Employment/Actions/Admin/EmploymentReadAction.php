@@ -75,10 +75,11 @@ class EmploymentReadAction extends Action
             $cacheKey,
             CacheTime::GENERAL->value,
             function () {
-                $query = Employment::filter($this->filters ?: [])
-                    ->sorted($this->sorts ?: []);
+                $query = Employment::filter($this->filters ?: []);
 
                 $queryCount = $query->clone();
+
+                $query->sorted($this->sorts ?: []);
 
                 if ($this->offset) {
                     $query->offset($this->offset);

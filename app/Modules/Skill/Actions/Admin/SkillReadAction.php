@@ -77,12 +77,13 @@ class SkillReadAction extends Action
             CacheTime::GENERAL->value,
             function () {
                 $query = Skill::filter($this->filters ?: [])
-                    ->sorted($this->sorts ?: [])
                     ->with([
                         'metatag',
                     ]);
 
                 $queryCount = $query->clone();
+
+                $query->sorted($this->sorts ?: []);
 
                 if ($this->offset) {
                     $query->offset($this->offset);

@@ -75,10 +75,11 @@ class FeedbackReadAction extends Action
             $cacheKey,
             CacheTime::GENERAL->value,
             function ()  {
-                $query = Feedback::filter($this->filters ?: [])
-                    ->sorted($this->sorts ?: []);
+                $query = Feedback::filter($this->filters ?: []);
 
                 $queryCount = $query->clone();
+
+                $query->sorted($this->sorts ?: []);
 
                 if ($this->offset) {
                     $query->offset($this->offset);

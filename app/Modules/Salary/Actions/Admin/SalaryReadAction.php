@@ -77,12 +77,13 @@ class SalaryReadAction extends Action
             CacheTime::GENERAL->value,
             function () {
                 $query = Salary::filter($this->filters ?: [])
-                    ->sorted($this->sorts ?: [])
                     ->with([
                         'profession',
                     ]);
 
                 $queryCount = $query->clone();
+
+                $query->sorted($this->sorts ?: []);
 
                 if ($this->offset) {
                     $query->offset($this->offset);

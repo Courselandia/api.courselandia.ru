@@ -90,10 +90,11 @@ class ReviewReadAction extends Action
                     ->whereHas('school', function ($query) {
                         $query->where('schools.status', true);
                     })
-                    ->sorted($this->sorts ?: [])
                     ->with('school');
 
                 $queryCount = $query->clone();
+
+                $query->sorted($this->sorts ?: []);
 
                 if ($this->offset) {
                     $query->offset($this->offset);
