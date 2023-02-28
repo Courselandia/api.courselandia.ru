@@ -67,6 +67,7 @@ class DataPipe implements Pipe
         'image_big_id',
         'schools',
         'header',
+        'count',
     ];
 
     /**
