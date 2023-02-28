@@ -59,8 +59,6 @@ class CourseReadAction extends Action
      */
     #[ArrayShape(['data' => 'array', 'total' => 'int'])] public function run(): array
     {
-        Cache::flush();
-
         $cacheKey = Util::getKey(
             'course',
             'admin',

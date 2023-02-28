@@ -98,6 +98,7 @@ class CourseGetAction extends Action
                         'learns',
                         'employments',
                         'features',
+                        'professions.salaries'
                     ])
                     ->where('status', Status::ACTIVE->value)
                     ->whereHas('school', function ($query) {

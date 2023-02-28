@@ -355,6 +355,19 @@ class CourseControllerTest extends TestCase
                     'created_at',
                     'updated_at',
                     'deleted_at',
+                    'salaries' => [
+                        '*' => [
+                            "id",
+                            "profession_id",
+                            "level",
+                            "salary",
+                            "status",
+                            "profession",
+                            "created_at",
+                            "updated_at",
+                            "deleted_at",
+                        ]
+                    ]
                 ]
             ],
             'metatag' => [

@@ -276,15 +276,7 @@ class OAuthDriverDatabase extends OAuthDriver
                 $query->addCondition(new RepositoryCondition('oauth_client_id', $clientEntity->id))
                     ->addCondition(new RepositoryCondition('token', $issuedToken->accessToken));
 
-                $cacheKey = Util::getKey('oAuth', 'token', $query);
-
-                $tokenEntity = Cache::tags(['oAuth', 'user'])->remember(
-                    $cacheKey,
-                    CacheTime::GENERAL->value,
-                    function () use ($query) {
-                        return $this->oAuthTokenEloquent->get($query);
-                    }
-                );
+                $tokenEntity = $this->oAuthTokenEloquent->get($query);
 
                 if ($tokenEntity) {
                     $tokenEntity->expires_at = $expiresAtToken;
@@ -407,15 +399,7 @@ class OAuthDriverDatabase extends OAuthDriver
                     $query->addCondition(new RepositoryCondition('oauth_client_id', $clientEntity->id))
                         ->addCondition(new RepositoryCondition('token', $issuedToken->accessToken));
 
-                    $cacheKey = Util::getKey('oAuth', 'token', $query);
-
-                    $tokenEntity = Cache::tags(['oAuth', 'user'])->remember(
-                        $cacheKey,
-                        CacheTime::GENERAL->value,
-                        function () use ($query) {
-                            return $this->oAuthTokenEloquent->get($query);
-                        }
-                    );
+                    $tokenEntity = $this->oAuthTokenEloquent->get($query);
 
                     if ($tokenEntity) {
                         $tokenEntity->expires_at = $expiresAtToken;
@@ -517,15 +501,7 @@ class OAuthDriverDatabase extends OAuthDriver
                     ->addCondition(new RepositoryCondition('oauth_clients.user_id', $value->user))
                     ->addRelation('client');
 
-                $cacheKey = Util::getKey('oAuth', 'token', $query);
-
-                $record = Cache::tags(['oAuth', 'user'])->remember(
-                    $cacheKey,
-                    CacheTime::GENERAL->value,
-                    function () use ($query) {
-                        return $this->oAuthTokenEloquent->get($query);
-                    }
-                );
+                $record = $this->oAuthTokenEloquent->get($query);
 
                 return (bool)$record;
             }
