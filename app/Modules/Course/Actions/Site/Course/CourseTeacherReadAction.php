@@ -8,6 +8,7 @@
 
 namespace App\Modules\Course\Actions\Site\Course;
 
+use App\Models\Clean;
 use DB;
 use App\Models\Entity;
 use App\Models\Exceptions\ParameterInvalidException;
@@ -96,9 +97,9 @@ class CourseTeacherReadAction extends Action
                     ])
                     ->filter($this->filters ?: [])
                     ->where('status', Status::ACTIVE->value)
-                    /*->whereHas('school', function ($query) {
+                    ->whereHas('school', function ($query) {
                         $query->where('status', true);
-                    })*/;
+                    });
                 })
                 ->where('status', true);
 
@@ -118,7 +119,9 @@ class CourseTeacherReadAction extends Action
 
                 $result = $query->get()->toArray();
 
-                return Entity::toEntities($result, new CourseItemFilter());
+                $result = Entity::toEntities($result, new CourseItemFilter());
+
+                return Clean::do($result, ['count'], true);
             }
         );
     }

@@ -12,6 +12,7 @@ use Closure;
 use App\Models\Contracts\Pipe;
 use App\Models\Entity;
 use App\Modules\Course\Entities\CourseRead;
+use App\Models\Clean;
 
 /**
  * Чтение курсов: фильтры: очистка и подготовка данных.
@@ -85,41 +86,9 @@ class DataPipe implements Pipe
         unset($entity->offset);
         unset($entity->limit);
 
-        $entity = $this->clean($entity, self::REMOVES);
-        $entity = $this->clean($entity, self::REMOVES_IF_NULL, true);
+        $entity = Clean::do($entity, self::REMOVES);
+        $entity = Clean::do($entity, self::REMOVES_IF_NULL, true);
 
         return $next($entity);
-    }
-
-    /**
-     * Чистка данных.
-     *
-     * @param Entity $entity Сущность для очистки.
-     * @param array $removes Массив ключей, которые подлежат очистки.
-     * @param bool $ifNull Только удалять если равен null.
-     *
-     * @return Entity Вернет очищенную сущность.
-     */
-    private function clean(Entity $entity, array $removes, bool $ifNull = false): Entity
-    {
-        foreach ($entity as $key => $value) {
-            if (is_array($entity->$key)) {
-                for ($i = 0; $i < count($entity->$key); $i++) {
-                    if ($entity->$key[$i] instanceof Entity) {
-                        $entity->$key[$i] = $this->clean($entity->$key[$i], $removes, $ifNull);
-                    }
-                }
-            } elseif ($entity->$key instanceof Entity) {
-                $entity->$key = $this->clean($entity->$key, $removes, $ifNull);
-            } elseif (in_array($key, $removes)) {
-                if ($ifNull === false) {
-                    unset($entity->$key);
-                } else if ($ifNull === true && $entity->$key === null) {
-                    unset($entity->$key);
-                }
-            }
-        }
-
-        return $entity;
     }
 }

@@ -34,7 +34,7 @@ class FilterTeacherPipe implements Pipe
         $action = app(CourseTeacherReadAction::class);
         $action->filters = $entity->filters;
         $action->offset = 0;
-        $action->limit = 5;
+        $action->limit = 6;
 
         $entity->filter->teachers = $action->run();
 
