@@ -166,6 +166,7 @@ class CourseFilter extends ModelFilter
      */
     public function online(bool $online): CourseFilter
     {
+        $online = $online ? 1 : 0;
         return $this->where('courses.online', $online);
     }
 

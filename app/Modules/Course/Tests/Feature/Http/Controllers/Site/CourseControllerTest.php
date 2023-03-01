@@ -109,7 +109,7 @@ class CourseControllerTest extends TestCase
                     ],
                     'credit',
                     'free',
-                    'online',
+                    'formats',
                     'levels',
                 ],
                 'section',

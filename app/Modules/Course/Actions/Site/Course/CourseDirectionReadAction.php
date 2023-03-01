@@ -122,13 +122,6 @@ class CourseDirectionReadAction extends Action
                 })
                 ->where('status', true);
 
-                if (count($currentFilters)) {
-                    $query->orderBy(
-                        DB::raw('FIELD(id, ' . implode(', ', array_reverse($currentFilters)) . ')'),
-                        'DESC'
-                    );
-                }
-
                 $query->orderBy('weight');
 
                 if ($this->offset) {

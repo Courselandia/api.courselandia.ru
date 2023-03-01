@@ -53,9 +53,9 @@ class CourseSchoolReadAction extends Action
      */
     public function run(): array
     {
-        if (isset($this->filters['schools-id'])) {
-            $currentFilters = is_array($this->filters['schools-id']) ? $this->filters['schools-id'] : [$this->filters['schools-id']];
-            unset($this->filters['schools-id']);
+        if (isset($this->filters['school-id'])) {
+            $currentFilters = is_array($this->filters['school-id']) ? $this->filters['school-id'] : [$this->filters['school-id']];
+            unset($this->filters['school-id']);
         } else {
             $currentFilters = [];
         }

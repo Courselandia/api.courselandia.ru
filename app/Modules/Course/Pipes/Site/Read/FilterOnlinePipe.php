@@ -17,6 +17,7 @@ use App\Modules\Course\Models\Course;
 use App\Models\Contracts\Pipe;
 use App\Models\Entity;
 use App\Modules\Course\Entities\CourseRead;
+use App\Modules\Course\Enums\Format;
 
 /**
  * Чтение курсов: фильтры: наличие курсов онлайн.
@@ -33,17 +34,21 @@ class FilterOnlinePipe implements Pipe
      */
     public function handle(Entity|CourseRead $entity, Closure $next): mixed
     {
-        $filters = $entity->filters;
+        if (isset($this->filters['online'])) {
+            unset($this->filters['online']);
+        } else {
+            $currentFilters = [];
+        }
 
         $cacheKey = Util::getKey(
             'course',
             'online',
             'site',
             'read',
-            $filters,
+            $currentFilters,
         );
 
-        $has = Cache::tags([
+        $formats = Cache::tags([
             'course',
             'direction',
             'profession',
@@ -56,18 +61,35 @@ class FilterOnlinePipe implements Pipe
         ])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
-            function () use ($filters) {
-                return !!Course::filter($filters ?: [])
-                    ->where('online', true)
-                    ->where('status', Status::ACTIVE->value)
-                    ->whereHas('school', function ($query) {
-                        $query->where('status', true);
-                    })
-                    ->count();
+            function () use ($currentFilters) {
+                $result = Course::select([
+                    'online',
+                ])->filter($currentFilters ?: [])
+                ->where('status', Status::ACTIVE->value)
+                ->whereHas('school', function ($query) {
+                    $query->where('status', true);
+                })
+                ->groupBy('online')
+                ->get();
+
+                $data = $result->pluck('online')->toArray();
+                $results = [];
+
+                for ($i = 0; $i < count($data); $i++) {
+                    if ($data[$i] === 0) {
+                        $results[] = Format::OFFLINE;
+                    }
+
+                    if ($data[$i] === 1) {
+                        $results[] = Format::ONLINE;
+                    }
+                }
+
+                return $results;
             }
         );
 
-        $entity->filter->online = $has;
+        $entity->filter->formats = $formats;
 
         return $next($entity);
     }

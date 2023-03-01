@@ -34,7 +34,7 @@ class FilterSkillPipe implements Pipe
         $action = app(CourseSkillReadAction::class);
         $action->filters = $entity->filters;
         $action->offset = 0;
-        $action->limit = 6;
+        $action->limit = 11;
 
         $entity->filter->skills = $action->run();
 

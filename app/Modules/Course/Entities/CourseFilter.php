@@ -10,6 +10,7 @@ namespace App\Modules\Course\Entities;
 
 use App\Models\Entity;
 use App\Modules\Category\Entities\Category;
+use App\Modules\Course\Enums\Format;
 use App\Modules\Direction\Entities\Direction;
 use App\Modules\Profession\Entities\Profession;
 use App\Modules\Salary\Enums\Level;
@@ -118,9 +119,9 @@ class CourseFilter extends Entity
     /**
      * Признак наличия фильтра для курсов онлайн.
      *
-     * @var bool|null
+     * @var Format[]
      */
-    public ?bool $online = null;
+    public ?array $formats = null;
 
     /**
      * Доступные уровни.

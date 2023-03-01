@@ -34,7 +34,7 @@ class FilterDirectionPipe implements Pipe
         $action = app(CourseDirectionReadAction::class);
         $action->filters = $entity->filters;
         $action->offset = 0;
-        $action->limit = 6;
+        $action->limit = 11;
 
         $entity->filter->directions = $action->run();
 
