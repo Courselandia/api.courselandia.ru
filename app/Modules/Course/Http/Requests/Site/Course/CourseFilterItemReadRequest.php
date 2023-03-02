@@ -53,6 +53,7 @@ class CourseFilterItemReadRequest extends FormRequest
                 'search',
                 'levels-level',
                 'credit',
+                'free',
             ]
         );
 

@@ -167,9 +167,25 @@ class CourseFilter extends ModelFilter
     public function credit(bool $status): CourseFilter
     {
         if ($status) {
-            return $this->where('courses.price_recurrent', null);
+            return $this->whereNotNull('courses.price_recurrent');
         } else {
-            return $this->whereNot('courses.price_recurrent', null);
+            return $this->whereNull('courses.price_recurrent');
+        }
+    }
+
+    /**
+     * Поиск бесплатных курсов.
+     *
+     * @param bool $status Признак наличия или отсутствия бесплатных курсов.
+     *
+     * @return CourseFilter Правила поиска.
+     */
+    public function free(bool $status): CourseFilter
+    {
+        if ($status) {
+            return $this->whereNull('courses.price');
+        } else {
+            return $this->whereNotNull('courses.price');
         }
     }
 
