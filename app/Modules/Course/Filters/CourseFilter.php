@@ -169,7 +169,11 @@ class CourseFilter extends ModelFilter
         if ($status) {
             return $this->whereNotNull('courses.price_recurrent');
         } else {
-            return $this->whereNull('courses.price_recurrent');
+            return $this->where(function($query) {
+                return $query
+                    ->whereNull('courses.price_recurrent')
+                    ->orWhere('courses.price_recurrent', '=', 0);
+            });
         }
     }
 
@@ -183,7 +187,11 @@ class CourseFilter extends ModelFilter
     public function free(bool $status): CourseFilter
     {
         if ($status) {
-            return $this->whereNull('courses.price');
+            return $this->where(function($query) {
+                return $query
+                    ->whereNull('courses.price')
+                    ->orWhere('courses.price', '=', 0);
+            });
         } else {
             return $this->whereNotNull('courses.price');
         }
@@ -223,7 +231,13 @@ class CourseFilter extends ModelFilter
      */
     public function duration(array $duration): CourseFilter
     {
-        return $this->whereBetween('courses.duration_rate', $duration);
+        if ($duration[0] == 0 && $duration[1] == 0) {
+            return $this
+                ->where('courses.duration_rate', '>=', '0')
+                ->where('courses.duration_rate', '<', '1');
+        } else {
+            return $this->whereBetween('courses.duration_rate', $duration);
+        }
     }
 
     /**

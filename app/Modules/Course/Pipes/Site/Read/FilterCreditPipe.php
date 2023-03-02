@@ -33,14 +33,18 @@ class FilterCreditPipe implements Pipe
      */
     public function handle(Entity|CourseRead $entity, Closure $next): mixed
     {
-        $filters = $entity->filters;
+        $currentFilters = $entity->filters;
+
+        if (isset($currentFilters['credit'])) {
+            unset($currentFilters['credit']);
+        }
 
         $cacheKey = Util::getKey(
             'course',
             'credit',
             'site',
             'read',
-            $filters,
+            $currentFilters,
         );
 
         $has = Cache::tags([
@@ -56,9 +60,10 @@ class FilterCreditPipe implements Pipe
         ])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
-            function () use ($filters) {
-                return !!Course::filter($filters ?: [])
-                    ->where('price_recurrent', '!=', null)
+            function () use ($currentFilters) {
+                return !!Course::filter($currentFilters ?: [])
+                    ->whereNotNull('price_recurrent')
+                    ->where('price_recurrent', '!=', 0)
                     ->where('status', Status::ACTIVE->value)
                     ->whereHas('school', function ($query) {
                         $query->where('status', true);

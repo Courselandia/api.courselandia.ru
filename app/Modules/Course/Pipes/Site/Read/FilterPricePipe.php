@@ -34,10 +34,10 @@ class FilterPricePipe implements Pipe
      */
     public function handle(Entity|CourseRead $entity, Closure $next): mixed
     {
-        if (isset($this->filters['price'])) {
-            unset($this->filters['price']);
-        } else {
-            $currentFilters = [];
+        $currentFilters = $entity->filters;
+
+        if (isset($currentFilters['price'])) {
+            unset($currentFilters['price']);
         }
 
         $cacheKey = Util::getKey(

@@ -34,10 +34,10 @@ class FilterDurationPipe implements Pipe
      */
     public function handle(Entity|CourseRead $entity, Closure $next): mixed
     {
-        if (isset($this->filters['duration'])) {
-            unset($this->filters['duration']);
-        } else {
-            $currentFilters = [];
+        $currentFilters = $entity->filters;
+
+        if (isset($currentFilters['duration'])) {
+            unset($currentFilters['duration']);
         }
 
         $cacheKey = Util::getKey(

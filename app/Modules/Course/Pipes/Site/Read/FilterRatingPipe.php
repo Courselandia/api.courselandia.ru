@@ -33,27 +33,33 @@ class FilterRatingPipe implements Pipe
      */
     public function handle(Entity|CourseRead $entity, Closure $next): mixed
     {
+        $currentFilters = $entity->filters;
+
+        if (isset($currentFilters['rating'])) {
+            unset($currentFilters['rating']);
+        }
+
         $ratings = [];
 
-        $result = $this->hasRating(4.5, $entity->filters);
+        $result = $this->hasRating(4.5, $currentFilters);
 
         if ($result) {
             $ratings[] = 4.5;
         }
 
-        $result = $this->hasRating(4, $entity->filters);
+        $result = $this->hasRating(4, $currentFilters);
 
         if ($result) {
             $ratings[] = 4;
         }
 
-        $result = $this->hasRating(3.5, $entity->filters);
+        $result = $this->hasRating(3.5, $currentFilters);
 
         if ($result) {
             $ratings[] = 3.5;
         }
 
-        $result = $this->hasRating(3, $entity->filters);
+        $result = $this->hasRating(3, $currentFilters);
 
         if ($result) {
             $ratings[] = 3;
