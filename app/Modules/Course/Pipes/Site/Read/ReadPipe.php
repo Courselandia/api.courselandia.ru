@@ -93,7 +93,6 @@ class ReadPipe implements Pipe
                     'status',
                 ])
                 ->filter($entity->filters ?: [])
-                ->sorted($entity->sorts ?: [])
                 ->with([
                     'professions' => function ($query) {
                         $query->select([
@@ -145,6 +144,20 @@ class ReadPipe implements Pipe
                 ->whereHas('school', function ($query) {
                     $query->where('status', true);
                 });
+
+                if ($entity->sorts) {
+                    if (
+                        !array_key_exists('relevance', $entity->sorts)
+                        || (
+                            isset($entity->filters['search'])
+                            && $entity->filters['search']
+                        )
+                    ) {
+                        $query->sorted($entity->sorts ?: []);
+                    } else {
+                        $query->orderBy('header', 'ASC');
+                    }
+                }
 
                 if (isset($entity->filters['search']) && $entity->filters['search']) {
                     $search = Morph::get($entity->filters['search']);
