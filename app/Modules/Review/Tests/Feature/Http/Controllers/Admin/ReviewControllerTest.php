@@ -377,7 +377,7 @@ class ReviewControllerTest extends TestCase
                 'rating',
                 'price',
                 'price_old',
-                'price_recurrent_price',
+                'price_recurrent',
                 'currency',
                 'online',
                 'employment',

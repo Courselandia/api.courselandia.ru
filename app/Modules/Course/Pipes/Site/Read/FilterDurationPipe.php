@@ -34,14 +34,18 @@ class FilterDurationPipe implements Pipe
      */
     public function handle(Entity|CourseRead $entity, Closure $next): mixed
     {
-        $filters = $entity->filters;
+        if (isset($this->filters['duration'])) {
+            unset($this->filters['duration']);
+        } else {
+            $currentFilters = [];
+        }
 
         $cacheKey = Util::getKey(
             'course',
             'duration',
             'site',
             'read',
-            $filters,
+            $currentFilters,
         );
 
         $duration = Cache::tags([
@@ -57,13 +61,13 @@ class FilterDurationPipe implements Pipe
         ])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
-            function () use ($filters) {
+            function () use ($currentFilters) {
                 $min = 0;
 
                 $durationMin = Course::select([
                     DB::raw('MIN(duration_rate) as duration'),
                 ])
-                ->filter($filters ?: [])
+                ->filter($currentFilters ?: [])
                 ->where('status', Status::ACTIVE->value)
                 ->whereHas('school', function ($query) {
                     $query->where('status', true);
@@ -80,7 +84,7 @@ class FilterDurationPipe implements Pipe
                 $durationMax = Course::select([
                     DB::raw('MAX(duration_rate) as duration'),
                 ])
-                ->filter($filters ?: [])
+                ->filter($currentFilters ?: [])
                 ->where('status', Status::ACTIVE->value)
                 ->whereHas('school', function ($query) {
                     $query->where('status', true);

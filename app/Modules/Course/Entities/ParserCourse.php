@@ -80,7 +80,7 @@ class ParserCourse extends Entity
      *
      * @var float|null
      */
-    public float|null $price_recurrent_price = null;
+    public float|null $price_recurrent = null;
 
     /**
      * Количество уроков.

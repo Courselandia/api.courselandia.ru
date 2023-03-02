@@ -112,7 +112,7 @@ class CourseController extends Controller
             $action->rating = $request->get('rating');
             $action->price = $request->get('price');
             $action->price_old = $request->get('price_old');
-            $action->price_recurrent_price = $request->get('price_recurrent_price');
+            $action->price_recurrent = $request->get('price_recurrent');
             $action->currency = $request->get('currency') ? Currency::from($request->get('currency')) : null;
             $action->online = $request->get('online');
             $action->employment = $request->get('employment');
@@ -197,7 +197,7 @@ class CourseController extends Controller
             $action->rating = $request->get('rating');
             $action->price = $request->get('price');
             $action->price_old = $request->get('price_old');
-            $action->price_recurrent_price = $request->get('price_recurrent_price');
+            $action->price_recurrent = $request->get('price_recurrent');
             $action->currency = $request->get('currency') ? Currency::from($request->get('currency')) : null;
             $action->online = $request->get('online');
             $action->employment = $request->get('employment');

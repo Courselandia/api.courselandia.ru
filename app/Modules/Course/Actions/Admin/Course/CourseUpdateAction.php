@@ -118,7 +118,7 @@ class CourseUpdateAction extends Action
      *
      * @var float|null
      */
-    public float|null $price_recurrent_price = null;
+    public float|null $price_recurrent = null;
 
     /**
      * Валюта.
@@ -304,7 +304,7 @@ class CourseUpdateAction extends Action
                 $courseEntity->rating = $this->rating;
                 $courseEntity->price = $this->price;
                 $courseEntity->price_old = $this->price_old;
-                $courseEntity->price_recurrent_price = $this->price_recurrent_price;
+                $courseEntity->price_recurrent = $this->price_recurrent;
                 $courseEntity->currency = $this->currency;
                 $courseEntity->online = $this->online;
                 $courseEntity->employment = $this->employment;

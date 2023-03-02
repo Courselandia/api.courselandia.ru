@@ -58,7 +58,7 @@ class FilterCreditPipe implements Pipe
             CacheTime::GENERAL->value,
             function () use ($filters) {
                 return !!Course::filter($filters ?: [])
-                    ->where('price_recurrent_price', '!=', null)
+                    ->where('price_recurrent', '!=', null)
                     ->where('status', Status::ACTIVE->value)
                     ->whereHas('school', function ($query) {
                         $query->where('status', true);

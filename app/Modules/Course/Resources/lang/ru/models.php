@@ -19,7 +19,7 @@ return [
         'rating' => 'Рейтинг',
         'price' => 'Цена',
         'price_old' => 'Старая цена',
-        'price_recurrent_price' => 'Цена по кредиту',
+        'price_recurrent' => 'Цена по кредиту',
         'currency' => 'Валюта',
         'online' => 'Онлайн',
         'employment' => 'С трудоустройством',

@@ -158,6 +158,22 @@ class CourseFilter extends ModelFilter
     }
 
     /**
+     * Поиск по наличию рассрочки.
+     *
+     * @param bool $status Признак наличия или отсутствия рассрочки.
+     *
+     * @return CourseFilter Правила поиска.
+     */
+    public function credit(bool $status): CourseFilter
+    {
+        if ($status) {
+            return $this->where('courses.price_recurrent', null);
+        } else {
+            return $this->whereNot('courses.price_recurrent', null);
+        }
+    }
+
+    /**
      * Поиск по статусу является ли курс онлайн курсом.
      *
      * @param bool $online Статус.

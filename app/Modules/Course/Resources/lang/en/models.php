@@ -19,7 +19,7 @@ return [
         'rating' => 'Rating',
         'price' => 'Price',
         'price_old' => 'Rating with discount',
-        'price_recurrent_price' => 'Price with subscription',
+        'price_recurrent' => 'Price with subscription',
         'currency' => 'Currency',
         'online' => 'Online',
         'employment' => 'With employment',

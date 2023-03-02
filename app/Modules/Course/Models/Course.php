@@ -69,7 +69,7 @@ use App\Modules\Course\Filters\CourseFilter;
  * @property float $rating Рейтинг.
  * @property float $price Цена.
  * @property float $price_old Старая цена.
- * @property float $price_recurrent_price Цена по кредиту.
+ * @property float $price_recurrent Цена по кредиту.
  * @property string $currency Валюта.
  * @property boolean $online Онлайн.
  * @property boolean $employment С трудоустройством.
@@ -127,7 +127,7 @@ class Course extends Eloquent
         'rating',
         'price',
         'price_old',
-        'price_recurrent_price',
+        'price_recurrent',
         'currency',
         'online',
         'employment',
@@ -161,7 +161,7 @@ class Course extends Eloquent
         'rating' => 'string',
         'price' => 'string',
         'price_old' => 'string',
-        'price_recurrent_price' => 'string',
+        'price_recurrent' => 'string',
         'currency' => 'string',
         'online' => 'string',
         'employment' => 'string',
@@ -187,7 +187,7 @@ class Course extends Eloquent
             'rating' => 'nullable|float|float_between:0,5',
             'price' => 'nullable|float|float_between:0,999999',
             'price_old' => 'nullable|float|float_between:0,999999',
-            'price_recurrent_price' => 'nullable|float|float_between:0,999999',
+            'price_recurrent' => 'nullable|float|float_between:0,999999',
             'currency' => 'in:' . implode(',', EnumList::getValues(Currency::class)),
             'online' => 'boolean',
             'employment' => 'boolean',
@@ -224,7 +224,7 @@ class Course extends Eloquent
             'rating' => trans('course::models.course.rating'),
             'price' => trans('course::models.course.price'),
             'price_old' => trans('course::models.course.priceOld'),
-            'price_recurrent_price' => trans('course::models.course.priceRecurrentPrice'),
+            'price_recurrent' => trans('course::models.course.priceRecurrentPrice'),
             'currency' => trans('course::models.course.currency'),
             'online' => trans('course::models.course.online'),
             'employment' => trans('course::models.course.employment'),

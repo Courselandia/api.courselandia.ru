@@ -51,7 +51,8 @@ class CourseFilterItemReadRequest extends FormRequest
                 'tools-id',
                 'levels-id',
                 'search',
-                'levels-level'
+                'levels-level',
+                'credit',
             ]
         );
 

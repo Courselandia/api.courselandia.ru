@@ -34,14 +34,18 @@ class FilterPricePipe implements Pipe
      */
     public function handle(Entity|CourseRead $entity, Closure $next): mixed
     {
-        $filters = $entity->filters;
+        if (isset($this->filters['price'])) {
+            unset($this->filters['price']);
+        } else {
+            $currentFilters = [];
+        }
 
         $cacheKey = Util::getKey(
             'course',
             'price',
             'site',
             'read',
-            $filters,
+            $currentFilters,
         );
 
         $price = Cache::tags([
@@ -57,12 +61,12 @@ class FilterPricePipe implements Pipe
         ])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
-            function () use ($filters) {
+            function () use ($currentFilters) {
                 return Course::select([
                     DB::raw('MIN(price) as price_min'),
                     DB::raw('MAX(price) as price_max'),
                 ])
-                ->filter($filters ?: [])
+                ->filter($currentFilters ?: [])
                 ->where('status', Status::ACTIVE->value)
                 ->whereHas('school', function ($query) {
                     $query->where('status', true);

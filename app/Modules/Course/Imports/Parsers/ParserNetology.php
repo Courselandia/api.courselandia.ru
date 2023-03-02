@@ -84,7 +84,7 @@ class ParserNetology extends ParserYml
             $course->url = $offer['url'];
             $course->image = $offer['picture'] ?? null;
             $course->price = $offer['price'];
-            $course->price_recurrent_price = $offer['min_credit_payment_sum'] ?? null;
+            $course->price_recurrent = $offer['min_credit_payment_sum'] ?? null;
             $course->currency = Currency::RUB;
             $course->direction = $offer['direction'];
 

@@ -73,7 +73,7 @@ class ParserSkillbox extends ParserYml
             $course->url = $offer['url'];
             $course->image = $offer['picture'] ?? null;
             $course->price = $offer['price'];
-            $course->price_recurrent_price = $offer['credit_price'] ?? null;
+            $course->price_recurrent = $offer['credit_price'] ?? null;
             $course->currency = Currency::RUB;
             $course->direction = $offer['direction'];
             $course->employment = (bool)$offer['with_employment'];
