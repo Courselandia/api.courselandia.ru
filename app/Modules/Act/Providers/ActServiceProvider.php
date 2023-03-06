@@ -38,8 +38,6 @@ class ActServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->register(RouteServiceProvider::class);
-
         App::bind('act', function () {
             return app(Implement::class);
         });

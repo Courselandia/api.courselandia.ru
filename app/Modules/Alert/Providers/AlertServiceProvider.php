@@ -38,8 +38,6 @@ class AlertServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->register(RouteServiceProvider::class);
-
         App::singleton(
             'alert',
             function () {

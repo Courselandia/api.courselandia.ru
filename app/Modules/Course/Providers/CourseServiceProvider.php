@@ -43,8 +43,6 @@ class CourseServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->register(RouteServiceProvider::class);
-
         $this->commands([
             CourseImportCommand::class,
             CourseFillCommand::class,

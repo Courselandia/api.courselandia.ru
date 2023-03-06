@@ -213,6 +213,9 @@ return [
         App\Modules\Access\Providers\AccessServiceProvider::class,
         App\Modules\Access\Providers\RouteServiceProvider::class,
 
+        App\Modules\OAuth\Providers\OAuthServiceProvider::class,
+        App\Modules\OAuth\Providers\RouteServiceProvider::class,
+
         App\Modules\Act\Providers\ActServiceProvider::class,
         App\Modules\Act\Providers\RouteServiceProvider::class,
 
@@ -245,9 +248,6 @@ return [
 
         App\Modules\Metatag\Providers\MetatagServiceProvider::class,
         App\Modules\Metatag\Providers\RouteServiceProvider::class,
-
-        App\Modules\OAuth\Providers\OAuthServiceProvider::class,
-        App\Modules\OAuth\Providers\RouteServiceProvider::class,
 
         App\Modules\Publication\Providers\PublicationServiceProvider::class,
         App\Modules\Publication\Providers\RouteServiceProvider::class,

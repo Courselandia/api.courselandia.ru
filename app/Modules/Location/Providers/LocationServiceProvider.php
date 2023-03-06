@@ -40,8 +40,6 @@ class LocationServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->register(RouteServiceProvider::class);
-
         App::singleton(LocationContract::class, function () {
             return new LocationModel();
         });

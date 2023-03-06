@@ -40,8 +40,6 @@ class LogServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->register(RouteServiceProvider::class);
-
         App::singleton(LogRepository::class, function () {
             return new LogRepository(new LogMongoDbModel(), new LogEntity());
         });

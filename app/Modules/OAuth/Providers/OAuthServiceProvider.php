@@ -56,8 +56,6 @@ class OAuthServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->register(RouteServiceProvider::class);
-
         App::singleton(RepositoryOAuthClientEloquent::class, function () {
             return new RepositoryOAuthClientEloquent(new ModelOAuthClientEloquent(), new OAuthClient());
         });
