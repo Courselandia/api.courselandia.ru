@@ -62,7 +62,7 @@ class FilterDurationPipe implements Pipe
             $cacheKey,
             CacheTime::GENERAL->value,
             function () use ($currentFilters) {
-                $min = 0;
+                $min = null;
 
                 $durationMin = Course::select([
                     DB::raw('MIN(duration_rate) as duration'),
@@ -75,7 +75,7 @@ class FilterDurationPipe implements Pipe
                 ->first()
                 ->toArray();
 
-                if ($durationMin) {
+                if ($durationMin && $durationMin['duration']) {
                     $min = $durationMin['duration'] < 1 ? 0 : $durationMin['duration'];
                 }
 
@@ -92,7 +92,7 @@ class FilterDurationPipe implements Pipe
                 ->first()
                 ->toArray();
 
-                if ($durationMax) {
+                if ($durationMax && $durationMax['duration']) {
                     $max = max($durationMax['duration'], 1);
                 }
 

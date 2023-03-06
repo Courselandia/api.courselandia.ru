@@ -34,10 +34,10 @@ class FilterOnlinePipe implements Pipe
      */
     public function handle(Entity|CourseRead $entity, Closure $next): mixed
     {
-        if (isset($this->filters['online'])) {
-            unset($this->filters['online']);
-        } else {
-            $currentFilters = [];
+        $currentFilters = $entity->filters;
+
+        if (isset($currentFilters['online'])) {
+            unset($currentFilters['online']);
         }
 
         $cacheKey = Util::getKey(
