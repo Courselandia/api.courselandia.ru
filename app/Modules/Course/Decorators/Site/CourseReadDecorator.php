@@ -46,6 +46,20 @@ class CourseReadDecorator extends Decorator
     public ?int $limit = null;
 
     /**
+     * Раздел описания.
+     *
+     * @var string|null
+     */
+    public ?string $section = null;
+
+    /**
+     * Ссылка на раздел описания.
+     *
+     * @var string|null
+     */
+    public ?string $sectionLink = null;
+
+    /**
      * Метод обработчик события после выполнения всех действий декоратора.
      *
      * @return CourseRead Вернет данные авторизации.
@@ -57,6 +71,8 @@ class CourseReadDecorator extends Decorator
         $courseRead->filters = $this->filters;
         $courseRead->offset = $this->offset;
         $courseRead->limit = $this->limit;
+        $courseRead->section = $this->section;
+        $courseRead->sectionLink = $this->sectionLink;
 
         return app(Pipeline::class)
             ->send($courseRead)

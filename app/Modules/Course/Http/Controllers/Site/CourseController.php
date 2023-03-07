@@ -251,6 +251,8 @@ class CourseController extends Controller
         $action->sorts = $request->get('sorts');
         $action->filters = $request->get('filters');
         $action->offset = $request->get('offset');
+        $action->section = $request->get('section');
+        $action->sectionLink = $request->get('sectionLink');
         $action->limit = $request->get('limit', 30);
 
         $entityCourseRead = $action->run();

@@ -63,6 +63,20 @@ class CourseReadAction extends Action
     public ?int $limit = null;
 
     /**
+     * Раздел описания.
+     *
+     * @var string|null
+     */
+    public ?string $section = null;
+
+    /**
+     * Ссылка на раздел описания.
+     *
+     * @var string|null
+     */
+    public ?string $sectionLink = null;
+
+    /**
      * Метод запуска логики.
      *
      * @return CourseRead|null Вернет результаты исполнения.
@@ -74,6 +88,8 @@ class CourseReadAction extends Action
         $decorator->filters = $this->filters;
         $decorator->offset = $this->offset;
         $decorator->limit = $this->limit;
+        $decorator->section = $this->section;
+        $decorator->sectionLink = $this->sectionLink;
 
         return $decorator->setActions([
             ReadPipe::class,

@@ -9,6 +9,7 @@
 namespace App\Modules\Course\Pipes\Site\Read;
 
 use App\Models\Enums\CacheTime;
+use App\Models\Exceptions\ParameterInvalidException;
 use Util;
 use App\Modules\Category\Models\Category;
 use App\Modules\Category\Entities\Category as CategoryEntity;
@@ -28,7 +29,6 @@ use Closure;
 use App\Models\Contracts\Pipe;
 use App\Models\Entity;
 use App\Modules\Course\Entities\CourseRead;
-use Eloquent;
 use Cache;
 
 /**
@@ -43,109 +43,81 @@ class DescriptionPipe implements Pipe
      * @param Closure $next Ссылка на следующий pipe.
      *
      * @return mixed Вернет значение полученное после выполнения следующего pipe.
+     * @throws ParameterInvalidException
      */
     public function handle(Entity|CourseRead $entity, Closure $next): mixed
     {
-        $descriptionByFilters = [
-            'categories-id' => [
-                'model' => Category::class,
-                'entity' => CategoryEntity::class,
-                'name' => 'category',
-            ],
-            'directions-id' => [
-                'model' => Direction::class,
-                'entity' => DirectionEntity::class,
-                'name' => 'direction',
-            ],
-            'professions-id' => [
-                'model' => Profession::class,
-                'entity' => ProfessionEntity::class,
-                'name' => 'profession',
-            ],
-            'school-id' => [
-                'model' => School::class,
-                'entity' => SchoolEntity::class,
-                'name' => 'school',
-            ],
-            'skills-id' => [
-                'model' => Skill::class,
-                'entity' => SkillEntity::class,
-                'name' => 'skill',
-            ],
-            'teachers-id' => [
-                'model' => Teacher::class,
-                'entity' => TeacherEntity::class,
-                'name' => 'teacher',
-            ],
-            'tools-id' => [
-                'model' => Tool::class,
-                'entity' => ToolEntity::class,
-                'name' => 'tool',
-            ],
-        ];
+        $cacheKey = Util::getKey(
+            'course',
+            'site',
+            'description',
+            $entity->section,
+            $entity->sectionLink,
+        );
 
-        $model = null;
-        $modelEntity = null;
-        $id = null;
-        $descriptionName = null;
+        $section = $entity->section;
+        $link = $entity->sectionLink;
 
-        foreach ($descriptionByFilters as $filterName => $item) {
-            if (
-                isset($entity->filters[$filterName])
-                && ((
-                        is_array($entity->filters[$filterName])
-                        && count($entity->filters[$filterName]) === 1
-                    ) || (
-                        !is_array($entity->filters[$filterName])
-                        && $entity->filters[$filterName]
-                    ))
-            ) {
-                $model = $item['model'];
-                $modelEntity = $item['entity'];
-                $filters = is_array($entity->filters[$filterName]) ? $entity->filters[$filterName] : [$entity->filters[$filterName]];
-                $id = $filters[0];
-                $descriptionName = $item['name'];
+        $entity->description = Cache::tags([
+            'course',
+            'direction',
+            'profession',
+            'category',
+            'skill',
+            'teacher',
+            'tool',
+            'process',
+            'employment',
+            'review',
+        ])->remember(
+            $cacheKey,
+            CacheTime::GENERAL->value,
+            function () use ($section, $link) {
+                if ($section === 'direction') {
+                    $data = Direction::where('link', $link)->first();
 
-                break;
-            }
-        }
-
-        if ($model) {
-            $cacheKey = Util::getKey(
-                'course',
-                'site',
-                'description',
-                $descriptionName,
-                $id,
-            );
-
-            $record = Cache::tags([
-                'course',
-                'direction',
-                'profession',
-                'category',
-                'skill',
-                'teacher',
-                'tool',
-                'process',
-                'employment',
-                'review',
-            ])->remember(
-                $cacheKey,
-                CacheTime::GENERAL->value,
-                function () use ($model, $id) {
-                    /**
-                     * @var $model Eloquent
-                     */
-                    return $model::find($id)?->toArray();
+                    return $data ? new DirectionEntity($data->toArray()) : null;
                 }
-            );
 
-            if ($record) {
-                $entity->description = new $modelEntity($record);
-                $entity->section = $descriptionName;
+                if ($section === 'category') {
+                    $data = Category::where('link', $link)->first();
+
+                    return $data ? new CategoryEntity($data->toArray()) : null;
+                }
+
+                if ($section === 'profession') {
+                    $data = Profession::where('link', $link)->first();
+
+                    return $data ? new ProfessionEntity($data->toArray()) : null;
+                }
+
+                if ($section === 'school') {
+                    $data = School::where('link', $link)->first();
+
+                    return $data ? new SchoolEntity($data->toArray()) : null;
+                }
+
+                if ($section === 'teacher') {
+                    $data = Teacher::where('link', $link)->first();
+
+                    return $data ? new TeacherEntity($data->toArray()) : null;
+                }
+
+                if ($section === 'tool') {
+                    $data = Tool::where('link', $link)->first();
+
+                    return $data ? new ToolEntity($data->toArray()) : null;
+                }
+
+                if ($section === 'skill') {
+                    $data = Skill::where('link', $link)->first();
+
+                    return $data ? new SkillEntity($data->toArray()) : null;
+                }
+
+                return null;
             }
-        }
+        );
 
         return $next($entity);
     }

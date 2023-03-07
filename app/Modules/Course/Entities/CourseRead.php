@@ -65,6 +65,13 @@ class CourseRead extends Entity
     public ?string $section = null;
 
     /**
+     * Ссылка на раздел описания.
+     *
+     * @var string|null
+     */
+    public ?string $sectionLink = null;
+
+    /**
      * Сущность описания.
      *
      * @var Entity|null

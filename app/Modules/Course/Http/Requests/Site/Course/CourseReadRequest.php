@@ -81,6 +81,8 @@ class CourseReadRequest extends CourseFilterItemReadRequest
                 'sorts' => trans('course::http.requests.admin.courseReadRequest.sorts'),
                 'offset' => trans('course::http.requests.admin.courseReadRequest.offset'),
                 'limit' => trans('course::http.requests.admin.courseReadRequest.limit'),
+                'section' => trans('course::http.requests.admin.courseReadRequest.section'),
+                'sectionLink' => trans('course::http.requests.admin.courseReadRequest.sectionLink'),
             ]
         );
     }

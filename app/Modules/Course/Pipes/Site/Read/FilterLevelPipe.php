@@ -37,14 +37,18 @@ class FilterLevelPipe implements Pipe
      */
     public function handle(Entity|CourseRead $entity, Closure $next): mixed
     {
-        $filters = $entity->filters;
+        $currentFilters = $entity->filters;
+
+        if (isset($currentFilters['levels-level'])) {
+            unset($currentFilters['levels-level']);
+        }
 
         $cacheKey = Util::getKey(
             'course',
             'level',
             'site',
             'read',
-            $filters
+            $currentFilters
         );
 
         $levels = Cache::tags([
@@ -60,17 +64,17 @@ class FilterLevelPipe implements Pipe
         ])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
-            function () use ($filters) {
+            function () use ($currentFilters) {
                 $result = CourseLevel::select([
                     'level',
                 ])
                 ->distinct()
                 ->where('id', '!=', null)
-                ->whereHas('course', function ($query) use ($filters) {
+                ->whereHas('course', function ($query) use ($currentFilters) {
                     $query->select([
                         'courses.id',
                     ])
-                    ->filter($filters ?: [])
+                    ->filter($currentFilters ?: [])
                     ->where('status', Status::ACTIVE->value)
                     ->whereHas('school', function ($query) {
                         $query->where('status', true);
