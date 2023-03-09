@@ -44,7 +44,6 @@ class ToolGetAction extends Action
             function () {
                 $result = Tool::with([
                     'metatag',
-                    'categories',
                 ])->find($this->id);
 
                 if ($result) {
