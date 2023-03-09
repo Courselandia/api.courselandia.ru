@@ -10,6 +10,7 @@ namespace App\Modules\Category\Http\Controllers\Site;
 
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Category\Actions\Site\CategoryGetAction;
+use App\Modules\Category\Actions\Site\CategoryLinkAction;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
 
@@ -30,6 +31,37 @@ class CategoryController extends Controller
     {
         $action = app(CategoryGetAction::class);
         $action->id = $id;
+        $data = $action->run();
+
+        if ($data) {
+            $data = [
+                'data' => $data,
+                'success' => true,
+            ];
+
+            return response()->json($data);
+        } else {
+            $data = [
+                'data' => null,
+                'success' => false,
+            ];
+
+            return response()->json($data)->setStatusCode(404);
+        }
+    }
+
+    /**
+     * Получение категории.
+     *
+     * @param string $link Ссылка категории.
+     *
+     * @return JsonResponse Вернет JSON ответ.
+     * @throws ParameterInvalidException
+     */
+    public function link(string $link): JsonResponse
+    {
+        $action = app(CategoryLinkAction::class);
+        $action->link = $link;
         $data = $action->run();
 
         if ($data) {

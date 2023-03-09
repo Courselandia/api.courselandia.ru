@@ -1,27 +1,26 @@
 <?php
 /**
- * Модуль Направления.
- * Этот модуль содержит все классы для работы с направлениями.
+ * Модуль Категорий.
+ * Этот модуль содержит все классы для работы с категориями.
  *
- * @package App\Modules\Direction
+ * @package App\Modules\Category
  */
 
-namespace App\Modules\Direction\Actions\Site;
+namespace App\Modules\Category\Actions\Site;
 
-use App\Modules\Category\Http\Controllers\Site\CategoryController;
 use App\Modules\Course\Enums\Status;
 use Cache;
 use Util;
 use App\Models\Action;
 use App\Models\Enums\CacheTime;
 use App\Models\Exceptions\ParameterInvalidException;
-use App\Modules\Direction\Entities\Direction as DirectionEntity;
-use App\Modules\Direction\Models\Direction;
+use App\Modules\Category\Entities\Category as CategoryEntity;
+use App\Modules\Category\Models\Category;
 
 /**
  * Класс действия для получения категории.
  */
-class DirectionLinkAction extends Action
+class CategoryLinkAction extends Action
 {
     /**
      * ID категории.
@@ -33,29 +32,30 @@ class DirectionLinkAction extends Action
     /**
      * Метод запуска логики.
      *
-     * @return DirectionEntity|null Вернет результаты исполнения.
+     * @return CategoryEntity|null Вернет результаты исполнения.
      * @throws ParameterInvalidException
      */
-    public function run(): ?DirectionEntity
+    public function run(): ?CategoryEntity
     {
-        $cacheKey = Util::getKey('direction', 'admin', 'get', $this->link);
+        $cacheKey = Util::getKey('category', 'admin', 'get', $this->link);
 
-        return Cache::tags(['catalog', 'category'])->remember(
+        return Cache::tags(['catalog', 'category', 'direction', 'profession'])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
             function () {
-                $result = Direction::where('link', $this->link)
-                    ->with([
-                        'metatag',
-                    ])
+                $result = Category::where('link', $this->link)
                     ->whereHas('courses', function ($query) {
                         $query->where('status', Status::ACTIVE->value);
                     })
-                    ->first();
+                    ->with([
+                        'metatag',
+                        'directions',
+                        'professions',
+                    ])->first();
 
                 if ($result) {
                     $item = $result->toArray();
-                    $entity = new DirectionEntity();
+                    $entity = new CategoryEntity();
                     $entity->set($item);
 
                     return $entity;

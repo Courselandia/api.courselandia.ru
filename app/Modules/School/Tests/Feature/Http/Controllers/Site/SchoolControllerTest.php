@@ -8,6 +8,7 @@
 
 namespace App\Modules\School\Tests\Feature\Http\Controllers\Site;
 
+use App\Modules\Course\Tests\Feature\Http\Controllers\Site\CourseControllerTest;
 use App\Modules\School\Models\School;
 use JetBrains\PhpStorm\Pure;
 use Tests\TestCase;
@@ -86,11 +87,11 @@ class SchoolControllerTest extends TestCase
      */
     public function testLink(): void
     {
-        $school = School::factory()->create();
+        $course = CourseControllerTest::createCourse();
 
         $this->json(
             'GET',
-            'api/private/site/school/link/' . $school->link,
+            'api/private/site/school/link/' . $course->school->link,
         )->assertStatus(200)->assertJsonStructure([
             'data' => $this->getSchoolStructure(),
             'success',

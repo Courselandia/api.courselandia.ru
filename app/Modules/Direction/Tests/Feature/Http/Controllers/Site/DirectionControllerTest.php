@@ -78,9 +78,6 @@ class DirectionControllerTest extends TestCase
     {
         $course = CourseControllerTest::createCourse();
 
-        echo $course->directions[0]->link;
-        echo "\n\n";
-
         $this->json(
             'GET',
             'api/private/site/direction/link/' . $course->directions[0]->link,
