@@ -20,8 +20,6 @@ use App\Modules\Course\Tests\Feature\Http\Controllers\Site\CourseControllerTest;
  */
 class DirectionControllerTest extends TestCase
 {
-    use TokenTest;
-
     /**
      * Получение записи.
      *
@@ -39,10 +37,6 @@ class DirectionControllerTest extends TestCase
         $this->json(
             'GET',
             'api/private/site/direction/get/' . $direction->id,
-            [],
-            [
-                'Authorization' => 'Bearer ' . $this->getAdminToken()
-            ]
         )->assertStatus(200)->assertJsonStructure([
             'data' => $this->getDirectionStructure(true, true),
             'success',
@@ -59,10 +53,6 @@ class DirectionControllerTest extends TestCase
         $this->json(
             'GET',
             'api/private/site/category/get/1000',
-            [],
-            [
-                'Authorization' => 'Bearer ' . $this->getAdminToken()
-            ]
         )->assertStatus(404)->assertJsonStructure([
             'data',
             'success',
@@ -81,10 +71,6 @@ class DirectionControllerTest extends TestCase
         $this->json(
             'GET',
             'api/private/site/direction/link/' . $course->directions[0]->link,
-            [],
-            [
-                'Authorization' => 'Bearer ' . $this->getAdminToken()
-            ]
         )->assertStatus(200)->assertJsonStructure([
             'data' => $this->getDirectionStructure(true, true),
             'success',
@@ -101,10 +87,6 @@ class DirectionControllerTest extends TestCase
         $this->json(
             'GET',
             'api/private/site/direction/link/test',
-            [],
-            [
-                'Authorization' => 'Bearer ' . $this->getAdminToken()
-            ]
         )->assertStatus(404)->assertJsonStructure([
             'data',
             'success',

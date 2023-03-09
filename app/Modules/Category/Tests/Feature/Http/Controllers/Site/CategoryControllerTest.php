@@ -20,8 +20,6 @@ use Tests\TestCase;
  */
 class CategoryControllerTest extends TestCase
 {
-    use TokenTest;
-
     /**
      * Получение записи.
      *
@@ -39,10 +37,6 @@ class CategoryControllerTest extends TestCase
         $this->json(
             'GET',
             'api/private/admin/category/get/' . $category->id,
-            [],
-            [
-                'Authorization' => 'Bearer ' . $this->getAdminToken()
-            ]
         )->assertStatus(200)->assertJsonStructure([
             'data' => $this->getCategoryStructure(true, true),
             'success',
@@ -59,10 +53,6 @@ class CategoryControllerTest extends TestCase
         $this->json(
             'GET',
             'api/private/site/category/get/1000',
-            [],
-            [
-                'Authorization' => 'Bearer ' . $this->getAdminToken()
-            ]
         )->assertStatus(404)->assertJsonStructure([
             'data',
             'success',
@@ -81,10 +71,6 @@ class CategoryControllerTest extends TestCase
         $this->json(
             'GET',
             'api/private/site/category/link/' . $course->categories[0]->link,
-            [],
-            [
-                'Authorization' => 'Bearer ' . $this->getAdminToken()
-            ]
         )->assertStatus(200)->assertJsonStructure([
             'data' => $this->getCategoryStructure(true, true),
             'success',
@@ -101,10 +87,6 @@ class CategoryControllerTest extends TestCase
         $this->json(
             'GET',
             'api/private/site/category/link/test',
-            [],
-            [
-                'Authorization' => 'Bearer ' . $this->getAdminToken()
-            ]
         )->assertStatus(404)->assertJsonStructure([
             'data',
             'success',

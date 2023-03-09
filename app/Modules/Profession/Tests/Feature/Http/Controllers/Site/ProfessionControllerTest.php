@@ -18,8 +18,6 @@ use Tests\TestCase;
  */
 class ProfessionControllerTest extends TestCase
 {
-    use TokenTest;
-
     /**
      * Получение записи.
      *
@@ -32,10 +30,6 @@ class ProfessionControllerTest extends TestCase
         $this->json(
             'GET',
             'api/private/site/profession/get/' . $profession->id,
-            [],
-            [
-                'Authorization' => 'Bearer ' . $this->getAdminToken()
-            ]
         )->assertStatus(200)->assertJsonStructure([
             'data' => $this->getProfessionStructure(true, true),
             'success',
@@ -52,10 +46,6 @@ class ProfessionControllerTest extends TestCase
         $this->json(
             'GET',
             'api/private/site/category/get/1000',
-            [],
-            [
-                'Authorization' => 'Bearer ' . $this->getAdminToken()
-            ]
         )->assertStatus(404)->assertJsonStructure([
             'data',
             'success',
@@ -74,10 +64,6 @@ class ProfessionControllerTest extends TestCase
         $this->json(
             'GET',
             'api/private/site/profession/link/' . $course->professions[0]->link,
-            [],
-            [
-                'Authorization' => 'Bearer ' . $this->getAdminToken()
-            ]
         )->assertStatus(200)->assertJsonStructure([
             'data' => $this->getProfessionStructure(true, true),
             'success',
@@ -94,10 +80,6 @@ class ProfessionControllerTest extends TestCase
         $this->json(
             'GET',
             'api/private/site/category/link/test',
-            [],
-            [
-                'Authorization' => 'Bearer ' . $this->getAdminToken()
-            ]
         )->assertStatus(404)->assertJsonStructure([
             'data',
             'success',
