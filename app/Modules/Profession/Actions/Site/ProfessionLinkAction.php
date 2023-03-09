@@ -1,12 +1,12 @@
 <?php
 /**
- * Модуль Категорий.
- * Этот модуль содержит все классы для работы с категориями.
+ * Модуль Профессии.
+ * Этот модуль содержит все классы для работы с профессиями.
  *
- * @package App\Modules\Category
+ * @package App\Modules\Profession
  */
 
-namespace App\Modules\Category\Actions\Site;
+namespace App\Modules\Profession\Actions\Site;
 
 use App\Modules\Course\Enums\Status;
 use Cache;
@@ -14,16 +14,16 @@ use Util;
 use App\Models\Action;
 use App\Models\Enums\CacheTime;
 use App\Models\Exceptions\ParameterInvalidException;
-use App\Modules\Category\Entities\Category as CategoryEntity;
-use App\Modules\Category\Models\Category;
+use App\Modules\Profession\Entities\Profession as ProfessionEntity;
+use App\Modules\Profession\Models\Profession;
 
 /**
  * Класс действия для получения категории.
  */
-class CategoryLinkAction extends Action
+class ProfessionLinkAction extends Action
 {
     /**
-     * ID категории.
+     * Ссылка категории.
      *
      * @var string|null
      */
@@ -32,32 +32,29 @@ class CategoryLinkAction extends Action
     /**
      * Метод запуска логики.
      *
-     * @return CategoryEntity|null Вернет результаты исполнения.
+     * @return ProfessionEntity|null Вернет результаты исполнения.
      * @throws ParameterInvalidException
      */
-    public function run(): ?CategoryEntity
+    public function run(): ?ProfessionEntity
     {
-        $cacheKey = Util::getKey('category', 'admin', 'get', $this->link);
+        $cacheKey = Util::getKey('profession', 'admin', 'get', $this->link);
 
-        return Cache::tags(['catalog', 'category', 'direction', 'profession'])->remember(
+        return Cache::tags(['catalog', 'profession'])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
             function () {
-                $result = Category::where('link', $this->link)
+                $result = Profession::where('link', $this->link)
                     ->whereHas('courses', function ($query) {
                         $query->where('status', Status::ACTIVE->value);
                     })
                     ->active()
                     ->with([
                         'metatag',
-                        'directions',
-                        'professions',
-                    ])
-                    ->first();
+                    ])->first();
 
                 if ($result) {
                     $item = $result->toArray();
-                    $entity = new CategoryEntity();
+                    $entity = new ProfessionEntity();
                     $entity->set($item);
 
                     return $entity;

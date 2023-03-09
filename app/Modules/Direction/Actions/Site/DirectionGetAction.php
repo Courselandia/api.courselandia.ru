@@ -43,8 +43,10 @@ class DirectionGetAction extends Action
             CacheTime::GENERAL->value,
             function () {
                 $result = Direction::with([
-                    'metatag',
-                ])->find($this->id);
+                        'metatag',
+                    ])
+                    ->active()
+                    ->find($this->id);
 
                 if ($result) {
                     $item = $result->toArray();

@@ -43,5 +43,8 @@ Route::group([
     function () {
         Route::get('get/{id}', 'Site\ProfessionController@get')
             ->name('get');
+
+        Route::get('link/{link}', 'Site\ProfessionController@link')
+            ->name('link');
     }
 );
