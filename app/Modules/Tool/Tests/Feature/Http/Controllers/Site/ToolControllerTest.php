@@ -8,8 +8,8 @@
 
 namespace App\Modules\Tool\Tests\Feature\Http\Controllers\Site;
 
+use App\Modules\Course\Tests\Feature\Http\Controllers\Site\CourseControllerTest;
 use App\Modules\Tool\Models\Tool;
-use App\Models\Test\TokenTest;
 use Tests\TestCase;
 
 /**
@@ -17,8 +17,6 @@ use Tests\TestCase;
  */
 class ToolControllerTest extends TestCase
 {
-    use TokenTest;
-
     /**
      * Получение записи.
      *
@@ -30,11 +28,7 @@ class ToolControllerTest extends TestCase
 
         $this->json(
             'GET',
-            'api/private/admin/tool/get/' . $tool->id,
-            [],
-            [
-                'Authorization' => 'Bearer ' . $this->getAdminToken()
-            ]
+            'api/private/site/tool/get/' . $tool->id,
         )->assertStatus(200)->assertJsonStructure([
             'data' => $this->getToolStructure(true, true),
             'success',
@@ -50,11 +44,41 @@ class ToolControllerTest extends TestCase
     {
         $this->json(
             'GET',
-            'api/private/admin/category/get/1000',
-            [],
-            [
-                'Authorization' => 'Bearer ' . $this->getAdminToken()
-            ]
+            'api/private/site/category/get/1000',
+        )->assertStatus(404)->assertJsonStructure([
+            'data',
+            'success',
+        ]);
+    }
+
+    /**
+     * Получение записи.
+     *
+     * @return void
+     */
+    public function testLink(): void
+    {
+        $course = CourseControllerTest::createCourse();
+
+        $this->json(
+            'GET',
+            'api/private/site/tool/link/' . $course->tools[0]->link,
+        )->assertStatus(200)->assertJsonStructure([
+            'data' => $this->getToolStructure(true, true),
+            'success',
+        ]);
+    }
+
+    /**
+     * Получение записи с ошибкой при отсутствии записи.
+     *
+     * @return void
+     */
+    public function testLinkNotExist(): void
+    {
+        $this->json(
+            'GET',
+            'api/private/site/tool/link/test',
         )->assertStatus(404)->assertJsonStructure([
             'data',
             'success',

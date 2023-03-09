@@ -43,5 +43,8 @@ Route::group([
     function () {
         Route::get('get/{id}', 'Site\ToolController@get')
             ->name('get');
+
+        Route::get('link/{link}', 'Site\ToolController@link')
+            ->name('link');
     }
 );

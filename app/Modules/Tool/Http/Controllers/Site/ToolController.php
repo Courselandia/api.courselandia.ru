@@ -10,6 +10,7 @@ namespace App\Modules\Tool\Http\Controllers\Site;
 
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Tool\Actions\Site\ToolGetAction;
+use App\Modules\Tool\Actions\Site\ToolLinkAction;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
 
@@ -30,6 +31,37 @@ class ToolController extends Controller
     {
         $action = app(ToolGetAction::class);
         $action->id = $id;
+        $data = $action->run();
+
+        if ($data) {
+            $data = [
+                'data' => $data,
+                'success' => true,
+            ];
+
+            return response()->json($data);
+        } else {
+            $data = [
+                'data' => null,
+                'success' => false,
+            ];
+
+            return response()->json($data)->setStatusCode(404);
+        }
+    }
+
+    /**
+     * Получение категории.
+     *
+     * @param string $link Ссылка категории.
+     *
+     * @return JsonResponse Вернет JSON ответ.
+     * @throws ParameterInvalidException
+     */
+    public function link(string $link): JsonResponse
+    {
+        $action = app(ToolLinkAction::class);
+        $action->link = $link;
         $data = $action->run();
 
         if ($data) {
