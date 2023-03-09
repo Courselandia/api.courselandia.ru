@@ -31,3 +31,17 @@ Route::group([
         Route::delete('destroy/', 'Admin\SkillController@destroy')
             ->name('destroy');
     });
+
+Route::group([
+    'middleware' => [
+        'locale',
+        'ajax',
+    ],
+    'prefix' => 'private/site/skill/',
+    'as' => 'api.private.site.skill'
+],
+    function () {
+        Route::get('get/{id}', 'Site\SkillController@get')
+            ->name('get');
+    }
+);

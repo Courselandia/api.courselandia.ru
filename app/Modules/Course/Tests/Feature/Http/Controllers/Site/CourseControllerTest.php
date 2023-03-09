@@ -69,6 +69,8 @@ class CourseControllerTest extends TestCase
                 'filters' => [
                     'school-id' => $course->school_id,
                 ],
+                'section' => 'direction',
+                'sectionLink' => $course->directions[0]->link,
             ],
         )->assertStatus(200)->assertJsonStructure([
             'data' => [
@@ -544,12 +546,7 @@ class CourseControllerTest extends TestCase
                     'name',
                 ]
             ],
-            'levels' => [
-                '*' => [
-                    'id',
-                    'level',
-                ]
-            ]
+            'levels',
         ];
     }
 

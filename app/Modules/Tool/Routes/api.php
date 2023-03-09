@@ -31,3 +31,17 @@ Route::group([
         Route::delete('destroy/', 'Admin\ToolController@destroy')
             ->name('destroy');
     });
+
+Route::group([
+    'middleware' => [
+        'locale',
+        'ajax',
+    ],
+    'prefix' => 'private/site/tool/',
+    'as' => 'api.private.site.tool'
+],
+    function () {
+        Route::get('get/{id}', 'Site\ToolController@get')
+            ->name('get');
+    }
+);

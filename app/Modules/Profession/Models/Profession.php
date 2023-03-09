@@ -40,7 +40,6 @@ use App\Modules\Profession\Filters\ProfessionFilter;
  * @property string $status Статус.
  *
  * @property-read Metatag $metatag
- * @property-read Category[] $categories
  * @property-read Salary[] $salaries
  * @property-read Course[] $courses
  */
@@ -138,16 +137,6 @@ class Profession extends Eloquent
     public function metatag(): BelongsTo
     {
         return $this->belongsTo(Metatag::class);
-    }
-
-    /**
-     * Категории этой профессии.
-     *
-     * @return BelongsToMany Модели категорий.
-     */
-    public function categories(): BelongsToMany
-    {
-        return $this->belongsToMany(Category::class);
     }
 
     /**

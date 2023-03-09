@@ -31,3 +31,17 @@ Route::group([
         Route::delete('destroy/', 'Admin\DirectionController@destroy')
             ->name('destroy');
     });
+
+Route::group([
+    'middleware' => [
+        'locale',
+        'ajax',
+    ],
+    'prefix' => 'private/site/direction/',
+    'as' => 'api.private.site.direction'
+],
+    function () {
+        Route::get('get/{id}', 'Site\DirectionController@get')
+            ->name('get');
+    }
+);

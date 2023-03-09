@@ -8,12 +8,12 @@
 
 namespace App\Modules\Course\Pipes\Site\Read;
 
-use App\Models\Exceptions\ParameterInvalidException;
-use App\Modules\Course\Actions\Site\Course\CourseCategoryReadAction;
-use Closure;
 use App\Models\Contracts\Pipe;
 use App\Models\Entity;
+use App\Models\Exceptions\ParameterInvalidException;
+use App\Modules\Course\Actions\Site\Course\CourseCategoryReadAction;
 use App\Modules\Course\Entities\CourseRead;
+use Closure;
 
 /**
  * Чтение курсов: фильтры: категории.

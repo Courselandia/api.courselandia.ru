@@ -38,7 +38,6 @@ use App\Modules\Skill\Filters\SkillFilter;
  * @property string $status Статус.
  *
  * @property-read Metatag $metatag
- * @property-read Category[] $categories
  * @property-read Course[] $courses
  */
 class Skill extends Eloquent
@@ -135,16 +134,6 @@ class Skill extends Eloquent
     public function metatag(): BelongsTo
     {
         return $this->belongsTo(Metatag::class);
-    }
-
-    /**
-     * Категории этой навыка.
-     *
-     * @return BelongsToMany Модели категорий.
-     */
-    public function categories(): BelongsToMany
-    {
-        return $this->belongsToMany(Category::class);
     }
 
     /**

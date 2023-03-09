@@ -30,4 +30,19 @@ Route::group([
 
         Route::delete('destroy/', 'Admin\CategoryController@destroy')
             ->name('destroy');
-    });
+    }
+);
+
+Route::group([
+    'middleware' => [
+        'locale',
+        'ajax',
+    ],
+    'prefix' => 'private/site/category/',
+    'as' => 'api.private.site.category'
+],
+    function () {
+        Route::get('get/{id}', 'Site\CategoryController@get')
+            ->name('get');
+    }
+);

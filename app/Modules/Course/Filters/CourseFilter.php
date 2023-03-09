@@ -26,24 +26,31 @@ class CourseFilter extends ModelFilter
     public $relations = [
         'school' => [
             'school-id'  => 'schoolId',
+            'school-link'  => 'schoolLink',
         ],
         'directions' => [
             'directions-id'  => 'directionsId',
+            'directions-link'  => 'directionsLink',
         ],
         'professions' => [
             'professions-id'  => 'professionsId',
+            'professions-link'  => 'professionsLink',
         ],
         'categories' => [
             'categories-id'  => 'categoriesId',
+            'categories-link'  => 'categoriesLink',
         ],
         'skills' => [
             'skills-id'  => 'skillsId',
+            'skills-link'  => 'skillsLink',
         ],
         'teachers' => [
             'teachers-id'  => 'teachersId',
+            'teachers-link'  => 'teachersLink',
         ],
         'tools' => [
             'tools-id'  => 'toolsId',
+            'tools-link'  => 'toolsLink',
         ],
         'levels' => [
             'levels-level'  => 'levelsLevel',
@@ -72,6 +79,20 @@ class CourseFilter extends ModelFilter
     public function schoolId(array|int|string $schoolIds): CourseFilter
     {
         return $this->whereIn('courses.school_id', is_array($schoolIds) ? $schoolIds : [$schoolIds]);
+    }
+
+    /**
+     * Поиск по школам через ссылку.
+     *
+     * @param array|string $links Ссылка школы.
+     *
+     * @return CourseFilter Правила поиска.
+     */
+    public function schoolLink(array|string $links): CourseFilter
+    {
+        return $this->related('school', function($query) use ($links) {
+            return $query->whereIn('schools.link', is_array($links) ? $links : [$links]);
+        });
     }
 
     /**
@@ -267,6 +288,20 @@ class CourseFilter extends ModelFilter
     }
 
     /**
+     * Поиск по направлениям через ссылку.
+     *
+     * @param array|string $links Ссылки направлений.
+     *
+     * @return CourseFilter Правила поиска.
+     */
+    public function directionsLink(array|string $links): CourseFilter
+    {
+        return $this->related('directions', function($query) use ($links) {
+            return $query->whereIn('directions.link', is_array($links) ? $links : [$links]);
+        });
+    }
+
+    /**
      * Поиск по профессиям.
      *
      * @param array|int|string $ids ID's профессий.
@@ -277,6 +312,20 @@ class CourseFilter extends ModelFilter
     {
         return $this->related('professions', function($query) use ($ids) {
             return $query->whereIn('professions.id', is_array($ids) ? $ids : [$ids]);
+        });
+    }
+
+    /**
+     * Поиск по профессиям через ссылку.
+     *
+     * @param array|string $links Ссылки профессий.
+     *
+     * @return CourseFilter Правила поиска.
+     */
+    public function professionsLink(array|string $links): CourseFilter
+    {
+        return $this->related('professions', function($query) use ($links) {
+            return $query->whereIn('professions.link', is_array($links) ? $links : [$links]);
         });
     }
 
@@ -295,6 +344,20 @@ class CourseFilter extends ModelFilter
     }
 
     /**
+     * Поиск по категориям через ссылку.
+     *
+     * @param array|string $links Ссылки категории.
+     *
+     * @return CourseFilter Правила поиска.
+     */
+    public function categoriesLink(array|string $links): CourseFilter
+    {
+        return $this->related('categories', function($query) use ($links) {
+            return $query->whereIn('categories.link', is_array($links) ? $links : [$links]);
+        });
+    }
+
+    /**
      * Поиск по навыкам.
      *
      * @param array|int|string $ids ID's навыков.
@@ -309,9 +372,23 @@ class CourseFilter extends ModelFilter
     }
 
     /**
-     * Поиск по навыкам.
+     * Поиск по навыкам через ссылку.
      *
-     * @param array|int|string $ids ID's навыков.
+     * @param array|string $links Ссылки навыков.
+     *
+     * @return CourseFilter Правила поиска.
+     */
+    public function skillsLink(array|string $links): CourseFilter
+    {
+        return $this->related('skills', function($query) use ($links) {
+            return $query->whereIn('skills.link', is_array($links) ? $links : [$links]);
+        });
+    }
+
+    /**
+     * Поиск по учителям.
+     *
+     * @param array|int|string $ids ID's учителей.
      *
      * @return CourseFilter Правила поиска.
      */
@@ -319,6 +396,20 @@ class CourseFilter extends ModelFilter
     {
         return $this->related('teachers', function($query) use ($ids) {
             return $query->whereIn('teachers.id', is_array($ids) ? $ids : [$ids]);
+        });
+    }
+
+    /**
+     * Поиск по учителям через ссылку.
+     *
+     * @param array|string $links Ссылки учителей.
+     *
+     * @return CourseFilter Правила поиска.
+     */
+    public function teachersLink(array|string $links): CourseFilter
+    {
+        return $this->related('teachers', function($query) use ($links) {
+            return $query->whereIn('teachers.link', is_array($links) ? $links : [$links]);
         });
     }
 
@@ -333,6 +424,20 @@ class CourseFilter extends ModelFilter
     {
         return $this->related('tools', function($query) use ($ids) {
             return $query->whereIn('tools.id', is_array($ids) ? $ids : [$ids]);
+        });
+    }
+
+    /**
+     * Поиск по инструментам через ссылку.
+     *
+     * @param array|string $links Ссылки инструментов.
+     *
+     * @return CourseFilter Правила поиска.
+     */
+    public function toolsLink(array|string $links): CourseFilter
+    {
+        return $this->related('tools', function($query) use ($links) {
+            return $query->whereIn('tools.link', is_array($links) ? $links : [$links]);
         });
     }
 
