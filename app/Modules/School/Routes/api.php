@@ -52,4 +52,7 @@ Route::group([
 
         Route::get('get/{id}', 'Site\SchoolController@get')
             ->name('get');
+
+        Route::get('link/{link}', 'Site\SchoolController@link')
+            ->name('link');
     });

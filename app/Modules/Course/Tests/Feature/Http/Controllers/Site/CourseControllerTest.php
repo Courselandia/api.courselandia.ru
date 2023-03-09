@@ -35,7 +35,7 @@ class CourseControllerTest extends TestCase
      */
     public function testGet(): void
     {
-        $course = $this->createCourse();
+        $course = self::createCourse();
 
         $this->json(
             'GET',
@@ -53,9 +53,9 @@ class CourseControllerTest extends TestCase
      */
     public function testRead(): void
     {
-        $course = $this->createCourse();
-        $this->createCourse();
-        $this->createCourse();
+        $course = self::createCourse();
+        self::createCourse();
+        self::createCourse();
 
         $this->json(
             'GET',
@@ -139,8 +139,8 @@ class CourseControllerTest extends TestCase
 
     public function testDirections(): void
     {
-        $this->createCourse();
-        $this->createCourse();
+        self::createCourse();
+        self::createCourse();
 
         $this->json(
             'GET',
@@ -155,8 +155,8 @@ class CourseControllerTest extends TestCase
 
     public function testCategories(): void
     {
-        $this->createCourse();
-        $this->createCourse();
+        self::createCourse();
+        self::createCourse();
 
         $this->json(
             'GET',
@@ -171,8 +171,8 @@ class CourseControllerTest extends TestCase
 
     public function testProfessions(): void
     {
-        $this->createCourse();
-        $this->createCourse();
+        self::createCourse();
+        self::createCourse();
 
         $this->json(
             'GET',
@@ -187,8 +187,8 @@ class CourseControllerTest extends TestCase
 
     public function testSchools(): void
     {
-        $this->createCourse();
-        $this->createCourse();
+        self::createCourse();
+        self::createCourse();
 
         $this->json(
             'GET',
@@ -203,8 +203,8 @@ class CourseControllerTest extends TestCase
 
     public function testTools(): void
     {
-        $this->createCourse();
-        $this->createCourse();
+        self::createCourse();
+        self::createCourse();
 
         $this->json(
             'GET',
@@ -219,8 +219,8 @@ class CourseControllerTest extends TestCase
 
     public function testSkills(): void
     {
-        $this->createCourse();
-        $this->createCourse();
+        self::createCourse();
+        self::createCourse();
 
         $this->json(
             'GET',
@@ -235,8 +235,8 @@ class CourseControllerTest extends TestCase
 
     public function testTeachers(): void
     {
-        $this->createCourse();
-        $this->createCourse();
+        self::createCourse();
+        self::createCourse();
 
         $this->json(
             'GET',
@@ -254,7 +254,7 @@ class CourseControllerTest extends TestCase
      *
      * @return Course Вернет курс.
      */
-    private function createCourse(): Course {
+    static public function createCourse(): Course {
         $course = Course::factory()->create();
         $directions = Direction::factory()->count(3)->create();
         $professions = Profession::factory()->count(4)->create();

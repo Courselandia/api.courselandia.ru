@@ -43,5 +43,8 @@ Route::group([
     function () {
         Route::get('get/{id}', 'Site\DirectionController@get')
             ->name('get');
+
+        Route::get('link/{link}', 'Site\DirectionController@link')
+            ->name('link');
     }
 );

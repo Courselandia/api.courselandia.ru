@@ -10,6 +10,7 @@ namespace App\Modules\School\Http\Controllers\Site;
 
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\School\Actions\Site\School\SchoolGetAction;
+use App\Modules\School\Actions\Site\School\SchoolLinkAction;
 use App\Modules\School\Actions\Site\School\SchoolReadAction;
 use App\Modules\School\Http\Requests\Site\School\SchoolReadRequest;
 use Illuminate\Http\JsonResponse;
@@ -33,6 +34,37 @@ class SchoolController extends Controller
     {
         $action = app(SchoolGetAction::class);
         $action->id = $id;
+        $data = $action->run();
+
+        if ($data) {
+            $data = [
+                'data' => $data,
+                'success' => true,
+            ];
+
+            return response()->json($data);
+        } else {
+            $data = [
+                'data' => null,
+                'success' => false,
+            ];
+
+            return response()->json($data)->setStatusCode(404);
+        }
+    }
+
+    /**
+     * Получение школы.
+     *
+     * @param string $link Ссылка.
+     *
+     * @return JsonResponse Вернет JSON ответ.
+     * @throws ParameterInvalidException
+     */
+    public function link(string $link): JsonResponse
+    {
+        $action = app(SchoolLinkAction::class);
+        $action->link = $link;
         $data = $action->run();
 
         if ($data) {

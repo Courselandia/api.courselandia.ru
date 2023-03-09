@@ -80,6 +80,40 @@ class SchoolControllerTest extends TestCase
     }
 
     /**
+     * Получение записи.
+     *
+     * @return void
+     */
+    public function testLink(): void
+    {
+        $school = School::factory()->create();
+
+        $this->json(
+            'GET',
+            'api/private/site/school/link/' . $school->link,
+        )->assertStatus(200)->assertJsonStructure([
+            'data' => $this->getSchoolStructure(),
+            'success',
+        ]);
+    }
+
+    /**
+     * Получение записи с ошибкой при отсутствии записи.
+     *
+     * @return void
+     */
+    public function testLinkNotExist(): void
+    {
+        $this->json(
+            'GET',
+            'api/private/site/school/link/test',
+        )->assertStatus(404)->assertJsonStructure([
+            'data',
+            'success',
+        ]);
+    }
+
+    /**
      * Получить структуру данных школы.
      *
      * @return array Массив структуры данных школы.
