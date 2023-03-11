@@ -9,7 +9,6 @@
 namespace App\Modules\Course\Actions\Site\Course;
 
 use App\Modules\Course\Entities\CourseItemDirectionFilter;
-use DB;
 use App\Models\Entity;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Direction\Models\Direction;
@@ -88,10 +87,6 @@ class CourseDirectionReadAction extends Action
                 'site',
                 'read',
                 'all',
-                $this->offset,
-                $this->limit,
-                $this->withCategories,
-                $this->withCount,
             );
 
             $allDirections = Cache::tags([
@@ -238,9 +233,9 @@ class CourseDirectionReadAction extends Action
                     }
 
                     return $allDirections;
-                } else {
-                    return $activeDirections;
                 }
+
+                return $activeDirections;
             }
         );
     }

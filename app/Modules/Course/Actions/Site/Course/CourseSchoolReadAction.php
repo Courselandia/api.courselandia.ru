@@ -46,6 +46,13 @@ class CourseSchoolReadAction extends Action
     public ?int $limit = null;
 
     /**
+     * Отключать не активные.
+     *
+     * @var bool
+     */
+    public ?bool $disabled = false;
+
+    /**
      * Метод запуска логики.
      *
      * @return CourseItemFilter[] Вернет результаты исполнения.
@@ -60,6 +67,49 @@ class CourseSchoolReadAction extends Action
             unset($filters['school-id']);
         } else {
             $schoolFilters = [];
+        }
+
+        if ($this->disabled === true) {
+            $cacheKey = Util::getKey(
+                'course',
+                'schools',
+                'site',
+                'read',
+                'all',
+            );
+
+            $allSchools = Cache::tags([
+                'course',
+                'direction',
+                'profession',
+                'category',
+                'skill',
+                'teacher',
+                'tool',
+                'process',
+                'employment',
+            ])->remember(
+                $cacheKey,
+                CacheTime::GENERAL->value,
+                function () {
+                    $result = School::select([
+                        'schools.id',
+                        'schools.link',
+                        'schools.name',
+                    ])
+                    ->whereHas('courses', function ($query) {
+                        $query->where('status', Status::ACTIVE->value);
+                    })
+                    ->where('status', true)
+                    ->orderBy('name')
+                    ->get()
+                    ->toArray();
+
+                    return Entity::toEntities($result, new CourseItemFilter());
+                }
+            );
+        } else {
+            $allSchools = [];
         }
 
         $cacheKey = Util::getKey(
@@ -85,7 +135,7 @@ class CourseSchoolReadAction extends Action
         ])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
-            function () use ($schoolFilters, $filters) {
+            function () use ($schoolFilters, $filters, $allSchools) {
                 $query = School::select([
                     'schools.id',
                     'schools.link',
@@ -97,23 +147,50 @@ class CourseSchoolReadAction extends Action
                 })
                 ->where('status', true);
 
-                if (count($schoolFilters)) {
+                if (count($schoolFilters) && !$this->disabled) {
                     $query->orderBy(DB::raw('FIELD(id, ' . implode(', ', array_reverse($schoolFilters)) . ')'), 'DESC');
                 }
 
                 $query->orderBy('name');
 
-                if ($this->offset) {
-                    $query->offset($this->offset);
-                }
+                if (!$this->disabled) {
+                    if ($this->offset) {
+                        $query->offset($this->offset);
+                    }
 
-                if ($this->limit) {
-                    $query->limit($this->limit);
+                    if ($this->limit) {
+                        $query->limit($this->limit);
+                    }
                 }
 
                 $result = $query->get()->toArray();
 
-                return Entity::toEntities($result, new CourseItemFilter());
+                $activeSchools = Entity::toEntities($result, new CourseItemFilter());
+
+                if ($this->disabled) {
+                    $collectionActiveSchools = collect($activeSchools);
+
+                    foreach ($allSchools as $school) {
+                        /**
+                         * @var CourseItemFilter $school
+                         */
+                        $school->disabled = $collectionActiveSchools->search(function ($item) use ($school) {
+                            return $item->id === $school->id;
+                        }) === false;
+                    }
+
+                    return collect($allSchools)
+                        ->sortBy(function ($item) {
+                            $disabled = $item->disabled ? '1' : '0';
+
+                            return $disabled . ' ' . $item->name;
+                        })
+                        ->slice($this->offset, $this->limit)
+                        ->values()
+                        ->toArray();
+                }
+
+                return $activeSchools;
             }
         );
     }

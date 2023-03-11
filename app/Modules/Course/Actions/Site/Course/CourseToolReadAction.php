@@ -46,6 +46,13 @@ class CourseToolReadAction extends Action
     public ?int $limit = null;
 
     /**
+     * Отключать не активные.
+     *
+     * @var bool
+     */
+    public ?bool $disabled = false;
+
+    /**
      * Метод запуска логики.
      *
      * @return CourseItemFilter[] Вернет результаты исполнения.
@@ -60,6 +67,53 @@ class CourseToolReadAction extends Action
             unset($filters['tools-id']);
         } else {
             $toolFilters = [];
+        }
+
+        if ($this->disabled === true) {
+            $cacheKey = Util::getKey(
+                'course',
+                'tools',
+                'site',
+                'read',
+                'all',
+            );
+
+            $allTools = Cache::tags([
+                'course',
+                'direction',
+                'profession',
+                'category',
+                'skill',
+                'teacher',
+                'tool',
+            ])->remember(
+                $cacheKey,
+                CacheTime::GENERAL->value,
+                function () {
+                    $result = Tool::select([
+                        'tools.id',
+                        'tools.link',
+                        'tools.name',
+                    ])
+                    ->whereHas('courses', function ($query) {
+                        $query->select([
+                            'courses.id',
+                        ])
+                        ->where('status', Status::ACTIVE->value)
+                        ->whereHas('school', function ($query) {
+                            $query->where('status', true);
+                        });
+                    })
+                    ->where('status', true)
+                    ->orderBy('name')
+                    ->get()
+                    ->toArray();
+
+                    return Entity::toEntities($result, new CourseItemFilter());
+                }
+            );
+        } else {
+            $allTools = [];
         }
 
         $cacheKey = Util::getKey(
@@ -83,7 +137,7 @@ class CourseToolReadAction extends Action
         ])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
-            function () use ($toolFilters, $filters) {
+            function () use ($toolFilters, $filters, $allTools) {
                 $query = Tool::select([
                     'tools.id',
                     'tools.link',
@@ -92,7 +146,8 @@ class CourseToolReadAction extends Action
                 ->whereHas('courses', function ($query) use ($filters) {
                     $query->select([
                         'courses.id',
-                    ])->filter($filters ?: [])
+                    ])
+                    ->filter($filters ?: [])
                     ->where('status', Status::ACTIVE->value)
                     ->whereHas('school', function ($query) {
                         $query->where('status', true);
@@ -100,23 +155,49 @@ class CourseToolReadAction extends Action
                 })
                 ->where('status', true);
 
-                if (count($toolFilters)) {
+                if (count($toolFilters) && !$this->disabled) {
                     $query->orderBy(DB::raw('FIELD(id, ' . implode(', ', array_reverse($toolFilters)) . ')'), 'DESC');
                 }
 
                 $query->orderBy('name');
 
-                if ($this->offset) {
-                    $query->offset($this->offset);
-                }
+                if (!$this->disabled) {
+                    if ($this->offset) {
+                        $query->offset($this->offset);
+                    }
 
-                if ($this->limit) {
-                    $query->limit($this->limit);
+                    if ($this->limit) {
+                        $query->limit($this->limit);
+                    }
                 }
 
                 $result = $query->get()->toArray();
+                $activeTools = Entity::toEntities($result, new CourseItemFilter());
 
-                return Entity::toEntities($result, new CourseItemFilter());
+                if ($this->disabled) {
+                    $collectionActiveTools = collect($activeTools);
+
+                    foreach ($allTools as $tool) {
+                        /**
+                         * @var CourseItemFilter $tool
+                         */
+                        $tool->disabled = $collectionActiveTools->search(function ($item) use ($tool) {
+                            return $item->id === $tool->id;
+                        }) === false;
+                    }
+
+                    return collect($allTools)
+                        ->sortBy(function ($item) {
+                            $disabled = $item->disabled ? '1' : '0';
+
+                            return $disabled . ' ' . $item->name;
+                        })
+                        ->slice($this->offset, $this->limit)
+                        ->values()
+                        ->toArray();
+                }
+
+                return $activeTools;
             }
         );
     }

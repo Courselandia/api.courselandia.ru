@@ -39,31 +39,24 @@ class FilterRatingPipe implements Pipe
             unset($currentFilters['rating']);
         }
 
-        $ratings = [];
-
-        $result = $this->hasRating(4.5, $currentFilters);
-
-        if ($result) {
-            $ratings[] = 4.5;
-        }
-
-        $result = $this->hasRating(4, $currentFilters);
-
-        if ($result) {
-            $ratings[] = 4;
-        }
-
-        $result = $this->hasRating(3.5, $currentFilters);
-
-        if ($result) {
-            $ratings[] = 3.5;
-        }
-
-        $result = $this->hasRating(3, $currentFilters);
-
-        if ($result) {
-            $ratings[] = 3;
-        }
+        $ratings = [
+            [
+                'label' => 4.5,
+                'disabled' => !$this->hasRating(4.5, $currentFilters),
+            ],
+            [
+                'label' => 4,
+                'disabled' => !$this->hasRating(4, $currentFilters),
+            ],
+            [
+                'label' => 3.5,
+                'disabled' => !$this->hasRating(3.5, $currentFilters),
+            ],
+            [
+                'label' => 3,
+                'disabled' => !$this->hasRating(3, $currentFilters),
+            ]
+        ];
 
         $entity->filter->ratings = $ratings;
 

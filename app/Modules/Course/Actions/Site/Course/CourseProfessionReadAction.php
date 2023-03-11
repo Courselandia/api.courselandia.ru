@@ -46,6 +46,13 @@ class CourseProfessionReadAction extends Action
     public ?int $limit = null;
 
     /**
+     * Отключать не активные.
+     *
+     * @var bool
+     */
+    public ?bool $disabled = false;
+
+    /**
      * Метод запуска логики.
      *
      * @return CourseItemFilter[] Вернет результаты исполнения.
@@ -62,6 +69,55 @@ class CourseProfessionReadAction extends Action
             $professionFilters = [];
         }
 
+        if ($this->disabled === true) {
+            $cacheKey = Util::getKey(
+                'course',
+                'professions',
+                'site',
+                'read',
+                'all',
+            );
+
+            $allProfessions = Cache::tags([
+                'course',
+                'direction',
+                'profession',
+                'category',
+                'skill',
+                'teacher',
+                'tool',
+                'process',
+                'employment',
+            ])->remember(
+                $cacheKey,
+                CacheTime::GENERAL->value,
+                function () {
+                    $result = Profession::select([
+                        'professions.id',
+                        'professions.link',
+                        'professions.name',
+                    ])
+                    ->whereHas('courses', function ($query) {
+                        $query->select([
+                            'courses.id',
+                        ])
+                        ->where('status', Status::ACTIVE->value)
+                        ->whereHas('school', function ($query) {
+                            $query->where('status', true);
+                        });
+                    })
+                    ->where('status', true)
+                    ->orderBy('name')
+                    ->get()
+                    ->toArray();
+
+                    return Entity::toEntities($result, new CourseItemFilter());
+                }
+            );
+        } else {
+            $allProfessions = [];
+        }
+
         $cacheKey = Util::getKey(
             'course',
             'professions',
@@ -70,6 +126,7 @@ class CourseProfessionReadAction extends Action
             $filters,
             $this->offset,
             $this->limit,
+            $this->disabled,
         );
 
         return Cache::tags([
@@ -85,13 +142,13 @@ class CourseProfessionReadAction extends Action
         ])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
-            function () use ($professionFilters, $filters) {
+            function () use ($professionFilters, $filters, $allProfessions) {
                 $query = Profession::select([
                     'professions.id',
                     'professions.link',
                     'professions.name',
                 ])
-                ->whereHas('courses', function ($query) use ($filters) {
+                ->whereHas('courses', function ($query) use ($filters, $allProfessions) {
                     $query->select([
                         'courses.id',
                     ])
@@ -103,23 +160,50 @@ class CourseProfessionReadAction extends Action
                 })
                 ->where('status', true);
 
-                if (count($professionFilters)) {
+                if (count($professionFilters) && !$this->disabled) {
                     $query->orderBy(DB::raw('FIELD(id, ' . implode(', ', array_reverse($professionFilters)) . ')'), 'DESC');
                 }
 
                 $query->orderBy('name');
 
-                if ($this->offset) {
-                    $query->offset($this->offset);
-                }
+                if (!$this->disabled) {
+                    if ($this->offset) {
+                        $query->offset($this->offset);
+                    }
 
-                if ($this->limit) {
-                    $query->limit($this->limit);
+                    if ($this->limit) {
+                        $query->limit($this->limit);
+                    }
                 }
 
                 $result = $query->get()->toArray();
 
-                return Entity::toEntities($result, new CourseItemFilter());
+                $activeProfessions = Entity::toEntities($result, new CourseItemFilter());
+
+                if ($this->disabled) {
+                    $collectionActiveProfessions = collect($activeProfessions);
+
+                    foreach ($allProfessions as $profession) {
+                        /**
+                         * @var CourseItemFilter $profession
+                         */
+                        $profession->disabled = $collectionActiveProfessions->search(function ($item) use ($profession) {
+                            return $item->id === $profession->id;
+                        }) === false;
+                    }
+
+                    return collect($allProfessions)
+                        ->sortBy(function ($item) {
+                            $disabled = $item->disabled ? '1' : '0';
+
+                            return $disabled . ' ' . $item->name;
+                        })
+                        ->slice($this->offset, $this->limit)
+                        ->values()
+                        ->toArray();
+                }
+
+                return $activeProfessions;
             }
         );
     }
