@@ -60,6 +60,13 @@ class CourseReadDecorator extends Decorator
     public ?string $sectionLink = null;
 
     /**
+     * Отключать не активные.
+     *
+     * @var bool
+     */
+    public bool $disabled = false;
+
+    /**
      * Метод обработчик события после выполнения всех действий декоратора.
      *
      * @return CourseRead Вернет данные авторизации.

@@ -84,4 +84,11 @@ class CourseRead extends Entity
      * @var int|null
      */
     public ?int $total = null;
+
+    /**
+     * Отключать не активные.
+     *
+     * @var bool
+     */
+    public bool $disabled = false;
 }

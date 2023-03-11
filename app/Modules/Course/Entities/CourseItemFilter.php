@@ -42,4 +42,11 @@ class CourseItemFilter extends Entity
      * @var int|null
      */
     public ?int $count = null;
+
+    /**
+     * Фильтр отключен.
+     *
+     * @var bool|null
+     */
+    public ?bool $disabled = null;
 }

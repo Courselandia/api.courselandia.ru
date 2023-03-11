@@ -77,6 +77,13 @@ class CourseReadAction extends Action
     public ?string $sectionLink = null;
 
     /**
+     * Отключать не активные.
+     *
+     * @var bool
+     */
+    public bool $disabled = false;
+
+    /**
      * Метод запуска логики.
      *
      * @return CourseRead|null Вернет результаты исполнения.
@@ -90,6 +97,7 @@ class CourseReadAction extends Action
         $decorator->limit = $this->limit;
         $decorator->section = $this->section;
         $decorator->sectionLink = $this->sectionLink;
+        $decorator->disabled = $this->disabled;
 
         return $decorator->setActions([
             ReadPipe::class,

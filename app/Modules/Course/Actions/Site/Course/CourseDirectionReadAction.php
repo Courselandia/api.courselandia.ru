@@ -61,6 +61,13 @@ class CourseDirectionReadAction extends Action
     public ?bool $withCount = false;
 
     /**
+     * Отключать не активные
+     *
+     * @var bool
+     */
+    public ?bool $disabled = false;
+
+    /**
      * Метод запуска логики.
      *
      * @return CourseItemFilter[] Вернет результаты исполнения.
@@ -74,6 +81,60 @@ class CourseDirectionReadAction extends Action
             unset($filters['directions-id']);
         }
 
+        if ($this->disabled === true) {
+            $cacheKey = Util::getKey(
+                'course',
+                'directions',
+                'site',
+                'read',
+                'all',
+                $this->offset,
+                $this->limit,
+                $this->withCategories,
+                $this->withCount,
+            );
+
+            $allDirections = Cache::tags([
+                'course',
+                'direction',
+                'profession',
+                'category',
+                'skill',
+                'teacher',
+                'tool',
+                'process',
+                'employment',
+            ])->remember(
+                $cacheKey,
+                CacheTime::GENERAL->value,
+                function () use ($filters) {
+                    $result = Direction::select([
+                        'directions.id',
+                        'directions.name',
+                        'directions.link',
+                        'directions.weight',
+                    ])
+                    ->whereHas('courses', function ($query) {
+                        $query->select([
+                            'courses.id',
+                        ])
+                        ->where('status', Status::ACTIVE->value)
+                        ->whereHas('school', function ($query) {
+                            $query->where('status', true);
+                        });
+                    })
+                    ->where('status', true)
+                    ->orderBy('weight')
+                    ->get()
+                    ->toArray();
+
+                    return Entity::toEntities($result, new CourseItemFilter());
+                }
+            );
+        } else {
+            $allDirections = [];
+        }
+
         $cacheKey = Util::getKey(
             'course',
             'directions',
@@ -84,6 +145,7 @@ class CourseDirectionReadAction extends Action
             $this->limit,
             $this->withCategories,
             $this->withCount,
+            $this->disabled,
         );
 
         return Cache::tags([
@@ -99,7 +161,7 @@ class CourseDirectionReadAction extends Action
         ])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
-            function () use ($filters) {
+            function () use ($filters, $allDirections) {
                 $query = Direction::select([
                     'directions.id',
                     'directions.name',
@@ -120,12 +182,14 @@ class CourseDirectionReadAction extends Action
 
                 $query->orderBy('weight');
 
-                if ($this->offset) {
-                    $query->offset($this->offset);
-                }
+                if (!$this->disabled) {
+                    if ($this->offset) {
+                        $query->offset($this->offset);
+                    }
 
-                if ($this->limit) {
-                    $query->limit($this->limit);
+                    if ($this->limit) {
+                        $query->limit($this->limit);
+                    }
                 }
 
                 if ($this->withCategories) {
@@ -159,7 +223,24 @@ class CourseDirectionReadAction extends Action
                     return Entity::toEntities($result, new CourseItemDirectionFilter());
                 }
 
-                return Entity::toEntities($result, new CourseItemFilter());
+                $activeDirections = Entity::toEntities($result, new CourseItemFilter());
+
+                if ($this->disabled) {
+                    $collectionActiveDirections = collect($activeDirections);
+
+                    foreach ($allDirections as $direction) {
+                        /**
+                         * @var CourseItemFilter $direction
+                         */
+                        $direction->disabled = $collectionActiveDirections->search(function ($item) use ($direction) {
+                            return $item->id === $direction->id;
+                        }) === false;
+                    }
+
+                    return $allDirections;
+                } else {
+                    return $activeDirections;
+                }
             }
         );
     }

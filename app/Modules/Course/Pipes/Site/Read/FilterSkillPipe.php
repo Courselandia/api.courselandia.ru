@@ -35,6 +35,7 @@ class FilterSkillPipe implements Pipe
         $action->filters = $entity->filters;
         $action->offset = 0;
         $action->limit = 11;
+        $action->disabled = true;
 
         $entity->filter->skills = $action->run();
 

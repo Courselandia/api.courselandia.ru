@@ -53,8 +53,11 @@ class CourseProfessionReadAction extends Action
      */
     public function run(): array
     {
-        if (isset($this->filters['professions-id'])) {
-            $professionFilters = is_array($this->filters['professions-id']) ? $this->filters['professions-id'] : [$this->filters['professions-id']];
+        $filters = $this->filters;
+
+        if (isset($filters['professions-id'])) {
+            $professionFilters = is_array($filters['professions-id']) ? $filters['professions-id'] : [$filters['professions-id']];
+            unset($filters['professions-id']);
         } else {
             $professionFilters = [];
         }
@@ -64,7 +67,7 @@ class CourseProfessionReadAction extends Action
             'professions',
             'site',
             'read',
-            $this->filters,
+            $filters,
             $this->offset,
             $this->limit,
         );
@@ -82,17 +85,17 @@ class CourseProfessionReadAction extends Action
         ])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
-            function () use ($professionFilters) {
+            function () use ($professionFilters, $filters) {
                 $query = Profession::select([
                     'professions.id',
                     'professions.link',
                     'professions.name',
                 ])
-                ->whereHas('courses', function ($query) {
+                ->whereHas('courses', function ($query) use ($filters) {
                     $query->select([
                         'courses.id',
                     ])
-                    ->filter($this->filters ?: [])
+                    ->filter($filters ?: [])
                     ->where('status', Status::ACTIVE->value)
                     ->whereHas('school', function ($query) {
                         $query->where('status', true);

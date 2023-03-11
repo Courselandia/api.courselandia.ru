@@ -55,9 +55,9 @@ class CourseToolReadAction extends Action
     {
         $filters = $this->filters;
 
-        if (isset($filters['skills-id'])) {
+        if (isset($filters['tools-id'])) {
             $toolFilters = is_array($filters['tools-id']) ? $filters['tools-id'] : [$filters['tools-id']];
-            unset($filters['skills-id']);
+            unset($filters['tools-id']);
         } else {
             $toolFilters = [];
         }

@@ -254,6 +254,7 @@ class CourseController extends Controller
         $action->section = $request->get('section');
         $action->sectionLink = $request->get('sectionLink');
         $action->limit = $request->get('limit', 30);
+        $action->disabled = true;
 
         $entityCourseRead = $action->run();
 
