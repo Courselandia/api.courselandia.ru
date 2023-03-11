@@ -54,10 +54,9 @@ class CourseProfessionReadAction extends Action
     public function run(): array
     {
         if (isset($this->filters['professions-id'])) {
-            $currentFilters = is_array($this->filters['professions-id']) ? $this->filters['professions-id'] : [$this->filters['professions-id']];
-            unset($this->filters['professions-id']);
+            $professionFilters = is_array($this->filters['professions-id']) ? $this->filters['professions-id'] : [$this->filters['professions-id']];
         } else {
-            $currentFilters = [];
+            $professionFilters = [];
         }
 
         $cacheKey = Util::getKey(
@@ -68,7 +67,6 @@ class CourseProfessionReadAction extends Action
             $this->filters,
             $this->offset,
             $this->limit,
-            $currentFilters,
         );
 
         return Cache::tags([
@@ -84,7 +82,7 @@ class CourseProfessionReadAction extends Action
         ])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
-            function () use ($currentFilters) {
+            function () use ($professionFilters) {
                 $query = Profession::select([
                     'professions.id',
                     'professions.link',
@@ -102,8 +100,8 @@ class CourseProfessionReadAction extends Action
                 })
                 ->where('status', true);
 
-                if (count($currentFilters)) {
-                    $query->orderBy(DB::raw('FIELD(id, ' . implode(', ', array_reverse($currentFilters)) . ')'), 'DESC');
+                if (count($professionFilters)) {
+                    $query->orderBy(DB::raw('FIELD(id, ' . implode(', ', array_reverse($professionFilters)) . ')'), 'DESC');
                 }
 
                 $query->orderBy('name');

@@ -53,11 +53,13 @@ class CourseCategoryReadAction extends Action
      */
     public function run(): array
     {
-        if (isset($this->filters['categories-id'])) {
-            $currentFilters = is_array($this->filters['categories-id']) ? $this->filters['categories-id'] : [$this->filters['categories-id']];
-            unset($this->filters['categories-id']);
+        $filters = $this->filters;
+
+        if (isset($filters['categories-id'])) {
+            $categoryFilters = is_array($filters['categories-id']) ? $filters['categories-id'] : [$filters['categories-id']];
+            unset($filters['categories-id']);
         } else {
-            $currentFilters = [];
+            $categoryFilters = [];
         }
 
         $cacheKey = Util::getKey(
@@ -65,10 +67,9 @@ class CourseCategoryReadAction extends Action
             'categories',
             'site',
             'read',
-            $this->filters,
+            $filters,
             $this->offset,
             $this->limit,
-            $currentFilters,
         );
 
         return Cache::tags([
@@ -84,17 +85,17 @@ class CourseCategoryReadAction extends Action
         ])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
-            function () use ($currentFilters) {
+            function () use ($categoryFilters, $filters) {
                 $query = Category::select([
                     'categories.id',
                     'categories.link',
                     'categories.name',
                 ])
-                ->whereHas('courses', function ($query) {
+                ->whereHas('courses', function ($query) use ($filters) {
                     $query->select([
                         'courses.id',
                     ])
-                    ->filter($this->filters ?: [])
+                    ->filter($filters ?: [])
                     ->where('status', Status::ACTIVE->value)
                     ->whereHas('school', function ($query) {
                         $query->where('status', true);
@@ -102,8 +103,8 @@ class CourseCategoryReadAction extends Action
                 })
                 ->where('status', true);
 
-                if (count($currentFilters)) {
-                    $query->orderBy(DB::raw('FIELD(id, ' . implode(', ', array_reverse($currentFilters)) . ')'), 'DESC');
+                if (count($categoryFilters)) {
+                    $query->orderBy(DB::raw('FIELD(id, ' . implode(', ', array_reverse($categoryFilters)) . ')'), 'DESC');
                 }
 
                 $query->orderBy('name');

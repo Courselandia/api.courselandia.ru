@@ -68,13 +68,10 @@ class CourseDirectionReadAction extends Action
      */
     public function run(): array
     {
-        if (isset($this->filters['directions-id'])) {
-            $currentFilters = is_array(
-                $this->filters['directions-id']
-            ) ? $this->filters['directions-id'] : [$this->filters['directions-id']];
-            unset($this->filters['directions-id']);
-        } else {
-            $currentFilters = [];
+        $filters = $this->filters;
+
+        if (isset($filters['directions-id'])) {
+            unset($filters['directions-id']);
         }
 
         $cacheKey = Util::getKey(
@@ -82,10 +79,9 @@ class CourseDirectionReadAction extends Action
             'directions',
             'site',
             'read',
-            $this->filters,
+            $filters,
             $this->offset,
             $this->limit,
-            $currentFilters,
             $this->withCategories,
             $this->withCount,
         );
@@ -103,18 +99,18 @@ class CourseDirectionReadAction extends Action
         ])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
-            function () use ($currentFilters) {
+            function () use ($filters) {
                 $query = Direction::select([
                     'directions.id',
                     'directions.name',
                     'directions.link',
                     'directions.weight',
                 ])
-                ->whereHas('courses', function ($query) {
+                ->whereHas('courses', function ($query) use ($filters) {
                     $query->select([
                         'courses.id',
                     ])
-                    ->filter($this->filters ?: [])
+                    ->filter($filters ?: [])
                     ->where('status', Status::ACTIVE->value)
                     ->whereHas('school', function ($query) {
                         $query->where('status', true);

@@ -53,11 +53,13 @@ class CourseToolReadAction extends Action
      */
     public function run(): array
     {
-        if (isset($this->filters['tools-id'])) {
-            $currentFilters = is_array($this->filters['tools-id']) ? $this->filters['tools-id'] : [$this->filters['tools-id']];
-            unset($this->filters['tools-id']);
+        $filters = $this->filters;
+
+        if (isset($filters['skills-id'])) {
+            $toolFilters = is_array($filters['tools-id']) ? $filters['tools-id'] : [$filters['tools-id']];
+            unset($filters['skills-id']);
         } else {
-            $currentFilters = [];
+            $toolFilters = [];
         }
 
         $cacheKey = Util::getKey(
@@ -65,10 +67,9 @@ class CourseToolReadAction extends Action
             'tools',
             'site',
             'read',
-            $this->filters,
+            $filters,
             $this->offset,
             $this->limit,
-            $currentFilters,
         );
 
         return Cache::tags([
@@ -82,16 +83,16 @@ class CourseToolReadAction extends Action
         ])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
-            function () use ($currentFilters) {
+            function () use ($toolFilters, $filters) {
                 $query = Tool::select([
                     'tools.id',
                     'tools.link',
                     'tools.name',
                 ])
-                ->whereHas('courses', function ($query) {
+                ->whereHas('courses', function ($query) use ($filters) {
                     $query->select([
                         'courses.id',
-                    ])->filter($this->filters ?: [])
+                    ])->filter($filters ?: [])
                     ->where('status', Status::ACTIVE->value)
                     ->whereHas('school', function ($query) {
                         $query->where('status', true);
@@ -99,8 +100,8 @@ class CourseToolReadAction extends Action
                 })
                 ->where('status', true);
 
-                if (count($currentFilters)) {
-                    $query->orderBy(DB::raw('FIELD(id, ' . implode(', ', array_reverse($currentFilters)) . ')'), 'DESC');
+                if (count($toolFilters)) {
+                    $query->orderBy(DB::raw('FIELD(id, ' . implode(', ', array_reverse($toolFilters)) . ')'), 'DESC');
                 }
 
                 $query->orderBy('name');

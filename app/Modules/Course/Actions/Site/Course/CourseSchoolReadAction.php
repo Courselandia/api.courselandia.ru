@@ -53,11 +53,13 @@ class CourseSchoolReadAction extends Action
      */
     public function run(): array
     {
-        if (isset($this->filters['school-id'])) {
-            $currentFilters = is_array($this->filters['school-id']) ? $this->filters['school-id'] : [$this->filters['school-id']];
-            unset($this->filters['school-id']);
+        $filters = $this->filters;
+
+        if (isset($filters['school-id'])) {
+            $schoolFilters = is_array($filters['school-id']) ? $filters['school-id'] : [$filters['school-id']];
+            unset($filters['school-id']);
         } else {
-            $currentFilters = [];
+            $schoolFilters = [];
         }
 
         $cacheKey = Util::getKey(
@@ -65,10 +67,9 @@ class CourseSchoolReadAction extends Action
             'schools',
             'site',
             'read',
-            $this->filters,
+            $filters,
             $this->offset,
             $this->limit,
-            $currentFilters,
         );
 
         return Cache::tags([
@@ -84,20 +85,20 @@ class CourseSchoolReadAction extends Action
         ])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
-            function () use ($currentFilters) {
+            function () use ($schoolFilters, $filters) {
                 $query = School::select([
                     'schools.id',
                     'schools.link',
                     'schools.name',
                 ])
-                ->whereHas('courses', function ($query) {
-                    $query->filter($this->filters ?: [])
+                ->whereHas('courses', function ($query) use ($filters) {
+                    $query->filter($filters ?? [])
                         ->where('status', Status::ACTIVE->value);
                 })
                 ->where('status', true);
 
-                if (count($currentFilters)) {
-                    $query->orderBy(DB::raw('FIELD(id, ' . implode(', ', array_reverse($currentFilters)) . ')'), 'DESC');
+                if (count($schoolFilters)) {
+                    $query->orderBy(DB::raw('FIELD(id, ' . implode(', ', array_reverse($schoolFilters)) . ')'), 'DESC');
                 }
 
                 $query->orderBy('name');

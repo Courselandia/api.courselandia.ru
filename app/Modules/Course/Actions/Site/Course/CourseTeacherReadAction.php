@@ -55,10 +55,9 @@ class CourseTeacherReadAction extends Action
     public function run(): array
     {
         if (isset($this->filters['teachers-id'])) {
-            $currentFilters = is_array($this->filters['teachers-id']) ? $this->filters['teachers-id'] : [$this->filters['teachers-id']];
-            unset($this->filters['teachers-id']);
+            $teacherFilters = is_array($this->filters['teachers-id']) ? $this->filters['teachers-id'] : [$this->filters['teachers-id']];
         } else {
-            $currentFilters = [];
+            $teacherFilters = [];
         }
 
         $cacheKey = Util::getKey(
@@ -69,7 +68,6 @@ class CourseTeacherReadAction extends Action
             $this->filters,
             $this->offset,
             $this->limit,
-            $currentFilters,
         );
 
         return Cache::tags([
@@ -85,7 +83,7 @@ class CourseTeacherReadAction extends Action
         ])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
-            function () use ($currentFilters) {
+            function () use ($teacherFilters) {
                 $query = Teacher::select([
                     'teachers.id',
                     'teachers.link',
@@ -103,8 +101,8 @@ class CourseTeacherReadAction extends Action
                 })
                 ->where('status', true);
 
-                if (count($currentFilters)) {
-                    $query->orderBy(DB::raw('FIELD(id, ' . implode(', ', array_reverse($currentFilters)) . ')'), 'DESC');
+                if (count($teacherFilters)) {
+                    $query->orderBy(DB::raw('FIELD(id, ' . implode(', ', array_reverse($teacherFilters)) . ')'), 'DESC');
                 }
 
                 $query->orderBy('name');

@@ -53,11 +53,13 @@ class CourseSkillReadAction extends Action
      */
     public function run(): array
     {
-        if (isset($this->filters['skills-id'])) {
-            $currentFilters = is_array($this->filters['skills-id']) ? $this->filters['skills-id'] : [$this->filters['skills-id']];
-            unset($this->filters['skills-id']);
+        $filters = $this->filters;
+
+        if (isset($filters['skills-id'])) {
+            $skillFilters = is_array($filters['skills-id']) ? $filters['skills-id'] : [$filters['skills-id']];
+            unset($filters['skills-id']);
         } else {
-            $currentFilters = [];
+            $skillFilters = [];
         }
 
         $cacheKey = Util::getKey(
@@ -65,10 +67,9 @@ class CourseSkillReadAction extends Action
             'skills',
             'site',
             'read',
-            $this->filters,
+            $filters,
             $this->offset,
             $this->limit,
-            $currentFilters,
         );
 
         return Cache::tags([
@@ -84,17 +85,17 @@ class CourseSkillReadAction extends Action
         ])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
-            function () use ($currentFilters) {
+            function () use ($skillFilters, $filters) {
                 $query = Skill::select([
                     'skills.id',
                     'skills.link',
                     'skills.name',
                 ])
-                ->whereHas('courses', function ($query) {
+                ->whereHas('courses', function ($query) use ($filters) {
                     $query->select([
                         'courses.id',
                     ])
-                    ->filter($this->filters ?: [])
+                    ->filter($filters ?: [])
                     ->where('status', Status::ACTIVE->value)
                     ->whereHas('school', function ($query) {
                         $query->where('status', true);
@@ -102,8 +103,8 @@ class CourseSkillReadAction extends Action
                 })
                 ->where('status', true);
 
-                if (count($currentFilters)) {
-                    $query->orderBy(DB::raw('FIELD(id, ' . implode(', ', array_reverse($currentFilters)) . ')'), 'DESC');
+                if (count($skillFilters)) {
+                    $query->orderBy(DB::raw('FIELD(id, ' . implode(', ', array_reverse($skillFilters)) . ')'), 'DESC');
                 }
 
                 $query->orderBy('name');
