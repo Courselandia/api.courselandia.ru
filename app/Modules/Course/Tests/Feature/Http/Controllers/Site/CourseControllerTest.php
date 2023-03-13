@@ -136,16 +136,35 @@ class CourseControllerTest extends TestCase
             'GET',
             'api/private/site/course/read/rated',
             [
-                'offset' => 0,
                 'limit' => 10,
-                'sorts' => [
-                    'header' => 'ASC',
+            ],
+        )->assertStatus(200)->assertJsonStructure([
+            'data' => [
+                'courses' => [
+                    '*' => $this->getCoursesStructure()
                 ],
-                'filters' => [
-                    'school-id' => $course->school_id,
-                ],
-                'section' => 'direction',
-                'sectionLink' => $course->directions[0]->link,
+            ],
+            'success',
+        ]);
+    }
+
+    /**
+     * Чтение записей.
+     *
+     * @return void
+     */
+    public function testReadSearch(): void
+    {
+        $course = self::createCourse();
+        self::createCourse();
+        self::createCourse();
+
+        $this->json(
+            'GET',
+            'api/private/site/course/read/rated',
+            [
+                'limit' => 10,
+                'search' => $course->header,
             ],
         )->assertStatus(200)->assertJsonStructure([
             'data' => [

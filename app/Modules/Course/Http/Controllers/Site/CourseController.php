@@ -13,6 +13,7 @@ use App\Modules\Course\Actions\Site\Course\CourseDirectionReadAction;
 use App\Modules\Course\Actions\Site\Course\CourseCategoryReadAction;
 use App\Modules\Course\Actions\Site\Course\CourseProfessionReadAction;
 use App\Modules\Course\Actions\Site\Course\CourseReadRatedAction;
+use App\Modules\Course\Actions\Site\Course\CourseReadSearchAction;
 use App\Modules\Course\Actions\Site\Course\CourseSchoolReadAction;
 use App\Modules\Course\Actions\Site\Course\CourseToolReadAction;
 use App\Modules\Course\Actions\Site\Course\CourseSkillReadAction;
@@ -21,6 +22,7 @@ use App\Modules\Course\Actions\Site\Course\CourseGetAction;
 use App\Modules\Course\Http\Requests\Site\Course\CourseFilterItemReadRequest;
 use App\Modules\Course\Http\Requests\Site\Course\CourseReadRatedRequest;
 use App\Modules\Course\Http\Requests\Site\Course\CourseReadRequest;
+use App\Modules\Course\Http\Requests\Site\Course\CourseReadSearchRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
 use App\Modules\Course\Actions\Site\Course\CourseReadAction;
@@ -278,6 +280,27 @@ class CourseController extends Controller
     {
         $action = app(CourseReadRatedAction::class);
         $action->limit = $request->get('limit', 16);
+
+        $data = $action->run();
+
+        return response()->json([
+            'data' => $data,
+            'success' => true,
+        ]);
+    }
+
+    /**
+     *  Полнотекстовый поиск.
+     *
+     * @param CourseReadSearchRequest $request Запрос.
+     *
+     * @return JsonResponse Вернет JSON ответ.
+     */
+    public function readSearch(CourseReadSearchRequest $request): JsonResponse
+    {
+        $action = app(CourseReadSearchAction::class);
+        $action->limit = $request->get('limit', 12);
+        $action->search = $request->get('search');
 
         $data = $action->run();
 

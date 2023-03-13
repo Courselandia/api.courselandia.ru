@@ -79,6 +79,9 @@ Route::group([
 
                 Route::get('/rated', 'Site\CourseController@readRated')
                     ->name('rated');
+
+                Route::get('/search', 'Site\CourseController@readSearch')
+                    ->name('search');
             }
         );
     }
