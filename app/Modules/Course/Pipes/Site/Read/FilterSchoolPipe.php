@@ -34,7 +34,7 @@ class FilterSchoolPipe implements Pipe
         $action = app(CourseSchoolReadAction::class);
         $action->filters = $entity->filters;
         $action->offset = 0;
-        $action->limit = 11;
+        $action->limit = $entity->openedSchools ? null : 11;
         $action->disabled = true;
 
         $entity->filter->schools = $action->run();

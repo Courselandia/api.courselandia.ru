@@ -51,6 +51,12 @@ class DataPipe implements Pipe
         'site',
         'course_id',
         'processes',
+        'openedCategories',
+        'openedProfessions',
+        'openedSchools',
+        'openedSkills',
+        'openedTeachers',
+        'openedTools',
     ];
 
     /**

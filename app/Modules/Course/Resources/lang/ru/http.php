@@ -62,6 +62,12 @@ return [
                 'path' => 'Путь',
                 'withCategories' => 'С категориями',
                 'withCount' => 'Количество',
+                'openedSchools' => 'Школы открыты',
+                'openedCategories' => 'Категории открыты',
+                'openedProfessions' => 'Профессии открыты',
+                'openedTeachers' => 'Учителя открыты',
+                'openedSkills' => 'Навыки открыты',
+                'openedTools' => 'Инструменты открыты',
             ],
             'courseGetRequest' => [
                 'id' => 'ID',

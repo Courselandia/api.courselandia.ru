@@ -62,6 +62,12 @@ return [
                 'path' => 'Path',
                 'withCategories' => 'With categories',
                 'withCount' => 'Amount',
+                'openedSchools' => 'Opened Schools',
+                'openedCategories' => 'Opened Categories',
+                'openedProfessions' => 'Opened Professions',
+                'openedTeachers' => 'Opened Teachers',
+                'openedSkills' => 'Opened Skills',
+                'openedTools' => 'Opened Tools',
             ],
             'courseGetRequest' => [
                 'id' => 'ID',

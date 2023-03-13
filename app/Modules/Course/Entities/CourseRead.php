@@ -91,4 +91,46 @@ class CourseRead extends Entity
      * @var bool
      */
     public bool $disabled = false;
+
+    /**
+     * Признак школы открыты.
+     *
+     * @var bool
+     */
+    public bool $openedSchools = false;
+
+    /**
+     * Признак категории открыты.
+     *
+     * @var bool
+     */
+    public bool $openedCategories = false;
+
+    /**
+     * Признак профессии открыты.
+     *
+     * @var bool
+     */
+    public bool $openedProfessions = false;
+
+    /**
+     * Признак учителя открыты.
+     *
+     * @var bool
+     */
+    public bool $openedTeachers = false;
+
+    /**
+     * Признак навыки открыты.
+     *
+     * @var bool
+     */
+    public bool $openedSkills = false;
+
+    /**
+     * Признак инструменты открыты.
+     *
+     * @var bool
+     */
+    public bool $openedTools = false;
 }

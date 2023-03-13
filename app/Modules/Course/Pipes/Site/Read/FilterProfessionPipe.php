@@ -34,7 +34,7 @@ class FilterProfessionPipe implements Pipe
         $action = app(CourseProfessionReadAction::class);
         $action->filters = $entity->filters;
         $action->offset = 0;
-        $action->limit = 11;
+        $action->limit = $entity->openedProfessions ? null : 11;
         $action->disabled = true;
 
         $entity->filter->professions = $action->run();

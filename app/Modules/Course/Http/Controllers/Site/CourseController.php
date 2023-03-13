@@ -260,6 +260,12 @@ class CourseController extends Controller
         $action->sectionLink = $request->get('sectionLink');
         $action->limit = $request->get('limit', 30);
         $action->disabled = true;
+        $action->openedSchools = $request->get('openedSchools', false);
+        $action->openedCategories = $request->get('openedCategories', false);
+        $action->openedProfessions = $request->get('openedProfessions', false);
+        $action->openedTeachers = $request->get('openedTeachers', false);
+        $action->openedSkills = $request->get('openedSkills', false);
+        $action->openedTools = $request->get('openedTools', false);
 
         $entityCourseRead = $action->run();
 

@@ -67,6 +67,48 @@ class CourseReadDecorator extends Decorator
     public bool $disabled = false;
 
     /**
+     * Признак школы открыты.
+     *
+     * @var bool
+     */
+    public bool $openedSchools = false;
+
+    /**
+     * Признак категории открыты.
+     *
+     * @var bool
+     */
+    public bool $openedCategories = false;
+
+    /**
+     * Признак профессии открыты.
+     *
+     * @var bool
+     */
+    public bool $openedProfessions = false;
+
+    /**
+     * Признак учителя открыты.
+     *
+     * @var bool
+     */
+    public bool $openedTeachers = false;
+
+    /**
+     * Признак навыки открыты.
+     *
+     * @var bool
+     */
+    public bool $openedSkills = false;
+
+    /**
+     * Признак инструменты открыты.
+     *
+     * @var bool
+     */
+    public bool $openedTools = false;
+
+    /**
      * Метод обработчик события после выполнения всех действий декоратора.
      *
      * @return CourseRead Вернет данные авторизации.
@@ -80,6 +122,12 @@ class CourseReadDecorator extends Decorator
         $courseRead->limit = $this->limit;
         $courseRead->section = $this->section;
         $courseRead->sectionLink = $this->sectionLink;
+        $courseRead->openedSchools = $this->openedSchools;
+        $courseRead->openedCategories = $this->openedCategories;
+        $courseRead->openedProfessions = $this->openedProfessions;
+        $courseRead->openedTeachers = $this->openedTeachers;
+        $courseRead->openedSkills = $this->openedSkills;
+        $courseRead->openedTools = $this->openedTools;
 
         return app(Pipeline::class)
             ->send($courseRead)

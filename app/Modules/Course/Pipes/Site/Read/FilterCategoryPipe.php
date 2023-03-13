@@ -34,7 +34,7 @@ class FilterCategoryPipe implements Pipe
         $action = app(CourseCategoryReadAction::class);
         $action->filters = $entity->filters;
         $action->offset = 0;
-        $action->limit = 11;
+        $action->limit = $entity->openedCategories ? null : 11;
         $action->disabled = true;
 
         $entity->filter->categories = $action->run();

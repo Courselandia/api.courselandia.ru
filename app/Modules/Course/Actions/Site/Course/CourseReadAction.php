@@ -84,6 +84,48 @@ class CourseReadAction extends Action
     public bool $disabled = false;
 
     /**
+     * Признак школы открыты.
+     *
+     * @var bool
+     */
+    public bool $openedSchools = false;
+
+    /**
+     * Признак категории открыты.
+     *
+     * @var bool
+     */
+    public bool $openedCategories = false;
+
+    /**
+     * Признак профессии открыты.
+     *
+     * @var bool
+     */
+    public bool $openedProfessions = false;
+
+    /**
+     * Признак учителя открыты.
+     *
+     * @var bool
+     */
+    public bool $openedTeachers = false;
+
+    /**
+     * Признак навыки открыты.
+     *
+     * @var bool
+     */
+    public bool $openedSkills = false;
+
+    /**
+     * Признак инструменты открыты.
+     *
+     * @var bool
+     */
+    public bool $openedTools = false;
+
+    /**
      * Метод запуска логики.
      *
      * @return CourseRead|null Вернет результаты исполнения.
@@ -98,6 +140,12 @@ class CourseReadAction extends Action
         $decorator->section = $this->section;
         $decorator->sectionLink = $this->sectionLink;
         $decorator->disabled = $this->disabled;
+        $decorator->openedSchools = $this->openedSchools;
+        $decorator->openedCategories = $this->openedCategories;
+        $decorator->openedProfessions = $this->openedProfessions;
+        $decorator->openedTeachers = $this->openedTeachers;
+        $decorator->openedSkills = $this->openedSkills;
+        $decorator->openedTools = $this->openedTools;
 
         return $decorator->setActions([
             ReadPipe::class,
