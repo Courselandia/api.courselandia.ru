@@ -348,7 +348,7 @@ class Util
      */
     public static function getKey(...$params): string
     {
-        return serialize($params);
+        return md5(serialize($params));
     }
 
     /**

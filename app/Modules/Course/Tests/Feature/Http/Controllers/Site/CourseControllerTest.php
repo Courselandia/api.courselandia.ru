@@ -122,6 +122,42 @@ class CourseControllerTest extends TestCase
     }
 
     /**
+     * Чтение записей.
+     *
+     * @return void
+     */
+    public function testReadRated(): void
+    {
+        $course = self::createCourse();
+        self::createCourse();
+        self::createCourse();
+
+        $this->json(
+            'GET',
+            'api/private/site/course/read/rated',
+            [
+                'offset' => 0,
+                'limit' => 10,
+                'sorts' => [
+                    'header' => 'ASC',
+                ],
+                'filters' => [
+                    'school-id' => $course->school_id,
+                ],
+                'section' => 'direction',
+                'sectionLink' => $course->directions[0]->link,
+            ],
+        )->assertStatus(200)->assertJsonStructure([
+            'data' => [
+                'courses' => [
+                    '*' => $this->getCoursesStructure()
+                ],
+            ],
+            'success',
+        ]);
+    }
+
+    /**
      * Получение записи с ошибкой при отсутствии записи.
      *
      * @return void

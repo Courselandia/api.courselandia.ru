@@ -69,7 +69,17 @@ Route::group([
         Route::get('teachers', 'Site\CourseController@teachers')
             ->name('teachers');
 
-        Route::get('read', 'Site\CourseController@read')
-            ->name('read');
+        Route::group([
+            'prefix' => 'read',
+            'as' => 'read'
+        ],
+            function () {
+                Route::get('', 'Site\CourseController@read')
+                    ->name('');
+
+                Route::get('/rated', 'Site\CourseController@readRated')
+                    ->name('rated');
+            }
+        );
     }
 );

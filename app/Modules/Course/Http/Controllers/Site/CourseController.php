@@ -12,12 +12,14 @@ use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Course\Actions\Site\Course\CourseDirectionReadAction;
 use App\Modules\Course\Actions\Site\Course\CourseCategoryReadAction;
 use App\Modules\Course\Actions\Site\Course\CourseProfessionReadAction;
+use App\Modules\Course\Actions\Site\Course\CourseReadRatedAction;
 use App\Modules\Course\Actions\Site\Course\CourseSchoolReadAction;
 use App\Modules\Course\Actions\Site\Course\CourseToolReadAction;
 use App\Modules\Course\Actions\Site\Course\CourseSkillReadAction;
 use App\Modules\Course\Actions\Site\Course\CourseTeacherReadAction;
 use App\Modules\Course\Actions\Site\Course\CourseGetAction;
 use App\Modules\Course\Http\Requests\Site\Course\CourseFilterItemReadRequest;
+use App\Modules\Course\Http\Requests\Site\Course\CourseReadRatedRequest;
 use App\Modules\Course\Http\Requests\Site\Course\CourseReadRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
@@ -261,6 +263,26 @@ class CourseController extends Controller
 
         return response()->json([
             'data' => $entityCourseRead,
+            'success' => true,
+        ]);
+    }
+
+    /**
+     * Получение лучшие курсы.
+     *
+     * @param CourseReadRatedRequest $request Запрос.
+     *
+     * @return JsonResponse Вернет JSON ответ.
+     */
+    public function readRated(CourseReadRatedRequest $request): JsonResponse
+    {
+        $action = app(CourseReadRatedAction::class);
+        $action->limit = $request->get('limit', 16);
+
+        $data = $action->run();
+
+        return response()->json([
+            'data' => $data,
             'success' => true,
         ]);
     }
