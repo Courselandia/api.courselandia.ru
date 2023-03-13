@@ -180,10 +180,16 @@ class CourseSchoolReadAction extends Action
                     }
 
                     return collect($allSchools)
-                        ->sortBy(function ($item) {
-                            $disabled = $item->disabled ? '1' : '0';
+                        ->sortBy(function ($item) use ($schoolFilters) {
+                            if (in_array($item->id, $schoolFilters)) {
+                                $weight = 1;
+                            } else if (!$item->disabled) {
+                                $weight = 2;
+                            } else {
+                                $weight = 3;
+                            }
 
-                            return $disabled . ' ' . $item->name;
+                            return $weight . ' - '. $item->name;
                         })
                         ->slice($this->offset, $this->limit)
                         ->values()

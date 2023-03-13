@@ -132,6 +132,7 @@ class CourseController extends Controller
         $action->filters = $request->get('filters');
         $action->offset = $request->get('offset');
         $action->limit = $request->get('limit');
+        $action->disabled = true;
 
         $data = $action->run();
 
@@ -157,6 +158,7 @@ class CourseController extends Controller
         $action->filters = $request->get('filters');
         $action->offset = $request->get('offset');
         $action->limit = $request->get('limit');
+        $action->disabled = true;
 
         $data = $action->run();
 
@@ -182,6 +184,7 @@ class CourseController extends Controller
         $action->filters = $request->get('filters');
         $action->offset = $request->get('offset');
         $action->limit = $request->get('limit');
+        $action->disabled = true;
 
         $data = $action->run();
 
@@ -207,6 +210,7 @@ class CourseController extends Controller
         $action->filters = $request->get('filters');
         $action->offset = $request->get('offset');
         $action->limit = $request->get('limit');
+        $action->disabled = true;
 
         $data = $action->run();
 
@@ -232,6 +236,7 @@ class CourseController extends Controller
         $action->filters = $request->get('filters');
         $action->offset = $request->get('offset');
         $action->limit = $request->get('limit');
+        $action->disabled = true;
 
         $data = $action->run();
 

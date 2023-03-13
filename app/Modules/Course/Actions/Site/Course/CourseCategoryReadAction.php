@@ -193,10 +193,16 @@ class CourseCategoryReadAction extends Action
                     }
 
                     return collect($allCategories)
-                        ->sortBy(function ($item) {
-                            $disabled = $item->disabled ? '1' : '0';
+                        ->sortBy(function ($item) use ($categoryFilters) {
+                            if (in_array($item->id, $categoryFilters)) {
+                                $weight = 1;
+                            } else if (!$item->disabled) {
+                                $weight = 2;
+                            } else {
+                                $weight = 3;
+                            }
 
-                            return $disabled . ' ' . $item->name;
+                            return $weight . ' - '. $item->name;
                         })
                         ->slice($this->offset, $this->limit)
                         ->values()
