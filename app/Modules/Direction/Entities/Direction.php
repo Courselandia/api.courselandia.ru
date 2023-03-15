@@ -8,9 +8,11 @@
 
 namespace App\Modules\Direction\Entities;
 
+use App\Models\Entities;
 use App\Models\Entity;
 use Carbon\Carbon;
 use App\Modules\Metatag\Entities\Metatag;
+use App\Modules\Category\Entities\Category;
 
 /**
  * Сущность для направлений.
@@ -100,4 +102,12 @@ class Direction extends Entity
      * @var ?Carbon
      */
     public ?Carbon $deleted_at = null;
+
+    /**
+     * Категории.
+     *
+     * @var Category[]
+     */
+    #[Entities(Category::class)]
+    public ?array $categories = null;
 }

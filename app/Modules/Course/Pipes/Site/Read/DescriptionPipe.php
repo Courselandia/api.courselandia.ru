@@ -8,28 +8,21 @@
 
 namespace App\Modules\Course\Pipes\Site\Read;
 
+use Util;
+use Cache;
+use Closure;
+use App\Models\Entity;
+use App\Models\Contracts\Pipe;
 use App\Models\Enums\CacheTime;
 use App\Models\Exceptions\ParameterInvalidException;
-use Util;
-use App\Modules\Category\Models\Category;
-use App\Modules\Category\Entities\Category as CategoryEntity;
-use App\Modules\Direction\Models\Direction;
-use App\Modules\Direction\Entities\Direction as DirectionEntity;
-use App\Modules\Profession\Models\Profession;
-use App\Modules\Profession\Entities\Profession as ProfessionEntity;
-use App\Modules\School\Models\School;
-use App\Modules\School\Entities\School as SchoolEntity;
-use App\Modules\Skill\Models\Skill;
-use App\Modules\Skill\Entities\Skill as SkillEntity;
-use App\Modules\Teacher\Models\Teacher;
-use App\Modules\Teacher\Entities\Teacher as TeacherEntity;
-use App\Modules\Tool\Models\Tool;
-use App\Modules\Tool\Entities\Tool as ToolEntity;
-use Closure;
-use App\Models\Contracts\Pipe;
-use App\Models\Entity;
+use App\Modules\Category\Actions\Site\CategoryLinkAction;
+use App\Modules\Direction\Actions\Site\DirectionLinkAction;
+use App\Modules\Profession\Actions\Site\ProfessionLinkAction;
+use App\Modules\School\Actions\Site\School\SchoolLinkAction;
+use App\Modules\Skill\Actions\Site\SkillLinkAction;
+use App\Modules\Teacher\Actions\Site\TeacherLinkAction;
+use App\Modules\Tool\Actions\Site\ToolLinkAction;
 use App\Modules\Course\Entities\CourseRead;
-use Cache;
 
 /**
  * Чтение курсов: описание.
@@ -74,45 +67,52 @@ class DescriptionPipe implements Pipe
             CacheTime::GENERAL->value,
             function () use ($section, $link) {
                 if ($section === 'direction') {
-                    $data = Direction::where('link', $link)->first();
+                    $action = app(DirectionLinkAction::class);
+                    $action->link = $link;
 
-                    return $data ? new DirectionEntity($data->toArray()) : null;
+                    return $action->run();
                 }
 
                 if ($section === 'category') {
-                    $data = Category::where('link', $link)->first();
+                    $action = app(CategoryLinkAction::class);
+                    $action->link = $link;
 
-                    return $data ? new CategoryEntity($data->toArray()) : null;
+                    return $action->run();
                 }
 
                 if ($section === 'profession') {
-                    $data = Profession::where('link', $link)->first();
+                    $action = app(ProfessionLinkAction::class);
+                    $action->link = $link;
 
-                    return $data ? new ProfessionEntity($data->toArray()) : null;
+                    return $action->run();
                 }
 
                 if ($section === 'school') {
-                    $data = School::where('link', $link)->first();
+                    $action = app(SchoolLinkAction::class);
+                    $action->link = $link;
 
-                    return $data ? new SchoolEntity($data->toArray()) : null;
+                    return $action->run();
                 }
 
                 if ($section === 'teacher') {
-                    $data = Teacher::where('link', $link)->first();
+                    $action = app(TeacherLinkAction::class);
+                    $action->link = $link;
 
-                    return $data ? new TeacherEntity($data->toArray()) : null;
+                    return $action->run();
                 }
 
                 if ($section === 'tool') {
-                    $data = Tool::where('link', $link)->first();
+                    $action = app(ToolLinkAction::class);
+                    $action->link = $link;
 
-                    return $data ? new ToolEntity($data->toArray()) : null;
+                    return $action->run();
                 }
 
                 if ($section === 'skill') {
-                    $data = Skill::where('link', $link)->first();
+                    $action = app(SkillLinkAction::class);
+                    $action->link = $link;
 
-                    return $data ? new SkillEntity($data->toArray()) : null;
+                    return $action->run();
                 }
 
                 return null;

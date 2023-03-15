@@ -47,6 +47,7 @@ class DirectionLinkAction extends Action
                 $result = Direction::where('link', $this->link)
                     ->with([
                         'metatag',
+                        'categories',
                     ])
                     ->whereHas('courses', function ($query) {
                         $query->where('status', Status::ACTIVE->value);

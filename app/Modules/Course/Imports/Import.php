@@ -159,7 +159,8 @@ class Import
     private function save(ParserCourse $courseEntity): int|string|null
     {
         try {
-            $course = Course::where('uuid', $courseEntity->uuid)
+            $course = Course::where('school_id', $courseEntity->school->value)
+                ->where('uuid', $courseEntity->uuid)
                 ->first();
 
             if ($course) {
@@ -172,7 +173,7 @@ class Import
                     'price_old' => $courseEntity->price_old,
                     'price_recurrent' => $courseEntity->price_recurrent,
                     'currency' => $courseEntity->currency?->value,
-                    'school' => $courseEntity->school?->value,
+                    'school_id' => $courseEntity->school?->value,
                     'duration' => $courseEntity->duration ?: $course->duration,
                     'duration_unit' => $courseEntity->duration_unit?->value ?: $course->duration_unit,
                     'lessons_amount' => $courseEntity->lessons_amount ?: $course->lessons_amount,
