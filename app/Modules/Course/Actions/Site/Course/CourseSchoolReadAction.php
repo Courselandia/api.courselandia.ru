@@ -118,6 +118,7 @@ class CourseSchoolReadAction extends Action
             'site',
             'read',
             $filters,
+            $schoolFilters,
             $this->offset,
             $this->limit,
         );

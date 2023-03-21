@@ -124,6 +124,7 @@ class CourseTeacherReadAction extends Action
             'site',
             'read',
             $filters,
+            $teacherFilters,
             $this->offset,
             $this->limit,
             $this->disabled,

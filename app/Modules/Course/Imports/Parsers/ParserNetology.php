@@ -104,6 +104,9 @@ class ParserNetology extends ParserYml
                         . ' | Не удалось получить единицу продолжительности: "' . $offer['params']['Продолжительность'] . '".'
                     );
                 }
+            } else {
+                $course->duration = null;
+                $course->duration_unit = null;
             }
 
             if (isset($offer['params']['Количество занятий']) && $offer['params']['Количество занятий']) {

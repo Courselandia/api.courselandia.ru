@@ -124,6 +124,7 @@ class CourseSkillReadAction extends Action
             'site',
             'read',
             $filters,
+            $skillFilters,
             $this->offset,
             $this->limit,
             $this->disabled,

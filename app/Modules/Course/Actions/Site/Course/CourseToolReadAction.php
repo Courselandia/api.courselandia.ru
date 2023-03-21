@@ -122,6 +122,7 @@ class CourseToolReadAction extends Action
             'site',
             'read',
             $filters,
+            $toolFilters,
             $this->offset,
             $this->limit,
         );

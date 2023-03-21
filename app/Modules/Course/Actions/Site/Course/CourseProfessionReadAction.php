@@ -124,6 +124,7 @@ class CourseProfessionReadAction extends Action
             'site',
             'read',
             $filters,
+            $professionFilters,
             $this->offset,
             $this->limit,
             $this->disabled,

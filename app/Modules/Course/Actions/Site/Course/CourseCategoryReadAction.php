@@ -124,6 +124,7 @@ class CourseCategoryReadAction extends Action
             'site',
             'read',
             $filters,
+            $categoryFilters,
             $this->offset,
             $this->limit,
             $this->disabled,

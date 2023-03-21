@@ -61,7 +61,10 @@ class FilterFreePipe implements Pipe
                     'id'
                 ])
                 ->filter($filters ?: [])
-                ->where('price', '=', null)
+                ->where(function ($query) {
+                    $query->whereNull('price')
+                        ->orWhere('price', '=', '');
+                })
                 ->where('status', Status::ACTIVE->value)
                 ->whereHas('school', function ($query) {
                     $query->where('status', true);
