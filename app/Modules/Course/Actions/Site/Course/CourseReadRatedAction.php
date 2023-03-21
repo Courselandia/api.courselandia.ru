@@ -9,7 +9,7 @@
 namespace App\Modules\Course\Actions\Site\Course;
 
 use App\Models\Action;
-use App\Modules\Course\Entities\CourseRead;
+use App\Modules\Course\Entities\Course;
 use App\Modules\Course\Pipes\Site\Read\ReadPipe;
 use App\Modules\Course\Pipes\Site\Read\DescriptionPipe;
 use App\Modules\Course\Pipes\Site\Rated\DataPipe;
@@ -30,9 +30,9 @@ class CourseReadRatedAction extends Action
     /**
      * Метод запуска логики.
      *
-     * @return CourseRead|null Вернет результаты исполнения.
+     * @return Course[] Вернет результаты исполнения.
      */
-    public function run(): ?CourseRead
+    public function run(): array
     {
         $decorator = app(CourseReadDecorator::class);
 
@@ -47,10 +47,12 @@ class CourseReadRatedAction extends Action
         $decorator->offset = 0;
         $decorator->limit = $this->limit;
 
-        return $decorator->setActions([
+        $result = $decorator->setActions([
             ReadPipe::class,
             DescriptionPipe::class,
             DataPipe::class,
         ])->run();
+
+        return $result->courses;
     }
 }
