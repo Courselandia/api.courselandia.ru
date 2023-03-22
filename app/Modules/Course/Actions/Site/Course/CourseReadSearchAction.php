@@ -9,11 +9,12 @@
 namespace App\Modules\Course\Actions\Site\Course;
 
 use App\Models\Action;
-use App\Modules\Course\Entities\Course;
+use App\Models\Clean;
+use App\Modules\Course\Entities\CourseRead;
 use App\Modules\Course\Pipes\Site\Read\ReadPipe;
-use App\Modules\Course\Pipes\Site\Read\DescriptionPipe;
 use App\Modules\Course\Pipes\Site\Rated\DataPipe;
 use App\Modules\Course\Decorators\Site\CourseReadDecorator;
+use JetBrains\PhpStorm\ArrayShape;
 
 /**
  * Класс действия для полнотекстового поиска.
@@ -37,9 +38,9 @@ class CourseReadSearchAction extends Action
     /**
      * Метод запуска логики.
      *
-     * @return Course[] Вернет результаты исполнения.
+     * @return array Вернет результаты исполнения.
      */
-    public function run(): array
+    #[ArrayShape(['data' => 'array', 'total' => 'int'])] public function run(): array
     {
         $decorator = app(CourseReadDecorator::class);
 
@@ -56,10 +57,25 @@ class CourseReadSearchAction extends Action
 
         $result = $decorator->setActions([
             ReadPipe::class,
-            DescriptionPipe::class,
             DataPipe::class,
         ])->run();
 
-        return $result->courses;
+        $result = Clean::do($result, [
+            'openedSchools',
+            'openedCategories',
+            'openedProfessions',
+            'openedProfessions',
+            'openedTeachers',
+            'openedSkills',
+            'openedTools',
+        ]);
+
+        /**
+         * @var CourseRead $result
+         */
+        return [
+            'data' => $result->courses,
+            'total' => $result->total,
+        ];
     }
 }

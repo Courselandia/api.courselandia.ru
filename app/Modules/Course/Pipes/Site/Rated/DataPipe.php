@@ -55,7 +55,6 @@ class DataPipe implements Pipe
         'section',
         'sectionLink',
         'description',
-        'total',
         'disabled',
     ];
 

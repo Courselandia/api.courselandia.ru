@@ -20,7 +20,7 @@
         "codebuds/webp-converter": "^0.5.1",
         "danielme85/laravel-log-to-db": "^3.0",
         "firebase/php-jwt": "^5.2",
-        "guzzlehttp/guzzle": "^7.4",
+        "guzzlehttp/guzzle": "^7.5",
         "intervention/image": "^2.7.2",
         "jenssegers/mongodb": "^3.9",
         "kalnoy/nestedset": "^6.0",

@@ -9,13 +9,13 @@
 namespace App\Modules\Core\Http\Controllers\Admin;
 
 use Auth;
-use Cache;
-use Artisan;
+use GuzzleHttp\Exception\GuzzleException;
 use Log;
 use EMT\EMTypograph;
 use Illuminate\Routing\Controller;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use App\Modules\Core\Actions\Admin\CacheFlushAction;
 
 /**
  * Класс контроллер для работы с ядром дополнительных возможностей.
@@ -26,19 +26,13 @@ class CoreController extends Controller
      * Удаление кеша.
      *
      * @return JsonResponse Вернет JSON ответ.
+     * @throws GuzzleException
      */
     public function clean(): JsonResponse
     {
         $login = Auth::getUser()->login;
 
-        Cache::flush();
-
-        Artisan::call('view:clear');
-        Artisan::call('config:clear');
-        Artisan::call('route:clear');
-
-        Artisan::call('config:cache');
-        Artisan::call('route:cache');
+        app(CacheFlushAction::class)->run();
 
         Log::info(trans('core::http.controllers.admin.coreController.clean.log'), [
             'login' => $login,

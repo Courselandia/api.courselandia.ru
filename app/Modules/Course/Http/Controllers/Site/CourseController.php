@@ -314,10 +314,8 @@ class CourseController extends Controller
         $action->search = $request->get('search');
 
         $data = $action->run();
+        $data['success'] = true;
 
-        return response()->json([
-            'data' => $data,
-            'success' => true,
-        ]);
+        return response()->json($data);
     }
 }
