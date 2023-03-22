@@ -330,11 +330,19 @@ class CourseController extends Controller
      */
     public function readFavorites(CourseReadFavoritesRequest $request): JsonResponse
     {
-        $action = app(CourseReadFavoritesAction::class);
-        $action->ids = $request->get('ids', []);
+        if ($request->get('ids')) {
+            $action = app(CourseReadFavoritesAction::class);
+            $action->ids = $request->get('ids');
 
-        $data = $action->run();
-        $data['success'] = true;
+            $data = $action->run();
+            $data['success'] = true;
+        } else {
+            $data = [
+                'data' => [],
+                'total' => 0,
+                'success' => true,
+            ];
+        }
 
         return response()->json($data);
     }

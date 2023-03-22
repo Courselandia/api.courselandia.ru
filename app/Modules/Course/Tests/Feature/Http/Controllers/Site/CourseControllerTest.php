@@ -173,6 +173,36 @@ class CourseControllerTest extends TestCase
     }
 
     /**
+     * Чтение записей.
+     *
+     * @return void
+     */
+    public function testReadFavorites(): void
+    {
+        $course = [
+            self::createCourse(),
+            self::createCourse(),
+            self::createCourse(),
+        ];
+
+        $this->json(
+            'GET',
+            'api/private/site/course/read/favorites',
+            [
+                'ids' => [
+                    $course[0]->id,
+                    $course[1]->id,
+                ],
+            ],
+        )->assertStatus(200)->assertJsonStructure([
+            'data' => [
+                '*' => $this->getCoursesStructure(),
+            ],
+            'success',
+        ]);
+    }
+
+    /**
      * Получение записи с ошибкой при отсутствии записи.
      *
      * @return void

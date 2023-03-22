@@ -38,7 +38,7 @@ class CourseReadFavoritesAction extends Action
         $decorator = app(CourseReadDecorator::class);
 
         $decorator->filters = [
-            'id' => $this->ids,
+            'ids' => $this->ids,
         ];
 
         $result = $decorator->setActions([
