@@ -52,7 +52,10 @@ return [
             ],
             'courseImageUpdateRequest' => [
                 'image' => 'Изображение',
-            ]
+            ],
+            'courseReadFavoritesRequest' => [
+                'ids' => 'IDs',
+            ],
         ],
         'site' => [
             'courseReadRequest' => [

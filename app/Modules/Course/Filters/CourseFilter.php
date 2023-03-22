@@ -58,6 +58,18 @@ class CourseFilter extends ModelFilter
     ];
 
     /**
+     * Поиск по IDs.
+     *
+     * @param int[]|string[] $ids IDs.
+     *
+     * @return CourseFilter Правила поиска.
+     */
+    public function ids(array $ids): CourseFilter
+    {
+        return $this->whereIn('courses.id', $ids);
+    }
+
+    /**
      * Поиск по ID.
      *
      * @param int|string $id ID.

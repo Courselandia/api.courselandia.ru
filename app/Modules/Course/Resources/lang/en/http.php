@@ -53,6 +53,9 @@ return [
             'courseImageUpdateRequest' => [
                 'image' => 'Image',
             ],
+            'courseReadFavoritesRequest' => [
+                'ids' => 'IDs',
+            ],
         ],
         'site' => [
             'courseReadRequest' => [

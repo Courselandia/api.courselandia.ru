@@ -82,6 +82,9 @@ Route::group([
 
                 Route::get('/search', 'Site\CourseController@readSearch')
                     ->name('search');
+
+                Route::get('/favorites', 'Site\CourseController@readFavorites')
+                    ->name('favorites');
             }
         );
     }

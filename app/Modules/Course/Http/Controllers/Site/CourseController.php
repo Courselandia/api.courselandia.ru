@@ -14,12 +14,14 @@ use App\Modules\Course\Actions\Site\Course\CourseCategoryReadAction;
 use App\Modules\Course\Actions\Site\Course\CourseProfessionReadAction;
 use App\Modules\Course\Actions\Site\Course\CourseReadRatedAction;
 use App\Modules\Course\Actions\Site\Course\CourseReadSearchAction;
+use App\Modules\Course\Actions\Site\Course\CourseReadFavoritesAction;
 use App\Modules\Course\Actions\Site\Course\CourseSchoolReadAction;
 use App\Modules\Course\Actions\Site\Course\CourseToolReadAction;
 use App\Modules\Course\Actions\Site\Course\CourseSkillReadAction;
 use App\Modules\Course\Actions\Site\Course\CourseTeacherReadAction;
 use App\Modules\Course\Actions\Site\Course\CourseGetAction;
 use App\Modules\Course\Http\Requests\Site\Course\CourseFilterItemReadRequest;
+use App\Modules\Course\Http\Requests\Site\Course\CourseReadFavoritesRequest;
 use App\Modules\Course\Http\Requests\Site\Course\CourseReadRatedRequest;
 use App\Modules\Course\Http\Requests\Site\Course\CourseReadRequest;
 use App\Modules\Course\Http\Requests\Site\Course\CourseReadSearchRequest;
@@ -312,6 +314,24 @@ class CourseController extends Controller
         $action = app(CourseReadSearchAction::class);
         $action->limit = $request->get('limit', 12);
         $action->search = $request->get('search');
+
+        $data = $action->run();
+        $data['success'] = true;
+
+        return response()->json($data);
+    }
+
+    /**
+     * Избранное.
+     *
+     * @param CourseReadFavoritesRequest $request Запрос.
+     *
+     * @return JsonResponse Вернет JSON ответ.
+     */
+    public function readFavorites(CourseReadFavoritesRequest $request): JsonResponse
+    {
+        $action = app(CourseReadFavoritesAction::class);
+        $action->ids = $request->get('ids', []);
 
         $data = $action->run();
         $data['success'] = true;
