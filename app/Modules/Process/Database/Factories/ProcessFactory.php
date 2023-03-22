@@ -36,7 +36,7 @@ class ProcessFactory extends Factory
     ])] public function definition(): array
     {
         return [
-            'name' => $this->faker->text(20),
+            'name' => $this->faker->text(160),
             'text' => $this->faker->text(1000),
             'status' => true,
         ];

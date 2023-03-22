@@ -83,7 +83,7 @@ services:
         ports:
             - ${DOCKER_DB_TEST_PORT}:${DB_TEST_PORT}
         command:
-            --sql_mode=STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION
+            --sql_mode="STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION" --max_connections=500
         networks:
             - network
 

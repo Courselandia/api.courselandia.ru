@@ -34,7 +34,7 @@ class CourseLearnFactory extends Factory
     ])] public function definition(): array
     {
         return [
-            'text' => $this->faker->text(80),
+            'text' => $this->faker->text(160),
         ];
     }
 }

@@ -140,9 +140,7 @@ class CourseControllerTest extends TestCase
             ],
         )->assertStatus(200)->assertJsonStructure([
             'data' => [
-                'courses' => [
-                    '*' => $this->getCoursesStructure()
-                ],
+                '*' => $this->getCoursesStructure(),
             ],
             'success',
         ]);
@@ -168,9 +166,7 @@ class CourseControllerTest extends TestCase
             ],
         )->assertStatus(200)->assertJsonStructure([
             'data' => [
-                'courses' => [
-                    '*' => $this->getCoursesStructure()
-                ],
+                '*' => $this->getCoursesStructure(),
             ],
             'success',
         ]);
@@ -309,7 +305,8 @@ class CourseControllerTest extends TestCase
      *
      * @return Course Вернет курс.
      */
-    static public function createCourse(): Course {
+    static public function createCourse(): Course
+    {
         $course = Course::factory()->create();
         $directions = Direction::factory()->count(3)->create();
         $professions = Profession::factory()->count(4)->create();

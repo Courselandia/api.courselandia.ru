@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App;
+use DB;
 use App\Models\Bot;
 use App\Models\Device;
 use App\Models\Util;

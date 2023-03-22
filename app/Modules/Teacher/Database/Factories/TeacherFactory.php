@@ -42,8 +42,8 @@ class TeacherFactory extends Factory
     {
         return [
             'metatag_id' => Metatag::factory(),
-            'name' => $this->faker->text(20),
-            'link' => Util::latin($this->faker->text(60)),
+            'name' => $this->faker->text(160),
+            'link' => Util::latin($this->faker->text(160)),
             'text' => $this->faker->text(1000),
             'rating' => 4.27,
             'status' => true,

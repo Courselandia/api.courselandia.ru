@@ -29,8 +29,8 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        Auth::provider('access', function($app) {
-            return new AccessUserProvider($app->make(User::class));
+        Auth::provider('access', function() {
+            return new AccessUserProvider();
         });
 
         $gate->define('role', 'App\Modules\Access\Models\GateRole@check');

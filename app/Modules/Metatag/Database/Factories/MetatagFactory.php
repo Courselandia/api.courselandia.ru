@@ -37,7 +37,7 @@ class MetatagFactory extends Factory
     {
         return [
             'description' => $this->faker->text(250),
-            'keywords' => $this->faker->text(50),
+            'keywords' => $this->faker->text(160),
             'title' => $this->faker->text(100),
         ];
     }

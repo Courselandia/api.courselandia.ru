@@ -36,9 +36,9 @@ class CategoryControllerTest extends TestCase
 
         $this->json(
             'GET',
-            'api/private/admin/category/get/' . $category->id,
+            'api/private/site/category/get/' . $category->id,
         )->assertStatus(200)->assertJsonStructure([
-            'data' => $this->getCategoryStructure(true, true),
+            'data' => $this->getCategoryStructure(),
             'success',
         ]);
     }

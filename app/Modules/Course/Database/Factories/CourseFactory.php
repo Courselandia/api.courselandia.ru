@@ -41,7 +41,7 @@ class CourseFactory extends Factory
             'uuid' => (string) rand(1000000, 1000000000),
             'metatag_id' => Metatag::factory(),
             'school_id' => School::factory(),
-            'header' => $this->faker->text(40),
+            'header' => $this->faker->text(160),
             'text' => $this->faker->text(1000),
             'link' => Util::latin($this->faker->text(100)),
             'url' => $this->faker->url(),
