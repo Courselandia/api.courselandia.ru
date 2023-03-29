@@ -8,6 +8,7 @@
 
 namespace App\Modules\Core\Providers;
 
+use App\Modules\Core\Commands\SitemapGenerateCommand;
 use Config;
 use Illuminate\Support\ServiceProvider;
 
@@ -37,6 +38,9 @@ class CoreServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
+        $this->commands([
+            SitemapGenerateCommand::class,
+        ]);
     }
 
     /**

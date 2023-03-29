@@ -16,6 +16,7 @@
         "ext-pdo": "*",
         "ext-xmlreader": "*",
         "ext-zip": "*",
+        "ext-dom": "*",
         "ckfinder/ckfinder-laravel-package": "^4.0",
         "codebuds/webp-converter": "^0.5.1",
         "danielme85/laravel-log-to-db": "^3.0",
