@@ -10,11 +10,19 @@ namespace App\Modules\Core\Sitemap;
 
 use Config;
 use DomDocument;
+use DOMElement;
 use DOMException;
 use Storage;
 use App\Models\Error;
 use App\Models\Event;
 use App\Modules\Core\Sitemap\Parts\PartDirection;
+use App\Modules\Core\Sitemap\Parts\PartCategory;
+use App\Modules\Core\Sitemap\Parts\PartProfession;
+use App\Modules\Core\Sitemap\Parts\PartSchool;
+use App\Modules\Core\Sitemap\Parts\PartSkill;
+use App\Modules\Core\Sitemap\Parts\PartTeacher;
+use App\Modules\Core\Sitemap\Parts\PartTool;
+use App\Modules\Core\Sitemap\Parts\PartCourse;
 
 /**
  * Класс генерации sitemap.xml.
@@ -39,14 +47,33 @@ class Sitemap
     private DomDocument $xml;
 
     /**
+     * Корневой элемент.
+     *
+     * @var DOMElement
+     */
+    private DOMElement $root;
+
+    /**
      * Конструктор.
      */
     public function __construct()
     {
-        $this->addPart(new PartDirection());
+        $this
+            ->addPart(new PartDirection())
+            ->addPart(new PartCategory())
+            ->addPart(new PartProfession())
+            ->addPart(new PartSchool())
+            ->addPart(new PartSkill())
+            ->addPart(new PartTeacher())
+            ->addPart(new PartTool())
+            ->addPart(new PartCourse());
+
         $this->xml = new DomDocument('1.0', 'utf-8');
     }
 
+    /**
+     * Генератор файла.
+     */
     public function generate(): void
     {
         $this->offLimits();
@@ -58,7 +85,7 @@ class Sitemap
     /**
      * Получить количество генерируемых элементов.
      *
-     * @return void
+     * @return int Общее количество генерируемых элементов в файле
      */
     public function getTotal(): int
     {
@@ -92,10 +119,11 @@ class Sitemap
     private function generateRootElement(): void
     {
         try {
-            $this->xml->appendChild(
-                $this->xml->createElement('urlset')
-                    ->setAttribute('xmlns', 'http://www.sitemaps.org/schemas/sitemap/0.9')
-            );
+            $urlset = $this->xml->createElement('urlset');
+            $urlset->setAttribute('xmlns', 'http://www.sitemaps.org/schemas/sitemap/0.9');
+            $this->xml->appendChild($urlset);
+
+            $this->root = $urlset;
         } catch (DOMException $error) {
             $this->addError($error);
         }
@@ -113,12 +141,12 @@ class Sitemap
         foreach ($parts as $part) {
             foreach ($part->generate() as $item) {
                 try {
-                    $this->xml->appendChild(
-                        $this->xml->createElement('url')
-                            ->appendChild($this->xml->createElement('loc', Config::get('app.api_url' . $item->path)))
-                            ->appendChild($this->xml->createElement('changefreq', $item->changefreq))
-                            ->appendChild($this->xml->createElement('priority', $item->priority))
-                    );
+                    $url = $this->xml->createElement('url');
+                    $url->appendChild($this->xml->createElement('loc', Config::get('app.api_url') . $item->path));
+                    $url->appendChild($this->xml->createElement('changefreq', $item->changefreq));
+                    $url->appendChild($this->xml->createElement('priority', $item->priority));
+
+                    $this->root->appendChild($url);
 
                     $this->fireEvent('generated', [$item]);
                 } catch (DOMException $error) {

@@ -8,17 +8,16 @@
 
 namespace App\Modules\Core\Sitemap\Parts;
 
-use App\Modules\Course\Enums\Status;
-use App\Modules\Direction\Models\Direction;
 use Generator;
 use App\Modules\Core\Sitemap\Item;
-use App\Modules\Core\Sitemap\Part;
+use App\Modules\Course\Enums\Status;
+use App\Modules\Teacher\Models\Teacher;
 use Illuminate\Database\Eloquent\Builder;
 
 /**
- * Генератор для направлений.
+ * Генератор для учителей.
  */
-class PartDirection extends Part
+class PartTeacher extends PartDirection
 {
     /**
      * Вернет количество генерируемых элементов.
@@ -48,7 +47,7 @@ class PartDirection extends Part
 
             if ($result) {
                 $item = new Item();
-                $item->path = 'courses/direction/' . $result['link'];
+                $item->path = 'courses/teacher/' . $result['link'];
 
                 yield $item;
             }
@@ -62,8 +61,8 @@ class PartDirection extends Part
      */
     private function getQuery(): Builder
     {
-        return Direction::select([
-            'directions.link',
+        return Teacher::select([
+            'teachers.link',
         ])
         ->whereHas('courses', function ($query) {
             $query->select([
@@ -75,6 +74,6 @@ class PartDirection extends Part
             });
         })
         ->where('status', true)
-        ->orderBy('weight');
+        ->orderBy('name');
     }
 }

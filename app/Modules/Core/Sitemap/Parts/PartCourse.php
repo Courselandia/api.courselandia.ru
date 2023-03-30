@@ -8,17 +8,16 @@
 
 namespace App\Modules\Core\Sitemap\Parts;
 
-use App\Modules\Course\Enums\Status;
-use App\Modules\Direction\Models\Direction;
 use Generator;
 use App\Modules\Core\Sitemap\Item;
-use App\Modules\Core\Sitemap\Part;
+use App\Modules\Course\Enums\Status;
 use Illuminate\Database\Eloquent\Builder;
+use App\Modules\Course\Models\Course;
 
 /**
- * Генератор для направлений.
+ * Генератор для курсов.
  */
-class PartDirection extends Part
+class PartCourse extends PartDirection
 {
     /**
      * Вернет количество генерируемых элементов.
@@ -48,7 +47,7 @@ class PartDirection extends Part
 
             if ($result) {
                 $item = new Item();
-                $item->path = 'courses/direction/' . $result['link'];
+                $item->path = 'courses/show/' . $result['school']['link'] . '/' . $result['link'];
 
                 yield $item;
             }
@@ -62,19 +61,22 @@ class PartDirection extends Part
      */
     private function getQuery(): Builder
     {
-        return Direction::select([
-            'directions.link',
+        return Course::select([
+            'id',
+            'school_id',
+            'link',
         ])
-        ->whereHas('courses', function ($query) {
-            $query->select([
-                'courses.id',
-            ])
-            ->where('status', Status::ACTIVE->value)
-            ->whereHas('school', function ($query) {
-                $query->where('status', true);
-            });
-        })
-        ->where('status', true)
-        ->orderBy('weight');
+        ->with([
+            'school' => function ($query) {
+                $query->select([
+                    'schools.id',
+                    'schools.link',
+                ])->where('status', true);
+            },
+        ])
+        ->where('status', Status::ACTIVE->value)
+        ->whereHas('school', function ($query) {
+            $query->where('status', true);
+        });
     }
 }

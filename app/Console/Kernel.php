@@ -29,6 +29,7 @@ class Kernel extends ConsoleKernel
         })->daily();
 
         $schedule->command('course:import')->dailyAt('00:00');
+        $schedule->command('sitemap:generate')->dailyAt('06:00');
     }
 
     /**
