@@ -8,6 +8,7 @@
 
 namespace App\Modules\OAuth\Models;
 
+use DB;
 use Util;
 use Cache;
 use Config;
@@ -26,6 +27,8 @@ use App\Modules\OAuth\Contracts\OAuthDriver;
 use App\Modules\OAuth\Repositories\OAuthClientEloquent;
 use App\Modules\OAuth\Repositories\OAuthTokenEloquent;
 use App\Modules\OAuth\Repositories\OAuthRefreshTokenEloquent;
+use App\Modules\OAuth\Models\OAuthTokenEloquent as OAuthTokenEloquentModel;
+use App\Modules\OAuth\Models\OAuthRefreshTokenEloquent as OAuthRefreshTokenEloquentModel;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Models\Exceptions\UserNotExistException;
 use App\Models\Exceptions\InvalidFormatException;
@@ -534,6 +537,13 @@ class OAuthDriverDatabase extends OAuthDriver
         foreach ($tokens as $token) {
             $this->oAuthTokenEloquent->destroy($token->id, true);
         }
+
+        DB::statement('DELETE clients_1 FROM oauth_clients as clients_1, oauth_clients as clients_2 WHERE clients_1.id < clients_2.id AND clients_1.user_id = clients_2.user_id');
+        DB::statement('DELETE tokens_1 FROM oauth_tokens as tokens_1, oauth_tokens as tokens_2 WHERE tokens_1.id < tokens_2.id AND tokens_1.oauth_client_id = tokens_2.oauth_client_id');
+        DB::statement('DELETE refresh_tokens_1 FROM oauth_refresh_tokens as refresh_tokens_1, oauth_refresh_tokens as refresh_tokens_2 WHERE refresh_tokens_1.id < refresh_tokens_2.id AND refresh_tokens_1.oauth_token_id = refresh_tokens_2.oauth_token_id');
+
+        OAuthTokenEloquentModel::doesntHave('client')->delete();
+        OAuthRefreshTokenEloquentModel::doesntHave('token')->delete();
     }
 }
 
