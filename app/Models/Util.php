@@ -448,7 +448,7 @@ class Util
         bool $beginning = true
     ): string {
         $digits = $digits === false ? 0 : 2;
-        $money = self::_number($number, $digits);
+        $money = self::_number($number, $digits, ' ');
 
         if ($label) {
             if ($beginning) {

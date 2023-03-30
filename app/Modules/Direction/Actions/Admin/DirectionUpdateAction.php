@@ -119,10 +119,10 @@ class DirectionUpdateAction extends Action
             $action->description = $this->description;
             $action->keywords = $this->keywords;
             $action->title = $this->title;
+            $action->id = $directionEntity->metatag_id;
             $metatag = $action->run();
 
             $directionEntity->id = $this->id;
-            $directionEntity->metatag_id = $metatag->id;
             $directionEntity->name = $this->name;
             $directionEntity->header = $this->header;
             $directionEntity->weight = $this->weight;

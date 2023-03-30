@@ -102,6 +102,7 @@ class ToolUpdateAction extends Action
             $action->description = $this->description;
             $action->keywords = $this->keywords;
             $action->title = $this->title;
+            $action->id = $toolEntity->metatag_id;
             $metatag = $action->run();
 
             $toolEntity->id = $this->id;

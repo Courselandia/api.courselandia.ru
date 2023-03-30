@@ -8,26 +8,27 @@
 
 namespace App\Modules\Course\Actions\Admin\Course;
 
-use DB;
-use Cache;
 use App\Models\Action;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
+use App\Modules\Course\Entities\Course as CourseEntity;
+use App\Modules\Course\Entities\CourseFeature as CourseFeatureEntity;
+use App\Modules\Course\Entities\CourseLearn as CourseLearnEntity;
+use App\Modules\Course\Entities\CourseLevel as CourseLevelEntity;
 use App\Modules\Course\Enums\Currency;
 use App\Modules\Course\Enums\Duration;
 use App\Modules\Course\Enums\Language;
 use App\Modules\Course\Enums\Status;
+use App\Modules\Course\Models\Course;
+use App\Modules\Course\Models\CourseFeature;
+use App\Modules\Course\Models\CourseLearn;
+use App\Modules\Course\Models\CourseLevel;
 use App\Modules\Image\Entities\Image;
 use App\Modules\Metatag\Actions\MetatagSetAction;
-use App\Modules\Course\Entities\Course as CourseEntity;
-use App\Modules\Course\Models\Course;
-use App\Modules\Course\Models\CourseLevel;
-use App\Modules\Course\Models\CourseLearn;
-use App\Modules\Course\Models\CourseFeature;
-use App\Modules\Course\Entities\CourseLevel as CourseLevelEntity;
-use App\Modules\Course\Entities\CourseLearn as CourseLearnEntity;
-use App\Modules\Course\Entities\CourseFeature as CourseFeatureEntity;
+use App\Modules\Metatag\Template\Template;
 use App\Modules\Salary\Enums\Level;
+use Cache;
+use DB;
 use Illuminate\Http\UploadedFile;
 use Throwable;
 
@@ -177,11 +178,11 @@ class CourseUpdateAction extends Action
     public Status|null $status = null;
 
     /**
-     * Описание.
+     * Шаблон описание.
      *
      * @var string|null
      */
-    public ?string $description = null;
+    public ?string $template_description = null;
 
     /**
      * Ключевые слова.
@@ -191,11 +192,11 @@ class CourseUpdateAction extends Action
     public ?string $keywords = null;
 
     /**
-     * Заголовок.
+     * Шаблон заголовка.
      *
      * @var string|null
      */
-    public ?string $title = null;
+    public ?string $template_title = null;
 
     /**
      * ID направлений.
@@ -290,9 +291,24 @@ class CourseUpdateAction extends Action
         if ($courseEntity) {
             DB::transaction(function () use ($courseEntity) {
                 $action = app(MetatagSetAction::class);
-                $action->description = $this->description;
+
+                $templateValues = [
+                    'course' => $this->header,
+                    'school' => $courseEntity->school->name,
+                    'price' => $this->price,
+                    'currency' => $this->currency,
+                ];
+
+                $template = new Template();
+
+                $action->description = $template->convert($this->template_description, $templateValues);
+                $action->title = $template->convert($this->template_title, $templateValues);
+
+                $action->template_description = $this->template_description;
+                $action->template_title = $this->template_title;
                 $action->keywords = $this->keywords;
-                $action->title = $this->title;
+                $action->id = $courseEntity->id;
+
                 $metatag = $action->run();
 
                 $courseEntity->school_id = $this->school_id;
@@ -313,7 +329,6 @@ class CourseUpdateAction extends Action
                 $courseEntity->lessons_amount = $this->lessons_amount;
                 $courseEntity->modules_amount = $this->modules_amount;
                 $courseEntity->status = $this->status;
-                $courseEntity->metatag_id = $metatag->id;
 
                 if ($this->image) {
                     $courseEntity->image_small_id = $this->image;

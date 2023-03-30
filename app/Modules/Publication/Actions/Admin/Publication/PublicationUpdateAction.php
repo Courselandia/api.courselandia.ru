@@ -119,9 +119,9 @@ class PublicationUpdateAction extends Action
             $action->description = $this->description;
             $action->keywords = $this->keywords;
             $action->title = $this->title;
+            $action->id = $publicationEntity->metatag_id;
             $metatag = $action->run();
 
-            $publicationEntity->metatag_id = $metatag->id;
             $publicationEntity->published_at = $this->published_at;
             $publicationEntity->header = $this->header;
             $publicationEntity->link = $this->link;

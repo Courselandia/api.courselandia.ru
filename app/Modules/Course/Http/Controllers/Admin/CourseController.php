@@ -8,6 +8,7 @@
 
 namespace App\Modules\Course\Http\Controllers\Admin;
 
+use App\Modules\Metatag\Template\TemplateException;
 use Auth;
 use Log;
 use ReflectionException;
@@ -136,8 +137,8 @@ class CourseController extends Controller
             $action->employments = $request->get('employments');
             $action->features = $request->get('features');
 
-            $action->description = $request->get('description');
-            $action->title = $request->get('title');
+            $action->template_description = $request->get('template_description');
+            $action->template_title = $request->get('template_title');
             $action->keywords = $request->get('keywords');
 
             if ($request->hasFile('image') && $request->file('image')->isValid()) {
@@ -161,7 +162,7 @@ class CourseController extends Controller
             ];
 
             return response()->json($data);
-        } catch (ValidateException $error) {
+        } catch (ValidateException|TemplateException $error) {
             return response()->json([
                 'success' => false,
                 'message' => $error->getMessage()
@@ -221,8 +222,8 @@ class CourseController extends Controller
             $action->employments = $request->get('employments');
             $action->features = $request->get('features');
 
-            $action->description = $request->get('description');
-            $action->title = $request->get('title');
+            $action->template_description = $request->get('template_description');
+            $action->template_title = $request->get('template_title');
             $action->keywords = $request->get('keywords');
 
             if ($request->hasFile('image') && $request->file('image')->isValid()) {
@@ -246,7 +247,7 @@ class CourseController extends Controller
             ];
 
             return response()->json($data);
-        } catch (ValidateException|RecordExistException $error) {
+        } catch (ValidateException|RecordExistException|TemplateException $error) {
             return response()->json([
                 'success' => false,
                 'message' => $error->getMessage()

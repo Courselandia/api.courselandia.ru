@@ -102,10 +102,10 @@ class ProfessionUpdateAction extends Action
             $action->description = $this->description;
             $action->keywords = $this->keywords;
             $action->title = $this->title;
+            $action->id = $professionEntity->metatag_id;
             $metatag = $action->run();
 
             $professionEntity->id = $this->id;
-            $professionEntity->metatag_id = $metatag->id;
             $professionEntity->name = $this->name;
             $professionEntity->header = $this->header;
             $professionEntity->link = $this->link;

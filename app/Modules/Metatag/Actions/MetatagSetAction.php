@@ -47,6 +47,20 @@ class MetatagSetAction extends Action
     public ?string $title = null;
 
     /**
+     * Шаблон заголовок.
+     *
+     * @var string|null
+     */
+    public ?string $template_title = null;
+
+    /**
+     * Шаблон описания.
+     *
+     * @var string|null
+     */
+    public ?string $template_description = null;
+
+    /**
      * Метод запуска логики.
      *
      * @return MetatagEntity|null Вернет результаты исполнения.
@@ -58,6 +72,8 @@ class MetatagSetAction extends Action
         $metatagEntity->description = $this->description;
         $metatagEntity->keywords = $this->keywords;
         $metatagEntity->title = $this->title;
+        $metatagEntity->template_description = $this->template_description;
+        $metatagEntity->template_title = $this->template_title;
 
         if ($this->id) {
             $metatag = Metatag::find($this->id);

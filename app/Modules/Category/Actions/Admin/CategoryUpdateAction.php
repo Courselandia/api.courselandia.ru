@@ -116,10 +116,10 @@ class CategoryUpdateAction extends Action
             $action->description = $this->description;
             $action->keywords = $this->keywords;
             $action->title = $this->title;
+            $action->id = $categoryEntity->metatag_id;
             $metatag = $action->run();
 
             $categoryEntity->id = $this->id;
-            $categoryEntity->metatag_id = $metatag->id;
             $categoryEntity->name = $this->name;
             $categoryEntity->header = $this->header;
             $categoryEntity->link = $this->link;

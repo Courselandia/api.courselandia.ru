@@ -102,10 +102,10 @@ class SkillUpdateAction extends Action
             $action->description = $this->description;
             $action->keywords = $this->keywords;
             $action->title = $this->title;
+            $action->id = $skillEntity->metatag_id;
             $metatag = $action->run();
 
             $skillEntity->id = $this->id;
-            $skillEntity->metatag_id = $metatag->id;
             $skillEntity->name = $this->name;
             $skillEntity->header = $this->header;
             $skillEntity->link = $this->link;

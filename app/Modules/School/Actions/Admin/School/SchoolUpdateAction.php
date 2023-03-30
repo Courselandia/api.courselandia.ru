@@ -132,9 +132,9 @@ class SchoolUpdateAction extends Action
             $action->description = $this->description;
             $action->keywords = $this->keywords;
             $action->title = $this->title;
+            $action->id = $schoolEntity->metatag_id;
             $metatag = $action->run();
 
-            $schoolEntity->metatag_id = $metatag->id;
             $schoolEntity->name = $this->name;
             $schoolEntity->header = $this->header;
             $schoolEntity->link = $this->link;

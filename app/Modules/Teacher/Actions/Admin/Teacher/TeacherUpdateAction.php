@@ -125,6 +125,7 @@ class TeacherUpdateAction extends Action
             $action->description = $this->description;
             $action->keywords = $this->keywords;
             $action->title = $this->title;
+            $action->id = $teacherEntity->metatag_id;
             $metatag = $action->run();
 
             $teacherEntity->metatag_id = $metatag->id;

@@ -8,6 +8,8 @@
 
 namespace App\Modules\Course\Actions\Admin\Course;
 
+use App\Modules\Metatag\Template\Template;
+use App\Modules\School\Models\School;
 use DB;
 use Cache;
 use App\Models\Action;
@@ -171,11 +173,11 @@ class CourseCreateAction extends Action
     public Status|null $status = null;
 
     /**
-     * Описание.
+     * Шаблон описание.
      *
      * @var string|null
      */
-    public ?string $description = null;
+    public ?string $template_description = null;
 
     /**
      * Ключевые слова.
@@ -185,11 +187,11 @@ class CourseCreateAction extends Action
     public ?string $keywords = null;
 
     /**
-     * Заголовок.
+     * Шаблон заголовка.
      *
      * @var string|null
      */
-    public ?string $title = null;
+    public ?string $template_title = null;
 
     /**
      * ID направлений.
@@ -280,9 +282,25 @@ class CourseCreateAction extends Action
     {
         $id = DB::transaction(function () {
             $action = app(MetatagSetAction::class);
-            $action->description = $this->description;
+
+            $school = School::find($this->school_id);
+
+            $templateValues = [
+                'course' => $this->header,
+                'school' => $school->name,
+                'price' => $this->price,
+                'currency' => $this->currency,
+            ];
+
+            $template = new Template();
+
+            $action->description = $template->convert($this->template_description, $templateValues);
+            $action->title = $template->convert($this->template_title, $templateValues);
+
+            $action->template_description = $this->template_description;
+            $action->template_title = $this->template_title;
             $action->keywords = $this->keywords;
-            $action->title = $this->title;
+
             $metatag = $action->run();
 
             $courseEntity = new CourseEntity();

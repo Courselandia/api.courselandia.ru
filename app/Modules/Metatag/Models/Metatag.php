@@ -27,6 +27,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @property string $description Описание.
  * @property string $keywords Ключевые слова.
  * @property string $title Заголовок.
+ * @property string $template_title Шаблон заголовка.
+ * @property string $template_description Шаблон описания.
  */
 class Metatag extends Eloquent
 {
@@ -47,6 +49,8 @@ class Metatag extends Eloquent
         'description',
         'keywords',
         'title',
+        'template_title',
+        'template_description',
     ];
 
     /**
@@ -68,12 +72,16 @@ class Metatag extends Eloquent
         'description' => 'string',
         'keywords' => 'string',
         'title' => 'string',
+        'template_title' => 'string',
+        'template_description' => 'string',
     ])] protected function getRules(): array
     {
         return [
             'description' => 'max:1000',
             'keywords' => 'max:1000',
             'title' => 'max:500',
+            'template_title' => 'max:500',
+            'template_description' => 'max:500',
         ];
     }
 
@@ -86,12 +94,16 @@ class Metatag extends Eloquent
         'description' => 'mixed',
         'keywords' => 'mixed',
         'title' => 'mixed',
+        'template_description' => 'mixed',
+        'template_title' => 'mixed',
     ])] protected function getNames(): array
     {
         return [
             'description' => trans('metatag::models.metatag.description'),
             'keywords' => trans('metatag::models.metatag.keywords'),
             'title' => trans('metatag::models.metatag.title'),
+            'template_description' => trans('metatag::models.metatag.templateDescription'),
+            'template_title' => trans('metatag::models.metatag.templateTitle'),
         ];
     }
 
