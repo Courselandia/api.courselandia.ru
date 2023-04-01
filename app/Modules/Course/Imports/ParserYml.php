@@ -107,19 +107,31 @@ abstract class ParserYml extends Parser
                             ...$this->getOffer($reader)
                         ];
 
+                        if (!isset($offer['categoryId'])) {
+                            $this->addError(
+                                $this->getSchool()->getLabel()
+                                . ' | ' . $offer['name']
+                                . ' | Не найден ID категории в XML файле.'
+                            );
+
+                            continue;
+                        }
+
                         $categoryName = $categories[$offer['categoryId']];
 
-                        if (isset($directions[$categoryName])) {
-                            $offer['direction'] = $directions[$categoryName];
-
-                            yield $offer;
-                        } else {
+                        if (!isset($directions[$categoryName])) {
                             $this->addError(
                                 $this->getSchool()->getLabel()
                                 . ' | ' . $offer['name']
                                 . ' | Не найдено направление для категории: "' . $categoryName . '".'
                             );
+
+                            continue;
                         }
+
+                        $offer['direction'] = $directions[$categoryName];
+
+                        yield $offer;
                     }
                 }
             }
