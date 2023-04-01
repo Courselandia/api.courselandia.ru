@@ -214,6 +214,7 @@ class Import
                 $course = Course::create([
                     'uuid' => $courseEntity->uuid,
                     'name' => $courseEntity->name,
+                    'header' => '{course} от {school:genitive}',
                     'link' => strtolower(Util::latin(strtolower($courseEntity->name))),
                     'text' => $courseEntity->text,
                     'status' => $courseEntity->status ? Status::DRAFT->value : Status::DISABLED->value,

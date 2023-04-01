@@ -105,6 +105,7 @@ class CourseController extends Controller
         try {
             $action = app(CourseCreateAction::class);
             $action->school_id = $request->get('school_id');
+            $action->name = $request->get('name');
             $action->header = $request->get('header');
             $action->text = $request->get('text');
             $action->link = $request->get('link');
@@ -190,6 +191,7 @@ class CourseController extends Controller
             $action = app(CourseUpdateAction::class);
             $action->id = $id;
             $action->school_id = $request->get('school_id');
+            $action->name = $request->get('name');
             $action->header = $request->get('header');
             $action->text = $request->get('text');
             $action->link = $request->get('link');

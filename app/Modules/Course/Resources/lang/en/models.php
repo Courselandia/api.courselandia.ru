@@ -9,6 +9,7 @@ return [
         'image_big_id' => 'Big image',
         'image_middle_id' => 'Middle image',
         'image_small_id' => 'Small image',
+        'name' => 'Name',
         'header' => 'Header',
         'text' => 'Text',
         'name_morphy' => 'Morphy Name',

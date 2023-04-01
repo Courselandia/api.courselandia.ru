@@ -64,7 +64,7 @@ class CourseControllerTest extends TestCase
                 'offset' => 0,
                 'limit' => 10,
                 'sorts' => [
-                    'header' => 'ASC',
+                    'name' => 'ASC',
                 ],
                 'filters' => [
                     'school-id' => $course->school_id,
@@ -391,6 +391,7 @@ class CourseControllerTest extends TestCase
             'image_big_id',
             'image_middle_id',
             'image_small_id',
+            'name',
             'header',
             'text',
             'name_morphy',
@@ -576,6 +577,7 @@ class CourseControllerTest extends TestCase
         return [
             'id',
             'school_id',
+            'name',
             'header',
             'link',
             'url',

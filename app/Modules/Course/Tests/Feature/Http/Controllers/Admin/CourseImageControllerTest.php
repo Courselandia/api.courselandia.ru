@@ -151,6 +151,7 @@ class CourseImageControllerTest extends TestCase
             'image_big_id',
             'image_middle_id',
             'image_small_id',
+            'name',
             'header',
             'text',
             'name_morphy',

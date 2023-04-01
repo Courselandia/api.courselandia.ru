@@ -367,6 +367,7 @@ class ReviewControllerTest extends TestCase
                 'image_big_id',
                 'image_middle_id',
                 'image_small_id',
+                'name',
                 'header',
                 'text',
                 'header_morphy',

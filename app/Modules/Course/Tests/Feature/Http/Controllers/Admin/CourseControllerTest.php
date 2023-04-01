@@ -56,7 +56,7 @@ class CourseControllerTest extends TestCase
                 'offset' => 0,
                 'limit' => 10,
                 'sorts' => [
-                    'header' => 'ASC',
+                    'name' => 'ASC',
                 ],
                 'filters' => [
                     'link' => $course->link,
@@ -161,6 +161,7 @@ class CourseControllerTest extends TestCase
             'api/private/admin/course/create',
             [
                 'school_id' => $school->id,
+                'name' => $faker->text(191),
                 'header' => $faker->text(191),
                 'link' => Util::latin($faker->text(191)),
                 'url' => $faker->url(),
@@ -208,6 +209,7 @@ class CourseControllerTest extends TestCase
         return [
             'school_id' => $school->id,
             'image' => UploadedFile::fake()->image('course.jpg', 1500, 1500),
+            'name' => $faker->text(191),
             'header' => $faker->text(191),
             'text' => $faker->text(1000),
             'link' => Util::latin($faker->text(191)),
@@ -290,6 +292,7 @@ class CourseControllerTest extends TestCase
             'POST',
             'api/private/admin/course/create',
             [
+                'name' => $faker->text(191),
                 'header' => $faker->text(191),
                 'link' => Util::latin($faker->text(191)),
             ],
@@ -338,6 +341,7 @@ class CourseControllerTest extends TestCase
             'PUT',
             'api/private/admin/course/update/' . $course->id,
             [
+                'name' => $faker->text(191),
                 'header' => $faker->text(191),
                 'link' => Util::latin($faker->text(191)),
                 'status' => 'TEST',
@@ -412,6 +416,7 @@ class CourseControllerTest extends TestCase
             'image_big_id',
             'image_middle_id',
             'image_small_id',
+            'name',
             'header',
             'text',
             'name_morphy',

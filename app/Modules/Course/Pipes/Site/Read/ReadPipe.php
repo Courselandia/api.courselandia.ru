@@ -73,6 +73,7 @@ class ReadPipe implements Pipe
                     'image_big_id',
                     'image_middle_id',
                     'image_small_id',
+                    'name',
                     'header',
                     'text',
                     'link',
@@ -155,7 +156,7 @@ class ReadPipe implements Pipe
                     ) {
                         $query->sorted($entity->sorts ?: []);
                     } else {
-                        $query->orderBy('header', 'ASC');
+                        $query->orderBy('name', 'ASC');
                     }
                 }
 
