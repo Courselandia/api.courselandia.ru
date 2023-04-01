@@ -25,6 +25,7 @@ use App\Modules\Course\Imports\Parsers\ParserSkillbox;
 use App\Modules\Course\Imports\Parsers\ParserSkyPro;
 use App\Modules\Course\Imports\Parsers\ParserContented;
 use App\Modules\Course\Imports\Parsers\ParserSkillFactory;
+use App\Modules\Course\Imports\Parsers\ParserXyzSchool;
 
 /**
  * Класс импорта курсов.
@@ -65,7 +66,8 @@ class Import
             ->addParser(new ParserSkillbox('https://feeds.advcake.com/feed/download/e77ebb28c278d755a0d7f5b6aeaa2674'))
             ->addParser(new ParserSkyPro('https://feeds.advcake.com/feed/download/3ae0ebb5de2e80b35668ba8b3db8b760'))
             ->addParser(new ParserSkillFactory('https://feeds.advcake.com/feed/download/993eb3d8a8131641e035707f860fef7d'))
-            ->addParser(new ParserContented('https://feeds.advcake.com/feed/download/5a6f3f438c1f38f77256e65abc44e780'));
+            ->addParser(new ParserContented('https://feeds.advcake.com/feed/download/5a6f3f438c1f38f77256e65abc44e780'))
+            ->addParser(new ParserXyzSchool('https://feeds.advcake.com/feed/download/ef05e6d05099e4672126b4cddeeec695'));
     }
 
     /**

@@ -43,6 +43,11 @@ enum School: int implements EnumLabel
     case CONTENTED = 6;
 
     /**
+     * XYZ School.
+     */
+    case XYZ_SCHOOL = 7;
+
+    /**
      * Получение лейбл перечисления.
      *
      * @return string|int Вернет лейбл перечисления.
@@ -56,6 +61,7 @@ enum School: int implements EnumLabel
             self::SKYPRO => 'Skypro',
             self::SKILL_FACTORY => 'SkillFactory',
             self::CONTENTED => 'Contented',
+            self::XYZ_SCHOOL => 'XYZ School',
         };
     }
 }
