@@ -87,8 +87,8 @@ class ParserGeekBrains extends ParserYml
                 $course->price_old = $offer['oldprice'];
             }
 
-            if (isset($offer['params']['Продолжительность обучения, месяцев']) && $offer['params']['Продолжительность обучения, месяцев']) {
-                $course->duration = $offer['params']['Продолжительность обучения, месяцев'];
+            if (isset($offer['params']['Продолжительность обучения, месяцев']['value']) && $offer['params']['Продолжительность обучения, месяцев']['value']) {
+                $course->duration = $offer['params']['Продолжительность обучения, месяцев']['value'];
                 $course->duration_unit = Duration::MONTH;
             }
 

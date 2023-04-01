@@ -8,18 +8,18 @@
 
 namespace App\Modules\Course\Imports\Parsers;
 
+use Generator;
 use App\Modules\Course\Enums\Duration;
 use App\Modules\School\Enums\School;
-use Generator;
 use App\Modules\Course\Entities\ParserCourse;
 use App\Modules\Course\Enums\Currency;
 use App\Modules\Course\Imports\ParserYml;
 use App\Modules\Direction\Enums\Direction;
 
 /**
- * Парсинг курсов Skillbox.
+ * Парсинг курсов XYZ School.
  */
-class ParserSkillbox extends ParserYml
+class ParserXyzSchool extends ParserYml
 {
     /**
      * Вернет школу.
@@ -28,7 +28,7 @@ class ParserSkillbox extends ParserYml
      */
     public function getSchool(): School
     {
-        return School::SKILLBOX;
+        return School::XYZ_SCHOOL;
     }
 
     /**
@@ -39,20 +39,12 @@ class ParserSkillbox extends ParserYml
     public function getDirections(): array
     {
         return [
-            'Для бизнеса' => Direction::BUSINESS,
-            'Бизнес-школа' => Direction::BUSINESS,
-            'Английский язык' => Direction::OTHER,
-            'Маркетинг' => Direction::MARKETING,
-            'Дизайн' => Direction::DESIGN,
-            'Игры' => Direction::GAMES,
-            'Программирование' => Direction::PROGRAMMING,
-            'Управление' => Direction::BUSINESS,
-            'Кино и Музыка' => Direction::OTHER,
-            'Общее развитие' => Direction::OTHER,
-            'Психология' => Direction::OTHER,
-            'Инженерия' => Direction::OTHER,
-            'Архитектура' => Direction::OTHER,
-            'Другое' => Direction::OTHER,
+            'Игровой дизайн' => Direction::DESIGN,
+            'Разработка игр на Unity' => Direction::GAMES,
+            'Разработка игр на Unreal Engine' => Direction::GAMES,
+            '3D-графика' => Direction::DESIGN,
+            '2D-графика' => Direction::DESIGN,
+            'Разное' => Direction::OTHER,
         ];
     }
 
@@ -67,33 +59,25 @@ class ParserSkillbox extends ParserYml
             $course = new ParserCourse();
             $course->school = $this->getSchool();
             $course->uuid = $offer['attributes']['id'];
-            $course->header = $offer['name'];
-            $course->text = $offer['description'];
-            $course->status = $offer['attributes']['available'] === 'true';
             $course->url = $offer['url'];
             $course->image = $offer['picture'] ?? null;
             $course->price = $offer['price'];
-            $course->price_recurrent = $offer['credit_price'] ?? null;
             $course->currency = Currency::RUB;
             $course->direction = $offer['direction'];
-            $course->employment = (bool)$offer['with_employment'];
+            $course->header = $offer['name'];
+            $course->price_old = (isset($offer['oldprice']) && $offer['oldprice'] !== 'None') ? $offer['oldprice'] : null;
+            $course->text = $offer['description'];
+            $course->price_recurrent = (isset($offer['credit_price']) && $offer['credit_price'] !== 'None') ? $offer['credit_price'] : null;
+            $course->duration = $offer['params']['Продолжительность']['value'] ?? null;
 
-            if (isset($offer['oldprice']) && $offer['oldprice']) {
-                $course->price_old = $offer['oldprice'];
+            if (isset($offer['params']['Продолжительность']['unit']) || isset($offer['params']['Продолжительность']['value'])) {
+                $course->duration_unit = isset($offer['params']['Продолжительность']['unit'])
+                    ? $this->getDurationUnit($offer['params']['Продолжительность']['unit'])
+                    : Duration::MONTH;
             }
 
-            if (isset($offer['duration'])) {
-                $course->duration = $offer['duration']['value'];
-                $course->duration_unit = $this->getDurationUnit($offer['duration']['attributes']['unit']);
-
-                if (!$course->duration_unit) {
-                    $this->addError(
-                        $this->getSchool()->getLabel()
-                        . ' | ' . $offer['name']
-                        . ' | Не удалось получить единицу продолжительности: "' . $offer['duration']['attributes']['unit'] . '".'
-                    );
-                }
-            }
+            $course->status = $offer['attributes']['available'] === 'true';
+            $course->image = $offer['picture'] ?? null;
 
             yield $course;
         }
@@ -108,13 +92,13 @@ class ParserSkillbox extends ParserYml
      */
     private function getDurationUnit(string $duration): ?Duration
     {
-        if ($duration === 'year') {
+        if ($duration === 'год') {
             return Duration::YEAR;
-        } elseif ($duration === 'month') {
+        } elseif ($duration === 'месяц') {
             return Duration::MONTH;
-        } elseif ($duration === 'week') {
+        } elseif ($duration === 'неделя') {
             return Duration::WEEK;
-        } elseif ($duration === 'day') {
+        } elseif ($duration === 'день') {
             return Duration::DAY;
         }
 

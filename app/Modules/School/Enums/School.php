@@ -28,6 +28,36 @@ enum School: int implements EnumLabel
     case GEEKBRAINS = 3;
 
     /**
+     * SkyPro.
+     */
+    case SKYPRO = 4;
+
+    /**
+     * SkillFactory.
+     */
+    case SKILL_FACTORY = 5;
+
+    /**
+     * Contented.
+     */
+    case CONTENTED = 6;
+
+    /**
+     * XYZ School.
+     */
+    case XYZ_SCHOOL = 7;
+
+    /**
+     * Skillbox Английский (Kespa).
+     */
+    case SKILLBOX_ENG_KESPA = 8;
+
+    /**
+     * Международная Школа Профессий.
+     */
+    case INTERNATIONAL_SCHOOL_PROFESSIONS = 9;
+
+    /**
      * Получение лейбл перечисления.
      *
      * @return string|int Вернет лейбл перечисления.
@@ -38,6 +68,12 @@ enum School: int implements EnumLabel
             self::NETOLOGIA => 'Нетология',
             self::SKILLBOX => 'Skillbox',
             self::GEEKBRAINS => 'GeekBrains',
+            self::SKYPRO => 'Skypro',
+            self::SKILL_FACTORY => 'SkillFactory',
+            self::CONTENTED => 'Contented',
+            self::XYZ_SCHOOL => 'XYZ School',
+            self::SKILLBOX_ENG_KESPA => 'Skillbox Английский (Kespa)',
+            self::INTERNATIONAL_SCHOOL_PROFESSIONS => 'Международная Школа Профессий',
         };
     }
 }

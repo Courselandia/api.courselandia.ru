@@ -55,7 +55,7 @@ abstract class ParserYml extends Parser
                             if ($reader->nodeType === XMLReader::ELEMENT) {
                                 $id = $reader->getAttribute('id');
                                 $reader->read();
-                                $categories[$id] = $reader->value;
+                                $categories[$id] = trim($reader->value);
                             }
                         }
 
@@ -107,19 +107,27 @@ abstract class ParserYml extends Parser
                             ...$this->getOffer($reader)
                         ];
 
-                        $categoryName = $categories[$offer['categoryId']];
-
-                        if (isset($directions[$categoryName])) {
-                            $offer['direction'] = $directions[$categoryName];
-
-                            yield $offer;
-                        } else {
-                            $this->addError(
-                                $this->getSchool()->getLabel()
-                                . ' | ' . $offer['name']
-                                . ' | Не найдено направление для категории: "' . $categoryName . '".'
-                            );
+                        if (!isset($offer['categoryId'])) {
+                            continue;
                         }
+
+                        if (count($directions)) {
+                            $categoryName = $categories[$offer['categoryId']];
+
+                            if (!isset($directions[$categoryName])) {
+                                $this->addError(
+                                    $this->getSchool()->getLabel()
+                                    . ' | ' . $offer['name']
+                                    . ' | Не найдено направление для категории: "' . $categoryName . '".'
+                                );
+
+                                continue;
+                            }
+
+                            $offer['direction'] = $directions[$categoryName];
+                        }
+
+                        yield $offer;
                     }
                 }
             }
@@ -147,7 +155,7 @@ abstract class ParserYml extends Parser
 
             for ($i = 0; $i < $attributeCount; $i++) {
                 $reader->moveToAttributeNo($i);
-                $attributes[$reader->name] = $reader->value;
+                $attributes[$reader->name] = trim($reader->value);
             }
 
             $reader->moveToElement();
@@ -175,11 +183,28 @@ abstract class ParserYml extends Parser
             }
 
             if ($reader->name === 'param') {
-                $name = $reader->getAttribute('name');
-                $reader->read();
+                $attributes = [];
 
-                if ($name) {
-                    $offer['params'][$name] = $reader->value;
+                if ($reader->hasAttributes) {
+                    $attributeCount = $reader->attributeCount;
+
+                    for ($i = 0; $i < $attributeCount; $i++) {
+                        $reader->moveToAttributeNo($i);
+                        $attributes[$reader->name] = trim($reader->value);
+                    }
+                }
+
+                if (isset($attributes['name'])) {
+                    $name = $attributes['name'];
+                    unset($attributes['name']);
+
+                    if (count($attributes)) {
+                        $offer['params'][$name] = $attributes;
+                    }
+                    $reader->read();
+                    $offer['params'][$name]['value'] = trim($reader->value);
+                } else {
+                    $reader->read();
                 }
 
                 $reader->read();
@@ -192,7 +217,7 @@ abstract class ParserYml extends Parser
 
                     for ($i = 0; $i < $attributeCount; $i++) {
                         $reader->moveToAttributeNo($i);
-                        $attributes[$reader->name] = $reader->value;
+                        $attributes[$reader->name] = trim($reader->value);
                     }
                 }
 
@@ -200,11 +225,11 @@ abstract class ParserYml extends Parser
 
                 if (count($attributes)) {
                     $offer[$name] = [
-                        'value' => $reader->value,
+                        'value' => trim($reader->value),
                         'attributes' => $attributes,
                     ];
                 } else {
-                    $offer[$name] = $reader->value;
+                    $offer[$name] = trim($reader->value);
                 }
             }
         }

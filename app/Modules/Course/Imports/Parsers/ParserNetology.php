@@ -93,15 +93,15 @@ class ParserNetology extends ParserYml
                 $course->price_old = $offer['oldprice'];
             }
 
-            if (isset($offer['params']['Продолжительность']) && $offer['params']['Продолжительность']) {
-                $course->duration = $this->getDuration($offer['params']['Продолжительность']);
-                $course->duration_unit = $this->getDurationUnit($offer['params']['Продолжительность']);
+            if (isset($offer['params']['Продолжительность']['value']) && $offer['params']['Продолжительность']['value']) {
+                $course->duration = $this->getDuration($offer['params']['Продолжительность']['value']);
+                $course->duration_unit = $this->getDurationUnit($offer['params']['Продолжительность']['value']);
 
                 if (!$course->duration_unit) {
                     $this->addError(
                         $this->getSchool()->getLabel()
                         . ' | ' . $offer['name']
-                        . ' | Не удалось получить единицу продолжительности: "' . $offer['params']['Продолжительность'] . '".'
+                        . ' | Не удалось получить единицу продолжительности: "' . $offer['params']['Продолжительность']['value'] . '".'
                     );
                 }
             } else {
@@ -109,8 +109,8 @@ class ParserNetology extends ParserYml
                 $course->duration_unit = null;
             }
 
-            if (isset($offer['params']['Количество занятий']) && $offer['params']['Количество занятий']) {
-                $course->lessons_amount = $this->getLessonsAmount($offer['params']['Количество занятий']);
+            if (isset($offer['params']['Количество занятий']['value']) && $offer['params']['Количество занятий']['value']) {
+                $course->lessons_amount = $this->getLessonsAmount($offer['params']['Количество занятий']['value']);
             }
 
             yield $course;
@@ -124,7 +124,7 @@ class ParserNetology extends ParserYml
      *
      * @return int Вернет продолжительность.
      */
-    public function getDuration(string $duration): int
+    private function getDuration(string $duration): int
     {
         [$value] = explode(' ', $duration);
 
@@ -138,7 +138,7 @@ class ParserNetology extends ParserYml
      *
      * @return Duration|null Вернет единицу измерения продолжительности курса.
      */
-    public function getDurationUnit(string $duration): ?Duration
+    private function getDurationUnit(string $duration): ?Duration
     {
         [, $duration] = explode(' ', $duration);
         $duration = trim($duration);
@@ -163,7 +163,7 @@ class ParserNetology extends ParserYml
      *
      * @return int|null Вернет количество уроков.
      */
-    public function getLessonsAmount(string $value): ?int
+    private function getLessonsAmount(string $value): ?int
     {
         [$value] = explode(' ', $value);
 
