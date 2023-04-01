@@ -11,7 +11,7 @@ return [
         'image_small_id' => 'Small image',
         'header' => 'Header',
         'text' => 'Text',
-        'header_morphy' => 'Morphy Header',
+        'name_morphy' => 'Morphy Name',
         'text_morphy' => 'Morphy Description',
         'link' => 'Link',
         'url' => 'URL',

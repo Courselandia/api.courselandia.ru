@@ -120,9 +120,9 @@ class CourseFilter extends ModelFilter
 
         return $this->where(function ($q) use ($queryMorph, $query) {
             return $q->whereRaw(
-                'MATCH(header_morphy) AGAINST(? IN BOOLEAN MODE)',
+                'MATCH(name_morphy) AGAINST(? IN BOOLEAN MODE)',
                 [$queryMorph]
-            )->orWhere('header_morphy', 'LIKE', '%' . $query . '%');
+            )->orWhere('name_morphy', 'LIKE', '%' . $query . '%');
         });
     }
 
@@ -159,7 +159,7 @@ class CourseFilter extends ModelFilter
         return $this->where(function ($q) use ($queryMorph, $query) {
             return $q
                 ->whereRaw(
-                    'MATCH(header_morphy, text_morphy) AGAINST(? IN BOOLEAN MODE)',
+                    'MATCH(name_morphy, text_morphy) AGAINST(? IN BOOLEAN MODE)',
                     [$queryMorph]
                 );
             }

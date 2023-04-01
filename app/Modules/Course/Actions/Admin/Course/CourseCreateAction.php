@@ -54,6 +54,13 @@ class CourseCreateAction extends Action
     public int|UploadedFile|Image|null $image = null;
 
     /**
+     * Название.
+     *
+     * @var string|null
+     */
+    public string|null $name = null;
+
+    /**
      * Заголовок.
      *
      * @var string|null
@@ -308,6 +315,7 @@ class CourseCreateAction extends Action
             $courseEntity->image_small_id = $this->image;
             $courseEntity->image_middle_id = $this->image;
             $courseEntity->image_big_id = $this->image;
+            $courseEntity->name = $this->name;
             $courseEntity->header = $this->header;
             $courseEntity->text = $this->text;
             $courseEntity->link = $this->link;

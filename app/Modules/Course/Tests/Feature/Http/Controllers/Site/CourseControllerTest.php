@@ -162,7 +162,7 @@ class CourseControllerTest extends TestCase
             'api/private/site/course/read/rated',
             [
                 'limit' => 10,
-                'search' => $course->header,
+                'search' => $course->name,
             ],
         )->assertStatus(200)->assertJsonStructure([
             'data' => [
@@ -393,7 +393,7 @@ class CourseControllerTest extends TestCase
             'image_small_id',
             'header',
             'text',
-            'header_morphy',
+            'name_morphy',
             'text_morphy',
             'link',
             'url',

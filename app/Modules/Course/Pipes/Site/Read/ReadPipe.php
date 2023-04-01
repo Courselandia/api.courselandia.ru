@@ -164,7 +164,7 @@ class ReadPipe implements Pipe
                     $search = DB::getPdo()->quote($search);
 
                     $query->addSelect(
-                        DB::raw('MATCH(header_morphy, text_morphy) AGAINST(' . $search . ' IN BOOLEAN MODE) AS relevance')
+                        DB::raw('MATCH(name_morphy, text_morphy) AGAINST(' . $search . ' IN BOOLEAN MODE) AS relevance')
                     );
                 }
 

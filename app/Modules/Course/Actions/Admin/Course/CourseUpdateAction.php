@@ -59,6 +59,13 @@ class CourseUpdateAction extends Action
     public int|UploadedFile|Image|null $image = null;
 
     /**
+     * Название.
+     *
+     * @var string|null
+     */
+    public string|null $name = null;
+
+    /**
      * Заголовок.
      *
      * @var string|null
@@ -309,9 +316,10 @@ class CourseUpdateAction extends Action
                 $action->keywords = $this->keywords;
                 $action->id = $courseEntity->id;
 
-                $metatag = $action->run();
+                $action->run();
 
                 $courseEntity->school_id = $this->school_id;
+                $courseEntity->name = $this->name;
                 $courseEntity->header = $this->header;
                 $courseEntity->text = $this->text;
                 $courseEntity->link = $this->link;

@@ -153,7 +153,7 @@ class CourseImageControllerTest extends TestCase
             'image_small_id',
             'header',
             'text',
-            'header_morphy',
+            'name_morphy',
             'text_morphy',
             'link',
             'url',

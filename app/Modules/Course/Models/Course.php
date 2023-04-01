@@ -59,9 +59,10 @@ use App\Modules\Course\Filters\CourseFilter;
  * @property int|string|array|UploadedFile|ImageEntity $image_big_id Большая картинка.
  * @property int|string|array|UploadedFile|ImageEntity $image_middle_id Средняя картинка.
  * @property int|string|array|UploadedFile|ImageEntity $image_small_id Маленькая картинка.
+ * @property string $name Название.
  * @property string $header Заголовок.
  * @property string $text Описание.
- * @property string $header_morphy Заголовок морфологизированное.
+ * @property string $name_morphy Название морфологизированное.
  * @property string $text_morphy Описание морфологизированное.
  * @property string $link Ссылка.
  * @property string $url URL на курс.
@@ -119,7 +120,7 @@ class Course extends Eloquent
         'image_small_id',
         'header',
         'text',
-        'header_morphy',
+        'name_morphy',
         'text_morphy',
         'link',
         'url',
@@ -153,7 +154,7 @@ class Course extends Eloquent
         'image_small_id' => 'string',
         'header' => 'string',
         'text' => 'string',
-        'header_morphy' => 'string',
+        'name_morphy' => 'string',
         'text_morphy' => 'string',
         'link' => 'string',
         'url' => 'string',
@@ -179,7 +180,7 @@ class Course extends Eloquent
             'school_id' => 'required|digits_between:0,20|exists_soft:schools,id',
             'header' => 'required|between:1,191',
             'text' => 'max:5000',
-            'header_morphy' => 'max:191',
+            'name_morphy' => 'max:191',
             'text_morphy' => 'max:5000',
             'link' => 'required|between:1,191|alpha_dash',
             'url' => 'required|url',
@@ -216,7 +217,7 @@ class Course extends Eloquent
             'image_small_id' => trans('course::models.course.imageSmallId'),
             'header' => trans('course::models.course.header'),
             'text' => trans('course::models.course.text'),
-            'header_morphy' => trans('course::models.course.headerMorphy'),
+            'name_morphy' => trans('course::models.course.headerMorphy'),
             'text_morphy' => trans('course::models.course.textMorphy'),
             'link' => trans('course::models.course.link'),
             'url' => trans('course::models.course.url'),
