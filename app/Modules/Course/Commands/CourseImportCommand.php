@@ -55,7 +55,7 @@ class CourseImportCommand extends Command
         $this->amount = 0;
 
         $import->addEvent('read', function (Import $imp, ParserCourse $course) {
-            $this->line('Импортирован курс: ' . $course->school->getLabel() . ' | ' . $course->header);
+            $this->line('Импортирован курс: ' . $course->school->getLabel() . ' | ' . $course->name);
             $this->amount++;
         });
 

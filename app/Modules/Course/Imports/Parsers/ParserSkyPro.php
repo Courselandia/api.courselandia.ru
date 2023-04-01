@@ -67,7 +67,7 @@ class ParserSkyPro extends ParserYml
             $course = new ParserCourse();
             $course->school = $this->getSchool();
             $course->uuid = $offer['attributes']['id'];
-            $course->header = $offer['name'];
+            $course->name = $offer['name'];
             $course->url = $offer['url'];
             $course->direction = $offer['direction'];
             $course->price = $offer['price'];

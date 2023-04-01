@@ -64,7 +64,7 @@ class ParserXyzSchool extends ParserYml
             $course->price = $offer['price'];
             $course->currency = Currency::RUB;
             $course->direction = $offer['direction'];
-            $course->header = $offer['name'];
+            $course->name = $offer['name'];
             $course->price_old = (isset($offer['oldprice']) && $offer['oldprice'] !== 'None') ? $offer['oldprice'] : null;
             $course->text = $offer['description'];
             $course->price_recurrent = (isset($offer['credit_price']) && $offer['credit_price'] !== 'None') ? $offer['credit_price'] : null;

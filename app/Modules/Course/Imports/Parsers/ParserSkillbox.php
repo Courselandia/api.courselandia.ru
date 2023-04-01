@@ -67,7 +67,7 @@ class ParserSkillbox extends ParserYml
             $course = new ParserCourse();
             $course->school = $this->getSchool();
             $course->uuid = $offer['attributes']['id'];
-            $course->header = $offer['name'];
+            $course->name = $offer['name'];
             $course->text = $offer['description'];
             $course->status = $offer['attributes']['available'] === 'true';
             $course->url = $offer['url'];

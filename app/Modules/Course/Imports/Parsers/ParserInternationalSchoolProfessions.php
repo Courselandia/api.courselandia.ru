@@ -55,7 +55,7 @@ class ParserInternationalSchoolProfessions extends ParserYml
             $course->price = $offer['price'];
             $course->currency = Currency::RUB;
             $course->image = $offer['picture'] ?? null;
-            $course->header = $offer['name'];
+            $course->name = $offer['name'];
             $course->text = $offer['description'];
             $course->status = $offer['attributes']['available'] === 'true';
 

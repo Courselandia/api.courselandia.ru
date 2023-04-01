@@ -184,8 +184,8 @@ class Import
                 }
 
                 $data = [
-                    'header' => $courseEntity->header,
-                    'link' => strtolower(Util::latin(strtolower($courseEntity->header))),
+                    'name' => $courseEntity->name,
+                    'link' => strtolower(Util::latin(strtolower($courseEntity->name))),
                     'status' => $status,
                     'url' => $courseEntity->url,
                     'price' => $courseEntity->price,
@@ -213,8 +213,8 @@ class Import
 
                 $course = Course::create([
                     'uuid' => $courseEntity->uuid,
-                    'header' => $courseEntity->header,
-                    'link' => strtolower(Util::latin(strtolower($courseEntity->header))),
+                    'name' => $courseEntity->name,
+                    'link' => strtolower(Util::latin(strtolower($courseEntity->name))),
                     'text' => $courseEntity->text,
                     'status' => $courseEntity->status ? Status::DRAFT->value : Status::DISABLED->value,
                     'url' => $courseEntity->url,
@@ -243,7 +243,7 @@ class Import
         } catch (Throwable $error) {
             $this->addError(
                 $courseEntity->school->getLabel()
-                . ' | ' . $courseEntity->header
+                . ' | ' . $courseEntity->name
                 . ' | ' . $error->getMessage()
             );
         }

@@ -77,7 +77,7 @@ class ParserGeekBrains extends ParserYml
             $course->url = $offer['url'];
             $course->price = $offer['price'];
             $course->image = $offer['picture'] ?? null;
-            $course->header = $offer['name'];
+            $course->name = $offer['name'];
             $course->text = $offer['description'];
             $course->status = true;
             $course->currency = Currency::RUB;
