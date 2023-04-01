@@ -27,6 +27,8 @@ enum School: int implements EnumLabel
      */
     case GEEKBRAINS = 3;
 
+    case SKYPRO = 4;
+
     /**
      * Получение лейбл перечисления.
      *
@@ -38,6 +40,7 @@ enum School: int implements EnumLabel
             self::NETOLOGIA => 'Нетология',
             self::SKILLBOX => 'Skillbox',
             self::GEEKBRAINS => 'GeekBrains',
+            self::SKYPRO => 'Skypro',
         };
     }
 }

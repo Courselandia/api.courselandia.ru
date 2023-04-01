@@ -8,8 +8,6 @@
 
 namespace App\Modules\Course\Imports;
 
-use App\Modules\Course\Imports\Parsers\ParserGeekBrains;
-use App\Modules\Course\Imports\Parsers\ParserSkillbox;
 use Cache;
 use Throwable;
 use Util;
@@ -22,6 +20,9 @@ use App\Modules\Course\Imports\Parsers\ParserNetology;
 use App\Modules\Course\Models\Course;
 use App\Modules\Course\Enums\Status;
 use Illuminate\Http\UploadedFile;
+use App\Modules\Course\Imports\Parsers\ParserGeekBrains;
+use App\Modules\Course\Imports\Parsers\ParserSkillbox;
+use App\Modules\Course\Imports\Parsers\ParserSkyPro;
 
 /**
  * Класс импорта курсов.
@@ -57,12 +58,11 @@ class Import
      */
     public function __construct()
     {
-        $this->addParser(new ParserNetology('https://feeds.advcake.com/feed/download/54321b01372443d9902b3387dd154c8f'))
-            ->addParser(new ParserGeekBrains('https://feeds.advcake.com/feed/download/07d89f2e6d9a92a355caa2d4db424cfd'))
-            ->addParser(new ParserSkillbox('https://feeds.advcake.com/feed/download/e77ebb28c278d755a0d7f5b6aeaa2674'));
-        // City Business School -> Webium -> https://feeds.advcake.com/feed/download/2ca5ff004511ec6231f8d0048fa9e84d
-        // Videoforme -> Международная школа профессий -> https://feeds.advcake.com/feed/download/e1a360fbf7edc064fbea2080f2ebcfb5
-        // Hexlet -> https://feeds.advcake.com/feed/download/4048a9a848201ec4a3bab2c9034332be
+        $this//->addParser(new ParserNetology('https://feeds.advcake.com/feed/download/54321b01372443d9902b3387dd154c8f'))
+            //->addParser(new ParserGeekBrains('https://feeds.advcake.com/feed/download/07d89f2e6d9a92a355caa2d4db424cfd'))
+            //->addParser(new ParserSkillbox('https://feeds.advcake.com/feed/download/e77ebb28c278d755a0d7f5b6aeaa2674'))
+            ->addParser(new ParserSkyPro('https://feeds.advcake.com/feed/download/3ae0ebb5de2e80b35668ba8b3db8b760'));
+        // skypro https://feeds.advcake.com/feed/download/3ae0ebb5de2e80b35668ba8b3db8b760
     }
 
     /**

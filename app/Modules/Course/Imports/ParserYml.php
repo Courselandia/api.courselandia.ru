@@ -175,11 +175,28 @@ abstract class ParserYml extends Parser
             }
 
             if ($reader->name === 'param') {
-                $name = $reader->getAttribute('name');
-                $reader->read();
+                $attributes = [];
 
-                if ($name) {
-                    $offer['params'][$name] = $reader->value;
+                if ($reader->hasAttributes) {
+                    $attributeCount = $reader->attributeCount;
+
+                    for ($i = 0; $i < $attributeCount; $i++) {
+                        $reader->moveToAttributeNo($i);
+                        $attributes[$reader->name] = $reader->value;
+                    }
+                }
+
+                if (isset($attributes['name'])) {
+                    $name = $attributes['name'];
+                    unset($attributes['name']);
+
+                    if (count($attributes)) {
+                        $offer['params'][$name] = $attributes;
+                    }
+                    $reader->read();
+                    $offer['params'][$name]['value'] = $reader->value;
+                } else {
+                    $reader->read();
                 }
 
                 $reader->read();
