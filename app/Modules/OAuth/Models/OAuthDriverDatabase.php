@@ -33,6 +33,7 @@ use App\Models\Exceptions\RecordNotExistException;
 use App\Models\Exceptions\UserNotExistException;
 use App\Models\Exceptions\InvalidFormatException;
 use App\Modules\OAuth\Entities\Token;
+use App\Models\Exceptions\RecordExistException;
 
 /**
  * Класс драйвер работы с токенами в базе данных.
@@ -196,27 +197,23 @@ class OAuthDriverDatabase extends OAuthDriver
         $query->addCondition(new RepositoryCondition('user_id', $userId))
             ->addCondition(new RepositoryCondition('secret', $issue->accessToken));
 
-        $cacheKey = Util::getKey('oAuth', 'client', $query);
+        $client = $this->oAuthClientEloquent->get($query);
 
-        $client = Cache::tags(['oAuth', 'user'])->remember(
-            $cacheKey,
-            CacheTime::GENERAL->value,
-            function () use ($query) {
-                return $this->oAuthClientEloquent->get($query);
+        try {
+            if ($client) {
+                $client->expires_at = $expiresAtToken;
+
+                $this->oAuthClientEloquent->update($client->id, $client);
+            } else {
+                $client = new OAuthClient();
+                $client->user_id = $userId;
+                $client->secret = $issue->accessToken;
+                $client->expires_at = $expiresAtToken;
+
+                $this->oAuthClientEloquent->create($client);
             }
-        );
+        } catch (RecordExistException $error) {
 
-        if ($client) {
-            $client->expires_at = $expiresAtToken;
-
-            $this->oAuthClientEloquent->update($client->id, $client);
-        } else {
-            $client = new OAuthClient();
-            $client->user_id = $userId;
-            $client->secret = $issue->accessToken;
-            $client->expires_at = $expiresAtToken;
-
-            $this->oAuthClientEloquent->create($client);
         }
 
         Cache::tags(['oAuth', 'user'])->flush();
@@ -255,15 +252,7 @@ class OAuthDriverDatabase extends OAuthDriver
             $query->addCondition(new RepositoryCondition('secret', $secret))
                 ->addCondition(new RepositoryCondition('user_id', $value->user));
 
-            $cacheKey = Util::getKey('oAuth', 'client', $query);
-
-            $clientEntity = Cache::tags(['oAuth', 'user'])->remember(
-                $cacheKey,
-                CacheTime::GENERAL->value,
-                function () use ($query) {
-                    return $this->oAuthClientEloquent->get($query);
-                }
-            );
+            $clientEntity = $this->oAuthClientEloquent->get($query);
 
             if ($clientEntity) {
                 $expiresAtToken = Carbon::now()->addSeconds($this->getSecondsTokenLife());
@@ -281,42 +270,42 @@ class OAuthDriverDatabase extends OAuthDriver
 
                 $tokenEntity = $this->oAuthTokenEloquent->get($query);
 
-                if ($tokenEntity) {
-                    $tokenEntity->expires_at = $expiresAtToken;
-                    $this->oAuthTokenEloquent->update($tokenEntity->id, $tokenEntity);
-                } else {
-                    $tokenEntity = new OAuthToken();
-                    $tokenEntity->oauth_client_id = $clientEntity->id;
-                    $tokenEntity->token = $issuedToken->accessToken;
-                    $tokenEntity->expires_at = $expiresAtToken;
+                try {
+                    if ($tokenEntity) {
+                        $tokenEntity->expires_at = $expiresAtToken;
+                        $this->oAuthTokenEloquent->update($tokenEntity->id, $tokenEntity);
+                    } else {
+                        $tokenEntity = new OAuthToken();
+                        $tokenEntity->oauth_client_id = $clientEntity->id;
+                        $tokenEntity->token = $issuedToken->accessToken;
+                        $tokenEntity->expires_at = $expiresAtToken;
 
-                    $tokenEntity->id = $this->oAuthTokenEloquent->create($tokenEntity);
+                        $tokenEntity->id = $this->oAuthTokenEloquent->create($tokenEntity);
+                    }
+                } catch (RecordExistException $error) {
+
                 }
 
                 $query = new RepositoryQueryBuilder();
                 $query->addCondition(new RepositoryCondition('oauth_token_id', $tokenEntity->id))
                     ->addCondition(new RepositoryCondition('refresh_token', $issuedToken->refreshToken));
 
-                $cacheKey = Util::getKey('oAuth', 'refresh', $query);
+                $refreshToken = $this->oAuthRefreshTokenEloquent->get($query);
 
-                $refreshToken = Cache::tags(['oAuth', 'user'])->remember(
-                    $cacheKey,
-                    CacheTime::GENERAL->value,
-                    function () use ($query) {
-                        return $this->oAuthRefreshTokenEloquent->get($query);
+                try {
+                    if ($refreshToken) {
+                        $refreshToken->expires_at = $expiresAtRefreshToken;
+                        $this->oAuthRefreshTokenEloquent->update($refreshToken->id, $refreshToken);
+                    } else {
+                        $refreshToken = new OAuthRefresh();
+                        $refreshToken->oauth_token_id = $tokenEntity->id;
+                        $refreshToken->refresh_token = $issuedToken->refreshToken;
+                        $refreshToken->expires_at = $expiresAtRefreshToken;
+
+                        $this->oAuthRefreshTokenEloquent->create($refreshToken);
                     }
-                );
+                } catch (RecordExistException $error) {
 
-                if ($refreshToken) {
-                    $refreshToken->expires_at = $expiresAtRefreshToken;
-                    $this->oAuthRefreshTokenEloquent->update($refreshToken->id, $refreshToken);
-                } else {
-                    $refreshToken = new OAuthRefresh();
-                    $refreshToken->oauth_token_id = $tokenEntity->id;
-                    $refreshToken->refresh_token = $issuedToken->refreshToken;
-                    $refreshToken->expires_at = $expiresAtRefreshToken;
-
-                    $this->oAuthRefreshTokenEloquent->create($refreshToken);
                 }
 
                 Cache::tags(['uAuth', 'user'])->flush();
@@ -362,15 +351,7 @@ class OAuthDriverDatabase extends OAuthDriver
 
         if ($user) {
             $query = new RepositoryQueryBuilder($value->client);
-            $cacheKey = Util::getKey('oAuth', 'client', $query);
-
-            $clientEntity = Cache::tags(['oAuth', 'user'])->remember(
-                $cacheKey,
-                CacheTime::GENERAL->value,
-                function () use ($query) {
-                    return $this->oAuthClientEloquent->get($query);
-                }
-            );
+            $clientEntity = $this->oAuthClientEloquent->get($query);
 
             if ($clientEntity) {
                 $query = new RepositoryQueryBuilder();
@@ -378,15 +359,7 @@ class OAuthDriverDatabase extends OAuthDriver
                     ->addCondition(new RepositoryCondition('oauth_clients.user_id', $value->user))
                     ->addRelation('token.client');
 
-                $cacheKey = Util::getKey('oAuth', 'refresh', $query);
-
-                $refreshTokenEntity = Cache::tags(['oAuth', 'user'])->remember(
-                    $cacheKey,
-                    CacheTime::GENERAL->value,
-                    function () use ($query) {
-                        return $this->oAuthRefreshTokenEloquent->get($query);
-                    }
-                );
+                $refreshTokenEntity = $this->oAuthRefreshTokenEloquent->get($query);
 
                 if ($refreshTokenEntity) {
                     $expiresAtToken = Carbon::now()->addSeconds($this->getSecondsTokenLife());
@@ -404,42 +377,42 @@ class OAuthDriverDatabase extends OAuthDriver
 
                     $tokenEntity = $this->oAuthTokenEloquent->get($query);
 
-                    if ($tokenEntity) {
-                        $tokenEntity->expires_at = $expiresAtToken;
-                        $tokenEntity->id = $this->oAuthTokenEloquent->update($tokenEntity->id, $tokenEntity);
-                    } else {
-                        $tokenEntity = new OAuthToken();
-                        $tokenEntity->oauth_client_id = $clientEntity->id;
-                        $tokenEntity->token = $issuedToken->accessToken;
-                        $tokenEntity->expires_at = $expiresAtToken;
+                    try {
+                        if ($tokenEntity) {
+                            $tokenEntity->expires_at = $expiresAtToken;
+                            $tokenEntity->id = $this->oAuthTokenEloquent->update($tokenEntity->id, $tokenEntity);
+                        } else {
+                            $tokenEntity = new OAuthToken();
+                            $tokenEntity->oauth_client_id = $clientEntity->id;
+                            $tokenEntity->token = $issuedToken->accessToken;
+                            $tokenEntity->expires_at = $expiresAtToken;
 
-                        $tokenEntity->id = $this->oAuthTokenEloquent->create($tokenEntity);
+                            $tokenEntity->id = $this->oAuthTokenEloquent->create($tokenEntity);
+                        }
+                    } catch (RecordExistException $error) {
+
                     }
 
                     $query = new RepositoryQueryBuilder();
                     $query->addCondition(new RepositoryCondition('oauth_token_id', $tokenEntity->id))
                         ->addCondition(new RepositoryCondition('refresh_token', $issuedToken->refreshToken));
 
-                    $cacheKey = Util::getKey('oAuth', 'refresh', $query);
+                    $refreshTokenEntity = $this->oAuthRefreshTokenEloquent->get($query);
 
-                    $refreshTokenEntity = Cache::tags(['oAuth', 'user'])->remember(
-                        $cacheKey,
-                        CacheTime::GENERAL->value,
-                        function () use ($query) {
-                            return $this->oAuthRefreshTokenEloquent->get($query);
+                    try {
+                        if ($refreshTokenEntity) {
+                            $refreshTokenEntity->expires_at = $expiresAtRefreshToken;
+                            $this->oAuthRefreshTokenEloquent->update($refreshTokenEntity->id, $refreshTokenEntity);
+                        } else {
+                            $refreshTokenEntity = new OAuthRefresh();
+                            $refreshTokenEntity->oauth_token_id = $tokenEntity->id;
+                            $refreshTokenEntity->refresh_token = $issuedToken->refreshToken;
+                            $refreshTokenEntity->expires_at = $expiresAtRefreshToken;
+
+                            $refreshTokenEntity->id = $this->oAuthRefreshTokenEloquent->create($refreshTokenEntity);
                         }
-                    );
+                    } catch(RecordExistException $error) {
 
-                    if ($refreshTokenEntity) {
-                        $refreshTokenEntity->expires_at = $expiresAtRefreshToken;
-                        $this->oAuthRefreshTokenEloquent->update($refreshTokenEntity->id, $refreshTokenEntity);
-                    } else {
-                        $refreshTokenEntity = new OAuthRefresh();
-                        $refreshTokenEntity->oauth_token_id = $tokenEntity->id;
-                        $refreshTokenEntity->refresh_token = $issuedToken->refreshToken;
-                        $refreshTokenEntity->expires_at = $expiresAtRefreshToken;
-
-                        $refreshTokenEntity->id = $this->oAuthRefreshTokenEloquent->create($refreshTokenEntity);
                     }
 
                     Cache::tags(['oAuth', 'user'])->flush();
@@ -488,15 +461,8 @@ class OAuthDriverDatabase extends OAuthDriver
 
         if ($user) {
             $query = new RepositoryQueryBuilder($value->client);
-            $cacheKey = Util::getKey('oAuth', 'client', $query);
 
-            $clientEntity = Cache::tags(['aAuth', 'user'])->remember(
-                $cacheKey,
-                CacheTime::GENERAL->value,
-                function () use ($query) {
-                    return $this->oAuthClientEloquent->get($query);
-                }
-            );
+            $clientEntity = $this->oAuthClientEloquent->get($query);
 
             if ($clientEntity) {
                 $query = new RepositoryQueryBuilder();
