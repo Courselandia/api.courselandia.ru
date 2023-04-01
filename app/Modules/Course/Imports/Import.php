@@ -8,6 +8,7 @@
 
 namespace App\Modules\Course\Imports;
 
+use App\Modules\Course\Imports\Parsers\ParserSkillFactory;
 use Cache;
 use Throwable;
 use Util;
@@ -58,10 +59,11 @@ class Import
      */
     public function __construct()
     {
-        $this->addParser(new ParserNetology('https://feeds.advcake.com/feed/download/54321b01372443d9902b3387dd154c8f'))
-            ->addParser(new ParserGeekBrains('https://feeds.advcake.com/feed/download/07d89f2e6d9a92a355caa2d4db424cfd'))
-            ->addParser(new ParserSkillbox('https://feeds.advcake.com/feed/download/e77ebb28c278d755a0d7f5b6aeaa2674'))
-            ->addParser(new ParserSkyPro('https://feeds.advcake.com/feed/download/3ae0ebb5de2e80b35668ba8b3db8b760'));
+        $this//->addParser(new ParserNetology('https://feeds.advcake.com/feed/download/54321b01372443d9902b3387dd154c8f'))
+            //->addParser(new ParserGeekBrains('https://feeds.advcake.com/feed/download/07d89f2e6d9a92a355caa2d4db424cfd'))
+            //->addParser(new ParserSkillbox('https://feeds.advcake.com/feed/download/e77ebb28c278d755a0d7f5b6aeaa2674'))
+            //->addParser(new ParserSkyPro('https://feeds.advcake.com/feed/download/3ae0ebb5de2e80b35668ba8b3db8b760'))
+            ->addParser(new ParserSkillFactory('https://feeds.advcake.com/feed/download/993eb3d8a8131641e035707f860fef7d'));
     }
 
     /**
@@ -213,7 +215,7 @@ class Import
                 ]);
             }
 
-            if (count($course->directions) === 0 && $courseEntity->direction) {
+            if ($courseEntity->direction) {
                 $course->directions()->sync(
                     $courseEntity->direction->value ? [$courseEntity->direction->value] : []
                 );
