@@ -173,8 +173,6 @@ class Import
                 ->first();
 
             if ($course) {
-                $status = null;
-
                 if ($courseEntity->status) {
                     if ($course->status === Status::DISABLED->value) {
                         $status = Status::DRAFT->value;
