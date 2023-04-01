@@ -53,6 +53,11 @@ enum School: int implements EnumLabel
     case SKILLBOX_ENG_KESPA = 8;
 
     /**
+     * Международная Школа Профессий.
+     */
+    case INTERNATIONAL_SCHOOL_PROFESSIONS = 9;
+
+    /**
      * Получение лейбл перечисления.
      *
      * @return string|int Вернет лейбл перечисления.
@@ -68,6 +73,7 @@ enum School: int implements EnumLabel
             self::CONTENTED => 'Contented',
             self::XYZ_SCHOOL => 'XYZ School',
             self::SKILLBOX_ENG_KESPA => 'Skillbox Английский (Kespa)',
+            self::INTERNATIONAL_SCHOOL_PROFESSIONS => 'Международная Школа Профессий',
         };
     }
 }
