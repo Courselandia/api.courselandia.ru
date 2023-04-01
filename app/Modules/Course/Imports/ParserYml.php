@@ -55,7 +55,7 @@ abstract class ParserYml extends Parser
                             if ($reader->nodeType === XMLReader::ELEMENT) {
                                 $id = $reader->getAttribute('id');
                                 $reader->read();
-                                $categories[$id] = $reader->value;
+                                $categories[$id] = trim($reader->value);
                             }
                         }
 
@@ -155,7 +155,7 @@ abstract class ParserYml extends Parser
 
             for ($i = 0; $i < $attributeCount; $i++) {
                 $reader->moveToAttributeNo($i);
-                $attributes[$reader->name] = $reader->value;
+                $attributes[$reader->name] = trim($reader->value);
             }
 
             $reader->moveToElement();
@@ -190,7 +190,7 @@ abstract class ParserYml extends Parser
 
                     for ($i = 0; $i < $attributeCount; $i++) {
                         $reader->moveToAttributeNo($i);
-                        $attributes[$reader->name] = $reader->value;
+                        $attributes[$reader->name] = trim($reader->value);
                     }
                 }
 
@@ -202,7 +202,7 @@ abstract class ParserYml extends Parser
                         $offer['params'][$name] = $attributes;
                     }
                     $reader->read();
-                    $offer['params'][$name]['value'] = $reader->value;
+                    $offer['params'][$name]['value'] = trim($reader->value);
                 } else {
                     $reader->read();
                 }
@@ -217,7 +217,7 @@ abstract class ParserYml extends Parser
 
                     for ($i = 0; $i < $attributeCount; $i++) {
                         $reader->moveToAttributeNo($i);
-                        $attributes[$reader->name] = $reader->value;
+                        $attributes[$reader->name] = trim($reader->value);
                     }
                 }
 
@@ -225,11 +225,11 @@ abstract class ParserYml extends Parser
 
                 if (count($attributes)) {
                     $offer[$name] = [
-                        'value' => $reader->value,
+                        'value' => trim($reader->value),
                         'attributes' => $attributes,
                     ];
                 } else {
-                    $offer[$name] = $reader->value;
+                    $offer[$name] = trim($reader->value);
                 }
             }
         }

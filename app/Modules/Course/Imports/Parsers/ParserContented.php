@@ -16,9 +16,9 @@ use App\Modules\Course\Imports\ParserYml;
 use App\Modules\Direction\Enums\Direction;
 
 /**
- * Парсинг курсов SkillFactory.
+ * Парсинг курсов Contented.
  */
-class ParserSkillFactory extends ParserYml
+class ParserContented extends ParserYml
 {
     /**
      * Вернет школу.
@@ -27,7 +27,7 @@ class ParserSkillFactory extends ParserYml
      */
     public function getSchool(): School
     {
-        return School::SKILL_FACTORY;
+        return School::CONTENTED;
     }
 
     /**

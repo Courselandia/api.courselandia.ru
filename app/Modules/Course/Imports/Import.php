@@ -8,7 +8,6 @@
 
 namespace App\Modules\Course\Imports;
 
-use App\Modules\Course\Imports\Parsers\ParserSkillFactory;
 use Cache;
 use Throwable;
 use Util;
@@ -17,13 +16,15 @@ use ImageStore;
 use App\Models\Error;
 use App\Modules\Course\Entities\ParserCourse;
 use App\Models\Event;
-use App\Modules\Course\Imports\Parsers\ParserNetology;
 use App\Modules\Course\Models\Course;
 use App\Modules\Course\Enums\Status;
 use Illuminate\Http\UploadedFile;
+use App\Modules\Course\Imports\Parsers\ParserNetology;
 use App\Modules\Course\Imports\Parsers\ParserGeekBrains;
 use App\Modules\Course\Imports\Parsers\ParserSkillbox;
 use App\Modules\Course\Imports\Parsers\ParserSkyPro;
+use App\Modules\Course\Imports\Parsers\ParserContented;
+use App\Modules\Course\Imports\Parsers\ParserSkillFactory;
 
 /**
  * Класс импорта курсов.
@@ -59,11 +60,12 @@ class Import
      */
     public function __construct()
     {
-        $this//->addParser(new ParserNetology('https://feeds.advcake.com/feed/download/54321b01372443d9902b3387dd154c8f'))
-            //->addParser(new ParserGeekBrains('https://feeds.advcake.com/feed/download/07d89f2e6d9a92a355caa2d4db424cfd'))
-            //->addParser(new ParserSkillbox('https://feeds.advcake.com/feed/download/e77ebb28c278d755a0d7f5b6aeaa2674'))
-            //->addParser(new ParserSkyPro('https://feeds.advcake.com/feed/download/3ae0ebb5de2e80b35668ba8b3db8b760'))
-            ->addParser(new ParserSkillFactory('https://feeds.advcake.com/feed/download/993eb3d8a8131641e035707f860fef7d'));
+        $this->addParser(new ParserNetology('https://feeds.advcake.com/feed/download/54321b01372443d9902b3387dd154c8f'))
+            ->addParser(new ParserGeekBrains('https://feeds.advcake.com/feed/download/07d89f2e6d9a92a355caa2d4db424cfd'))
+            ->addParser(new ParserSkillbox('https://feeds.advcake.com/feed/download/e77ebb28c278d755a0d7f5b6aeaa2674'))
+            ->addParser(new ParserSkyPro('https://feeds.advcake.com/feed/download/3ae0ebb5de2e80b35668ba8b3db8b760'))
+            ->addParser(new ParserSkillFactory('https://feeds.advcake.com/feed/download/993eb3d8a8131641e035707f860fef7d'))
+            ->addParser(new ParserContented('https://feeds.advcake.com/feed/download/5a6f3f438c1f38f77256e65abc44e780'));
     }
 
     /**
@@ -165,10 +167,22 @@ class Import
                 ->first();
 
             if ($course) {
+                $status = null;
+
+                if ($courseEntity->status) {
+                    if ($course->status === Status::DISABLED->value) {
+                        $status = Status::DRAFT->value;
+                    } else {
+                        $status = $course->status;
+                    }
+                } else {
+                    $status = Status::DISABLED->value;
+                }
+
                 $data = [
                     'header' => $courseEntity->header,
                     'link' => strtolower(Util::latin(strtolower($courseEntity->header))),
-                    'status' => $courseEntity->status ? $course->status : Status::DISABLED->value,
+                    'status' => $status,
                     'url' => $courseEntity->url,
                     'price' => $courseEntity->price,
                     'price_old' => $courseEntity->price_old,
