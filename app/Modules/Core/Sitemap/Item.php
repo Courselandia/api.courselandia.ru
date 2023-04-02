@@ -25,7 +25,7 @@ class Item
      *
      * @var string
      */
-    public string $changefreq = 'day';
+    public string $changefreq = 'daily';
 
     /**
      * Приоритетность.
