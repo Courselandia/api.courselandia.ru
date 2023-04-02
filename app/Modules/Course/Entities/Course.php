@@ -97,6 +97,13 @@ class Course extends Entity
     public string|null $header = null;
 
     /**
+     * Шаблон заголовка.
+     *
+     * @var string|null
+     */
+    public string|null $header_template = null;
+
+    /**
      * Описание.
      *
      * @var string|null

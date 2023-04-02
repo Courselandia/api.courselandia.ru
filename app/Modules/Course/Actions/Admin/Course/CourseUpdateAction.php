@@ -73,6 +73,13 @@ class CourseUpdateAction extends Action
     public string|null $header = null;
 
     /**
+     * Шаблон заголовка.
+     *
+     * @var string|null
+     */
+    public string|null $header_template = null;
+
+    /**
      * Описание.
      *
      * @var string|null
@@ -300,7 +307,7 @@ class CourseUpdateAction extends Action
                 $action = app(MetatagSetAction::class);
 
                 $templateValues = [
-                    'course' => $this->header,
+                    'course' => $this->name,
                     'school' => $courseEntity->school->name,
                     'price' => $this->price,
                     'currency' => $this->currency,
@@ -320,7 +327,8 @@ class CourseUpdateAction extends Action
 
                 $courseEntity->school_id = $this->school_id;
                 $courseEntity->name = $this->name;
-                $courseEntity->header = $this->header;
+                $courseEntity->header = $template->convert($this->header_template, $templateValues);
+                $courseEntity->header_template = $this->header_template;
                 $courseEntity->text = $this->text;
                 $courseEntity->link = $this->link;
                 $courseEntity->url = $this->url;

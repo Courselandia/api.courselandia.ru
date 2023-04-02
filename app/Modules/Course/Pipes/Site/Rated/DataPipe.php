@@ -72,6 +72,7 @@ class DataPipe implements Pipe
         'image_middle_id',
         'image_big_id',
         'schools',
+        'header_template',
         'header',
         'count',
     ];

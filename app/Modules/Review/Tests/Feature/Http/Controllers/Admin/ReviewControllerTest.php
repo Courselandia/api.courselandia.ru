@@ -370,7 +370,7 @@ class ReviewControllerTest extends TestCase
                 'name',
                 'header',
                 'text',
-                'header_morphy',
+                'name_morphy',
                 'text_morphy',
                 'link',
                 'url',

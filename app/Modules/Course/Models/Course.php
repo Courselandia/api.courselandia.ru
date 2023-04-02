@@ -61,6 +61,7 @@ use App\Modules\Course\Filters\CourseFilter;
  * @property int|string|array|UploadedFile|ImageEntity $image_small_id Маленькая картинка.
  * @property string $name Название.
  * @property string $header Заголовок.
+ * @property string $header_template Шаблон заголовок.
  * @property string $text Описание.
  * @property string $name_morphy Название морфологизированное.
  * @property string $text_morphy Описание морфологизированное.
@@ -120,6 +121,7 @@ class Course extends Eloquent
         'image_small_id',
         'name',
         'header',
+        'header_template',
         'text',
         'name_morphy',
         'text_morphy',
@@ -155,6 +157,7 @@ class Course extends Eloquent
         'image_small_id' => 'string',
         'name' => 'string',
         'header' => 'string',
+        'header_template' => 'string',
         'text' => 'string',
         'name_morphy' => 'string',
         'text_morphy' => 'string',
@@ -182,6 +185,7 @@ class Course extends Eloquent
             'school_id' => 'required|digits_between:0,20|exists_soft:schools,id',
             'name' => 'required|between:1,191',
             'header' => 'max:191',
+            'header_template' => 'max:191',
             'text' => 'max:5000',
             'name_morphy' => 'max:191',
             'text_morphy' => 'max:5000',
@@ -220,6 +224,7 @@ class Course extends Eloquent
             'image_small_id' => trans('course::models.course.imageSmallId'),
             'name' => trans('course::models.course.name'),
             'header' => trans('course::models.course.header'),
+            'header_template' => trans('course::models.course.headerTemplate'),
             'text' => trans('course::models.course.text'),
             'name_morphy' => trans('course::models.course.headerMorphy'),
             'text_morphy' => trans('course::models.course.textMorphy'),

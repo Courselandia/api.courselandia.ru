@@ -39,25 +39,29 @@ class Template
     /**
      * Получение строки после шаблонизирования.
      *
-     * @param string $template Шаблон.
+     * @param string|null $template Шаблон.
      * @param array<string, string>|null $values Значения для шаблонов.
      *
-     * @return string Вернет результат конвертации после шаблонизирования.
+     * @return ?string Вернет результат конвертации после шаблонизирования.
      * @throws TemplateException
      */
-    public function convert(string $template, ?array $values): string
+    public function convert(?string $template, ?array $values): ?string
     {
-        $tags = $this->getTagStrings($template);
-        $replaces = [];
+        if ($template) {
+            $tags = $this->getTagStrings($template);
+            $replaces = [];
 
-        foreach ($tags as $tagString) {
-            $tag = $this->convertTagStringToSettings($tagString);
-            $tagObject = $this->getTag($tag['name']);
-            $value = $values[$tag['name']] ?? null;
-            $replaces[$tagString] = $tagObject->convert($value, $tag['configs'], $values);
+            foreach ($tags as $tagString) {
+                $tag = $this->convertTagStringToSettings($tagString);
+                $tagObject = $this->getTag($tag['name']);
+                $value = $values[$tag['name']] ?? null;
+                $replaces[$tagString] = $tagObject->convert($value, $tag['configs'], $values);
+            }
+
+            return str_replace(array_keys($replaces), array_values($replaces), $template);
         }
 
-        return str_replace(array_keys($replaces), array_values($replaces), $template);
+        return $template;
     }
 
     /**

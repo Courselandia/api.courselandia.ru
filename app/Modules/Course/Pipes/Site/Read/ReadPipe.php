@@ -75,6 +75,7 @@ class ReadPipe implements Pipe
                     'image_small_id',
                     'name',
                     'header',
+                    'header_template',
                     'text',
                     'link',
                     'url',

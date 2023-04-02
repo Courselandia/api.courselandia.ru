@@ -51,6 +51,6 @@ class TagPrice extends Tag
             $currency = '€';
         }
 
-        return Util::getMoney($value, false, $currency, false);
+        return ($value && $currency) ? Util::getMoney($value, false, $currency, false) : $value;
     }
 }

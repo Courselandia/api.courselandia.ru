@@ -27,6 +27,7 @@ class CreateTableCourses extends Migration
 
             $table->string('name', 191);
             $table->string('header', 191)->nullable();
+            $table->string('header_template', 191)->nullable();
             $table->text('text')->nullable();
             $table->string('name_morphy', 191);
             $table->text('text_morphy')->nullable();

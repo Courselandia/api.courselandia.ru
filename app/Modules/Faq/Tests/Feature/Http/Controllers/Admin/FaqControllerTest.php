@@ -284,6 +284,7 @@ class FaqControllerTest extends TestCase
                 'metatag_id',
                 'name',
                 'header',
+                'header_template',
                 'link',
                 'text',
                 'rating',

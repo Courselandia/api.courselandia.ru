@@ -68,6 +68,13 @@ class CourseCreateAction extends Action
     public string|null $header = null;
 
     /**
+     * Шаблон заголовка.
+     *
+     * @var string|null
+     */
+    public string|null $header_template = null;
+
+    /**
      * Описание.
      *
      * @var string|null
@@ -293,7 +300,7 @@ class CourseCreateAction extends Action
             $school = School::find($this->school_id);
 
             $templateValues = [
-                'course' => $this->header,
+                'course' => $this->name,
                 'school' => $school->name,
                 'price' => $this->price,
                 'currency' => $this->currency,
@@ -316,7 +323,8 @@ class CourseCreateAction extends Action
             $courseEntity->image_middle_id = $this->image;
             $courseEntity->image_big_id = $this->image;
             $courseEntity->name = $this->name;
-            $courseEntity->header = $this->header;
+            $courseEntity->header = $template->convert($this->header_template, $templateValues);
+            $courseEntity->header_template = $this->header_template;
             $courseEntity->text = $this->text;
             $courseEntity->link = $this->link;
             $courseEntity->url = $this->url;
