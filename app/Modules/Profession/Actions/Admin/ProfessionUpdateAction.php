@@ -11,6 +11,8 @@ namespace App\Modules\Profession\Actions\Admin;
 use App\Models\Action;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
+use App\Modules\Metatag\Template\Template;
+use App\Modules\Metatag\Template\TemplateException;
 use App\Modules\Profession\Entities\Profession as ProfessionEntity;
 use App\Modules\Profession\Models\Profession;
 use App\Modules\Metatag\Actions\MetatagSetAction;
@@ -36,11 +38,11 @@ class ProfessionUpdateAction extends Action
     public ?string $name = null;
 
     /**
-     * Заголовок.
+     * Шаблон заголовка.
      *
      * @var string|null
      */
-    public ?string $header = null;
+    public ?string $header_template = null;
 
     /**
      * Ссылка.
@@ -64,11 +66,11 @@ class ProfessionUpdateAction extends Action
     public ?bool $status = null;
 
     /**
-     * Описание.
+     * Шаблон описания.
      *
      * @var string|null
      */
-    public ?string $description = null;
+    public ?string $template_description = null;
 
     /**
      * Ключевые слова.
@@ -78,11 +80,11 @@ class ProfessionUpdateAction extends Action
     public ?string $keywords = null;
 
     /**
-     * Заголовок.
+     * Шаблон заголовка.
      *
      * @var string|null
      */
-    public ?string $title = null;
+    public ?string $template_title = null;
 
     /**
      * Метод запуска логики.
@@ -90,6 +92,7 @@ class ProfessionUpdateAction extends Action
      * @return ProfessionEntity Вернет результаты исполнения.
      * @throws RecordNotExistException
      * @throws ParameterInvalidException
+     * @throws TemplateException
      */
     public function run(): ProfessionEntity
     {
@@ -98,16 +101,22 @@ class ProfessionUpdateAction extends Action
         $professionEntity = $action->run();
 
         if ($professionEntity) {
-            $action = app(MetatagSetAction::class);
-            $action->description = $this->description;
-            $action->keywords = $this->keywords;
-            $action->title = $this->title;
-            $action->id = $professionEntity->metatag_id;
-            $metatag = $action->run();
+            $templateValues = [];
 
+            $template = new Template();
+
+            $action = app(MetatagSetAction::class);
+            $action->description = $template->convert($this->template_description, $templateValues);
+            $action->title = $template->convert($this->template_title, $templateValues);
+            $action->template_description = $this->template_description;
+            $action->template_title = $this->template_title;
+            $action->keywords = $this->keywords;
+            $action->id = $professionEntity->metatag_id ?: null;
+
+            $professionEntity->metatag_id = $action->run()->id;
             $professionEntity->id = $this->id;
             $professionEntity->name = $this->name;
-            $professionEntity->header = $this->header;
+            $professionEntity->header = $template->convert($this->header_template, $templateValues);
             $professionEntity->link = $this->link;
             $professionEntity->text = $this->text;
             $professionEntity->status = $this->status;

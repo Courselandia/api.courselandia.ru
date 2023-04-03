@@ -23,6 +23,7 @@ use App\Modules\Direction\Http\Requests\Admin\DirectionDestroyRequest;
 use App\Modules\Direction\Http\Requests\Admin\DirectionReadRequest;
 use App\Modules\Direction\Http\Requests\Admin\DirectionUpdateRequest;
 use App\Modules\Direction\Http\Requests\Admin\DirectionUpdateStatusRequest;
+use App\Modules\Metatag\Template\TemplateException;
 use Auth;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
@@ -101,13 +102,13 @@ class DirectionController extends Controller
         try {
             $action = app(DirectionCreateAction::class);
             $action->name = $request->get('name');
-            $action->header = $request->get('header');
+            $action->header_template = $request->get('header_template');
             $action->weight = $request->get('weight');
             $action->link = $request->get('link');
             $action->text = $request->get('text');
             $action->status = $request->get('status');
-            $action->title = $request->get('title');
-            $action->description = $request->get('description');
+            $action->template_description = $request->get('template_description');
+            $action->template_title = $request->get('template_title');
             $action->keywords = $request->get('keywords');
 
             $data = $action->run();
@@ -127,7 +128,7 @@ class DirectionController extends Controller
             ];
 
             return response()->json($data);
-        } catch (ValidateException $error) {
+        } catch (ValidateException|TemplateException $error) {
             return response()->json([
                 'success' => false,
                 'message' => $error->getMessage()
@@ -155,13 +156,13 @@ class DirectionController extends Controller
             $action = app(DirectionUpdateAction::class);
             $action->id = $id;
             $action->name = $request->get('name');
-            $action->header = $request->get('header');
+            $action->header_template = $request->get('header_template');
             $action->weight = $request->get('weight');
             $action->link = $request->get('link');
             $action->text = $request->get('text');
             $action->status = $request->get('status');
-            $action->title = $request->get('title');
-            $action->description = $request->get('description');
+            $action->template_description = $request->get('template_description');
+            $action->template_title = $request->get('template_title');
             $action->keywords = $request->get('keywords');
             $data = $action->run();
 
@@ -180,7 +181,7 @@ class DirectionController extends Controller
             ];
 
             return response()->json($data);
-        } catch (ValidateException|RecordExistException $error) {
+        } catch (ValidateException|RecordExistException|TemplateException $error) {
             return response()->json([
                 'success' => false,
                 'message' => $error->getMessage()

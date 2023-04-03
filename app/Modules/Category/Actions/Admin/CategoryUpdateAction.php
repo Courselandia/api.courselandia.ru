@@ -14,6 +14,8 @@ use App\Models\Exceptions\RecordNotExistException;
 use App\Modules\Category\Entities\Category as CategoryEntity;
 use App\Modules\Category\Models\Category;
 use App\Modules\Metatag\Actions\MetatagSetAction;
+use App\Modules\Metatag\Template\Template;
+use App\Modules\Metatag\Template\TemplateException;
 use Cache;
 
 /**
@@ -36,11 +38,11 @@ class CategoryUpdateAction extends Action
     public ?string $name = null;
 
     /**
-     * Заголовок.
+     * Шаблон заголовка.
      *
      * @var string|null
      */
-    public ?string $header = null;
+    public ?string $header_template = null;
 
     /**
      * Ссылка.
@@ -64,11 +66,11 @@ class CategoryUpdateAction extends Action
     public ?bool $status = null;
 
     /**
-     * Описание.
+     * Шаблон описания.
      *
      * @var string|null
      */
-    public ?string $description = null;
+    public ?string $template_description = null;
 
     /**
      * Ключевые слова.
@@ -78,11 +80,11 @@ class CategoryUpdateAction extends Action
     public ?string $keywords = null;
 
     /**
-     * Заголовок.
+     * Шаблон заголовка.
      *
      * @var string|null
      */
-    public ?string $title = null;
+    public ?string $template_title = null;
 
     /**
      * ID направлений.
@@ -104,6 +106,7 @@ class CategoryUpdateAction extends Action
      * @return CategoryEntity Вернет результаты исполнения.
      * @throws RecordNotExistException
      * @throws ParameterInvalidException
+     * @throws TemplateException
      */
     public function run(): CategoryEntity
     {
@@ -112,16 +115,22 @@ class CategoryUpdateAction extends Action
         $categoryEntity = $action->run();
 
         if ($categoryEntity) {
-            $action = app(MetatagSetAction::class);
-            $action->description = $this->description;
-            $action->keywords = $this->keywords;
-            $action->title = $this->title;
-            $action->id = $categoryEntity->metatag_id;
-            $metatag = $action->run();
+            $templateValues = [];
 
+            $template = new Template();
+
+            $action = app(MetatagSetAction::class);
+            $action->description = $template->convert($this->template_description, $templateValues);
+            $action->title = $template->convert($this->template_title, $templateValues);
+            $action->template_description = $this->template_description;
+            $action->template_title = $this->template_title;
+            $action->keywords = $this->keywords;
+            $action->id = $categoryEntity->metatag_id ?: null;
+
+            $categoryEntity->metatag_id = $action->run()->id;
             $categoryEntity->id = $this->id;
             $categoryEntity->name = $this->name;
-            $categoryEntity->header = $this->header;
+            $categoryEntity->header = $template->convert($this->header_template, $templateValues);
             $categoryEntity->link = $this->link;
             $categoryEntity->text = $this->text;
             $categoryEntity->status = $this->status;

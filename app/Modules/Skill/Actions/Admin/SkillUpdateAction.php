@@ -11,6 +11,8 @@ namespace App\Modules\Skill\Actions\Admin;
 use App\Models\Action;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
+use App\Modules\Metatag\Template\Template;
+use App\Modules\Metatag\Template\TemplateException;
 use App\Modules\Skill\Entities\Skill as SkillEntity;
 use App\Modules\Skill\Models\Skill;
 use App\Modules\Metatag\Actions\MetatagSetAction;
@@ -36,11 +38,11 @@ class SkillUpdateAction extends Action
     public ?string $name = null;
 
     /**
-     * Заголовок.
+     * Шаблон заголовка.
      *
      * @var string|null
      */
-    public ?string $header = null;
+    public ?string $header_template = null;
 
     /**
      * Ссылка.
@@ -64,11 +66,11 @@ class SkillUpdateAction extends Action
     public ?bool $status = null;
 
     /**
-     * Описание.
+     * Шаблон описания.
      *
      * @var string|null
      */
-    public ?string $description = null;
+    public ?string $template_description = null;
 
     /**
      * Ключевые слова.
@@ -78,11 +80,11 @@ class SkillUpdateAction extends Action
     public ?string $keywords = null;
 
     /**
-     * Заголовок.
+     * Шаблон заголовка.
      *
      * @var string|null
      */
-    public ?string $title = null;
+    public ?string $template_title = null;
 
     /**
      * Метод запуска логики.
@@ -90,6 +92,7 @@ class SkillUpdateAction extends Action
      * @return SkillEntity Вернет результаты исполнения.
      * @throws RecordNotExistException
      * @throws ParameterInvalidException
+     * @throws TemplateException
      */
     public function run(): SkillEntity
     {
@@ -98,16 +101,22 @@ class SkillUpdateAction extends Action
         $skillEntity = $action->run();
 
         if ($skillEntity) {
-            $action = app(MetatagSetAction::class);
-            $action->description = $this->description;
-            $action->keywords = $this->keywords;
-            $action->title = $this->title;
-            $action->id = $skillEntity->metatag_id;
-            $metatag = $action->run();
+            $templateValues = [];
 
+            $template = new Template();
+
+            $action = app(MetatagSetAction::class);
+            $action->description = $template->convert($this->template_description, $templateValues);
+            $action->title = $template->convert($this->template_title, $templateValues);
+            $action->template_description = $this->template_description;
+            $action->template_title = $this->template_title;
+            $action->keywords = $this->keywords;
+            $action->id = $skillEntity->metatag_id ?: null;
+
+            $skillEntity->metatag_id = $action->run()->id;
             $skillEntity->id = $this->id;
             $skillEntity->name = $this->name;
-            $skillEntity->header = $this->header;
+            $skillEntity->header = $template->convert($this->header_template, $templateValues);
             $skillEntity->link = $this->link;
             $skillEntity->text = $this->text;
             $skillEntity->status = $this->status;

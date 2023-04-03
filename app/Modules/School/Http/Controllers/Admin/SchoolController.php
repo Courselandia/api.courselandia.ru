@@ -12,6 +12,7 @@ use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordExistException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Models\Exceptions\ValidateException;
+use App\Modules\Metatag\Template\TemplateException;
 use App\Modules\School\Actions\Admin\School\SchoolCreateAction;
 use App\Modules\School\Actions\Admin\School\SchoolDestroyAction;
 use App\Modules\School\Actions\Admin\School\SchoolGetAction;
@@ -101,14 +102,14 @@ class SchoolController extends Controller
         try {
             $action = app(SchoolCreateAction::class);
             $action->name = $request->get('name');
-            $action->header = $request->get('header');
+            $action->header_template = $request->get('header_template');
             $action->link = $request->get('link');
             $action->text = $request->get('text');
             $action->rating = $request->get('rating', 0);
             $action->site = $request->get('site');
             $action->status = $request->get('status');
-            $action->title = $request->get('title');
-            $action->description = $request->get('description');
+            $action->template_description = $request->get('template_description');
+            $action->template_title = $request->get('template_title');
             $action->keywords = $request->get('keywords');
 
             if ($request->hasFile('imageLogo') && $request->file('imageLogo')->isValid()) {
@@ -136,7 +137,7 @@ class SchoolController extends Controller
             ];
 
             return response()->json($data);
-        } catch (ValidateException $error) {
+        } catch (ValidateException|TemplateException $error) {
             return response()->json([
                 'success' => false,
                 'message' => $error->getMessage()
@@ -164,14 +165,14 @@ class SchoolController extends Controller
             $action = app(SchoolUpdateAction::class);
             $action->id = $id;
             $action->name = $request->get('name');
-            $action->header = $request->get('header');
+            $action->header_template = $request->get('header_template');
             $action->link = $request->get('link');
             $action->text = $request->get('text');
             $action->rating = $request->get('rating', 0);
             $action->site = $request->get('site');
             $action->status = $request->get('status');
-            $action->title = $request->get('title');
-            $action->description = $request->get('description');
+            $action->template_description = $request->get('template_description');
+            $action->template_title = $request->get('template_title');
             $action->keywords = $request->get('keywords');
 
             if ($request->hasFile('imageLogo') && $request->file('imageLogo')->isValid()) {
@@ -199,7 +200,7 @@ class SchoolController extends Controller
             ];
 
             return response()->json($data);
-        } catch (ValidateException|RecordExistException $error) {
+        } catch (ValidateException|RecordExistException|TemplateException $error) {
             return response()->json([
                 'success' => false,
                 'message' => $error->getMessage()

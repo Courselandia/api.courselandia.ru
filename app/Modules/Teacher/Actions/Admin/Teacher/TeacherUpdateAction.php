@@ -13,6 +13,8 @@ use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Modules\Image\Entities\Image;
 use App\Modules\Metatag\Actions\MetatagSetAction;
+use App\Modules\Metatag\Template\Template;
+use App\Modules\Metatag\Template\TemplateException;
 use App\Modules\Teacher\Entities\Teacher as TeacherEntity;
 use App\Modules\Teacher\Models\Teacher;
 use Cache;
@@ -73,11 +75,11 @@ class TeacherUpdateAction extends Action
     public ?bool $status = null;
 
     /**
-     * Описание.
+     * Шаблон описания.
      *
      * @var string|null
      */
-    public ?string $description = null;
+    public ?string $template_description = null;
 
     /**
      * Ключевые слова.
@@ -87,11 +89,11 @@ class TeacherUpdateAction extends Action
     public ?string $keywords = null;
 
     /**
-     * Заголовок.
+     * Шаблон заголовка.
      *
      * @var string|null
      */
-    public ?string $title = null;
+    public ?string $template_title = null;
 
     /**
      * ID направлений.
@@ -113,6 +115,7 @@ class TeacherUpdateAction extends Action
      * @return TeacherEntity Вернет результаты исполнения.
      * @throws RecordNotExistException
      * @throws ParameterInvalidException
+     * @throws TemplateException
      */
     public function run(): TeacherEntity
     {
@@ -121,14 +124,19 @@ class TeacherUpdateAction extends Action
         $teacherEntity = $action->run();
 
         if ($teacherEntity) {
-            $action = app(MetatagSetAction::class);
-            $action->description = $this->description;
-            $action->keywords = $this->keywords;
-            $action->title = $this->title;
-            $action->id = $teacherEntity->metatag_id;
-            $metatag = $action->run();
+            $templateValues = [];
 
-            $teacherEntity->metatag_id = $metatag->id;
+            $template = new Template();
+
+            $action = app(MetatagSetAction::class);
+            $action->description = $template->convert($this->template_description, $templateValues);
+            $action->title = $template->convert($this->template_title, $templateValues);
+            $action->template_description = $this->template_description;
+            $action->template_title = $this->template_title;
+            $action->keywords = $this->keywords;
+            $action->id = $teacherEntity->metatag_id ?: null;
+
+            $teacherEntity->metatag_id = $action->run()->id;
             $teacherEntity->name = $this->name;
             $teacherEntity->link = $this->link;
             $teacherEntity->text = $this->text;

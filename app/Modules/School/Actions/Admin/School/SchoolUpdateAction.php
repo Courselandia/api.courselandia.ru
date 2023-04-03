@@ -13,6 +13,8 @@ use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Modules\Image\Entities\Image;
 use App\Modules\Metatag\Actions\MetatagSetAction;
+use App\Modules\Metatag\Template\Template;
+use App\Modules\Metatag\Template\TemplateException;
 use App\Modules\School\Entities\School as SchoolEntity;
 use App\Modules\School\Models\School;
 use Cache;
@@ -38,11 +40,11 @@ class SchoolUpdateAction extends Action
     public ?string $name = null;
 
     /**
-     * Заголовок.
+     * Шаблон заголовка.
      *
      * @var string|null
      */
-    public ?string $header = null;
+    public ?string $header_template = null;
 
     /**
      * Ссылка.
@@ -94,11 +96,11 @@ class SchoolUpdateAction extends Action
     public ?bool $status = null;
 
     /**
-     * Описание.
+     * Шаблон описания.
      *
      * @var string|null
      */
-    public ?string $description = null;
+    public ?string $template_description = null;
 
     /**
      * Ключевые слова.
@@ -108,11 +110,11 @@ class SchoolUpdateAction extends Action
     public ?string $keywords = null;
 
     /**
-     * Заголовок.
+     * Шаблон заголовка.
      *
      * @var string|null
      */
-    public ?string $title = null;
+    public ?string $template_title = null;
 
     /**
      * Метод запуска логики.
@@ -120,6 +122,7 @@ class SchoolUpdateAction extends Action
      * @return SchoolEntity Вернет результаты исполнения.
      * @throws RecordNotExistException
      * @throws ParameterInvalidException
+     * @throws TemplateException
      */
     public function run(): SchoolEntity
     {
@@ -128,15 +131,21 @@ class SchoolUpdateAction extends Action
         $schoolEntity = $action->run();
 
         if ($schoolEntity) {
-            $action = app(MetatagSetAction::class);
-            $action->description = $this->description;
-            $action->keywords = $this->keywords;
-            $action->title = $this->title;
-            $action->id = $schoolEntity->metatag_id;
-            $metatag = $action->run();
+            $templateValues = [];
 
+            $template = new Template();
+
+            $action = app(MetatagSetAction::class);
+            $action->description = $template->convert($this->template_description, $templateValues);
+            $action->title = $template->convert($this->template_title, $templateValues);
+            $action->template_description = $this->template_description;
+            $action->template_title = $this->template_title;
+            $action->keywords = $this->keywords;
+            $action->id = $schoolEntity->metatag_id ?: null;
+
+            $schoolEntity->metatag_id = $action->run()->id;
             $schoolEntity->name = $this->name;
-            $schoolEntity->header = $this->header;
+            $schoolEntity->header = $template->convert($this->header_template, $templateValues);
             $schoolEntity->link = $this->link;
             $schoolEntity->text = $this->text;
             $schoolEntity->site = $this->site;

@@ -12,6 +12,7 @@ use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordExistException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Models\Exceptions\ValidateException;
+use App\Modules\Metatag\Template\TemplateException;
 use App\Modules\Teacher\Actions\Admin\Teacher\TeacherCreateAction;
 use App\Modules\Teacher\Actions\Admin\Teacher\TeacherDestroyAction;
 use App\Modules\Teacher\Actions\Admin\Teacher\TeacherGetAction;
@@ -107,8 +108,8 @@ class TeacherController extends Controller
             $action->status = $request->get('status');
             $action->title = $request->get('title');
             $action->description = $request->get('description');
-            $action->keywords = $request->get('keywords');
-            $action->directions = $request->get('directions');
+            $action->template_description = $request->get('template_description');
+            $action->template_title = $request->get('template_title');
             $action->schools = $request->get('schools');
 
             if ($request->hasFile('image') && $request->file('image')->isValid()) {
@@ -132,7 +133,7 @@ class TeacherController extends Controller
             ];
 
             return response()->json($data);
-        } catch (ValidateException $error) {
+        } catch (ValidateException|TemplateException $error) {
             return response()->json([
                 'success' => false,
                 'message' => $error->getMessage()
@@ -166,8 +167,8 @@ class TeacherController extends Controller
             $action->status = $request->get('status');
             $action->title = $request->get('title');
             $action->description = $request->get('description');
-            $action->keywords = $request->get('keywords');
-            $action->directions = $request->get('directions');
+            $action->template_description = $request->get('template_description');
+            $action->template_title = $request->get('template_title');
             $action->schools = $request->get('schools');
 
             if ($request->hasFile('image') && $request->file('image')->isValid()) {
@@ -191,7 +192,7 @@ class TeacherController extends Controller
             ];
 
             return response()->json($data);
-        } catch (ValidateException|RecordExistException $error) {
+        } catch (ValidateException|RecordExistException|TemplateException $error) {
             return response()->json([
                 'success' => false,
                 'message' => $error->getMessage()

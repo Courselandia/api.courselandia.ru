@@ -12,6 +12,8 @@ use App\Models\Action;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Image\Entities\Image;
 use App\Modules\Metatag\Actions\MetatagSetAction;
+use App\Modules\Metatag\Template\Template;
+use App\Modules\Metatag\Template\TemplateException;
 use App\Modules\School\Entities\School as SchoolEntity;
 use App\Modules\School\Models\School;
 use Cache;
@@ -30,11 +32,11 @@ class SchoolCreateAction extends Action
     public ?string $name = null;
 
     /**
-     * Заголовок.
+     * Шаблон заголовка.
      *
      * @var string|null
      */
-    public ?string $header = null;
+    public ?string $header_template = null;
 
     /**
      * Ссылка.
@@ -86,11 +88,11 @@ class SchoolCreateAction extends Action
     public ?bool $status = null;
 
     /**
-     * Описание.
+     * Шаблон описания.
      *
      * @var string|null
      */
-    public ?string $description = null;
+    public ?string $template_description = null;
 
     /**
      * Ключевые слова.
@@ -100,29 +102,37 @@ class SchoolCreateAction extends Action
     public ?string $keywords = null;
 
     /**
-     * Заголовок.
+     * Шаблон заголовка.
      *
      * @var string|null
      */
-    public ?string $title = null;
+    public ?string $template_title = null;
 
     /**
      * Метод запуска логики.
      *
      * @return SchoolEntity Вернет результаты исполнения.
      * @throws ParameterInvalidException
+     * @throws TemplateException
      */
     public function run(): SchoolEntity
     {
         $action = app(MetatagSetAction::class);
-        $action->description = $this->description;
+        $template = new Template();
+
+        $templateValues = [];
+
+        $action->description = $template->convert($this->template_description, $templateValues);
+        $action->title = $template->convert($this->template_title, $templateValues);
+        $action->template_description = $this->template_description;
+        $action->template_title = $this->template_title;
         $action->keywords = $this->keywords;
-        $action->title = $this->title;
+
         $metatag = $action->run();
 
         $schoolEntity = new SchoolEntity();
         $schoolEntity->name = $this->name;
-        $schoolEntity->header = $this->header;
+        $schoolEntity->header = $template->convert($this->header_template, $templateValues);
         $schoolEntity->link = $this->link;
         $schoolEntity->text = $this->text;
         $schoolEntity->site = $this->site;

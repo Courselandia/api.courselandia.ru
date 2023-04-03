@@ -13,6 +13,8 @@ use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Direction\Entities\Direction as DirectionEntity;
 use App\Modules\Direction\Models\Direction;
 use App\Modules\Metatag\Actions\MetatagSetAction;
+use App\Modules\Metatag\Template\Template;
+use App\Modules\Metatag\Template\TemplateException;
 use Cache;
 
 /**
@@ -28,11 +30,11 @@ class DirectionCreateAction extends Action
     public ?string $name = null;
 
     /**
-     * Заголовок.
+     * Шаблон заголовка.
      *
      * @var string|null
      */
-    public ?string $header = null;
+    public ?string $header_template = null;
 
     /**
      * Вес.
@@ -63,11 +65,11 @@ class DirectionCreateAction extends Action
     public ?bool $status = null;
 
     /**
-     * Описание.
+     * Шаблон описания.
      *
      * @var string|null
      */
-    public ?string $description = null;
+    public ?string $template_description = null;
 
     /**
      * Ключевые слова.
@@ -77,29 +79,36 @@ class DirectionCreateAction extends Action
     public ?string $keywords = null;
 
     /**
-     * Заголовок.
+     * Шаблон заголовка.
      *
      * @var string|null
      */
-    public ?string $title = null;
+    public ?string $template_title = null;
 
     /**
      * Метод запуска логики.
      *
      * @return DirectionEntity Вернет результаты исполнения.
-     * @throws ParameterInvalidException
+     * @throws ParameterInvalidException|TemplateException
      */
     public function run(): DirectionEntity
     {
         $action = app(MetatagSetAction::class);
-        $action->description = $this->description;
+        $template = new Template();
+
+        $templateValues = [];
+
+        $action->description = $template->convert($this->template_description, $templateValues);
+        $action->title = $template->convert($this->template_title, $templateValues);
+        $action->template_description = $this->template_description;
+        $action->template_title = $this->template_title;
         $action->keywords = $this->keywords;
-        $action->title = $this->title;
+
         $metatag = $action->run();
 
         $directionEntity = new DirectionEntity();
         $directionEntity->name = $this->name;
-        $directionEntity->header = $this->header;
+        $directionEntity->header = $template->convert($this->header_template, $templateValues);
         $directionEntity->weight = $this->weight;
         $directionEntity->link = $this->link;
         $directionEntity->text = $this->text;

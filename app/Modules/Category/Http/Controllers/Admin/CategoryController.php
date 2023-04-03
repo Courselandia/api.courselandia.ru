@@ -23,6 +23,7 @@ use App\Modules\Category\Http\Requests\Admin\CategoryDestroyRequest;
 use App\Modules\Category\Http\Requests\Admin\CategoryReadRequest;
 use App\Modules\Category\Http\Requests\Admin\CategoryUpdateRequest;
 use App\Modules\Category\Http\Requests\Admin\CategoryUpdateStatusRequest;
+use App\Modules\Metatag\Template\TemplateException;
 use Auth;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
@@ -101,14 +102,14 @@ class CategoryController extends Controller
         try {
             $action = app(CategoryCreateAction::class);
             $action->name = $request->get('name');
-            $action->header = $request->get('header');
+            $action->header_template = $request->get('header_template');
             $action->link = $request->get('link');
             $action->text = $request->get('text');
             $action->directions = $request->get('directions');
             $action->professions = $request->get('professions');
             $action->status = $request->get('status');
-            $action->title = $request->get('title');
-            $action->description = $request->get('description');
+            $action->template_description = $request->get('template_description');
+            $action->template_title = $request->get('template_title');
             $action->keywords = $request->get('keywords');
 
             $data = $action->run();
@@ -128,7 +129,7 @@ class CategoryController extends Controller
             ];
 
             return response()->json($data);
-        } catch (ValidateException $error) {
+        } catch (ValidateException|TemplateException $error) {
             return response()->json([
                 'success' => false,
                 'message' => $error->getMessage()
@@ -156,15 +157,15 @@ class CategoryController extends Controller
             $action = app(CategoryUpdateAction::class);
             $action->id = $id;
             $action->name = $request->get('name');
-            $action->header = $request->get('header');
+            $action->header_template = $request->get('header_template');
             $action->link = $request->get('link');
             $action->text = $request->get('text');
             $action->directions = $request->get('directions');
             $action->professions = $request->get('professions');
             $action->status = $request->get('status');
             $action->title = $request->get('title');
-            $action->description = $request->get('description');
-            $action->keywords = $request->get('keywords');
+            $action->template_description = $request->get('template_description');
+            $action->template_title = $request->get('template_title');
             $data = $action->run();
 
             Log::info(
@@ -182,7 +183,7 @@ class CategoryController extends Controller
             ];
 
             return response()->json($data);
-        } catch (ValidateException|RecordExistException $error) {
+        } catch (ValidateException|RecordExistException|TemplateException $error) {
             return response()->json([
                 'success' => false,
                 'message' => $error->getMessage()

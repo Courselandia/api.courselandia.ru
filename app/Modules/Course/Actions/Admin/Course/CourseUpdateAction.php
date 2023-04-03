@@ -322,7 +322,6 @@ class CourseUpdateAction extends Action
                 $action->id = $courseEntity->metatag_id ?: null;
 
                 $courseEntity->metatag_id = $action->run()->id;
-
                 $courseEntity->school_id = $this->school_id;
                 $courseEntity->name = $this->name;
                 $courseEntity->header = $template->convert($this->header_template, $templateValues);

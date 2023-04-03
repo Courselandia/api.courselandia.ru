@@ -12,6 +12,7 @@ use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordExistException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Models\Exceptions\ValidateException;
+use App\Modules\Metatag\Template\TemplateException;
 use App\Modules\Profession\Actions\Admin\ProfessionCreateAction;
 use App\Modules\Profession\Actions\Admin\ProfessionDestroyAction;
 use App\Modules\Profession\Actions\Admin\ProfessionGetAction;
@@ -101,12 +102,12 @@ class ProfessionController extends Controller
         try {
             $action = app(ProfessionCreateAction::class);
             $action->name = $request->get('name');
-            $action->header = $request->get('header');
+            $action->header_template = $request->get('header_template');
             $action->link = $request->get('link');
             $action->text = $request->get('text');
             $action->status = $request->get('status');
-            $action->title = $request->get('title');
-            $action->description = $request->get('description');
+            $action->template_description = $request->get('template_description');
+            $action->template_title = $request->get('template_title');
             $action->keywords = $request->get('keywords');
 
             $data = $action->run();
@@ -126,7 +127,7 @@ class ProfessionController extends Controller
             ];
 
             return response()->json($data);
-        } catch (ValidateException $error) {
+        } catch (ValidateException|TemplateException $error) {
             return response()->json([
                 'success' => false,
                 'message' => $error->getMessage()
@@ -154,12 +155,12 @@ class ProfessionController extends Controller
             $action = app(ProfessionUpdateAction::class);
             $action->id = $id;
             $action->name = $request->get('name');
-            $action->header = $request->get('header');
+            $action->header_template = $request->get('header_template');
             $action->link = $request->get('link');
             $action->text = $request->get('text');
             $action->status = $request->get('status');
-            $action->title = $request->get('title');
-            $action->description = $request->get('description');
+            $action->template_description = $request->get('template_description');
+            $action->template_title = $request->get('template_title');
             $action->keywords = $request->get('keywords');
             $data = $action->run();
 
@@ -178,7 +179,7 @@ class ProfessionController extends Controller
             ];
 
             return response()->json($data);
-        } catch (ValidateException|RecordExistException $error) {
+        } catch (ValidateException|RecordExistException|TemplateException $error) {
             return response()->json([
                 'success' => false,
                 'message' => $error->getMessage()

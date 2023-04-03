@@ -14,6 +14,8 @@ use App\Models\Exceptions\RecordNotExistException;
 use App\Modules\Direction\Entities\Direction as DirectionEntity;
 use App\Modules\Direction\Models\Direction;
 use App\Modules\Metatag\Actions\MetatagSetAction;
+use App\Modules\Metatag\Template\Template;
+use App\Modules\Metatag\Template\TemplateException;
 use Cache;
 
 /**
@@ -36,11 +38,11 @@ class DirectionUpdateAction extends Action
     public ?string $name = null;
 
     /**
-     * Заголовок.
+     * Шаблон заголовка.
      *
      * @var string|null
      */
-    public ?string $header = null;
+    public ?string $header_template = null;
 
     /**
      * Вес.
@@ -71,11 +73,11 @@ class DirectionUpdateAction extends Action
     public ?bool $status = null;
 
     /**
-     * Описание.
+     * Шаблон описания.
      *
      * @var string|null
      */
-    public ?string $description = null;
+    public ?string $template_description = null;
 
     /**
      * Ключевые слова.
@@ -85,11 +87,11 @@ class DirectionUpdateAction extends Action
     public ?string $keywords = null;
 
     /**
-     * Заголовок.
+     * Шаблон заголовка.
      *
      * @var string|null
      */
-    public ?string $title = null;
+    public ?string $template_title = null;
 
     /**
      * Конструктор.
@@ -107,6 +109,7 @@ class DirectionUpdateAction extends Action
      * @return DirectionEntity Вернет результаты исполнения.
      * @throws RecordNotExistException
      * @throws ParameterInvalidException
+     * @throws TemplateException
      */
     public function run(): DirectionEntity
     {
@@ -115,16 +118,22 @@ class DirectionUpdateAction extends Action
         $directionEntity = $action->run();
 
         if ($directionEntity) {
-            $action = app(MetatagSetAction::class);
-            $action->description = $this->description;
-            $action->keywords = $this->keywords;
-            $action->title = $this->title;
-            $action->id = $directionEntity->metatag_id;
-            $metatag = $action->run();
+            $templateValues = [];
 
+            $template = new Template();
+
+            $action = app(MetatagSetAction::class);
+            $action->description = $template->convert($this->template_description, $templateValues);
+            $action->title = $template->convert($this->template_title, $templateValues);
+            $action->template_description = $this->template_description;
+            $action->template_title = $this->template_title;
+            $action->keywords = $this->keywords;
+            $action->id = $directionEntity->metatag_id ?: null;
+
+            $directionEntity->metatag_id = $action->run()->id;
             $directionEntity->id = $this->id;
             $directionEntity->name = $this->name;
-            $directionEntity->header = $this->header;
+            $directionEntity->header = $template->convert($this->header_template, $templateValues);
             $directionEntity->weight = $this->weight;
             $directionEntity->link = $this->link;
             $directionEntity->text = $this->text;

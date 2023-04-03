@@ -10,6 +10,8 @@ namespace App\Modules\Tool\Actions\Admin;
 
 use App\Models\Action;
 use App\Models\Exceptions\ParameterInvalidException;
+use App\Modules\Metatag\Template\Template;
+use App\Modules\Metatag\Template\TemplateException;
 use App\Modules\Tool\Entities\Tool as ToolEntity;
 use App\Modules\Tool\Models\Tool;
 use App\Modules\Metatag\Actions\MetatagSetAction;
@@ -28,11 +30,11 @@ class ToolCreateAction extends Action
     public ?string $name = null;
 
     /**
-     * Заголовок.
+     * Шаблон заголовка.
      *
      * @var string|null
      */
-    public ?string $header = null;
+    public ?string $header_template = null;
 
     /**
      * Ссылка.
@@ -56,11 +58,11 @@ class ToolCreateAction extends Action
     public ?bool $status = null;
 
     /**
-     * Описание.
+     * Шаблон описания.
      *
      * @var string|null
      */
-    public ?string $description = null;
+    public ?string $template_description = null;
 
     /**
      * Ключевые слова.
@@ -70,29 +72,37 @@ class ToolCreateAction extends Action
     public ?string $keywords = null;
 
     /**
-     * Заголовок.
+     * Шаблон заголовка.
      *
      * @var string|null
      */
-    public ?string $title = null;
+    public ?string $template_title = null;
 
     /**
      * Метод запуска логики.
      *
      * @return ToolEntity Вернет результаты исполнения.
      * @throws ParameterInvalidException
+     * @throws TemplateException
      */
     public function run(): ToolEntity
     {
         $action = app(MetatagSetAction::class);
-        $action->description = $this->description;
+        $template = new Template();
+
+        $templateValues = [];
+
+        $action->description = $template->convert($this->template_description, $templateValues);
+        $action->title = $template->convert($this->template_title, $templateValues);
+        $action->template_description = $this->template_description;
+        $action->template_title = $this->template_title;
         $action->keywords = $this->keywords;
-        $action->title = $this->title;
+
         $metatag = $action->run();
 
         $toolEntity = new ToolEntity();
         $toolEntity->name = $this->name;
-        $toolEntity->header = $this->header;
+        $toolEntity->header = $template->convert($this->header_template, $templateValues);
         $toolEntity->link = $this->link;
         $toolEntity->text = $this->text;
         $toolEntity->status = $this->status;

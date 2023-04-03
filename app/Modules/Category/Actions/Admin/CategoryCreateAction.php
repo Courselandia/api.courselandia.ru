@@ -13,6 +13,8 @@ use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Category\Entities\Category as CategoryEntity;
 use App\Modules\Category\Models\Category;
 use App\Modules\Metatag\Actions\MetatagSetAction;
+use App\Modules\Metatag\Template\Template;
+use App\Modules\Metatag\Template\TemplateException;
 use Cache;
 
 /**
@@ -28,11 +30,11 @@ class CategoryCreateAction extends Action
     public ?string $name = null;
 
     /**
-     * Заголовок.
+     * Шаблон заголовка.
      *
      * @var string|null
      */
-    public ?string $header = null;
+    public ?string $header_template = null;
 
     /**
      * Ссылка.
@@ -56,11 +58,11 @@ class CategoryCreateAction extends Action
     public ?bool $status = null;
 
     /**
-     * Описание.
+     * Шаблон описания.
      *
      * @var string|null
      */
-    public ?string $description = null;
+    public ?string $template_description = null;
 
     /**
      * Ключевые слова.
@@ -70,11 +72,11 @@ class CategoryCreateAction extends Action
     public ?string $keywords = null;
 
     /**
-     * Заголовок.
+     * Шаблон заголовка.
      *
      * @var string|null
      */
-    public ?string $title = null;
+    public ?string $template_title = null;
 
     /**
      * ID направлений.
@@ -95,18 +97,26 @@ class CategoryCreateAction extends Action
      *
      * @return CategoryEntity Вернет результаты исполнения.
      * @throws ParameterInvalidException
+     * @throws TemplateException
      */
     public function run(): CategoryEntity
     {
         $action = app(MetatagSetAction::class);
-        $action->description = $this->description;
+        $template = new Template();
+
+        $templateValues = [];
+
+        $action->description = $template->convert($this->template_description, $templateValues);
+        $action->title = $template->convert($this->template_title, $templateValues);
+        $action->template_description = $this->template_description;
+        $action->template_title = $this->template_title;
         $action->keywords = $this->keywords;
-        $action->title = $this->title;
+
         $metatag = $action->run();
 
         $categoryEntity = new CategoryEntity();
         $categoryEntity->name = $this->name;
-        $categoryEntity->header = $this->header;
+        $categoryEntity->header = $template->convert($this->header_template, $templateValues);
         $categoryEntity->link = $this->link;
         $categoryEntity->text = $this->text;
         $categoryEntity->status = $this->status;
