@@ -47,6 +47,64 @@ class Template
      */
     public function convert(?string $template, ?array $values): ?string
     {
+        $template = $this->convertConditions($template, $values);
+
+        return $this->convertTags($template, $values);
+    }
+
+    /**
+     * Конвертируем тэги.
+     *
+     * @param string|null $template Шаблон.
+     * @param array<string, string>|null $values Значения для шаблонов.
+     *
+     * @return ?string Вернет результат конвертации после шаблонизирования.
+     * @throws TemplateException
+     */
+    private function convertConditions(?string $template, ?array $values): ?string
+    {
+        if ($template) {
+            preg_match_all("/\[[A-Za-z]*:[{}A-Za-zА-Яа-я0-9,.: ]*(\|[{}A-Za-zА-Яа-я0-9,.: ]*)?\]/u", $template, $matches);
+            $conditions = [];
+
+            if (isset($matches[0][0])) {
+                for ($i = 0; $i < count($matches[0]); $i++) {
+                    $conditionTag = $matches[0][$i];
+                    $conditions[$matches[0][$i]] = '';
+
+                    preg_match_all("/\[([A-Za-z]*):([{}A-Za-zА-Яа-я0-9,. ]*)(\|([{}A-Za-zА-Яа-я0-9,. ]*))?\]/u", $conditionTag, $conditionMatches);
+
+                    if (isset($conditionMatches[1][0]) && isset($conditionMatches[2][0])) {
+                        $condition = $conditionMatches[1][0];
+                        $conditionTrue = $conditionMatches[2][0];
+                        $conditionFalse = $conditionMatches[4][0] ?? '';
+
+                        $tag = $this->convertTagStringToSettings($condition);
+                        $tagObject = $this->getTag($tag['name']);
+                        $value = $values[$tag['name']] ?? null;
+                        $valueTag = trim($tagObject->convert($value, $tag['configs'], $values));
+                        $conditions[$matches[0][$i]] = $valueTag ? $conditionTrue : $conditionFalse;
+                    }
+                }
+            }
+
+            $template = str_replace(array_keys($conditions), array_values($conditions), $template);
+        }
+
+        return $template;
+    }
+
+    /**
+     * Конвертируем тэги.
+     *
+     * @param string|null $template Шаблон.
+     * @param array<string, string>|null $values Значения для шаблонов.
+     *
+     * @return ?string Вернет результат конвертации после шаблонизирования.
+     * @throws TemplateException
+     */
+    private function convertTags(?string $template, ?array $values): ?string
+    {
         if ($template) {
             $tags = $this->getTagStrings($template);
             $replaces = [];
@@ -73,7 +131,7 @@ class Template
      */
     private function getTagStrings(string $template): array
     {
-        preg_match_all("({[A-Za-z0-9-_.]*:?([A-Za-z0-9-_.]*\|?)*})", $template, $matches);
+        preg_match_all("/({[A-Za-z0-9-_.]*:?([A-Za-z0-9-_.]*\|?)*})/u", $template, $matches);
         $matches = $matches[0];
         $tags = [];
 

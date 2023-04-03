@@ -15,7 +15,7 @@ class Apply
 {
 /*
  * Курсы:
- * Title: Курс {course} от {school:genitive} по цене {price} — Courselandia
+ * Title: Курс {course} от {school:genitive} [price:по цене {price}|бесплатно] — Courselandia
  * Description: Приступите к программе обучения прям сейчас онлайн-курса {course} от {school:genitive} выбрав его в каталоге Courselandia, легкий поиск, возможность сравнивать курсы по разным параметрам
  * Header: {course} от {school:genitive}
  */

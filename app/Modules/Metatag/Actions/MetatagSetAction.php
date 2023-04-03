@@ -63,10 +63,10 @@ class MetatagSetAction extends Action
     /**
      * Метод запуска логики.
      *
-     * @return MetatagEntity|null Вернет результаты исполнения.
+     * @return MetatagEntity Вернет результаты исполнения.
      * @throws ParameterInvalidException
      */
-    public function run(): ?MetatagEntity
+    public function run(): MetatagEntity
     {
         $metatagEntity = new MetatagEntity();
         $metatagEntity->description = $this->description;
@@ -79,16 +79,15 @@ class MetatagSetAction extends Action
             $metatag = Metatag::find($this->id);
 
             if ($metatag) {
+                $metatagEntity->id = $this->id;
                 $metatag->update($metatagEntity->toArray());
 
                 return new MetatagEntity($metatagEntity->toArray());
             }
-        } else {
-            $metatag = Metatag::create($metatagEntity->toArray());
-
-            return new MetatagEntity($metatag->toArray());
         }
 
-        return null;
+        $metatag = Metatag::create($metatagEntity->toArray());
+
+        return new MetatagEntity($metatag->toArray());
     }
 }

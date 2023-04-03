@@ -304,8 +304,6 @@ class CourseUpdateAction extends Action
 
         if ($courseEntity) {
             DB::transaction(function () use ($courseEntity) {
-                $action = app(MetatagSetAction::class);
-
                 $templateValues = [
                     'course' => $this->name,
                     'school' => $courseEntity->school->name,
@@ -315,15 +313,15 @@ class CourseUpdateAction extends Action
 
                 $template = new Template();
 
+                $action = app(MetatagSetAction::class);
                 $action->description = $template->convert($this->template_description, $templateValues);
                 $action->title = $template->convert($this->template_title, $templateValues);
-
                 $action->template_description = $this->template_description;
                 $action->template_title = $this->template_title;
                 $action->keywords = $this->keywords;
-                $action->id = $courseEntity->id;
+                $action->id = $courseEntity->metatag_id ?: null;
 
-                $action->run();
+                $courseEntity->metatag_id = $action->run()->id;
 
                 $courseEntity->school_id = $this->school_id;
                 $courseEntity->name = $this->name;
