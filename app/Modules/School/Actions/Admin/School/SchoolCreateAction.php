@@ -122,6 +122,7 @@ class SchoolCreateAction extends Action
 
         $templateValues = [
             'school' => $this->name,
+            'countSchoolCourses' => 0,
         ];
 
         $action->description = $template->convert($this->description_template, $templateValues);

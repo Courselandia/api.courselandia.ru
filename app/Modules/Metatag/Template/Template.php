@@ -12,6 +12,7 @@ use App\Modules\Metatag\Template\Tags\TagCategory;
 use App\Modules\Metatag\Template\Tags\TagCountCategoryCourses;
 use App\Modules\Metatag\Template\Tags\TagCountDirectionCourses;
 use App\Modules\Metatag\Template\Tags\TagCountProfessionCourses;
+use App\Modules\Metatag\Template\Tags\TagCountSchoolCourses;
 use App\Modules\Metatag\Template\Tags\TagCountSkillCourses;
 use App\Modules\Metatag\Template\Tags\TagCountToolCourses;
 use App\Modules\Metatag\Template\Tags\TagCourse;
@@ -48,12 +49,13 @@ class Template
             ->addTag(new TagProfession())
             ->addTag(new TagSkill())
             ->addTag(new TagTool())
-            ->addTag(new TagCountToolCourses())
             ->addTag(new TagPrice())
+            ->addTag(new TagCountToolCourses())
             ->addTag(new TagCountDirectionCourses())
             ->addTag(new TagCountProfessionCourses())
             ->addTag(new TagCountCategoryCourses())
-            ->addTag(new TagCountSkillCourses());
+            ->addTag(new TagCountSkillCourses())
+            ->addTag(new TagCountSchoolCourses());
     }
 
     /**
@@ -69,7 +71,7 @@ class Template
     {
         $template = $this->convertConditions($template, $values);
         $template = $this->convertTags($template, $values);
-        $template = str_replace(' . ', '. ', $template);
+        $template = str_replace([' . ', ' , '], ['. ', ', '], $template);
 
         return str_replace(['    ', '   ', '  '], ' ', $template);
     }
@@ -86,7 +88,7 @@ class Template
     private function convertConditions(?string $template, ?array $values): ?string
     {
         if ($template) {
-            preg_match_all("/\[[A-Za-z]*:[{}A-Za-zА-Яа-я0-9,.:;|— ]*(\/[{}A-Za-zА-Яа-я0-9,.:;|— ]*)?\]/u", $template, $matches);
+            preg_match_all("/\[[A-Za-z]*:[{}A-Za-zА-Яа-я0-9,.:;|—\- ]*(\/[{}A-Za-zА-Яа-я0-9,.:;|—\- ]*)?\]/u", $template, $matches);
             $conditions = [];
 
             if (isset($matches[0][0])) {
@@ -94,7 +96,7 @@ class Template
                     $conditionTag = $matches[0][$i];
                     $conditions[$matches[0][$i]] = '';
 
-                    preg_match_all("/\[([A-Za-z]*):([{}A-Za-zА-Яа-я0-9,.:;|— ]*)(\/([{}A-Za-zА-Яа-я0-9,.:;|— ]*))?\]/u", $conditionTag, $conditionMatches);
+                    preg_match_all("/\[([A-Za-z]*):([{}A-Za-zА-Яа-я0-9,.:;|—\- ]*)(\/([{}A-Za-zА-Яа-я0-9,.:;|—\- ]*))?\]/u", $conditionTag, $conditionMatches);
 
                     if (isset($conditionMatches[1][0]) && isset($conditionMatches[2][0])) {
                         $condition = $conditionMatches[1][0];
@@ -153,7 +155,7 @@ class Template
      */
     private function getTagStrings(string $template): array
     {
-        preg_match_all("/({[А-Яа-яA-Za-z0-9-_.]*:?([А-Яа-яA-Za-z0-9-_.]*\|?)*})/u", $template, $matches);
+        preg_match_all("/({[А-Яа-яA-Za-z0-9-_.]*:?([А-Яа-яA-Za-z0-9-_.—\- ]*\|?)*})/u", $template, $matches);
         $matches = $matches[0];
         $tags = [];
 

@@ -11,6 +11,8 @@ namespace App\Modules\School\Actions\Admin\School;
 use App\Models\Action;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
+use App\Modules\Course\Enums\Status;
+use App\Modules\Course\Models\Course;
 use App\Modules\Image\Entities\Image;
 use App\Modules\Metatag\Actions\MetatagSetAction;
 use App\Modules\Metatag\Template\Template;
@@ -131,10 +133,16 @@ class SchoolUpdateAction extends Action
         $schoolEntity = $action->run();
 
         if ($schoolEntity) {
-            $templateValues = [];
+            $countSchoolCourses = Course::where('courses.status', Status::ACTIVE->value)
+                ->whereHas('school', function ($query) {
+                    $query->where('schools.status', true)
+                        ->where('schools.id', $this->id);
+                })
+                ->count();
 
             $templateValues = [
                 'school' => $this->name,
+                'countSchoolCourses' => $countSchoolCourses,
             ];
 
             $template = new Template();
