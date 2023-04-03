@@ -92,6 +92,7 @@ class ToolCreateAction extends Action
 
         $templateValues = [
             'tool' => $this->name,
+            'countToolCourses' => 0,
         ];
 
         $action->description = $template->convert($this->description_template, $templateValues);

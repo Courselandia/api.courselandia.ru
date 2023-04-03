@@ -13,12 +13,14 @@ use App\Modules\Metatag\Template\Tags\TagCountCategoryCourses;
 use App\Modules\Metatag\Template\Tags\TagCountDirectionCourses;
 use App\Modules\Metatag\Template\Tags\TagCountProfessionCourses;
 use App\Modules\Metatag\Template\Tags\TagCountSkillCourses;
+use App\Modules\Metatag\Template\Tags\TagCountToolCourses;
 use App\Modules\Metatag\Template\Tags\TagCourse;
 use App\Modules\Metatag\Template\Tags\TagDirection;
 use App\Modules\Metatag\Template\Tags\TagPrice;
 use App\Modules\Metatag\Template\Tags\TagProfession;
 use App\Modules\Metatag\Template\Tags\TagSchool;
 use App\Modules\Metatag\Template\Tags\TagSkill;
+use App\Modules\Metatag\Template\Tags\TagTool;
 use JetBrains\PhpStorm\ArrayShape;
 
 /**
@@ -45,6 +47,8 @@ class Template
             ->addTag(new TagDirection())
             ->addTag(new TagProfession())
             ->addTag(new TagSkill())
+            ->addTag(new TagTool())
+            ->addTag(new TagCountToolCourses())
             ->addTag(new TagPrice())
             ->addTag(new TagCountDirectionCourses())
             ->addTag(new TagCountProfessionCourses())
@@ -65,7 +69,7 @@ class Template
     {
         $template = $this->convertConditions($template, $values);
         $template = $this->convertTags($template, $values);
-        $template = str_replace(' .', '.', $template);
+        $template = str_replace(' . ', '. ', $template);
 
         return str_replace(['    ', '   ', '  '], ' ', $template);
     }

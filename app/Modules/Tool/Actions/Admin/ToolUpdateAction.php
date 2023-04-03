@@ -11,6 +11,8 @@ namespace App\Modules\Tool\Actions\Admin;
 use App\Models\Action;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
+use App\Modules\Course\Enums\Status;
+use App\Modules\Course\Models\Course;
 use App\Modules\Metatag\Template\Template;
 use App\Modules\Metatag\Template\TemplateException;
 use App\Modules\Tool\Entities\Tool as ToolEntity;
@@ -101,8 +103,18 @@ class ToolUpdateAction extends Action
         $toolEntity = $action->run();
 
         if ($toolEntity) {
+            $countToolCourses = Course::where('courses.status', Status::ACTIVE->value)
+                ->whereHas('school', function ($query) {
+                    $query->where('schools.status', true);
+                })
+                ->whereHas('tools', function ($query) {
+                    $query->where('tools.id', $this->id);
+                })
+                ->count();
+
             $templateValues = [
                 'tool' => $this->name,
+                'countToolCourses' => $countToolCourses,
             ];
 
             $template = new Template();

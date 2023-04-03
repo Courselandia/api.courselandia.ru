@@ -38,5 +38,10 @@ class Apply
  * Title: Каталог онлайн-курсов по {skill:dative}[countSkillCourses:: {countSkillCourses:курс|nominative} для обучения] — Courselandia
  * Description: Подберите обучающий онлайн-курс для получения навыка {skill:nominative} из каталога Courselandia [countSkillCourses:— {countSkillCourses:курс|nominative} для вас]. Сравнение цен, рейтинг онлайн-школ, сравнение курсов.
  * Header: Онлайн курсы по {skill:dative}
+ *
+ * Инструменты:
+ * Title: Онлайн-курсы по изучению инструмента {tool:nominative}[countToolCourses:: {countToolCourses:курс|nominative} для обучения с нуля] — Courselandia
+ * Description: Выбирайте обучающий онлайн-курс по изучению инструмента {tool:nominative} из каталога Courselandia [countToolCourses:— {countToolCourses:курс|nominative} на ваш выбор]. Рейтинг онлайн-школ, сравнение цен, легкий поиск онлайн-курсов.
+ * Header: Онлайн-курсы по изучению инструмента {tool:nominative}
  */
 }
