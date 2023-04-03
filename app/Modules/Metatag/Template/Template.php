@@ -9,6 +9,7 @@
 namespace App\Modules\Metatag\Template;
 
 use App\Modules\Metatag\Template\Tags\TagCategory;
+use App\Modules\Metatag\Template\Tags\TagCountCategoryCourses;
 use App\Modules\Metatag\Template\Tags\TagCountDirectionCourses;
 use App\Modules\Metatag\Template\Tags\TagCountProfessionCourses;
 use App\Modules\Metatag\Template\Tags\TagCourse;
@@ -43,7 +44,8 @@ class Template
             ->addTag(new TagProfession())
             ->addTag(new TagPrice())
             ->addTag(new TagCountDirectionCourses())
-            ->addTag(new TagCountProfessionCourses());
+            ->addTag(new TagCountProfessionCourses())
+            ->addTag(new TagCountCategoryCourses());
     }
 
     /**

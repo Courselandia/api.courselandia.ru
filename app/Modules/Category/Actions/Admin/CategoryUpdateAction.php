@@ -13,6 +13,8 @@ use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Modules\Category\Entities\Category as CategoryEntity;
 use App\Modules\Category\Models\Category;
+use App\Modules\Course\Enums\Status;
+use App\Modules\Course\Models\Course;
 use App\Modules\Metatag\Actions\MetatagSetAction;
 use App\Modules\Metatag\Template\Template;
 use App\Modules\Metatag\Template\TemplateException;
@@ -115,8 +117,18 @@ class CategoryUpdateAction extends Action
         $categoryEntity = $action->run();
 
         if ($categoryEntity) {
+            $countCategoryCourses = Course::where('courses.status', Status::ACTIVE->value)
+                ->whereHas('school', function ($query) {
+                    $query->where('schools.status', true);
+                })
+                ->whereHas('categories', function ($query) {
+                    $query->where('categories.id', $this->id);
+                })
+                ->count();
+
             $templateValues = [
                 'category' => $this->name,
+                'countCategoryCourses' => $countCategoryCourses,
             ];
 
             $template = new Template();

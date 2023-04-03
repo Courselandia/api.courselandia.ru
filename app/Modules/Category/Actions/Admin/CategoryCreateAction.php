@@ -106,6 +106,7 @@ class CategoryCreateAction extends Action
 
         $templateValues = [
             'category' => $this->name,
+            'countCategoryCourses' => 0,
         ];
 
         $action->description = $template->convert($this->description_template, $templateValues);
