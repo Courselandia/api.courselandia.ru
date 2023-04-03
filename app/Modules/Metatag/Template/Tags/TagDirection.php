@@ -11,7 +11,7 @@ namespace App\Modules\Metatag\Template\Tags;
 /**
  * Тэг обработчик для направления курса: {direction}.
  */
-class TagDirection extends TagCourse
+class TagDirection extends TagSchool
 {
     /**
      * Название тэга.
@@ -20,6 +20,6 @@ class TagDirection extends TagCourse
      */
     public function getName(): string
     {
-        return 'category';
+        return 'direction';
     }
 }

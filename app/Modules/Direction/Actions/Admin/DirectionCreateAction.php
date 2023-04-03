@@ -98,6 +98,7 @@ class DirectionCreateAction extends Action
 
         $templateValues = [
             'direction' => $this->name,
+            'countDirectionCourses' => 0,
         ];
 
         $action->description = $template->convert($this->description_template, $templateValues);

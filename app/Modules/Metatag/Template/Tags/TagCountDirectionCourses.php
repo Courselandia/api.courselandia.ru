@@ -11,13 +11,12 @@ namespace App\Modules\Metatag\Template\Tags;
 use Log;
 use Throwable;
 use Config;
-use App\Modules\Metatag\Template\Tag;
 use Morpher\Ws3Client\Morpher;
 
 /**
- * Тэг обработчик для название школы: {school}.
+ * Тэг обработчик для количества курсов в направлении: {countDirectionCourses}.
  */
-class TagSchool extends Tag
+class TagCountDirectionCourses extends TagSchool
 {
     /**
      * Название тэга.
@@ -26,7 +25,7 @@ class TagSchool extends Tag
      */
     public function getName(): string
     {
-        return 'school';
+        return 'countDirectionCourses';
     }
 
     /**
@@ -41,11 +40,18 @@ class TagSchool extends Tag
     public function convert(?string $value = null, ?array $configs = null, ?array $values = null): string|null
     {
         try {
-            $morpher = new Morpher(Config::get('morph.url'), Config::get('morph.token'));
-            $result = $morpher->russian->Parse($value);
-            $pad = ucfirst($configs[0]);
+            if (isset($configs[0])) {
+                $value = (int)$value;
+                $morpher = new Morpher(Config::get('morph.url'), Config::get('morph.token'));
+                $unit = $morpher->russian->Parse($configs[0]);
+                $unit = $value === 1 ? $unit->Nominative : $unit->Plural->Nominative;
+                $result = $morpher->russian->Spell((int)$value, $unit);
+                $pad = ucfirst($configs[1]);
 
-            return mb_strtolower($result->{$pad});
+                return $value . ' ' . $result->UnitDeclension->{$pad};
+            }
+
+            return $value;
         } catch (Throwable $error) {
             Log::debug('Morpher Error: ' . $error->getMessage());
         }

@@ -11,6 +11,8 @@ namespace App\Modules\Direction\Actions\Admin;
 use App\Models\Action;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
+use App\Modules\Course\Enums\Status;
+use App\Modules\Course\Models\Course;
 use App\Modules\Direction\Entities\Direction as DirectionEntity;
 use App\Modules\Direction\Models\Direction;
 use App\Modules\Metatag\Actions\MetatagSetAction;
@@ -118,8 +120,18 @@ class DirectionUpdateAction extends Action
         $directionEntity = $action->run();
 
         if ($directionEntity) {
+            $countDirectionCourses = Course::where('courses.status', Status::ACTIVE->value)
+                ->whereHas('school', function ($query) {
+                    $query->where('schools.status', true);
+                })
+                ->whereHas('directions', function ($query) {
+                    $query->where('directions.id', $this->id);
+                })
+                ->count();
+
             $templateValues = [
                 'direction' => $this->name,
+                'countDirectionCourses' => $countDirectionCourses,
             ];
 
             $template = new Template();

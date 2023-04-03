@@ -20,6 +20,6 @@ class TagTeacher extends TagCourse
      */
     public function getName(): string
     {
-        return 'category';
+        return 'teacher';
     }
 }
