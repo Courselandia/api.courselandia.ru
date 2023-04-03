@@ -92,6 +92,7 @@ class SkillCreateAction extends Action
 
         $templateValues = [
             'skill' => $this->name,
+            'countSkillCourses' => 0,
         ];
 
         $action->description = $template->convert($this->description_template, $templateValues);

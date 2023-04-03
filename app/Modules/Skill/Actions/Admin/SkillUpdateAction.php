@@ -11,6 +11,8 @@ namespace App\Modules\Skill\Actions\Admin;
 use App\Models\Action;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
+use App\Modules\Course\Enums\Status;
+use App\Modules\Course\Models\Course;
 use App\Modules\Metatag\Template\Template;
 use App\Modules\Metatag\Template\TemplateException;
 use App\Modules\Skill\Entities\Skill as SkillEntity;
@@ -101,8 +103,18 @@ class SkillUpdateAction extends Action
         $skillEntity = $action->run();
 
         if ($skillEntity) {
+            $countSkillCourses = Course::where('courses.status', Status::ACTIVE->value)
+                ->whereHas('school', function ($query) {
+                    $query->where('schools.status', true);
+                })
+                ->whereHas('skills', function ($query) {
+                    $query->where('skills.id', $this->id);
+                })
+                ->count();
+
             $templateValues = [
                 'skill' => $this->name,
+                'countSkillCourses' => $countSkillCourses,
             ];
 
             $template = new Template();

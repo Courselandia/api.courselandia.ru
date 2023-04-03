@@ -20,7 +20,7 @@ class Apply
  * Header: {course} от {school:genitive}
  *
  * Направления:
- * Title: Каталог онлайн-курсов по {direction:dative}[countDirectionCourses:: {countDirectionCourses:курс|genitive} для обучения] — Courselandia
+ * Title: Каталог онлайн-курсов по {direction:dative}[countDirectionCourses:: {countDirectionCourses:курс|nominative} для обучения] — Courselandia
  * Description: В каталоге Courselandia вы можете найти интересные курсы по направлению {direction:nominative} [countDirectionCourses:из {countDirectionCourses:вариант|genitive}]. Здесь полное описание курсов, удобный поиск, рейтинги, обучающие программы.
  * Header: Онлайн курсы по {direction:dative}
  *
@@ -30,8 +30,13 @@ class Apply
  * Header: Онлайн-курсы по профессии {profession:nominative}
  *
  * Категория:
- * Title: Каталог онлайн-курсов по {category:dative}[countCategoryCourses:: {countCategoryCourses:курс|genitive} для обучения с нуля] — Courselandia
- * Description: Выберите обучающий онлайн-курс в категории {category:nominative} в каталоге Courselandia [countCategoryCourses:— {countProfessionCourses:курс|nominative} для вас]. Рейтинги онлайн-школ, сравнение цен, быстрый поиск, сравнение курсов, обучающие программы.
+ * Title: Каталог онлайн-курсов по {category:dative}[countCategoryCourses:: {countCategoryCourses:курс|nominative} для обучения с нуля] — Courselandia
+ * Description: Выберите обучающий онлайн-курс в категории {category:nominative} в каталоге Courselandia [countCategoryCourses:— {countCategoryCourses:курс|nominative} для вас]. Рейтинги онлайн-школ, сравнение цен, быстрый поиск, сравнение курсов, обучающие программы.
  * Header: Онлайн курсы по {category:dative}
+ *
+ * Навыки:
+ * Title: Каталог онлайн-курсов по {skill:dative}[countSkillCourses:: {countSkillCourses:курс|nominative} для обучения] — Courselandia
+ * Description: Подберите обучающий онлайн-курс для получения навыка {skill:nominative} из каталога Courselandia [countSkillCourses:— {countSkillCourses:курс|nominative} для вас]. Сравнение цен, рейтинг онлайн-школ, сравнение курсов.
+ * Header: Онлайн курсы по {skill:dative}
  */
 }

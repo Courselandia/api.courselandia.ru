@@ -12,11 +12,13 @@ use App\Modules\Metatag\Template\Tags\TagCategory;
 use App\Modules\Metatag\Template\Tags\TagCountCategoryCourses;
 use App\Modules\Metatag\Template\Tags\TagCountDirectionCourses;
 use App\Modules\Metatag\Template\Tags\TagCountProfessionCourses;
+use App\Modules\Metatag\Template\Tags\TagCountSkillCourses;
 use App\Modules\Metatag\Template\Tags\TagCourse;
 use App\Modules\Metatag\Template\Tags\TagDirection;
 use App\Modules\Metatag\Template\Tags\TagPrice;
 use App\Modules\Metatag\Template\Tags\TagProfession;
 use App\Modules\Metatag\Template\Tags\TagSchool;
+use App\Modules\Metatag\Template\Tags\TagSkill;
 use JetBrains\PhpStorm\ArrayShape;
 
 /**
@@ -42,10 +44,12 @@ class Template
             ->addTag(new TagCategory())
             ->addTag(new TagDirection())
             ->addTag(new TagProfession())
+            ->addTag(new TagSkill())
             ->addTag(new TagPrice())
             ->addTag(new TagCountDirectionCourses())
             ->addTag(new TagCountProfessionCourses())
-            ->addTag(new TagCountCategoryCourses());
+            ->addTag(new TagCountCategoryCourses())
+            ->addTag(new TagCountSkillCourses());
     }
 
     /**
