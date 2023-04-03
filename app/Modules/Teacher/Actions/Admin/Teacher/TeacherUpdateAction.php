@@ -124,7 +124,9 @@ class TeacherUpdateAction extends Action
         $teacherEntity = $action->run();
 
         if ($teacherEntity) {
-            $templateValues = [];
+            $templateValues = [
+                'teacher' => $this->name,
+            ];
 
             $template = new Template();
 

@@ -89,7 +89,9 @@ class ProfessionCreateAction extends Action
     {
         $action = app(MetatagSetAction::class);
         $template = new Template();
-        $templateValues = [];
+        $templateValues = [
+            'profession' => $this->name,
+        ];
 
         $action->description = $template->convert($this->description_template, $templateValues);
         $action->title = $template->convert($this->title_template, $templateValues);

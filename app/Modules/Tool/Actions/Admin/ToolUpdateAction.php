@@ -101,7 +101,9 @@ class ToolUpdateAction extends Action
         $toolEntity = $action->run();
 
         if ($toolEntity) {
-            $templateValues = [];
+            $templateValues = [
+                'tool' => $this->name,
+            ];
 
             $template = new Template();
 

@@ -115,7 +115,9 @@ class CategoryUpdateAction extends Action
         $categoryEntity = $action->run();
 
         if ($categoryEntity) {
-            $templateValues = [];
+            $templateValues = [
+                'category' => $this->name,
+            ];
 
             $template = new Template();
 

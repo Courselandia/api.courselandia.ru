@@ -8,16 +8,10 @@
 
 namespace App\Modules\Metatag\Template\Tags;
 
-use Log;
-use Throwable;
-use Config;
-use App\Modules\Metatag\Template\Tag;
-use Morpher\Ws3Client\Morpher;
-
 /**
- * Тэг обработчик для названия курса: {course}.
+ * Тэг обработчик для категории инструментов: {tool}.
  */
-class TagCourse extends TagSchool
+class TagTool extends TagCourse
 {
     /**
      * Название тэга.
@@ -26,6 +20,6 @@ class TagCourse extends TagSchool
      */
     public function getName(): string
     {
-        return 'course';
+        return 'tool';
     }
 }

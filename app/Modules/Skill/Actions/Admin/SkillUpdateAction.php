@@ -101,7 +101,9 @@ class SkillUpdateAction extends Action
         $skillEntity = $action->run();
 
         if ($skillEntity) {
-            $templateValues = [];
+            $templateValues = [
+                'skill' => $this->name,
+            ];
 
             $template = new Template();
 

@@ -101,7 +101,9 @@ class ProfessionUpdateAction extends Action
         $professionEntity = $action->run();
 
         if ($professionEntity) {
-            $templateValues = [];
+            $templateValues = [
+                'profession' => $this->name,
+            ];
 
             $template = new Template();
 

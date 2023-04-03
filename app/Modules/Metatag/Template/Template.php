@@ -8,8 +8,11 @@
 
 namespace App\Modules\Metatag\Template;
 
+use App\Modules\Metatag\Template\Tags\TagCategory;
 use App\Modules\Metatag\Template\Tags\TagCourse;
+use App\Modules\Metatag\Template\Tags\TagDirection;
 use App\Modules\Metatag\Template\Tags\TagPrice;
+use App\Modules\Metatag\Template\Tags\TagProfession;
 use App\Modules\Metatag\Template\Tags\TagSchool;
 use JetBrains\PhpStorm\ArrayShape;
 
@@ -33,6 +36,9 @@ class Template
         $this
             ->addTag(new TagSchool())
             ->addTag(new TagCourse())
+            ->addTag(new TagCategory())
+            ->addTag(new TagDirection())
+            ->addTag(new TagProfession())
             ->addTag(new TagPrice());
     }
 

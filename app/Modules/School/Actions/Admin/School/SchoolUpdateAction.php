@@ -133,6 +133,10 @@ class SchoolUpdateAction extends Action
         if ($schoolEntity) {
             $templateValues = [];
 
+            $templateValues = [
+                'school' => $this->name,
+            ];
+
             $template = new Template();
 
             $action = app(MetatagSetAction::class);

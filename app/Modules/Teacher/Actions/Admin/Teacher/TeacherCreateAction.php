@@ -113,7 +113,9 @@ class TeacherCreateAction extends Action
         $action = app(MetatagSetAction::class);
         $template = new Template();
 
-        $templateValues = [];
+        $templateValues = [
+            'teacher' => $this->name,
+        ];
 
         $action->description = $template->convert($this->description_template, $templateValues);
         $action->title = $template->convert($this->title_template, $templateValues);

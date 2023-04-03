@@ -118,7 +118,9 @@ class DirectionUpdateAction extends Action
         $directionEntity = $action->run();
 
         if ($directionEntity) {
-            $templateValues = [];
+            $templateValues = [
+                'direction' => $this->name,
+            ];
 
             $template = new Template();
 
