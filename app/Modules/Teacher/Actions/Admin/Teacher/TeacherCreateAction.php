@@ -115,6 +115,7 @@ class TeacherCreateAction extends Action
 
         $templateValues = [
             'teacher' => $this->name,
+            'countTeacherCourses' => 0,
         ];
 
         $action->description = $template->convert($this->description_template, $templateValues);
