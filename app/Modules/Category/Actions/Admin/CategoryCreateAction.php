@@ -62,7 +62,7 @@ class CategoryCreateAction extends Action
      *
      * @var string|null
      */
-    public ?string $template_description = null;
+    public ?string $description_template = null;
 
     /**
      * Ключевые слова.
@@ -76,7 +76,7 @@ class CategoryCreateAction extends Action
      *
      * @var string|null
      */
-    public ?string $template_title = null;
+    public ?string $title_template = null;
 
     /**
      * ID направлений.
@@ -106,10 +106,10 @@ class CategoryCreateAction extends Action
 
         $templateValues = [];
 
-        $action->description = $template->convert($this->template_description, $templateValues);
-        $action->title = $template->convert($this->template_title, $templateValues);
-        $action->template_description = $this->template_description;
-        $action->template_title = $this->template_title;
+        $action->description = $template->convert($this->description_template, $templateValues);
+        $action->title = $template->convert($this->title_template, $templateValues);
+        $action->description_template = $this->description_template;
+        $action->title_template = $this->title_template;
         $action->keywords = $this->keywords;
 
         $metatag = $action->run();
@@ -117,6 +117,7 @@ class CategoryCreateAction extends Action
         $categoryEntity = new CategoryEntity();
         $categoryEntity->name = $this->name;
         $categoryEntity->header = $template->convert($this->header_template, $templateValues);
+        $categoryEntity->header_template = $this->header_template;
         $categoryEntity->link = $this->link;
         $categoryEntity->text = $this->text;
         $categoryEntity->status = $this->status;

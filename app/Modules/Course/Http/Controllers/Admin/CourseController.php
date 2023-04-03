@@ -138,8 +138,8 @@ class CourseController extends Controller
             $action->employments = $request->get('employments');
             $action->features = $request->get('features');
 
-            $action->template_description = $request->get('template_description');
-            $action->template_title = $request->get('template_title');
+            $action->description_template = $request->get('description_template');
+            $action->title_template = $request->get('title_template');
             $action->keywords = $request->get('keywords');
 
             if ($request->hasFile('image') && $request->file('image')->isValid()) {
@@ -224,8 +224,8 @@ class CourseController extends Controller
             $action->employments = $request->get('employments');
             $action->features = $request->get('features');
 
-            $action->template_description = $request->get('template_description');
-            $action->template_title = $request->get('template_title');
+            $action->description_template = $request->get('description_template');
+            $action->title_template = $request->get('title_template');
             $action->keywords = $request->get('keywords');
 
             if ($request->hasFile('image') && $request->file('image')->isValid()) {

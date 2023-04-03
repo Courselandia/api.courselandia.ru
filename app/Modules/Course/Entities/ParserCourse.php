@@ -34,13 +34,6 @@ class ParserCourse extends Entity
     public string|null $name = null;
 
     /**
-     * Заголовок.
-     *
-     * @var string|null
-     */
-    public string|null $header = null;
-
-    /**
      * Описание.
      *
      * @var string|null

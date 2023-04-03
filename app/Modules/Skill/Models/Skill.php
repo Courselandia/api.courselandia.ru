@@ -33,6 +33,7 @@ use App\Modules\Skill\Filters\SkillFilter;
  * @property int|string $metatag_id ID метатегов.
  * @property string $name Название.
  * @property string $header Заголовок.
+ * @property string $header_template Шаблон заголовка.
  * @property string $link Ссылка.
  * @property string $text Текст.
  * @property string $status Статус.
@@ -60,6 +61,7 @@ class Skill extends Eloquent
         'metatag_id',
         'name',
         'header',
+        'header_template',
         'link',
         'text',
         'status',
@@ -74,6 +76,7 @@ class Skill extends Eloquent
         'metatag_id' => 'string',
         'name' => 'string',
         'header' => 'string',
+        'header_template' => 'string',
         'link' => 'string',
         'text' => 'string',
         'status' => 'string'
@@ -83,6 +86,7 @@ class Skill extends Eloquent
             'metatag_id' => 'digits_between:0,20',
             'name' => 'required|between:1,191',
             'header' => 'max:191',
+            'header_template' => 'max:191',
             'link' => 'required|between:1,191|alpha_dash|unique_soft:skills,link,' . $this->id . ',id',
             'text' => 'max:65000',
             'status' => 'required|boolean'
@@ -100,6 +104,7 @@ class Skill extends Eloquent
             'metatag_id' => trans('skill::models.skill.metatagId'),
             'name' => trans('skill::models.skill.name'),
             'header' => trans('skill::models.skill.header'),
+            'header_template' => trans('skill::models.skill.headerTemplate'),
             'link' => trans('skill::models.skill.link'),
             'text' => trans('skill::models.skill.text'),
             'status' => trans('skill::models.skill.status')

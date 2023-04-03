@@ -97,6 +97,7 @@ class ProfessionControllerTest extends TestCase
             'id',
             'name',
             'header',
+            'header_template',
             'link',
             'text',
             'status',

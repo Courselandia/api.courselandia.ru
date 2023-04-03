@@ -228,8 +228,8 @@ class Import
 
                 $action->title = $template->convert($templateTitle, $templateValues);
                 $action->description = $template->convert($templateDescription, $templateValues);
-                $action->template_title = $templateTitle;
-                $action->template_description = $templateDescription;
+                $action->title_template = $templateTitle;
+                $action->description_template = $templateDescription;
 
                 $metatag = $action->run();
 

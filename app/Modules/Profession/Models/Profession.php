@@ -35,6 +35,7 @@ use App\Modules\Profession\Filters\ProfessionFilter;
  * @property int|string $metatag_id ID метатегов.
  * @property string $name Название.
  * @property string $header Заголовок.
+ * @property string $header_template Шаблон заголовка.
  * @property string $link Ссылка.
  * @property string $text Текст.
  * @property string $status Статус.
@@ -63,6 +64,7 @@ class Profession extends Eloquent
         'metatag_id',
         'name',
         'header',
+        'header_template',
         'link',
         'text',
         'status',
@@ -77,6 +79,7 @@ class Profession extends Eloquent
         'metatag_id' => 'string',
         'name' => 'string',
         'header' => 'string',
+        'header_template' => 'string',
         'link' => 'string',
         'text' => 'string',
         'status' => 'string'
@@ -86,6 +89,7 @@ class Profession extends Eloquent
             'metatag_id' => 'digits_between:0,20',
             'name' => 'required|between:1,191',
             'header' => 'max:191',
+            'header_template' => 'max:191',
             'link' => 'required|between:1,191|alpha_dash|unique_soft:professions,link,' . $this->id . ',id',
             'text' => 'max:65000',
             'status' => 'required|boolean'
@@ -103,6 +107,7 @@ class Profession extends Eloquent
             'metatag_id' => trans('profession::models.profession.metatagId'),
             'name' => trans('profession::models.profession.name'),
             'header' => trans('profession::models.profession.header'),
+            'header_template' => trans('profession::models.profession.headerTemplate'),
             'link' => trans('profession::models.profession.link'),
             'text' => trans('profession::models.profession.text'),
             'status' => trans('profession::models.profession.status')

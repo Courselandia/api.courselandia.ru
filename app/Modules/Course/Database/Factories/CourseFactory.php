@@ -43,6 +43,7 @@ class CourseFactory extends Factory
             'school_id' => School::factory(),
             'name' => $this->faker->text(160),
             'header' => $this->faker->text(160),
+            'header_template' => $this->faker->text(160),
             'text' => $this->faker->text(1000),
             'link' => Util::latin($this->faker->text(100)),
             'url' => $this->faker->url(),

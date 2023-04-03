@@ -122,7 +122,6 @@ class PublicationUpdateAction extends Action
             $action->id = $publicationEntity->metatag_id ?: null;
 
             $publicationEntity->metatag_id = $action->run()->id;
-
             $publicationEntity->published_at = $this->published_at;
             $publicationEntity->header = $this->header;
             $publicationEntity->link = $this->link;

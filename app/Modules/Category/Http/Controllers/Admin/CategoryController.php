@@ -108,8 +108,8 @@ class CategoryController extends Controller
             $action->directions = $request->get('directions');
             $action->professions = $request->get('professions');
             $action->status = $request->get('status');
-            $action->template_description = $request->get('template_description');
-            $action->template_title = $request->get('template_title');
+            $action->description_template = $request->get('description_template');
+            $action->title_template = $request->get('title_template');
             $action->keywords = $request->get('keywords');
 
             $data = $action->run();
@@ -164,8 +164,8 @@ class CategoryController extends Controller
             $action->professions = $request->get('professions');
             $action->status = $request->get('status');
             $action->title = $request->get('title');
-            $action->template_description = $request->get('template_description');
-            $action->template_title = $request->get('template_title');
+            $action->description_template = $request->get('description_template');
+            $action->title_template = $request->get('title_template');
             $data = $action->run();
 
             Log::info(

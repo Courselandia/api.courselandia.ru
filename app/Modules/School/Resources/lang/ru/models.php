@@ -4,7 +4,8 @@ return [
     'school' => [
         'metatagId' => 'ID метатэгов',
         'publishedAt' => 'Дата добавления',
-        'header' => 'Заголовок статьи',
+        'header' => 'Заголовок',
+        'headerTemplate' => 'Шаблон заголовок',
         'link' => 'Ссылка на статью',
         'anons' => 'Анонс',
         'article' => 'Текст статьи',

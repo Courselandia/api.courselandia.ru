@@ -4,7 +4,8 @@ return [
     'school' => [
         'metatagId' => 'ID metatag',
         'publishedAt' => 'Date add',
-        'header' => 'Title',
+        'header' => 'Header',
+        'headerTemplate' => 'Header template',
         'link' => 'Link',
         'anons' => 'Anons',
         'article' => 'Article',

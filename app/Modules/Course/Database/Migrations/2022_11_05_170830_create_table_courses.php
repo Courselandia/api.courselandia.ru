@@ -59,7 +59,7 @@ class CreateTableCourses extends Migration
         });
 
         DB::statement('ALTER TABLE courses ADD FULLTEXT search(name_morphy, text_morphy)');
-        DB::statement('ALTER TABLE courses ADD FULLTEXT search_header(name_morphy)');
+        DB::statement('ALTER TABLE courses ADD FULLTEXT search_name(name_morphy)');
         DB::statement('ALTER TABLE courses ADD FULLTEXT search_text(text_morphy)');
     }
 

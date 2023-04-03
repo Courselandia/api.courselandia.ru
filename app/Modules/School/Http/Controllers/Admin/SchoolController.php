@@ -108,8 +108,8 @@ class SchoolController extends Controller
             $action->rating = $request->get('rating', 0);
             $action->site = $request->get('site');
             $action->status = $request->get('status');
-            $action->template_description = $request->get('template_description');
-            $action->template_title = $request->get('template_title');
+            $action->description_template = $request->get('description_template');
+            $action->title_template = $request->get('title_template');
             $action->keywords = $request->get('keywords');
 
             if ($request->hasFile('imageLogo') && $request->file('imageLogo')->isValid()) {
@@ -171,8 +171,8 @@ class SchoolController extends Controller
             $action->rating = $request->get('rating', 0);
             $action->site = $request->get('site');
             $action->status = $request->get('status');
-            $action->template_description = $request->get('template_description');
-            $action->template_title = $request->get('template_title');
+            $action->description_template = $request->get('description_template');
+            $action->title_template = $request->get('title_template');
             $action->keywords = $request->get('keywords');
 
             if ($request->hasFile('imageLogo') && $request->file('imageLogo')->isValid()) {

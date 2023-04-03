@@ -106,8 +106,8 @@ class SkillController extends Controller
             $action->link = $request->get('link');
             $action->text = $request->get('text');
             $action->status = $request->get('status');
-            $action->template_description = $request->get('template_description');
-            $action->template_title = $request->get('template_title');
+            $action->description_template = $request->get('description_template');
+            $action->title_template = $request->get('title_template');
             $action->keywords = $request->get('keywords');
 
             $data = $action->run();
@@ -159,8 +159,8 @@ class SkillController extends Controller
             $action->link = $request->get('link');
             $action->text = $request->get('text');
             $action->status = $request->get('status');
-            $action->template_description = $request->get('template_description');
-            $action->template_title = $request->get('template_title');
+            $action->description_template = $request->get('description_template');
+            $action->title_template = $request->get('title_template');
             $action->keywords = $request->get('keywords');
             $data = $action->run();
 

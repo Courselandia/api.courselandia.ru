@@ -16,8 +16,8 @@ class AddColumnTemplateToTableMetatags extends Migration
     public function up(): void
     {
         Schema::table('metatags', function (Blueprint $table) {
-            $table->text('template_description')->nullable();
-            $table->text('template_title')->nullable();
+            $table->text('description_template')->nullable();
+            $table->text('title_template')->nullable();
         });
     }
 
@@ -29,8 +29,8 @@ class AddColumnTemplateToTableMetatags extends Migration
     public function down(): void
     {
         Schema::table('metatags', function (Blueprint $table) {
-            $table->dropColumn('template_description');
-            $table->dropColumn('template_title');
+            $table->dropColumn('description_template');
+            $table->dropColumn('title_template');
         });
     }
 }

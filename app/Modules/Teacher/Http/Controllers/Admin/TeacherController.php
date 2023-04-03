@@ -108,8 +108,8 @@ class TeacherController extends Controller
             $action->status = $request->get('status');
             $action->title = $request->get('title');
             $action->description = $request->get('description');
-            $action->template_description = $request->get('template_description');
-            $action->template_title = $request->get('template_title');
+            $action->description_template = $request->get('description_template');
+            $action->title_template = $request->get('title_template');
             $action->schools = $request->get('schools');
 
             if ($request->hasFile('image') && $request->file('image')->isValid()) {
@@ -167,8 +167,8 @@ class TeacherController extends Controller
             $action->status = $request->get('status');
             $action->title = $request->get('title');
             $action->description = $request->get('description');
-            $action->template_description = $request->get('template_description');
-            $action->template_title = $request->get('template_title');
+            $action->description_template = $request->get('description_template');
+            $action->title_template = $request->get('title_template');
             $action->schools = $request->get('schools');
 
             if ($request->hasFile('image') && $request->file('image')->isValid()) {

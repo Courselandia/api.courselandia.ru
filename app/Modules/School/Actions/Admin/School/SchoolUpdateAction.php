@@ -100,7 +100,7 @@ class SchoolUpdateAction extends Action
      *
      * @var string|null
      */
-    public ?string $template_description = null;
+    public ?string $description_template = null;
 
     /**
      * Ключевые слова.
@@ -114,7 +114,7 @@ class SchoolUpdateAction extends Action
      *
      * @var string|null
      */
-    public ?string $template_title = null;
+    public ?string $title_template = null;
 
     /**
      * Метод запуска логики.
@@ -136,16 +136,17 @@ class SchoolUpdateAction extends Action
             $template = new Template();
 
             $action = app(MetatagSetAction::class);
-            $action->description = $template->convert($this->template_description, $templateValues);
-            $action->title = $template->convert($this->template_title, $templateValues);
-            $action->template_description = $this->template_description;
-            $action->template_title = $this->template_title;
+            $action->description = $template->convert($this->description_template, $templateValues);
+            $action->title = $template->convert($this->title_template, $templateValues);
+            $action->description_template = $this->description_template;
+            $action->title_template = $this->title_template;
             $action->keywords = $this->keywords;
             $action->id = $schoolEntity->metatag_id ?: null;
 
             $schoolEntity->metatag_id = $action->run()->id;
             $schoolEntity->name = $this->name;
             $schoolEntity->header = $template->convert($this->header_template, $templateValues);
+            $schoolEntity->header_template = $this->header_template;
             $schoolEntity->link = $this->link;
             $schoolEntity->text = $this->text;
             $schoolEntity->site = $this->site;

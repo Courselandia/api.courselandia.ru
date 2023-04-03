@@ -48,6 +48,13 @@ class Direction extends Entity
     public ?string $header = null;
 
     /**
+     * Заголовок.
+     *
+     * @var string|null
+     */
+    public ?string $header_template = null;
+
+    /**
      * Вес.
      *
      * @var int|null

@@ -152,7 +152,7 @@ class CategoryControllerTest extends TestCase
             'api/private/admin/category/create',
             [
                 'name' => $faker->text(150),
-                'header' => $faker->text(150),
+                'header_template' => $faker->text(150),
                 'link' => Util::latin($faker->text(150)),
                 'text' => $faker->text(10000),
                 'status' => true,
@@ -182,7 +182,7 @@ class CategoryControllerTest extends TestCase
             'POST',
             'api/private/admin/category/create',
             [
-                'header' => $faker->text(150),
+                'header_template' => $faker->text(150),
                 'link' => Util::latin($faker->text(150)),
                 'text' => $faker->text(10000),
                 'status' => true,
@@ -215,7 +215,7 @@ class CategoryControllerTest extends TestCase
             'api/private/admin/category/update/' . $category->id,
             [
                 'name' => $faker->text(150),
-                'header' => $faker->text(150),
+                'header_template' => $faker->text(150),
                 'link' => Util::latin($faker->text(150)),
                 'text' => $faker->text(10000),
                 'status' => true,
@@ -247,7 +247,7 @@ class CategoryControllerTest extends TestCase
             'api/private/admin/category/update/' . $category->id,
             [
                 'name' => $faker->text(150),
-                'header' => $faker->text(350),
+                'header_template' => $faker->text(350),
                 'link' => Util::latin($faker->text(150)),
                 'text' => $faker->text(10000),
                 'status' => 'test',
@@ -277,7 +277,7 @@ class CategoryControllerTest extends TestCase
             'api/private/admin/category/update/1000',
             [
                 'name' => $faker->text(150),
-                'header' => $faker->text(150),
+                'header_template' => $faker->text(150),
                 'link' => Util::latin($faker->text(150)),
                 'text' => $faker->text(10000),
                 'status' => true,
@@ -398,6 +398,7 @@ class CategoryControllerTest extends TestCase
             'id',
             'name',
             'header',
+            'header_template',
             'link',
             'text',
             'status',
@@ -413,6 +414,7 @@ class CategoryControllerTest extends TestCase
                     'id',
                     'name',
                     'header',
+                    'header_template',
                     'weight',
                     'link',
                     'text',
@@ -431,6 +433,7 @@ class CategoryControllerTest extends TestCase
                     'id',
                     'name',
                     'header',
+                    'header_template',
                     'link',
                     'text',
                     'status',

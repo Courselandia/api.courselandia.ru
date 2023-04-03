@@ -70,7 +70,7 @@ class ToolUpdateAction extends Action
      *
      * @var string|null
      */
-    public ?string $template_description = null;
+    public ?string $description_template = null;
 
     /**
      * Ключевые слова.
@@ -84,7 +84,7 @@ class ToolUpdateAction extends Action
      *
      * @var string|null
      */
-    public ?string $template_title = null;
+    public ?string $title_template = null;
 
     /**
      * Метод запуска логики.
@@ -106,10 +106,10 @@ class ToolUpdateAction extends Action
             $template = new Template();
 
             $action = app(MetatagSetAction::class);
-            $action->description = $template->convert($this->template_description, $templateValues);
-            $action->title = $template->convert($this->template_title, $templateValues);
-            $action->template_description = $this->template_description;
-            $action->template_title = $this->template_title;
+            $action->description = $template->convert($this->description_template, $templateValues);
+            $action->title = $template->convert($this->title_template, $templateValues);
+            $action->description_template = $this->description_template;
+            $action->title_template = $this->title_template;
             $action->keywords = $this->keywords;
             $action->id = $toolEntity->metatag_id ?: null;
 
@@ -118,6 +118,7 @@ class ToolUpdateAction extends Action
             $toolEntity->id = $this->id;
             $toolEntity->name = $this->name;
             $toolEntity->header = $template->convert($this->header_template, $templateValues);
+            $toolEntity->header_template = $this->header_template;
             $toolEntity->link = $this->link;
             $toolEntity->text = $this->text;
             $toolEntity->status = $this->status;

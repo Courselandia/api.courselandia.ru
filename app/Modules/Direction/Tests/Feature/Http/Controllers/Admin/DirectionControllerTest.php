@@ -112,7 +112,7 @@ class DirectionControllerTest extends TestCase
             'api/private/admin/direction/create',
             [
                 'name' => $faker->text(150),
-                'header' => $faker->text(150),
+                'header_template' => $faker->text(150),
                 'weight' => $faker->numberBetween(1, 500),
                 'link' => Util::latin($faker->text(150)),
                 'status' => true,
@@ -140,7 +140,7 @@ class DirectionControllerTest extends TestCase
             'api/private/admin/direction/create',
             [
                 'name' => $faker->text(150),
-                'header' => $faker->text(150),
+                'header_template' => $faker->text(150),
                 'weight' => $faker->numberBetween(1, 500),
                 'link' => Util::latin($faker->text(150)),
                 'text' => $faker->text(10000),
@@ -168,7 +168,7 @@ class DirectionControllerTest extends TestCase
             'POST',
             'api/private/admin/direction/create',
             [
-                'header' => $faker->text(150),
+                'header_template' => $faker->text(150),
                 'weight' => $faker->numberBetween(1, 500),
                 'link' => Util::latin($faker->text(150)),
                 'text' => $faker->text(10000),
@@ -198,7 +198,7 @@ class DirectionControllerTest extends TestCase
             'api/private/admin/direction/update/' . $direction->id,
             [
                 'name' => $faker->text(150),
-                'header' => $faker->text(150),
+                'header_template' => $faker->text(150),
                 'weight' => $faker->numberBetween(1, 500),
                 'link' => Util::latin($faker->text(150)),
                 'text' => $faker->text(10000),
@@ -228,7 +228,7 @@ class DirectionControllerTest extends TestCase
             'api/private/admin/direction/update/' . $direction->id,
             [
                 'name' => $faker->text(150),
-                'header' => $faker->realTextBetween(350, 500),
+                'header_template' => $faker->realTextBetween(350, 500),
                 'weight' => $faker->numberBetween(1, 500),
                 'link' => Util::latin($faker->text(150)),
                 'text' => $faker->text(10000),
@@ -257,7 +257,7 @@ class DirectionControllerTest extends TestCase
             'api/private/admin/direction/update/1000',
             [
                 'name' => $faker->text(150),
-                'header' => $faker->text(150),
+                'header_template' => $faker->text(150),
                 'weight' => $faker->numberBetween(1, 500),
                 'link' => Util::latin($faker->text(150)),
                 'text' => $faker->text(10000),
@@ -376,6 +376,7 @@ class DirectionControllerTest extends TestCase
             'id',
             'name',
             'header',
+            'header_template',
             'weight',
             'link',
             'text',

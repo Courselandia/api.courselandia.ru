@@ -48,6 +48,13 @@ class School extends Entity
     public ?string $header = null;
 
     /**
+     * Шаблон заголовка.
+     *
+     * @var string|null
+     */
+    public ?string $header_template = null;
+
+    /**
      * Ссылка.
      *
      * @var string|null

@@ -34,6 +34,7 @@ use App\Modules\Category\Filters\CategoryFilter;
  * @property int|string $metatag_id ID метатегов.
  * @property string $name Название.
  * @property string $header Заголовок.
+ * @property string $header_template Шаблон заголовка.
  * @property string $link Ссылка.
  * @property string $text Текст.
  * @property string $status Статус.
@@ -63,6 +64,7 @@ class Category extends Eloquent
         'metatag_id',
         'name',
         'header',
+        'header_template',
         'link',
         'text',
         'status',
@@ -77,6 +79,7 @@ class Category extends Eloquent
         'metatag_id' => 'string',
         'name' => 'string',
         'header' => 'string',
+        'header_template' => 'string',
         'link' => 'string',
         'text' => 'string',
         'status' => 'string'
@@ -86,6 +89,7 @@ class Category extends Eloquent
             'metatag_id' => 'digits_between:0,20',
             'name' => 'required|between:1,191',
             'header' => 'max:191',
+            'header_template' => 'max:191',
             'link' => 'required|between:1,191|alpha_dash|unique_soft:categories,link,' . $this->id . ',id',
             'text' => 'max:65000',
             'status' => 'required|boolean'
@@ -103,6 +107,7 @@ class Category extends Eloquent
             'metatag_id' => trans('category::models.category.metatagId'),
             'name' => trans('category::models.category.name'),
             'header' => trans('category::models.category.header'),
+            'headerTemplate' => trans('category::models.category.headerTemplate'),
             'link' => trans('category::models.category.link'),
             'text' => trans('category::models.category.text'),
             'status' => trans('category::models.category.status')

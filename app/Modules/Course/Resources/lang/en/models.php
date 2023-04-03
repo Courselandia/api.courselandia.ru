@@ -11,6 +11,7 @@ return [
         'image_small_id' => 'Small image',
         'name' => 'Name',
         'header' => 'Header',
+        'headerTemplate' => 'Header Template',
         'text' => 'Text',
         'name_morphy' => 'Morphy Name',
         'text_morphy' => 'Morphy Description',
