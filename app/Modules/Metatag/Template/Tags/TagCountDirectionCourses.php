@@ -43,9 +43,7 @@ class TagCountDirectionCourses extends TagSchool
             if (isset($configs[0])) {
                 $value = (int)$value;
                 $morpher = new Morpher(Config::get('morph.url'), Config::get('morph.token'));
-                $unit = $morpher->russian->Parse($configs[0]);
-                $unit = $value === 1 ? $unit->Nominative : $unit->Plural->Nominative;
-                $result = $morpher->russian->Spell((int)$value, $unit);
+                $result = $morpher->russian->Spell($value, $configs[0]);
                 $pad = ucfirst($configs[1]);
 
                 return $value . ' ' . $result->UnitDeclension->{$pad};

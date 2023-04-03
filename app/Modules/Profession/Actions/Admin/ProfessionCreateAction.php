@@ -91,6 +91,7 @@ class ProfessionCreateAction extends Action
         $template = new Template();
         $templateValues = [
             'profession' => $this->name,
+            'countProfessionCourses' => 0,
         ];
 
         $action->description = $template->convert($this->description_template, $templateValues);

@@ -23,5 +23,10 @@ class Apply
  * Title: Онлайн-курсы по {direction:dative}[countDirectionCourses:: {countDirectionCourses:курс|genitive} для обучения] — Courselandia
  * Description: В каталоге Courselandia вы можете найти интересные курсы по направлению {direction:nominative} [countDirectionCourses:из {countDirectionCourses:вариант|genitive}]. Здесь полное описание курсов, удобный поиск, рейтинги, обучающие программы.
  * Header: Онлайн курсы по {direction:dative}
+ *
+ * Профессия:
+ * Title: Онлайн-курсы по профессии {profession:nominative} [countProfessionCourses:— {countProfessionCourses:курс|nominative} для обучения] — Courselandia
+ * Description: Найдите для себя онлайн-курс по профессии {profession:nominative} из каталога Courselandia [countProfessionCourses:— {countProfessionCourses:курс|nominative} на выбор]. Рейтинг онлайн-школ и курсов, легкий поиск, сравнение цен.
+ * Header: Онлайн-курсы по профессии {profession:nominative}
  */
 }

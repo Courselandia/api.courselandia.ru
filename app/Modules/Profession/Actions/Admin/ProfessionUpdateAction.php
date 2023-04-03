@@ -11,6 +11,8 @@ namespace App\Modules\Profession\Actions\Admin;
 use App\Models\Action;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
+use App\Modules\Course\Enums\Status;
+use App\Modules\Course\Models\Course;
 use App\Modules\Metatag\Template\Template;
 use App\Modules\Metatag\Template\TemplateException;
 use App\Modules\Profession\Entities\Profession as ProfessionEntity;
@@ -101,8 +103,18 @@ class ProfessionUpdateAction extends Action
         $professionEntity = $action->run();
 
         if ($professionEntity) {
+            $countProfessionCourses = Course::where('courses.status', Status::ACTIVE->value)
+                ->whereHas('school', function ($query) {
+                    $query->where('schools.status', true);
+                })
+                ->whereHas('professions', function ($query) {
+                    $query->where('professions.id', $this->id);
+                })
+                ->count();
+
             $templateValues = [
                 'profession' => $this->name,
+                'countProfessionCourses' => $countProfessionCourses,
             ];
 
             $template = new Template();

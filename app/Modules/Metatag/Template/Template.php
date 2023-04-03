@@ -10,6 +10,7 @@ namespace App\Modules\Metatag\Template;
 
 use App\Modules\Metatag\Template\Tags\TagCategory;
 use App\Modules\Metatag\Template\Tags\TagCountDirectionCourses;
+use App\Modules\Metatag\Template\Tags\TagCountProfessionCourses;
 use App\Modules\Metatag\Template\Tags\TagCourse;
 use App\Modules\Metatag\Template\Tags\TagDirection;
 use App\Modules\Metatag\Template\Tags\TagPrice;
@@ -41,7 +42,8 @@ class Template
             ->addTag(new TagDirection())
             ->addTag(new TagProfession())
             ->addTag(new TagPrice())
-            ->addTag(new TagCountDirectionCourses());
+            ->addTag(new TagCountDirectionCourses())
+            ->addTag(new TagCountProfessionCourses());
     }
 
     /**
@@ -59,7 +61,7 @@ class Template
         $template = $this->convertTags($template, $values);
         $template = str_replace(' .', '.', $template);
 
-        return str_replace(['    ', '   ', '  '], [' '], $template);
+        return str_replace(['    ', '   ', '  '], ' ', $template);
     }
 
     /**
@@ -74,7 +76,7 @@ class Template
     private function convertConditions(?string $template, ?array $values): ?string
     {
         if ($template) {
-            preg_match_all("/\[[A-Za-z]*:[{}A-Za-zА-Яа-я0-9,.:;| ]*(\/[{}A-Za-zА-Яа-я0-9,.:;| ]*)?\]/u", $template, $matches);
+            preg_match_all("/\[[A-Za-z]*:[{}A-Za-zА-Яа-я0-9,.:;|— ]*(\/[{}A-Za-zА-Яа-я0-9,.:;|— ]*)?\]/u", $template, $matches);
             $conditions = [];
 
             if (isset($matches[0][0])) {
@@ -82,7 +84,7 @@ class Template
                     $conditionTag = $matches[0][$i];
                     $conditions[$matches[0][$i]] = '';
 
-                    preg_match_all("/\[([A-Za-z]*):([{}A-Za-zА-Яа-я0-9,.:;| ]*)(\/([{}A-Za-zА-Яа-я0-9,.:;| ]*))?\]/u", $conditionTag, $conditionMatches);
+                    preg_match_all("/\[([A-Za-z]*):([{}A-Za-zА-Яа-я0-9,.:;|— ]*)(\/([{}A-Za-zА-Яа-я0-9,.:;|— ]*))?\]/u", $conditionTag, $conditionMatches);
 
                     if (isset($conditionMatches[1][0]) && isset($conditionMatches[2][0])) {
                         $condition = $conditionMatches[1][0];
