@@ -9,6 +9,7 @@
 namespace App\Modules\Metatag\Apply\Tasks;
 
 use Throwable;
+use App\Modules\Metatag\Apply\Apply;
 use App\Modules\Course\Enums\Currency;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Course\Enums\Status;
@@ -79,14 +80,14 @@ class TaskCourse extends Task
             $query->where('status', true);
         });
 
-        for ($i = 0; $count; $i++) {
+        for ($i = 0; $i < $count; $i++) {
             $course = $query->clone()
-                ->offset($i + 1)
+                ->offset($i)
                 ->limit(1)
                 ->first();
 
             if ($course) {
-                sleep(1.5);
+                sleep(Apply::SLEEP);
                 /**
                  * @var Course $course
                  */
