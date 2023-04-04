@@ -41,8 +41,10 @@ class MetatagApplyCommand extends Command
      */
     public function handle(): void
     {
-        if (!$this->confirm('Данная команда приведет к удалению всех старых метатегов. Вы точно хотите продолжить? [да|нет]')) {
-            return;
+        if (!$this->option('update')) {
+            if (!$this->confirm('Данная команда приведет к удалению всех старых метатегов. Вы точно хотите продолжить? [да|нет]')) {
+                return;
+            }
         }
 
         $apply = new Apply();

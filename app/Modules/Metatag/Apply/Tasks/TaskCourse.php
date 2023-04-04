@@ -9,6 +9,7 @@
 namespace App\Modules\Metatag\Apply\Tasks;
 
 use Throwable;
+use App\Modules\Course\Enums\Currency;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Course\Enums\Status;
 use App\Modules\Course\Models\Course;
@@ -94,15 +95,26 @@ class TaskCourse extends Task
                     'course' => $course->name,
                     'school' => $course->school->name,
                     'price' => $course->price,
-                    'currency' => $course->currency,
+                    'currency' => Currency::from($course->currency),
                 ];
 
                 $action = app(MetatagSetAction::class);
 
                 if ($this->onlyUpdate()) {
-                    $action->description = $template->convert($course->metatag->description_template, $templateValues);
-                    $action->title = $template->convert($course->metatag->title_template, $templateValues);
-                    $course->header = $template->convert($course->header_template, $templateValues);
+                    $action->description = $course->metatag?->description_template
+                        ? $template->convert($course->metatag?->description_template, $templateValues)
+                        : null;
+
+                    $action->title = $course->metatag?->title_template
+                        ? $template->convert($course->metatag?->title_template, $templateValues)
+                        : null;
+
+                    $course->header = $course->header_template
+                        ? $template->convert($course->header_template, $templateValues)
+                        : null;
+
+                    $action->description_template = $course->metatag?->description_template;
+                    $action->title_template = $course->metatag?->title_template;
                 } else {
                     $action->description = $template->convert($this->description_template, $templateValues);
                     $action->title = $template->convert($this->title_template, $templateValues);
