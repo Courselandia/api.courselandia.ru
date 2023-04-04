@@ -40,7 +40,7 @@ class TagCountDirectionCourses extends TagSchool
     public function convert(?string $value = null, ?array $configs = null, ?array $values = null): string|null
     {
         //try {
-            if (isset($configs[0])) {
+            if (isset($configs[0]) && isset($configs[1])) {
                 $value = (int)$value;
                 $morpher = new Morpher(Config::get('morph.url'), Config::get('morph.token'));
                 $result = $morpher->russian->Spell($value, $configs[0]);

@@ -41,11 +41,13 @@ class TagSchool extends Tag
     public function convert(?string $value = null, ?array $configs = null, ?array $values = null): string|null
     {
         //try {
-            $morpher = new Morpher(Config::get('morph.url'), Config::get('morph.token'));
-            $result = $morpher->russian->Parse($value);
-            $pad = ucfirst($configs[0]);
+            if (isset($configs[0])) {
+                $morpher = new Morpher(Config::get('morph.url'), Config::get('morph.token'));
+                $result = $morpher->russian->Parse($value);
+                $pad = ucfirst($configs[0]);
 
-            return $result->{$pad};
+                return $result->{$pad};
+            }
         //} catch (Throwable $error) {
             // Log::debug('Morpher Error: ' . $error->getMessage());
         //}
