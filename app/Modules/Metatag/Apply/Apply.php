@@ -8,6 +8,7 @@
 
 namespace App\Modules\Metatag\Apply;
 
+use Cache;
 use App\Models\Error;
 use App\Models\Event;
 use App\Modules\Metatag\Apply\Tasks\TaskCategory;
@@ -86,6 +87,19 @@ class Apply
                 }
             }
         }
+
+        Cache::tags([
+            'course',
+            'direction',
+            'profession',
+            'category',
+            'skill',
+            'teacher',
+            'tool',
+            'processes',
+            'employment',
+            'review',
+        ])->flush();
     }
 
     /**

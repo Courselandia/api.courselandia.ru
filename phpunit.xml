@@ -58,5 +58,6 @@
         <server name="APP_PAGES_URL" value="false"/>
         <server name="GOOGLE_MAP_KEY" value="AIzaSyCKKsK2tKbKneKZyC81MgXbQDeJFTE3fFU"/>
         <server name="FIREBASE_CREDENTIALS" value="storage/app/firebase.json"/>
+        <server name="MORPHER_TOKEN" value="5e73611a-548f-4dd1-b7ca-eae7e845344d"/>
     </php>
 </phpunit>

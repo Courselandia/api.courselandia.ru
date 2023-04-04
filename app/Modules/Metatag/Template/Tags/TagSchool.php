@@ -45,7 +45,7 @@ class TagSchool extends Tag
             $result = $morpher->russian->Parse($value);
             $pad = ucfirst($configs[0]);
 
-            return mb_strtolower($result->{$pad});
+            return $result->{$pad};
         } catch (Throwable $error) {
             Log::debug('Morpher Error: ' . $error->getMessage());
         }

@@ -22,7 +22,6 @@ class CreateTableProfessions extends Migration
             $table->string('name', 191)->index('name');
             $table->string('header', 191)->nullable();
             $table->string('header_template', 191)->nullable();
-            $table->string('header_template', 191)->nullable();
             $table->string('link', 191)->index('link');
             $table->text('text')->nullable();
 
