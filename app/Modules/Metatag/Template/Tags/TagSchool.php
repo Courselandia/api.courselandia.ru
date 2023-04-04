@@ -40,7 +40,7 @@ class TagSchool extends Tag
      */
     public function convert(?string $value = null, ?array $configs = null, ?array $values = null): string|null
     {
-        //try {
+        try {
             if (isset($configs[0])) {
                 $morpher = new Morpher(Config::get('morph.url'), Config::get('morph.token'));
                 $result = $morpher->russian->Parse($value);
@@ -48,9 +48,9 @@ class TagSchool extends Tag
 
                 return $result->{$pad};
             }
-        //} catch (Throwable $error) {
-            // Log::debug('Morpher Error: ' . $error->getMessage());
-        //}
+        } catch (Throwable $error) {
+            Log::debug('Morpher Error: ' . $error->getMessage());
+        }
 
         return $value;
     }

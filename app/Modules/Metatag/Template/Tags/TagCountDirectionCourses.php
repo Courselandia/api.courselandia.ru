@@ -39,7 +39,7 @@ class TagCountDirectionCourses extends TagSchool
      */
     public function convert(?string $value = null, ?array $configs = null, ?array $values = null): string|null
     {
-        //try {
+        try {
             if (isset($configs[0]) && isset($configs[1])) {
                 $value = (int)$value;
                 $morpher = new Morpher(Config::get('morph.url'), Config::get('morph.token'));
@@ -50,9 +50,9 @@ class TagCountDirectionCourses extends TagSchool
             }
 
             return $value;
-        //} catch (Throwable $error) {
-            //Log::debug('Morpher Error: ' . $error->getMessage());
-        //}
+        } catch (Throwable $error) {
+            Log::debug('Morpher Error: ' . $error->getMessage());
+        }
 
         return $value;
     }
