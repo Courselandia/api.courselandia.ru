@@ -34,6 +34,7 @@ use App\Modules\Direction\Filters\DirectionFilter;
  * @property int|string $metatag_id ID метатегов.
  * @property string $name Название.
  * @property string $header Заголовок.
+ * @property string $header_template Шаблон заголовка.
  * @property string $weight Вес.
  * @property string $link Ссылка.
  * @property string $text Текст.
@@ -64,6 +65,7 @@ class Direction extends Eloquent
         'metatag_id',
         'name',
         'header',
+        'header_template',
         'weight',
         'link',
         'text',
@@ -79,6 +81,7 @@ class Direction extends Eloquent
         'metatag_id' => 'string',
         'name' => 'string',
         'header' => 'string',
+        'header_template' => 'string',
         'weight' => 'string',
         'link' => 'string',
         'text' => 'string',
@@ -89,6 +92,7 @@ class Direction extends Eloquent
             'metatag_id' => 'digits_between:0,20',
             'name' => 'required|between:1,191',
             'header' => 'max:191',
+            'header_template' => 'max:191',
             'weight' => 'integer|digits_between:0,5',
             'link' => 'required|between:1,191|alpha_dash|unique_soft:directions,link,' . $this->id . ',id',
             'text' => 'max:65000',
@@ -107,6 +111,7 @@ class Direction extends Eloquent
             'metatag_id' => trans('direction::models.direction.metatagId'),
             'name' => trans('direction::models.direction.name'),
             'header' => trans('direction::models.direction.header'),
+            'header_template' => trans('direction::models.direction.headerTemplate'),
             'weight' => trans('direction::models.direction.weight'),
             'link' => trans('direction::models.direction.link'),
             'text' => trans('direction::models.direction.text'),

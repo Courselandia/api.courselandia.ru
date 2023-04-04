@@ -113,7 +113,7 @@ class SchoolControllerTest extends TestCase
             'api/private/admin/school/create',
             [
                 'name' => $faker->text(191),
-                'header' => $faker->text(191),
+                'header_template' => $faker->text(191),
                 'link' => Util::latin($faker->text(191)),
                 'status' => true,
             ],
@@ -140,7 +140,7 @@ class SchoolControllerTest extends TestCase
             'api/private/admin/school/create',
             [
                 'name' => $faker->text(191),
-                'header' => $faker->text(191),
+                'header_template' => $faker->text(191),
                 'link' => Util::latin($faker->text(191)),
                 'text' => $faker->text(1500),
                 'site' => $faker->url(),
@@ -172,7 +172,7 @@ class SchoolControllerTest extends TestCase
             'api/private/admin/school/create',
             [
                 'name' => $faker->text(191),
-                'header' => $faker->text(191),
+                'header_template' => $faker->text(191),
                 'link' => Util::latin($faker->text(191)),
                 'text' => $faker->text(1500),
                 'site' => $faker->url(),
@@ -205,7 +205,7 @@ class SchoolControllerTest extends TestCase
             'api/private/admin/school/update/'.$school->id,
             [
                 'name' => $faker->text(191),
-                'header' => $faker->text(191),
+                'header_template' => $faker->text(191),
                 'link' => Util::latin($faker->text(191)),
                 'text' => $faker->text(1500),
                 'site' => $faker->url(),
@@ -238,7 +238,7 @@ class SchoolControllerTest extends TestCase
             'api/private/admin/school/update/'.$school->id,
             [
                 'name' => $faker->text(191),
-                'header' => $faker->text(191),
+                'header_template' => $faker->text(191),
                 'link' => Util::latin($faker->text(191)),
                 'text' => $faker->text(1500),
                 'site' => $faker->url(),
@@ -270,7 +270,7 @@ class SchoolControllerTest extends TestCase
             'api/private/admin/school/update/1000',
             [
                 'name' => $faker->text(191),
-                'header' => $faker->text(191),
+                'header_template' => $faker->text(191),
                 'link' => Util::latin($faker->text(191)),
                 'text' => $faker->text(1500),
                 'site' => $faker->url(),
@@ -395,6 +395,7 @@ class SchoolControllerTest extends TestCase
             'metatag_id',
             'name',
             'header',
+            'header_template',
             'link',
             'text',
             'rating',

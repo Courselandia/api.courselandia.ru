@@ -59,9 +59,11 @@ use App\Modules\Course\Filters\CourseFilter;
  * @property int|string|array|UploadedFile|ImageEntity $image_big_id Большая картинка.
  * @property int|string|array|UploadedFile|ImageEntity $image_middle_id Средняя картинка.
  * @property int|string|array|UploadedFile|ImageEntity $image_small_id Маленькая картинка.
+ * @property string $name Название.
  * @property string $header Заголовок.
+ * @property string $header_template Шаблон заголовок.
  * @property string $text Описание.
- * @property string $header_morphy Заголовок морфологизированное.
+ * @property string $name_morphy Название морфологизированное.
  * @property string $text_morphy Описание морфологизированное.
  * @property string $link Ссылка.
  * @property string $url URL на курс.
@@ -117,9 +119,11 @@ class Course extends Eloquent
         'image_big_id',
         'image_middle_id',
         'image_small_id',
+        'name',
         'header',
+        'header_template',
         'text',
-        'header_morphy',
+        'name_morphy',
         'text_morphy',
         'link',
         'url',
@@ -151,9 +155,11 @@ class Course extends Eloquent
         'image_big_id' => 'string',
         'image_middle_id' => 'string',
         'image_small_id' => 'string',
+        'name' => 'string',
         'header' => 'string',
+        'header_template' => 'string',
         'text' => 'string',
-        'header_morphy' => 'string',
+        'name_morphy' => 'string',
         'text_morphy' => 'string',
         'link' => 'string',
         'url' => 'string',
@@ -177,9 +183,11 @@ class Course extends Eloquent
             'uuid' => 'max:191',
             'metatag_id' => 'digits_between:0,20',
             'school_id' => 'required|digits_between:0,20|exists_soft:schools,id',
-            'header' => 'required|between:1,191',
+            'name' => 'required|between:1,191',
+            'header' => 'max:191',
+            'header_template' => 'max:191',
             'text' => 'max:5000',
-            'header_morphy' => 'max:191',
+            'name_morphy' => 'max:191',
             'text_morphy' => 'max:5000',
             'link' => 'required|between:1,191|alpha_dash',
             'url' => 'required|url',
@@ -214,9 +222,11 @@ class Course extends Eloquent
             'image_big_id' => trans('course::models.course.imageBigId'),
             'image_middle_id' => trans('course::models.course.imageMiddleId'),
             'image_small_id' => trans('course::models.course.imageSmallId'),
+            'name' => trans('course::models.course.name'),
             'header' => trans('course::models.course.header'),
+            'header_template' => trans('course::models.course.headerTemplate'),
             'text' => trans('course::models.course.text'),
-            'header_morphy' => trans('course::models.course.headerMorphy'),
+            'name_morphy' => trans('course::models.course.headerMorphy'),
             'text_morphy' => trans('course::models.course.textMorphy'),
             'link' => trans('course::models.course.link'),
             'url' => trans('course::models.course.url'),

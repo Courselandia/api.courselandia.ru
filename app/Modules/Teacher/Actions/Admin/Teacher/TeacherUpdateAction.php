@@ -11,8 +11,12 @@ namespace App\Modules\Teacher\Actions\Admin\Teacher;
 use App\Models\Action;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
+use App\Modules\Course\Enums\Status;
+use App\Modules\Course\Models\Course;
 use App\Modules\Image\Entities\Image;
 use App\Modules\Metatag\Actions\MetatagSetAction;
+use App\Modules\Metatag\Template\Template;
+use App\Modules\Metatag\Template\TemplateException;
 use App\Modules\Teacher\Entities\Teacher as TeacherEntity;
 use App\Modules\Teacher\Models\Teacher;
 use Cache;
@@ -73,11 +77,11 @@ class TeacherUpdateAction extends Action
     public ?bool $status = null;
 
     /**
-     * Описание.
+     * Шаблон описания.
      *
      * @var string|null
      */
-    public ?string $description = null;
+    public ?string $description_template = null;
 
     /**
      * Ключевые слова.
@@ -87,11 +91,11 @@ class TeacherUpdateAction extends Action
     public ?string $keywords = null;
 
     /**
-     * Заголовок.
+     * Шаблон заголовка.
      *
      * @var string|null
      */
-    public ?string $title = null;
+    public ?string $title_template = null;
 
     /**
      * ID направлений.
@@ -113,6 +117,7 @@ class TeacherUpdateAction extends Action
      * @return TeacherEntity Вернет результаты исполнения.
      * @throws RecordNotExistException
      * @throws ParameterInvalidException
+     * @throws TemplateException
      */
     public function run(): TeacherEntity
     {
@@ -121,13 +126,31 @@ class TeacherUpdateAction extends Action
         $teacherEntity = $action->run();
 
         if ($teacherEntity) {
-            $action = app(MetatagSetAction::class);
-            $action->description = $this->description;
-            $action->keywords = $this->keywords;
-            $action->title = $this->title;
-            $metatag = $action->run();
+            $countTeacherCourses = Course::where('courses.status', Status::ACTIVE->value)
+                ->whereHas('school', function ($query) {
+                    $query->where('schools.status', true);
+                })
+                ->whereHas('teachers', function ($query) {
+                    $query->where('teachers.id', $this->id);
+                })
+                ->count();
 
-            $teacherEntity->metatag_id = $metatag->id;
+            $templateValues = [
+                'teacher' => $this->name,
+                'countTeacherCourses' => $countTeacherCourses,
+            ];
+
+            $template = new Template();
+
+            $action = app(MetatagSetAction::class);
+            $action->description = $template->convert($this->description_template, $templateValues);
+            $action->title = $template->convert($this->title_template, $templateValues);
+            $action->description_template = $this->description_template;
+            $action->title_template = $this->title_template;
+            $action->keywords = $this->keywords;
+            $action->id = $teacherEntity->metatag_id ?: null;
+
+            $teacherEntity->metatag_id = $action->run()->id;
             $teacherEntity->name = $this->name;
             $teacherEntity->link = $this->link;
             $teacherEntity->text = $this->text;

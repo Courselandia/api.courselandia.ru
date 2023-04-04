@@ -73,7 +73,9 @@ class ReadPipe implements Pipe
                     'image_big_id',
                     'image_middle_id',
                     'image_small_id',
+                    'name',
                     'header',
+                    'header_template',
                     'text',
                     'link',
                     'url',
@@ -155,7 +157,7 @@ class ReadPipe implements Pipe
                     ) {
                         $query->sorted($entity->sorts ?: []);
                     } else {
-                        $query->orderBy('header', 'ASC');
+                        $query->orderBy('name', 'ASC');
                     }
                 }
 
@@ -164,7 +166,7 @@ class ReadPipe implements Pipe
                     $search = DB::getPdo()->quote($search);
 
                     $query->addSelect(
-                        DB::raw('MATCH(header_morphy, text_morphy) AGAINST(' . $search . ' IN BOOLEAN MODE) AS relevance')
+                        DB::raw('MATCH(name_morphy, text_morphy) AGAINST(' . $search . ' IN BOOLEAN MODE) AS relevance')
                     );
                 }
 

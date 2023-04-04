@@ -8,6 +8,9 @@
 
 namespace App\Modules\Course\Imports;
 
+use App\Modules\Course\Enums\Currency;
+use App\Modules\Metatag\Actions\MetatagSetAction;
+use App\Modules\Metatag\Template\Template;
 use Cache;
 use Throwable;
 use Util;
@@ -184,8 +187,8 @@ class Import
                 }
 
                 $data = [
-                    'header' => $courseEntity->header,
-                    'link' => strtolower(Util::latin(strtolower($courseEntity->header))),
+                    'name' => $courseEntity->name,
+                    'link' => strtolower(Util::latin(strtolower($courseEntity->name))),
                     'status' => $status,
                     'url' => $courseEntity->url,
                     'price' => $courseEntity->price,
@@ -209,12 +212,35 @@ class Import
 
                 $course->update($data);
             } else {
+                $template = new Template();
+                $action = app(MetatagSetAction::class);
+
+                $templateValues = [
+                    'course' => $courseEntity->name,
+                    'school' => $courseEntity->school->getLabel(),
+                    'price' => $courseEntity->price,
+                    'currency' => $courseEntity->currency?->value || Currency::RUB,
+                ];
+
+                $templateTitle = 'Курс {course} от {school:genitive} [price:по цене {price}|бесплатно] — Courselandia';
+                $templateDescription = 'Приступите к программе обучения прям сейчас онлайн-курса {course} от {school:genitive} выбрав его в каталоге Courselandia, легкий поиск, возможность сравнивать курсы по разным параметрам';
+                $headerTemplate = '{course} от {school:genitive}';
+
+                $action->title = $template->convert($templateTitle, $templateValues);
+                $action->description = $template->convert($templateDescription, $templateValues);
+                $action->title_template = $templateTitle;
+                $action->description_template = $templateDescription;
+
+                $metatag = $action->run();
+
                 $image = $courseEntity->image ? $this->getImage($courseEntity->image) : null;
 
                 $course = Course::create([
                     'uuid' => $courseEntity->uuid,
-                    'header' => $courseEntity->header,
-                    'link' => strtolower(Util::latin(strtolower($courseEntity->header))),
+                    'name' => $courseEntity->name,
+                    'header' => $template->convert($headerTemplate, $templateValues),
+                    'header_template' => $headerTemplate,
+                    'link' => strtolower(Util::latin(strtolower($courseEntity->name))),
                     'text' => $courseEntity->text,
                     'status' => $courseEntity->status ? Status::DRAFT->value : Status::DISABLED->value,
                     'url' => $courseEntity->url,
@@ -230,6 +256,7 @@ class Import
                     'duration_unit' => $courseEntity->duration_unit?->value,
                     'lessons_amount' => $courseEntity->lessons_amount,
                     'employment' => $courseEntity->employment,
+                    'metatag_id' => $metatag->id,
                 ]);
             }
 
@@ -243,7 +270,7 @@ class Import
         } catch (Throwable $error) {
             $this->addError(
                 $courseEntity->school->getLabel()
-                . ' | ' . $courseEntity->header
+                . ' | ' . $courseEntity->name
                 . ' | ' . $error->getMessage()
             );
         }

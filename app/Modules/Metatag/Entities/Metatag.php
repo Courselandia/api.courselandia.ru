@@ -45,6 +45,20 @@ class Metatag extends Entity
     public ?string $title = null;
 
     /**
+     * Шаблон заголовок.
+     *
+     * @var string|null
+     */
+    public ?string $title_template = null;
+
+    /**
+     * Шаблон описания.
+     *
+     * @var string|null
+     */
+    public ?string $description_template = null;
+
+    /**
      * Дата создания.
      *
      * @var ?Carbon

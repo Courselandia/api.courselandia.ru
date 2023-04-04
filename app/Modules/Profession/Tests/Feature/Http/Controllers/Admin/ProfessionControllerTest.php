@@ -112,7 +112,7 @@ class ProfessionControllerTest extends TestCase
             'api/private/admin/profession/create',
             [
                 'name' => $faker->text(150),
-                'header' => $faker->text(150),
+                'header_template' => $faker->text(150),
                 'link' => Util::latin($faker->text(150)),
                 'text' => $faker->text(10000),
                 'status' => true,
@@ -139,7 +139,7 @@ class ProfessionControllerTest extends TestCase
             'POST',
             'api/private/admin/profession/create',
             [
-                'header' => $faker->text(150),
+                'header_template' => $faker->text(150),
                 'link' => Util::latin($faker->text(150)),
                 'text' => $faker->text(10000),
                 'status' => true,
@@ -168,7 +168,7 @@ class ProfessionControllerTest extends TestCase
             'api/private/admin/profession/update/' . $profession->id,
             [
                 'name' => $faker->text(150),
-                'header' => $faker->text(150),
+                'header_template' => $faker->text(150),
                 'link' => Util::latin($faker->text(150)),
                 'text' => $faker->text(10000),
                 'status' => true,
@@ -197,7 +197,7 @@ class ProfessionControllerTest extends TestCase
             'api/private/admin/profession/update/' . $profession->id,
             [
                 'name' => $faker->text(150),
-                'header' => $faker->realTextBetween(350, 500),
+                'header_template' => $faker->realTextBetween(350, 500),
                 'link' => Util::latin($faker->text(150)),
                 'text' => $faker->text(10000),
                 'status' => 'test',
@@ -225,7 +225,7 @@ class ProfessionControllerTest extends TestCase
             'api/private/admin/profession/update/1000',
             [
                 'name' => $faker->text(150),
-                'header' => $faker->text(150),
+                'header_template' => $faker->text(150),
                 'link' => Util::latin($faker->text(150)),
                 'text' => $faker->text(10000),
                 'status' => true,
@@ -343,6 +343,7 @@ class ProfessionControllerTest extends TestCase
             'id',
             'name',
             'header',
+            'header_template',
             'link',
             'text',
             'status',

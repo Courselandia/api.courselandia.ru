@@ -96,6 +96,7 @@ class ToolControllerTest extends TestCase
             'id',
             'name',
             'header',
+            'header_template',
             'link',
             'text',
             'status',

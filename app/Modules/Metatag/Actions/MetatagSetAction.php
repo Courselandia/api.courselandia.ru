@@ -47,32 +47,47 @@ class MetatagSetAction extends Action
     public ?string $title = null;
 
     /**
+     * Шаблон заголовок.
+     *
+     * @var string|null
+     */
+    public ?string $title_template = null;
+
+    /**
+     * Шаблон описания.
+     *
+     * @var string|null
+     */
+    public ?string $description_template = null;
+
+    /**
      * Метод запуска логики.
      *
-     * @return MetatagEntity|null Вернет результаты исполнения.
+     * @return MetatagEntity Вернет результаты исполнения.
      * @throws ParameterInvalidException
      */
-    public function run(): ?MetatagEntity
+    public function run(): MetatagEntity
     {
         $metatagEntity = new MetatagEntity();
         $metatagEntity->description = $this->description;
         $metatagEntity->keywords = $this->keywords;
         $metatagEntity->title = $this->title;
+        $metatagEntity->description_template = $this->description_template;
+        $metatagEntity->title_template = $this->title_template;
 
         if ($this->id) {
             $metatag = Metatag::find($this->id);
 
             if ($metatag) {
+                $metatagEntity->id = $this->id;
                 $metatag->update($metatagEntity->toArray());
 
                 return new MetatagEntity($metatagEntity->toArray());
             }
-        } else {
-            $metatag = Metatag::create($metatagEntity->toArray());
-
-            return new MetatagEntity($metatag->toArray());
         }
 
-        return null;
+        $metatag = Metatag::create($metatagEntity->toArray());
+
+        return new MetatagEntity($metatag->toArray());
     }
 }

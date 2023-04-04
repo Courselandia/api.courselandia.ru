@@ -45,6 +45,7 @@ use App\Modules\School\Filters\SchoolFilter;
  * @property int|string $metatag_id ID метатегов.
  * @property string $name Название.
  * @property string $header Заголовок статьи.
+ * @property string $header_template Шаблон заголовок.
  * @property string $link Ссылка на статью.
  * @property string $text Текст.
  * @property string $rating Рейтинг.
@@ -79,6 +80,7 @@ class School extends Eloquent
         'metatag_id',
         'name',
         'header',
+        'header_template',
         'link',
         'text',
         'rating',
@@ -98,6 +100,7 @@ class School extends Eloquent
         'metatag_id' => 'string',
         'name' => 'string',
         'header' => 'string',
+        'header_template' => 'string',
         'link' => 'string',
         'text' => 'string',
         'rating' => 'string',
@@ -110,7 +113,8 @@ class School extends Eloquent
         return [
             'metatag_id' => 'digits_between:0,20',
             'name' => 'required|between:1,191',
-            'header' => 'required|between:1,191',
+            'header' => 'max:191',
+            'header_template' => 'max:191',
             'link' => 'required|between:1,191|alpha_dash|unique_soft:schools,link,'.$this->id.',id',
             'text' => 'max:65000',
             'rating' => 'nullable|float|float_between:0,5',
@@ -130,6 +134,7 @@ class School extends Eloquent
             'metatag_id' => trans('school::models.school.metatagId'),
             'name' => trans('school::models.school.name'),
             'header' => trans('school::models.school.header'),
+            'header_template' => trans('school::models.school.headerTemplate'),
             'link' => trans('school::models.school.link'),
             'text' => trans('school::models.school.text'),
             'image_logo_id' => trans('school::models.school.imageLogoId'),

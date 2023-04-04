@@ -13,7 +13,11 @@ use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Modules\Category\Entities\Category as CategoryEntity;
 use App\Modules\Category\Models\Category;
+use App\Modules\Course\Enums\Status;
+use App\Modules\Course\Models\Course;
 use App\Modules\Metatag\Actions\MetatagSetAction;
+use App\Modules\Metatag\Template\Template;
+use App\Modules\Metatag\Template\TemplateException;
 use Cache;
 
 /**
@@ -36,11 +40,11 @@ class CategoryUpdateAction extends Action
     public ?string $name = null;
 
     /**
-     * Заголовок.
+     * Шаблон заголовка.
      *
      * @var string|null
      */
-    public ?string $header = null;
+    public ?string $header_template = null;
 
     /**
      * Ссылка.
@@ -64,11 +68,11 @@ class CategoryUpdateAction extends Action
     public ?bool $status = null;
 
     /**
-     * Описание.
+     * Шаблон описания.
      *
      * @var string|null
      */
-    public ?string $description = null;
+    public ?string $description_template = null;
 
     /**
      * Ключевые слова.
@@ -78,11 +82,11 @@ class CategoryUpdateAction extends Action
     public ?string $keywords = null;
 
     /**
-     * Заголовок.
+     * Шаблон заголовка.
      *
      * @var string|null
      */
-    public ?string $title = null;
+    public ?string $title_template = null;
 
     /**
      * ID направлений.
@@ -104,6 +108,7 @@ class CategoryUpdateAction extends Action
      * @return CategoryEntity Вернет результаты исполнения.
      * @throws RecordNotExistException
      * @throws ParameterInvalidException
+     * @throws TemplateException
      */
     public function run(): CategoryEntity
     {
@@ -112,16 +117,35 @@ class CategoryUpdateAction extends Action
         $categoryEntity = $action->run();
 
         if ($categoryEntity) {
-            $action = app(MetatagSetAction::class);
-            $action->description = $this->description;
-            $action->keywords = $this->keywords;
-            $action->title = $this->title;
-            $metatag = $action->run();
+            $countCategoryCourses = Course::where('courses.status', Status::ACTIVE->value)
+                ->whereHas('school', function ($query) {
+                    $query->where('schools.status', true);
+                })
+                ->whereHas('categories', function ($query) {
+                    $query->where('categories.id', $this->id);
+                })
+                ->count();
 
+            $templateValues = [
+                'category' => $this->name,
+                'countCategoryCourses' => $countCategoryCourses,
+            ];
+
+            $template = new Template();
+
+            $action = app(MetatagSetAction::class);
+            $action->description = $template->convert($this->description_template, $templateValues);
+            $action->title = $template->convert($this->title_template, $templateValues);
+            $action->description_template = $this->description_template;
+            $action->title_template = $this->title_template;
+            $action->keywords = $this->keywords;
+            $action->id = $categoryEntity->metatag_id ?: null;
+
+            $categoryEntity->metatag_id = $action->run()->id;
             $categoryEntity->id = $this->id;
-            $categoryEntity->metatag_id = $metatag->id;
             $categoryEntity->name = $this->name;
-            $categoryEntity->header = $this->header;
+            $categoryEntity->header = $template->convert($this->header_template, $templateValues);
+            $categoryEntity->header_template = $this->header_template;
             $categoryEntity->link = $this->link;
             $categoryEntity->text = $this->text;
             $categoryEntity->status = $this->status;

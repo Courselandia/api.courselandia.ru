@@ -8,26 +8,27 @@
 
 namespace App\Modules\Course\Actions\Admin\Course;
 
-use DB;
-use Cache;
 use App\Models\Action;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
+use App\Modules\Course\Entities\Course as CourseEntity;
+use App\Modules\Course\Entities\CourseFeature as CourseFeatureEntity;
+use App\Modules\Course\Entities\CourseLearn as CourseLearnEntity;
+use App\Modules\Course\Entities\CourseLevel as CourseLevelEntity;
 use App\Modules\Course\Enums\Currency;
 use App\Modules\Course\Enums\Duration;
 use App\Modules\Course\Enums\Language;
 use App\Modules\Course\Enums\Status;
+use App\Modules\Course\Models\Course;
+use App\Modules\Course\Models\CourseFeature;
+use App\Modules\Course\Models\CourseLearn;
+use App\Modules\Course\Models\CourseLevel;
 use App\Modules\Image\Entities\Image;
 use App\Modules\Metatag\Actions\MetatagSetAction;
-use App\Modules\Course\Entities\Course as CourseEntity;
-use App\Modules\Course\Models\Course;
-use App\Modules\Course\Models\CourseLevel;
-use App\Modules\Course\Models\CourseLearn;
-use App\Modules\Course\Models\CourseFeature;
-use App\Modules\Course\Entities\CourseLevel as CourseLevelEntity;
-use App\Modules\Course\Entities\CourseLearn as CourseLearnEntity;
-use App\Modules\Course\Entities\CourseFeature as CourseFeatureEntity;
+use App\Modules\Metatag\Template\Template;
 use App\Modules\Salary\Enums\Level;
+use Cache;
+use DB;
 use Illuminate\Http\UploadedFile;
 use Throwable;
 
@@ -58,11 +59,18 @@ class CourseUpdateAction extends Action
     public int|UploadedFile|Image|null $image = null;
 
     /**
-     * Заголовок.
+     * Название.
      *
      * @var string|null
      */
-    public string|null $header = null;
+    public string|null $name = null;
+
+    /**
+     * Шаблон заголовка.
+     *
+     * @var string|null
+     */
+    public string|null $header_template = null;
 
     /**
      * Описание.
@@ -177,11 +185,11 @@ class CourseUpdateAction extends Action
     public Status|null $status = null;
 
     /**
-     * Описание.
+     * Шаблон описание.
      *
      * @var string|null
      */
-    public ?string $description = null;
+    public ?string $description_template = null;
 
     /**
      * Ключевые слова.
@@ -191,11 +199,11 @@ class CourseUpdateAction extends Action
     public ?string $keywords = null;
 
     /**
-     * Заголовок.
+     * Шаблон заголовка.
      *
      * @var string|null
      */
-    public ?string $title = null;
+    public ?string $title_template = null;
 
     /**
      * ID направлений.
@@ -289,14 +297,28 @@ class CourseUpdateAction extends Action
 
         if ($courseEntity) {
             DB::transaction(function () use ($courseEntity) {
-                $action = app(MetatagSetAction::class);
-                $action->description = $this->description;
-                $action->keywords = $this->keywords;
-                $action->title = $this->title;
-                $metatag = $action->run();
+                $templateValues = [
+                    'course' => $this->name,
+                    'school' => $courseEntity->school->name,
+                    'price' => $this->price,
+                    'currency' => $this->currency,
+                ];
 
+                $template = new Template();
+
+                $action = app(MetatagSetAction::class);
+                $action->description = $template->convert($this->description_template, $templateValues);
+                $action->title = $template->convert($this->title_template, $templateValues);
+                $action->description_template = $this->description_template;
+                $action->title_template = $this->title_template;
+                $action->keywords = $this->keywords;
+                $action->id = $courseEntity->metatag_id ?: null;
+
+                $courseEntity->metatag_id = $action->run()->id;
                 $courseEntity->school_id = $this->school_id;
-                $courseEntity->header = $this->header;
+                $courseEntity->name = $this->name;
+                $courseEntity->header = $template->convert($this->header_template, $templateValues);
+                $courseEntity->header_template = $this->header_template;
                 $courseEntity->text = $this->text;
                 $courseEntity->link = $this->link;
                 $courseEntity->url = $this->url;
@@ -313,7 +335,6 @@ class CourseUpdateAction extends Action
                 $courseEntity->lessons_amount = $this->lessons_amount;
                 $courseEntity->modules_amount = $this->modules_amount;
                 $courseEntity->status = $this->status;
-                $courseEntity->metatag_id = $metatag->id;
 
                 if ($this->image) {
                     $courseEntity->image_small_id = $this->image;

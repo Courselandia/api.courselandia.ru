@@ -8,6 +8,8 @@
 
 namespace App\Modules\Course\Actions\Admin\Course;
 
+use App\Modules\Metatag\Template\Template;
+use App\Modules\School\Models\School;
 use DB;
 use Cache;
 use App\Models\Action;
@@ -52,11 +54,18 @@ class CourseCreateAction extends Action
     public int|UploadedFile|Image|null $image = null;
 
     /**
-     * Заголовок.
+     * Название.
      *
      * @var string|null
      */
-    public string|null $header = null;
+    public string|null $name = null;
+
+    /**
+     * Шаблон заголовка.
+     *
+     * @var string|null
+     */
+    public string|null $header_template = null;
 
     /**
      * Описание.
@@ -171,11 +180,11 @@ class CourseCreateAction extends Action
     public Status|null $status = null;
 
     /**
-     * Описание.
+     * Шаблон описание.
      *
      * @var string|null
      */
-    public ?string $description = null;
+    public ?string $description_template = null;
 
     /**
      * Ключевые слова.
@@ -185,11 +194,11 @@ class CourseCreateAction extends Action
     public ?string $keywords = null;
 
     /**
-     * Заголовок.
+     * Шаблон заголовка.
      *
      * @var string|null
      */
-    public ?string $title = null;
+    public ?string $title_template = null;
 
     /**
      * ID направлений.
@@ -280,9 +289,25 @@ class CourseCreateAction extends Action
     {
         $id = DB::transaction(function () {
             $action = app(MetatagSetAction::class);
-            $action->description = $this->description;
+
+            $school = School::find($this->school_id);
+
+            $templateValues = [
+                'course' => $this->name,
+                'school' => $school->name,
+                'price' => $this->price,
+                'currency' => $this->currency,
+            ];
+
+            $template = new Template();
+
+            $action->description = $template->convert($this->description_template, $templateValues);
+            $action->title = $template->convert($this->title_template, $templateValues);
+
+            $action->description_template = $this->description_template;
+            $action->title_template = $this->title_template;
             $action->keywords = $this->keywords;
-            $action->title = $this->title;
+
             $metatag = $action->run();
 
             $courseEntity = new CourseEntity();
@@ -290,7 +315,9 @@ class CourseCreateAction extends Action
             $courseEntity->image_small_id = $this->image;
             $courseEntity->image_middle_id = $this->image;
             $courseEntity->image_big_id = $this->image;
-            $courseEntity->header = $this->header;
+            $courseEntity->name = $this->name;
+            $courseEntity->header = $template->convert($this->header_template, $templateValues);
+            $courseEntity->header_template = $this->header_template;
             $courseEntity->text = $this->text;
             $courseEntity->link = $this->link;
             $courseEntity->url = $this->url;

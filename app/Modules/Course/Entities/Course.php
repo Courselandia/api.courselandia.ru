@@ -83,11 +83,25 @@ class Course extends Entity
     public int|UploadedFile|Image|null $image_big_id = null;
 
     /**
+     * Название.
+     *
+     * @var string|null
+     */
+    public string|null $name = null;
+
+    /**
      * Заголовок.
      *
      * @var string|null
      */
     public string|null $header = null;
+
+    /**
+     * Шаблон заголовка.
+     *
+     * @var string|null
+     */
+    public string|null $header_template = null;
 
     /**
      * Описание.
@@ -101,7 +115,7 @@ class Course extends Entity
      *
      * @var string|null
      */
-    public string|null $header_morphy = null;
+    public string|null $name_morphy = null;
 
     /**
      * Описание морфологизированное.

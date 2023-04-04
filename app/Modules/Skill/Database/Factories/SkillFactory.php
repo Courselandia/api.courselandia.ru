@@ -35,6 +35,7 @@ class SkillFactory extends Factory
         'metatag_id' => '\Illuminate\Database\Eloquent\Factories\Factory',
         'name' => 'string',
         'header' => 'string',
+        'header_template' => 'string',
         'link' => 'string',
         'text' => 'string',
         'status' => 'bool'
@@ -44,6 +45,7 @@ class SkillFactory extends Factory
             'metatag_id' => Metatag::factory(),
             'name' => $this->faker->text(160),
             'header' => $this->faker->text(160),
+            'header_template' => $this->faker->text(160),
             'link' => Util::latin($this->faker->text(160)),
             'text' => $this->faker->text(1000),
             'status' => true,

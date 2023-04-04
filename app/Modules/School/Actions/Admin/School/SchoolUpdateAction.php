@@ -11,8 +11,12 @@ namespace App\Modules\School\Actions\Admin\School;
 use App\Models\Action;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
+use App\Modules\Course\Enums\Status;
+use App\Modules\Course\Models\Course;
 use App\Modules\Image\Entities\Image;
 use App\Modules\Metatag\Actions\MetatagSetAction;
+use App\Modules\Metatag\Template\Template;
+use App\Modules\Metatag\Template\TemplateException;
 use App\Modules\School\Entities\School as SchoolEntity;
 use App\Modules\School\Models\School;
 use Cache;
@@ -38,11 +42,11 @@ class SchoolUpdateAction extends Action
     public ?string $name = null;
 
     /**
-     * Заголовок.
+     * Шаблон заголовка.
      *
      * @var string|null
      */
-    public ?string $header = null;
+    public ?string $header_template = null;
 
     /**
      * Ссылка.
@@ -94,11 +98,11 @@ class SchoolUpdateAction extends Action
     public ?bool $status = null;
 
     /**
-     * Описание.
+     * Шаблон описания.
      *
      * @var string|null
      */
-    public ?string $description = null;
+    public ?string $description_template = null;
 
     /**
      * Ключевые слова.
@@ -108,11 +112,11 @@ class SchoolUpdateAction extends Action
     public ?string $keywords = null;
 
     /**
-     * Заголовок.
+     * Шаблон заголовка.
      *
      * @var string|null
      */
-    public ?string $title = null;
+    public ?string $title_template = null;
 
     /**
      * Метод запуска логики.
@@ -120,6 +124,7 @@ class SchoolUpdateAction extends Action
      * @return SchoolEntity Вернет результаты исполнения.
      * @throws RecordNotExistException
      * @throws ParameterInvalidException
+     * @throws TemplateException
      */
     public function run(): SchoolEntity
     {
@@ -128,15 +133,32 @@ class SchoolUpdateAction extends Action
         $schoolEntity = $action->run();
 
         if ($schoolEntity) {
-            $action = app(MetatagSetAction::class);
-            $action->description = $this->description;
-            $action->keywords = $this->keywords;
-            $action->title = $this->title;
-            $metatag = $action->run();
+            $countSchoolCourses = Course::where('courses.status', Status::ACTIVE->value)
+                ->whereHas('school', function ($query) {
+                    $query->where('schools.status', true)
+                        ->where('schools.id', $this->id);
+                })
+                ->count();
 
-            $schoolEntity->metatag_id = $metatag->id;
+            $templateValues = [
+                'school' => $this->name,
+                'countSchoolCourses' => $countSchoolCourses,
+            ];
+
+            $template = new Template();
+
+            $action = app(MetatagSetAction::class);
+            $action->description = $template->convert($this->description_template, $templateValues);
+            $action->title = $template->convert($this->title_template, $templateValues);
+            $action->description_template = $this->description_template;
+            $action->title_template = $this->title_template;
+            $action->keywords = $this->keywords;
+            $action->id = $schoolEntity->metatag_id ?: null;
+
+            $schoolEntity->metatag_id = $action->run()->id;
             $schoolEntity->name = $this->name;
-            $schoolEntity->header = $this->header;
+            $schoolEntity->header = $template->convert($this->header_template, $templateValues);
+            $schoolEntity->header_template = $this->header_template;
             $schoolEntity->link = $this->link;
             $schoolEntity->text = $this->text;
             $schoolEntity->site = $this->site;

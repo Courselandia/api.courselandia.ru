@@ -11,6 +11,10 @@ namespace App\Modules\Tool\Actions\Admin;
 use App\Models\Action;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
+use App\Modules\Course\Enums\Status;
+use App\Modules\Course\Models\Course;
+use App\Modules\Metatag\Template\Template;
+use App\Modules\Metatag\Template\TemplateException;
 use App\Modules\Tool\Entities\Tool as ToolEntity;
 use App\Modules\Tool\Models\Tool;
 use App\Modules\Metatag\Actions\MetatagSetAction;
@@ -36,11 +40,11 @@ class ToolUpdateAction extends Action
     public ?string $name = null;
 
     /**
-     * Заголовок.
+     * Шаблон заголовка.
      *
      * @var string|null
      */
-    public ?string $header = null;
+    public ?string $header_template = null;
 
     /**
      * Ссылка.
@@ -64,11 +68,11 @@ class ToolUpdateAction extends Action
     public ?bool $status = null;
 
     /**
-     * Описание.
+     * Шаблон описания.
      *
      * @var string|null
      */
-    public ?string $description = null;
+    public ?string $description_template = null;
 
     /**
      * Ключевые слова.
@@ -78,11 +82,11 @@ class ToolUpdateAction extends Action
     public ?string $keywords = null;
 
     /**
-     * Заголовок.
+     * Шаблон заголовка.
      *
      * @var string|null
      */
-    public ?string $title = null;
+    public ?string $title_template = null;
 
     /**
      * Метод запуска логики.
@@ -90,6 +94,7 @@ class ToolUpdateAction extends Action
      * @return ToolEntity Вернет результаты исполнения.
      * @throws RecordNotExistException
      * @throws ParameterInvalidException
+     * @throws TemplateException
      */
     public function run(): ToolEntity
     {
@@ -98,16 +103,36 @@ class ToolUpdateAction extends Action
         $toolEntity = $action->run();
 
         if ($toolEntity) {
+            $countToolCourses = Course::where('courses.status', Status::ACTIVE->value)
+                ->whereHas('school', function ($query) {
+                    $query->where('schools.status', true);
+                })
+                ->whereHas('tools', function ($query) {
+                    $query->where('tools.id', $this->id);
+                })
+                ->count();
+
+            $templateValues = [
+                'tool' => $this->name,
+                'countToolCourses' => $countToolCourses,
+            ];
+
+            $template = new Template();
+
             $action = app(MetatagSetAction::class);
-            $action->description = $this->description;
+            $action->description = $template->convert($this->description_template, $templateValues);
+            $action->title = $template->convert($this->title_template, $templateValues);
+            $action->description_template = $this->description_template;
+            $action->title_template = $this->title_template;
             $action->keywords = $this->keywords;
-            $action->title = $this->title;
-            $metatag = $action->run();
+            $action->id = $toolEntity->metatag_id ?: null;
+
+            $toolEntity->metatag_id = $action->run()->id;
 
             $toolEntity->id = $this->id;
-            $toolEntity->metatag_id = $metatag->id;
             $toolEntity->name = $this->name;
-            $toolEntity->header = $this->header;
+            $toolEntity->header = $template->convert($this->header_template, $templateValues);
+            $toolEntity->header_template = $this->header_template;
             $toolEntity->link = $this->link;
             $toolEntity->text = $this->text;
             $toolEntity->status = $this->status;

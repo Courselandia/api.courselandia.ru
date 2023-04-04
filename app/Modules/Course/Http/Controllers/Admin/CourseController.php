@@ -8,6 +8,7 @@
 
 namespace App\Modules\Course\Http\Controllers\Admin;
 
+use App\Modules\Metatag\Template\TemplateException;
 use Auth;
 use Log;
 use ReflectionException;
@@ -104,7 +105,8 @@ class CourseController extends Controller
         try {
             $action = app(CourseCreateAction::class);
             $action->school_id = $request->get('school_id');
-            $action->header = $request->get('header');
+            $action->name = $request->get('name');
+            $action->header_template = $request->get('header_template');
             $action->text = $request->get('text');
             $action->link = $request->get('link');
             $action->url = $request->get('url');
@@ -136,8 +138,8 @@ class CourseController extends Controller
             $action->employments = $request->get('employments');
             $action->features = $request->get('features');
 
-            $action->description = $request->get('description');
-            $action->title = $request->get('title');
+            $action->description_template = $request->get('description_template');
+            $action->title_template = $request->get('title_template');
             $action->keywords = $request->get('keywords');
 
             if ($request->hasFile('image') && $request->file('image')->isValid()) {
@@ -161,7 +163,7 @@ class CourseController extends Controller
             ];
 
             return response()->json($data);
-        } catch (ValidateException $error) {
+        } catch (ValidateException|TemplateException $error) {
             return response()->json([
                 'success' => false,
                 'message' => $error->getMessage()
@@ -189,7 +191,8 @@ class CourseController extends Controller
             $action = app(CourseUpdateAction::class);
             $action->id = $id;
             $action->school_id = $request->get('school_id');
-            $action->header = $request->get('header');
+            $action->name = $request->get('name');
+            $action->header_template = $request->get('header_template');
             $action->text = $request->get('text');
             $action->link = $request->get('link');
             $action->url = $request->get('url');
@@ -221,8 +224,8 @@ class CourseController extends Controller
             $action->employments = $request->get('employments');
             $action->features = $request->get('features');
 
-            $action->description = $request->get('description');
-            $action->title = $request->get('title');
+            $action->description_template = $request->get('description_template');
+            $action->title_template = $request->get('title_template');
             $action->keywords = $request->get('keywords');
 
             if ($request->hasFile('image') && $request->file('image')->isValid()) {
@@ -246,7 +249,7 @@ class CourseController extends Controller
             ];
 
             return response()->json($data);
-        } catch (ValidateException|RecordExistException $error) {
+        } catch (ValidateException|RecordExistException|TemplateException $error) {
             return response()->json([
                 'success' => false,
                 'message' => $error->getMessage()

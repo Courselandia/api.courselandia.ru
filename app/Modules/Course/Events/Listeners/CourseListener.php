@@ -39,7 +39,7 @@ class CourseListener
             $course->duration_rate = 12 * $course->duration;
         }
 
-        $course->header_morphy = Morph::get($course->header);
+        $course->name_morphy = Morph::get($course->name);
         $course->text_morphy = Morph::get($course->text);
 
         return true;
@@ -65,7 +65,7 @@ class CourseListener
             $course->duration_rate = 12 * $course->duration;
         }
 
-        $course->header_morphy = Morph::get($course->header);
+        $course->name_morphy = Morph::get($course->name);
         $course->text_morphy = Morph::get($course->text);
 
         return true;

@@ -12,6 +12,7 @@ use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordExistException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Models\Exceptions\ValidateException;
+use App\Modules\Metatag\Template\TemplateException;
 use App\Modules\Skill\Actions\Admin\SkillCreateAction;
 use App\Modules\Skill\Actions\Admin\SkillDestroyAction;
 use App\Modules\Skill\Actions\Admin\SkillGetAction;
@@ -101,12 +102,12 @@ class SkillController extends Controller
         try {
             $action = app(SkillCreateAction::class);
             $action->name = $request->get('name');
-            $action->header = $request->get('header');
+            $action->header_template = $request->get('header_template');
             $action->link = $request->get('link');
             $action->text = $request->get('text');
             $action->status = $request->get('status');
-            $action->title = $request->get('title');
-            $action->description = $request->get('description');
+            $action->description_template = $request->get('description_template');
+            $action->title_template = $request->get('title_template');
             $action->keywords = $request->get('keywords');
 
             $data = $action->run();
@@ -126,7 +127,7 @@ class SkillController extends Controller
             ];
 
             return response()->json($data);
-        } catch (ValidateException $error) {
+        } catch (ValidateException|TemplateException $error) {
             return response()->json([
                 'success' => false,
                 'message' => $error->getMessage()
@@ -154,12 +155,12 @@ class SkillController extends Controller
             $action = app(SkillUpdateAction::class);
             $action->id = $id;
             $action->name = $request->get('name');
-            $action->header = $request->get('header');
+            $action->header_template = $request->get('header_template');
             $action->link = $request->get('link');
             $action->text = $request->get('text');
             $action->status = $request->get('status');
-            $action->title = $request->get('title');
-            $action->description = $request->get('description');
+            $action->description_template = $request->get('description_template');
+            $action->title_template = $request->get('title_template');
             $action->keywords = $request->get('keywords');
             $data = $action->run();
 
@@ -178,7 +179,7 @@ class SkillController extends Controller
             ];
 
             return response()->json($data);
-        } catch (ValidateException|RecordExistException $error) {
+        } catch (ValidateException|RecordExistException|TemplateException $error) {
             return response()->json([
                 'success' => false,
                 'message' => $error->getMessage()

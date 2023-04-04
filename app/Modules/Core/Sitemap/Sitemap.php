@@ -35,7 +35,7 @@ class Sitemap
     /**
      * Части для генерации.
      *
-     * @var array
+     * @var array<Part>
      */
     private array $parts = [];
 

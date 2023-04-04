@@ -12,6 +12,8 @@ use App\Models\Action;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Image\Entities\Image;
 use App\Modules\Metatag\Actions\MetatagSetAction;
+use App\Modules\Metatag\Template\Template;
+use App\Modules\Metatag\Template\TemplateException;
 use App\Modules\Teacher\Entities\Teacher as TeacherEntity;
 use App\Modules\Teacher\Models\Teacher;
 use Cache;
@@ -65,11 +67,11 @@ class TeacherCreateAction extends Action
     public ?bool $status = null;
 
     /**
-     * Описание.
+     * Шаблон описания.
      *
      * @var string|null
      */
-    public ?string $description = null;
+    public ?string $description_template = null;
 
     /**
      * Ключевые слова.
@@ -79,11 +81,11 @@ class TeacherCreateAction extends Action
     public ?string $keywords = null;
 
     /**
-     * Заголовок.
+     * Шаблон заголовка.
      *
      * @var string|null
      */
-    public ?string $title = null;
+    public ?string $title_template = null;
 
     /**
      * ID направлений.
@@ -104,13 +106,24 @@ class TeacherCreateAction extends Action
      *
      * @return TeacherEntity Вернет результаты исполнения.
      * @throws ParameterInvalidException
+     * @throws TemplateException
      */
     public function run(): TeacherEntity
     {
         $action = app(MetatagSetAction::class);
-        $action->description = $this->description;
+        $template = new Template();
+
+        $templateValues = [
+            'teacher' => $this->name,
+            'countTeacherCourses' => 0,
+        ];
+
+        $action->description = $template->convert($this->description_template, $templateValues);
+        $action->title = $template->convert($this->title_template, $templateValues);
+        $action->description_template = $this->description_template;
+        $action->title_template = $this->title_template;
         $action->keywords = $this->keywords;
-        $action->title = $this->title;
+
         $metatag = $action->run();
 
         $teacherEntity = new TeacherEntity();

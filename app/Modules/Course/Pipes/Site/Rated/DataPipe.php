@@ -27,7 +27,7 @@ class DataPipe implements Pipe
     private const REMOVES = [
         'uuid',
         'metatag_id',
-        'header_morphy',
+        'name_morphy',
         'text_morphy',
         'created_at',
         'updated_at',
@@ -72,6 +72,7 @@ class DataPipe implements Pipe
         'image_middle_id',
         'image_big_id',
         'schools',
+        'header_template',
         'header',
         'count',
     ];
