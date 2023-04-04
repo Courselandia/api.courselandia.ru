@@ -46,11 +46,11 @@ class Apply
  *
  * Школы:
  * Title: {school}:[countSchoolCourses: {countSchoolCourses:онлайн-курс|nominative} — ] цены, сравнения, описание программ и курсов — Courselandia
- * Description: Начни учиться в онлайн-школе {school} [countSchoolCourses: — {countSchoolCourses:профессиональный онлайн-курс|nominative} от ведущих преподавателей], подробное описание курса в каталоге Courselandia.
+ * Description: Начни учиться в онлайн-школе {school} [countSchoolCourses: — {countSchoolCourses:профессиональный онлайн-курс|nominative} от ведущих преподавателей], подробное описание курсов в каталоге Courselandia.
  * Header: Онлайн-курсы школы {school}
  *
  * Учитель:
- * Title: Преподаватель {teacher} — отзывы, рейтинг[countTeacherCourses:, список из {countTeacherCourses:курс|nominative}] — Courselandia
+ * Title: Преподаватель {teacher} — отзывы, рейтинг[countTeacherCourses:, список из {countTeacherCourses:курс|genitive}] — Courselandia
  * Description: Все курсы преподавателя {teacher} — полный список обучающих онлайн-курсов в каталоге Courselandia.
  */
 }
