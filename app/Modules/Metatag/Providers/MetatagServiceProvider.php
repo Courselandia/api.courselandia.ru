@@ -8,6 +8,7 @@
 
 namespace App\Modules\Metatag\Providers;
 
+use App\Modules\Metatag\Commands\MetatagApplyCommand;
 use Config;
 use Illuminate\Support\ServiceProvider;
 
@@ -36,6 +37,9 @@ class MetatagServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
+        $this->commands([
+            MetatagApplyCommand::class,
+        ]);
     }
 
     /**
