@@ -48,8 +48,6 @@ class TagCountDirectionCourses extends TagSchool
 
                 return $value . ' ' . $result->UnitDeclension->{$pad};
             }
-
-            return $value;
         } catch (Throwable $error) {
             Log::debug('Morpher Error: ' . $error->getMessage());
         }

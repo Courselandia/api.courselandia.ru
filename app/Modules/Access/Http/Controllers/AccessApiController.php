@@ -8,6 +8,7 @@
 
 namespace App\Modules\Access\Http\Controllers;
 
+use App\Models\Exceptions\ValidateException;
 use Illuminate\Routing\Controller;
 use Illuminate\Http\JsonResponse;
 use App\Models\Exceptions\InvalidPasswordException;
@@ -84,6 +85,11 @@ class AccessApiController extends Controller
                 'success' => false,
                 'message' => $error->getMessage()
             ])->setStatusCode(401);
+        } catch (ValidateException $error) {
+            return response()->json([
+                'success' => false,
+                'message' => $error->getMessage()
+            ])->setStatusCode(400);
         }
     }
 
@@ -113,6 +119,11 @@ class AccessApiController extends Controller
                 'success' => false,
                 'message' => $error->getMessage()
             ])->setStatusCode(401);
+        } catch (ValidateException $error) {
+            return response()->json([
+                'success' => false,
+                'message' => $error->getMessage()
+            ])->setStatusCode(400);
         }
     }
 }
