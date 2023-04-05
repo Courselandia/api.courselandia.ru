@@ -142,7 +142,7 @@ class Sitemap
             foreach ($part->generate() as $item) {
                 try {
                     $url = $this->xml->createElement('url');
-                    $url->appendChild($this->xml->createElement('loc', Config::get('app.api_url') . $item->path));
+                    $url->appendChild($this->xml->createElement('loc', Config::get('app.url') . $item->path));
                     $url->appendChild($this->xml->createElement('changefreq', $item->changefreq));
                     $url->appendChild($this->xml->createElement('priority', $item->priority));
 

@@ -119,7 +119,7 @@ class AccessApiController extends Controller
                 'success' => false,
                 'message' => $error->getMessage()
             ])->setStatusCode(401);
-        } catch (ValidateException $error) {
+        } catch (ValidateException|RecordNotExistException $error) {
             return response()->json([
                 'success' => false,
                 'message' => $error->getMessage()

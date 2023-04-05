@@ -52,11 +52,11 @@ class TaskCourse extends Task
      */
     public function count(): int
     {
-        return Course::/*where('status', Status::ACTIVE->value)*/
-            /*->whereHas('school', function ($query) {
+        return Course::where('status', Status::ACTIVE->value)
+            ->whereHas('school', function ($query) {
                 $query->where('status', true);
             })
-            ->*/count();
+            ->count();
     }
 
     /**
@@ -75,10 +75,10 @@ class TaskCourse extends Task
             'metatag',
             'school',
         ])
-        //->where('status', Status::ACTIVE->value)
-        /*->whereHas('school', function ($query) {
+        ->where('status', Status::ACTIVE->value)
+        ->whereHas('school', function ($query) {
             $query->where('status', true);
-        })*/;
+        });
 
         for ($i = 0; $i < $count; $i++) {
             $course = $query->clone()
