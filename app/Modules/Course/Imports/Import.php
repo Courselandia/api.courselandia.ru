@@ -68,7 +68,7 @@ class Import
     {
         $this->addParser(new ParserNetology('https://feeds.advcake.com/feed/download/54321b01372443d9902b3387dd154c8f'))
             ->addParser(new ParserGeekBrains('https://feeds.advcake.com/feed/download/07d89f2e6d9a92a355caa2d4db424cfd'))
-            ->addParser(new ParserSkillbox('https://feeds.advcake.com/feed/download/e77ebb28c278d755a0d7f5b6aeaa2674'))
+            ->addParser(new ParserSkillbox('https://feeds.advcake.com/feed/download/04c98be3ff7eb4298b14b863b66f5447')) // Боевой
             ->addParser(new ParserSkyPro('https://feeds.advcake.com/feed/download/3ae0ebb5de2e80b35668ba8b3db8b760'))
             ->addParser(new ParserSkillFactory('https://feeds.advcake.com/feed/download/993eb3d8a8131641e035707f860fef7d'))
             ->addParser(new ParserContented('https://feeds.advcake.com/feed/download/5a6f3f438c1f38f77256e65abc44e780'))
