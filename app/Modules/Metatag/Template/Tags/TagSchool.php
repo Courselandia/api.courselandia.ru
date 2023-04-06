@@ -41,7 +41,7 @@ class TagSchool extends Tag
     public function convert(?string $value = null, ?array $configs = null, ?array $values = null): string|null
     {
         try {
-            if (isset($configs[0])) {
+            if (isset($configs[0]) && $value) {
                 $morpher = new Morpher(Config::get('morph.url'), Config::get('morph.token'));
                 $result = $morpher->russian->Parse($value);
                 $pad = ucfirst($configs[0]);
