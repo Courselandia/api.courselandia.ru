@@ -51,7 +51,7 @@ abstract class Entity
 
             if ($value instanceof Entity) {
                 $values[$property->getName()] = $value->toArray();
-            } elseif (is_array($value) && array_is_list($value)) {
+            } elseif (is_array($value) && array_is_list($value) && $this->isArrayWithEntities($value)) {
                 $values[$property->getName()] = [];
 
                 for ($i = 0; $i < count($value); $i++) {
@@ -332,5 +332,26 @@ abstract class Entity
         }
 
         return [];
+    }
+
+    /**
+     * Проверка является ли данный массив массивом сущностей.
+     *
+     * @param array $checkArray Проверяемый массив.
+     * @return bool Результат проверки.
+     */
+    private function isArrayWithEntities(array $checkArray): bool
+    {
+        $status = false;
+
+        for ($i = 0; $i < count($checkArray); $i++) {
+            if (!is_object($checkArray[$i]) || !method_exists($checkArray[$i], 'toArray')) {
+                $status = false;
+
+                break;
+            }
+        }
+
+        return $status;
     }
 }

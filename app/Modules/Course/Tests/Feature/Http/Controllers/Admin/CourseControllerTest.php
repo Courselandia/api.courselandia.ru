@@ -450,6 +450,8 @@ class CourseControllerTest extends TestCase
         }
 
         if ($full) {
+            $structure[] = 'program';
+
             $structure['directions'] = [
                 '*' => [
                     'id',

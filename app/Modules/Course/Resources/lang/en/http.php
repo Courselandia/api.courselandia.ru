@@ -46,6 +46,7 @@ return [
                 'durationUnit' => 'Duration Unit',
                 'lessonsAmount' => 'Lessons amount',
                 'modulesAmount' => 'Modules amount',
+                'program' => 'Course program',
             ],
             'courseUpdateStatusRequest' => [
                 'status' => 'Status',

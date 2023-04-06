@@ -80,6 +80,7 @@ use App\Modules\Course\Filters\CourseFilter;
  * @property string $duration_unit Единица измерения продолжительности.
  * @property int $lessons_amount Количество уроков.
  * @property int $modules_amount Количество модулей.
+ * @property array $program Программа курса.
  * @property string $status Статус.
  *
  * @property-read Metatag $metatag
@@ -105,6 +106,15 @@ class Course extends Eloquent
     use SoftDeletes;
     use Validate;
     use Filterable;
+
+    /**
+     * Типизирование атрибутов.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'program' => 'array',
+    ];
 
     /**
      * Атрибуты, для которых разрешено массовое назначение.
@@ -140,6 +150,7 @@ class Course extends Eloquent
         'duration_unit',
         'lessons_amount',
         'modules_amount',
+        'program',
         'status',
     ];
 
@@ -243,6 +254,7 @@ class Course extends Eloquent
             'duration_unit' => trans('course::models.course.durationUnit'),
             'lessons_amount' => trans('course::models.course.lessonsAmount'),
             'modules_amount' => trans('course::models.course.modulesAmount'),
+            'program' => trans('course::models.course.program'),
             'status' => trans('course::models.course.status'),
         ];
     }

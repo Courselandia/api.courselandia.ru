@@ -30,6 +30,7 @@ return [
         'duration_unit' => 'Duration unit',
         'lessons_amount' => 'Lessons amount',
         'modules_amount' => 'Modules amount',
+        'program' => 'Course program',
         'status' => 'Status',
     ],
     'courseFeature' => [

@@ -63,6 +63,7 @@ class CourseCreateRequest extends FormRequest
         'duration_unit' => 'duration_unit',
         'lessons_amount' => 'string',
         'modules_amount' => 'string',
+        'program' => 'string',
         'status' => 'string',
     ])] public function rules(): array
     {
@@ -102,6 +103,7 @@ class CourseCreateRequest extends FormRequest
             'duration_unit' => 'nullable|in:' . implode(',', EnumList::getValues(Duration::class)),
             'lessons_amount' => 'nullable|integer',
             'modules_amount' => 'nullable|integer',
+            'program' => 'json',
             'status' => 'required|in:' . implode(',', EnumList::getValues(Status::class)),
         ];
     }
@@ -147,6 +149,7 @@ class CourseCreateRequest extends FormRequest
         'duration_unit' => 'string',
         'lessons_amount' => 'string',
         'modules_amount' => 'string',
+        'program' => 'string',
         'status' => 'string',
     ])] public function attributes(): array
     {
@@ -186,6 +189,7 @@ class CourseCreateRequest extends FormRequest
             'duration_unit' => trans('course::http.requests.admin.courseCreateRequest.durationUnit'),
             'lessons_amount' => trans('course::http.requests.admin.courseCreateRequest.lessonsAmount'),
             'modules_amount' => trans('course::http.requests.admin.courseCreateRequest.modulesAmount'),
+            'program' => trans('course::http.requests.admin.courseCreateRequest.program'),
             'status' => trans('course::http.requests.admin.courseCreateRequest.status'),
         ];
     }

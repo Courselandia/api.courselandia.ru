@@ -30,6 +30,7 @@ return [
         'duration_unit' => 'Единица измерения продолжительности',
         'lessons_amount' => 'Количество уроков',
         'modules_amount' => 'Количество модулей',
+        'program' => 'Программа курса',
         'status' => 'Статус.',
     ],
     'courseFeature' => [

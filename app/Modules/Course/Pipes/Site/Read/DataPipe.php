@@ -57,6 +57,7 @@ class DataPipe implements Pipe
         'openedSkills',
         'openedTeachers',
         'openedTools',
+        'program',
     ];
 
     /**

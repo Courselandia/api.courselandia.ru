@@ -178,6 +178,13 @@ class CourseUpdateAction extends Action
     public int|null $modules_amount = null;
 
     /**
+     * Программа курса.
+     *
+     * @var array|null
+     */
+    public array|null $program = null;
+
+    /**
      * Статус.
      *
      * @var Status|null
@@ -334,6 +341,7 @@ class CourseUpdateAction extends Action
                 $courseEntity->duration_unit = $this->duration_unit;
                 $courseEntity->lessons_amount = $this->lessons_amount;
                 $courseEntity->modules_amount = $this->modules_amount;
+                $courseEntity->program = $this->program;
                 $courseEntity->status = $this->status;
 
                 if ($this->image) {

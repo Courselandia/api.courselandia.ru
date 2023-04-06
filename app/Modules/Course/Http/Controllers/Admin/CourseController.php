@@ -124,6 +124,7 @@ class CourseController extends Controller
             ) : null;
             $action->lessons_amount = $request->get('lessons_amount');
             $action->modules_amount = $request->get('modules_amount');
+            $action->program = json_decode($request->get('program'), true);
             $action->status = Status::from($request->get('status'));
 
             $action->directions = $request->get('directions');
@@ -210,6 +211,7 @@ class CourseController extends Controller
             ) : null;
             $action->lessons_amount = $request->get('lessons_amount');
             $action->modules_amount = $request->get('modules_amount');
+            $action->program = json_decode($request->get('program'), true);
             $action->status = Status::from($request->get('status'));
 
             $action->directions = $request->get('directions');

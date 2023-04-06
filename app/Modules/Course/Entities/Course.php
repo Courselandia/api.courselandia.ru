@@ -230,6 +230,13 @@ class Course extends Entity
     public int|null $modules_amount = null;
 
     /**
+     * Программа курса.
+     *
+     * @var array|null
+     */
+    public array|null $program = null;
+
+    /**
      * Дата создания.
      *
      * @var ?Carbon
