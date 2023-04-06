@@ -11,7 +11,7 @@ namespace App\Modules\Metatag\Template\Tags;
 /**
  * Тэг обработчик для категории курса: {category}.
  */
-class TagCategory extends TagCourse
+class TagCategory extends TagSchool
 {
     /**
      * Название тэга.

@@ -49,7 +49,7 @@ class TagSchool extends Tag
                 return $result->{$pad};
             }
         } catch (Throwable $error) {
-            Log::debug('Morpher Error: ' . $error->getMessage());
+            // Log::debug('Morpher Error: ' . $error->getMessage());
         }
 
         return $value;
