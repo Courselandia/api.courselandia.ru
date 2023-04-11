@@ -64,6 +64,7 @@ class CourseCategoryReadAction extends Action
 
         if (isset($filters['categories-id'])) {
             $categoryFilters = is_array($filters['categories-id']) ? $filters['categories-id'] : [$filters['categories-id']];
+            unset($filters['categories-id']);
         } else {
             $categoryFilters = [];
         }

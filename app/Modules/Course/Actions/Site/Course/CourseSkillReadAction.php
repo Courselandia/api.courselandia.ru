@@ -64,6 +64,7 @@ class CourseSkillReadAction extends Action
 
         if (isset($filters['skills-id'])) {
             $skillFilters = is_array($filters['skills-id']) ? $filters['skills-id'] : [$filters['skills-id']];
+            unset($filters['skills-id']);
         } else {
             $skillFilters = [];
         }

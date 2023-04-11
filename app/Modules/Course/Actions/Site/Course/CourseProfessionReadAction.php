@@ -64,6 +64,7 @@ class CourseProfessionReadAction extends Action
 
         if (isset($filters['professions-id'])) {
             $professionFilters = is_array($filters['professions-id']) ? $filters['professions-id'] : [$filters['professions-id']];
+            unset($filters['professions-id']);
         } else {
             $professionFilters = [];
         }

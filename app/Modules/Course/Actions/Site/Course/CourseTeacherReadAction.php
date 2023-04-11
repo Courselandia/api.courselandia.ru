@@ -64,6 +64,7 @@ class CourseTeacherReadAction extends Action
 
         if (isset($filters['teachers-id'])) {
             $teacherFilters = is_array($filters['teachers-id']) ? $filters['teachers-id'] : [$filters['teachers-id']];
+            unset($filters['teachers-id']);
         } else {
             $teacherFilters = [];
         }
