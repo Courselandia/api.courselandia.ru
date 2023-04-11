@@ -96,36 +96,6 @@ class ReadPipe implements Pipe
                 ])
                 ->filter($entity->filters ?: [])
                 ->with([
-                    'professions' => function ($query) {
-                        $query->select([
-                            'professions.id',
-                            'professions.name',
-                        ])->where('status', true);
-                    },
-                    'categories' => function ($query) {
-                        $query->select([
-                            'categories.id',
-                            'categories.name',
-                        ])->where('status', true);
-                    },
-                    'skills' => function ($query) {
-                        $query->select([
-                            'skills.id',
-                            'skills.name',
-                        ])->where('status', true);
-                    },
-                    'teachers' => function ($query) {
-                        $query->select([
-                            'teachers.id',
-                            'teachers.name',
-                        ])->where('status', true);
-                    },
-                    'tools' => function ($query) {
-                        $query->select([
-                            'tools.id',
-                            'tools.name',
-                        ])->where('status', true);
-                    },
                     'school' => function ($query) {
                         $query->select([
                             'schools.id',
@@ -134,13 +104,6 @@ class ReadPipe implements Pipe
                             'schools.image_logo_id',
                         ])->where('status', true);
                     },
-                    'directions' => function ($query) {
-                        $query->select([
-                            'directions.id',
-                            'directions.name',
-                        ])->where('status', true);
-                    },
-                    'levels'
                 ])
                 ->where('status', Status::ACTIVE->value)
                 ->whereHas('school', function ($query) {

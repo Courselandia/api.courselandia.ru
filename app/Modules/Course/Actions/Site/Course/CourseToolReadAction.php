@@ -64,9 +64,59 @@ class CourseToolReadAction extends Action
 
         if (isset($filters['tools-id'])) {
             $toolFilters = is_array($filters['tools-id']) ? $filters['tools-id'] : [$filters['tools-id']];
-            unset($filters['tools-id']);
         } else {
             $toolFilters = [];
+        }
+
+        if (empty($filters)) {
+            $cacheKey = Util::getKey(
+                'course',
+                'tools',
+                'site',
+                'read',
+                'part',
+                $this->offset,
+                $this->limit,
+            );
+
+            return Cache::tags([
+                'course',
+                'direction',
+                'profession',
+                'category',
+                'skill',
+                'teacher',
+                'tool',
+                'process',
+                'employment',
+            ])->remember(
+                $cacheKey,
+                CacheTime::GENERAL->value,
+                function () {
+                    $result = Tool::select([
+                        'tools.id',
+                        'tools.link',
+                        'tools.name',
+                    ])
+                        ->whereHas('courses', function ($query) {
+                            $query->select([
+                                'courses.id',
+                            ])
+                                ->where('status', Status::ACTIVE->value)
+                                ->whereHas('school', function ($query) {
+                                    $query->where('status', true);
+                                });
+                        })
+                        ->where('status', true)
+                        ->orderBy('name')
+                        ->offset($this->offset)
+                        ->limit($this->limit)
+                        ->get()
+                        ->toArray();
+
+                    return Entity::toEntities($result, new CourseItemFilter());
+                }
+            );
         }
 
         if ($this->disabled === true) {
@@ -86,30 +136,30 @@ class CourseToolReadAction extends Action
                 'skill',
                 'teacher',
                 'tool',
+                'process',
+                'employment',
             ])->remember(
                 $cacheKey,
                 CacheTime::GENERAL->value,
                 function () {
-                    $result = Tool::select([
+                    return Tool::select([
                         'tools.id',
                         'tools.link',
                         'tools.name',
                     ])
-                    ->whereHas('courses', function ($query) {
-                        $query->select([
-                            'courses.id',
-                        ])
-                        ->where('status', Status::ACTIVE->value)
-                        ->whereHas('school', function ($query) {
-                            $query->where('status', true);
-                        });
-                    })
-                    ->where('status', true)
-                    ->orderBy('name')
-                    ->get()
-                    ->toArray();
-
-                    return Entity::toEntities($result, new CourseItemFilter());
+                        ->whereHas('courses', function ($query) {
+                            $query->select([
+                                'courses.id',
+                            ])
+                            ->where('status', Status::ACTIVE->value)
+                            ->whereHas('school', function ($query) {
+                                $query->where('status', true);
+                            });
+                        })
+                        ->where('status', true)
+                        ->orderBy('name')
+                        ->get()
+                        ->toArray();
                 }
             );
         } else {
@@ -125,6 +175,7 @@ class CourseToolReadAction extends Action
             $toolFilters,
             $this->offset,
             $this->limit,
+            $this->disabled,
         );
 
         return Cache::tags([
@@ -135,76 +186,89 @@ class CourseToolReadAction extends Action
             'skill',
             'teacher',
             'tool',
+            'process',
+            'employment',
         ])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
             function () use ($toolFilters, $filters, $allTools) {
-                $query = Tool::select([
-                    'tools.id',
-                    'tools.link',
-                    'tools.name',
-                ])
-                ->whereHas('courses', function ($query) use ($filters) {
-                    $query->select([
-                        'courses.id',
+                if (!empty($filters) || (count($toolFilters) && !$this->disabled) || !$this->disabled) {
+                    $query = Tool::select([
+                        'tools.id',
+                        'tools.link',
+                        'tools.name',
                     ])
-                    ->filter($filters ?: [])
-                    ->where('status', Status::ACTIVE->value)
-                    ->whereHas('school', function ($query) {
-                        $query->where('status', true);
-                    });
-                })
-                ->where('status', true);
+                    ->whereHas('courses', function ($query) use ($filters) {
+                        $query->select([
+                            'courses.id',
+                        ])
+                        ->filter($filters ?: [])
+                        ->where('status', Status::ACTIVE->value)
+                        ->whereHas('school', function ($query) {
+                            $query->where('status', true);
+                        });
+                    })
+                    ->where('status', true)
+                    ->orderBy('name');
 
-                if (count($toolFilters) && !$this->disabled) {
-                    $query->orderBy(DB::raw('FIELD(id, ' . implode(', ', array_reverse($toolFilters)) . ')'), 'DESC');
-                }
-
-                $query->orderBy('name');
-
-                if (!$this->disabled) {
-                    if ($this->offset) {
-                        $query->offset($this->offset);
+                    if (count($toolFilters) && !$this->disabled) {
+                        $query->orderBy(DB::raw('FIELD(id, ' . implode(', ', array_reverse($toolFilters)) . ')'), 'DESC');
                     }
 
-                    if ($this->limit) {
-                        $query->limit($this->limit);
-                    }
-                }
+                    if (!$this->disabled) {
+                        if ($this->offset) {
+                            $query->offset($this->offset);
+                        }
 
-                $result = $query->get()->toArray();
-                $activeTools = Entity::toEntities($result, new CourseItemFilter());
+                        if ($this->limit) {
+                            $query->limit($this->limit);
+                        }
+                    }
+
+                    $activeTools = $query->get()->toArray();
+                } else {
+                    $activeTools = $allTools;
+                }
 
                 if ($this->disabled) {
-                    $collectionActiveTools = collect($activeTools);
+                    if (count($activeTools) !== count($allTools)) {
+                        $activeToolsWithKey = [];
 
-                    foreach ($allTools as $tool) {
-                        /**
-                         * @var CourseItemFilter $tool
-                         */
-                        $tool->disabled = $collectionActiveTools->search(function ($item) use ($tool) {
-                            return $item->id === $tool->id;
-                        }) === false;
+                        for ($i = 0; $i < count($activeTools); $i++) {
+                            $activeToolsWithKey[$activeTools[$i]['id']] = true;
+                        }
+
+                        for ($i = 0; $i < count($allTools); $i++) {
+                            $allTools[$i]['disabled'] = !isset($activeToolsWithKey[$allTools[$i]['id']]);
+                        }
+                    } else {
+                        $allTools = collect($allTools)->map(function ($item) {
+                            $item['disabled'] = false;
+
+                            return $item;
+                        })->toArray();
                     }
 
-                    return collect($allTools)
+                    $result = collect($allTools)
                         ->sortBy(function ($item) use ($toolFilters) {
-                            if (in_array($item->id, $toolFilters)) {
+                            if (count($toolFilters) && in_array($item['id'], $toolFilters)) {
                                 $weight = 1;
-                            } else if (!$item->disabled) {
+                            } else if (isset($item['disabled']) && !$item['disabled']) {
                                 $weight = 2;
                             } else {
                                 $weight = 3;
                             }
 
-                            return $weight . ' - '. $item->name;
+                            return $weight . ' - '. $item['name'];
                         })
                         ->slice($this->offset, $this->limit)
                         ->values()
                         ->toArray();
+
+                    return Entity::toEntities($result, new CourseItemFilter());
                 }
 
-                return $activeTools;
+                return Entity::toEntities($activeTools, new CourseItemFilter());
             }
         );
     }

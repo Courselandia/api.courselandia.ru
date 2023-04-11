@@ -45,7 +45,10 @@ class ProfessionLinkAction extends Action
             function () {
                 $result = Profession::where('link', $this->link)
                     ->whereHas('courses', function ($query) {
-                        $query->where('status', Status::ACTIVE->value);
+                        $query->where('status', Status::ACTIVE->value)
+                            ->whereHas('school', function ($query) {
+                                $query->where('status', true);
+                            });
                     })
                     ->active()
                     ->with([

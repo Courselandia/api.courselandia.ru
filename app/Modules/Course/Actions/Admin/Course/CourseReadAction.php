@@ -11,6 +11,7 @@ namespace App\Modules\Course\Actions\Admin\Course;
 use App\Models\Entity;
 use App\Modules\Course\Entities\Course as CourseEntity;
 use Cache;
+use Illuminate\Cache\Events\CacheHit;
 use Util;
 use App\Models\Action;
 use App\Models\Enums\CacheTime;

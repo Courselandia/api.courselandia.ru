@@ -64,9 +64,63 @@ class CourseCategoryReadAction extends Action
 
         if (isset($filters['categories-id'])) {
             $categoryFilters = is_array($filters['categories-id']) ? $filters['categories-id'] : [$filters['categories-id']];
-            unset($filters['categories-id']);
         } else {
             $categoryFilters = [];
+        }
+
+        if (empty($filters)) {
+            $cacheKey = Util::getKey(
+                'course',
+                'categories',
+                'site',
+                'read',
+                'part',
+                $this->offset,
+                $this->limit,
+            );
+
+            return Cache::tags([
+                'course',
+                'direction',
+                'profession',
+                'category',
+                'skill',
+                'teacher',
+                'tool',
+                'process',
+                'employment',
+            ])->remember(
+                $cacheKey,
+                CacheTime::GENERAL->value,
+                function () {
+                    $query = Category::select([
+                        'categories.id',
+                        'categories.link',
+                        'categories.name',
+                    ])
+                    ->whereHas('courses', function ($query) {
+                        $query->select([
+                            'courses.id',
+                        ])
+                            ->where('status', Status::ACTIVE->value)
+                            ->whereHas('school', function ($query) {
+                                $query->where('status', true);
+                            });
+                    })
+                    ->where('status', true)
+                    ->orderBy('name');
+
+                    if ($this->offset) {
+                        $query->offset($this->offset);
+                    }
+
+                    if ($this->limit) {
+                        $query->limit($this->limit);
+                    }
+
+                    return Entity::toEntities($query->get()->toArray(), new CourseItemFilter());
+                }
+            );
         }
 
         if ($this->disabled === true) {
@@ -92,7 +146,7 @@ class CourseCategoryReadAction extends Action
                 $cacheKey,
                 CacheTime::GENERAL->value,
                 function () {
-                    $result = Category::select([
+                    return Category::select([
                         'categories.id',
                         'categories.link',
                         'categories.name',
@@ -101,17 +155,15 @@ class CourseCategoryReadAction extends Action
                         $query->select([
                             'courses.id',
                         ])
-                        ->where('status', Status::ACTIVE->value)
-                        ->whereHas('school', function ($query) {
-                            $query->where('status', true);
-                        });
+                            ->where('status', Status::ACTIVE->value)
+                            ->whereHas('school', function ($query) {
+                                $query->where('status', true);
+                            });
                     })
                     ->where('status', true)
                     ->orderBy('name')
                     ->get()
                     ->toArray();
-
-                    return Entity::toEntities($result, new CourseItemFilter());
                 }
             );
         } else {
@@ -144,73 +196,83 @@ class CourseCategoryReadAction extends Action
             $cacheKey,
             CacheTime::GENERAL->value,
             function () use ($categoryFilters, $filters, $allCategories) {
-                $query = Category::select([
-                    'categories.id',
-                    'categories.link',
-                    'categories.name',
-                ])
-                ->whereHas('courses', function ($query) use ($filters) {
-                    $query->select([
-                        'courses.id',
+                if (!empty($filters) || (count($categoryFilters) && !$this->disabled) || !$this->disabled) {
+                    $query = Category::select([
+                        'categories.id',
+                        'categories.link',
+                        'categories.name',
                     ])
-                    ->filter($filters ?: [])
-                    ->where('status', Status::ACTIVE->value)
-                    ->whereHas('school', function ($query) {
-                        $query->where('status', true);
-                    });
-                })
-                ->where('status', true);
+                        ->whereHas('courses', function ($query) use ($filters) {
+                            $query->select([
+                                'courses.id',
+                            ])
+                            ->filter($filters ?: [])
+                            ->where('status', Status::ACTIVE->value)
+                            ->whereHas('school', function ($query) {
+                                $query->where('status', true);
+                            });
+                        })
+                        ->where('status', true)
+                        ->orderBy('name');
 
-                if (count($categoryFilters) && !$this->disabled) {
-                    $query->orderBy(DB::raw('FIELD(id, ' . implode(', ', array_reverse($categoryFilters)) . ')'), 'DESC');
-                }
-
-                $query->orderBy('name');
-
-                if (!$this->disabled) {
-                    if ($this->offset) {
-                        $query->offset($this->offset);
+                    if (count($categoryFilters) && !$this->disabled) {
+                        $query->orderBy(DB::raw('FIELD(id, ' . implode(', ', array_reverse($categoryFilters)) . ')'), 'DESC');
                     }
 
-                    if ($this->limit) {
-                        $query->limit($this->limit);
+                    if (!$this->disabled) {
+                        if ($this->offset) {
+                            $query->offset($this->offset);
+                        }
+
+                        if ($this->limit) {
+                            $query->limit($this->limit);
+                        }
                     }
+
+                    $activeCategories = $query->get()->toArray();
+                } else {
+                    $activeCategories = $allCategories;
                 }
-
-                $result = $query->get()->toArray();
-
-                $activeCategories = Entity::toEntities($result, new CourseItemFilter());
 
                 if ($this->disabled) {
-                    $collectionActiveCategories = collect($activeCategories);
+                    if (count($activeCategories) !== count($allCategories)) {
+                        $activeCategoriesWithKey = [];
 
-                    foreach ($allCategories as $category) {
-                        /**
-                         * @var CourseItemFilter $category
-                         */
-                        $category->disabled = $collectionActiveCategories->search(function ($item) use ($category) {
-                            return $item->id === $category->id;
-                        }) === false;
+                        for ($i = 0; $i < count($activeCategories); $i++) {
+                            $activeCategoriesWithKey[$activeCategories[$i]['id']] = true;
+                        }
+
+                        for ($i = 0; $i < count($allCategories); $i++) {
+                            $allCategories[$i]['disabled'] = !isset($activeCategoriesWithKey[$allCategories[$i]['id']]);
+                        }
+                    } else {
+                        $allCategories = collect($allCategories)->map(function ($item) {
+                            $item['disabled'] = false;
+
+                            return $item;
+                        })->toArray();
                     }
 
-                    return collect($allCategories)
+                    $result = collect($allCategories)
                         ->sortBy(function ($item) use ($categoryFilters) {
-                            if (in_array($item->id, $categoryFilters)) {
+                            if (count($categoryFilters) && in_array($item['id'], $categoryFilters)) {
                                 $weight = 1;
-                            } else if (!$item->disabled) {
+                            } else if (isset($item['disabled']) && !$item['disabled']) {
                                 $weight = 2;
                             } else {
                                 $weight = 3;
                             }
 
-                            return $weight . ' - '. $item->name;
+                            return $weight . ' - '. $item['name'];
                         })
                         ->slice($this->offset, $this->limit)
                         ->values()
                         ->toArray();
+
+                    return Entity::toEntities($result, new CourseItemFilter());
                 }
 
-                return $activeCategories;
+                return Entity::toEntities($activeCategories, new CourseItemFilter());
             }
         );
     }

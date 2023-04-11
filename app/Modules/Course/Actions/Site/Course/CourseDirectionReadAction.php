@@ -80,6 +80,62 @@ class CourseDirectionReadAction extends Action
             unset($filters['directions-id']);
         }
 
+        if (empty($filters)) {
+            $cacheKey = Util::getKey(
+                'course',
+                'directions',
+                'site',
+                'read',
+                'part',
+                $this->offset,
+                $this->limit,
+            );
+
+            return Cache::tags([
+                'course',
+                'direction',
+                'profession',
+                'category',
+                'skill',
+                'teacher',
+                'tool',
+                'process',
+                'employment',
+            ])->remember(
+                $cacheKey,
+                CacheTime::GENERAL->value,
+                function () {
+                    $query = Direction::select([
+                        'directions.id',
+                        'directions.name',
+                        'directions.link',
+                        'directions.weight',
+                    ])
+                    ->whereHas('courses', function ($query) {
+                        $query->select([
+                            'courses.id',
+                        ])
+                            ->where('status', Status::ACTIVE->value)
+                            ->whereHas('school', function ($query) {
+                                $query->where('status', true);
+                            });
+                    })
+                    ->where('status', true)
+                    ->orderBy('weight');
+
+                    if ($this->offset) {
+                        $query->offset($this->offset);
+                    }
+
+                    if ($this->limit) {
+                        $query->limit($this->limit);
+                    }
+
+                    return Entity::toEntities($query->get()->toArray(), new CourseItemFilter());
+                }
+            );
+        }
+
         if ($this->disabled === true) {
             $cacheKey = Util::getKey(
                 'course',
@@ -103,7 +159,7 @@ class CourseDirectionReadAction extends Action
                 $cacheKey,
                 CacheTime::GENERAL->value,
                 function () use ($filters) {
-                    $result = Direction::select([
+                    return Direction::select([
                         'directions.id',
                         'directions.name',
                         'directions.link',
@@ -122,8 +178,6 @@ class CourseDirectionReadAction extends Action
                     ->orderBy('weight')
                     ->get()
                     ->toArray();
-
-                    return Entity::toEntities($result, new CourseItemFilter());
                 }
             );
         } else {
@@ -157,85 +211,93 @@ class CourseDirectionReadAction extends Action
             $cacheKey,
             CacheTime::GENERAL->value,
             function () use ($filters, $allDirections) {
-                $query = Direction::select([
-                    'directions.id',
-                    'directions.name',
-                    'directions.link',
-                    'directions.weight',
-                ])
-                ->whereHas('courses', function ($query) use ($filters) {
-                    $query->select([
-                        'courses.id',
+                if (!empty($filters) || !$this->disabled || $this->withCategories || $this->withCount) {
+                    $query = Direction::select([
+                        'directions.id',
+                        'directions.name',
+                        'directions.link',
+                        'directions.weight',
                     ])
-                    ->filter($filters ?: [])
-                    ->where('status', Status::ACTIVE->value)
-                    ->whereHas('school', function ($query) {
-                        $query->where('status', true);
-                    });
-                })
-                ->where('status', true);
-
-                $query->orderBy('weight');
-
-                if (!$this->disabled) {
-                    if ($this->offset) {
-                        $query->offset($this->offset);
-                    }
-
-                    if ($this->limit) {
-                        $query->limit($this->limit);
-                    }
-                }
-
-                if ($this->withCategories) {
-                    $query->with('categories');
-                }
-
-                if ($this->withCount) {
-                    $query->withCount([
-                        'courses' => function ($query) {
-                            $query
-                            ->filter($this->filters ?: [])
-                            ->where('courses.status', Status::ACTIVE->value)
+                    ->whereHas('courses', function ($query) use ($filters) {
+                        $query->select([
+                            'courses.id',
+                        ])
+                            ->filter($filters ?: [])
+                            ->where('status', Status::ACTIVE->value)
                             ->whereHas('school', function ($query) {
-                                $query->where('schools.status', true);
+                                $query->where('status', true);
                             });
+                    })
+                    ->where('status', true)
+                    ->orderBy('weight');
+
+                    if (!$this->disabled) {
+                        if ($this->offset) {
+                            $query->offset($this->offset);
                         }
-                    ]);
+
+                        if ($this->limit) {
+                            $query->limit($this->limit);
+                        }
+                    }
+
+                    if ($this->withCategories) {
+                        $query->with('categories');
+                    }
+
+                    if ($this->withCount) {
+                        $query->withCount([
+                            'courses' => function ($query) {
+                                $query
+                                    ->filter($this->filters ?: [])
+                                    ->where('courses.status', Status::ACTIVE->value)
+                                    ->whereHas('school', function ($query) {
+                                        $query->where('schools.status', true);
+                                    });
+                            }
+                        ]);
+                    }
+
+                    $activeDirections = $query->get()->toArray();
+                } else {
+                    $activeDirections = $allDirections;
                 }
 
-                $result = $query->get()->toArray();
-
                 if ($this->withCount) {
-                    foreach ($result as $key => $value) {
-                        $result[$key]['count'] = $value['courses_count'];
+                    foreach ($activeDirections as $key => $value) {
+                        $activeDirections[$key]['count'] = $value['courses_count'];
 
-                        unset($result[$key]['courses_count']);
+                        unset($activeDirections[$key]['courses_count']);
                     }
                 }
 
                 if ($this->withCategories) {
-                    return Entity::toEntities($result, new CourseItemDirectionFilter());
+                    return Entity::toEntities($activeDirections, new CourseItemDirectionFilter());
                 }
-
-                $activeDirections = Entity::toEntities($result, new CourseItemFilter());
 
                 if ($this->disabled) {
-                    $collectionActiveDirections = collect($activeDirections);
+                    if (count($activeDirections) !== count($allDirections)) {
+                        $activeDirectionsWithKey = [];
 
-                    foreach ($allDirections as $direction) {
-                        /**
-                         * @var CourseItemFilter $direction
-                         */
-                        $direction->disabled = $collectionActiveDirections->search(function ($item) use ($direction) {
-                            return $item->id === $direction->id;
-                        }) === false;
+                        for ($i = 0; $i < count($activeDirections); $i++) {
+                            $activeDirectionsWithKey[$activeDirections[$i]['id']] = true;
+                        }
+
+                        for ($i = 0; $i < count($allDirections); $i++) {
+                            $allDirections[$i]['disabled'] = !isset($activeDirectionsWithKey[$allDirections[$i]['id']]);
+                        }
+                    } else {
+                        $allDirections = collect($allDirections)->map(function ($item) {
+                            $item['disabled'] = false;
+
+                            return $item;
+                        })->toArray();
                     }
 
-                    return $allDirections;
+                    return Entity::toEntities($allDirections, new CourseItemFilter());
                 }
 
-                return $activeDirections;
+                return Entity::toEntities($activeDirections, new CourseItemFilter());
             }
         );
     }

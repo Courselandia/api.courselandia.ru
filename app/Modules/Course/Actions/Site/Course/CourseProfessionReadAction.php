@@ -64,9 +64,63 @@ class CourseProfessionReadAction extends Action
 
         if (isset($filters['professions-id'])) {
             $professionFilters = is_array($filters['professions-id']) ? $filters['professions-id'] : [$filters['professions-id']];
-            unset($filters['professions-id']);
         } else {
             $professionFilters = [];
+        }
+
+        if (empty($filters)) {
+            $cacheKey = Util::getKey(
+                'course',
+                'professions',
+                'site',
+                'read',
+                'part',
+                $this->offset,
+                $this->limit,
+            );
+
+            return Cache::tags([
+                'course',
+                'direction',
+                'profession',
+                'category',
+                'skill',
+                'teacher',
+                'tool',
+                'process',
+                'employment',
+            ])->remember(
+                $cacheKey,
+                CacheTime::GENERAL->value,
+                function () {
+                    $query = Profession::select([
+                        'professions.id',
+                        'professions.link',
+                        'professions.name',
+                    ])
+                        ->whereHas('courses', function ($query) {
+                            $query->select([
+                                'courses.id',
+                            ])
+                                ->where('status', Status::ACTIVE->value)
+                                ->whereHas('school', function ($query) {
+                                    $query->where('status', true);
+                                });
+                        })
+                        ->where('status', true)
+                        ->orderBy('name');
+
+                    if ($this->offset) {
+                        $query->offset($this->offset);
+                    }
+
+                    if ($this->limit) {
+                        $query->limit($this->limit);
+                    }
+
+                    return Entity::toEntities($query->get()->toArray(), new CourseItemFilter());
+                }
+            );
         }
 
         if ($this->disabled === true) {
@@ -92,26 +146,24 @@ class CourseProfessionReadAction extends Action
                 $cacheKey,
                 CacheTime::GENERAL->value,
                 function () {
-                    $result = Profession::select([
+                    return Profession::select([
                         'professions.id',
                         'professions.link',
                         'professions.name',
                     ])
-                    ->whereHas('courses', function ($query) {
-                        $query->select([
-                            'courses.id',
-                        ])
-                        ->where('status', Status::ACTIVE->value)
-                        ->whereHas('school', function ($query) {
-                            $query->where('status', true);
-                        });
-                    })
-                    ->where('status', true)
-                    ->orderBy('name')
-                    ->get()
-                    ->toArray();
-
-                    return Entity::toEntities($result, new CourseItemFilter());
+                        ->whereHas('courses', function ($query) {
+                            $query->select([
+                                'courses.id',
+                            ])
+                                ->where('status', Status::ACTIVE->value)
+                                ->whereHas('school', function ($query) {
+                                    $query->where('status', true);
+                                });
+                        })
+                        ->where('status', true)
+                        ->orderBy('name')
+                        ->get()
+                        ->toArray();
                 }
             );
         } else {
@@ -144,73 +196,83 @@ class CourseProfessionReadAction extends Action
             $cacheKey,
             CacheTime::GENERAL->value,
             function () use ($professionFilters, $filters, $allProfessions) {
-                $query = Profession::select([
-                    'professions.id',
-                    'professions.link',
-                    'professions.name',
-                ])
-                ->whereHas('courses', function ($query) use ($filters, $allProfessions) {
-                    $query->select([
-                        'courses.id',
+                if (!empty($filters) || (count($professionFilters) && !$this->disabled) || !$this->disabled) {
+                    $query = Profession::select([
+                        'professions.id',
+                        'professions.link',
+                        'professions.name',
                     ])
-                    ->filter($filters ?: [])
-                    ->where('status', Status::ACTIVE->value)
-                    ->whereHas('school', function ($query) {
-                        $query->where('status', true);
-                    });
-                })
-                ->where('status', true);
+                        ->whereHas('courses', function ($query) use ($filters) {
+                            $query->select([
+                                'courses.id',
+                            ])
+                                ->filter($filters ?: [])
+                                ->where('status', Status::ACTIVE->value)
+                                ->whereHas('school', function ($query) {
+                                    $query->where('status', true);
+                                });
+                        })
+                        ->where('status', true)
+                        ->orderBy('name');
 
-                if (count($professionFilters) && !$this->disabled) {
-                    $query->orderBy(DB::raw('FIELD(id, ' . implode(', ', array_reverse($professionFilters)) . ')'), 'DESC');
-                }
-
-                $query->orderBy('name');
-
-                if (!$this->disabled) {
-                    if ($this->offset) {
-                        $query->offset($this->offset);
+                    if (count($professionFilters) && !$this->disabled) {
+                        $query->orderBy(DB::raw('FIELD(id, ' . implode(', ', array_reverse($professionFilters)) . ')'), 'DESC');
                     }
 
-                    if ($this->limit) {
-                        $query->limit($this->limit);
+                    if (!$this->disabled) {
+                        if ($this->offset) {
+                            $query->offset($this->offset);
+                        }
+
+                        if ($this->limit) {
+                            $query->limit($this->limit);
+                        }
                     }
+
+                    $activeProfessions = $query->get()->toArray();
+                } else {
+                    $activeProfessions = $allProfessions;
                 }
-
-                $result = $query->get()->toArray();
-
-                $activeProfessions = Entity::toEntities($result, new CourseItemFilter());
 
                 if ($this->disabled) {
-                    $collectionActiveProfessions = collect($activeProfessions);
+                    if (count($activeProfessions) !== count($allProfessions)) {
+                        $activeProfessionsWithKey = [];
 
-                    foreach ($allProfessions as $profession) {
-                        /**
-                         * @var CourseItemFilter $profession
-                         */
-                        $profession->disabled = $collectionActiveProfessions->search(function ($item) use ($profession) {
-                            return $item->id === $profession->id;
-                        }) === false;
+                        for ($i = 0; $i < count($activeProfessions); $i++) {
+                            $activeProfessionsWithKey[$activeProfessions[$i]['id']] = true;
+                        }
+
+                        for ($i = 0; $i < count($allProfessions); $i++) {
+                            $allProfessions[$i]['disabled'] = !isset($activeProfessionsWithKey[$allProfessions[$i]['id']]);
+                        }
+                    } else {
+                        $allProfessions = collect($allProfessions)->map(function ($item) {
+                            $item['disabled'] = false;
+
+                            return $item;
+                        })->toArray();
                     }
 
-                    return collect($allProfessions)
+                    $result = collect($allProfessions)
                         ->sortBy(function ($item) use ($professionFilters) {
-                            if (in_array($item->id, $professionFilters)) {
+                            if (count($professionFilters) && in_array($item['id'], $professionFilters)) {
                                 $weight = 1;
-                            } else if (!$item->disabled) {
+                            } else if (isset($item['disabled']) && !$item['disabled']) {
                                 $weight = 2;
                             } else {
                                 $weight = 3;
                             }
 
-                            return $weight . ' - '. $item->name;
+                            return $weight . ' - '. $item['name'];
                         })
                         ->slice($this->offset, $this->limit)
                         ->values()
                         ->toArray();
+
+                    return Entity::toEntities($result, new CourseItemFilter());
                 }
 
-                return $activeProfessions;
+                return Entity::toEntities($activeProfessions, new CourseItemFilter());
             }
         );
     }

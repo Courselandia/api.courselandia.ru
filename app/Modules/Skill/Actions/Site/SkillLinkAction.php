@@ -46,7 +46,10 @@ class SkillLinkAction extends Action
                 $result = Skill::where('link', $this->link)
                     ->active()
                     ->whereHas('courses', function ($query) {
-                        $query->where('status', Status::ACTIVE->value);
+                        $query->where('status', Status::ACTIVE->value)
+                            ->whereHas('school', function ($query) {
+                                $query->where('status', true);
+                            });
                     })
                     ->with([
                         'metatag',

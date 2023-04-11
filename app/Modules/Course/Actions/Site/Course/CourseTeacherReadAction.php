@@ -8,7 +8,6 @@
 
 namespace App\Modules\Course\Actions\Site\Course;
 
-use App\Models\Clean;
 use DB;
 use App\Models\Entity;
 use App\Models\Exceptions\ParameterInvalidException;
@@ -69,6 +68,61 @@ class CourseTeacherReadAction extends Action
             $teacherFilters = [];
         }
 
+        if (empty($filters)) {
+            $cacheKey = Util::getKey(
+                'course',
+                'teachers',
+                'site',
+                'read',
+                'part',
+                $this->offset,
+                $this->limit,
+            );
+
+            return Cache::tags([
+                'course',
+                'direction',
+                'profession',
+                'category',
+                'skill',
+                'teacher',
+                'tool',
+                'process',
+                'employment',
+            ])->remember(
+                $cacheKey,
+                CacheTime::GENERAL->value,
+                function () {
+                    $query = Teacher::select([
+                        'teachers.id',
+                        'teachers.link',
+                        'teachers.name',
+                    ])
+                    ->whereHas('courses', function ($query) {
+                        $query->select([
+                            'courses.id',
+                        ])
+                        ->where('status', Status::ACTIVE->value)
+                        ->whereHas('school', function ($query) {
+                            $query->where('status', true);
+                        });
+                    })
+                    ->where('status', true)
+                    ->orderBy('name');
+
+                    if ($this->offset) {
+                        $query->offset($this->offset);
+                    }
+
+                    if ($this->limit) {
+                        $query->limit($this->limit);
+                    }
+
+                    return Entity::toEntities($query->get()->toArray(), new CourseItemFilter());
+                }
+            );
+        }
+
         if ($this->disabled === true) {
             $cacheKey = Util::getKey(
                 'course',
@@ -92,16 +146,13 @@ class CourseTeacherReadAction extends Action
                 $cacheKey,
                 CacheTime::GENERAL->value,
                 function () {
-                    $result = Teacher::select([
+                    return Teacher::select([
                         'teachers.id',
                         'teachers.link',
                         'teachers.name',
                     ])
                     ->whereHas('courses', function ($query) {
-                        $query->select([
-                            'courses.id',
-                        ])
-                        ->where('status', Status::ACTIVE->value)
+                        $query->where('status', Status::ACTIVE->value)
                         ->whereHas('school', function ($query) {
                             $query->where('status', true);
                         });
@@ -110,8 +161,6 @@ class CourseTeacherReadAction extends Action
                     ->orderBy('name')
                     ->get()
                     ->toArray();
-
-                    return Entity::toEntities($result, new CourseItemFilter());
                 }
             );
         } else {
@@ -144,74 +193,83 @@ class CourseTeacherReadAction extends Action
             $cacheKey,
             CacheTime::GENERAL->value,
             function () use ($teacherFilters, $filters, $allTeachers) {
-                $query = Teacher::select([
-                    'teachers.id',
-                    'teachers.link',
-                    'teachers.name',
-                ])
-                ->whereHas('courses', function ($query) use ($filters) {
-                    $query->select([
-                        'courses.id',
+                if (!empty($filters) || (count($teacherFilters) && !$this->disabled) || !$this->disabled) {
+                    $query = Teacher::select([
+                        'teachers.id',
+                        'teachers.link',
+                        'teachers.name',
                     ])
-                    ->filter($filters ?: [])
-                    ->where('status', Status::ACTIVE->value)
-                    ->whereHas('school', function ($query) {
-                        $query->where('status', true);
-                    });
-                })
-                ->where('status', true);
+                    ->whereHas('courses', function ($query) use ($filters) {
+                        $query->select([
+                            'courses.id',
+                        ])
+                        ->filter($filters ?: [])
+                        ->where('status', Status::ACTIVE->value)
+                        ->whereHas('school', function ($query) {
+                            $query->where('status', true);
+                        });
+                    })
+                    ->where('status', true)
+                    ->orderBy('name');
 
-                if (count($teacherFilters) && !$this->disabled) {
-                    $query->orderBy(DB::raw('FIELD(id, ' . implode(', ', array_reverse($teacherFilters)) . ')'), 'DESC');
-                }
-
-                $query->orderBy('name');
-
-                if (!$this->disabled) {
-                    if ($this->offset) {
-                        $query->offset($this->offset);
+                    if (count($teacherFilters) && !$this->disabled) {
+                        $query->orderBy(DB::raw('FIELD(id, ' . implode(', ', array_reverse($teacherFilters)) . ')'), 'DESC');
                     }
 
-                    if ($this->limit) {
-                        $query->limit($this->limit);
+                    if (!$this->disabled) {
+                        if ($this->offset) {
+                            $query->offset($this->offset);
+                        }
+
+                        if ($this->limit) {
+                            $query->limit($this->limit);
+                        }
                     }
+
+                    $activeTeachers = $query->get()->toArray();
+                } else {
+                    $activeTeachers = $allTeachers;
                 }
-
-                $result = $query->get()->toArray();
-
-                $result = Entity::toEntities($result, new CourseItemFilter());
-                $activeTeachers = Clean::do($result, ['count'], true);
 
                 if ($this->disabled) {
-                    $collectionActiveTeachers = collect($activeTeachers);
+                    if (count($activeTeachers) !== count($allTeachers)) {
+                        $activeTeachersWithKey = [];
 
-                    foreach ($allTeachers as $teacher) {
-                        /**
-                         * @var CourseItemFilter $teacher
-                         */
-                        $teacher->disabled = $collectionActiveTeachers->search(function ($item) use ($teacher) {
-                            return $item->id === $teacher->id;
-                        }) === false;
+                        for ($i = 0; $i < count($activeTeachers); $i++) {
+                            $activeTeachersWithKey[$activeTeachers[$i]['id']] = true;
+                        }
+
+                        for ($i = 0; $i < count($allTeachers); $i++) {
+                            $allTeachers[$i]['disabled'] = !isset($activeTeachersWithKey[$allTeachers[$i]['id']]);
+                        }
+                    } else {
+                        $allTeachers = collect($allTeachers)->map(function ($item) {
+                            $item['disabled'] = false;
+
+                            return $item;
+                        })->toArray();
                     }
 
-                    return collect($allTeachers)
+                    $result = collect($allTeachers)
                         ->sortBy(function ($item) use ($teacherFilters) {
-                            if (in_array($item->id, $teacherFilters)) {
+                            if (count($teacherFilters) && in_array($item['id'], $teacherFilters)) {
                                 $weight = 1;
-                            } else if (!$item->disabled) {
+                            } else if (isset($item['disabled']) && !$item['disabled']) {
                                 $weight = 2;
                             } else {
                                 $weight = 3;
                             }
 
-                            return $weight . ' - '. $item->name;
+                            return $weight . ' - '. $item['name'];
                         })
                         ->slice($this->offset, $this->limit)
                         ->values()
                         ->toArray();
+
+                    return Entity::toEntities($result, new CourseItemFilter());
                 }
 
-                return $activeTeachers;
+                return Entity::toEntities($activeTeachers, new CourseItemFilter());
             }
         );
     }
