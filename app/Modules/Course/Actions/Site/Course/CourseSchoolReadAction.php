@@ -63,8 +63,9 @@ class CourseSchoolReadAction extends Action
     {
         $filters = $this->filters;
 
-        if (isset($filters['schools-id'])) {
-            $schoolFilters = is_array($filters['schools-id']) ? $filters['schools-id'] : [$filters['schools-id']];
+        if (isset($filters['school-id'])) {
+            $schoolFilters = is_array($filters['school-id']) ? $filters['school-id'] : [$filters['school-id']];
+            unset($filters['school-id']);
         } else {
             $schoolFilters = [];
         }
