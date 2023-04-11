@@ -70,7 +70,7 @@ class CourseSchoolReadAction extends Action
             $schoolFilters = [];
         }
 
-        if (empty($filters)) {
+        if (empty($this->filters)) {
             $cacheKey = Util::getKey(
                 'course',
                 'schools',

@@ -69,7 +69,7 @@ class CourseToolReadAction extends Action
             $toolFilters = [];
         }
 
-        if (empty($filters)) {
+        if (empty($this->filters)) {
             $cacheKey = Util::getKey(
                 'course',
                 'tools',

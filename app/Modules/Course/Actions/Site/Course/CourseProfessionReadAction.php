@@ -69,7 +69,7 @@ class CourseProfessionReadAction extends Action
             $professionFilters = [];
         }
 
-        if (empty($filters)) {
+        if (empty($this->filters)) {
             $cacheKey = Util::getKey(
                 'course',
                 'professions',

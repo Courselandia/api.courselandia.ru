@@ -69,7 +69,7 @@ class CourseCategoryReadAction extends Action
             $categoryFilters = [];
         }
 
-        if (empty($filters)) {
+        if (empty($this->filters)) {
             $cacheKey = Util::getKey(
                 'course',
                 'categories',
