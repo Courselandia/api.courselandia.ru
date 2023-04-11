@@ -30,7 +30,7 @@ class Kernel extends ConsoleKernel
 
         $schedule->command('course:import')->dailyAt('00:00');
         $schedule->command('sitemap:generate')->dailyAt('05:00');
-        $schedule->command('artisan metatag:apply --update')->dailyAt('07:00');
+        $schedule->command('metatag:apply --update')->dailyAt('07:00');
     }
 
     /**
