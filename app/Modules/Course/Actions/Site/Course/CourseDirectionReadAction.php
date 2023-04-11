@@ -80,7 +80,7 @@ class CourseDirectionReadAction extends Action
             unset($filters['directions-id']);
         }
 
-        if (empty($this->filters)) {
+        if (empty($this->filters) && !$this->withCategories) {
             $cacheKey = Util::getKey(
                 'course',
                 'directions',
