@@ -66,15 +66,15 @@ class Import
      */
     public function __construct()
     {
-        $this->addParser(new ParserNetology('https://feeds.advcake.com/feed/download/54321b01372443d9902b3387dd154c8f'))
-            ->addParser(new ParserGeekBrains('https://feeds.advcake.com/feed/download/07d89f2e6d9a92a355caa2d4db424cfd'))
+        $this->addParser(new ParserNetology('https://feeds.advcake.com/feed/download/720bc9eb1b0a9ffdbbfb5a6bb5e1b430')) // Боевой
+            ->addParser(new ParserGeekBrains('https://feeds.advcake.com/feed/download/fb26c1c07ea836c24f519ae06463ad97')) // Боевой
             ->addParser(new ParserSkillbox('https://feeds.advcake.com/feed/download/04c98be3ff7eb4298b14b863b66f5447')) // Боевой
-            ->addParser(new ParserSkyPro('https://feeds.advcake.com/feed/download/3ae0ebb5de2e80b35668ba8b3db8b760'))
-            ->addParser(new ParserSkillFactory('https://feeds.advcake.com/feed/download/993eb3d8a8131641e035707f860fef7d'))
-            ->addParser(new ParserContented('https://feeds.advcake.com/feed/download/5a6f3f438c1f38f77256e65abc44e780'))
-            ->addParser(new ParserXyzSchool('https://feeds.advcake.com/feed/download/ef05e6d05099e4672126b4cddeeec695'))
-            ->addParser(new ParserSkillboxEng('https://feeds.advcake.com/feed/download/8aeda3dc397f0e13147ae10a8075de92'))
-            ->addParser(new ParserInternationalSchoolProfessions('https://feeds.advcake.com/feed/download/335b838a5b67c60fd7d67e7f0e0e4ae5'));
+            ->addParser(new ParserSkyPro('https://feeds.advcake.com/feed/download/78f9101b00fdc0ee9604c52c1498e8d6')) // Боевой
+            ->addParser(new ParserSkillFactory('https://feeds.advcake.com/feed/download/1b8ef478549c7676fd66df1115ea6197')) // Боевой
+            ->addParser(new ParserContented('https://feeds.advcake.com/feed/download/6d2dd813fb1c90af6a46a09152b8b66e')) // Боевой
+            ->addParser(new ParserXyzSchool('https://feeds.advcake.com/feed/download/beed1d5d836673744f70f869fa8dc96d')) // Боевой
+            ->addParser(new ParserSkillboxEng('https://feeds.advcake.com/feed/download/312e01ad656d54b004998c79a3fbd6d5')) // Боевой
+            ->addParser(new ParserInternationalSchoolProfessions('https://feeds.advcake.com/feed/download/e32dabfde71ef6a97dd8b66a9c142c99')); // Боевой
     }
 
     /**
