@@ -41,14 +41,22 @@ abstract class JobItem implements ShouldQueue
     public string $path;
 
     /**
+     * Ссылка на секцию.
+     *
+     * @var string|null
+     */
+    public ?string $link = null;
+
+    /**
      * Конструктор.
      *
      * @param int|null $id ID записи.
      */
-    public function __construct(string $path, ?int $id = null)
+    public function __construct(string $path, ?int $id = null, ?string $link = null)
     {
         $this->path = $path;
         $this->id = $id;
+        $this->link = $link;
     }
 
     /**

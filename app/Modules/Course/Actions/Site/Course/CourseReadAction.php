@@ -127,6 +127,13 @@ class CourseReadAction extends Action
     public bool $openedTools = false;
 
     /**
+     * Возможность брать данные с файлового хранидища.
+     *
+     * @var bool
+     */
+    public bool $dbFile = true;
+
+    /**
      * Метод запуска логики.
      *
      * @return CourseRead|null Вернет результаты исполнения.
@@ -134,7 +141,8 @@ class CourseReadAction extends Action
     public function run(): ?CourseRead
     {
         if (
-            !$this->openedSchools
+            $this->dbFile
+            && !$this->openedSchools
             && !$this->openedCategories
             && !$this->openedProfessions
             && !$this->openedTeachers

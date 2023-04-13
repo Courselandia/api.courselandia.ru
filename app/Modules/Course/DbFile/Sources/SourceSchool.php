@@ -46,7 +46,7 @@ class SourceSchool extends Source
                 ?->toArray();
 
             if ($result) {
-                JobSchool::dispatch('/schools', $result['id'])
+                JobSchool::dispatch('/schools', $result['id'], $result['link'])
                     ->delay(now()->addMinutes(5));
 
                 $this->fireEvent('export');

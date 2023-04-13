@@ -28,6 +28,7 @@ class JobCourse extends JobItem
         $action->filters = [];
         $action->offset = 0;
         $action->limit = 36;
+        $action->dbFile = false;
 
         $entityCourseRead = $action->run();
 

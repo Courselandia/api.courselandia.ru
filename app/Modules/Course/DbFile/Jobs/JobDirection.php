@@ -28,6 +28,9 @@ class JobDirection extends JobItem
         $action->filters = ['directions-id' => $this->id];
         $action->offset = 0;
         $action->limit = 36;
+        $action->section = 'direction';
+        $action->sectionLink = $this->link;
+        $action->dbFile = false;
 
         $entityCourseRead = $action->run();
 

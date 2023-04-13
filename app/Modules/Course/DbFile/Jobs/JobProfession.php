@@ -28,6 +28,9 @@ class JobProfession extends JobItem
         $action->filters = ['professions-id' => $this->id];
         $action->offset = 0;
         $action->limit = 36;
+        $action->section = 'profession';
+        $action->sectionLink = $this->link;
+        $action->dbFile = false;
 
         $entityCourseRead = $action->run();
 

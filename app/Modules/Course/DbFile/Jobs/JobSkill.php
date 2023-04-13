@@ -28,6 +28,9 @@ class JobSkill extends JobItem
         $action->filters = ['skills-id' => $this->id];
         $action->offset = 0;
         $action->limit = 36;
+        $action->section = 'skill';
+        $action->sectionLink = $this->link;
+        $action->dbFile = false;
 
         $entityCourseRead = $action->run();
 

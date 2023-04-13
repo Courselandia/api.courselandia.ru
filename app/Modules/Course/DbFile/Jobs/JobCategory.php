@@ -28,6 +28,9 @@ class JobCategory extends JobItem
         $action->filters = ['categories-id' => $this->id];
         $action->offset = 0;
         $action->limit = 36;
+        $action->section = 'category';
+        $action->sectionLink = $this->link;
+        $action->dbFile = false;
 
         $entityCourseRead = $action->run();
 
