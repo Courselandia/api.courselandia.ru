@@ -73,6 +73,8 @@ class Sitemap
 
     /**
      * Генератор файла.
+     *
+     * @return void
      */
     public function generate(): void
     {
