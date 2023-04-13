@@ -18,9 +18,9 @@ class Item
     /**
      * ID данных.
      *
-     * @var int|string
+     * @var int|string|null
      */
-    public int|string $id;
+    public int|string|null $id;
 
     /**
      * Данные для сохранения.

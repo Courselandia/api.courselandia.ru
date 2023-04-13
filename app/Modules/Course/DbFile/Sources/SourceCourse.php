@@ -8,7 +8,7 @@
 
 namespace App\Modules\Course\DbFile\Sources;
 
-use App\Modules\Course\DbFile\Jobs\JobTool;
+use App\Modules\Course\DbFile\Jobs\JobCourse;
 use App\Modules\Course\DbFile\Source;
 
 /**
@@ -33,7 +33,7 @@ class SourceCourse extends Source
      */
     public function export(): void
     {
-        JobTool::dispatch('/course')
+        JobCourse::dispatch('/courses')
             ->delay(now()->addMinutes(5));
 
         $this->fireEvent('export');
