@@ -47,7 +47,7 @@ class SourceTeacher extends Source
 
             if ($result) {
                 JobTeacher::dispatch('/teachers', $result['id'], $result['link'])
-                    ->delay(now()->addMinutes(5));
+                    ->delay(now()->addMinute());
 
                 $this->fireEvent('export');
             }

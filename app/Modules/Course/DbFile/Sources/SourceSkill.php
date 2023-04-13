@@ -47,7 +47,7 @@ class SourceSkill extends Source
 
             if ($result) {
                 JobSkill::dispatch('/skills', $result['id'], $result['link'])
-                    ->delay(now()->addMinutes(5));
+                    ->delay(now()->addMinute());
 
                 $this->fireEvent('export');
             }

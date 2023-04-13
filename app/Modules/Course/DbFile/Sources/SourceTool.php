@@ -47,7 +47,7 @@ class SourceTool extends Source
 
             if ($result) {
                 JobTool::dispatch('/tools', $result['id'], $result['link'])
-                    ->delay(now()->addMinutes(5));
+                    ->delay(now()->addMinute());
 
                 $this->fireEvent('export');
             }

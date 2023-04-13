@@ -47,7 +47,7 @@ class SourceSchool extends Source
 
             if ($result) {
                 JobSchool::dispatch('/schools', $result['id'], $result['link'])
-                    ->delay(now()->addMinutes(5));
+                    ->delay(now()->addMinute());
 
                 $this->fireEvent('export');
             }

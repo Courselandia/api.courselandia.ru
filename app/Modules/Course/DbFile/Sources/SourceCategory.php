@@ -47,7 +47,7 @@ class SourceCategory extends Source
 
             if ($result) {
                 JobCategory::dispatch('/categories', $result['id'], $result['link'])
-                    ->delay(now()->addMinutes(5));
+                    ->delay(now()->addMinute());
 
                 $this->fireEvent('export');
             }

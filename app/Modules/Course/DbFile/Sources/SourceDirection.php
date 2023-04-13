@@ -47,7 +47,7 @@ class SourceDirection extends Source
 
             if ($result) {
                 JobDirection::dispatch('/directions', $result['id'], $result['link'])
-                    ->delay(now()->addMinutes(5));
+                    ->delay(now()->addMinute());
 
                 $this->fireEvent('export');
             }

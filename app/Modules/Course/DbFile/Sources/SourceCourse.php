@@ -34,7 +34,7 @@ class SourceCourse extends Source
     public function export(): void
     {
         JobCourse::dispatch('/courses')
-            ->delay(now()->addMinutes(5));
+            ->delay(now()->addMinute());
 
         $this->fireEvent('export');
     }

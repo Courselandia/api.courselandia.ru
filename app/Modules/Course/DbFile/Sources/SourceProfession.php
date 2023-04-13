@@ -47,7 +47,7 @@ class SourceProfession extends Source
 
             if ($result) {
                 JobProfession::dispatch('/professions', $result['id'], $result['link'])
-                    ->delay(now()->addMinutes(5));
+                    ->delay(now()->addMinute());
 
                 $this->fireEvent('export');
             }
