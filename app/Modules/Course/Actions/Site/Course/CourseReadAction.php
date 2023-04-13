@@ -144,6 +144,7 @@ class CourseReadAction extends Action
             $result = Store::read($this->offset, $this->limit, $this->sorts, $this->filters);
 
             if ($result) {
+                \Log::debug('Файл');
                 return $result;
             }
         }
