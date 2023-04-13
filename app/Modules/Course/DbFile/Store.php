@@ -50,7 +50,7 @@ class Store
                 } else if (isset($filters['professions-id']) && count($filters['professions-id']) === 1) {
                     $pathFile = '/db/professions/' . $filters['professions-id'][0] . '.obj';
                 } else if (isset($filters['school-id']) && count($filters['school-id']) === 1) {
-                    $pathFile = '/db/school/' . $filters['school-id'][0] . '.obj';
+                    $pathFile = '/db/schools/' . $filters['school-id'][0] . '.obj';
                 } else if (isset($filters['skills-id']) && count($filters['skills-id']) === 1) {
                     $pathFile = '/db/skills/' . $filters['skills-id'][0] . '.obj';
                 } else if (isset($filters['teachers-id']) && count($filters['teachers-id']) === 1) {
