@@ -9,21 +9,14 @@
 namespace App\Modules\Course\DbFile;
 
 use App\Models\Error;
-use Generator;
+use App\Models\Event;
 
 /**
  * Абстрактный класс для создания источника формирования JSON файла.
  */
 abstract class Source
 {
-    use Error;
-
-    /**
-     * Получить путь к папке хранения файлов.
-     *
-     * @return string Путь к папке.
-     */
-    abstract public function getPathToDir(): string;
+    use Event;
 
     /**
      * Общее количество генерируемых данных.
@@ -33,9 +26,9 @@ abstract class Source
     abstract public function count(): int;
 
     /**
-     * Чтение данных.
+     * Запуск экспорта данных.
      *
-     * @return Generator<Item> Элемент для сохранения.
+     * @return void.
      */
-    abstract public function read(): Generator;
+    abstract public function export(): void;
 }

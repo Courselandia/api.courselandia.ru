@@ -8,16 +8,16 @@
 
 namespace App\Modules\Course\DbFile\Sources;
 
-use App\Modules\Course\DbFile\Jobs\JobDirection;
+use App\Modules\Course\DbFile\Jobs\JobSchool;
+use App\Modules\School\Models\School;
 use App\Modules\Course\Enums\Status;
 use App\Modules\Course\DbFile\Source;
-use App\Modules\Direction\Models\Direction;
 use Illuminate\Database\Eloquent\Builder;
 
 /**
- * Источник для формирования направлений.
+ * Источник для формирования школ.
  */
-class SourceDirection extends Source
+class SourceSchool extends Source
 {
     /**
      * Общее количество генерируемых данных.
@@ -46,7 +46,7 @@ class SourceDirection extends Source
                 ?->toArray();
 
             if ($result) {
-                JobDirection::dispatch('/directions', $result['id'])
+                JobSchool::dispatch('/schools', $result['id'])
                     ->delay(now()->addMinutes(5));
 
                 $this->fireEvent('export');
@@ -61,11 +61,8 @@ class SourceDirection extends Source
      */
     private function getQuery(): Builder
     {
-        return Direction::whereHas('courses', function ($query) {
-            $query->where('status', Status::ACTIVE->value)
-                ->whereHas('school', function ($query) {
-                    $query->where('status', true);
-                });
+        return School::whereHas('courses', function ($query) {
+            $query->where('status', Status::ACTIVE->value);
         })
         ->where('status', true)
         ->orderBy('id');

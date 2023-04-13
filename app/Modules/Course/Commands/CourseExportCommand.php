@@ -38,30 +38,20 @@ class CourseExportCommand extends Command
      */
     public function handle(): void
     {
-        $this->line('Экспортирование курсов с источников...');
+        $this->line('Создаем очереди на отправку в экспорт...');
 
         $export = new Export();
         $bar = $this->output->createProgressBar($export->getTotal());
         $bar->start();
 
-        $export->addEvent('read', function () use ($bar) {
+        $export->addEvent('export', function () use ($bar) {
             $bar->advance();
         });
 
         $export->run();
         $bar->finish();
 
-        if ($export->hasError()) {
-            $errors = $export->getErrors();
-
-            foreach ($errors as $error) {
-                $message = 'Ошибка экспорта курсов: ' . $error->getMessage();
-                Log::error($message);
-                $this->error($message);
-            }
-        }
-
-        $this->info("\n\nИмпорт курсов завершен.");
-        Log::info('Импорт курсов в файлы.');
+        $this->info("\n\nЭкспорт был отправлен в очереди.");
+        Log::info('Отправка экспорта курсов в очереди.');
     }
 }

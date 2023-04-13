@@ -8,11 +8,15 @@
 
 namespace App\Modules\Course\DbFile;
 
-use App\Modules\Course\Entities\CourseRead;
-use Storage;
-use App\Models\Error;
 use App\Models\Event;
+use App\Modules\Course\DbFile\Sources\SourceCourse;
 use App\Modules\Course\DbFile\Sources\SourceDirection;
+use App\Modules\Course\DbFile\Sources\SourceCategory;
+use App\Modules\Course\DbFile\Sources\SourceProfession;
+use App\Modules\Course\DbFile\Sources\SourceSchool;
+use App\Modules\Course\DbFile\Sources\SourceSkill;
+use App\Modules\Course\DbFile\Sources\SourceTeacher;
+use App\Modules\Course\DbFile\Sources\SourceTool;
 
 /**
  * Класс для экспортирования курсов в файлы для их быстрой загрузки.
@@ -20,7 +24,6 @@ use App\Modules\Course\DbFile\Sources\SourceDirection;
 class Export
 {
     use Event;
-    use Error;
 
     /**
      * Источники.
@@ -34,7 +37,14 @@ class Export
      */
     public function __construct()
     {
-        $this->addSource(new SourceDirection());
+        $this->addSource(new SourceCourse())
+            ->addSource(new SourceDirection())
+            ->addSource(new SourceSchool())
+            ->addSource(new SourceCategory())
+            ->addSource(new SourceProfession())
+            ->addSource(new SourceTeacher())
+            ->addSource(new SourceSkill())
+            ->addSource(new SourceTool());
     }
 
     /**
@@ -62,7 +72,7 @@ class Export
     public function run(): void
     {
         $this->offLimits();
-        $this->export();
+        $this->exports();
     }
 
     /**
@@ -82,46 +92,17 @@ class Export
      *
      * @return void
      */
-    private function export(): void
+    private function exports(): void
     {
         $sources = $this->getSources();
 
         foreach ($sources as $source) {
-            foreach ($source->read() as $item) {
-                $this->save($source->getPathToDir(), $item->id, $item->data);
+            $source->addEvent('export', function () {
+                $this->fireEvent('export');
+            });
 
-                $this->fireEvent(
-                    'read',
-                    [
-                        $source->getPathToDir(),
-                        $item->id,
-                        $item->data,
-                    ]
-                );
-            }
-
-            if ($source->hasError()) {
-                $errors = $source->getErrors();
-
-                foreach ($errors as $error) {
-                    $this->addError($error);
-                }
-            }
+            $source->export();
         }
-    }
-
-    /**
-     * Сохранение данных в файл.
-     *
-     * @param string $pathToDir Путь к файлу.
-     * @param string|int $id ID данных.
-     * @param CourseRead $data Данные для сохранения в файл.
-     *
-     * @return void
-     */
-    private function save(string $pathToDir, string|int $id, CourseRead $data): void
-    {
-        Storage::drive('local')->put('/db/' . $pathToDir . '/' . $id . '.obj', serialize($data));
     }
 
     /**
