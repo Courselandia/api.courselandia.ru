@@ -94,7 +94,7 @@ class CourseToolReadAction extends Action
                 $cacheKey,
                 CacheTime::GENERAL->value,
                 function () {
-                    $result = Tool::select([
+                    $query = Tool::select([
                         'tools.id',
                         'tools.link',
                         'tools.name',
@@ -109,11 +109,17 @@ class CourseToolReadAction extends Action
                                 });
                         })
                         ->where('status', true)
-                        ->orderBy('name')
-                        ->offset($this->offset)
-                        ->limit($this->limit)
-                        ->get()
-                        ->toArray();
+                        ->orderBy('name');
+
+                    if ($this->offset) {
+                        $query->offset($this->offset);
+                    }
+
+                    if ($this->limit) {
+                        $query->limit($this->limit);
+                    }
+
+                    $result = $query->get()->toArray();
 
                     return Entity::toEntities($result, new CourseItemFilter());
                 }

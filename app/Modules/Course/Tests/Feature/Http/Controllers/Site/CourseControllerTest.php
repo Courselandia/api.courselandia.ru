@@ -79,27 +79,6 @@ class CourseControllerTest extends TestCase
                 ],
                 'description' => $this->getDescriptionStructure(),
                 'filter' => [
-                    'directions' => [
-                        '*' => $this->getFilterStructure()
-                    ],
-                    'categories' => [
-                        '*' => $this->getFilterStructure()
-                    ],
-                    'professions' => [
-                        '*' => $this->getFilterStructure()
-                    ],
-                    'schools' => [
-                        '*' => $this->getFilterStructure()
-                    ],
-                    'tools' => [
-                        '*' => $this->getFilterStructure()
-                    ],
-                    'skills' => [
-                        '*' => $this->getFilterStructure()
-                    ],
-                    'teachers' => [
-                        '*' => $this->getFilterStructure()
-                    ],
                     'ratings',
                     'price' => [
                         'min',
@@ -128,7 +107,7 @@ class CourseControllerTest extends TestCase
      */
     public function testReadRated(): void
     {
-        $course = self::createCourse();
+        self::createCourse();
         self::createCourse();
         self::createCourse();
 
@@ -601,42 +580,6 @@ class CourseControllerTest extends TestCase
             'duration_unit',
             'lessons_amount',
             'modules_amount',
-            'directions' => [
-                '*' => [
-                    'id',
-                    'name',
-                ]
-            ],
-            'professions' => [
-                '*' => [
-                    'id',
-                    'name',
-                ]
-            ],
-            'categories' => [
-                '*' => [
-                    'id',
-                    'name',
-                ]
-            ],
-            'skills' => [
-                '*' => [
-                    'id',
-                    'name',
-                ]
-            ],
-            'teachers' => [
-                '*' => [
-                    'id',
-                    'name',
-                ]
-            ],
-            'tools' => [
-                '*' => [
-                    'id',
-                    'name',
-                ]
-            ],
             'levels',
         ];
     }

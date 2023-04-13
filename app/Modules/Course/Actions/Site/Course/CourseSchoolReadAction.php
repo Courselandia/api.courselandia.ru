@@ -96,7 +96,7 @@ class CourseSchoolReadAction extends Action
                 $cacheKey,
                 CacheTime::GENERAL->value,
                 function () {
-                    $result = School::select([
+                    $query = School::select([
                         'schools.id',
                         'schools.link',
                         'schools.name',
@@ -111,11 +111,17 @@ class CourseSchoolReadAction extends Action
                                 });
                         })
                         ->where('status', true)
-                        ->orderBy('name')
-                        ->offset($this->offset)
-                        ->limit($this->limit)
-                        ->get()
-                        ->toArray();
+                        ->orderBy('name');
+
+                    if ($this->offset) {
+                        $query->offset($this->offset);
+                    }
+
+                    if ($this->limit) {
+                        $query->limit($this->limit);
+                    }
+
+                    $result = $query->get()->toArray();
 
                     return Entity::toEntities($result, new CourseItemFilter());
                 }
