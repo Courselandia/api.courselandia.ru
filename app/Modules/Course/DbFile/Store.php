@@ -8,6 +8,7 @@
 
 namespace App\Modules\Course\DbFile;
 
+use Config;
 use Storage;
 use App\Modules\Course\Entities\CourseRead;
 
@@ -26,7 +27,8 @@ class Store
     public static function read($offset = 0, $limit = 36, ?array $sorts = [], ?array $filters = []): ?CourseRead
     {
         if (
-            $offset === 0
+            Config::get('app.course_db_file')
+            && $offset === 0
             && $limit === 36
             && (isset($sorts['name']) && mb_strtolower($sorts['name']) === 'asc')
         ) {
