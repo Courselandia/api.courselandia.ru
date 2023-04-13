@@ -28,6 +28,7 @@ use App\Modules\Course\Pipes\Site\Read\ReadPipe;
 use App\Modules\Course\Pipes\Site\Read\DescriptionPipe;
 use App\Modules\Course\Pipes\Site\Read\DataPipe;
 use App\Modules\Course\Decorators\Site\CourseReadDecorator;
+use App\Modules\Course\DbFile\Store;
 
 /**
  * Класс действия для получения курсов.
@@ -132,6 +133,21 @@ class CourseReadAction extends Action
      */
     public function run(): ?CourseRead
     {
+        if (
+            !$this->openedSchools
+            && !$this->openedCategories
+            && !$this->openedProfessions
+            && !$this->openedTeachers
+            && !$this->openedSkills
+            && !$this->openedTools
+        ) {
+            $result = Store::read($this->offset, $this->limit, $this->sorts, $this->filters);
+
+            if ($result) {
+                return $result;
+            }
+        }
+
         $decorator = app(CourseReadDecorator::class);
         $decorator->sorts = $this->sorts;
         $decorator->filters = $this->filters;
