@@ -176,6 +176,7 @@ class Import
                 ->first();
 
             $name = html_entity_decode($courseEntity->name);
+            $name = rtrim($name,'.');
             $text = html_entity_decode($courseEntity->text);
 
             if ($course) {
