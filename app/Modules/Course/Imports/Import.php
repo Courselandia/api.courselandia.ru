@@ -175,6 +175,9 @@ class Import
                 ->where('uuid', $courseEntity->uuid)
                 ->first();
 
+            $name = html_entity_decode($courseEntity->name);
+            $text = html_entity_decode($courseEntity->text);
+
             if ($course) {
                 if ($courseEntity->status) {
                     if ($course->status === Status::DISABLED->value) {
@@ -187,8 +190,8 @@ class Import
                 }
 
                 $data = [
-                    'name' => $courseEntity->name,
-                    'link' => strtolower(Util::latin(strtolower($courseEntity->name))),
+                    'name' => $name,
+                    'link' => strtolower(Util::latin(strtolower($name))),
                     'status' => $status,
                     'url' => $courseEntity->url,
                     'price' => $courseEntity->price,
@@ -216,7 +219,7 @@ class Import
                 $action = app(MetatagSetAction::class);
 
                 $templateValues = [
-                    'course' => $courseEntity->name,
+                    'course' => $name,
                     'school' => $courseEntity->school->getLabel(),
                     'price' => $courseEntity->price,
                     'currency' => $courseEntity->currency?->value || Currency::RUB,
@@ -237,11 +240,11 @@ class Import
 
                 $course = Course::create([
                     'uuid' => $courseEntity->uuid,
-                    'name' => $courseEntity->name,
+                    'name' => $name,
                     'header' => $template->convert($headerTemplate, $templateValues),
                     'header_template' => $headerTemplate,
-                    'link' => strtolower(Util::latin(strtolower($courseEntity->name))),
-                    'text' => $courseEntity->text,
+                    'link' => strtolower(Util::latin(strtolower($name))),
+                    'text' => $text,
                     'status' => $courseEntity->status ? Status::DRAFT->value : Status::DISABLED->value,
                     'url' => $courseEntity->url,
                     'image_small_id' => $image,
