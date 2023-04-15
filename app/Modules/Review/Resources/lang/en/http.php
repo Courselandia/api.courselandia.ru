@@ -18,6 +18,7 @@ return [
                 'status' => 'Status',
                 'rating' => 'Rating',
                 'schoolId' => 'School ID',
+                'createdAt' => 'Created At',
             ],
         ],
         'site' => [

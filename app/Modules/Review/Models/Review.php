@@ -32,6 +32,7 @@ use App\Modules\Review\Enums\Status;
  * @property int|string $school_id ID школы.
  * @property int|string $course_id ID курса.
  * @property string $uuid Уникальный идентификатор спарсенного отзыва.
+ * @property string $source Источник отзыва.
  * @property string $name Имя автора.
  * @property string $title Заголовок.
  * @property string $review Отзыв.
@@ -60,6 +61,7 @@ class Review extends Eloquent
         'id',
         'school_id',
         'course_id',
+        'source',
         'uuid',
         'name',
         'title',
@@ -78,6 +80,7 @@ class Review extends Eloquent
     #[ArrayShape([
         'school_id' => 'string',
         'course_id' => 'string',
+        'source' => 'string',
         'uuid' => 'string',
         'name' => 'string',
         'title' => 'string',
@@ -91,6 +94,7 @@ class Review extends Eloquent
         return [
             'school_id' => 'required|digits_between:0,20|exists_soft:schools,id',
             'course_id' => 'nullable|digits_between:0,20|exists_soft:courses,id',
+            'source' => 'max:191',
             'uuid' => 'max:191',
             'name' => 'max:191',
             'title' => 'max:191',
@@ -112,6 +116,7 @@ class Review extends Eloquent
         return [
             'school_id' => trans('review::models.review.schoolId'),
             'course_id' => trans('review::models.review.courseId'),
+            'source' => trans('review::models.review.source'),
             'uuid' => trans('review::models.review.uuid'),
             'name' => trans('review::models.review.name'),
             'title' => trans('review::models.review.title'),

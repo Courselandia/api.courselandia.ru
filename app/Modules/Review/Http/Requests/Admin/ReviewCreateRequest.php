@@ -28,6 +28,7 @@ class ReviewCreateRequest extends FormRequest
         'course_id' => 'string',
         'status' => 'string',
         'rating' => 'string',
+        'created_at' => 'string',
     ])] public function rules(): array
     {
         return [
@@ -35,6 +36,7 @@ class ReviewCreateRequest extends FormRequest
             'course_id' => 'nullable|exists_soft:courses,id',
             'status' => 'required|in:' . implode(',', EnumList::getValues(Status::class)),
             'rating' => 'nullable|integer',
+            'created_at' => 'required|date_format:Y-m-d H:i:s O',
         ];
     }
 
@@ -47,7 +49,8 @@ class ReviewCreateRequest extends FormRequest
         'school_id' => 'string',
         'course_id' => 'string',
         'status' => 'string',
-        'rating' => 'string'
+        'rating' => 'string',
+        'created_at' => 'string'
     ])] public function attributes(): array
     {
         return [
@@ -55,6 +58,7 @@ class ReviewCreateRequest extends FormRequest
             'course_id' => trans('review::http.requests.admin.reviewCreateRequest.courseId'),
             'status' => trans('review::http.requests.admin.reviewCreateRequest.status'),
             'rating' => trans('review::http.requests.admin.reviewCreateRequest.rating'),
+            'created_at' => trans('review::http.requests.admin.reviewCreateRequest.createdAt'),
         ];
     }
 }

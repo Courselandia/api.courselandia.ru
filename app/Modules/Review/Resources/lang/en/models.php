@@ -3,6 +3,7 @@
 return [
     'review' => [
         'schoolId' => 'ID school',
+        'source' => 'Source',
         'uuid' => 'Unique ID of parsed review',
         'name' => 'Name',
         'title' => 'Title',

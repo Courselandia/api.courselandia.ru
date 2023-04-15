@@ -8,10 +8,12 @@
 
 namespace App\Modules\Review\Http\Controllers\Admin;
 
+use Config;
 use App\Modules\Review\Enums\Status;
 use App\Modules\Review\Http\Requests\Admin\ReviewCreateRequest;
 use App\Modules\Review\Http\Requests\Admin\ReviewUpdateRequest;
 use Auth;
+use Carbon\Carbon;
 use Log;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
@@ -100,12 +102,17 @@ class ReviewController extends Controller
             $action = app(ReviewCreateAction::class);
             $action->school_id = $request->get('school_id');
             $action->course_id = $request->get('course_id');
+            $action->source = $request->get('source');
             $action->name = $request->get('name');
             $action->review = $request->get('review');
             $action->advantages = $request->get('advantages');
             $action->disadvantages = $request->get('disadvantages');
             $action->rating = $request->get('rating');
             $action->status = Status::from($request->get('status'));
+            $action->created_at = Carbon::createFromFormat(
+                'Y-m-d H:i:s O',
+                $request->get('created_at')
+            )->setTimezone(Config::get('app.timezone'));
 
             $data = $action->run();
 
@@ -148,6 +155,7 @@ class ReviewController extends Controller
             $action->id = $id;
             $action->school_id = $request->get('school_id');
             $action->course_id = $request->get('course_id');
+            $action->source = $request->get('source');
             $action->name = $request->get('name');
             $action->title = $request->get('title');
             $action->review = $request->get('review');
@@ -155,6 +163,10 @@ class ReviewController extends Controller
             $action->disadvantages = $request->get('disadvantages');
             $action->rating = $request->get('rating');
             $action->status = Status::from($request->get('status'));
+            $action->created_at = Carbon::createFromFormat(
+                'Y-m-d H:i:s O',
+                $request->get('created_at')
+            )->setTimezone(Config::get('app.timezone'));
 
             $data = $action->run();
 

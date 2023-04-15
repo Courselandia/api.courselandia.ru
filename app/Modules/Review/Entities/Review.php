@@ -41,6 +41,13 @@ class Review extends Entity
     public int|string|null $course_id = null;
 
     /**
+     * Источник.
+     *
+     * @var string|null
+     */
+    public ?string $source = null;
+
+    /**
      * Имя автора.
      *
      * @var string|null

@@ -18,6 +18,7 @@ return [
                 'status' => 'Статус',
                 'rating' => 'Рейтинг',
                 'schoolId' => 'ID школы',
+                'createdAt' => 'Дата создания',
             ],
         ],
         'site' => [

@@ -14,6 +14,7 @@ use App\Modules\Review\Entities\Review as ReviewEntity;
 use App\Modules\Review\Enums\Status;
 use App\Modules\Review\Models\Review;
 use Cache;
+use Carbon\Carbon;
 
 /**
  * Класс действия для создания отзывов.
@@ -84,6 +85,20 @@ class ReviewCreateAction extends Action
     public ?Status $status = null;
 
     /**
+     * Дата добавления.
+     *
+     * @var ?Carbon
+     */
+    public ?Carbon $created_at = null;
+
+    /**
+     * Источник.
+     *
+     * @var ?string
+     */
+    public ?string $source = null;
+
+    /**
      * Метод запуска логики.
      *
      * @return ReviewEntity Вернет результаты исполнения.
@@ -101,6 +116,8 @@ class ReviewCreateAction extends Action
         $reviewEntity->disadvantages = $this->disadvantages;
         $reviewEntity->rating = $this->rating;
         $reviewEntity->status = $this->status;
+        $reviewEntity->created_at = $this->created_at;
+        $reviewEntity->source = $this->source;
 
         $review = Review::create($reviewEntity->toArray());
         Cache::tags(['catalog', 'school', 'review', 'course'])->flush();
