@@ -19,6 +19,7 @@ class CreateTableReviews extends Migration
             $table->bigInteger('id', true)->unsigned();
             $table->bigInteger('school_id')->unsigned()->index('school_id');
             $table->bigInteger('course_id')->unsigned()->index('course_id')->nullable();
+            $table->string('uuid', 191)->nullable();
 
             $table->string('name', 191)->nullable();
             $table->string('title', 191)->nullable();
