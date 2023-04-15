@@ -55,6 +55,13 @@ class Review extends Entity
     public ?string $title = null;
 
     /**
+     * Отзыв.
+     *
+     * @var string|null
+     */
+    public ?string $review = null;
+
+    /**
      * Достоинства.
      *
      * @var string|null

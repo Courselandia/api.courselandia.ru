@@ -34,7 +34,7 @@ class ReviewCreateRequest extends FormRequest
             'school_id' => 'exists_soft:schools,id',
             'course_id' => 'nullable|exists_soft:courses,id',
             'status' => 'required|in:' . implode(',', EnumList::getValues(Status::class)),
-            'rating' => 'integer',
+            'rating' => 'nullable|integer',
         ];
     }
 

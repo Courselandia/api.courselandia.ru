@@ -33,6 +33,7 @@ use App\Modules\Review\Enums\Status;
  * @property int|string $course_id ID курса.
  * @property string $name Имя автора.
  * @property string $title Заголовок.
+ * @property string $review Отзыв.
  * @property string $advantages Достоинства.
  * @property string $disadvantages Недостатки.
  * @property int $rating Рейтинг.
@@ -60,6 +61,7 @@ class Review extends Eloquent
         'course_id',
         'name',
         'title',
+        'review',
         'advantages',
         'disadvantages',
         'rating',
@@ -76,6 +78,7 @@ class Review extends Eloquent
         'course_id' => 'string',
         'name' => 'string',
         'title' => 'string',
+        'review' => 'string',
         'advantages' => 'string',
         'disadvantages' => 'string',
         'rating' => 'string',
@@ -85,8 +88,9 @@ class Review extends Eloquent
         return [
             'school_id' => 'required|digits_between:0,20|exists_soft:schools,id',
             'course_id' => 'nullable|digits_between:0,20|exists_soft:courses,id',
-            'name' => 'required|between:1,191',
+            'name' => 'max:191',
             'title' => 'max:191',
+            'review' => 'max:65000',
             'advantages' => 'max:65000',
             'disadvantages' => 'max:65000',
             'rating' => 'integer|between:0,5',
@@ -106,6 +110,7 @@ class Review extends Eloquent
             'course_id' => trans('review::models.review.courseId'),
             'name' => trans('review::models.review.name'),
             'title' => trans('review::models.review.title'),
+            'review' => trans('review::models.review.review'),
             'advantages' => trans('review::models.review.advantages'),
             'disadvantages' => trans('review::models.review.disadvantages'),
             'rating' => trans('review::models.review.rating'),

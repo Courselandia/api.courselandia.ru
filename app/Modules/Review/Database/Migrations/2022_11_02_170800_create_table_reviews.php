@@ -20,11 +20,12 @@ class CreateTableReviews extends Migration
             $table->bigInteger('school_id')->unsigned()->index('school_id');
             $table->bigInteger('course_id')->unsigned()->index('course_id')->nullable();
 
-            $table->string('name', 191);
+            $table->string('name', 191)->nullable();
             $table->string('title', 191)->nullable();
+            $table->text('review')->nullable();
             $table->text('advantages')->nullable();
             $table->text('disadvantages')->nullable();
-            $table->integer('rating')->unsigned()->default(1);
+            $table->integer('rating')->unsigned()->nullable();
 
             $table->string('status', 20)->default('disabled')->index();
 

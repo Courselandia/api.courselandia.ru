@@ -57,6 +57,13 @@ class ReviewUpdateAction extends Action
     public ?string $title = null;
 
     /**
+     * Отзыв.
+     *
+     * @var string|null
+     */
+    public ?string $review = null;
+
+    /**
      * Достоинства.
      *
      * @var string|null
@@ -103,6 +110,7 @@ class ReviewUpdateAction extends Action
             $reviewEntity->course_id = $this->course_id;
             $reviewEntity->name = $this->name;
             $reviewEntity->title = $this->title;
+            $reviewEntity->review = $this->review;
             $reviewEntity->advantages = $this->advantages;
             $reviewEntity->disadvantages = $this->disadvantages;
             $reviewEntity->rating = $this->rating;

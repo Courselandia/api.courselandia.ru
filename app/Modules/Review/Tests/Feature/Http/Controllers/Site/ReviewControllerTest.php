@@ -71,6 +71,7 @@ class ReviewControllerTest extends TestCase
             'course_id',
             'name',
             'title',
+            'review',
             'advantages',
             'disadvantages',
             'rating',
