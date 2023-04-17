@@ -8,6 +8,8 @@
 
 namespace App\Modules\Review\Imports;
 
+use App\Modules\Review\Imports\Parsers\ParserContented;
+use App\Modules\Review\Imports\Parsers\ParserIrecommend;
 use App\Modules\Review\Imports\Parsers\ParserTutortop;
 use App\Modules\School\Enums\School;
 use Throwable;
@@ -44,9 +46,9 @@ class Import
             ->addParser(new ParserKursvill(School::GEEKBRAINS, 'https://kursvill.ru/shkoly/geekbrains.ru/?show=all#reviews'))
             ->addParser(new ParserKursvill(School::SKILL_FACTORY, 'https://kursvill.ru/shkoly/skillfactory.ru/?show=all#reviews'))
             ->addParser(new ParserTutortop(School::CONTENTED, 'https://tutortop.ru/school-reviews/contented/'))
-            /*->addParser(new TaskContented(School::CONTENTED, 'https://contented.ru/otzyvy'))
-            ->addParser(new TaskIrecommend(School::SKILLBOX, 'https://irecommend.ru/content/sait-skillbox-onlain-shkola'))
-            ->addParser(new TaskKatalogKursov(School::SKILLBOX, 'https://katalog-kursov.ru/reviews/school-skillbox/'))
+            ->addParser(new ParserContented(School::CONTENTED, 'https://contented.ru/otzyvy'))
+            ->addParser(new ParserIrecommend(School::SKILLBOX, 'https://irecommend.ru/content/sait-skillbox-onlain-shkola'))
+            /*->addParser(new TaskKatalogKursov(School::SKILLBOX, 'https://katalog-kursov.ru/reviews/school-skillbox/'))
             ->addParser(new TaskVk(School::XYZ_SCHOOL, 'https://vk.com/topic-124560669_34868074?offset=0'))
             ->addParser(new TaskMapsYandex(School::SKILLBOX, 'https://yandex.ru/maps/org/skillbox/4275407173/reviews/?ll=37.607031%2C55.727789&z=13'))
             ->addParser(new TaskMapsYandex(School::GEEKBRAINS, 'https://yandex.ru/maps/org/geekbrains/1402263817/reviews/'))
