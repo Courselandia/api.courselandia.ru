@@ -62,7 +62,7 @@ abstract class Parser
      */
     public function getSource(): string
     {
-        return parse_url($this->getUrl())['host'];
+        return parse_url($this->getUrl())['scheme'] . '://' .parse_url($this->getUrl())['host'];
     }
 
     /**

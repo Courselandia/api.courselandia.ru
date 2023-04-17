@@ -2,7 +2,6 @@
 
 namespace App\Modules\Review\Imports\Parsers;
 
-use DateTime;
 use Generator;
 use Throwable;
 use Carbon\Carbon;
@@ -11,6 +10,9 @@ use Facebook\WebDriver\WebDriverBy;
 use App\Modules\Review\Imports\Browser;
 use App\Modules\Review\Entities\ParserReview;
 
+/**
+ * Парсер для kursvill.ru
+ */
 class ParserKursvill extends Parser
 {
     /**
