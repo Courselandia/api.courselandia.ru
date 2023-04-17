@@ -56,6 +56,16 @@ abstract class Parser
     }
 
     /**
+     * Вернет источник.
+     *
+     * @return string
+     */
+    public function getSource(): string
+    {
+        return parse_url($this->getUrl())['host'];
+    }
+
+    /**
      * Вернет школу.
      *
      * @return School Школа.
@@ -92,7 +102,7 @@ abstract class Parser
             $review->advantages,
             $review->disadvantages,
             $review->rating,
-            $review->created_at->format('Y-m-d H:i:s'),
+            $review->date->format('Y-m-d H:i:s'),
         ]);
 
         return Review::where('uuid',  $key)->exists();

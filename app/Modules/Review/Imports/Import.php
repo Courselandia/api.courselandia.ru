@@ -5,15 +5,17 @@
  *
  * @package App\Modules\Course
  */
+
 namespace App\Modules\Review\Imports;
 
-use Util;
 use App\Modules\School\Enums\School;
 use Throwable;
 use App\Models\Error;
 use App\Models\Event;
+use App\Modules\Review\Enums\Status;
 use App\Modules\Review\Entities\ParserReview;
 use App\Modules\Review\Models\Review;
+use App\Modules\Review\Imports\Parsers\ParserKursvill;
 
 /**
  * Импорт курсов с разных источников.
@@ -35,8 +37,7 @@ class Import
      */
     public function __construct()
     {
-        $this->addParser(new TaskKursvill(School::SKILLBOX, 'https://kursvill.ru/shkoly/skillbox.ru/?show=all#reviews'))
-            ->addParser(new TaskKursvill(School::NETOLOGIA, 'https://kursvill.ru/shkoly/netology.ru/?show=all#reviews'))
+        $this->addParser(new ParserKursvill(School::SKILLBOX, 'https://kursvill.ru/shkoly/skillbox.ru/?show=all#reviews'))/*->addParser(new TaskKursvill(School::NETOLOGIA, 'https://kursvill.ru/shkoly/netology.ru/?show=all#reviews'))
             ->addParser(new TaskKursvill(School::XYZ_SCHOOL, 'https://kursvill.ru/shkoly/school-xyz.com/?show=all#reviews'))
             ->addParser(new TaskKursvill(School::GEEKBRAINS, 'https://kursvill.ru/shkoly/geekbrains.ru/?show=all#reviews'))
             ->addParser(new TaskKursvill(School::SKILL_FACTORY, 'https://kursvill.ru/shkoly/skillfactory.ru/?show=all#reviews'))
@@ -66,7 +67,8 @@ class Import
             ->addParser(new TaskSpr(School::SKILLBOX, 'https://www.spr.ru/moskva/uchebnie-i-obrazovatelnie-tsentri-kursi/reviews/skillbox-5153272.html'))
             ->addParser(new TaskZoon(School::SKILLBOX, 'https://zoon.ru/msk/trainings/kompaniya_skillbox_na_leninskom_prospekte/reviews/'))
             ->addParser(new TaskSkillbox(School::SKILLBOX, 'https://skillbox.ru/otzyvy/'))
-            ->addParser(new TaskOtzyvmarketing(School::SKILLBOX, 'https://otzyvmarketing.ru/skillbox/'));
+            ->addParser(new TaskOtzyvmarketing(School::SKILLBOX, 'https://otzyvmarketing.ru/skillbox/'))*/
+        ;
     }
 
     /**
@@ -99,22 +101,22 @@ class Import
      */
     private function import(): void
     {
-        foreach ($this->getParsers() as $parser)
-        {
+        foreach ($this->getParsers() as $parser) {
             $this->fireEvent(
                 'school', [
-                    $parser->getSchool()
-                ],
-            );
+                $parser->getSchool()
+            ]);
 
             foreach ($parser->read() as $entityReview) {
                 if (!$parser->isReviewExist($entityReview)) {
-                    $review = $this->save($parser->getSchool(), $entityReview);
+                    $id = $this->save($parser->getSchool(), $parser->getSource(), $entityReview);
 
-                    if ($review) {
+                    if ($id) {
+                        $entityReview->id = $id;
+
                         $this->fireEvent(
                             'imported', [
-                            $review
+                            $entityReview
                         ]);
                     } else {
                         $errors = $parser->getErrors();
@@ -139,10 +141,11 @@ class Import
      *
      * @param School $school Школа.
      * @param ParserReview $entityReview Спарсенный отзыв.
+     * @param string $source Источник.
      *
      * @return int|string|null Вернет ID созданного отзыва.
      */
-    public function save(School $school, ParserReview $entityReview): int|string|null
+    public function save(School $school, string $source, ParserReview $entityReview): int|string|null
     {
         try {
             $review = Review::create([
@@ -153,7 +156,9 @@ class Import
                 'advantages' => $entityReview->advantages,
                 'disadvantages' => $entityReview->disadvantages,
                 'rating' => $entityReview->rating,
-                'created_at' => $entityReview->created_at,
+                'created_at' => $entityReview->date,
+                'source' => $source,
+                'status' => Status::REVIEW,
             ]);
 
             return $review->id;

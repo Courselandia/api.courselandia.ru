@@ -10,7 +10,7 @@ namespace App\Modules\Review\Providers;
 
 use Config;
 use Illuminate\Support\ServiceProvider;
-
+use App\Modules\Review\Commands\ReviewImportCommand;
 use App\Modules\Review\Models\Review as ReviewModel;
 use App\Modules\Review\Events\Listeners\ReviewListener;
 
@@ -41,6 +41,9 @@ class ReviewServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
+        $this->commands([
+            ReviewImportCommand::class,
+        ]);
     }
 
     /**

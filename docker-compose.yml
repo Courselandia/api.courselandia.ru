@@ -190,6 +190,20 @@ services:
         networks:
             - network
 
+    browser:
+        image: selenium/standalone-firefox:latest
+        container_name: api-courselandia-ru-browser
+        restart: unless-stopped
+        ports:
+            - "${DOCKER_BROWSER_PORT}:4444"
+        privileged: true
+        shm_size: 2g
+        environment:
+            - SE_NODE_MAX_INSTANCES=4
+            - SE_NODE_MAX_SESSIONS=10
+        networks:
+            - network
+
 networks:
     network:
         driver: bridge

@@ -17,6 +17,13 @@ use Carbon\Carbon;
 class ParserReview extends Entity
 {
     /**
+     * ID тзыва.
+     *
+     * @var int|null
+     */
+    public ?int $id = null;
+
+    /**
      * Имя автора.
      *
      * @var string|null
@@ -63,5 +70,5 @@ class ParserReview extends Entity
      *
      * @var ?Carbon
      */
-    public ?Carbon $created_at = null;
+    public ?Carbon $date = null;
 }
