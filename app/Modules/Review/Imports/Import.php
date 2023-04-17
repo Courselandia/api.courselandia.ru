@@ -109,14 +109,16 @@ class Import
 
             foreach ($parser->read() as $entityReview) {
                 if (!$parser->isReviewExist($entityReview)) {
-                    $id = $this->save($parser->getSchool(), $parser->getSource(), $entityReview);
+                    $id = $this->save($parser->getSchool(), $parser->getSource(), $parser->getUuid($entityReview), $entityReview);
 
                     if ($id) {
                         $entityReview->id = $id;
 
                         $this->fireEvent(
                             'imported', [
-                            $entityReview
+                            $entityReview,
+                            $parser->getSchool(),
+                            $parser->getSource(),
                         ]);
                     } else {
                         $errors = $parser->getErrors();
@@ -140,16 +142,18 @@ class Import
      * Сохранить отзыв.
      *
      * @param School $school Школа.
-     * @param ParserReview $entityReview Спарсенный отзыв.
      * @param string $source Источник.
+     * @param string $uuid Уникальный ключ спарсенного отзыва.
+     * @param ParserReview $entityReview Спарсенный отзыв.
      *
      * @return int|string|null Вернет ID созданного отзыва.
      */
-    public function save(School $school, string $source, ParserReview $entityReview): int|string|null
+    public function save(School $school, string $source, string $uuid, ParserReview $entityReview): int|string|null
     {
         try {
             $review = Review::create([
                 'school_id' => $school->value,
+                'uuid' => $uuid,
                 'name' => $entityReview->name,
                 'title' => $entityReview->title,
                 'review' => $entityReview->review,
@@ -158,7 +162,7 @@ class Import
                 'rating' => $entityReview->rating,
                 'created_at' => $entityReview->date,
                 'source' => $source,
-                'status' => Status::REVIEW,
+                'status' => Status::REVIEW->value,
             ]);
 
             return $review->id;

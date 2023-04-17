@@ -30,7 +30,12 @@ class ReviewListener
             ->where('school_id', $review->school_id)
             ->where('course_id', $review->course_id)
             ->where('name', $review->name)
+            ->where('title', $review->title)
+            ->where('review', $review->review)
+            ->where('advantages', $review->advantages)
+            ->where('disadvantages', $review->disadvantages)
             ->where('rating', $review->rating)
+            ->where('created_at', $review->created_at)
             ->first();
 
         if ($result) {
@@ -55,7 +60,12 @@ class ReviewListener
             ->where('school_id', $review->school_id)
             ->where('course_id', $review->course_id)
             ->where('name', $review->name)
+            ->where('title', $review->title)
+            ->where('review', $review->review)
+            ->where('advantages', $review->advantages)
+            ->where('disadvantages', $review->disadvantages)
             ->where('rating', $review->rating)
+            ->where('created_at', $review->created_at)
             ->first();
 
         if ($result) {

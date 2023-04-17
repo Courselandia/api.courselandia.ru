@@ -5,6 +5,7 @@ namespace App\Modules\Review\Imports\Parsers;
 use DateTime;
 use Generator;
 use Throwable;
+use Carbon\Carbon;
 use App\Modules\Review\Imports\Parser;
 use Facebook\WebDriver\WebDriverBy;
 use App\Modules\Review\Imports\Browser;
@@ -41,40 +42,36 @@ class ParserKursvill extends Parser
                 try {
                     $name = $review->findElement(WebDriverBy::cssSelector('meta[itemprop="author"]'))->getAttribute('content');
                 } catch (Throwable $error) {
-                    $this->addError($this->getSchool()->getLabel() . ', from' . $this->getUrl() . ' : Не удается получить имя. ' . $error->getMessage());
+                    $this->addError($this->getSchool()->getLabel() . ', from: ' . $this->getUrl() . ' : Не удается получить имя. ' . $error->getMessage());
                     $hasError = true;
                 }
 
                 try {
                     $date = $review->findElement(WebDriverBy::cssSelector('meta[itemprop="datePublished"]'))->getAttribute('content');
-                    $dt = DateTime::createFromFormat('d.m.Y', $date);
-
-                    if ($dt) {
-                        $date = $dt->format('Y-m-d') . ' 00:00:00';
-                    }
+                    $date = Carbon::createFromFormat('d.m.Y H:i:s', $date . ' 00:00:00');
                 } catch (Throwable $error) {
-                    $this->addError($this->getSchool()->getLabel() . ', from' . $this->getUrl() . ' : Не удается получить дату. ' . $error->getMessage());
+                    $this->addError($this->getSchool()->getLabel() . ', from: ' . $this->getUrl() . ' : Не удается получить дату. ' . $error->getMessage());
                     $hasError = true;
                 }
 
                 try {
                     $title = $review->findElement(WebDriverBy::cssSelector('meta[itemprop="itemReviewed"]'))->getAttribute('content');
                 } catch (Throwable $error) {
-                    $this->addError($this->getSchool()->getLabel() . ', from' . $this->getUrl() . ' : Не удается получить заголовок. ' . $error->getMessage());
+                    $this->addError($this->getSchool()->getLabel() . ', from: ' . $this->getUrl() . ' : Не удается получить заголовок. ' . $error->getMessage());
                     $hasError = true;
                 }
 
                 try {
                     $rating = $review->findElement(WebDriverBy::cssSelector('meta[itemprop="ratingValue"]'))->getAttribute('content');
                 } catch (Throwable $error) {
-                    $this->addError($this->getSchool()->getLabel() . ', from' . $this->getUrl() . ' : Не удается получить рейтинг. ' . $error->getMessage());
+                    $this->addError($this->getSchool()->getLabel() . ', from: ' . $this->getUrl() . ' : Не удается получить рейтинг. ' . $error->getMessage());
                     $hasError = true;
                 }
 
                 try {
                     $reviewText = $review->findElement(WebDriverBy::cssSelector('span[itemprop="description"]'))->getText();
                 } catch (Throwable $error) {
-                    $this->addError($this->getSchool()->getLabel() . ', from' . $this->getUrl() . ' : Не удается получить описание. ' . $error->getMessage());
+                    $this->addError($this->getSchool()->getLabel() . ', from: ' . $this->getUrl() . ' : Не удается получить описание. ' . $error->getMessage());
                     $hasError = true;
                 }
 
@@ -108,7 +105,7 @@ class ParserKursvill extends Parser
                 }
             }
         } catch (Throwable $error) {
-            $this->addError($this->getSchool()->getLabel() . ', from' . $this->getUrl() . ' : Не удается получить список отзывов. ' . $error->getMessage());
+            $this->addError($this->getSchool()->getLabel() . ', from: ' . $this->getUrl() . ' : Не удается получить список отзывов. ' . $error->getMessage());
         }
     }
 }

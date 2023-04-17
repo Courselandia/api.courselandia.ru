@@ -8,6 +8,7 @@
 
 namespace App\Modules\Review\Commands;
 
+use App\Modules\School\Enums\School;
 use Log;
 use App\Modules\Review\Entities\ParserReview;
 use App\Modules\Review\Imports\Import;
@@ -33,6 +34,13 @@ class ReviewImportCommand extends Command
     protected $description = 'Импортирование отзывов с разных источников.';
 
     /**
+     * Количество импортированных отзывов.
+     *
+     * @var int
+     */
+    private int $amount = 0;
+
+    /**
      * Выполнение команды.
      *
      * @return void
@@ -43,13 +51,24 @@ class ReviewImportCommand extends Command
 
         $import = new Import();
 
-        $import->addEvent('imported', function (ParserReview $review) {
-            $this->info('Создан отзыв: #' . $review->id);
+        $import->addEvent('imported', function (Import $imp, ParserReview $review, School $school, string $source) {
+            $this->amount++;
+            $this->info('Создан отзыв для школы ' . $school->getLabel() . ': #' . $review->id);
         });
 
         $import->run();
 
-        $this->info("\n\nИмпорт завершен.");
+        if ($import->hasError()) {
+            $errors = $import->getErrors();
+
+            foreach ($errors as $error) {
+                $message = 'Ошибка импорта отзывов: ' . $error->getMessage();
+                Log::error($message);
+                $this->error($message);
+            }
+        }
+
+        $this->info("\n\nИмпортировано отзывов: " . $this->amount . ".");
         Log::info('Импортирование отзывов.');
     }
 }

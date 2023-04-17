@@ -86,15 +86,15 @@ abstract class Parser
     }
 
     /**
-     * Проверка существует ли уже этот отзыв или нет.
+     * Уникальный ключ для проверки уникальности отзыва.
      *
      * @param ParserReview $review Спарсенный отзыв.
      *
-     * @return bool Вернет признак наличия отзыва в базе данных.
+     * @return string Ключ.
      */
-    public function isReviewExist(ParserReview $review): bool
+    public function getUuid(ParserReview $review): string
     {
-        $key = Util::getKey([
+        return Util::getKey([
             $this->getSchool()->value,
             $review->name,
             $review->title,
@@ -104,7 +104,17 @@ abstract class Parser
             $review->rating,
             $review->date->format('Y-m-d H:i:s'),
         ]);
+    }
 
-        return Review::where('uuid',  $key)->exists();
+    /**
+     * Проверка существует ли уже этот отзыв или нет.
+     *
+     * @param ParserReview $review Спарсенный отзыв.
+     *
+     * @return bool Вернет признак наличия отзыва в базе данных.
+     */
+    public function isReviewExist(ParserReview $review): bool
+    {
+        return Review::where('uuid',  $this->getUuid($review))->exists();
     }
 }
