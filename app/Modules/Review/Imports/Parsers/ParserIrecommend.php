@@ -1,4 +1,10 @@
 <?php
+/**
+ * Модуль Отзывов.
+ * Этот модуль содержит все классы для работы с отзывовами.
+ *
+ * @package App\Modules\Review
+ */
 
 namespace App\Modules\Review\Imports\Parsers;
 
@@ -87,15 +93,19 @@ class ParserIrecommend extends Parser
                     $elem = $reviewDriver
                         ->findElements(WebDriverBy::cssSelector('.reviewBlock .ratio .plus'));
 
+                    $advantages = null;
+
                     if ($elem) {
-                        $textValue .= PHP_EOL . $elem[0]->getText();
+                        $advantages = $elem[0]->getText();
                     }
 
                     $elem = $reviewDriver
                         ->findElements(WebDriverBy::cssSelector('.reviewBlock .ratio .minus'));
 
+                    $disadvantages = null;
+
                     if ($elem) {
-                        $textValue .= PHP_EOL . $elem[0]->getText();
+                        $disadvantages = $elem[0]->getText();
                     }
 
                     $date = strtotime($dateValue);
@@ -106,6 +116,8 @@ class ParserIrecommend extends Parser
                     $review->date = Carbon::createFromFormat('U', $date);
                     $review->name = $authorValue;
                     $review->review = trim($textValue);
+                    $review->advantages = trim($advantages);
+                    $review->disadvantages = trim($disadvantages);
 
                     yield $review;
                 } catch (Throwable $error) {

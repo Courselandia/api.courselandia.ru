@@ -1,4 +1,10 @@
 <?php
+/**
+ * Модуль Отзывов.
+ * Этот модуль содержит все классы для работы с отзывовами.
+ *
+ * @package App\Modules\Review
+ */
 
 namespace App\Modules\Review\Imports\Parsers;
 

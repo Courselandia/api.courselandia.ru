@@ -10,7 +10,10 @@ namespace App\Modules\Review\Imports;
 
 use App\Modules\Review\Imports\Parsers\ParserContented;
 use App\Modules\Review\Imports\Parsers\ParserIrecommend;
+use App\Modules\Review\Imports\Parsers\ParserKatalogKursov;
+use App\Modules\Review\Imports\Parsers\ParserMapsYandex;
 use App\Modules\Review\Imports\Parsers\ParserTutortop;
+use App\Modules\Review\Imports\Parsers\ParserVk;
 use App\Modules\School\Enums\School;
 use Throwable;
 use App\Models\Error;
@@ -21,7 +24,7 @@ use App\Modules\Review\Models\Review;
 use App\Modules\Review\Imports\Parsers\ParserKursvill;
 
 /**
- * Импорт курсов с разных источников.
+ * Импорт отзывов с разных источников.
  */
 class Import
 {
@@ -29,7 +32,7 @@ class Import
     use Event;
 
     /**
-     * Парсеры курсов.
+     * Парсеры отзывов.
      *
      * @var Parser[]
      */
@@ -40,24 +43,24 @@ class Import
      */
     public function __construct()
     {
-        $this->addParser(new ParserKursvill(School::SKILLBOX, 'https://kursvill.ru/shkoly/skillbox.ru/?show=all#reviews'))
-            ->addParser(new ParserKursvill(School::NETOLOGIA, 'https://kursvill.ru/shkoly/netology.ru/?show=all#reviews'))
-            ->addParser(new ParserKursvill(School::XYZ_SCHOOL, 'https://kursvill.ru/shkoly/school-xyz.com/?show=all#reviews'))
-            ->addParser(new ParserKursvill(School::GEEKBRAINS, 'https://kursvill.ru/shkoly/geekbrains.ru/?show=all#reviews'))
-            ->addParser(new ParserKursvill(School::SKILL_FACTORY, 'https://kursvill.ru/shkoly/skillfactory.ru/?show=all#reviews'))
-            ->addParser(new ParserTutortop(School::CONTENTED, 'https://tutortop.ru/school-reviews/contented/'))
-            ->addParser(new ParserContented(School::CONTENTED, 'https://contented.ru/otzyvy'))
-            ->addParser(new ParserIrecommend(School::SKILLBOX, 'https://irecommend.ru/content/sait-skillbox-onlain-shkola'))
-            /*->addParser(new TaskKatalogKursov(School::SKILLBOX, 'https://katalog-kursov.ru/reviews/school-skillbox/'))
-            ->addParser(new TaskVk(School::XYZ_SCHOOL, 'https://vk.com/topic-124560669_34868074?offset=0'))
-            ->addParser(new TaskMapsYandex(School::SKILLBOX, 'https://yandex.ru/maps/org/skillbox/4275407173/reviews/?ll=37.607031%2C55.727789&z=13'))
-            ->addParser(new TaskMapsYandex(School::GEEKBRAINS, 'https://yandex.ru/maps/org/geekbrains/1402263817/reviews/'))
-            ->addParser(new TaskMapsYandex(School::NETOLOGIA, 'https://yandex.ru/maps/org/netologiya/205031471256/reviews/'))
-            ->addParser(new TaskMapsYandex(School::SKILL_FACTORY, 'https://yandex.ru/maps/org/skillfactory/237135461560/reviews/'))
-            ->addParser(new TaskMapsYandex(School::CONTENTED, 'https://yandex.ru/maps/org/contented/115157665135/reviews/'))
-            ->addParser(new TaskMapsYandex(School::XYZ_SCHOOL, 'https://yandex.ru/maps/org/xyz_school/151268379499/reviews/'))
-            ->addParser(new TaskMapsYandex(School::INTERNATIONAL_SCHOOL_PROFESSIONS, 'https://yandex.ru/maps/org/mezhdunarodnaya_shkola_professiy/33978597831/reviews/'))
-            ->addParser(new TaskMooc(School::SKILLBOX, 'skillbox'))
+        $this//->addParser(new ParserKursvill(School::SKILLBOX, 'https://kursvill.ru/shkoly/skillbox.ru/?show=all#reviews'))
+            //->addParser(new ParserKursvill(School::NETOLOGIA, 'https://kursvill.ru/shkoly/netology.ru/?show=all#reviews'))
+            //->addParser(new ParserKursvill(School::XYZ_SCHOOL, 'https://kursvill.ru/shkoly/school-xyz.com/?show=all#reviews'))
+            //->addParser(new ParserKursvill(School::GEEKBRAINS, 'https://kursvill.ru/shkoly/geekbrains.ru/?show=all#reviews'))
+            //->addParser(new ParserKursvill(School::SKILL_FACTORY, 'https://kursvill.ru/shkoly/skillfactory.ru/?show=all#reviews'))
+            //->addParser(new ParserTutortop(School::CONTENTED, 'https://tutortop.ru/school-reviews/contented/'))
+            //->addParser(new ParserContented(School::CONTENTED, 'https://contented.ru/otzyvy'))
+            //->addParser(new ParserIrecommend(School::SKILLBOX, 'https://irecommend.ru/content/sait-skillbox-onlain-shkola'))
+            //->addParser(new ParserKatalogKursov(School::SKILLBOX, 'https://katalog-kursov.ru/reviews/school-skillbox/'))
+            //->addParser(new ParserVk(School::XYZ_SCHOOL, 'https://vk.com/topic-124560669_34868074?offset=0'))
+            ->addParser(new ParserMapsYandex(School::SKILLBOX, 'https://yandex.ru/maps/org/skillbox/4275407173/reviews/?ll=37.607031%2C55.727789&z=13'))
+            //->addParser(new ParserMapsYandex(School::GEEKBRAINS, 'https://yandex.ru/maps/org/geekbrains/1402263817/reviews/'))
+            //->addParser(new ParserMapsYandex(School::NETOLOGIA, 'https://yandex.ru/maps/org/netologiya/205031471256/reviews/'))
+            //->addParser(new ParserMapsYandex(School::SKILL_FACTORY, 'https://yandex.ru/maps/org/skillfactory/237135461560/reviews/'))
+            //->addParser(new ParserMapsYandex(School::CONTENTED, 'https://yandex.ru/maps/org/contented/115157665135/reviews/'))
+            //->addParser(new ParserMapsYandex(School::XYZ_SCHOOL, 'https://yandex.ru/maps/org/xyz_school/151268379499/reviews/'))
+            //->addParser(new ParserMapsYandex(School::INTERNATIONAL_SCHOOL_PROFESSIONS, 'https://yandex.ru/maps/org/mezhdunarodnaya_shkola_professiy/33978597831/reviews/'))
+            /*->addParser(new TaskMooc(School::SKILLBOX, 'skillbox'))
             ->addParser(new TaskMooc(School::NETOLOGIA, 'netology'))
             ->addParser(new TaskMooc(School::XYZ_SCHOOL, 'xyz-school'))
             ->addParser(new TaskMooc(School::GEEKBRAINS, 'geekbrains'))
@@ -209,7 +212,7 @@ class Import
     /**
      * Получение всех парсеров.
      *
-     * @return Parser[]
+     * @return Parser[] Массив парсеров.
      */
     public function getParsers(): array
     {

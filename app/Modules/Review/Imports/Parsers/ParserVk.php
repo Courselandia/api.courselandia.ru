@@ -18,9 +18,9 @@ use App\Modules\Review\Imports\Browser;
 use App\Modules\Review\Entities\ParserReview;
 
 /**
- * Парсер для contented.ru
+ * Парсер для vk.com
  */
-class ParserContented extends Parser
+class ParserVk extends Parser
 {
     /**
      * Чтение отзывов.
@@ -36,22 +36,56 @@ class ParserContented extends Parser
         try {
             $driver->get($this->getUrl());
             sleep(5);
-            $reviews = $driver->findElements(WebDriverBy::cssSelector('.r.t-rec.t-rec_pt_0.t-rec_pb_45.t-rec_pb-res-480_15'));
+
+            $pageButtonToLast = $driver->findElement(WebDriverBy::cssSelector('.pg_lnk.fl_l:last-child'));
+            $pageButtonToLast->click();
+            sleep(5);
+            $totalPages = (int)$driver->findElement(WebDriverBy::cssSelector('.pg_lnk_sel.fl_l'))->getText();
+
+            $script = '
+            for (var i = 0; i < ' . $totalPages . '; i++) {
+                window.setTimeout(function () {
+                    window.scrollTo(0, document.body.scrollHeight);
+                }, 1000 * i);
+            }
+            ';
+
+            $wait = $totalPages * 1.5;
+            $driver->get($this->getUrl());
+
+            sleep(5);
+            $driver->executeScript($script);
+            sleep($wait);
+
+            $reviews = $driver->findElements(WebDriverBy::cssSelector('.bp_post'));
 
             foreach ($reviews as $review) {
                 try {
-                    $atoms = $review->findElements(WebDriverBy::cssSelector('.tn-atom'));
-                    $name = ucfirst(mb_strtolower($atoms[4]->getText()));
-                    $title = $atoms[3]->getText();
-                    $reviewText = $atoms[2]->getText();
+                    $name = $review->findElement(WebDriverBy::cssSelector('.bp_author'))->getText();
+                    $text = $review->findElement(WebDriverBy::cssSelector('.bp_text'))->getText();
+                    $date = $review->findElement(WebDriverBy::cssSelector('.bp_date'))->getText();
+
+                    if ($date) {
+                        if (strpos($date, 'yesterday') !== false) {
+                            $dateYesterday = date('Y-m-d', strtotime('-1 days'));
+                            $date = str_replace('yesterday', $dateYesterday, $date);
+                            $date = Carbon::createFromFormat('Y-m-d \a\t g:i a', $date);
+                        } else {
+                            $date = Carbon::createFromFormat('j M Y \a\t g:i a', $date);
+                        }
+                    } else {
+                        $date = Carbon::now();
+                    }
+
+                    $title = null;
                     $rating = null;
 
                     $review = new ParserReview();
                     $review->title = $title;
                     $review->rating = $rating;
-                    $review->date = Carbon::now();
+                    $review->date = $date;
                     $review->name = $name;
-                    $review->review = $reviewText;
+                    $review->review = $text;
 
                     yield $review;
                 } catch (Throwable $error) {
