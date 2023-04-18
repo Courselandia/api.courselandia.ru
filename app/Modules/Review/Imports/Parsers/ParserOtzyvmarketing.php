@@ -61,7 +61,7 @@ class ParserOtzyvmarketing extends Parser
 
                 foreach ($reviews as $review) {
                     try {
-                        $title = $review->findElement(WebDriverBy::cssSelector('.text .review-title A'))->getText();;
+                        $title = $review->findElement(WebDriverBy::cssSelector('.text .review-title A'))->getText();
                         $name = $review->findElement(WebDriverBy::cssSelector('SPAN[itemprop="author"] SPAN[itemprop="name"]'))->getText();
                         $text = $review->findElement(WebDriverBy::cssSelector('P[itemprop="description"]'))->getText();
                         $date = $review->findElement(WebDriverBy::cssSelector('.date'))->getText();
@@ -83,6 +83,8 @@ class ParserOtzyvmarketing extends Parser
                                 $rating = 2;
                             } else if ($rating === 'width:20%;') {
                                 $rating = 1;
+                            } else {
+                                $rating = null;
                             }
                         }
 
