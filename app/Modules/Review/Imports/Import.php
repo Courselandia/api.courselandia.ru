@@ -8,6 +8,17 @@
 
 namespace App\Modules\Review\Imports;
 
+use App\Modules\Review\Imports\Parsers\ParserOtzyvmarketing;
+use App\Modules\Review\Imports\Parsers\ParserSkillbox;
+use App\Modules\Review\Imports\Parsers\ParserZoon;
+use Throwable;
+use App\Models\Error;
+use App\Models\Event;
+use App\Modules\School\Enums\School;
+use App\Modules\Review\Enums\Status;
+use App\Modules\Review\Models\Review;
+use App\Modules\Review\Entities\ParserReview;
+use App\Modules\Review\Imports\Parsers\ParserKursvill;
 use App\Modules\Review\Imports\Parsers\ParserContented;
 use App\Modules\Review\Imports\Parsers\ParserIrecommend;
 use App\Modules\Review\Imports\Parsers\ParserKatalogKursov;
@@ -19,14 +30,6 @@ use App\Modules\Review\Imports\Parsers\ParserProgbasics;
 use App\Modules\Review\Imports\Parsers\ParserSpr;
 use App\Modules\Review\Imports\Parsers\ParserTutortop;
 use App\Modules\Review\Imports\Parsers\ParserVk;
-use App\Modules\School\Enums\School;
-use Throwable;
-use App\Models\Error;
-use App\Models\Event;
-use App\Modules\Review\Enums\Status;
-use App\Modules\Review\Entities\ParserReview;
-use App\Modules\Review\Models\Review;
-use App\Modules\Review\Imports\Parsers\ParserKursvill;
 
 /**
  * Импорт отзывов с разных источников.
@@ -76,10 +79,10 @@ class Import
             //->addParser(new ParserNetology(School::NETOLOGIA, 'https://netology.ru/otzyvy'))
             //->addParser(new ParserOtzyvru(School::SKILLBOX, 'https://otzyvru.com/skillbox'))
             //->addParser(new ParserProgbasics(School::SKILLBOX, 'https://progbasics.ru/schools/skillbox/reviews'))
-            ->addParser(new ParserSpr(School::SKILLBOX, 'https://spr.ru/moskva/uchebnie-i-obrazovatelnie-tsentri-kursi/reviews/skillbox-5153272.html'))
-            /*->addParser(new TaskZoon(School::SKILLBOX, 'https://zoon.ru/msk/trainings/kompaniya_skillbox_na_leninskom_prospekte/reviews/'))
-            ->addParser(new TaskSkillbox(School::SKILLBOX, 'https://skillbox.ru/otzyvy/'))
-            ->addParser(new TaskOtzyvmarketing(School::SKILLBOX, 'https://otzyvmarketing.ru/skillbox/'))*/
+            //->addParser(new ParserSpr(School::SKILLBOX, 'https://spr.ru/moskva/uchebnie-i-obrazovatelnie-tsentri-kursi/reviews/skillbox-5153272.html'))
+            //->addParser(new ParserZoon(School::SKILLBOX, 'https://zoon.ru/msk/trainings/kompaniya_skillbox_na_leninskom_prospekte/reviews/'))
+            //->addParser(new ParserSkillbox(School::SKILLBOX, 'https://skillbox.ru/otzyvy/'))
+            ->addParser(new ParserOtzyvmarketing(School::SKILLBOX, 'https://otzyvmarketing.ru/skillbox/'))
         ;
     }
 
