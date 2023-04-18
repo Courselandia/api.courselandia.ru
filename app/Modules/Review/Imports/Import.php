@@ -13,6 +13,10 @@ use App\Modules\Review\Imports\Parsers\ParserIrecommend;
 use App\Modules\Review\Imports\Parsers\ParserKatalogKursov;
 use App\Modules\Review\Imports\Parsers\ParserMapsYandex;
 use App\Modules\Review\Imports\Parsers\ParserMooc;
+use App\Modules\Review\Imports\Parsers\ParserNetology;
+use App\Modules\Review\Imports\Parsers\ParserOtzyvru;
+use App\Modules\Review\Imports\Parsers\ParserProgbasics;
+use App\Modules\Review\Imports\Parsers\ParserSpr;
 use App\Modules\Review\Imports\Parsers\ParserTutortop;
 use App\Modules\Review\Imports\Parsers\ParserVk;
 use App\Modules\School\Enums\School;
@@ -69,11 +73,11 @@ class Import
             //->addParser(new ParserMooc(School::CONTENTED, 'contented-education-platform'))
             //->addParser(new ParserMooc(School::INTERNATIONAL_SCHOOL_PROFESSIONS, 'imba-akademia-cifrovogo-biznesa-ingate'))
             //->addParser(new ParserMooc(School::NETOLOGIA, 'https://netology.ru/otzyvy'))
-            ->addParser(new ParserNetology(School::NETOLOGIA, 'https://netology.ru/otzyvy'))
-            /*->addParser(new TaskOtzyvru(School::SKILLBOX, 'https://www.otzyvru.com/skillbox'))
-            ->addParser(new TaskProgbasics(School::SKILLBOX, 'https://progbasics.ru/schools/skillbox/reviews'))
-            ->addParser(new TaskSpr(School::SKILLBOX, 'https://www.spr.ru/moskva/uchebnie-i-obrazovatelnie-tsentri-kursi/reviews/skillbox-5153272.html'))
-            ->addParser(new TaskZoon(School::SKILLBOX, 'https://zoon.ru/msk/trainings/kompaniya_skillbox_na_leninskom_prospekte/reviews/'))
+            //->addParser(new ParserNetology(School::NETOLOGIA, 'https://netology.ru/otzyvy'))
+            //->addParser(new ParserOtzyvru(School::SKILLBOX, 'https://otzyvru.com/skillbox'))
+            //->addParser(new ParserProgbasics(School::SKILLBOX, 'https://progbasics.ru/schools/skillbox/reviews'))
+            ->addParser(new ParserSpr(School::SKILLBOX, 'https://spr.ru/moskva/uchebnie-i-obrazovatelnie-tsentri-kursi/reviews/skillbox-5153272.html'))
+            /*->addParser(new TaskZoon(School::SKILLBOX, 'https://zoon.ru/msk/trainings/kompaniya_skillbox_na_leninskom_prospekte/reviews/'))
             ->addParser(new TaskSkillbox(School::SKILLBOX, 'https://skillbox.ru/otzyvy/'))
             ->addParser(new TaskOtzyvmarketing(School::SKILLBOX, 'https://otzyvmarketing.ru/skillbox/'))*/
         ;

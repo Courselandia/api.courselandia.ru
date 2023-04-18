@@ -102,7 +102,7 @@ abstract class Parser
             $review->advantages,
             $review->disadvantages,
             $review->rating,
-            $review->date->format('Y-m-d H:i:s'),
+            $review->date?->format('Y-m-d H:i:s'),
         ]);
     }
 
