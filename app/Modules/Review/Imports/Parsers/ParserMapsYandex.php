@@ -87,8 +87,7 @@ class ParserMapsYandex extends Parser
                         $date = $this->getDate($date[0]->getText());
                     } else {
                         $date = $date[0]->getAttribute('content');
-
-                        throw new Exception($date);
+                        $date = Carbon::parse($date);
                     }
 
                     $review = new ParserReview();
@@ -138,7 +137,7 @@ class ParserMapsYandex extends Parser
         try {
             return Carbon::createFromFormat('d.m.Y H:i:s', $date . ' 00:00:00');
         } catch(Exception $error) {
-            return Carbon::createFromFormat('d.m.', $date . date('Y') . ' 00:00:00');
+            return Carbon::createFromFormat('d.m.Y H:i:s', $date . date('Y') . ' 00:00:00');
         }
     }
 }
