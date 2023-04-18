@@ -107,6 +107,18 @@ abstract class Parser
     }
 
     /**
+     * Получить запись отзыва.
+     *
+     * @param ParserReview $review Спарсенный отзыв.
+     *
+     * @return Review|null Вернет запись отзыва.
+     */
+    public function getReview(ParserReview $review): ?Review
+    {
+        return Review::where('uuid',  $this->getUuid($review))->first();
+    }
+
+    /**
      * Проверка существует ли уже этот отзыв или нет.
      *
      * @param ParserReview $review Спарсенный отзыв.
@@ -115,6 +127,6 @@ abstract class Parser
      */
     public function isReviewExist(ParserReview $review): bool
     {
-        return Review::where('uuid',  $this->getUuid($review))->exists();
+        return !!$this->getReview($review);
     }
 }

@@ -53,7 +53,11 @@ class ReviewImportCommand extends Command
 
         $import->addEvent('imported', function (Import $imp, ParserReview $review, School $school, string $source) {
             $this->amount++;
-            $this->info('Создан отзыв для школы ' . $school->getLabel() . ': #' . $review->id);
+            $this->line('Создан отзыв для школы ' . $school->getLabel() . ': #' . $review->id);
+        });
+
+        $import->addEvent('skipped', function (Import $imp, ParserReview $review, School $school, string $source) {
+            $this->warn('Пропущен отзыв для школы ' . $school->getLabel() . ': #' . $review->id);
         });
 
         $import->run();
