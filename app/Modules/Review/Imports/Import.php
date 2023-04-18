@@ -120,6 +120,10 @@ class Import
             ]);
 
             foreach ($parser->read() as $entityReview) {
+                if ($this->isReviewEmpty($entityReview)) {
+                    continue;
+                }
+
                 if (!$parser->isReviewExist($entityReview)) {
                     $id = $this->save($parser->getSchool(), $parser->getSource(), $parser->getUuid($entityReview), $entityReview);
 
@@ -197,6 +201,29 @@ class Import
         }
 
         return null;
+    }
+
+    /**
+     * Проверка, что отзыв не пустой.
+     *
+     * @param ParserReview $entityReview Спарсенный отзыв.
+     *
+     * @return bool Вернет true, если отзыв пустой.
+     */
+    public function isReviewEmpty(ParserReview $entityReview): bool
+    {
+        if (
+            !$entityReview->name
+            && !$entityReview->title
+            && !$entityReview->review
+            && !$entityReview->advantages
+            && !$entityReview->disadvantages
+            && !$entityReview->rating
+        ) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
