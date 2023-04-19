@@ -108,6 +108,10 @@ class ReadPipe implements Pipe
                 ->where('status', Status::ACTIVE->value)
                 ->whereHas('school', function ($query) {
                     $query->where('status', true);
+                })
+                ->where(function ($query) {
+                    $query->where('image_small_id', '!=', '')
+                        ->orWhereNotNull('image_small_id');
                 });
 
                 if ($entity->sorts) {
