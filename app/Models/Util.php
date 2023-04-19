@@ -17,9 +17,9 @@ class Util
     /**
      * Конвертирование из одной кодировки в другую.
      *
-     * @param  mixed  $arString  Переменная со строками.
-     * @param  string  $from  Из кодировки.
-     * @param  string  $to  В кодировку.
+     * @param mixed $arString Переменная со строками.
+     * @param string $from Из кодировки.
+     * @param string $to В кодировку.
      *
      * @return mixed Конвертированная строка.
      */
@@ -47,7 +47,7 @@ class Util
     /**
      * Очистка строки от всех HTML тегов.
      *
-     * @param  string  $string  Строка.
+     * @param string $string Строка.
      *
      * @return string Очищенная строка.
      */
@@ -61,7 +61,7 @@ class Util
     /**
      * Очистка строки с переводом тега &lt;br /&gt; к \\r\\n и удаление HTML разметки.
      *
-     * @param  string  $string  Строка.
+     * @param string $string Строка.
      *
      * @return string Очищенная строка.
      */
@@ -76,7 +76,7 @@ class Util
     /**
      * Очистка строки с переводом каретки к тэгу &lt;br /&gt; и удаление HTML разметки.
      *
-     * @param  string  $string  Строка.
+     * @param string $string Строка.
      *
      * @return string Очищенная строка.
      */
@@ -91,7 +91,7 @@ class Util
     /**
      * Очистка строки с переводом каретки к тэгу &lt;br /&gt; с сохранением HTML разметки.
      *
-     * @param  string  $string  Строка.
+     * @param string $string Строка.
      *
      * @return string Очищенная строка.
      */
@@ -105,7 +105,7 @@ class Util
     /**
      * Очистка строки с сохранением HTML разметки.
      *
-     * @param  string  $string  Строка.
+     * @param string $string Строка.
      *
      * @return string Очищенная строка.
      */
@@ -117,7 +117,7 @@ class Util
     /**
      * Обработка строки с переводом тега &lt;br /&gt; к \\r\\n.
      *
-     * @param  string  $string  Строка.
+     * @param string $string Строка.
      *
      * @return string Очищенная строка.
      */
@@ -131,7 +131,7 @@ class Util
     /**
      * Обработка строки с переводом каретки к тэгу &lt;br /&gt;.
      *
-     * @param  string  $str  Строка.
+     * @param string $str Строка.
      *
      * @return string Очищенная строка.
      */
@@ -146,7 +146,7 @@ class Util
     /**
      * Удаление всех лишних пробелов в строке.
      *
-     * @param  string  $string  Строка для очистки лишних пробелов.
+     * @param string $string Строка для очистки лишних пробелов.
      *
      * @return string Строка без лишних пробелов.
      */
@@ -161,9 +161,9 @@ class Util
      * Транслирует текст.
      * Переводит текст с русского языка.
      *
-     * @param  string  $string  Строка для перевода.
-     * @param  string  $separator  Сепаратор, который используется в качестве пробела.
-     * @param  bool  $symbols  Если указать true, то допустит только буквы и и цифры, остальные символы будут удалены.
+     * @param string $string Строка для перевода.
+     * @param string $separator Сепаратор, который используется в качестве пробела.
+     * @param bool $symbols Если указать true, то допустит только буквы и и цифры, остальные символы будут удалены.
      *
      * @return string Транслируемая строка.
      */
@@ -326,7 +326,7 @@ class Util
     /**
      * Метод проверит, является ли массив ассоциативным.
      *
-     * @param  mixed  $arr  Ассоциативный массив для проверки.
+     * @param mixed $arr Ассоциативный массив для проверки.
      *
      * @return bool Возвращает true, если массив ассоциативный.
      */
@@ -342,7 +342,7 @@ class Util
     /**
      * Получение уникального ключа.
      *
-     * @param  array  $params  Параметры.
+     * @param array $params Параметры.
      *
      * @return string Вернет уникальный ключ.
      */
@@ -354,19 +354,20 @@ class Util
     /**
      * Получение отформатированного числа.
      *
-     * @param  float  $number  Число для форматирования.
-     * @param  int  $digits  Количество чисел после дробной точки.
-     * @param  string  $separate  Точка для дробного числа.
-     * @param  string  $separateDigits  Разделитель для числа.
+     * @param float $number Число для форматирования.
+     * @param int $digits Количество чисел после дробной точки.
+     * @param string $separate Точка для дробного числа.
+     * @param string $separateDigits Разделитель для числа.
      *
      * @return string Вернет отформатированное число.
      */
     private static function _number(
-        float $number,
-        int $digits = 0,
+        float  $number,
+        int    $digits = 0,
         string $separate = ',',
         string $separateDigits = '.'
-    ): string {
+    ): string
+    {
         $numberArr = [];
         $number = round($number, $digits);
 
@@ -394,11 +395,11 @@ class Util
 
             for ($i = $lenPrice, $z = -1; $i >= 0; $i--) {
                 if ($z == 2) {
-                    $numberForm = $separate.$numberForm;
+                    $numberForm = $separate . $numberForm;
                     $z = -1;
                 }
 
-                $numberForm = @$numberArr[0][$i].$numberForm;
+                $numberForm = @$numberArr[0][$i] . $numberForm;
                 $z++;
             }
 
@@ -408,11 +409,11 @@ class Util
         $numberNew = $numberArr[0];
 
         if ($numberArr[0] != '' && isset($numberArr[1]) && $numberArr[1] != '' && $digits) {
-            $numberNew = $numberArr[0].$separateDigits.$numberArr[1];
+            $numberNew = $numberArr[0] . $separateDigits . $numberArr[1];
         }
 
         if ($minus) {
-            return '-'.$numberNew;
+            return '-' . $numberNew;
         } else {
             return $numberNew;
         }
@@ -421,8 +422,8 @@ class Util
     /**
      * Получение отформатированного числа.
      *
-     * @param  float  $number  Число для форматирования.
-     * @param  int  $digits  Количество чисел после дробной точки.
+     * @param float $number Число для форматирования.
+     * @param int $digits Количество чисел после дробной точки.
      *
      * @return string Вернет отформатированное число.
      */
@@ -434,27 +435,28 @@ class Util
     /**
      * Получение отформатированного числа в виде цены.
      *
-     * @param  float  $number  Число для форматирования.
-     * @param  bool  $digits  Отображать дробные числа.
-     * @param  string  $label  Знак валюты.
-     * @param  bool  $beginning  Ставить ли знак валюты в начале.
+     * @param float $number Число для форматирования.
+     * @param bool $digits Отображать дробные числа.
+     * @param string $label Знак валюты.
+     * @param bool $beginning Ставить ли знак валюты в начале.
      *
      * @return string Вернет отформатированное число.
      */
     public static function getMoney(
-        float $number,
-        bool $digits = true,
+        float  $number,
+        bool   $digits = true,
         string $label = '$',
-        bool $beginning = true
-    ): string {
+        bool   $beginning = true
+    ): string
+    {
         $digits = $digits === false ? 0 : 2;
         $money = self::_number($number, $digits, ' ');
 
         if ($label) {
             if ($beginning) {
-                $money = $label.$money;
+                $money = $label . $money;
             } else {
-                $money = $money.' '.$label;
+                $money = $money . ' ' . $label;
             }
         }
 
@@ -464,7 +466,7 @@ class Util
     /**
      * Проверка содержит ли строка корректный JSON.
      *
-     * @param  string  $string  Строка проверки.
+     * @param string $string Строка проверки.
      *
      * @return bool Вернет результат проверки.
      */
@@ -476,5 +478,17 @@ class Util
         }
 
         return false;
+    }
+
+    /**
+     * Буквы в верхнем регистре для каждого слова.
+     *
+     * @param string $value Строка для конвертирования.
+     *
+     * @return string Строка.
+     */
+    public static function ucwords(string $value): string
+    {
+        return mb_convert_case($value, MB_CASE_TITLE, 'UTF-8');
     }
 }

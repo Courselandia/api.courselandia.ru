@@ -8,6 +8,7 @@
 
 namespace App\Modules\Review\Imports;
 
+use Util;
 use Throwable;
 use App\Models\Error;
 use App\Models\Event;
@@ -180,7 +181,7 @@ class Import
             $review = Review::create([
                 'school_id' => $school->value,
                 'uuid' => $uuid,
-                'name' => $entityReview->name,
+                'name' => Util::ucwords($entityReview->name),
                 'title' => $entityReview->title,
                 'review' => $entityReview->review,
                 'advantages' => $entityReview->advantages,
