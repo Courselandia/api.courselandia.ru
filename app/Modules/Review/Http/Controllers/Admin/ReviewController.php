@@ -1,7 +1,7 @@
 <?php
 /**
  * Модуль Отзывов.
- * Этот модуль содержит все классы для работы с отзывовами.
+ * Этот модуль содержит все классы для работы с отзывами.
  *
  * @package App\Modules\Review
  */
@@ -30,7 +30,7 @@ use App\Modules\Review\Http\Requests\Admin\ReviewDestroyRequest;
 use App\Modules\Review\Http\Requests\Admin\ReviewReadRequest;
 
 /**
- * Класс контроллер для работы с отзывовами в административной части.
+ * Класс контроллер для работы с отзывами в административной части.
  */
 class ReviewController extends Controller
 {

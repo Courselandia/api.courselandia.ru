@@ -1,9 +1,9 @@
 <?php
 /**
- * Модуль Курсов.
- * Этот модуль содержит все классы для работы с курсами.
+ * Модуль Отзывов.
+ * Этот модуль содержит все классы для работы с отзывами.
  *
- * @package App\Modules\Course
+ * @package App\Modules\Review
  */
 
 namespace App\Modules\Review\Imports;
