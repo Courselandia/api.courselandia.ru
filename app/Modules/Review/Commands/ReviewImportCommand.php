@@ -72,7 +72,7 @@ class ReviewImportCommand extends Command
             }
         }
 
-        $this->info("\n\nИмпортировано отзывов: " . $this->amount . ".");
+        $this->info("\n\nИмпортировано отзывов: " . $this->amount . '.');
         Log::info('Импортирование отзывов: ' . $this->amount . ' шт.');
     }
 }
