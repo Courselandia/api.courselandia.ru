@@ -8,6 +8,8 @@
 
 namespace App\Modules\Review\Imports\Parsers;
 
+use Util;
+use Carbon\Carbon;
 use Generator;
 use Throwable;
 use App\Modules\Review\Imports\Parser;
@@ -62,7 +64,7 @@ class ParserSkillbox extends Parser
                 try {
                     $title = null;
                     $rating = 5;
-                    $date = null;
+                    $date = Carbon::now();
 
                     $name = $review->findElement(WebDriverBy::cssSelector('.ui-text-review-header__author'))->getText();
                     $text = $review->findElement(WebDriverBy::cssSelector('.ui-text-review__text'))->getText();
@@ -82,5 +84,25 @@ class ParserSkillbox extends Parser
         } catch (Throwable $error) {
             $this->addError($this->getSchool()->getLabel() . ', из: ' . $this->getUrl() . ' : Не удается получить список отзывов. ' . $error->getMessage());
         }
+    }
+
+    /**
+     * Уникальный ключ для проверки уникальности отзыва.
+     *
+     * @param ParserReview $review Спарсенный отзыв.
+     *
+     * @return string Ключ.
+     */
+    public function getUuid(ParserReview $review): string
+    {
+        return Util::getKey([
+            $this->getSchool()->value,
+            $review->name,
+            $review->title,
+            $review->review,
+            $review->advantages,
+            $review->disadvantages,
+            $review->rating,
+        ]);
     }
 }

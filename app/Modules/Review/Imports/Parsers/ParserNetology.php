@@ -8,6 +8,8 @@
 
 namespace App\Modules\Review\Imports\Parsers;
 
+use Util;
+use Carbon\Carbon;
 use Generator;
 use Throwable;
 use App\Modules\Review\Imports\Parser;
@@ -42,7 +44,7 @@ class ParserNetology extends Parser
                     $title = $review->findElement(WebDriverBy::cssSelector('.src-Landings-pages-StudentReviews-components-ReviewCard--programTitle--_Ok6v'))->getText();
                     $text = $review->findElement(WebDriverBy::cssSelector('.src-Landings-pages-StudentReviews-components-ReviewCard--review--_TkIQ'))->getText();
                     $rating = null;
-                    $date = null;
+                    $date = Carbon::now();
 
                     $review = new ParserReview();
                     $review->title = $title;
@@ -59,5 +61,25 @@ class ParserNetology extends Parser
         } catch (Throwable $error) {
             $this->addError($this->getSchool()->getLabel() . ', из: ' . $this->getUrl() . ' : Не удается получить список отзывов. ' . $error->getMessage());
         }
+    }
+
+    /**
+     * Уникальный ключ для проверки уникальности отзыва.
+     *
+     * @param ParserReview $review Спарсенный отзыв.
+     *
+     * @return string Ключ.
+     */
+    public function getUuid(ParserReview $review): string
+    {
+        return Util::getKey([
+            $this->getSchool()->value,
+            $review->name,
+            $review->title,
+            $review->review,
+            $review->advantages,
+            $review->disadvantages,
+            $review->rating,
+        ]);
     }
 }

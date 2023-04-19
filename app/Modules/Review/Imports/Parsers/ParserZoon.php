@@ -154,6 +154,7 @@ class ParserZoon extends Parser
         ];
 
         $date = str_replace(array_keys($months), array_values($months), $date);
+
         return Carbon::createFromFormat('j.m.Y в H:i:s', $date . ':00');
     }
 }

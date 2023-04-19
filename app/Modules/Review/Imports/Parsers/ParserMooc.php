@@ -89,7 +89,7 @@ class ParserMooc extends Parser
                     $review = new ParserReview();
                     $review->title = $titleValue;
                     $review->rating = $ratingValue;
-                    $review->date = $date ? Carbon::createFromFormat('U', $date) : null;
+                    $review->date = $date ? Carbon::createFromFormat('U', $date) : Carbon::now();
                     $review->name = $authorValue;
                     $review->review = trim($textValue);
 

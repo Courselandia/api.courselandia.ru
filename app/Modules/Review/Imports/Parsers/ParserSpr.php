@@ -78,7 +78,6 @@ class ParserSpr extends Parser
                     $title = $review->findElement(WebDriverBy::cssSelector('.reviewTitleText SPAN'))->getText();
                     $name = $review->findElement(WebDriverBy::cssSelector('.reviewAuthor'))->getText();
                     $date = $review->findElement(WebDriverBy::cssSelector('.reviewDate'))->getText();
-
                     $date = Carbon::createFromFormat('j.m.Y H:i:s', $date . ' 00:00:00');
 
                     $more = $review->findElements(WebDriverBy::cssSelector('.readMoreReview'));
