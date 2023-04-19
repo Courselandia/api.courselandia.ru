@@ -70,6 +70,7 @@ class Review extends Eloquent
         'disadvantages',
         'rating',
         'status',
+        'created_at',
     ];
 
     /**
