@@ -222,11 +222,11 @@ class CourseDirectionReadAction extends Action
                         $query->select([
                             'courses.id',
                         ])
-                            ->filter($filters ?: [])
-                            ->where('status', Status::ACTIVE->value)
-                            ->whereHas('school', function ($query) {
-                                $query->where('status', true);
-                            });
+                        ->filter($filters ?: [])
+                        ->where('status', Status::ACTIVE->value)
+                        ->whereHas('school', function ($query) {
+                            $query->where('status', true);
+                        });
                     })
                     ->where('status', true)
                     ->orderBy('weight');
