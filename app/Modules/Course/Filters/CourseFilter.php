@@ -25,7 +25,7 @@ class CourseFilter extends ModelFilter
      */
     public $relations = [
         'school' => [
-            'school-id'  => 'schoolId',
+            //'school-id'  => 'schoolId',
             'school-link'  => 'schoolLink',
         ],
         'directions' => [
