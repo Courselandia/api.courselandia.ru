@@ -8,14 +8,13 @@
 
 namespace App\Modules\Course\Actions\Site\Course;
 
-use Cache;
-use Util;
 use App\Models\Action;
-use App\Models\Enums\CacheTime;
-use App\Models\Exceptions\ParameterInvalidException;
+use App\Modules\Course\Decorators\Site\CourseGetDecorator;
+use App\Modules\Course\Entities\CourseGet;
+use App\Modules\Course\Pipes\Site\Get\GetPipe;
 use App\Modules\Course\Entities\Course as CourseEntity;
-use App\Modules\Course\Models\Course;
-use App\Modules\Course\Enums\Status;
+use App\Modules\Course\Pipes\Site\Get\DataPipe;
+use App\Modules\Course\Pipes\Site\Get\SimilaritiesPipe;
 
 /**
  * Класс действия для получения курса.
@@ -34,81 +33,23 @@ class CourseGetAction extends Action
      *
      * @var string|null
      */
-    public string|null $course = null;
+    public string|null $link = null;
 
     /**
      * Метод запуска логики.
      *
      * @return CourseEntity|null Вернет результаты исполнения.
-     * @throws ParameterInvalidException
      */
-    public function run(): ?CourseEntity
+    public function run(): ?CourseGet
     {
-        $cacheKey = Util::getKey('course', 'site', $this->school, $this->course);
+        $decorator = app(CourseGetDecorator::class);
+        $decorator->school = $this->school;
+        $decorator->link = $this->link;
 
-        return Cache::tags([
-            'course',
-            'direction',
-            'profession',
-            'category',
-            'skill',
-            'teacher',
-            'tool',
-            'process',
-            'employment',
-            'review',
-        ])->remember(
-            $cacheKey,
-            CacheTime::GENERAL->value,
-            function () {
-                $course = Course::where('link', $this->course)
-                    ->with([
-                        'metatag',
-                        'professions' => function ($query) {
-                            $query->where('status', true);
-                        },
-                        'professions.salaries' => function ($query) {
-                            $query->where('status', true);
-                        },
-                        'categories' => function ($query) {
-                            $query->where('status', true);
-                        },
-                        'skills' => function ($query) {
-                            $query->where('status', true);
-                        },
-                        'teachers' => function ($query) {
-                            $query->where('status', true);
-                        },
-                        'tools' => function ($query) {
-                            $query->where('status', true);
-                        },
-                        'processes' => function ($query) {
-                            $query->where('status', true);
-                        },
-                        'school' => function ($query) {
-                            $query->where('status', true);
-                        },
-                        'school.faqs' => function ($query) {
-                            $query->where('status', true);
-                        },
-                        'directions' => function ($query) {
-                            $query->where('status', true);
-                        },
-                        'levels',
-                        'learns',
-                        'employments',
-                        'features',
-                        'professions.salaries'
-                    ])
-                    ->where('status', Status::ACTIVE->value)
-                    ->whereHas('school', function ($query) {
-                        $query->where('status', true)
-                            ->where('link', $this->school);
-                    })
-                    ->first();
-
-                return $course ? new CourseEntity($course->toArray()) : null;
-            }
-        );
+        return $decorator->setActions([
+            GetPipe::class,
+            SimilaritiesPipe::class,
+            DataPipe::class,
+        ])->run();
     }
 }

@@ -133,4 +133,11 @@ class CourseRead extends Entity
      * @var bool
      */
     public bool $openedTools = false;
+
+    /**
+     * Вывести курсы только с картинками.
+     *
+     * @var bool
+     */
+    public bool $onlyWithImage = false;
 }

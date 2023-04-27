@@ -30,12 +30,9 @@ class CoreController extends Controller
      */
     public function clean(): JsonResponse
     {
-        $login = Auth::getUser()->login;
-
         app(CacheFlushAction::class)->run();
 
         Log::info(trans('core::http.controllers.admin.coreController.clean.log'), [
-            'login' => $login,
             'module' => 'Cache',
             'type' => 'destroy'
         ]);

@@ -109,9 +109,16 @@ class CourseReadDecorator extends Decorator
     public bool $openedTools = false;
 
     /**
+     * Вывести курсы только с картинками.
+     *
+     * @var bool
+     */
+    public bool $onlyWithImage = false;
+
+    /**
      * Метод обработчик события после выполнения всех действий декоратора.
      *
-     * @return CourseRead Вернет данные авторизации.
+     * @return CourseRead Вернет данные курсов.
      */
     public function run(): CourseRead
     {
@@ -128,6 +135,7 @@ class CourseReadDecorator extends Decorator
         $courseRead->openedTeachers = $this->openedTeachers;
         $courseRead->openedSkills = $this->openedSkills;
         $courseRead->openedTools = $this->openedTools;
+        $courseRead->onlyWithImage = $this->onlyWithImage;
 
         return app(Pipeline::class)
             ->send($courseRead)

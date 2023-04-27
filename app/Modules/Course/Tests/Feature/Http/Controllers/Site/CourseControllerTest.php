@@ -41,7 +41,9 @@ class CourseControllerTest extends TestCase
             'GET',
             'api/private/site/course/get/' . $course->school->link . '/' . $course->link,
         )->assertStatus(200)->assertJsonStructure([
-            'data' => $this->getCourseStructure(),
+            'data' => [
+                'course' => $this->getCourseStructure(),
+            ],
             'success',
         ]);
     }

@@ -10,13 +10,13 @@ namespace App\Modules\Course\Pipes\Site\Read;
 
 use Morph;
 use DB;
+use Closure;
+use Util;
+use Cache;
 use App\Modules\Course\Entities\CourseFilter;
 use App\Modules\Course\Entities\CourseFilterDuration;
 use App\Modules\Course\Entities\CourseFilterPrice;
 use App\Modules\Course\Enums\Status;
-use Closure;
-use Util;
-use Cache;
 use App\Models\Contracts\Pipe;
 use App\Models\Entity;
 use App\Models\Enums\CacheTime;
@@ -108,11 +108,14 @@ class ReadPipe implements Pipe
                 ->where('status', Status::ACTIVE->value)
                 ->whereHas('school', function ($query) {
                     $query->where('status', true);
-                })
-                ->where(function ($query) {
-                    $query->where('image_small_id', '!=', '')
-                        ->orWhereNotNull('image_small_id');
                 });
+
+                if ($entity->onlyWithImage) {
+                    $query->where(function ($query) {
+                        $query->where('image_small_id', '!=', '')
+                            ->orWhereNotNull('image_small_id');
+                    });
+                }
 
                 if ($entity->sorts) {
                     if (

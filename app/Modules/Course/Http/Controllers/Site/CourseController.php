@@ -38,33 +38,32 @@ class CourseController extends Controller
      * Получение курса.
      *
      * @param string $school Ссылка школы.
-     * @param string $course Ссылка курса.
+     * @param string $link Ссылка курса.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException
      */
-    public function get(string $school, string $course): JsonResponse
+    public function get(string $school, string $link): JsonResponse
     {
         $action = app(CourseGetAction::class);
         $action->school = $school;
-        $action->course = $course;
+        $action->link = $link;
         $data = $action->run();
 
-        if ($data) {
+        if ($data->course) {
             $data = [
                 'data' => $data,
                 'success' => true,
             ];
 
             return response()->json($data);
-        } else {
-            $data = [
-                'data' => null,
-                'success' => false,
-            ];
-
-            return response()->json($data)->setStatusCode(404);
         }
+
+        $data = [
+            'data' => null,
+            'success' => false,
+        ];
+
+        return response()->json($data)->setStatusCode(404);
     }
 
     /**

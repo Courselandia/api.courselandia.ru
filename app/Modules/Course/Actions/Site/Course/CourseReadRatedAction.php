@@ -46,6 +46,7 @@ class CourseReadRatedAction extends Action
 
         $decorator->offset = 0;
         $decorator->limit = $this->limit;
+        $decorator->onlyWithImage = true;
 
         $result = $decorator->setActions([
             ReadPipe::class,

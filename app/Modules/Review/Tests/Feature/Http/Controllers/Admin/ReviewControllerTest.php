@@ -13,6 +13,7 @@ use App\Modules\Review\Enums\Status;
 use App\Models\Test\TokenTest;
 use App\Modules\Review\Models\Review;
 use App\Modules\School\Models\School;
+use Carbon\Carbon;
 use Faker\Factory as Faker;
 use JetBrains\PhpStorm\Pure;
 use Tests\TestCase;
@@ -118,6 +119,7 @@ class ReviewControllerTest extends TestCase
                 'name' => $faker->text(191),
                 'title' => $faker->text(191),
                 'rating' => 4,
+                'created_at' => Carbon::now()->addMonths(-5)->format('Y-m-d H:i:s O'),
                 'status' => Status::ACTIVE,
             ],
             [
@@ -151,6 +153,7 @@ class ReviewControllerTest extends TestCase
                 'review' => $faker->text(5000),
                 'advantages' => $faker->text(5000),
                 'disadvantages' => $faker->text(5000),
+                'created_at' => Carbon::now()->addMonths(-5)->format('Y-m-d H:i:s O'),
                 'rating' => 4,
                 'status' => Status::ACTIVE,
             ],
@@ -220,6 +223,7 @@ class ReviewControllerTest extends TestCase
                 'review' => $faker->text(5000),
                 'advantages' => $faker->text(5000),
                 'disadvantages' => $faker->text(5000),
+                'created_at' => Carbon::now()->addMonths(-5)->format('Y-m-d H:i:s O'),
                 'rating' => 5,
                 'status' => Status::ACTIVE,
             ],
@@ -289,6 +293,7 @@ class ReviewControllerTest extends TestCase
                 'review' => $faker->text(5000),
                 'advantages' => $faker->text(5000),
                 'disadvantages' => $faker->text(5000),
+                'created_at' => Carbon::now()->addMonths(-5)->format('Y-m-d H:i:s O'),
                 'rating' => 4,
                 'status' => Status::ACTIVE,
             ],

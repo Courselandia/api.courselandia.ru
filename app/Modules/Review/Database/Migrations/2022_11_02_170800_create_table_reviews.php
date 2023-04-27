@@ -27,6 +27,7 @@ class CreateTableReviews extends Migration
             $table->text('advantages')->nullable();
             $table->text('disadvantages')->nullable();
             $table->integer('rating')->unsigned()->nullable();
+            $table->string('source', 191)->nullable();
 
             $table->string('status', 20)->default('disabled')->index();
 
