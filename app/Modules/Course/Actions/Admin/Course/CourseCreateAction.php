@@ -349,7 +349,7 @@ class CourseCreateAction extends Action
             $courseEntity->skill_ids = Data::getSkills($this->skills ?: []);
             $courseEntity->teacher_ids = Data::getTeachers($this->teachers ?: []);
             $courseEntity->tool_ids = Data::getTools($this->tools ?: []);
-            $courseEntity->level_values = $this->levels;
+            $courseEntity->level_values = Data::getLevels($this->levels);
             $courseEntity->has_active_school = Data::isActiveSchool($this->school_id);
 
             $courseEntity->status = $this->status;
