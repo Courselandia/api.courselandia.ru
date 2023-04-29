@@ -23,6 +23,7 @@ use App\Modules\Course\Models\Course;
 use App\Modules\Course\Models\CourseFeature;
 use App\Modules\Course\Models\CourseLearn;
 use App\Modules\Course\Models\CourseLevel;
+use App\Modules\Course\Normalize\Data;
 use App\Modules\Image\Entities\Image;
 use App\Modules\Metatag\Actions\MetatagSetAction;
 use App\Modules\Metatag\Template\Template;
@@ -342,6 +343,16 @@ class CourseUpdateAction extends Action
                 $courseEntity->lessons_amount = $this->lessons_amount;
                 $courseEntity->modules_amount = $this->modules_amount;
                 $courseEntity->program = $this->program;
+
+                $courseEntity->direction_ids = Data::getDirections($this->directions ?: []);
+                $courseEntity->profession_ids = Data::getProfessions($this->professions ?: []);
+                $courseEntity->category_ids = Data::getCategories($this->categories ?: []);
+                $courseEntity->skill_ids = Data::getSkills($this->skills ?: []);
+                $courseEntity->teacher_ids = Data::getTeachers($this->teachers ?: []);
+                $courseEntity->tool_ids = Data::getTools($this->tools ?: []);
+                $courseEntity->level_values = $this->levels;
+                $courseEntity->has_active_school = Data::isActiveSchool($this->school_id);
+
                 $courseEntity->status = $this->status;
 
                 if ($this->image) {

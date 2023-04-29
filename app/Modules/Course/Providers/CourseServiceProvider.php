@@ -8,11 +8,12 @@
 
 namespace App\Modules\Course\Providers;
 
+use Config;
+use Illuminate\Support\ServiceProvider;
 use App\Modules\Course\Commands\CourseExportCommand;
 use App\Modules\Course\Commands\CourseFillCommand;
 use App\Modules\Course\Commands\CourseImportCommand;
-use Config;
-use Illuminate\Support\ServiceProvider;
+use App\Modules\Course\Commands\CourseNormalizeCommand;
 use App\Modules\Course\Models\Course as CourseModel;
 use App\Modules\Course\Events\Listeners\CourseListener;
 
@@ -47,6 +48,7 @@ class CourseServiceProvider extends ServiceProvider
             CourseImportCommand::class,
             CourseFillCommand::class,
             CourseExportCommand::class,
+            CourseNormalizeCommand::class,
         ]);
     }
 

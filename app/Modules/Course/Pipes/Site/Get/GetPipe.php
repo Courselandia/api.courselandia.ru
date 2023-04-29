@@ -93,7 +93,6 @@ class GetPipe implements Pipe
                         'learns',
                         'employments',
                         'features',
-                        'professions.salaries'
                     ])
                     ->where('status', Status::ACTIVE->value)
                     ->whereHas('school', function ($query) use ($school) {

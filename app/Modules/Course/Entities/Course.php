@@ -237,6 +237,62 @@ class Course extends Entity
     public array|null $program = null;
 
     /**
+     * Активные направления.
+     *
+     * @var array|null
+     */
+    public array|null $direction_ids = null;
+
+    /**
+     * Активные профессии.
+     *
+     * @var array|null
+     */
+    public array|null $profession_ids = null;
+
+    /**
+     * Активные категории.
+     *
+     * @var array|null
+     */
+    public array|null $category_ids = null;
+
+    /**
+     * Активные навыки.
+     *
+     * @var array|null
+     */
+    public array|null $skill_ids = null;
+
+    /**
+     * Активные учителя.
+     *
+     * @var array|null
+     */
+    public array|null $teacher_ids = null;
+
+    /**
+     * Активные инструменты.
+     *
+     * @var array|null
+     */
+    public array|null $tool_ids = null;
+
+    /**
+     * Активные уровни.
+     *
+     * @var array|null
+     */
+    public array|null $level_values = null;
+
+    /**
+     * Признак если активная школа.
+     *
+     * @var bool|null
+     */
+    public bool|null $has_active_school = null;
+
+    /**
      * Дата создания.
      *
      * @var ?Carbon
