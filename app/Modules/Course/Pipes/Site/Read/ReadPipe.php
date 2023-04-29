@@ -45,11 +45,11 @@ class ReadPipe implements Pipe
             'course',
             'site',
             'read',
-            'count',
             $entity->sorts,
             $entity->filters,
             $entity->offset,
-            $entity->limit
+            $entity->limit,
+            $entity->onlyWithImage,
         );
 
         $result = Cache::tags([

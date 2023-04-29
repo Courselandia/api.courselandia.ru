@@ -28,6 +28,13 @@ use App\Models\Exceptions\ParameterInvalidException;
 class SimilaritiesPipe implements Pipe
 {
     /**
+     * Количество курсов.
+     *
+     * @var int
+     */
+    private const LIMIT = 12;
+
+    /**
      * Метод, который будет вызван у pipeline.
      *
      * @param Entity|CourseGet $entity Сущность.
@@ -38,6 +45,7 @@ class SimilaritiesPipe implements Pipe
      */
     public function handle(Entity|CourseGet $entity, Closure $next): mixed
     {
+        Cache::flush();
         $course = $entity->course;
 
         if ($course) {
@@ -62,6 +70,8 @@ class SimilaritiesPipe implements Pipe
 
                     $filters = [
                         'search' => $search,
+                        'directions-id' => $course->directions[0]->id,
+                        'categories-id' => [$course->categories[0]->id],
                     ];
 
                     $search = Morph::get($search);
@@ -114,11 +124,9 @@ class SimilaritiesPipe implements Pipe
                         DB::raw('MATCH(name_morphy, text_morphy) AGAINST(' . $search . ' IN BOOLEAN MODE) AS relevance')
                     )
                     ->orderBy('relevance', 'DESC')
-                    ->limit(12);
+                    ->limit(self::LIMIT);
 
                     $items = $query->get()->toArray();
-
-                    print_r($items);
 
                     return Entity::toEntities($items, new CourseEntity());
                 }
