@@ -81,6 +81,14 @@ use App\Modules\Course\Filters\CourseFilter;
  * @property int $lessons_amount Количество уроков.
  * @property int $modules_amount Количество модулей.
  * @property array $program Программа курса.
+ * @property array $direction_ids Активные направления.
+ * @property array $profession_ids Активные профессии.
+ * @property array $category_ids Активные категории.
+ * @property array $skill_ids Активные навыки.
+ * @property array $teacher_ids Активные учителя.
+ * @property array $tool_ids Активные инструменты.
+ * @property array $level_values Активные уровни.
+ * @property boolean $has_active_school Признак если активная школа.
  * @property string $status Статус.
  *
  * @property-read Metatag $metatag
@@ -114,6 +122,13 @@ class Course extends Eloquent
      */
     protected $casts = [
         'program' => 'array',
+        'direction_ids' => 'array',
+        'profession_ids' => 'array',
+        'category_ids' => 'array',
+        'skill_ids' => 'array',
+        'teacher_ids' => 'array',
+        'tool_ids' => 'array',
+        'level_values' => 'array',
     ];
 
     /**
@@ -151,6 +166,14 @@ class Course extends Eloquent
         'lessons_amount',
         'modules_amount',
         'program',
+        'direction_ids',
+        'profession_ids',
+        'category_ids',
+        'skill_ids',
+        'teacher_ids',
+        'tool_ids',
+        'level_values',
+        'has_active_school',
         'status',
     ];
 
@@ -187,6 +210,15 @@ class Course extends Eloquent
         'duration_unit' => 'string',
         'lessons_amount' => 'string',
         'modules_amount' => 'string',
+        'program' => 'string',
+        'direction_ids' => 'string',
+        'profession_ids' => 'string',
+        'category_ids' => 'string',
+        'skill_ids' => 'string',
+        'teacher_ids' => 'string',
+        'tool_ids' => 'string',
+        'level_values' => 'string',
+        'has_active_school' => 'string',
         'status' => 'string',
     ])] protected function getRules(): array
     {
@@ -215,6 +247,15 @@ class Course extends Eloquent
             'duration_unit' => 'in:' . implode(',', EnumList::getValues(Duration::class)),
             'lessons_amount' => 'integer|digits_between:0,5',
             'modules_amount' => 'integer|digits_between:0,5',
+            'program' => 'json',
+            'direction_ids' => 'json',
+            'profession_ids' => 'json',
+            'category_ids' => 'json',
+            'skill_ids' => 'json',
+            'teacher_ids' => 'json',
+            'tool_ids' => 'json',
+            'level_values' => 'json',
+            'has_active_school' => 'boolean',
             'status' => 'required|in:' . implode(',', EnumList::getValues(Status::class)),
         ];
     }
@@ -255,6 +296,14 @@ class Course extends Eloquent
             'lessons_amount' => trans('course::models.course.lessonsAmount'),
             'modules_amount' => trans('course::models.course.modulesAmount'),
             'program' => trans('course::models.course.program'),
+            'direction_ids' => trans('course::models.course.directionIds'),
+            'profession_ids' => trans('course::models.course.professionIds'),
+            'category_ids' => trans('course::models.course.categoryIds'),
+            'skill_ids' => trans('course::models.course.skillIds'),
+            'teacher_ids' => trans('course::models.course.teacherIds'),
+            'tool_ids' => trans('course::models.course.toolIds'),
+            'level_values' => trans('course::models.course.levelValues'),
+            'has_active_school' => trans('course::models.course.hasActiveSchool'),
             'status' => trans('course::models.course.status'),
         ];
     }
