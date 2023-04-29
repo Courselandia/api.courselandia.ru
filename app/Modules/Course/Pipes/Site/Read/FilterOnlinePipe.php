@@ -66,9 +66,7 @@ class FilterOnlinePipe implements Pipe
                     'online',
                 ])->filter($currentFilters ?: [])
                 ->where('status', Status::ACTIVE->value)
-                ->whereHas('school', function ($query) {
-                    $query->where('status', true);
-                })
+                ->where('has_active_school', true)
                 ->groupBy('online')
                 ->get();
 

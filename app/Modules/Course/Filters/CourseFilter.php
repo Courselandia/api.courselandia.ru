@@ -8,6 +8,7 @@
 
 namespace App\Modules\Course\Filters;
 
+use DB;
 use Morph;
 use App\Modules\Course\Enums\Status;
 use App\Modules\Salary\Enums\Level;
@@ -25,34 +26,25 @@ class CourseFilter extends ModelFilter
      */
     public $relations = [
         'school' => [
-            'school-link'  => 'schoolLink',
+            'school-link' => 'schoolLink',
         ],
         'directions' => [
-            'directions-id'  => 'directionsId',
-            'directions-link'  => 'directionsLink',
+            'directions-link' => 'directionsLink',
         ],
         'professions' => [
-            'professions-id'  => 'professionsId',
-            'professions-link'  => 'professionsLink',
+            'professions-link' => 'professionsLink',
         ],
         'categories' => [
-            'categories-id'  => 'categoriesId',
-            'categories-link'  => 'categoriesLink',
+            'categories-link' => 'categoriesLink',
         ],
         'skills' => [
-            'skills-id'  => 'skillsId',
-            'skills-link'  => 'skillsLink',
+            'skills-link' => 'skillsLink',
         ],
         'teachers' => [
-            'teachers-id'  => 'teachersId',
-            'teachers-link'  => 'teachersLink',
+            'teachers-link' => 'teachersLink',
         ],
         'tools' => [
-            'tools-id'  => 'toolsId',
-            'tools-link'  => 'toolsLink',
-        ],
-        'levels' => [
-            'levels-level'  => 'levelsLevel',
+            'tools-link' => 'toolsLink',
         ],
     ];
 
@@ -101,7 +93,7 @@ class CourseFilter extends ModelFilter
      */
     public function schoolLink(array|string $links): CourseFilter
     {
-        return $this->related('school', function($query) use ($links) {
+        return $this->related('school', function ($query) use ($links) {
             return $query->whereIn('schools.link', is_array($links) ? $links : [$links]);
         });
     }
@@ -161,7 +153,7 @@ class CourseFilter extends ModelFilter
                     'MATCH(name_morphy, text_morphy) AGAINST(? IN BOOLEAN MODE)',
                     [$queryMorph]
                 );
-            }
+        }
         );
     }
 
@@ -201,7 +193,7 @@ class CourseFilter extends ModelFilter
         if ($status) {
             return $this->whereNotNull('courses.price_recurrent');
         } else {
-            return $this->where(function($query) {
+            return $this->where(function ($query) {
                 return $query
                     ->whereNull('courses.price_recurrent')
                     ->orWhere('courses.price_recurrent', '=', 0);
@@ -219,7 +211,7 @@ class CourseFilter extends ModelFilter
     public function free(bool $status): CourseFilter
     {
         if ($status) {
-            return $this->where(function($query) {
+            return $this->where(function ($query) {
                 return $query
                     ->whereNull('courses.price')
                     ->orWhere('courses.price', '=', 0);
@@ -275,13 +267,43 @@ class CourseFilter extends ModelFilter
     /**
      * Поиск по статусу.
      *
-     * @param Status[]|Status|string[]|string  $statuses Статусы.
+     * @param Status[]|Status|string[]|string $statuses Статусы.
      *
      * @return CourseFilter Правила поиска.
      */
     public function status(array|Status|string $statuses): CourseFilter
     {
         return $this->whereIn('courses.status', is_array($statuses) ? $statuses : [$statuses]);
+    }
+
+    /**
+     * Поиск ID по колонке с JSON.
+     *
+     * @param string $colum Название колонки.
+     * @param array|int|string $ids ID's.
+     * @param bool $string Признак, что ищем строку.
+     *
+     * @return CourseFilter Правила поиска.
+     */
+    private function whereIdsInJson(string $colum, array|int|string $ids, bool $string = false): CourseFilter
+    {
+        $ids = is_array($ids) ? $ids : [$ids];
+
+        return $this->where(function ($query) use ($colum, $ids, $string) {
+            for ($i = 0; $i < count($ids); $i++) {
+                if ($string) {
+                    $condition = DB::raw("JSON_CONTAINS(" . $colum . ", '\"" . $ids[$i] . "\"')");
+                } else {
+                    $condition = DB::raw("JSON_CONTAINS(" . $colum . ", '" . $ids[$i] . "')");
+                }
+
+                if ($i === 0) {
+                    $query->whereRaw($condition);
+                } else {
+                    $query->orWhereRaw($condition);
+                }
+            }
+        });
     }
 
     /**
@@ -293,9 +315,7 @@ class CourseFilter extends ModelFilter
      */
     public function directionsId(array|int|string $ids): CourseFilter
     {
-        return $this->related('directions', function($query) use ($ids) {
-            return $query->whereIn('directions.id', is_array($ids) ? $ids : [$ids]);
-        });
+        return $this->whereIdsInJson('direction_ids', $ids);
     }
 
     /**
@@ -307,7 +327,7 @@ class CourseFilter extends ModelFilter
      */
     public function directionsLink(array|string $links): CourseFilter
     {
-        return $this->related('directions', function($query) use ($links) {
+        return $this->related('directions', function ($query) use ($links) {
             return $query->whereIn('directions.link', is_array($links) ? $links : [$links]);
         });
     }
@@ -321,9 +341,7 @@ class CourseFilter extends ModelFilter
      */
     public function professionsId(array|int|string $ids): CourseFilter
     {
-        return $this->related('professions', function($query) use ($ids) {
-            return $query->whereIn('professions.id', is_array($ids) ? $ids : [$ids]);
-        });
+        return $this->whereIdsInJson('profession_ids', $ids);
     }
 
     /**
@@ -335,7 +353,7 @@ class CourseFilter extends ModelFilter
      */
     public function professionsLink(array|string $links): CourseFilter
     {
-        return $this->related('professions', function($query) use ($links) {
+        return $this->related('professions', function ($query) use ($links) {
             return $query->whereIn('professions.link', is_array($links) ? $links : [$links]);
         });
     }
@@ -349,9 +367,7 @@ class CourseFilter extends ModelFilter
      */
     public function categoriesId(array|int|string $ids): CourseFilter
     {
-        return $this->related('categories', function($query) use ($ids) {
-            return $query->whereIn('categories.id', is_array($ids) ? $ids : [$ids]);
-        });
+        return $this->whereIdsInJson('category_ids', $ids);
     }
 
     /**
@@ -363,7 +379,7 @@ class CourseFilter extends ModelFilter
      */
     public function categoriesLink(array|string $links): CourseFilter
     {
-        return $this->related('categories', function($query) use ($links) {
+        return $this->related('categories', function ($query) use ($links) {
             return $query->whereIn('categories.link', is_array($links) ? $links : [$links]);
         });
     }
@@ -377,9 +393,7 @@ class CourseFilter extends ModelFilter
      */
     public function skillsId(array|int|string $ids): CourseFilter
     {
-        return $this->related('skills', function($query) use ($ids) {
-            return $query->whereIn('skills.id', is_array($ids) ? $ids : [$ids]);
-        });
+        return $this->whereIdsInJson('skill_ids', $ids);
     }
 
     /**
@@ -391,7 +405,7 @@ class CourseFilter extends ModelFilter
      */
     public function skillsLink(array|string $links): CourseFilter
     {
-        return $this->related('skills', function($query) use ($links) {
+        return $this->related('skills', function ($query) use ($links) {
             return $query->whereIn('skills.link', is_array($links) ? $links : [$links]);
         });
     }
@@ -405,9 +419,7 @@ class CourseFilter extends ModelFilter
      */
     public function teachersId(array|int|string $ids): CourseFilter
     {
-        return $this->related('teachers', function($query) use ($ids) {
-            return $query->whereIn('teachers.id', is_array($ids) ? $ids : [$ids]);
-        });
+        return $this->whereIdsInJson('teacher_ids', $ids);
     }
 
     /**
@@ -419,7 +431,7 @@ class CourseFilter extends ModelFilter
      */
     public function teachersLink(array|string $links): CourseFilter
     {
-        return $this->related('teachers', function($query) use ($links) {
+        return $this->related('teachers', function ($query) use ($links) {
             return $query->whereIn('teachers.link', is_array($links) ? $links : [$links]);
         });
     }
@@ -433,9 +445,7 @@ class CourseFilter extends ModelFilter
      */
     public function toolsId(array|int|string $ids): CourseFilter
     {
-        return $this->related('tools', function($query) use ($ids) {
-            return $query->whereIn('tools.id', is_array($ids) ? $ids : [$ids]);
-        });
+        return $this->whereIdsInJson('tool_ids', $ids);
     }
 
     /**
@@ -447,7 +457,7 @@ class CourseFilter extends ModelFilter
      */
     public function toolsLink(array|string $links): CourseFilter
     {
-        return $this->related('tools', function($query) use ($links) {
+        return $this->related('tools', function ($query) use ($links) {
             return $query->whereIn('tools.link', is_array($links) ? $links : [$links]);
         });
     }
@@ -461,8 +471,6 @@ class CourseFilter extends ModelFilter
      */
     public function levelsLevel(array|Level|string $levels): CourseFilter
     {
-        return $this->related('levels', function($query) use ($levels) {
-            return $query->whereIn('course_levels.level', is_array($levels) ? $levels : [$levels]);
-        });
+        return $this->whereIdsInJson('level_values', $levels, true);
     }
 }

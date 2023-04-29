@@ -45,7 +45,6 @@ class SimilaritiesPipe implements Pipe
      */
     public function handle(Entity|CourseGet $entity, Closure $next): mixed
     {
-        Cache::flush();
         $course = $entity->course;
 
         if ($course) {

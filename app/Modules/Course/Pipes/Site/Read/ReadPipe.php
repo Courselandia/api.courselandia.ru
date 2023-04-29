@@ -106,9 +106,7 @@ class ReadPipe implements Pipe
                     },
                 ])
                 ->where('status', Status::ACTIVE->value)
-                ->whereHas('school', function ($query) {
-                    $query->where('status', true);
-                });
+                ->where('has_active_school', true);
 
                 if ($entity->onlyWithImage) {
                     $query->where(function ($query) {
@@ -122,6 +120,7 @@ class ReadPipe implements Pipe
                         !array_key_exists('relevance', $entity->sorts)
                         || (
                             isset($entity->filters['search'])
+                            && $entity->filters['search']
                             && $entity->filters['search']
                         )
                     ) {

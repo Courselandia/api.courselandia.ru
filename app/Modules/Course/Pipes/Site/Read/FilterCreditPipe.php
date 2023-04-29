@@ -65,9 +65,7 @@ class FilterCreditPipe implements Pipe
                     ->whereNotNull('price_recurrent')
                     ->where('price_recurrent', '!=', 0)
                     ->where('status', Status::ACTIVE->value)
-                    ->whereHas('school', function ($query) {
-                        $query->where('status', true);
-                    })
+                    ->where('has_active_school', true)
                     ->count();
             }
         );

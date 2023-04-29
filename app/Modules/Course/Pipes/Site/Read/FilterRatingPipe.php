@@ -99,9 +99,7 @@ class FilterRatingPipe implements Pipe
                 return !!Course::filter($filters ?: [])
                     ->where('rating', '>=', $rating)
                     ->where('status', Status::ACTIVE->value)
-                    ->whereHas('school', function ($query) {
-                        $query->where('status', true);
-                    })
+                    ->where('has_active_school', true)
                     ->count();
             }
         );

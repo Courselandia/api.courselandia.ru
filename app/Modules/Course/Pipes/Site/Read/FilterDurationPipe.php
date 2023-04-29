@@ -69,9 +69,7 @@ class FilterDurationPipe implements Pipe
                 ])
                 ->filter($currentFilters ?: [])
                 ->where('status', Status::ACTIVE->value)
-                ->whereHas('school', function ($query) {
-                    $query->where('status', true);
-                })
+                ->where('has_active_school', true)
                 ->first()
                 ->toArray();
 
@@ -86,9 +84,7 @@ class FilterDurationPipe implements Pipe
                 ])
                 ->filter($currentFilters ?: [])
                 ->where('status', Status::ACTIVE->value)
-                ->whereHas('school', function ($query) {
-                    $query->where('status', true);
-                })
+                ->where('has_active_school', true)
                 ->first()
                 ->toArray();
 

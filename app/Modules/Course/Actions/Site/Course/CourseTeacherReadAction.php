@@ -104,9 +104,7 @@ class CourseTeacherReadAction extends Action
                             'courses.id',
                         ])
                         ->where('status', Status::ACTIVE->value)
-                        ->whereHas('school', function ($query) {
-                            $query->where('status', true);
-                        });
+                        ->where('has_active_school', true);
                     })
                     ->where('status', true)
                     ->orderBy('name');
@@ -154,9 +152,7 @@ class CourseTeacherReadAction extends Action
                     ])
                     ->whereHas('courses', function ($query) {
                         $query->where('status', Status::ACTIVE->value)
-                        ->whereHas('school', function ($query) {
-                            $query->where('status', true);
-                        });
+                        ->where('has_active_school', true);
                     })
                     ->where('status', true)
                     ->orderBy('name')
@@ -206,9 +202,7 @@ class CourseTeacherReadAction extends Action
                         ])
                         ->filter($filters ?: [])
                         ->where('status', Status::ACTIVE->value)
-                        ->whereHas('school', function ($query) {
-                            $query->where('status', true);
-                        });
+                        ->where('has_active_school', true);
                     })
                     ->where('status', true)
                     ->orderBy('name');

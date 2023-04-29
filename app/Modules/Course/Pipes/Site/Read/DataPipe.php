@@ -58,6 +58,14 @@ class DataPipe implements Pipe
         'openedTeachers',
         'openedTools',
         'program',
+        'direction_ids',
+        'profession_ids',
+        'category_ids',
+        'skill_ids',
+        'teacher_ids',
+        'tool_ids',
+        'level_values',
+        'has_active_school',
     ];
 
     /**

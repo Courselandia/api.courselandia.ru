@@ -66,9 +66,7 @@ class FilterFreePipe implements Pipe
                         ->orWhere('price', '=', '');
                 })
                 ->where('status', Status::ACTIVE->value)
-                ->whereHas('school', function ($query) {
-                    $query->where('status', true);
-                })
+                ->where('has_active_school', true)
                 ->count();
             }
         );

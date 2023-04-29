@@ -115,10 +115,8 @@ class CourseDirectionReadAction extends Action
                         $query->select([
                             'courses.id',
                         ])
-                            ->where('status', Status::ACTIVE->value)
-                            ->whereHas('school', function ($query) {
-                                $query->where('status', true);
-                            });
+                        ->where('status', Status::ACTIVE->value)
+                        ->where('has_active_school', true);
                     })
                     ->where('status', true)
                     ->orderBy('weight');
@@ -170,9 +168,7 @@ class CourseDirectionReadAction extends Action
                             'courses.id',
                         ])
                         ->where('status', Status::ACTIVE->value)
-                        ->whereHas('school', function ($query) {
-                            $query->where('status', true);
-                        });
+                        ->where('has_active_school', true);
                     })
                     ->where('status', true)
                     ->orderBy('weight')
@@ -224,9 +220,7 @@ class CourseDirectionReadAction extends Action
                         ])
                         ->filter($filters ?: [])
                         ->where('status', Status::ACTIVE->value)
-                        ->whereHas('school', function ($query) {
-                            $query->where('status', true);
-                        });
+                        ->where('has_active_school', true);
                     })
                     ->where('status', true)
                     ->orderBy('weight');
@@ -251,9 +245,7 @@ class CourseDirectionReadAction extends Action
                                 $query
                                     ->filter($this->filters ?: [])
                                     ->where('courses.status', Status::ACTIVE->value)
-                                    ->whereHas('school', function ($query) {
-                                        $query->where('schools.status', true);
-                                    });
+                                    ->where('has_active_school', true);
                             }
                         ]);
                     }
