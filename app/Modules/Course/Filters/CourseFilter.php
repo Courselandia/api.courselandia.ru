@@ -8,6 +8,7 @@
 
 namespace App\Modules\Course\Filters;
 
+use App\Modules\Course\Normalize\Data;
 use DB;
 use Morph;
 use App\Modules\Course\Enums\Status;
@@ -285,17 +286,13 @@ class CourseFilter extends ModelFilter
      *
      * @return CourseFilter Правила поиска.
      */
-    private function whereIdsInJson(string $colum, array|int|string $ids, bool $string = false): CourseFilter
+    private function whereIdsInJson(string $colum, array|int|string $ids): CourseFilter
     {
         $ids = is_array($ids) ? $ids : [$ids];
 
-        return $this->where(function ($query) use ($colum, $ids, $string) {
+        return $this->where(function ($query) use ($colum, $ids) {
             for ($i = 0; $i < count($ids); $i++) {
-                if ($string) {
-                    $condition = DB::raw("JSON_CONTAINS(" . $colum . ", '\"" . $ids[$i] . "\"')");
-                } else {
-                    $condition = DB::raw("JSON_CONTAINS(" . $colum . ", '" . $ids[$i] . "')");
-                }
+                $condition = DB::raw("JSON_CONTAINS(" . $colum . ", '" . $ids[$i] . "')");
 
                 if ($i === 0) {
                     $query->whereRaw($condition);
@@ -471,6 +468,6 @@ class CourseFilter extends ModelFilter
      */
     public function levelsLevel(array|Level|string $levels): CourseFilter
     {
-        return $this->whereIdsInJson('level_values', $levels, true);
+        return $this->whereIdsInJson('level_values', Data::getLevels($levels));
     }
 }

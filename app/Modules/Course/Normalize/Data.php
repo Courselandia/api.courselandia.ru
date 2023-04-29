@@ -10,6 +10,7 @@ namespace App\Modules\Course\Normalize;
 
 use App\Modules\Direction\Models\Direction;
 use App\Modules\Profession\Models\Profession;
+use App\Modules\Salary\Enums\Level;
 use App\Modules\School\Models\School;
 use App\Modules\Skill\Models\Skill;
 use App\Modules\Teacher\Models\Teacher;
@@ -128,5 +129,33 @@ class Data
         return School::where('id', $id)
             ->where('status', true)
             ->exists();
+    }
+
+    /**
+     * Переведет нормализованное значение уровни.
+     *
+     * @param array|Level|string $levels Массив уровней в не нормализованном виде.
+     *
+     * @return array Массив уровней в нормализованном виде.
+     */
+    public static function getLevels(array|Level|string $levels): array
+    {
+        $levels = is_array($levels) ? $levels : [$levels];
+
+        for ($i = 0; $i < count($levels); $i++) {
+            if ($levels[$i] instanceof Level) {
+                $levels[$i] = $levels[$i]->value;
+            }
+
+            if ($levels[$i] === Level::JUNIOR->value) {
+                $levels[$i] = 1;
+            } else if ($levels[$i] === Level::MIDDLE->value) {
+                $levels[$i] = 2;
+            } else if ($levels[$i] === Level::SENIOR->value) {
+                $levels[$i] = 3;
+            }
+        }
+
+        return $levels;
     }
 }

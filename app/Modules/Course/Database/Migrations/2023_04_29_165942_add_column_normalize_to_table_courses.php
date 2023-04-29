@@ -25,6 +25,14 @@ class AddColumnNormalizeToTableCourses extends Migration
             $table->json('level_values')->nullable();
             $table->boolean('has_active_school')->nullable()->index();
         });
+
+        DB::statement('CREATE INDEX courses_direction_ids_index ON courses ( (CAST(direction_ids AS UNSIGNED ARRAY)) );');
+        DB::statement('CREATE INDEX courses_profession_ids_index ON courses ( (CAST(profession_ids AS UNSIGNED ARRAY)) );');
+        DB::statement('CREATE INDEX courses_category_ids_index ON courses ( (CAST(category_ids AS UNSIGNED ARRAY)) );');
+        DB::statement('CREATE INDEX courses_skill_ids_index ON courses ( (CAST(skill_ids AS UNSIGNED ARRAY)) );');
+        DB::statement('CREATE INDEX courses_teacher_ids_index ON courses ( (CAST(teacher_ids AS UNSIGNED ARRAY)) );');
+        DB::statement('CREATE INDEX courses_tool_ids_index ON courses ( (CAST(tool_ids AS UNSIGNED ARRAY)) );');
+        DB::statement('CREATE INDEX courses_level_values_index ON courses ( (CAST(level_values AS UNSIGNED ARRAY)) );');
     }
 
     /**

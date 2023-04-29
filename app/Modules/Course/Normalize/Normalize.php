@@ -97,7 +97,7 @@ class Normalize
             $course->skill_ids = $course->skills->pluck('id');
             $course->teacher_ids = $course->teachers->pluck('id');
             $course->tool_ids = $course->tools->pluck('id');
-            $course->level_values = $course->levels->pluck('level');
+            $course->level_values = Data::getLevels($course->levels->pluck('level')->toArray());
             $course->has_active_school = (bool)$course->school;
 
             try {
