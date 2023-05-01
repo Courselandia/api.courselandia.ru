@@ -70,9 +70,7 @@ class ReadPipe implements Pipe
                 $query = Course::select([
                     'id',
                     'school_id',
-                    'image_big_id',
                     'image_middle_id',
-                    'image_small_id',
                     'name',
                     'header',
                     'header_template',
