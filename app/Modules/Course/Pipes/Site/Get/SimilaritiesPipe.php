@@ -120,7 +120,7 @@ class SimilaritiesPipe implements Pipe
                     })
                     ->where('id', '!=', $course->id)
                     ->addSelect(
-                        DB::raw('MATCH(name_morphy, text_morphy) AGAINST(' . $search . ' IN BOOLEAN MODE) AS relevance')
+                        DB::raw('MATCH(name_morphy, text_morphy) AGAINST(' . $search . ') AS relevance')
                     )
                     ->orderBy('relevance', 'DESC')
                     ->limit(self::LIMIT);
