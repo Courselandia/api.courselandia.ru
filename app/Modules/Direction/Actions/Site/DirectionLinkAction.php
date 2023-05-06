@@ -8,8 +8,6 @@
 
 namespace App\Modules\Direction\Actions\Site;
 
-use App\Modules\Category\Http\Controllers\Site\CategoryController;
-use App\Modules\Course\Enums\Status;
 use Cache;
 use Util;
 use App\Models\Action;
@@ -17,6 +15,7 @@ use App\Models\Enums\CacheTime;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Direction\Entities\Direction as DirectionEntity;
 use App\Modules\Direction\Models\Direction;
+use App\Modules\Course\Enums\Status;
 
 /**
  * Класс действия для получения категории.
@@ -47,7 +46,13 @@ class DirectionLinkAction extends Action
                 $result = Direction::where('link', $this->link)
                     ->with([
                         'metatag',
-                        'categories',
+                        'categories' => function ($query) {
+                            $query->where('status', true)
+                                ->whereHas('courses', function ($query) {
+                                    $query->where('status', Status::ACTIVE->value)
+                                        ->where('has_active_school', true);
+                                });
+                        },
                     ])
                     ->whereHas('courses', function ($query) {
                         $query->where('status', Status::ACTIVE->value)

@@ -46,15 +46,25 @@ class CategoryLinkAction extends Action
                 $result = Category::where('link', $this->link)
                     ->whereHas('courses', function ($query) {
                         $query->where('status', Status::ACTIVE->value)
-                            ->whereHas('school', function ($query) {
-                                $query->where('status', true);
-                            });
+                            ->where('has_active_school', true);
                     })
                     ->active()
                     ->with([
                         'metatag',
-                        'directions',
-                        'professions',
+                        'directions' => function ($query) {
+                            $query->where('status', true)
+                                ->whereHas('courses', function ($query) {
+                                    $query->where('status', Status::ACTIVE->value)
+                                        ->where('has_active_school', true);
+                                });
+                        },
+                        'professions' => function ($query) {
+                            $query->where('status', true)
+                                ->whereHas('courses', function ($query) {
+                                    $query->where('status', Status::ACTIVE->value)
+                                        ->where('has_active_school', true);
+                                });
+                        },
                     ])
                     ->first();
 

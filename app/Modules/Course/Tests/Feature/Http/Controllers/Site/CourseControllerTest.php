@@ -341,6 +341,17 @@ class CourseControllerTest extends TestCase
         CourseLearn::factory()->count(3)->for($course)->create();
         CourseLevel::factory()->count(3)->for($course)->create();
 
+        $course->direction_ids = collect($directions)->pluck('id');
+        $course->profession_ids = collect($professions)->pluck('id');
+        $course->category_ids = collect($categories)->pluck('id');
+        $course->skill_ids = collect($skills)->pluck('id');
+        $course->teacher_ids = collect($teachers)->pluck('id');
+        $course->tool_ids = collect($tools)->pluck('id');
+        $course->has_active_school = true;
+        $course->level_values = [1, 2, 3];
+
+        $course->save();
+
         return $course;
     }
 
