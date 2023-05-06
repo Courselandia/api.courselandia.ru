@@ -37,14 +37,14 @@ class Export
      */
     public function __construct()
     {
-        $this->addSource(new SourceCourse())
+        $this/*->addSource(new SourceCourse())*/
             ->addSource(new SourceDirection())
-            ->addSource(new SourceSchool())
+            /*->addSource(new SourceSchool())
             ->addSource(new SourceCategory())
             ->addSource(new SourceProfession())
             ->addSource(new SourceSkill())
             ->addSource(new SourceTool())
-            ->addSource(new SourceTeacher());
+            ->addSource(new SourceTeacher())*/;
     }
 
     /**

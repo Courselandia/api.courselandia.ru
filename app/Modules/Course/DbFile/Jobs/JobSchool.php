@@ -8,6 +8,7 @@
 
 namespace App\Modules\Course\DbFile\Jobs;
 
+use Cache;
 use Log;
 use App\Modules\Course\Actions\Site\Course\CourseReadAction;
 use App\Modules\Course\DbFile\Item;
@@ -24,6 +25,8 @@ class JobSchool extends JobItem
      */
     public function handle(): void
     {
+        Cache::flush();
+
         $action = app(CourseReadAction::class);
         $action->sorts = ['name' => 'ASC'];
         $action->filters = ['school-id' => $this->id];
