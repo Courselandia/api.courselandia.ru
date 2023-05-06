@@ -127,7 +127,7 @@ class CourseReadAction extends Action
     public bool $openedTools = false;
 
     /**
-     * Возможность брать данные с файлового хранидища.
+     * Возможность брать данные с файлового хранилища.
      *
      * @var bool
      */
