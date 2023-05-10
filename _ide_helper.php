@@ -4,7 +4,7 @@
 
 /**
  * A helper file for Laravel, to provide autocomplete information to your IDE
- * Generated for Laravel 9.37.0.
+ * Generated for Laravel 9.41.0.
  *
  * This file should not be included in your code, only analyzed by your IDE!
  *
@@ -5047,7 +5047,7 @@
                     /**
          * Return all of the created connections.
          *
-         * @return \Illuminate\Database\array<string, \Illuminate\Database\Connection>
+         * @return array<string, \Illuminate\Database\Connection> 
          * @static 
          */ 
         public static function getConnections()
@@ -9271,7 +9271,7 @@
      *
      * @method static mixed reset(array $credentials, \Closure $callback)
      * @method static string sendResetLink(array $credentials, \Closure $callback = null)
-     * @method static \Illuminate\Contracts\Auth\CanResetPassword getUser(array $credentials)
+     * @method static \Illuminate\Contracts\Auth\CanResetPassword|null getUser(array $credentials)
      * @method static string createToken(\Illuminate\Contracts\Auth\CanResetPassword $user)
      * @method static void deleteToken(\Illuminate\Contracts\Auth\CanResetPassword $user)
      * @method static bool tokenExists(\Illuminate\Contracts\Auth\CanResetPassword $user, string $token)
@@ -9777,8 +9777,6 @@
                     /**
          * 
          *
-         * @param $delay
-         * @param $payload
          * @param null $queue
          * @param int $attempts
          * @return mixed 
@@ -9793,9 +9791,7 @@
                     /**
          * 
          *
-         * @param string $payload
          * @param null $queue
-         * @param array $options
          * @return mixed 
          * @throws AMQPProtocolChannelException
          * @static 
@@ -9808,7 +9804,6 @@
                     /**
          * 
          *
-         * @return \VladimirYuldashev\LaravelQueueRabbitMQ\Queue\AbstractConnection 
          * @static 
          */ 
         public static function getConnection()
@@ -9819,7 +9814,6 @@
                     /**
          * 
          *
-         * @return \VladimirYuldashev\LaravelQueueRabbitMQ\Queue\AMQPChannel 
          * @static 
          */ 
         public static function getChannel()
@@ -9830,7 +9824,6 @@
                     /**
          * Job class to use.
          *
-         * @return string 
          * @throws Throwable
          * @static 
          */ 
@@ -9843,7 +9836,6 @@
          * Gets a queue/destination, by default the queue option set on the connection.
          *
          * @param null $queue
-         * @return string 
          * @static 
          */ 
         public static function getQueue($queue = null)
@@ -9856,8 +9848,6 @@
          * 
          * Returns false when when the exchange is missing.
          *
-         * @param string $exchange
-         * @return bool 
          * @throws AMQPProtocolChannelException
          * @static 
          */ 
@@ -9869,40 +9859,29 @@
                     /**
          * Declare a exchange in rabbitMQ, when not already declared.
          *
-         * @param string $name
-         * @param string $type
-         * @param bool $durable
-         * @param bool $autoDelete
-         * @param array $arguments
-         * @return void 
          * @static 
          */ 
         public static function declareExchange($name, $type = 'direct', $durable = true, $autoDelete = false, $arguments = [])
         {
                         /** @var \VladimirYuldashev\LaravelQueueRabbitMQ\Queue\RabbitMQQueue $instance */
-                        $instance->declareExchange($name, $type, $durable, $autoDelete, $arguments);
+                        return $instance->declareExchange($name, $type, $durable, $autoDelete, $arguments);
         }
                     /**
          * Delete a exchange from rabbitMQ, only when present in RabbitMQ.
          *
-         * @param string $name
-         * @param bool $unused
-         * @return void 
          * @throws AMQPProtocolChannelException
          * @static 
          */ 
         public static function deleteExchange($name, $unused = false)
         {
                         /** @var \VladimirYuldashev\LaravelQueueRabbitMQ\Queue\RabbitMQQueue $instance */
-                        $instance->deleteExchange($name, $unused);
+                        return $instance->deleteExchange($name, $unused);
         }
                     /**
          * Checks if the given queue already present/defined in RabbitMQ.
          * 
          * Returns false when when the queue is missing.
          *
-         * @param string|null $name
-         * @return bool 
          * @throws AMQPProtocolChannelException
          * @static 
          */ 
@@ -9914,95 +9893,74 @@
                     /**
          * Declare a queue in rabbitMQ, when not already declared.
          *
-         * @param string $name
-         * @param bool $durable
-         * @param bool $autoDelete
-         * @param array $arguments
-         * @return void 
          * @static 
          */ 
         public static function declareQueue($name, $durable = true, $autoDelete = false, $arguments = [])
         {
                         /** @var \VladimirYuldashev\LaravelQueueRabbitMQ\Queue\RabbitMQQueue $instance */
-                        $instance->declareQueue($name, $durable, $autoDelete, $arguments);
+                        return $instance->declareQueue($name, $durable, $autoDelete, $arguments);
         }
                     /**
          * Delete a queue from rabbitMQ, only when present in RabbitMQ.
          *
-         * @param string $name
-         * @param bool $if_unused
-         * @param bool $if_empty
-         * @return void 
          * @throws AMQPProtocolChannelException
          * @static 
          */ 
         public static function deleteQueue($name, $if_unused = false, $if_empty = false)
         {
                         /** @var \VladimirYuldashev\LaravelQueueRabbitMQ\Queue\RabbitMQQueue $instance */
-                        $instance->deleteQueue($name, $if_unused, $if_empty);
+                        return $instance->deleteQueue($name, $if_unused, $if_empty);
         }
                     /**
          * Bind a queue to an exchange.
          *
-         * @param string $queue
-         * @param string $exchange
-         * @param string $routingKey
-         * @return void 
          * @static 
          */ 
         public static function bindQueue($queue, $exchange, $routingKey = '')
         {
                         /** @var \VladimirYuldashev\LaravelQueueRabbitMQ\Queue\RabbitMQQueue $instance */
-                        $instance->bindQueue($queue, $exchange, $routingKey);
+                        return $instance->bindQueue($queue, $exchange, $routingKey);
         }
                     /**
          * Purge the queue of messages.
          *
-         * @param string|null $queue
-         * @return void 
          * @static 
          */ 
         public static function purge($queue = null)
         {
                         /** @var \VladimirYuldashev\LaravelQueueRabbitMQ\Queue\RabbitMQQueue $instance */
-                        $instance->purge($queue);
+                        return $instance->purge($queue);
         }
                     /**
          * Acknowledge the message.
          *
-         * @param \VladimirYuldashev\LaravelQueueRabbitMQ\Queue\RabbitMQJob $job
-         * @return void 
          * @static 
          */ 
         public static function ack($job)
         {
                         /** @var \VladimirYuldashev\LaravelQueueRabbitMQ\Queue\RabbitMQQueue $instance */
-                        $instance->ack($job);
+                        return $instance->ack($job);
         }
                     /**
          * Reject the message.
          *
-         * @param \VladimirYuldashev\LaravelQueueRabbitMQ\Queue\RabbitMQJob $job
-         * @param bool $requeue
-         * @return void 
          * @static 
          */ 
         public static function reject($job, $requeue = false)
         {
                         /** @var \VladimirYuldashev\LaravelQueueRabbitMQ\Queue\RabbitMQQueue $instance */
-                        $instance->reject($job, $requeue);
+                        return $instance->reject($job, $requeue);
         }
                     /**
          * Close the connection to RabbitMQ.
          *
-         * @return void 
          * @throws Exception
          * @static 
          */ 
         public static function close()
         {
                         /** @var \VladimirYuldashev\LaravelQueueRabbitMQ\Queue\RabbitMQQueue $instance */
-                        $instance->close();
+                        return $instance->close();
         }
                     /**
          * Get the backoff for an object-based queue handler.
@@ -11209,6 +11167,7 @@
                     /**
          * Gets the list of trusted proxies.
          *
+         * @return string[] 
          * @static 
          */ 
         public static function getTrustedProxies()
@@ -11240,6 +11199,7 @@
                     /**
          * Gets the list of trusted host patterns.
          *
+         * @return string[] 
          * @static 
          */ 
         public static function getTrustedHosts()
@@ -11654,6 +11614,7 @@
                     /**
          * Gets the mime types associated with the format.
          *
+         * @return string[] 
          * @static 
          */ 
         public static function getMimeTypes($format)
@@ -11673,7 +11634,7 @@
                     /**
          * Associates a format with mime types.
          *
-         * @param string|array $mimeTypes The associated mime types (the preferred one must be the first as it will be used as the content type)
+         * @param string|string[] $mimeTypes The associated mime types (the preferred one must be the first as it will be used as the content type)
          * @static 
          */ 
         public static function setFormat($format, $mimeTypes)
@@ -11709,14 +11670,26 @@
                         return $instance->setRequestFormat($format);
         }
                     /**
-         * Gets the format associated with the request.
+         * Gets the usual name of the format associated with the request's media type (provided in the Content-Type header).
          *
+         * @deprecated since Symfony 6.2, use getContentTypeFormat() instead
          * @static 
          */ 
         public static function getContentType()
         {            //Method inherited from \Symfony\Component\HttpFoundation\Request         
                         /** @var \Illuminate\Http\Request $instance */
                         return $instance->getContentType();
+        }
+                    /**
+         * Gets the usual name of the format associated with the request's media type (provided in the Content-Type header).
+         *
+         * @see Request::$formats
+         * @static 
+         */ 
+        public static function getContentTypeFormat()
+        {            //Method inherited from \Symfony\Component\HttpFoundation\Request         
+                        /** @var \Illuminate\Http\Request $instance */
+                        return $instance->getContentTypeFormat();
         }
                     /**
          * Sets the default locale.
@@ -11822,6 +11795,7 @@
          *
          * @param bool $asResource If true, a resource will be returned
          * @return string|resource 
+         * @psalm-return ($asResource is true ? resource : string)
          * @static 
          */ 
         public static function getContent($asResource = false)
@@ -11878,6 +11852,7 @@
                     /**
          * Gets a list of languages acceptable by the client browser ordered in the user browser preferences.
          *
+         * @return string[] 
          * @static 
          */ 
         public static function getLanguages()
@@ -11888,6 +11863,7 @@
                     /**
          * Gets a list of charsets acceptable by the client browser in preferable order.
          *
+         * @return string[] 
          * @static 
          */ 
         public static function getCharsets()
@@ -11898,6 +11874,7 @@
                     /**
          * Gets a list of encodings acceptable by the client browser in preferable order.
          *
+         * @return string[] 
          * @static 
          */ 
         public static function getEncodings()
@@ -11908,6 +11885,7 @@
                     /**
          * Gets a list of content types acceptable by the client browser in preferable order.
          *
+         * @return string[] 
          * @static 
          */ 
         public static function getAcceptableContentTypes()
@@ -12320,6 +12298,20 @@
         {
                         /** @var \Illuminate\Http\Request $instance */
                         return $instance->missing($key);
+        }
+                    /**
+         * Apply the callback if the request is missing the given input item key.
+         *
+         * @param string $key
+         * @param callable $callback
+         * @param callable|null $default
+         * @return $this|mixed 
+         * @static 
+         */ 
+        public static function whenMissing($key, $callback, $default = null)
+        {
+                        /** @var \Illuminate\Http\Request $instance */
+                        return $instance->whenMissing($key, $callback, $default);
         }
                     /**
          * Get the keys for all of the input and files.
@@ -13201,13 +13193,13 @@
          *
          * @param array $attributes
          * @param \Closure|array|string $routes
-         * @return void 
+         * @return \Illuminate\Routing\Router 
          * @static 
          */ 
         public static function group($attributes, $routes)
         {
                         /** @var \Illuminate\Routing\Router $instance */
-                        $instance->group($attributes, $routes);
+                        return $instance->group($attributes, $routes);
         }
                     /**
          * Merge the given array with the last group stack.
@@ -13476,6 +13468,19 @@
         {
                         /** @var \Illuminate\Routing\Router $instance */
                         return $instance->pushMiddlewareToGroup($group, $middleware);
+        }
+                    /**
+         * Remove the given middleware from the specified group.
+         *
+         * @param string $group
+         * @param string $middleware
+         * @return \Illuminate\Routing\Router 
+         * @static 
+         */ 
+        public static function removeMiddlewareFromGroup($group, $middleware)
+        {
+                        /** @var \Illuminate\Routing\Router $instance */
+                        return $instance->removeMiddlewareFromGroup($group, $middleware);
         }
                     /**
          * Flush the router's middleware groups.
@@ -14856,6 +14861,18 @@
         {
                         /** @var \Illuminate\Session\Store $instance */
                         return $instance->getHandler();
+        }
+                    /**
+         * Set the underlying session handler implementation.
+         *
+         * @param \SessionHandlerInterface $handler
+         * @return void 
+         * @static 
+         */ 
+        public static function setHandler($handler)
+        {
+                        /** @var \Illuminate\Session\Store $instance */
+                        $instance->setHandler($handler);
         }
                     /**
          * Determine if the session handler needs a request.
@@ -17007,6 +17024,65 @@
                         $instance->callCreator($view);
         }
                     /**
+         * Start injecting content into a fragment.
+         *
+         * @param string $fragment
+         * @return void 
+         * @static 
+         */ 
+        public static function startFragment($fragment)
+        {
+                        /** @var \Illuminate\View\Factory $instance */
+                        $instance->startFragment($fragment);
+        }
+                    /**
+         * Stop injecting content into a fragment.
+         *
+         * @return string 
+         * @throws \InvalidArgumentException
+         * @static 
+         */ 
+        public static function stopFragment()
+        {
+                        /** @var \Illuminate\View\Factory $instance */
+                        return $instance->stopFragment();
+        }
+                    /**
+         * Get the contents of a fragment.
+         *
+         * @param string $name
+         * @param string|null $default
+         * @return mixed 
+         * @static 
+         */ 
+        public static function getFragment($name, $default = null)
+        {
+                        /** @var \Illuminate\View\Factory $instance */
+                        return $instance->getFragment($name, $default);
+        }
+                    /**
+         * Get the entire array of rendered fragments.
+         *
+         * @return array 
+         * @static 
+         */ 
+        public static function getFragments()
+        {
+                        /** @var \Illuminate\View\Factory $instance */
+                        return $instance->getFragments();
+        }
+                    /**
+         * Flush all of the fragments.
+         *
+         * @return void 
+         * @static 
+         */ 
+        public static function flushFragments()
+        {
+                        /** @var \Illuminate\View\Factory $instance */
+                        $instance->flushFragments();
+        }
+                    /**
          * Start injecting content into a section.
          *
          * @param string $section
@@ -17371,6 +17447,18 @@
                         return $instance->withEntryPoints($entryPoints);
         }
                     /**
+         * Set the filename for the manifest file.
+         *
+         * @param string $filename
+         * @return \Illuminate\Foundation\Vite 
+         * @static 
+         */ 
+        public static function useManifestFilename($filename)
+        {
+                        /** @var \Illuminate\Foundation\Vite $instance */
+                        return $instance->useManifestFilename($filename);
+        }
+                    /**
          * Get the Vite "hot" file path.
          *
          * @return string 
@@ -17475,6 +17563,17 @@
         {
                         /** @var \Illuminate\Foundation\Vite $instance */
                         return $instance->manifestHash($buildDirectory);
+        }
+                    /**
+         * Determine if the HMR server is running.
+         *
+         * @return bool 
+         * @static 
+         */ 
+        public static function isRunningHot()
+        {
+                        /** @var \Illuminate\Foundation\Vite $instance */
+                        return $instance->isRunningHot();
         }
                     /**
          * Get the Vite tag content as a string of HTML.
@@ -18130,7 +18229,7 @@
                     /**
          * Adds an exception to be profiled in the debug bar
          *
-         * @param \Exception $e
+         * @param \Throwable $e
          * @static 
          */ 
         public static function addThrowable($e)
@@ -18759,342 +18858,6 @@
      
 }
 
-    namespace cijic\phpMorphy\Facade { 
-            /**
-     * 
-     *
-     */ 
-        class Morphy {
-                    /**
-         * 
-         *
-         * @return \phpMorphy_Morphier_Interface 
-         * @static 
-         */ 
-        public static function getCommonMorphier()
-        {            //Method inherited from \phpMorphy         
-                        /** @var \cijic\phpMorphy\Morphy $instance */
-                        return $instance->getCommonMorphier();
-        }
-                    /**
-         * 
-         *
-         * @return \phpMorphy_Morphier_Interface 
-         * @static 
-         */ 
-        public static function getPredictBySuffixMorphier()
-        {            //Method inherited from \phpMorphy         
-                        /** @var \cijic\phpMorphy\Morphy $instance */
-                        return $instance->getPredictBySuffixMorphier();
-        }
-                    /**
-         * 
-         *
-         * @return \phpMorphy_Morphier_Interface 
-         * @static 
-         */ 
-        public static function getPredictByDatabaseMorphier()
-        {            //Method inherited from \phpMorphy         
-                        /** @var \cijic\phpMorphy\Morphy $instance */
-                        return $instance->getPredictByDatabaseMorphier();
-        }
-                    /**
-         * 
-         *
-         * @return \phpMorphy_Morphier_Bulk 
-         * @static 
-         */ 
-        public static function getBulkMorphier()
-        {            //Method inherited from \phpMorphy         
-                        /** @var \cijic\phpMorphy\Morphy $instance */
-                        return $instance->getBulkMorphier();
-        }
-                    /**
-         * 
-         *
-         * @return string 
-         * @static 
-         */ 
-        public static function getEncoding()
-        {            //Method inherited from \phpMorphy         
-                        /** @var \cijic\phpMorphy\Morphy $instance */
-                        return $instance->getEncoding();
-        }
-                    /**
-         * 
-         *
-         * @return string 
-         * @static 
-         */ 
-        public static function getLocale()
-        {            //Method inherited from \phpMorphy         
-                        /** @var \cijic\phpMorphy\Morphy $instance */
-                        return $instance->getLocale();
-        }
-                    /**
-         * 
-         *
-         * @return \phpMorphy_GrammemsProvider_Base 
-         * @static 
-         */ 
-        public static function getGrammemsProvider()
-        {            //Method inherited from \phpMorphy         
-                        /** @var \cijic\phpMorphy\Morphy $instance */
-                        return $instance->getGrammemsProvider();
-        }
-                    /**
-         * 
-         *
-         * @return \phpMorphy_GrammemsProvider_Base 
-         * @static 
-         */ 
-        public static function getDefaultGrammemsProvider()
-        {            //Method inherited from \phpMorphy         
-                        /** @var \cijic\phpMorphy\Morphy $instance */
-                        return $instance->getDefaultGrammemsProvider();
-        }
-                    /**
-         * 
-         *
-         * @return \phpMorphy_Shm_Cache 
-         * @static 
-         */ 
-        public static function getShmCache()
-        {            //Method inherited from \phpMorphy         
-                        /** @var \cijic\phpMorphy\Morphy $instance */
-                        return $instance->getShmCache();
-        }
-                    /**
-         * 
-         *
-         * @return bool 
-         * @static 
-         */ 
-        public static function isLastPredicted()
-        {            //Method inherited from \phpMorphy         
-                        /** @var \cijic\phpMorphy\Morphy $instance */
-                        return $instance->isLastPredicted();
-        }
-                    /**
-         * 
-         *
-         * @static 
-         */ 
-        public static function getLastPredictionType()
-        {            //Method inherited from \phpMorphy         
-                        /** @var \cijic\phpMorphy\Morphy $instance */
-                        return $instance->getLastPredictionType();
-        }
-                    /**
-         * 
-         *
-         * @param mixed $word - string or array of strings
-         * @param mixed $type - prediction managment
-         * @return \phpMorphy_WordDescriptor_Collection 
-         * @static 
-         */ 
-        public static function findWord($word, $type = 0)
-        {            //Method inherited from \phpMorphy         
-                        /** @var \cijic\phpMorphy\Morphy $instance */
-                        return $instance->findWord($word, $type);
-        }
-                    /**
-         * Alias for getBaseForm
-         *
-         * @param mixed $word - string or array of strings
-         * @param mixed $type - prediction managment
-         * @return array 
-         * @static 
-         */ 
-        public static function lemmatize($word, $type = 0)
-        {            //Method inherited from \phpMorphy         
-                        /** @var \cijic\phpMorphy\Morphy $instance */
-                        return $instance->lemmatize($word, $type);
-        }
-                    /**
-         * 
-         *
-         * @param mixed $word - string or array of strings
-         * @param mixed $type - prediction managment
-         * @return array 
-         * @static 
-         */ 
-        public static function getBaseForm($word, $type = 0)
-        {            //Method inherited from \phpMorphy         
-                        /** @var \cijic\phpMorphy\Morphy $instance */
-                        return $instance->getBaseForm($word, $type);
-        }
-                    /**
-         * 
-         *
-         * @param mixed $word - string or array of strings
-         * @param mixed $type - prediction managment
-         * @return array 
-         * @static 
-         */ 
-        public static function getAllForms($word, $type = 0)
-        {            //Method inherited from \phpMorphy         
-                        /** @var \cijic\phpMorphy\Morphy $instance */
-                        return $instance->getAllForms($word, $type);
-        }
-                    /**
-         * 
-         *
-         * @param mixed $word - string or array of strings
-         * @param mixed $type - prediction managment
-         * @return array 
-         * @static 
-         */ 
-        public static function getPseudoRoot($word, $type = 0)
-        {            //Method inherited from \phpMorphy         
-                        /** @var \cijic\phpMorphy\Morphy $instance */
-                        return $instance->getPseudoRoot($word, $type);
-        }
-                    /**
-         * 
-         *
-         * @param mixed $word - string or array of strings
-         * @param mixed $type - prediction managment
-         * @return array 
-         * @static 
-         */ 
-        public static function getPartOfSpeech($word, $type = 0)
-        {            //Method inherited from \phpMorphy         
-                        /** @var \cijic\phpMorphy\Morphy $instance */
-                        return $instance->getPartOfSpeech($word, $type);
-        }
-                    /**
-         * 
-         *
-         * @param mixed $word - string or array of strings
-         * @param mixed $type - prediction managment
-         * @return array 
-         * @static 
-         */ 
-        public static function getAllFormsWithAncodes($word, $type = 0)
-        {            //Method inherited from \phpMorphy         
-                        /** @var \cijic\phpMorphy\Morphy $instance */
-                        return $instance->getAllFormsWithAncodes($word, $type);
-        }
-                    /**
-         * 
-         *
-         * @param mixed $word - string or array of strings
-         * @paradm bool $asText - represent graminfo as text or ancodes
-         * @param mixed $type - prediction managment
-         * @return array 
-         * @static 
-         */ 
-        public static function getAllFormsWithGramInfo($word, $asText = true, $type = 0)
-        {            //Method inherited from \phpMorphy         
-                        /** @var \cijic\phpMorphy\Morphy $instance */
-                        return $instance->getAllFormsWithGramInfo($word, $asText, $type);
-        }
-                    /**
-         * 
-         *
-         * @param mixed $word - string or array of strings
-         * @param mixed $type - prediction managment
-         * @return array 
-         * @static 
-         */ 
-        public static function getAncode($word, $type = 0)
-        {            //Method inherited from \phpMorphy         
-                        /** @var \cijic\phpMorphy\Morphy $instance */
-                        return $instance->getAncode($word, $type);
-        }
-                    /**
-         * 
-         *
-         * @param mixed $word - string or array of strings
-         * @param mixed $type - prediction managment
-         * @return array 
-         * @static 
-         */ 
-        public static function getGramInfo($word, $type = 0)
-        {            //Method inherited from \phpMorphy         
-                        /** @var \cijic\phpMorphy\Morphy $instance */
-                        return $instance->getGramInfo($word, $type);
-        }
-                    /**
-         * 
-         *
-         * @param mixed $word - string or array of strings
-         * @param mixed $type - prediction managment
-         * @return array 
-         * @static 
-         */ 
-        public static function getGramInfoMergeForms($word, $type = 0)
-        {            //Method inherited from \phpMorphy         
-                        /** @var \cijic\phpMorphy\Morphy $instance */
-                        return $instance->getGramInfoMergeForms($word, $type);
-        }
-                    /**
-         * 
-         *
-         * @param string $word
-         * @param mixed $ancode
-         * @param mixed $commonAncode
-         * @param bool $returnOnlyWord
-         * @param mixed $callback
-         * @param mixed $type
-         * @return array 
-         * @static 
-         */ 
-        public static function castFormByAncode($word, $ancode, $commonAncode = null, $returnOnlyWord = false, $callback = null, $type = 0)
-        {            //Method inherited from \phpMorphy         
-                        /** @var \cijic\phpMorphy\Morphy $instance */
-                        return $instance->castFormByAncode($word, $ancode, $commonAncode, $returnOnlyWord, $callback, $type);
-        }
-                    /**
-         * 
-         *
-         * @param string $word
-         * @param mixed $partOfSpeech
-         * @param array $grammems
-         * @param bool $returnOnlyWord
-         * @param mixed $callback
-         * @param mixed $type
-         * @return array 
-         * @static 
-         */ 
-        public static function castFormByGramInfo($word, $partOfSpeech, $grammems, $returnOnlyWord = false, $callback = null, $type = 0)
-        {            //Method inherited from \phpMorphy         
-                        /** @var \cijic\phpMorphy\Morphy $instance */
-                        return $instance->castFormByGramInfo($word, $partOfSpeech, $grammems, $returnOnlyWord, $callback, $type);
-        }
-                    /**
-         * 
-         *
-         * @param string $word
-         * @param string $patternWord
-         * @param mixed $essentialGrammems
-         * @param bool $returnOnlyWord
-         * @param mixed $callback
-         * @param mixed $type
-         * @return array 
-         * @static 
-         */ 
-        public static function castFormByPattern($word, $patternWord, $grammemsProvider = null, $returnOnlyWord = false, $callback = null, $type = 0)
-        {            //Method inherited from \phpMorphy         
-                        /** @var \cijic\phpMorphy\Morphy $instance */
-                        return $instance->castFormByPattern($word, $patternWord, $grammemsProvider, $returnOnlyWord, $callback, $type);
-        }
-                    /**
-         * 
-         *
-         * @static 
-         */ 
-        public static function createGrammemsProvider()
-        {            //Method inherited from \phpMorphy         
-                        /** @var \cijic\phpMorphy\Morphy $instance */
-                        return $instance->createGrammemsProvider();
-        }
-         
-    }
-     
-}
-
     namespace App\Models\Facades { 
             /**
      * Фасад класса для работы с утилитами.
@@ -19275,6 +19038,17 @@
         public static function isJson($string)
         {
                         return \App\Models\Util::isJson($string);
+        }
+                    /**
+         * Буквы в верхнем регистре для каждого слова.
+         *
+         * @param string $value Строка для конвертирования.
+         * @return string Строка.
+         * @static 
+         */ 
+        public static function ucwords($value)
+        {
+                        return \App\Models\Util::ucwords($value);
         }
          
     }
@@ -20106,7 +19880,6 @@
          * @return bool Вернет успешность установки статуса.
          * @throws RecordNotExistException
          * @throws ParameterInvalidException
-         * @throws ReflectionException
          * @static 
          */ 
         public static function setStatus($id, $status = true)
@@ -20120,7 +19893,6 @@
          * @param int|string $id ID предупреждения.
          * @return \App\Modules\Alert\Entities\Alert|null Вернет сущность предупреждения.
          * @throws ParameterInvalidException
-         * @throws ReflectionException
          * @static 
          */ 
         public static function get($id)
@@ -20234,6 +20006,98 @@
         public static function forgetDrivers()
         {            //Method inherited from \Illuminate\Support\Manager         
                         /** @var \App\Modules\OAuth\Models\OAuthDriverManager $instance */
+                        return $instance->forgetDrivers();
+        }
+         
+    }
+     
+}
+
+    namespace App\Modules\Writer\Facades { 
+            /**
+     * Фасад класса для написания текстов искусственным интеллектом.
+     *
+     */ 
+        class Writer {
+                    /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function getDefaultDriver()
+        {
+                        /** @var \App\Modules\Writer\Models\WriterManager $instance */
+                        return $instance->getDefaultDriver();
+        }
+                    /**
+         * Get a driver instance.
+         *
+         * @param string|null $driver
+         * @return mixed 
+         * @throws \InvalidArgumentException
+         * @static 
+         */ 
+        public static function driver($driver = null)
+        {            //Method inherited from \Illuminate\Support\Manager         
+                        /** @var \App\Modules\Writer\Models\WriterManager $instance */
+                        return $instance->driver($driver);
+        }
+                    /**
+         * Register a custom driver creator Closure.
+         *
+         * @param string $driver
+         * @param \Closure $callback
+         * @return \App\Modules\Writer\Models\WriterManager 
+         * @static 
+         */ 
+        public static function extend($driver, $callback)
+        {            //Method inherited from \Illuminate\Support\Manager         
+                        /** @var \App\Modules\Writer\Models\WriterManager $instance */
+                        return $instance->extend($driver, $callback);
+        }
+                    /**
+         * Get all of the created "drivers".
+         *
+         * @return array 
+         * @static 
+         */ 
+        public static function getDrivers()
+        {            //Method inherited from \Illuminate\Support\Manager         
+                        /** @var \App\Modules\Writer\Models\WriterManager $instance */
+                        return $instance->getDrivers();
+        }
+                    /**
+         * Get the container instance used by the manager.
+         *
+         * @return \Illuminate\Contracts\Container\Container 
+         * @static 
+         */ 
+        public static function getContainer()
+        {            //Method inherited from \Illuminate\Support\Manager         
+                        /** @var \App\Modules\Writer\Models\WriterManager $instance */
+                        return $instance->getContainer();
+        }
+                    /**
+         * Set the container instance used by the manager.
+         *
+         * @param \Illuminate\Contracts\Container\Container $container
+         * @return \App\Modules\Writer\Models\WriterManager 
+         * @static 
+         */ 
+        public static function setContainer($container)
+        {            //Method inherited from \Illuminate\Support\Manager         
+                        /** @var \App\Modules\Writer\Models\WriterManager $instance */
+                        return $instance->setContainer($container);
+        }
+                    /**
+         * Forget all of the resolved driver instances.
+         *
+         * @return \App\Modules\Writer\Models\WriterManager 
+         * @static 
+         */ 
+        public static function forgetDrivers()
+        {            //Method inherited from \Illuminate\Support\Manager         
+                        /** @var \App\Modules\Writer\Models\WriterManager $instance */
                         return $instance->forgetDrivers();
         }
          
@@ -20422,7 +20286,7 @@
                     /**
          * 
          *
-         * @return \Spatie\FlareClient\array<int, FlareMiddleware|class-string<FlareMiddleware>>
+         * @return array<int, FlareMiddleware|class-string<FlareMiddleware>> 
          * @static 
          */ 
         public static function getMiddleware()
@@ -20483,7 +20347,7 @@
                     /**
          * 
          *
-         * @param \Spatie\FlareClient\FlareMiddleware\FlareMiddleware|\Spatie\FlareClient\array<FlareMiddleware>|\Spatie\FlareClient\class-string<FlareMiddleware> $middleware
+         * @param \Spatie\FlareClient\FlareMiddleware\FlareMiddleware|array<FlareMiddleware>|\Spatie\FlareClient\class-string<FlareMiddleware> $middleware
          * @return \Spatie\FlareClient\Flare 
          * @static 
          */ 
@@ -20495,7 +20359,7 @@
                     /**
          * 
          *
-         * @return \Spatie\FlareClient\array<int,FlareMiddleware|\Spatie\FlareClient\class-string<FlareMiddleware>> 
+         * @return array<int,FlareMiddleware|class-string<FlareMiddleware>> 
          * @static 
          */ 
         public static function getMiddlewares()
@@ -20655,7 +20519,7 @@
          *
          * @param string $groupName
          * @param mixed $default
-         * @return \Spatie\FlareClient\array<int, mixed>
+         * @return array<int, mixed> 
          * @static 
          */ 
         public static function getGroup($groupName = 'context', $default = [])
@@ -24562,7 +24426,6 @@ namespace  {
             class MongoDb extends \Jenssegers\Mongodb\Eloquent\Model {}
             class XmlParser extends \Orchestra\Parser\Xml\Facade {}
             class Size extends \Intervention\Image\Facades\Image {}
-            class Morphy extends \cijic\phpMorphy\Facade\Morphy {}
             class Util extends \App\Models\Facades\Util {}
             class Morph extends \App\Models\Facades\Morph {}
             class Device extends \App\Models\Facades\Device {}
@@ -24576,6 +24439,7 @@ namespace  {
             class DocumentStore extends \App\Modules\Document\Facades\Document {}
             class Alert extends \App\Modules\Alert\Facades\Alert {}
             class OAuth extends \App\Modules\OAuth\Facades\OAuth {}
+            class Writer extends \App\Modules\Writer\Facades\Writer {}
             class LogToDB extends \danielme85\LaravelLogToDB\LogToDB {}
             class Image extends \Intervention\Image\Facades\Image {}
             class Firebase extends \Kreait\Laravel\Firebase\Facades\Firebase {}

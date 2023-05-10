@@ -290,6 +290,9 @@ return [
 
         App\Modules\Course\Providers\CourseServiceProvider::class,
         App\Modules\Course\Providers\RouteServiceProvider::class,
+
+        App\Modules\Writer\Providers\WriterServiceProvider::class,
+        App\Modules\Writer\Providers\RouteServiceProvider::class,
     ],
 
     /*
@@ -326,5 +329,6 @@ return [
         'DocumentStore' => App\Modules\Document\Facades\Document::class,
         'Alert' => App\Modules\Alert\Facades\Alert::class,
         'OAuth' => App\Modules\OAuth\Facades\OAuth::class,
+        'Writer' => App\Modules\Writer\Facades\Writer::class,
     ])->toArray(),
 ];
