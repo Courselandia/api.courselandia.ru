@@ -15,6 +15,7 @@ use App\Modules\Writer\Http\Requests\Admin\Teacher\WriterWriteRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
 use App\Models\Exceptions\ResponseException;
+use App\Models\Exceptions\RecordNotExistException;
 
 /**
  * Класс контроллер для написания текстов
@@ -83,6 +84,11 @@ class WriterController extends Controller
                 'success' => false,
                 'message' => $error->getMessage(),
             ])->setStatusCode(503);
+        } catch (RecordNotExistException $error) {
+            return response()->json([
+                'success' => false,
+                'message' => $error->getMessage(),
+            ])->setStatusCode(404);
         }
     }
 }

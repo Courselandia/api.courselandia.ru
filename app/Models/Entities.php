@@ -21,14 +21,14 @@ class Entities
      *
      * @var string
      */
-    private string $entity;
+    private string|array $entity;
 
     /**
      * Конструктор.
      *
-     * @param  string  $entity  Название класса сущности.
+     * @param string|array $entity Название класса сущности.
      */
-    public function __construct(string $entity)
+    public function __construct(string|array $entity)
     {
         $this->entity = $entity;
     }

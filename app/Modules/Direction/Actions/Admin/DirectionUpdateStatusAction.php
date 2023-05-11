@@ -35,16 +35,6 @@ class DirectionUpdateStatusAction extends Action
     public ?bool $status = null;
 
     /**
-     * Конструктор.
-     *
-     * @param  Direction  $direction  Репозиторий направлений.
-     */
-    public function __construct(Direction $direction)
-    {
-        $this->direction = $direction;
-    }
-
-    /**
      * Метод запуска логики.
      *
      * @return DirectionEntity Вернет результаты исполнения.

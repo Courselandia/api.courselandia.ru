@@ -21,6 +21,7 @@ class WriterFake extends Writer
      * Запрос на написание текста.
      *
      * @param string $request Запрос на написания текста.
+     *
      * @return string ID задачи на генерацию.
      */
     public function write(string $request): string
@@ -32,6 +33,7 @@ class WriterFake extends Writer
      * Получить результат.
      *
      * @param string $id ID задачи.
+     *
      * @return string Готовый текст.
      */
     public function result(string $id): string

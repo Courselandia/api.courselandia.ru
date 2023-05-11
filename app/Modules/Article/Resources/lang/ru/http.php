@@ -1,0 +1,27 @@
+<?php
+
+return [
+    'requests' => [
+        'admin' => [
+            'articleReadRequest' => [
+                'sorts' => 'Сортировка',
+                'offset' => 'Отступ',
+                'limit' => 'Лимит',
+                'filters' => 'Фильтр',
+                'status' => 'Статус',
+            ],
+            'articleUpdateStatusRequest' => [
+                'status' => 'Статус',
+            ],
+        ],
+    ],
+    'controllers' => [
+        'admin' => [
+            'articleController' => [
+                'update' => [
+                    'log' => 'Обновление категории.'
+                ],
+            ],
+        ],
+    ]
+];

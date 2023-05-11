@@ -15,6 +15,7 @@ use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\ProcessingException;
 use App\Modules\Writer\Contracts\Writer;
 use App\Models\Exceptions\ResponseException;
+use App\Models\Exceptions\RecordNotExistException;
 
 /**
  * Классы драйвер для написания текстов с использованием neuro-texter.ru.
@@ -25,6 +26,7 @@ class WriterNeuroTexter extends Writer
      * Запрос на написание текста.
      *
      * @param string $request Запрос на написания текста.
+     *
      * @return string ID задачи на генерацию.
      * @throws ResponseException
      */
@@ -60,8 +62,12 @@ class WriterNeuroTexter extends Writer
      * Получить результат.
      *
      * @param string $id ID задачи.
+     *
      * @return string Готовый текст.
      * @throws ProcessingException
+     * @throws ResponseException
+     * @throws RecordNotExistException
+     * @throws ParameterInvalidException
      */
     public function result(string $id): string
     {
@@ -79,7 +85,11 @@ class WriterNeuroTexter extends Writer
                 ]
             );
         } catch (Throwable $error) {
-            throw new ResponseException($error->getMessage());
+            if ($error->getCode() === 404) {
+                throw new RecordNotExistException(trans('writer::models.writerNeuroTexter.notExist'));
+            } else {
+                throw new ResponseException($error->getMessage());
+            }
         }
 
         $body = $response->getBody();

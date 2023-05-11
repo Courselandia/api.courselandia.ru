@@ -216,6 +216,9 @@ return [
         App\Modules\Access\Providers\AccessServiceProvider::class,
         App\Modules\Access\Providers\RouteServiceProvider::class,
 
+        App\Modules\Article\Providers\ArticleServiceProvider::class,
+        App\Modules\Article\Providers\RouteServiceProvider::class,
+
         App\Modules\OAuth\Providers\OAuthServiceProvider::class,
         App\Modules\OAuth\Providers\RouteServiceProvider::class,
 
