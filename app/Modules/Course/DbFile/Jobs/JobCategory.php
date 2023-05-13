@@ -24,8 +24,6 @@ class JobCategory extends JobItem
      */
     public function handle(): void
     {
-        Cache::flush();
-
         $action = app(CourseReadAction::class);
         $action->sorts = ['name' => 'ASC'];
         $action->filters = ['categories-id' => $this->id];

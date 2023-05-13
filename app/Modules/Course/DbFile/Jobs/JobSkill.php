@@ -24,8 +24,6 @@ class JobSkill extends JobItem
      */
     public function handle(): void
     {
-        Cache::flush();
-
         $action = app(CourseReadAction::class);
         $action->sorts = ['name' => 'ASC'];
         $action->filters = ['skills-id' => $this->id];

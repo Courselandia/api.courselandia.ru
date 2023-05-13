@@ -8,6 +8,7 @@
 
 namespace App\Modules\Course\DbFile;
 
+use Cache;
 use App\Models\Event;
 use App\Modules\Course\DbFile\Sources\SourceCourse;
 use App\Modules\Course\DbFile\Sources\SourceDirection;
@@ -71,6 +72,8 @@ class Export
      */
     public function run(): void
     {
+        Cache::flush();
+
         $this->offLimits();
         $this->exports();
     }
