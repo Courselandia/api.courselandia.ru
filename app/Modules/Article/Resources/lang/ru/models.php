@@ -10,5 +10,6 @@ return [
         'status' => 'Статус',
         'articleable_id' => 'ID сущности',
         'articleable_type' => 'Имя класса сущности',
+        'tries' => 'Попыток',
     ],
 ];

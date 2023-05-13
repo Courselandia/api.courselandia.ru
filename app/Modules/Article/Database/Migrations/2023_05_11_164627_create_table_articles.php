@@ -23,6 +23,7 @@ class CreateTableArticles extends Migration
             $table->string('request');
             $table->text('text')->nullable();
             $table->json('params')->nullable();
+            $table->smallInteger('tries')->default(0);
 
             $table->string('status', 50)->index();
 

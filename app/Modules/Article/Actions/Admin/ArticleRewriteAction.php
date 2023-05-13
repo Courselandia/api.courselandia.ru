@@ -16,6 +16,7 @@ use App\Models\Exceptions\RecordNotExistException;
 use App\Modules\Article\Enums\Status;
 use App\Modules\Article\Entities\Article as ArticleEntity;
 use App\Modules\Article\Models\Article;
+use App\Modules\Article\Jobs\ArticleSaveResultJob;
 
 /**
  * Класс действия для переписания статьи.
@@ -56,6 +57,9 @@ class ArticleRewriteAction extends Action
             $articleEntity->status = Status::PROCESSING;
 
             Article::find($this->id)->update($articleEntity->toArray());
+
+            ArticleSaveResultJob::dispatch($this->id)
+                ->delay(now()->addMinutes(2));
 
             Cache::tags(['article'])->flush();
 

@@ -62,6 +62,13 @@ class Article extends Entity
     public array|null $params = null;
 
     /**
+     * Количество попыток получить полученный текст.
+     *
+     * @var int|null
+     */
+    public int|null $tries = null;
+
+    /**
      * Статус.
      *
      * @var Status|null

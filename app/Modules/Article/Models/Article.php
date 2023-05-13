@@ -30,6 +30,7 @@ use App\Modules\Article\Filters\ArticleFilter;
  * @property string|null $request Запрос на написание текста.
  * @property string|null $text Текст.
  * @property array|null $params Дополнительные параметры.
+ * @property int $tries Количество попыток получить результат написанного текста.
  * @property string $status Статус
  * @property int|string $articleable_id ID сущности для которой написан текст.
  * @property int|string $articleable_type Имя класса сущности для которой написан текст.
@@ -66,6 +67,7 @@ class Article extends Eloquent
         'request',
         'text',
         'params',
+        'tries',
         'status',
         'articleable_id',
         'articleable_type',
@@ -83,6 +85,7 @@ class Article extends Eloquent
         'request' => 'string',
         'text' => 'string',
         'params' => 'string',
+        'tries' => 'string',
         'status' => 'string',
         'articleable_id' => 'string',
         'articleable_type' => 'string',
@@ -94,6 +97,7 @@ class Article extends Eloquent
             'request' => 'required|between:1,5000',
             'text' => 'required|between:1,65000',
             'params' => 'nullable|json',
+            'tries' => 'digits_between:0,2',
             'status' => 'required|between:1,50',
             'articleable_id' => 'nullable|digits_between:0,20',
             'articleable_type' => 'nullable|between:1,191',
@@ -113,6 +117,7 @@ class Article extends Eloquent
             'request' => trans('article::models.article.request'),
             'text' => trans('article::models.article.text'),
             'params' => trans('article::models.article.params'),
+            'tries' => trans('article::models.article.tries'),
             'status' => trans('article::models.article.status'),
             'articleable_id' => trans('article::models.article.articleableId'),
             'articleable_type' => trans('article::models.article.articleableType'),

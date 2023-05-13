@@ -10,5 +10,6 @@ return [
         'status' => 'Status',
         'articleable_id' => 'ID entity',
         'articleable_type' => 'Class name entity',
+        'tries' => 'Tries',
     ],
 ];
