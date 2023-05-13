@@ -53,7 +53,7 @@ class ArticleRewriteAction extends Action
             $taskId = Writer::write($this->request);
             $articleEntity->task_id = $taskId;
             $articleEntity->request = $this->request;
-            $articleEntity->status = Status::PENDING;
+            $articleEntity->status = Status::PROCESSING;
 
             Article::find($this->id)->update($articleEntity->toArray());
 

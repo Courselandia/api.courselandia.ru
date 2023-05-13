@@ -37,4 +37,9 @@ enum Status: string
      * Отключенный.
      */
     case DISABLED = 'disabled';
+
+    /**
+     * Принят.
+     */
+    case APPLIED = 'applied';
 }

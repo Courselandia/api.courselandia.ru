@@ -49,6 +49,7 @@ class PartDirection extends Part
             if ($result) {
                 $item = new Item();
                 $item->path = 'courses/direction/' . $result['link'];
+                $item->priority = 0.8;
 
                 yield $item;
             }
