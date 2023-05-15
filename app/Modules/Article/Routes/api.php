@@ -27,5 +27,8 @@ Route::group([
 
         Route::put('rewrite/{id}', 'Admin\ArticleController@rewrite')
             ->name('rewrite');
+
+        Route::put('apply/{id}', 'Admin\ArticleController@apply')
+            ->name('apply');
     }
 );

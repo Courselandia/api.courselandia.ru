@@ -333,5 +333,6 @@ return [
         'Alert' => App\Modules\Alert\Facades\Alert::class,
         'OAuth' => App\Modules\OAuth\Facades\OAuth::class,
         'Writer' => App\Modules\Writer\Facades\Writer::class,
+        'ArticleCategory' => App\Modules\Article\Facades\ArticleCategory::class,
     ])->toArray(),
 ];

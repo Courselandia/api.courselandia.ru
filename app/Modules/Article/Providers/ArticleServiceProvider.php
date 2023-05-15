@@ -8,6 +8,10 @@
 
 namespace App\Modules\Article\Providers;
 
+use App;
+use ArticleCategory;
+use App\Modules\Article\Categories\ArticleCategoryManager;
+use App\Modules\Article\Categories\CourseTextArticleCategory;
 use Config;
 use Illuminate\Support\ServiceProvider;
 
@@ -36,7 +40,13 @@ class ArticleServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
+        App::singleton('articleCategory', function ($app) {
+            return new ArticleCategoryManager($app);
+        });
 
+        ArticleCategory::extend('course.text', function () {
+            return new CourseTextArticleCategory();
+        });
     }
 
     /**

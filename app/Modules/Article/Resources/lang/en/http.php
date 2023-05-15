@@ -24,6 +24,9 @@ return [
                 'rewrite' => [
                     'log' => 'Rewrite the article.'
                 ],
+                'apply' => [
+                    'log' => 'Apply the article.'
+                ],
             ],
         ],
     ]

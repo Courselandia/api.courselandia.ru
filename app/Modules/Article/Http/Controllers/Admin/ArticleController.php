@@ -8,6 +8,7 @@
 
 namespace App\Modules\Article\Http\Controllers\Admin;
 
+use App\Modules\Article\Actions\Admin\ArticleApplyAction;
 use Auth;
 use Log;
 use ReflectionException;
@@ -135,7 +136,7 @@ class ArticleController extends Controller
     /**
      * Обновление статуса.
      *
-     * @param int|string $id ID пользователя.
+     * @param int|string $id ID статьи.
      * @param ArticleUpdateStatusRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
@@ -178,7 +179,7 @@ class ArticleController extends Controller
     /**
      * Запрос на переписания текста.
      *
-     * @param int|string $id ID пользователя.
+     * @param int|string $id ID статьи.
      * @param ArticleRewriteRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
@@ -194,6 +195,51 @@ class ArticleController extends Controller
             $data = $action->run();
 
             Log::info(trans('article::http.controllers.admin.articleController.rewrite.log'), [
+                'module' => 'Article',
+                'login' => Auth::getUser()->login,
+                'type' => 'update'
+            ]);
+
+            $data = [
+                'success' => true,
+                'data' => $data
+            ];
+
+            return response()->json($data);
+        } catch (ValidateException $error) {
+            return response()->json([
+                'success' => false,
+                'message' => $error->getMessage()
+            ])->setStatusCode(400);
+        } catch (RecordNotExistException $error) {
+            return response()->json([
+                'success' => false,
+                'message' => $error->getMessage()
+            ])->setStatusCode(404);
+        } catch (ResponseException $error) {
+            return response()->json([
+                'success' => false,
+                'message' => $error->getMessage()
+            ])->setStatusCode(503);
+        }
+    }
+
+    /**
+     * Принять и перенести написанный текст в сущность, для которой он был написан.
+     *
+     * @param int|string $id ID статьи.
+     *
+     * @return JsonResponse Вернет JSON ответ.
+     */
+    public function apply(int|string $id): JsonResponse
+    {
+        try {
+            $action = app(ArticleApplyAction::class);
+            $action->id = $id;
+
+            $data = $action->run();
+
+            Log::info(trans('article::http.controllers.admin.articleController.apply.log'), [
                 'module' => 'Article',
                 'login' => Auth::getUser()->login,
                 'type' => 'update'
