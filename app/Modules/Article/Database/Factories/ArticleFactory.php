@@ -9,7 +9,7 @@
 namespace App\Modules\Article\Database\Factories;
 
 use App\Modules\Article\Enums\Status;
-use App\Modules\School\Models\School;
+use App\Modules\Course\Models\Course;
 use JetBrains\PhpStorm\ArrayShape;
 use App\Modules\Article\Models\Article;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -42,17 +42,17 @@ class ArticleFactory extends Factory
         'articleable_type' => 'string',
     ])] public function definition(): array
     {
-        $school = School::factory()->create();
+        $course = Course::factory()->create();
 
         return [
             'task_id' => $this->faker->numberBetween(),
-            'category' => $this->faker->text(160),
+            'category' => 'course.text',
             'request' => $this->faker->text(1000),
             'text' => $this->faker->text(5000),
-            'params' => json_encode([]),
+            'params' => null,
             'status' => Status::READY->value,
-            'articleable_id' => $school->id,
-            'articleable_type' => School::class,
+            'articleable_id' => $course->id,
+            'articleable_type' => Course::class,
         ];
     }
 }
