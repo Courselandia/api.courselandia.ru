@@ -9,6 +9,7 @@
 namespace App\Modules\Article\Http\Requests\Admin;
 
 use App\Models\FormRequest;
+use JetBrains\PhpStorm\ArrayShape;
 
 /**
  * Класс запрос для переписания текста.
@@ -22,6 +23,22 @@ class ArticleRewriteRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [];
+        return [
+            'request' => 'required',
+        ];
+    }
+
+    /**
+     * Возвращает атрибуты.
+     *
+     * @return array Массив атрибутов.
+     */
+    #[ArrayShape([
+        'request' => 'string',
+    ])] public function attributes(): array
+    {
+        return [
+            'request' => trans('article::http.requests.admin.articleRewriteRequest.request'),
+        ];
     }
 }

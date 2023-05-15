@@ -13,6 +13,9 @@ return [
             'articleUpdateStatusRequest' => [
                 'status' => 'Status',
             ],
+            'articleRewriteRequest' => [
+                'request' => 'Request',
+            ],
         ],
     ],
     'controllers' => [

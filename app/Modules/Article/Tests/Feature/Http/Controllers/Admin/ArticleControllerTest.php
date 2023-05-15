@@ -242,6 +242,117 @@ class ArticleControllerTest extends TestCase
     }
 
     /**
+     * Переписание текста.
+     *
+     * @return void
+     */
+    public function testRewrite(): void
+    {
+        $article = Article::factory()->create();
+        $faker = Faker::create();
+
+        $this->json(
+            'PUT',
+            'api/private/admin/article/rewrite/' . $article->id,
+            [
+                'request' => $faker->text(),
+            ],
+            [
+                'Authorization' => 'Bearer ' . $this->getAdminToken()
+            ]
+        )->assertStatus(200)->assertJsonStructure([
+            'success',
+            'data' => $this->getArticleStructure(),
+        ]);
+    }
+
+    /**
+     * Переписание текста с ошибкой.
+     *
+     * @return void
+     */
+    public function testRewriteNotValid(): void
+    {
+        $article = Article::factory()->create();
+
+        $this->json(
+            'PUT',
+            'api/private/admin/article/rewrite/' . $article->id, [],
+            [
+                'Authorization' => 'Bearer ' . $this->getAdminToken()
+            ]
+        )->assertStatus(400)->assertJsonStructure([
+            'success',
+            'message',
+        ]);
+    }
+
+    /**
+     * Переписание текста с ошибкой для несуществующей записи.
+     *
+     * @return void
+     */
+    public function testRewriteNotExist(): void
+    {
+        $faker = Faker::create();
+
+        $this->json(
+            'PUT',
+            'api/private/admin/article/rewrite/1000',
+            [
+                'request' => $faker->text(),
+            ],
+            [
+                'Authorization' => 'Bearer ' . $this->getAdminToken()
+            ]
+        )->assertStatus(404)->assertJsonStructure([
+            'success',
+            'message',
+        ]);
+    }
+
+    /**
+     * Принятие и перенос текста.
+     *
+     * @return void
+     */
+    public function testApply(): void
+    {
+        $article = Article::factory()->create();
+        $faker = Faker::create();
+
+        $this->json(
+            'PUT',
+            'api/private/admin/article/apply/' . $article->id, [],
+            [
+                'Authorization' => 'Bearer ' . $this->getAdminToken()
+            ]
+        )->assertStatus(200)->assertJsonStructure([
+            'success',
+            'data' => $this->getArticleStructure(),
+        ]);
+    }
+
+    /**
+     * Переписание текста с ошибкой для несуществующей записи.
+     *
+     * @return void
+     */
+    public function testApplyNotExist(): void
+    {
+        $this->json(
+            'PUT',
+            'api/private/admin/article/apply/1000', [],
+            [
+                'Authorization' => 'Bearer ' . $this->getAdminToken()
+            ]
+        )->assertStatus(404)->assertJsonStructure([
+            'success',
+            'message',
+        ]);
+    }
+
+    /**
      * Получить структуру данных статьи.
      *
      * @return array Массив структуры данных статьи.

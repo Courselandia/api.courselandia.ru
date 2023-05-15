@@ -230,6 +230,7 @@ class ArticleController extends Controller
      * @param int|string $id ID статьи.
      *
      * @return JsonResponse Вернет JSON ответ.
+     * @throws ParameterInvalidException
      */
     public function apply(int|string $id): JsonResponse
     {
