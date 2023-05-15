@@ -41,6 +41,13 @@ class Article extends Entity
     public ?string $category = null;
 
     /**
+     * Название категории.
+     *
+     * @var string|null
+     */
+    public ?string $category_name = null;
+
+    /**
      * Запрос на написание текста.
      *
      * @var string|null

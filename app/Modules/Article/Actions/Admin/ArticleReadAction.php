@@ -10,6 +10,7 @@ namespace App\Modules\Article\Actions\Admin;
 
 use Cache;
 use Util;
+use ArticleCategory;
 use App\Models\Action;
 use App\Models\Entity;
 use ReflectionException;
@@ -93,6 +94,10 @@ class ArticleReadAction extends Action
                 }
 
                 $items = $query->get()->toArray();
+
+                for ($i = 0; $i < count($items); $i++) {
+                    $items[$i]['category_name'] = ArticleCategory::driver($items[$i]['category'])->name();
+                }
 
                 return [
                     'data' => Entity::toEntities($items, new ArticleEntity()),

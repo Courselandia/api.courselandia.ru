@@ -10,6 +10,7 @@ namespace App\Modules\Article\Actions\Admin;
 
 use Cache;
 use Util;
+use ArticleCategory;
 use App\Models\Action;
 use App\Models\Enums\CacheTime;
 use App\Models\Exceptions\ParameterInvalidException;
@@ -46,7 +47,14 @@ class ArticleGetAction extends Action
                     ->with('articleable')
                     ->first();
 
-                return $article ? new ArticleEntity($article->toArray()) : null;
+                if ($article) {
+                    $entity = new ArticleEntity($article->toArray());
+                    $entity->category_name = ArticleCategory::driver($entity->category)->name();
+
+                    return $entity;
+                }
+
+                return null;
             }
         );
     }
