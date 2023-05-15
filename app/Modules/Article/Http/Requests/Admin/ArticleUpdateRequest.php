@@ -15,5 +15,13 @@ use App\Models\FormRequest;
  */
 class ArticleUpdateRequest extends FormRequest
 {
-
+    /**
+     * Возвращает правила проверки.
+     *
+     * @return array Массив правил проверки.
+     */
+    public function rules(): array
+    {
+        return [];
+    }
 }

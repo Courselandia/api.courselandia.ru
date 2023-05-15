@@ -11,6 +11,7 @@ namespace App\Modules\Article\Jobs;
 use Log;
 use Throwable;
 use Writer;
+use Cache;
 use Illuminate\Bus\Queueable;
 use App\Modules\Article\Models\Article;
 use App\Models\Exceptions\ProcessingException;
@@ -85,6 +86,8 @@ class ArticleSaveResultJob implements ShouldQueue
                 $articleEntity->status = Status::FAILED;
                 Article::find($this->id)->update($articleEntity->toArray());
             }
+
+            Cache::tags(['article'])->flush();
         }
     }
 }

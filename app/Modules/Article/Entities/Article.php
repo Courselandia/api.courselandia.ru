@@ -113,8 +113,8 @@ class Article extends Entity
     /**
      * Сущность.
      *
-     * @var Course[]
+     * @var Course|null
      */
-    #[Entities(Course::class)]
-    public ?array $articleable = null;
+    #[Entities(['\App\Modules\Course\Models\Course' => Course::class], 'articleable_type')]
+    public Course|null $articleable = null;
 }

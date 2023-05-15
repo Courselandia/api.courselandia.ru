@@ -21,6 +21,9 @@ return [
                 'update' => [
                     'log' => 'Update the article.'
                 ],
+                'rewrite' => [
+                    'log' => 'Rewrite the article.'
+                ],
             ],
         ],
     ]
