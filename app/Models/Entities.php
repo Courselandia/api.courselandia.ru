@@ -27,8 +27,9 @@ class Entities
      * Конструктор.
      *
      * @param string|array $entity Название класса сущности.
+     * @param string|null $nameClass Название класса, который используется в $entity на тот случай если их там несколько. Используется при полиморфной связи.
      */
-    public function __construct(string|array $entity)
+    public function __construct(string|array $entity, ?string $nameClass)
     {
         $this->entity = $entity;
     }

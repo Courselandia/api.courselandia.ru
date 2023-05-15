@@ -8,6 +8,7 @@
 
 namespace App\Modules\Article\Http\Controllers\Admin;
 
+use App\Modules\Article\Enums\Status;
 use Auth;
 use Log;
 use ReflectionException;
@@ -145,7 +146,7 @@ class ArticleController extends Controller
         try {
             $action = app(ArticleUpdateStatusAction::class);
             $action->id = $id;
-            $action->status = $request->get('status');
+            $action->status = Status::from($request->get('status'));
 
             $data = $action->run();
 

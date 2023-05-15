@@ -15,9 +15,9 @@ use App\Modules\Article\Enums\Status;
 use App\Modules\Course\Entities\Course;
 
 /**
- * Сущность для статьи.
+ * Единая сущность, которая может принадлежать модели Article.
  */
-class Article extends Entity
+class Articleable extends Entity
 {
     /**
      * ID записи.
@@ -25,13 +25,6 @@ class Article extends Entity
      * @var int|string|null
      */
     public int|string|null $id = null;
-
-    /**
-     * ID задачи на написания текста.
-     *
-     * @var int|string|null
-     */
-    public int|string|null $task_id = null;
 
     /**
      * Категория.
