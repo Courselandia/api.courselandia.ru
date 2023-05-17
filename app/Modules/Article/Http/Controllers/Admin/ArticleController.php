@@ -8,13 +8,13 @@
 
 namespace App\Modules\Article\Http\Controllers\Admin;
 
-use App\Modules\Article\Actions\Admin\ArticleApplyAction;
 use Auth;
 use Log;
 use ReflectionException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
 use App\Modules\Article\Enums\Status;
+use App\Models\Exceptions\ResponseException;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Models\Exceptions\ValidateException;
@@ -26,8 +26,8 @@ use App\Modules\Article\Http\Requests\Admin\ArticleReadRequest;
 use App\Modules\Article\Http\Requests\Admin\ArticleUpdateRequest;
 use App\Modules\Article\Http\Requests\Admin\ArticleUpdateStatusRequest;
 use App\Modules\Article\Http\Requests\Admin\ArticleRewriteRequest;
-use App\Models\Exceptions\ResponseException;
 use App\Modules\Article\Actions\Admin\ArticleRewriteAction;
+use App\Modules\Article\Actions\Admin\ArticleApplyAction;
 
 /**
  * Класс контроллер для работы с категориями в административной части.

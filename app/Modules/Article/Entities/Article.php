@@ -62,6 +62,13 @@ class Article extends Entity
     public ?string $text = null;
 
     /**
+     * Текущий текст сущности.
+     *
+     * @var string|null
+     */
+    public ?string $text_current = null;
+
+    /**
      * Параметры.
      *
      * @var array|null

@@ -8,7 +8,9 @@
 
 namespace App\Modules\Article\Http\Requests\Admin;
 
+use App\Models\Enums\EnumList;
 use App\Models\FormRequest;
+use App\Modules\Article\Enums\Status;
 use JetBrains\PhpStorm\ArrayShape;
 use Schema;
 
@@ -38,7 +40,7 @@ class ArticleReadRequest extends FormRequest
             'offset' => 'integer|digits_between:0,20',
             'limit' => 'integer|digits_between:0,20',
             'filters' => 'array|filters:' . $columns . '|filter_date_range:published_at',
-            'filters.status' => 'boolean',
+            'filters.status' => 'in:' . implode(',', EnumList::getValues(Status::class)),
         ];
     }
 

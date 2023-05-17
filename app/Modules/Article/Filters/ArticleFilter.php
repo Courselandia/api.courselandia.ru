@@ -41,13 +41,25 @@ class ArticleFilter extends ModelFilter
     }
 
     /**
+     * Поиск по написанному тексту.
+     *
+     * @param string $query Строка поиска.
+     *
+     * @return ArticleFilter Правила поиска.
+     */
+    public function text(string $query): ArticleFilter
+    {
+        return $this->whereLike('articles.text', $query);
+    }
+
+    /**
      * Поиск по ID сущности.
      *
      * @param int|string $articleableId ID сущности.
      *
      * @return ArticleFilter Правила поиска.
      */
-    public function articleableId(int|string $articleableId): ArticleFilter
+    public function articleable(int|string $articleableId): ArticleFilter
     {
         return $this->where('articles.articleable_id', $articleableId);
     }
@@ -73,6 +85,6 @@ class ArticleFilter extends ModelFilter
      */
     public function status(array|Status|string $statuses): ArticleFilter
     {
-        return $this->whereIn('articles.category', is_array($statuses) ? $statuses : [$statuses]);
+        return $this->whereIn('articles.status', is_array($statuses) ? $statuses : [$statuses]);
     }
 }

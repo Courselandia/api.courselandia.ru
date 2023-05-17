@@ -10,6 +10,7 @@ namespace App\Modules\Article\Actions\Admin;
 
 use Cache;
 use Util;
+use Writer;
 use ArticleCategory;
 use App\Models\Action;
 use App\Models\Entity;
@@ -61,6 +62,8 @@ class ArticleReadAction extends Action
      */
     #[ArrayShape(['data' => 'array', 'total' => 'int'])] public function run(): array
     {
+        Cache::flush();
+
         $cacheKey = Util::getKey(
             'article',
             'admin',
@@ -96,7 +99,9 @@ class ArticleReadAction extends Action
                 $items = $query->get()->toArray();
 
                 for ($i = 0; $i < count($items); $i++) {
+                    $field = ArticleCategory::driver($items[$i]['category'])->field();
                     $items[$i]['category_name'] = ArticleCategory::driver($items[$i]['category'])->name();
+                    $items[$i]['text_current'] = $items[$i]['articleable'][$field];
                 }
 
                 return [

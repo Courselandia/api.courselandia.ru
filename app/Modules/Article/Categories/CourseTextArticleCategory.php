@@ -31,6 +31,16 @@ class CourseTextArticleCategory extends ArticleCategory
     }
 
     /**
+     * Название колонки, которая хранит текст, что должен быть изменен.
+     *
+     * @return string Название колонки.
+     */
+    public function field(): string
+    {
+        return 'text';
+    }
+
+    /**
      * Метод для создания собственной логики принятия текста.
      *
      * @param int $id ID статьи.

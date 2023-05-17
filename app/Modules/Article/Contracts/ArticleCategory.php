@@ -21,6 +21,13 @@ abstract class ArticleCategory
     abstract public function name(): string;
 
     /**
+     * Название колонки, которая хранит текст, что должен быть изменен.
+     *
+     * @return string Название колонки.
+     */
+    abstract public function field(): string;
+
+    /**
      * Абстрактный метод для создания собственной логики принятия текста.
      *
      * @param int $id ID статьи.

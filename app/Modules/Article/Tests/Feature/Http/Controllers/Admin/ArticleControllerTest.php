@@ -366,6 +366,7 @@ class ArticleControllerTest extends TestCase
             'category_name',
             'request',
             'text',
+            'text_current',
             'params',
             'tries',
             'status',

@@ -49,7 +49,9 @@ class ArticleGetAction extends Action
 
                 if ($article) {
                     $entity = new ArticleEntity($article->toArray());
+                    $field = ArticleCategory::driver($entity->category)->field();
                     $entity->category_name = ArticleCategory::driver($entity->category)->name();
+                    $entity->text_current = $entity->articleable->{$field};
 
                     return $entity;
                 }
