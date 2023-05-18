@@ -16,6 +16,9 @@ return [
             'articleRewriteRequest' => [
                 'request' => 'Request',
             ],
+            'articleUpdateRequest' => [
+                'apply' => 'Apply',
+            ],
         ],
     ],
     'controllers' => [

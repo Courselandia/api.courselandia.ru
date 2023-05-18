@@ -44,6 +44,12 @@ class ArticleApplyAction extends Action
 
         if ($articleEntity) {
             ArticleCategory::driver($articleEntity->category)->apply($articleEntity->id);
+
+            Cache::tags(['article'])->flush();
+
+            $action = app(ArticleGetAction::class);
+            $action->id = $this->id;
+            $articleEntity = $action->run();
             $articleEntity->status = Status::APPLIED;
 
             Article::find($this->id)->update($articleEntity->toArray());

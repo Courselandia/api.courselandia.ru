@@ -9,6 +9,7 @@
 namespace App\Modules\Article\Http\Requests\Admin;
 
 use App\Models\FormRequest;
+use JetBrains\PhpStorm\ArrayShape;
 
 /**
  * Класс запрос для обновления статьи.
@@ -20,8 +21,26 @@ class ArticleUpdateRequest extends FormRequest
      *
      * @return array Массив правил проверки.
      */
-    public function rules(): array
+    #[ArrayShape([
+        'apply' => 'string',
+    ])] public function rules(): array
     {
-        return [];
+        return [
+            'apply' => 'boolean'
+        ];
+    }
+
+    /**
+     * Возвращает атрибуты.
+     *
+     * @return array Массив атрибутов.
+     */
+    #[ArrayShape([
+        'apply' => 'string',
+    ])] public function attributes(): array
+    {
+        return [
+            'apply' => trans('article::http.requests.admin.articleUpdateRequest.apply'),
+        ];
     }
 }

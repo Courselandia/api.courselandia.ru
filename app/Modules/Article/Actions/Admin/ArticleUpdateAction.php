@@ -11,8 +11,7 @@ namespace App\Modules\Article\Actions\Admin;
 use App\Models\Action;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
-use App\Modules\Course\Enums\Status;
-use App\Modules\Course\Models\Course;
+use App\Modules\Article\Enums\Status;
 use App\Modules\Article\Entities\Article as ArticleEntity;
 use App\Modules\Article\Models\Article;
 use Cache;
@@ -37,6 +36,13 @@ class ArticleUpdateAction extends Action
     public ?string $text = null;
 
     /**
+     * Принять.
+     *
+     * @var bool|null
+     */
+    public ?bool $apply = false;
+
+    /**
      * Метод запуска логики.
      *
      * @return ArticleEntity Вернет результаты исполнения.
@@ -51,8 +57,15 @@ class ArticleUpdateAction extends Action
 
         if ($articleEntity) {
             $articleEntity->text = $this->text;
+            $articleEntity->status = Status::READY;
 
             Article::find($this->id)->update($articleEntity->toArray());
+
+            if ($this->apply) {
+                $action = app(ArticleApplyAction::class);
+                $action->id = $this->id;
+                $action->run();
+            }
 
             Cache::tags(['article'])->flush();
 

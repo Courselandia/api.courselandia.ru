@@ -103,6 +103,7 @@ class ArticleController extends Controller
             $action = app(ArticleUpdateAction::class);
             $action->id = $id;
             $action->text = $request->get('text');
+            $action->apply = $request->get('apply', false);
             $data = $action->run();
 
             Log::info(
