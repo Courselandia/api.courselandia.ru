@@ -12,6 +12,7 @@ use Cache;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Modules\Article\Actions\Admin\ArticleGetAction;
+use App\Modules\Course\Actions\Admin\Course\CourseGetAction;
 use App\Modules\Course\Models\Course;
 use App\Modules\Article\Contracts\ArticleCategory;
 
@@ -56,12 +57,91 @@ class CourseTextArticleCategory extends ArticleCategory
         $articleEntity = $action->run();
 
         if ($articleEntity) {
-
             $course = $articleEntity->articleable;
             $course->text = $articleEntity->text;
 
             Course::find($articleEntity->articleable->id)->update($course->toArray());
             Cache::tags(['course'])->flush();
+        } else {
+            throw new RecordNotExistException(
+                trans('course::actions.admin.courseUpdateStatusAction.notExistCourse')
+            );
+        }
+    }
+
+    /**
+     * Шаблон запроса к искусственному интеллекту.
+     *
+     * @param int $id ID сущности для которой пишется статья.
+     *
+     * @return string Запрос.
+     * @throws RecordNotExistException|ParameterInvalidException
+     */
+    public function requestTemplate(int $id): string
+    {
+        $action = app(CourseGetAction::class);
+        $action->id = $id;
+        $courseEntity = $action->run();
+
+        if ($courseEntity) {
+            $request = 'Напиши текст описание для курса "' . $courseEntity->name . '" от школы "' . $courseEntity->school->name . '". ';
+            $request .= 'Текст нужно писать от лица агрегатора курсов. Текст должен содержать 500 символов. ';
+
+            if (count($courseEntity->directions)) {
+                $request .= 'Направление курса ' . mb_strtolower($courseEntity->directions[0]->name) . '. ';
+            }
+
+            if (count($courseEntity->professions)) {
+                $request .= 'После окончания курса студент освоит ';
+
+                if (count($courseEntity->professions) === 1) {
+                    $request .= 'профессию ' . mb_strtolower($courseEntity->professions[0]->name);
+                } else {
+                    $request .= 'профессии ';
+
+                    for ($i = 0; $i < count($courseEntity->professions); $i++) {
+                        if ($i !== 0) {
+                            $request .= ', ';
+                        }
+
+                        $request .= $courseEntity->professions[$i]->name;
+                    }
+                }
+
+                $request .= '. ';
+            }
+
+            if ($courseEntity->modules_amount) {
+                $request .= 'Курс состоит из ' . $courseEntity->modules_amount . ' ';
+
+                if ($courseEntity->modules_amount === 1) {
+                    $request .= 'модуля';
+                } else {
+                    $request .= 'модулей';
+                }
+
+                $request .= '. ';
+            }
+
+            if ($courseEntity->lessons_amount) {
+                $request .= 'Курс состоит из ' . $courseEntity->lessons_amount . ' ';
+
+                if ($courseEntity->lessons_amount === 1) {
+                    $request .= 'урока';
+                } else if ($courseEntity->lessons_amount >= 2 && $courseEntity->lessons_amount <= 4) {
+                    $request .= 'урока';
+                } else {
+                    $request .= 'уроков';
+                }
+
+                $request .= '. ';
+            }
+
+            if ($courseEntity->text) {
+                $request .= 'Текст, который можно использовать: ' . strip_tags($courseEntity->text);
+            }
+
+            return $request;
         } else {
             throw new RecordNotExistException(
                 trans('course::actions.admin.courseUpdateStatusAction.notExistCourse')

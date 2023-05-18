@@ -102,6 +102,7 @@ class ArticleReadAction extends Action
                     $field = ArticleCategory::driver($items[$i]['category'])->field();
                     $items[$i]['category_name'] = ArticleCategory::driver($items[$i]['category'])->name();
                     $items[$i]['text_current'] = $items[$i]['articleable'][$field];
+                    $items[$i]['request_template'] = ArticleCategory::driver($items[$i]['category'])->requestTemplate($items[$i]['articleable_id']);
                 }
 
                 return [

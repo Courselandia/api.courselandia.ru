@@ -372,6 +372,7 @@ class ArticleControllerTest extends TestCase
             'status',
             'articleable_id',
             'articleable_type',
+            'request_template',
             'created_at',
             'updated_at',
             'deleted_at',

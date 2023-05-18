@@ -69,6 +69,13 @@ class Article extends Entity
     public ?string $text_current = null;
 
     /**
+     * Шаблон запроса к искусственному интеллекту.
+     *
+     * @var string|null
+     */
+    public ?string $request_template = null;
+
+    /**
      * Параметры.
      *
      * @var array|null

@@ -35,4 +35,13 @@ abstract class ArticleCategory
      * @return void
      */
     abstract public function apply(int $id): void;
+
+    /**
+     * Шаблон запроса к искусственному интеллекту.
+     *
+     * @param int $id ID сущности для которой пишется статья.
+     *
+     * @return string Запрос.
+     */
+    abstract public function requestTemplate(int $id): string;
 }
