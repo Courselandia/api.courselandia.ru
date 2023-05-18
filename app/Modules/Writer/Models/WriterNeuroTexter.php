@@ -8,6 +8,7 @@
 
 namespace App\Modules\Writer\Models;
 
+use App\Models\Exceptions\PaymentException;
 use Config;
 use Throwable;
 use GuzzleHttp\Client;
@@ -29,6 +30,7 @@ class WriterNeuroTexter extends Writer
      *
      * @return string ID задачи на генерацию.
      * @throws ResponseException
+     * @throws PaymentException
      */
     public function write(string $request): string
     {
@@ -49,7 +51,11 @@ class WriterNeuroTexter extends Writer
                 ],
             );
         } catch (Throwable $error) {
-            throw new ResponseException($error->getMessage());
+            if ($error->getCode() === 403) {
+                throw new PaymentException($error->getMessage());
+            } else {
+                throw new ResponseException($error->getMessage());
+            }
         }
 
         $body = $response->getBody();

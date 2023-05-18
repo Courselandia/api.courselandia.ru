@@ -8,6 +8,7 @@
 
 namespace App\Modules\Writer\Http\Controllers\Admin;
 
+use App\Models\Exceptions\PaymentException;
 use Log;
 use Auth;
 use Writer;
@@ -51,6 +52,11 @@ class WriterController extends Controller
             ];
 
             return response()->json($data);
+        } catch (PaymentException $error) {
+            return response()->json([
+                'success' => false,
+                'message' => $error->getMessage(),
+            ])->setStatusCode(402);
         } catch (ResponseException $error) {
             return response()->json([
                 'success' => false,
