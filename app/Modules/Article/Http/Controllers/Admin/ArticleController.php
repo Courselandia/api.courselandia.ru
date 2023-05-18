@@ -28,6 +28,7 @@ use App\Modules\Article\Http\Requests\Admin\ArticleUpdateStatusRequest;
 use App\Modules\Article\Http\Requests\Admin\ArticleRewriteRequest;
 use App\Modules\Article\Actions\Admin\ArticleRewriteAction;
 use App\Modules\Article\Actions\Admin\ArticleApplyAction;
+use App\Models\Exceptions\PaymentException;
 
 /**
  * Класс контроллер для работы с категориями в административной части.
@@ -217,6 +218,11 @@ class ArticleController extends Controller
                 'success' => false,
                 'message' => $error->getMessage()
             ])->setStatusCode(404);
+        } catch (PaymentException $error) {
+            return response()->json([
+                'success' => false,
+                'message' => $error->getMessage()
+            ])->setStatusCode(402);
         } catch (ResponseException $error) {
             return response()->json([
                 'success' => false,

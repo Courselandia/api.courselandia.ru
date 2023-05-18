@@ -17,6 +17,7 @@ use App\Models\Exceptions\ProcessingException;
 use App\Modules\Writer\Contracts\Writer;
 use App\Models\Exceptions\ResponseException;
 use App\Models\Exceptions\RecordNotExistException;
+use GuzzleHttp\Exception\ClientException;
 
 /**
  * Классы драйвер для написания текстов с использованием neuro-texter.ru.
@@ -50,11 +51,13 @@ class WriterNeuroTexter extends Writer
                     ],
                 ],
             );
-        } catch (Throwable $error) {
+        } catch (ClientException $error) {
+            $data = json_decode($error->getResponse()->getBody()->getContents(), true);
+
             if ($error->getCode() === 403) {
-                throw new PaymentException($error->getMessage());
+                throw new PaymentException($data['error']);
             } else {
-                throw new ResponseException($error->getMessage());
+                throw new ResponseException($data['error']);
             }
         }
 
@@ -74,6 +77,7 @@ class WriterNeuroTexter extends Writer
      * @throws ResponseException
      * @throws RecordNotExistException
      * @throws ParameterInvalidException
+     * @throws PaymentException
      */
     public function result(string $id): string
     {
@@ -90,11 +94,15 @@ class WriterNeuroTexter extends Writer
                     ],
                 ]
             );
-        } catch (Throwable $error) {
+        } catch (ClientException $error) {
+            $data = json_decode($error->getResponse()->getBody()->getContents(), true);
+
             if ($error->getCode() === 404) {
                 throw new RecordNotExistException(trans('writer::models.writerNeuroTexter.notExist'));
+            } if ($error->getCode() === 403) {
+                throw new PaymentException($data['error']);
             } else {
-                throw new ResponseException($error->getMessage());
+                throw new ResponseException($data['error']);
             }
         }
 
