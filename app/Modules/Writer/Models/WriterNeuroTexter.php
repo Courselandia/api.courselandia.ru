@@ -8,10 +8,10 @@
 
 namespace App\Modules\Writer\Models;
 
-use App\Models\Exceptions\PaymentException;
 use Config;
-use Throwable;
 use GuzzleHttp\Client;
+use App\Models\Exceptions\PaymentException;
+use GuzzleHttp\Exception\GuzzleException;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\ProcessingException;
 use App\Modules\Writer\Contracts\Writer;
@@ -31,7 +31,7 @@ class WriterNeuroTexter extends Writer
      *
      * @return string ID задачи на генерацию.
      * @throws ResponseException
-     * @throws PaymentException
+     * @throws PaymentException|GuzzleException
      */
     public function write(string $request): string
     {
@@ -77,7 +77,7 @@ class WriterNeuroTexter extends Writer
      * @throws ResponseException
      * @throws RecordNotExistException
      * @throws ParameterInvalidException
-     * @throws PaymentException
+     * @throws PaymentException|GuzzleException
      */
     public function result(string $id): string
     {
