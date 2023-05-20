@@ -19,7 +19,7 @@ abstract class Writer
      * @param string $request Запрос на написания текста.
      * @return string ID задачи на генерацию.
      */
-    abstract public function write(string $request): string;
+    abstract public function request(string $request): string;
 
     /**
      * Получить результат.

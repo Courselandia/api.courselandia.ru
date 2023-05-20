@@ -9,6 +9,7 @@
 namespace App\Modules\Writer\Http\Controllers\Admin;
 
 use App\Models\Exceptions\PaymentException;
+use App\Models\Exceptions\ProcessingException;
 use Log;
 use Auth;
 use Writer;
@@ -30,10 +31,10 @@ class WriterController extends Controller
      *
      * @return JsonResponse Вернет JSON ответ.
      */
-    public function write(WriterWriteRequest $request): JsonResponse
+    public function request(WriterWriteRequest $request): JsonResponse
     {
         try {
-            $id = Writer::write($request->get('request'));
+            $id = Writer::request($request->get('request'));
 
             Log::info(
                 trans('writer::http.controllers.admin.writerController.write.log'),
@@ -95,6 +96,16 @@ class WriterController extends Controller
                 'success' => false,
                 'message' => $error->getMessage(),
             ])->setStatusCode(404);
+        } catch (ProcessingException $error) {
+            return response()->json([
+                'success' => false,
+                'message' => $error->getMessage(),
+            ])->setStatusCode(501);
+        } catch (PaymentException $error) {
+            return response()->json([
+                'success' => false,
+                'message' => $error->getMessage(),
+            ])->setStatusCode(402);
         }
     }
 }

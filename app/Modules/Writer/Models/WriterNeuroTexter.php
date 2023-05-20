@@ -33,7 +33,7 @@ class WriterNeuroTexter extends Writer
      * @throws ResponseException
      * @throws PaymentException|GuzzleException
      */
-    public function write(string $request): string
+    public function request(string $request): string
     {
         $client = new Client();
 

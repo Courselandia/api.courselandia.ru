@@ -13,9 +13,9 @@ Route::group([
     'as' => 'api.private.admin.writer'
 ],
     function () {
+        Route::post('request/', 'Admin\WriterController@request')
+            ->name('request');
+
         Route::get('result/{id}', 'Admin\WriterController@result')
             ->name('result');
-
-        Route::post('write/', 'Admin\WriterController@write')
-            ->name('write');
     });

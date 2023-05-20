@@ -24,7 +24,7 @@ class WriterFake extends Writer
      *
      * @return string ID задачи на генерацию.
      */
-    public function write(string $request): string
+    public function request(string $request): string
     {
         return '10';
     }

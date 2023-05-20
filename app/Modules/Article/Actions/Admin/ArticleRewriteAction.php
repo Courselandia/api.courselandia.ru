@@ -51,7 +51,7 @@ class ArticleRewriteAction extends Action
         $articleEntity = $action->run();
 
         if ($articleEntity) {
-            $taskId = Writer::write($this->request);
+            $taskId = Writer::request($this->request);
             $articleEntity->task_id = $taskId;
             $articleEntity->request = $this->request;
             $articleEntity->status = Status::PROCESSING;
