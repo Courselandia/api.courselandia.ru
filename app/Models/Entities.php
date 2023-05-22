@@ -19,18 +19,27 @@ class Entities
     /**
      * Сущность.
      *
-     * @var string
+     * @var string|array
      */
-    private string $entity;
+    private string|array $entity;
+
+    /**
+     * Название поле, которое хранит имя класса, что должен использоваться в качестве entity.
+     *
+     * @var string|null
+     */
+    private ?string $fieldNameClass;
 
     /**
      * Конструктор.
      *
-     * @param  string  $entity  Название класса сущности.
+     * @param string|array $entity Название класса сущности.
+     * @param string|null $fieldNameClass Название поле, которое хранит имя класса, что используется в $entity на тот случай если их там несколько. Используется при полиморфной связи.
      */
-    public function __construct(string $entity)
+    public function __construct(string|array $entity, ?string $fieldNameClass = null)
     {
         $this->entity = $entity;
+        $this->fieldNameClass = $fieldNameClass;
     }
 
     /**
@@ -40,6 +49,16 @@ class Entities
      */
     public function getEntity(): Entity
     {
-        return new $this->entity();
+        return new $this->entity;
+    }
+
+    /**
+     * Вернет название поля, которое хранит название Entity, что должно использоваться при полиморфной связи.
+     *
+     * @return Entity
+     */
+    public function getFieldNameClass(): Entity
+    {
+        return new $this->fieldNameClass;
     }
 }

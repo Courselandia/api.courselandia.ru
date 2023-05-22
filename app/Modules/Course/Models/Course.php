@@ -8,15 +8,18 @@
 
 namespace App\Modules\Course\Models;
 
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use SVG\SVG;
+use Size;
+use ImageStore;
+use Exception;
+use Eloquent;
+use App\Modules\Article\Models\Article;
 use App\Modules\Course\Enums\Duration;
 use App\Modules\Course\Enums\Language;
 use App\Modules\Metatag\Models\Metatag;
 use App\Modules\Review\Models\Review;
-use Exception;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Size;
-use ImageStore;
 use App\Models\Enums\EnumList;
 use App\Models\Rep\RepositoryQueryBuilder;
 use App\Modules\Category\Models\Category;
@@ -33,7 +36,6 @@ use App\Modules\Tool\Models\Tool;
 use App\Modules\Process\Models\Process;
 use App\Modules\Employment\Models\Employment;
 use CodeBuds\WebPConverter\WebPConverter;
-use Eloquent;
 use App\Models\Delete;
 use App\Models\Validate;
 use App\Models\Sortable;
@@ -105,6 +107,7 @@ use App\Modules\Course\Filters\CourseFilter;
  * @property-read CourseLevel[] $levels
  * @property-read CourseLearn[] $learns
  * @property-read CourseFeature[] $features
+ * @property-read Article[] $articles
  */
 class Course extends Eloquent
 {
@@ -466,6 +469,16 @@ class Course extends Eloquent
     public function reviews(): HasMany
     {
         return $this->hasMany(Review::class);
+    }
+
+    /**
+     * Статьи написанные искусственным интеллектом.
+     *
+     * @return MorphMany Модели статей.
+     */
+    public function articles(): MorphMany
+    {
+        return $this->morphMany(Article::class, 'articleable');
     }
 
     /**

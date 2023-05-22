@@ -22,7 +22,7 @@ abstract class Entity
     /**
      * Конструктор.
      *
-     * @param  array|null  $values  Массив значений сущности.
+     * @param array|null $values Массив значений сущности.
      *
      * @throws ParameterInvalidException
      */
@@ -73,7 +73,7 @@ abstract class Entity
     /**
      * Установка значений через массив.
      *
-     * @param  array  $values  Массив свойств и значений.
+     * @param array $values Массив свойств и значений.
      *
      * @return $this
      * @throws ParameterInvalidException
@@ -124,18 +124,25 @@ abstract class Entity
                             );
                         }
 
-                        $entities = [];
+                        if (is_string($entity)) {
+                            $entities = [];
 
-                        for ($i = 0; $i < count($value); $i++) {
-                            if ($value[$i]) {
-                                /**
-                                 * @var Entity $ent
-                                 */
-                                $entities[$i] = new $entity($value[$i]);
+                            for ($i = 0; $i < count($value); $i++) {
+                                if ($value[$i]) {
+                                    /**
+                                     * @var Entity $ent
+                                     */
+                                    $entities[$i] = new $entity($value[$i]);
+                                }
                             }
-                        }
 
-                        $this->{$property->getName()} = $entities;
+                            $this->{$property->getName()} = $entities;
+                        } else {
+                            $entityFieldNameClass = $this->getEntityFieldNameClass($property);
+
+                            $entity = ($entity[$this->{$entityFieldNameClass}]);
+                            $this->{$property->getName()} = new $entity($value);
+                        }
                     } else {
                         $this->{$property->getName()} = $value;
                     }
@@ -167,13 +174,14 @@ abstract class Entity
     }
 
     /**
-     * Вернет сущность, которая хранится в аннотации свойства сущности.
+     * Вернет параметры аннотации свойства сущности.
      *
-     * @param  ReflectionProperty  $property  Название свойства.
+     * @param ReflectionProperty $property Название свойства.
+     * @param int $index Индекс параметра.
      *
-     * @return string|null Вернет название класса сущности.
+     * @return string|array|null Параметр.
      */
-    private function getEntityAttribute(ReflectionProperty $property): ?string
+    private function getEntityParameter(ReflectionProperty $property, int $index): string|array|null
     {
         $attributes = $property->getAttributes();
 
@@ -181,8 +189,8 @@ abstract class Entity
             if ($attribute->getName() === 'App\Models\Entities') {
                 $arguments = $attribute->getArguments();
 
-                if (!empty($arguments[0])) {
-                    return $arguments[0];
+                if (!empty($arguments[$index])) {
+                    return $arguments[$index];
                 }
             }
         }
@@ -191,10 +199,34 @@ abstract class Entity
     }
 
     /**
+     * Вернет сущность, которая хранится в аннотации свойства сущности.
+     *
+     * @param ReflectionProperty $property Название свойства.
+     *
+     * @return string|array|null Вернет название класса сущности.
+     */
+    private function getEntityAttribute(ReflectionProperty $property): string|array|null
+    {
+        return $this->getEntityParameter($property, 0);
+    }
+
+    /**
+     * Вернет название поля, которое хранится в аннотации свойства сущности.
+     *
+     * @param ReflectionProperty $property Название свойства.
+     *
+     * @return string|null Вернет название класса сущности.
+     */
+    private function getEntityFieldNameClass(ReflectionProperty $property): ?string
+    {
+        return $this->getEntityParameter($property, 1);
+    }
+
+    /**
      * Проверка на существование типа.
      *
-     * @param  ReflectionProperty  $property  Свойство.
-     * @param  string  $nameType  Название типа.
+     * @param ReflectionProperty $property Свойство.
+     * @param string $nameType Название типа.
      *
      * @return bool Вернет результат проверки.
      */
@@ -212,8 +244,8 @@ abstract class Entity
     /**
      * Проверка типа на соответствие определенному классу.
      *
-     * @param  ReflectionProperty  $property  Свойство.
-     * @param  string  $class  Класс для проверки.
+     * @param ReflectionProperty $property Свойство.
+     * @param string $class Класс для проверки.
      *
      * @return bool Вернет результат проверки.
      * @throws ParameterInvalidException
@@ -233,14 +265,14 @@ abstract class Entity
         }
 
         throw new ParameterInvalidException(
-            trans('entity.typeNotExist', ['parameter' => get_class($this).'::'.$property->getName()])
+            trans('entity.typeNotExist', ['parameter' => get_class($this) . '::' . $property->getName()])
         );
     }
 
     /**
      * Проверка типа, что он Enum.
      *
-     * @param  ReflectionProperty  $property  Свойство.
+     * @param ReflectionProperty $property Свойство.
      *
      * @return bool Вернет результат проверки.
      * @throws ParameterInvalidException
@@ -260,14 +292,14 @@ abstract class Entity
         }
 
         throw new ParameterInvalidException(
-            trans('entity.typeNotExist', ['parameter' => get_class($this).'::'.$property->getName()])
+            trans('entity.typeNotExist', ['parameter' => get_class($this) . '::' . $property->getName()])
         );
     }
 
     /**
      * Вернет сущность, которая хранится в типе свойства.
      *
-     * @param  ReflectionProperty  $property  Свойство.
+     * @param ReflectionProperty $property Свойство.
      *
      * @return Entity|null Сущность.
      */
@@ -287,8 +319,8 @@ abstract class Entity
     /**
      * Вернет Enum, который хранится в типе свойства.
      *
-     * @param  ReflectionProperty  $property  Свойство.
-     * @param  string|int|float  $value  Значение.
+     * @param ReflectionProperty $property Свойство.
+     * @param string|int|float $value Значение.
      *
      * @return object|null Enum.
      */
@@ -308,7 +340,7 @@ abstract class Entity
     /**
      * Получение всех типов данных для свойства.
      *
-     * @param  ReflectionProperty  $property  Свойство.
+     * @param ReflectionProperty $property Свойство.
      *
      * @return array Вернет все типы данных.
      */
@@ -342,7 +374,7 @@ abstract class Entity
      */
     private function isArrayWithEntities(array $checkArray): bool
     {
-        $status = false;
+        $status = true;
 
         for ($i = 0; $i < count($checkArray); $i++) {
             if (!is_object($checkArray[$i]) || !method_exists($checkArray[$i], 'toArray')) {
