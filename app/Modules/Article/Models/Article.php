@@ -94,7 +94,7 @@ class Article extends Eloquent
         return [
             'task_id' => 'digits_between:0,20',
             'category' => 'required|between:1,191',
-            'request' => 'required|between:1,5000',
+            'request' => 'max:65000',
             'text' => 'required|between:1,65000',
             'params' => 'nullable|json',
             'tries' => 'digits_between:0,2',

@@ -20,7 +20,7 @@ class CreateTableArticles extends Migration
             $table->bigInteger('task_id')->unsigned('task_id')->index();
 
             $table->text('category');
-            $table->string('request');
+            $table->string('request')->nullable();
             $table->text('text')->nullable();
             $table->json('params')->nullable();
             $table->smallInteger('tries')->default(0);

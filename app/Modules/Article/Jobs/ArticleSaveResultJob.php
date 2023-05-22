@@ -23,6 +23,9 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use App\Modules\Article\Enums\Status;
 
+/**
+ * Задание на получения результата написанного текста.
+ */
 class ArticleSaveResultJob implements ShouldQueue
 {
     use InteractsWithQueue;

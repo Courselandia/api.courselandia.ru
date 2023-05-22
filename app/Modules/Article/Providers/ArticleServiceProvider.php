@@ -9,6 +9,7 @@
 namespace App\Modules\Article\Providers;
 
 use App;
+use App\Modules\Article\Commands\ArticleWriteCommand;
 use ArticleCategory;
 use App\Modules\Article\Categories\ArticleCategoryManager;
 use App\Modules\Article\Categories\CourseTextArticleCategory;
@@ -47,6 +48,10 @@ class ArticleServiceProvider extends ServiceProvider
         ArticleCategory::extend('course.text', function () {
             return new CourseTextArticleCategory();
         });
+
+        $this->commands([
+            ArticleWriteCommand::class,
+        ]);
     }
 
     /**
