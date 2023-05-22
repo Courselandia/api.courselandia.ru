@@ -95,6 +95,8 @@ class Write
                 $now = $now->addMinute();
 
                 $task->run($i, $now);
+
+                $task->deleteEvent('run');
             }
         }
     }
