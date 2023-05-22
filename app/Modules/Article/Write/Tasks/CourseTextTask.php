@@ -36,31 +36,34 @@ class CourseTextTask extends Task
     /**
      * Запуск написания текстов.
      *
+     * @param int $index Порядковый номер элемента.
      * @param Carbon|null $delay Дата, на сколько нужно отложить задачу.
      *
      * @return void
      * @throws ParameterInvalidException
      */
-    public function run(Carbon $delay = null): void
+    public function run(int $index, Carbon $delay = null): void
     {
-        $courses = $this->getQuery()->get();
+        $course = $this
+            ->getQuery()
+            ->offset($index)
+            ->limit(1)
+            ->first();
 
-        foreach ($courses as $course) {
-            $this->fireEvent('run', [$course]);
+        $this->fireEvent('run', [$course]);
 
-            $entity = new ArticleEntity();
-            $entity->category = 'course.text';
-            $entity->status = ArticleStatus::PENDING;
-            $entity->articleable_id = $course->id;
-            $entity->articleable_type = '\App\Modules\Course\Models\Course';
+        $entity = new ArticleEntity();
+        $entity->category = 'course.text';
+        $entity->status = ArticleStatus::PENDING;
+        $entity->articleable_id = $course->id;
+        $entity->articleable_type = '\App\Modules\Course\Models\Course';
 
-            $article = Article::create($entity->toArray());
+        $article = Article::create($entity->toArray());
 
-            $job = ArticleWriteTextJob::dispatch($article->id, 'course.text');
+        $job = ArticleWriteTextJob::dispatch($article->id, 'course.text');
 
-            if ($delay) {
-                $job->delay($delay);
-            }
+        if ($delay) {
+            $job->delay($delay);
         }
     }
 

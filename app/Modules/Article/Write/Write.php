@@ -85,11 +85,17 @@ class Write
         $now = Carbon::now();
 
         foreach ($tasks as $task) {
-            $task->addEvent('run', function () {
-                $this->fireEvent('run');
-            });
+            $total = $task->count();
 
-            $task->run($now->addMinute());
+            for ($i = 0; $i < $total; $i++) {
+                $task->addEvent('run', function () {
+                    $this->fireEvent('run');
+                });
+
+                $now = $now->addMinute();
+
+                $task->run($i, $now);
+            }
         }
     }
 

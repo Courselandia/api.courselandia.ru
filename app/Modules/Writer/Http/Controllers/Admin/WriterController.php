@@ -8,6 +8,7 @@
 
 namespace App\Modules\Writer\Http\Controllers\Admin;
 
+use App\Models\Exceptions\LimitException;
 use App\Models\Exceptions\PaymentException;
 use App\Models\Exceptions\ProcessingException;
 use Log;
@@ -58,6 +59,11 @@ class WriterController extends Controller
                 'success' => false,
                 'message' => $error->getMessage(),
             ])->setStatusCode(402);
+        } catch (LimitException $error) {
+            return response()->json([
+                'success' => false,
+                'message' => $error->getMessage(),
+            ])->setStatusCode(400);
         } catch (ResponseException $error) {
             return response()->json([
                 'success' => false,

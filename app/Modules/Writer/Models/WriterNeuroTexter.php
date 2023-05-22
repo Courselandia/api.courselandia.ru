@@ -8,6 +8,7 @@
 
 namespace App\Modules\Writer\Models;
 
+use App\Models\Exceptions\LimitException;
 use Config;
 use GuzzleHttp\Client;
 use App\Models\Exceptions\PaymentException;
@@ -32,6 +33,7 @@ class WriterNeuroTexter extends Writer
      * @return string ID задачи на генерацию.
      * @throws ResponseException
      * @throws PaymentException|GuzzleException
+     * @throws LimitException
      */
     public function request(string $request): string
     {
@@ -56,6 +58,8 @@ class WriterNeuroTexter extends Writer
 
             if ($error->getCode() === 403) {
                 throw new PaymentException($data['error']);
+            } elseif ($error->getCode() === 400) {
+                throw new LimitException($data['error']);
             } else {
                 throw new ResponseException($data['error']);
             }

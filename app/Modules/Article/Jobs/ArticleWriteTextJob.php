@@ -8,6 +8,7 @@
 
 namespace App\Modules\Article\Jobs;
 
+use App\Models\Exceptions\LimitException;
 use Log;
 use Writer;
 use Cache;
@@ -86,8 +87,8 @@ class ArticleWriteTextJob implements ShouldQueue
                 ArticleSaveResultJob::dispatch($this->id)
                     ->delay(now()->addMinutes(2));
             }
-        } catch (PaymentException $error) {
-            Log::error('Нужно оплатить сервис написания текстов.');
+        } catch (PaymentException|LimitException $error) {
+            Log::error($error->getMessage());
         }
     }
 }

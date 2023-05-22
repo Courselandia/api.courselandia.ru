@@ -8,6 +8,7 @@
 
 namespace App\Modules\Article\Http\Controllers\Admin;
 
+use App\Models\Exceptions\LimitException;
 use Auth;
 use Log;
 use ReflectionException;
@@ -223,6 +224,11 @@ class ArticleController extends Controller
                 'success' => false,
                 'message' => $error->getMessage()
             ])->setStatusCode(402);
+        } catch (LimitException $error) {
+            return response()->json([
+                'success' => false,
+                'message' => $error->getMessage()
+            ])->setStatusCode(400);
         } catch (ResponseException $error) {
             return response()->json([
                 'success' => false,

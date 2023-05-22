@@ -15,6 +15,7 @@ class CreateTableFailedJobs extends Migration {
 		Schema::create('failed_jobs', function(Blueprint $table)
 		{
 			$table->increments('id');
+            $table->string('uuid')->index();
 			$table->text('connection');
 			$table->text('queue');
 			$table->text('payload');
@@ -31,7 +32,7 @@ class CreateTableFailedJobs extends Migration {
 	 */
 	public function down(): void
     {
-		Schema::drop('jobFailed');
+		Schema::drop('failed_jobs');
 	}
 
 }
