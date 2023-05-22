@@ -92,10 +92,10 @@ class Article extends Eloquent
     ])] protected function getRules(): array
     {
         return [
-            'task_id' => 'digits_between:0,20',
+            'task_id' => 'nullable|digits_between:0,20',
             'category' => 'required|between:1,191',
-            'request' => 'max:65000',
-            'text' => 'required|between:1,65000',
+            'request' => 'nullable|max:65000',
+            'text' => 'nullable|max:65000',
             'params' => 'nullable|json',
             'tries' => 'digits_between:0,2',
             'status' => 'required|between:1,50',

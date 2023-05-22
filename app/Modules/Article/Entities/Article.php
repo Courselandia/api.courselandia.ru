@@ -87,7 +87,7 @@ class Article extends Entity
      *
      * @var int|null
      */
-    public int|null $tries = null;
+    public int|null $tries = 0;
 
     /**
      * Статус.

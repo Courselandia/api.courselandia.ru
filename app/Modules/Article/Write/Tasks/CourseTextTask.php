@@ -16,6 +16,7 @@ use App\Modules\Course\Models\Course;
 use Illuminate\Database\Eloquent\Builder;
 use App\Modules\Article\Entities\Article as ArticleEntity;
 use App\Modules\Article\Models\Article;
+use App\Modules\Article\Enums\Status as ArticleStatus;
 
 /**
  * Написание текстов для описания курсов.
@@ -45,16 +46,17 @@ class CourseTextTask extends Task
         $courses = $this->getQuery()->get();
 
         foreach ($courses as $course) {
-            $this->fireEvent('run');
+            $this->fireEvent('run', [$course]);
 
             $entity = new ArticleEntity();
             $entity->category = 'course.text';
+            $entity->status = ArticleStatus::PENDING;
             $entity->articleable_id = $course->id;
             $entity->articleable_type = '\App\Modules\Course\Models\Course';
 
             $article = Article::create($entity->toArray());
 
-            $job = ArticleWriteTextJob::dispatch($article->id);
+            $job = ArticleWriteTextJob::dispatch($article->id, 'course.text');
 
             if ($delay) {
                 $job->delay($delay);
@@ -76,6 +78,6 @@ class CourseTextTask extends Task
                         $query->where('articles.category', 'course.text');
                     });
             })
-            ->limit(20);
+            ->orderBy('id', 'ASC');
     }
 }

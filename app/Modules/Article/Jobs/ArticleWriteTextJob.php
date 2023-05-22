@@ -10,6 +10,7 @@ namespace App\Modules\Article\Jobs;
 
 use Log;
 use Writer;
+use Cache;
 use ArticleCategory;
 use Illuminate\Bus\Queueable;
 use App\Models\Exceptions\ParameterInvalidException;
@@ -72,13 +73,15 @@ class ArticleWriteTextJob implements ShouldQueue
             $articleEntity = $action->run();
 
             if ($articleEntity && $articleEntity->status === Status::PENDING) {
-                $request = ArticleCategory::driver($this->category)->requestTemplate($this->id);
+                $request = ArticleCategory::driver($this->category)->requestTemplate($articleEntity->articleable_id);
                 $taskId = Writer::request($request);
                 $articleEntity->task_id = $taskId;
                 $articleEntity->request = $request;
                 $articleEntity->status = Status::PROCESSING;
 
                 Article::find($this->id)->update($articleEntity->toArray());
+
+                Cache::tags(['article'])->flush();
 
                 ArticleSaveResultJob::dispatch($this->id)
                     ->delay(now()->addMinutes(2));
