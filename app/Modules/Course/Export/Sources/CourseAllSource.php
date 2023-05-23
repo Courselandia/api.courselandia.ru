@@ -6,15 +6,16 @@
  * @package App\Modules\Course
  */
 
-namespace App\Modules\Course\DbFile\Sources;
+namespace App\Modules\Course\Export\Sources;
 
-use App\Modules\Course\DbFile\Jobs\JobCourse;
-use App\Modules\Course\DbFile\Source;
+use App\Modules\Course\Export\Jobs\CourseAllItemJob;
+use App\Modules\Course\Export\Jobs\CourseItemJob;
+use App\Modules\Course\Export\Source;
 
 /**
  * Источник для формирования курсов.
  */
-class SourceCourse extends Source
+class CourseAllSource extends Source
 {
     /**
      * Общее количество генерируемых данных.
@@ -33,7 +34,7 @@ class SourceCourse extends Source
      */
     public function export(): void
     {
-        JobCourse::dispatch('/courses')
+        CourseAllItemJob::dispatch('courses')
             ->delay(now()->addMinute());
 
         $this->fireEvent('export');

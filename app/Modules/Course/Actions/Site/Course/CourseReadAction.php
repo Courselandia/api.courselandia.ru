@@ -8,6 +8,7 @@
 
 namespace App\Modules\Course\Actions\Site\Course;
 
+use Config;
 use App\Models\Action;
 use App\Modules\Course\Entities\CourseRead;
 use App\Modules\Course\Pipes\Site\Read\FilterCategoryPipe;
@@ -28,7 +29,6 @@ use App\Modules\Course\Pipes\Site\Read\ReadPipe;
 use App\Modules\Course\Pipes\Site\Read\DescriptionPipe;
 use App\Modules\Course\Pipes\Site\Read\DataPipe;
 use App\Modules\Course\Decorators\Site\CourseReadDecorator;
-use App\Modules\Course\DbFile\Store;
 
 /**
  * Класс действия для получения курсов.
@@ -127,11 +127,11 @@ class CourseReadAction extends Action
     public bool $openedTools = false;
 
     /**
-     * Возможность брать данные с файлового хранилища.
+     * Использовать ли систему precache для ускорения ответа.
      *
      * @var bool
      */
-    public bool $dbFile = true;
+    public bool $precache = true;
 
     /**
      * Метод запуска логики.
@@ -141,7 +141,8 @@ class CourseReadAction extends Action
     public function run(): ?CourseRead
     {
         if (
-            $this->dbFile
+            $this->precache
+            && Config::get('app.course_precache')
             && !$this->openedSchools
             && !$this->openedCategories
             && !$this->openedProfessions
@@ -149,7 +150,12 @@ class CourseReadAction extends Action
             && !$this->openedSkills
             && !$this->openedTools
         ) {
-            $result = Store::read($this->offset, $this->limit, $this->sorts, $this->filters);
+            $action = app(CoursePrecacheReadAction::class);
+            $action->offset = $this->offset;
+            $action->limit = $this->limit;
+            $action->sorts = $this->sorts;
+            $action->filters = $this->filters;
+            $result = $action->run();
 
             if ($result) {
                 return $result;

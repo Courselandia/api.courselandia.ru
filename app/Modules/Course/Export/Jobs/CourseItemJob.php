@@ -6,11 +6,11 @@
  * @package App\Modules\Course
  */
 
-namespace App\Modules\Course\DbFile\Jobs;
+namespace App\Modules\Course\Export\Jobs;
 
-use Storage;
-use App\Modules\Course\DbFile\Item;
 use Illuminate\Bus\Queueable;
+use App\Modules\Course\Entities\CourseRead;
+use App\Modules\Course\Models\CourseMongoDb;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -19,7 +19,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 /**
  * Задача для формирования.
  */
-abstract class JobItem implements ShouldQueue
+abstract class CourseItemJob implements ShouldQueue
 {
     use InteractsWithQueue;
     use Queueable;
@@ -27,18 +27,18 @@ abstract class JobItem implements ShouldQueue
     use Dispatchable;
 
     /**
-     * ID Записи.
+     * ID фильтра.
      *
      * @var int|null
      */
-    public ?int $id = null;
+    public ?int $uuid = null;
 
     /**
-     * Путь к папке для хранения файла с данными.
+     * Категория фильтра.
      *
      * @var string
      */
-    public string $path;
+    public string $category;
 
     /**
      * Ссылка на секцию.
@@ -50,27 +50,31 @@ abstract class JobItem implements ShouldQueue
     /**
      * Конструктор.
      *
-     * @param int|null $id ID записи.
+     * @param string $category Категория.
+     * @param int|null $uuid ID фильтра.
+     * @param string|null $link Ссылка фильтра.
      */
-    public function __construct(string $path, ?int $id = null, ?string $link = null)
+    public function __construct(string $category, ?int $uuid = null, ?string $link = null)
     {
-        $this->path = $path;
-        $this->id = $id;
+        $this->category = $category;
+        $this->uuid = $uuid;
         $this->link = $link;
     }
 
     /**
      * Сохранение данных в файл.
      *
-     * @param Item $item Данные.
+     * @param CourseRead $item Данные.
      *
      * @return void
      */
-    protected function save(Item $item): void
+    protected function save(CourseRead $item): void
     {
-        $name = $this->id ?: 'default';
-        $path = '/db/' . $this->path . '/' . $name. '.obj';
-
-        Storage::drive('local')->put($path, serialize($item->data));
+        CourseMongoDb::create([
+            'uuid' => $this->uuid,
+            'category' => $this->category,
+            'link' => $this->link,
+            'data' => serialize($item),
+        ]);
     }
 }

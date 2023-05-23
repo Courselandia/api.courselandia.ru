@@ -6,18 +6,18 @@
  * @package App\Modules\Course
  */
 
-namespace App\Modules\Course\DbFile\Sources;
+namespace App\Modules\Course\Export\Sources;
 
-use App\Modules\Course\DbFile\Jobs\JobSkill;
+use App\Modules\Course\Export\Jobs\CourseSkillItemJob;
 use App\Modules\Course\Enums\Status;
-use App\Modules\Course\DbFile\Source;
+use App\Modules\Course\Export\Source;
 use App\Modules\Skill\Models\Skill;
 use Illuminate\Database\Eloquent\Builder;
 
 /**
  * Источник для формирования навыков.
  */
-class SourceSkill extends Source
+class CourseSkillSource extends Source
 {
     /**
      * Общее количество генерируемых данных.
@@ -46,7 +46,7 @@ class SourceSkill extends Source
                 ?->toArray();
 
             if ($result) {
-                JobSkill::dispatch('/skills', $result['id'], $result['link'])
+                CourseSkillItemJob::dispatch('skills', $result['id'], $result['link'])
                     ->delay(now()->addMinute());
 
                 $this->fireEvent('export');

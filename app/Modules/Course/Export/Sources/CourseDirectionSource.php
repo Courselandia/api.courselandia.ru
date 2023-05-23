@@ -6,18 +6,18 @@
  * @package App\Modules\Course
  */
 
-namespace App\Modules\Course\DbFile\Sources;
+namespace App\Modules\Course\Export\Sources;
 
-use App\Modules\Course\DbFile\Jobs\JobTool;
+use App\Modules\Course\Export\Jobs\CourseDirectionItemJob;
 use App\Modules\Course\Enums\Status;
-use App\Modules\Course\DbFile\Source;
-use App\Modules\Tool\Models\Tool;
+use App\Modules\Course\Export\Source;
+use App\Modules\Direction\Models\Direction;
 use Illuminate\Database\Eloquent\Builder;
 
 /**
- * Источник для формирования инструментов.
+ * Источник для формирования направлений.
  */
-class SourceTool extends Source
+class CourseDirectionSource extends Source
 {
     /**
      * Общее количество генерируемых данных.
@@ -46,7 +46,7 @@ class SourceTool extends Source
                 ?->toArray();
 
             if ($result) {
-                JobTool::dispatch('/tools', $result['id'], $result['link'])
+                CourseDirectionItemJob::dispatch('directions', $result['id'], $result['link'])
                     ->delay(now()->addMinute());
 
                 $this->fireEvent('export');
@@ -61,7 +61,7 @@ class SourceTool extends Source
      */
     private function getQuery(): Builder
     {
-        return Tool::whereHas('courses', function ($query) {
+        return Direction::whereHas('courses', function ($query) {
             $query->where('status', Status::ACTIVE->value)
                 ->whereHas('school', function ($query) {
                     $query->where('status', true);

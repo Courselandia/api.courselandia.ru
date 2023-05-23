@@ -54,4 +54,10 @@ return [
         'course_id' => 'ID course',
         'text' => 'Text',
     ],
+    'courseMongoDb' => [
+        'uuid' => 'UUID',
+        'category' => 'Category',
+        'link' => 'Link',
+        'data' => 'Data',
+    ],
 ];

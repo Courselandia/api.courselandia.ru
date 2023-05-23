@@ -129,7 +129,7 @@ return [
 
     'cipher' => 'AES-256-CBC',
 
-    'course_db_file' => env('COURSE_DB_FILE', false),
+    'course_precache' => env('COURSE_PRECACHE', false),
 
     /*
     |--------------------------------------------------------------------------

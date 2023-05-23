@@ -6,16 +6,14 @@
  * @package App\Modules\Course
  */
 
-namespace App\Modules\Course\DbFile\Jobs;
+namespace App\Modules\Course\Export\Jobs;
 
-use Cache;
 use App\Modules\Course\Actions\Site\Course\CourseReadAction;
-use App\Modules\Course\DbFile\Item;
 
 /**
- * Задача для формирования учителя.
+ * Задача для формирования навыка.
  */
-class JobTeacher extends JobItem
+class CourseSkillItemJob extends CourseItemJob
 {
     /**
      * Выполнение задачи.
@@ -26,21 +24,17 @@ class JobTeacher extends JobItem
     {
         $action = app(CourseReadAction::class);
         $action->sorts = ['name' => 'ASC'];
-        $action->filters = ['teachers-id' => $this->id];
+        $action->filters = ['skills-id' => $this->uuid];
         $action->offset = 0;
         $action->limit = 36;
-        $action->section = 'teacher';
+        $action->section = 'skill';
         $action->sectionLink = $this->link;
-        $action->dbFile = false;
+        $action->precache = false;
 
         $entityCourseRead = $action->run();
 
         if ($entityCourseRead) {
-            $item = new Item();
-            $item->id = $this->id;
-            $item->data = $entityCourseRead;
-
-            $this->save($item);
+            $this->save($entityCourseRead);
         }
     }
 }

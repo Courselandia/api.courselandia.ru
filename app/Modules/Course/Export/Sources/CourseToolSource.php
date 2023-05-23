@@ -6,18 +6,18 @@
  * @package App\Modules\Course
  */
 
-namespace App\Modules\Course\DbFile\Sources;
+namespace App\Modules\Course\Export\Sources;
 
-use App\Modules\Course\DbFile\Jobs\JobCategory;
+use App\Modules\Course\Export\Jobs\CourseToolItemJob;
 use App\Modules\Course\Enums\Status;
-use App\Modules\Course\DbFile\Source;
-use App\Modules\Category\Models\Category;
+use App\Modules\Course\Export\Source;
+use App\Modules\Tool\Models\Tool;
 use Illuminate\Database\Eloquent\Builder;
 
 /**
- * Источник для формирования категорий.
+ * Источник для формирования инструментов.
  */
-class SourceCategory extends Source
+class CourseToolSource extends Source
 {
     /**
      * Общее количество генерируемых данных.
@@ -46,7 +46,7 @@ class SourceCategory extends Source
                 ?->toArray();
 
             if ($result) {
-                JobCategory::dispatch('/categories', $result['id'], $result['link'])
+                CourseToolItemJob::dispatch('tools', $result['id'], $result['link'])
                     ->delay(now()->addMinute());
 
                 $this->fireEvent('export');
@@ -61,7 +61,7 @@ class SourceCategory extends Source
      */
     private function getQuery(): Builder
     {
-        return Category::whereHas('courses', function ($query) {
+        return Tool::whereHas('courses', function ($query) {
             $query->where('status', Status::ACTIVE->value)
                 ->whereHas('school', function ($query) {
                     $query->where('status', true);

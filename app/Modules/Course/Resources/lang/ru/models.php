@@ -54,4 +54,10 @@ return [
         'course_id' => 'ID курса',
         'level' => 'Уровень',
     ],
+    'courseMongoDb' => [
+        'uuid' => 'UUID',
+        'category' => 'Категория',
+        'link' => 'Ссылка',
+        'data' => 'Данные',
+    ],
 ];

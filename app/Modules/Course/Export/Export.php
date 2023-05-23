@@ -6,21 +6,24 @@
  * @package App\Modules\Course
  */
 
-namespace App\Modules\Course\DbFile;
+namespace App\Modules\Course\Export;
 
+use App\Modules\Course\Export\Sources\CourseAllSource;
+use App\Modules\Course\Models\CourseMongoDb;
 use Cache;
 use App\Models\Event;
-use App\Modules\Course\DbFile\Sources\SourceCourse;
-use App\Modules\Course\DbFile\Sources\SourceDirection;
-use App\Modules\Course\DbFile\Sources\SourceCategory;
-use App\Modules\Course\DbFile\Sources\SourceProfession;
-use App\Modules\Course\DbFile\Sources\SourceSchool;
-use App\Modules\Course\DbFile\Sources\SourceSkill;
-use App\Modules\Course\DbFile\Sources\SourceTeacher;
-use App\Modules\Course\DbFile\Sources\SourceTool;
+use App\Modules\Course\Export\Sources\CourseSource;
+use App\Modules\Course\Export\Sources\CourseDirectionSource;
+use App\Modules\Course\Export\Sources\CourseCategorySource;
+use App\Modules\Course\Export\Sources\CourseProfessionSource;
+use App\Modules\Course\Export\Sources\CourseSchoolSource;
+use App\Modules\Course\Export\Sources\CourseSkillSource;
+use App\Modules\Course\Export\Sources\CourseTeacherSource;
+use App\Modules\Course\Export\Sources\CourseToolSource;
+use App\Modules\Course\Export\Jobs\CourseAllItemJob;
 
 /**
- * Класс для экспортирования курсов в файлы для их быстрой загрузки.
+ * Класс для экспортирования курсов в MongoDB для быстрой загрузки.
  */
 class Export
 {
@@ -38,14 +41,14 @@ class Export
      */
     public function __construct()
     {
-        $this->addSource(new SourceCourse())
-            ->addSource(new SourceDirection())
-            ->addSource(new SourceSchool())
-            ->addSource(new SourceCategory())
-            ->addSource(new SourceProfession())
-            ->addSource(new SourceSkill())
-            ->addSource(new SourceTool())
-            ->addSource(new SourceTeacher());
+        $this->addSource(new CourseAllSource())
+            ->addSource(new CourseDirectionSource())
+            ->addSource(new CourseSchoolSource())
+            ->addSource(new CourseCategorySource())
+            ->addSource(new CourseProfessionSource())
+            ->addSource(new CourseSkillSource())
+            ->addSource(new CourseToolSource())
+            ->addSource(new CourseTeacherSource());
     }
 
     /**
@@ -75,6 +78,7 @@ class Export
         Cache::flush();
 
         $this->offLimits();
+        $this->truncate();
         $this->exports();
     }
 
@@ -88,6 +92,16 @@ class Export
         ini_set('memory_limit', '2048M');
         ini_set('max_execution_time', '0');
         ignore_user_abort(true);
+    }
+
+    /**
+     * Очистить старые данные.
+     *
+     * @return void
+     */
+    private function truncate(): void
+    {
+        CourseMongoDb::truncate();
     }
 
     /**

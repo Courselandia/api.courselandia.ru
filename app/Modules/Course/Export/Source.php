@@ -6,7 +6,7 @@
  * @package App\Modules\Course
  */
 
-namespace App\Modules\Course\DbFile;
+namespace App\Modules\Course\Export;
 
 use App\Models\Error;
 use App\Models\Event;

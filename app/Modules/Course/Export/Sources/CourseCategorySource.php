@@ -6,18 +6,18 @@
  * @package App\Modules\Course
  */
 
-namespace App\Modules\Course\DbFile\Sources;
+namespace App\Modules\Course\Export\Sources;
 
-use App\Modules\Course\DbFile\Jobs\JobSchool;
-use App\Modules\School\Models\School;
+use App\Modules\Course\Export\Jobs\CourseCategoryItemJob;
 use App\Modules\Course\Enums\Status;
-use App\Modules\Course\DbFile\Source;
+use App\Modules\Course\Export\Source;
+use App\Modules\Category\Models\Category;
 use Illuminate\Database\Eloquent\Builder;
 
 /**
- * Источник для формирования школ.
+ * Источник для формирования категорий.
  */
-class SourceSchool extends Source
+class CourseCategorySource extends Source
 {
     /**
      * Общее количество генерируемых данных.
@@ -46,7 +46,7 @@ class SourceSchool extends Source
                 ?->toArray();
 
             if ($result) {
-                JobSchool::dispatch('/schools', $result['id'], $result['link'])
+                CourseCategoryItemJob::dispatch('categories', $result['id'], $result['link'])
                     ->delay(now()->addMinute());
 
                 $this->fireEvent('export');
@@ -61,8 +61,11 @@ class SourceSchool extends Source
      */
     private function getQuery(): Builder
     {
-        return School::whereHas('courses', function ($query) {
-            $query->where('status', Status::ACTIVE->value);
+        return Category::whereHas('courses', function ($query) {
+            $query->where('status', Status::ACTIVE->value)
+                ->whereHas('school', function ($query) {
+                    $query->where('status', true);
+                });
         })
         ->where('status', true)
         ->orderBy('id');

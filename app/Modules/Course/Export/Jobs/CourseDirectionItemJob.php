@@ -6,16 +6,16 @@
  * @package App\Modules\Course
  */
 
-namespace App\Modules\Course\DbFile\Jobs;
+namespace App\Modules\Course\Export\Jobs;
 
 use Cache;
 use App\Modules\Course\Actions\Site\Course\CourseReadAction;
-use App\Modules\Course\DbFile\Item;
+use App\Modules\Course\Export\Item;
 
 /**
- * Задача для формирования курсов.
+ * Задача для формирования направления.
  */
-class JobCourse extends JobItem
+class CourseDirectionItemJob extends CourseItemJob
 {
     /**
      * Выполнение задачи.
@@ -26,19 +26,17 @@ class JobCourse extends JobItem
     {
         $action = app(CourseReadAction::class);
         $action->sorts = ['name' => 'ASC'];
-        $action->filters = [];
+        $action->filters = ['directions-id' => $this->uuid];
         $action->offset = 0;
         $action->limit = 36;
-        $action->dbFile = false;
+        $action->section = 'direction';
+        $action->sectionLink = $this->link;
+        $action->precache = false;
 
         $entityCourseRead = $action->run();
 
         if ($entityCourseRead) {
-            $item = new Item();
-            $item->id = $this->id;
-            $item->data = $entityCourseRead;
-
-            $this->save($item);
+            $this->save($entityCourseRead);
         }
     }
 }

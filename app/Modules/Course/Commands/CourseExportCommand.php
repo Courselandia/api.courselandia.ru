@@ -10,7 +10,7 @@ namespace App\Modules\Course\Commands;
 
 use Log;
 use Illuminate\Console\Command;
-use App\Modules\Course\DbFile\Export;
+use App\Modules\Course\Export\Export;
 
 /**
  * Экспорт курсов в файлы для их быстрой загрузки.

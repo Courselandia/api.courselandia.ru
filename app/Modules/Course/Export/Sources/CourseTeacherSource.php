@@ -6,18 +6,18 @@
  * @package App\Modules\Course
  */
 
-namespace App\Modules\Course\DbFile\Sources;
+namespace App\Modules\Course\Export\Sources;
 
-use App\Modules\Course\DbFile\Jobs\JobProfession;
+use App\Modules\Course\Export\Jobs\CourseTeacherItemJob;
 use App\Modules\Course\Enums\Status;
-use App\Modules\Course\DbFile\Source;
-use App\Modules\Profession\Models\Profession;
+use App\Modules\Course\Export\Source;
+use App\Modules\Teacher\Models\Teacher;
 use Illuminate\Database\Eloquent\Builder;
 
 /**
- * Источник для формирования профессий.
+ * Источник для формирования учителей.
  */
-class SourceProfession extends Source
+class CourseTeacherSource extends Source
 {
     /**
      * Общее количество генерируемых данных.
@@ -26,7 +26,7 @@ class SourceProfession extends Source
      */
     public function count(): int
     {
-        return $this->getQuery()->count();
+        return $this->getQuery()->clone()->count();
     }
 
     /**
@@ -46,7 +46,7 @@ class SourceProfession extends Source
                 ?->toArray();
 
             if ($result) {
-                JobProfession::dispatch('/professions', $result['id'], $result['link'])
+                CourseTeacherItemJob::dispatch('teachers', $result['id'], $result['link'])
                     ->delay(now()->addMinute());
 
                 $this->fireEvent('export');
@@ -61,7 +61,7 @@ class SourceProfession extends Source
      */
     private function getQuery(): Builder
     {
-        return Profession::whereHas('courses', function ($query) {
+        return Teacher::whereHas('courses', function ($query) {
             $query->where('status', Status::ACTIVE->value)
                 ->whereHas('school', function ($query) {
                     $query->where('status', true);
