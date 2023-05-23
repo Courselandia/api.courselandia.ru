@@ -223,7 +223,7 @@ return [
         App\Modules\OAuth\Providers\RouteServiceProvider::class,
 
         App\Modules\Act\Providers\ActServiceProvider::class,
-        App\Modules\Act\Providers\RouteServiceProvider::class,
+        // App\Modules\Act\Providers\RouteServiceProvider::class,
 
         App\Modules\Alert\Providers\AlertServiceProvider::class,
         App\Modules\Alert\Providers\RouteServiceProvider::class,
@@ -231,8 +231,8 @@ return [
         App\Modules\Core\Providers\CoreServiceProvider::class,
         App\Modules\Core\Providers\RouteServiceProvider::class,
 
-        App\Modules\Document\Providers\DocumentServiceProvider::class,
-        App\Modules\Document\Providers\RouteServiceProvider::class,
+        //App\Modules\Document\Providers\DocumentServiceProvider::class,
+        //App\Modules\Document\Providers\RouteServiceProvider::class,
 
         App\Modules\Employment\Providers\EmploymentServiceProvider::class,
         App\Modules\Employment\Providers\RouteServiceProvider::class,
@@ -253,7 +253,7 @@ return [
         App\Modules\Log\Providers\RouteServiceProvider::class,
 
         App\Modules\Metatag\Providers\MetatagServiceProvider::class,
-        App\Modules\Metatag\Providers\RouteServiceProvider::class,
+        //App\Modules\Metatag\Providers\RouteServiceProvider::class,
 
         App\Modules\Publication\Providers\PublicationServiceProvider::class,
         App\Modules\Publication\Providers\RouteServiceProvider::class,
