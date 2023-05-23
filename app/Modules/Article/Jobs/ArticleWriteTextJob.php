@@ -76,11 +76,12 @@ class ArticleWriteTextJob implements ShouldQueue
             if ($articleEntity && $articleEntity->status === Status::PENDING) {
                 $request = ArticleCategory::driver($this->category)->requestTemplate($articleEntity->articleable_id);
                 $taskId = Writer::request($request);
-                $articleEntity->task_id = $taskId;
-                $articleEntity->request = $request;
-                $articleEntity->status = Status::PROCESSING;
 
-                Article::find($this->id)->update($articleEntity->toArray());
+                Article::find($this->id)->update([
+                    'task_id' => $taskId,
+                    'request' => $request,
+                    'status' => Status::PROCESSING->value,
+                ]);
 
                 Cache::tags(['article'])->flush();
 

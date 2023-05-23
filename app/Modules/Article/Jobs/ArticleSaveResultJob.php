@@ -67,27 +67,32 @@ class ArticleSaveResultJob implements ShouldQueue
         if ($articleEntity && $articleEntity->status === Status::PROCESSING) {
             try {
                 $text = Writer::result($articleEntity->task_id);
-                $articleEntity->text = $text;
-                $articleEntity->status = Status::READY;
-                $articleEntity->tries = $articleEntity->tries + 1;
 
-                Article::find($this->id)->update($articleEntity->toArray());
+                Article::find($this->id)->update([
+                    'text' => $text,
+                    'status' => Status::READY->value,
+                    'tries' => $articleEntity->tries + 1,
+                ]);
             } catch (ProcessingException $error) {
                 if ($articleEntity->tries < self::MAX_TRIES) {
-                    $articleEntity->tries = $articleEntity->tries + 1;
-
                     ArticleSaveResultJob::dispatch($this->id)
                         ->delay(now()->addMinutes(2));
+
+                    Article::find($this->id)->update([
+                        'tries' => $articleEntity->tries + 1,
+                    ]);
                 } else {
                     Log::error('Достигнуто максимальное количество попыток получить написанный текст. ID: ' . $this->id . '. Task ID: ' . $articleEntity->task_id);
-                    $articleEntity->status = Status::FAILED;
-                }
 
-                Article::find($this->id)->update($articleEntity->toArray());
+                    Article::find($this->id)->update([
+                        'status' => Status::FAILED->value,
+                    ]);
+                }
             } catch (Throwable $error) {
                 Log::error('Ошибка получения написанного текста: ' . $error->getMessage() . '. ID: ' . $this->id . '. Task ID: ' . $articleEntity->task_id);
-                $articleEntity->status = Status::FAILED;
-                Article::find($this->id)->update($articleEntity->toArray());
+                Article::find($this->id)->update([
+                    'status' => Status::FAILED->value,
+                ]);
             }
 
             Cache::tags(['article'])->flush();
