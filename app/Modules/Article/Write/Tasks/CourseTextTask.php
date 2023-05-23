@@ -36,34 +36,36 @@ class CourseTextTask extends Task
     /**
      * Запуск написания текстов.
      *
-     * @param int $index Порядковый номер элемента.
      * @param Carbon|null $delay Дата, на сколько нужно отложить задачу.
      *
      * @return void
      * @throws ParameterInvalidException
      */
-    public function run(int $index, Carbon $delay = null): void
+    public function run(Carbon $delay = null): void
     {
-        $course = $this
+        $courses = $this
             ->getQuery()
-            ->offset($index)
-            ->limit(1)
-            ->first();
+            ->clone()
+            ->get();
 
-        $this->fireEvent('run', [$course]);
+        foreach ($courses as $course) {
+            $this->fireEvent('run', [$course]);
 
-        $entity = new ArticleEntity();
-        $entity->category = 'course.text';
-        $entity->status = ArticleStatus::PENDING;
-        $entity->articleable_id = $course->id;
-        $entity->articleable_type = '\App\Modules\Course\Models\Course';
+            $entity = new ArticleEntity();
+            $entity->category = 'course.text';
+            $entity->status = ArticleStatus::PENDING;
+            $entity->articleable_id = $course->id;
+            $entity->articleable_type = 'App\Modules\Course\Models\Course';
 
-        $article = Article::create($entity->toArray());
+            $delay = $delay->addMinute();
 
-        $job = ArticleWriteTextJob::dispatch($article->id, 'course.text');
+            $article = Article::create($entity->toArray());
 
-        if ($delay) {
-            $job->delay($delay);
+            $job = ArticleWriteTextJob::dispatch($article->id, 'course.text');
+
+            if ($delay) {
+                $job->delay($delay);
+            }
         }
     }
 
@@ -75,11 +77,8 @@ class CourseTextTask extends Task
     private function getQuery(): Builder
     {
         return Course::where('status', Status::ACTIVE->value)
-            ->where(function (Builder $query) {
-                $query->doesntHave('articles')
-                    ->orWhereHas('articles', function (Builder $query) {
-                        $query->where('articles.category', 'course.text');
-                    });
+            ->doesntHave('articles', 'and', function (Builder $query) {
+                $query->where('articles.category', 'course.text');
             })
             ->orderBy('id', 'ASC');
     }

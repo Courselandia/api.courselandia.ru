@@ -38,30 +38,37 @@ class ArticleWriteCommand extends Command
      */
     public function handle(): void
     {
-        $this->line('Запуск заданий на написание текстов...');
-
         $write = new Write();
-        $bar = $this->output->createProgressBar($write->getTotal());
-        $bar->start();
+        $total = $write->getTotal();
 
-        $write->addEvent('run', function () use ($bar) {
-            $bar->advance();
-        });
+        if ($total) {
+            $this->line('Запуск заданий на написание текстов...');
 
-        $write->run();
-        $bar->finish();
+            $bar = $this->output->createProgressBar($total);
+            $bar->start();
 
-        if ($write->hasError()) {
-            $errors = $write->getErrors();
+            $write->addEvent('run', function () use ($bar) {
+                $bar->advance();
+            });
 
-            foreach ($errors as $error) {
-                $message = 'Ошибка запуска задания: ' . $error->getMessage();
-                Log::error($message);
-                $this->error($message);
+            $write->run();
+            $bar->finish();
+
+            if ($write->hasError()) {
+                $errors = $write->getErrors();
+
+                foreach ($errors as $error) {
+                    $message = 'Ошибка запуска задания: ' . $error->getMessage();
+                    Log::error($message);
+                    $this->error($message);
+                }
             }
+
+            $this->info("\n\nЗадания на написания текстов были отправлены в очередь.");
+        } else {
+            $this->info("\n\nНет заданий для написания текстов.");
         }
 
-        $this->info("\n\nЗадания на написания текстов были отправлены в очередь.");
         Log::info('Запуск написания текстов.');
     }
 }

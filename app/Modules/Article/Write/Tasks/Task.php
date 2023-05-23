@@ -30,10 +30,9 @@ abstract class Task
     /**
      * Запуск формирования текстов.
      *
-     * @param int $index Порядковый номер элемента.
      * @param Carbon|null $delay Дата, на сколько нужно отложить задачу.
      *
      * @return void
      */
-    abstract public function run(int $index, Carbon $delay = null): void;
+    abstract public function run(Carbon $delay = null): void;
 }
