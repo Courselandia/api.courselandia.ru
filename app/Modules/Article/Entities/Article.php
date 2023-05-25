@@ -48,6 +48,13 @@ class Article extends Entity
     public ?string $category_name = null;
 
     /**
+     * Метка сущности.
+     *
+     * @var string|null
+     */
+    public ?string $category_label = null;
+
+    /**
      * Запрос на написание текста.
      *
      * @var string|null

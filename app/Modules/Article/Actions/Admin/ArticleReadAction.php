@@ -99,6 +99,7 @@ class ArticleReadAction extends Action
                 for ($i = 0; $i < count($items); $i++) {
                     $field = ArticleCategory::driver($items[$i]['category'])->field();
                     $items[$i]['category_name'] = ArticleCategory::driver($items[$i]['category'])->name();
+                    $items[$i]['category_label'] = ArticleCategory::driver($items[$i]['category'])->label($items[$i]['articleable_id']);
                     $items[$i]['text_current'] = $items[$i]['articleable'][$field];
                     $items[$i]['request_template'] = ArticleCategory::driver($items[$i]['category'])->requestTemplate($items[$i]['articleable_id']);
                 }

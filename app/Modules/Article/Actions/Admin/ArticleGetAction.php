@@ -51,6 +51,7 @@ class ArticleGetAction extends Action
                     $entity = new ArticleEntity($article->toArray());
                     $field = ArticleCategory::driver($entity->category)->field();
                     $entity->category_name = ArticleCategory::driver($entity->category)->name();
+                    $entity->category_label = ArticleCategory::driver($entity->category)->label($article->articleable_id);
                     $entity->text_current = $entity->articleable->{$field};
                     $entity->request_template = ArticleCategory::driver($entity->category)->requestTemplate($article->articleable_id);
 

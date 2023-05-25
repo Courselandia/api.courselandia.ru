@@ -42,6 +42,29 @@ class CourseTextArticleCategory extends ArticleCategory
     }
 
     /**
+     * Метод для получения метки, которая характеризует сущность.
+     *
+     * @param int $id ID сущности для которой пишется статья.
+     *
+     * @return string Метка.
+     * @throws RecordNotExistException|ParameterInvalidException
+     */
+    public function label(int $id): string
+    {
+        $action = app(CourseGetAction::class);
+        $action->id = $id;
+        $courseEntity = $action->run();
+
+        if ($courseEntity) {
+            return $courseEntity->name;
+        } else {
+            throw new RecordNotExistException(
+                trans('course::actions.admin.courseUpdateStatusAction.notExistCourse')
+            );
+        }
+    }
+
+    /**
      * Метод для создания собственной логики принятия текста.
      *
      * @param int $id ID статьи.

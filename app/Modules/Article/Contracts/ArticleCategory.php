@@ -44,4 +44,13 @@ abstract class ArticleCategory
      * @return string Запрос.
      */
     abstract public function requestTemplate(int $id): string;
+
+    /**
+     * Абстрактный метод для получения метки, которая характеризует сущность.
+     *
+     * @param int $id ID сущности для которой пишется статья.
+     *
+     * @return string Метка.
+     */
+    abstract public function label(int $id): string;
 }
