@@ -9,12 +9,13 @@
 namespace App\Modules\Article\Providers;
 
 use App;
-use App\Modules\Article\Commands\ArticleWriteCommand;
+use Config;
 use ArticleCategory;
+use Illuminate\Support\ServiceProvider;
+use App\Modules\Article\Commands\ArticleApplyCommand;
+use App\Modules\Article\Commands\ArticleWriteCommand;
 use App\Modules\Article\Categories\ArticleCategoryManager;
 use App\Modules\Article\Categories\CourseTextArticleCategory;
-use Config;
-use Illuminate\Support\ServiceProvider;
 
 /**
  * Класс сервис-провайдера для настройки этого модуля.
@@ -51,6 +52,7 @@ class ArticleServiceProvider extends ServiceProvider
 
         $this->commands([
             ArticleWriteCommand::class,
+            ArticleApplyCommand::class,
         ]);
     }
 

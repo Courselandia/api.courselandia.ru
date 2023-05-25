@@ -11,14 +11,14 @@ namespace App\Modules\Writer\Http\Controllers\Admin;
 use App\Models\Exceptions\LimitException;
 use App\Models\Exceptions\PaymentException;
 use App\Models\Exceptions\ProcessingException;
-use Log;
+use App\Models\Exceptions\RecordNotExistException;
+use App\Models\Exceptions\ResponseException;
+use App\Modules\Writer\Http\Requests\Admin\WriterWriteRequest;
 use Auth;
-use Writer;
-use App\Modules\Writer\Http\Requests\Admin\Teacher\WriterWriteRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
-use App\Models\Exceptions\ResponseException;
-use App\Models\Exceptions\RecordNotExistException;
+use Log;
+use Writer;
 
 /**
  * Класс контроллер для написания текстов

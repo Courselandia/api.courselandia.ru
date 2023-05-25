@@ -6,7 +6,7 @@
  * @package App.Models.Writer
  */
 
-namespace App\Modules\Writer\Http\Requests\Admin\Teacher;
+namespace App\Modules\Writer\Http\Requests\Admin;
 
 use App\Models\FormRequest;
 use JetBrains\PhpStorm\ArrayShape;
