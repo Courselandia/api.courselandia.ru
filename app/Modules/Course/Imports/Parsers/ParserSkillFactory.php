@@ -54,7 +54,7 @@ class ParserSkillFactory extends ParserYml
             $course->name = $offer['name'];
             $course->url = $offer['url'];
             $course->price = $offer['price'];
-            $course->price_old = $offer['oldprice'];
+            $course->price_old = $offer['oldprice'] ?? null;
             $course->currency = Currency::RUB;
             $course->image = $offer['picture'] ?? null;
             $course->text = $offer['description'];
