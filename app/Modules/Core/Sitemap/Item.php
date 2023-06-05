@@ -30,7 +30,7 @@ class Item
     /**
      * Приоритетность.
      *
-     * @var int
+     * @var float
      */
-    public int $priority = 1;
+    public float $priority = 1;
 }
