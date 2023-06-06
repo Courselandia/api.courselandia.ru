@@ -228,6 +228,9 @@ return [
         App\Modules\Alert\Providers\AlertServiceProvider::class,
         App\Modules\Alert\Providers\RouteServiceProvider::class,
 
+        App\Modules\Analyzer\Providers\AnalyzerServiceProvider::class,
+        App\Modules\Analyzer\Providers\RouteServiceProvider::class,
+
         App\Modules\Core\Providers\CoreServiceProvider::class,
         App\Modules\Core\Providers\RouteServiceProvider::class,
 
