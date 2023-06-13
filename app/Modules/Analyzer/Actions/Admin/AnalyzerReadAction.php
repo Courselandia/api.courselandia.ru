@@ -98,7 +98,7 @@ class AnalyzerReadAction extends Action
                 for ($i = 0; $i < count($items); $i++) {
                     $field = AnalyzerCategory::driver($items[$i]['category'])->field();
                     $items[$i]['category_name'] = AnalyzerCategory::driver($items[$i]['category'])->name();
-                    $items[$i]['category_label'] = AnalyzerCategory::driver($items[$i]['category'])->label($items[$i]['articleable_id']);
+                    $items[$i]['category_label'] = AnalyzerCategory::driver($items[$i]['category'])->label($items[$i]['analyzerable_id']);
                     $items[$i]['text'] = $items[$i]['analyzerable'][$field];
                 }
 

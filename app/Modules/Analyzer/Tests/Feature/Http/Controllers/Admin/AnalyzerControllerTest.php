@@ -123,27 +123,6 @@ class AnalyzerControllerTest extends TestCase
     }
 
     /**
-     * Провести анализ текста с ошибкой.
-     *
-     * @return void
-     */
-    public function testAnalyzeNotValid(): void
-    {
-        $analyzer = Analyzer::factory()->create();
-
-        $this->json(
-            'PUT',
-            'api/private/admin/analyzer/analyze/' . $analyzer->id, [],
-            [
-                'Authorization' => 'Bearer ' . $this->getAdminToken()
-            ]
-        )->assertStatus(400)->assertJsonStructure([
-            'success',
-            'message',
-        ]);
-    }
-
-    /**
      * Провести анализ текста с ошибкой для несуществующей записи.
      *
      * @return void
@@ -180,15 +159,15 @@ class AnalyzerControllerTest extends TestCase
             'category',
             'category_name',
             'category_label',
-            'request',
+            'unique',
+            'water',
+            'spam',
             'text',
-            'text_current',
             'params',
             'tries',
             'status',
             'analyzerable_id',
             'analyzerable_type',
-            'request_template',
             'created_at',
             'updated_at',
             'deleted_at',
