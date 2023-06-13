@@ -113,9 +113,9 @@ class PlagiarismTextRu extends Plagiarism
             }
         }
 
-        $result = new Result();
-        $seo = json_decode($result['seo_check'], true);
+        $seo = json_decode($response['seo_check'], true);
 
+        $result = new Result();
         $result->unique = $response['unique'];
         $result->water = $seo['water_percent'];
         $result->spam = $seo['spam_percent'];

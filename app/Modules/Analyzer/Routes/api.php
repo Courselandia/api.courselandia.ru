@@ -9,17 +9,17 @@ Route::group([
         'auth.api',
         'auth.role:' . Role::ADMIN->value . ',' . Role::MANAGER->value
     ],
-    'prefix' => 'private/admin/analyze/',
-    'as' => 'api.private.admin.analyze'
+    'prefix' => 'private/admin/analyzer/',
+    'as' => 'api.private.admin.analyzer'
 ],
     function () {
-        Route::get('read/', 'Admin\AnalyzeController@read')
+        Route::get('read/', 'Admin\AnalyzerController@read')
             ->name('read');
 
-        Route::get('get/{id}', 'Admin\AnalyzeController@get')
+        Route::get('get/{id}', 'Admin\AnalyzerController@get')
             ->name('get');
 
-        Route::put('analyze/{id}', 'Admin\AnalyzeController@analyze')
+        Route::put('analyze/{id}', 'Admin\AnalyzerController@analyze')
             ->name('analyze');
     }
 );

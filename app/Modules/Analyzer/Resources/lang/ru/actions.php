@@ -2,7 +2,7 @@
 
 return [
     'admin' => [
-        'analyzerApplyStatusAction' => [
+        'analyzerAnalyzeAction' => [
             'notExistAnalyzer' => 'Анализируемые данные не найдены.'
         ],
     ]

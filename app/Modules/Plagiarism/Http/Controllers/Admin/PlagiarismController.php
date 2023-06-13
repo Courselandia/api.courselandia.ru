@@ -82,12 +82,10 @@ class PlagiarismController extends Controller
     public function result(string $id): JsonResponse
     {
         try {
-            $text = Plagiarism::result($id);
+            $result = Plagiarism::result($id);
 
             $data = [
-                'data' => [
-                    'text' => $text,
-                ],
+                'data' => $result,
                 'success' => true,
             ];
 

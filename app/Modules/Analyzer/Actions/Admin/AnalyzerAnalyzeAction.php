@@ -64,7 +64,7 @@ class AnalyzerAnalyzeAction extends Action
         }
 
         throw new RecordNotExistException(
-            trans('analyzer::actions.admin.analyzerUpdateAction.notExistAnalyzer')
+            trans('analyzer::actions.admin.analyzerAnalyzeAction.notExistAnalyzer')
         );
     }
 }
