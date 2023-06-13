@@ -3,21 +3,21 @@
  * Статьи написанные искусственным интеллектом для разных сущностей.
  * Пакет содержит классы для хранения статей написанных искусственным интеллектом.
  *
- * @package App.Models.Article
+ * @package App.Models.Analyzer
  */
 
-namespace App\Modules\Article\Http\Requests\Admin;
+namespace App\Modules\Analyzer\Http\Requests\Admin;
 
 use App\Models\Enums\EnumList;
 use App\Models\FormRequest;
-use App\Modules\Article\Enums\Status;
+use App\Modules\Analyzer\Enums\Status;
 use JetBrains\PhpStorm\ArrayShape;
 use Schema;
 
 /**
- * Класс запрос для чтения категорий.
+ * Класс запрос для чтения.
  */
-class ArticleReadRequest extends FormRequest
+class AnalyzerReadRequest extends FormRequest
 {
     /**
      * Возвращает правила проверки.
@@ -32,7 +32,7 @@ class ArticleReadRequest extends FormRequest
         'filters.status' => 'string',
     ])] public function rules(): array
     {
-        $columns = Schema::getColumnListing('articles');
+        $columns = Schema::getColumnListing('analyzers');
         $columns = implode(',', $columns);
 
         return [
@@ -58,11 +58,11 @@ class ArticleReadRequest extends FormRequest
     ])] public function attributes(): array
     {
         return [
-            'sorts' => trans('article::http.requests.admin.articleReadRequest.sorts'),
-            'offset' => trans('article::http.requests.admin.articleReadRequest.offset'),
-            'limit' => trans('article::http.requests.admin.articleReadRequest.limit'),
-            'filters' => trans('article::http.requests.admin.articleReadRequest.filters'),
-            'filters.status' => trans('article::http.requests.admin.articleReadRequest.status'),
+            'sorts' => trans('analyzer::http.requests.admin.analyzerReadRequest.sorts'),
+            'offset' => trans('analyzer::http.requests.admin.analyzerReadRequest.offset'),
+            'limit' => trans('analyzer::http.requests.admin.analyzerReadRequest.limit'),
+            'filters' => trans('analyzer::http.requests.admin.analyzerReadRequest.filters'),
+            'filters.status' => trans('analyzer::http.requests.admin.analyzerReadRequest.status'),
         ];
     }
 }

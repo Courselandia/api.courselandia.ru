@@ -3,35 +3,23 @@
 return [
     'requests' => [
         'admin' => [
-            'articleReadRequest' => [
+            'analyzerReadRequest' => [
                 'sorts' => 'Сортировка',
                 'offset' => 'Отступ',
                 'limit' => 'Лимит',
                 'filters' => 'Фильтр',
                 'status' => 'Статус',
             ],
-            'articleUpdateStatusRequest' => [
-                'status' => 'Статус',
-            ],
-            'articleRewriteRequest' => [
-                'request' => 'Запрос',
-            ],
-            'articleUpdateRequest' => [
-                'apply' => 'Принять',
-            ],
         ],
     ],
     'controllers' => [
         'admin' => [
-            'articleController' => [
+            'analyzerController' => [
                 'update' => [
-                    'log' => 'Обновление текста.'
+                    'log' => 'Обновление данных.'
                 ],
-                'rewrite' => [
-                    'log' => 'Переписание текста.'
-                ],
-                'apply' => [
-                    'log' => 'Текст был принят.'
+                'analyze' => [
+                    'log' => 'Анализирование.'
                 ],
             ],
         ],

@@ -234,8 +234,8 @@ return [
         App\Modules\Core\Providers\CoreServiceProvider::class,
         App\Modules\Core\Providers\RouteServiceProvider::class,
 
-        //App\Modules\Document\Providers\DocumentServiceProvider::class,
-        //App\Modules\Document\Providers\RouteServiceProvider::class,
+        App\Modules\Document\Providers\DocumentServiceProvider::class,
+        App\Modules\Document\Providers\RouteServiceProvider::class,
 
         App\Modules\Employment\Providers\EmploymentServiceProvider::class,
         App\Modules\Employment\Providers\RouteServiceProvider::class,
@@ -299,6 +299,9 @@ return [
 
         App\Modules\Writer\Providers\WriterServiceProvider::class,
         App\Modules\Writer\Providers\RouteServiceProvider::class,
+
+        App\Modules\Plagiarism\Providers\PlagiarismServiceProvider::class,
+        App\Modules\Plagiarism\Providers\RouteServiceProvider::class,
     ],
 
     /*
@@ -337,5 +340,7 @@ return [
         'OAuth' => App\Modules\OAuth\Facades\OAuth::class,
         'Writer' => App\Modules\Writer\Facades\Writer::class,
         'ArticleCategory' => App\Modules\Article\Facades\ArticleCategory::class,
+        'Plagiarism' => App\Modules\Plagiarism\Facades\Plagiarism::class,
+        'AnalyzerCategory' => App\Modules\Analyzer\Facades\AnalyzerCategory::class,
     ])->toArray(),
 ];

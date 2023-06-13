@@ -282,7 +282,6 @@ class CourseFilter extends ModelFilter
      *
      * @param string $colum Название колонки.
      * @param array|int|string $ids ID's.
-     * @param bool $string Признак, что ищем строку.
      *
      * @return CourseFilter Правила поиска.
      */

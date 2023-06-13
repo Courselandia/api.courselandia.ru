@@ -3,35 +3,23 @@
 return [
     'requests' => [
         'admin' => [
-            'articleReadRequest' => [
+            'analyzerReadRequest' => [
                 'sorts' => 'Sorts',
                 'offset' => 'Offset',
                 'limit' => 'Limit',
                 'filters' => 'Filters',
                 'status' => 'Status',
             ],
-            'articleUpdateStatusRequest' => [
-                'status' => 'Status',
-            ],
-            'articleRewriteRequest' => [
-                'request' => 'Request',
-            ],
-            'articleUpdateRequest' => [
-                'apply' => 'Apply',
-            ],
         ],
     ],
     'controllers' => [
         'admin' => [
-            'articleController' => [
+            'analyzerController' => [
                 'update' => [
-                    'log' => 'Update the article.'
+                    'log' => 'Update the data.'
                 ],
-                'rewrite' => [
-                    'log' => 'Rewrite the article.'
-                ],
-                'apply' => [
-                    'log' => 'Apply the article.'
+                'analyze' => [
+                    'log' => 'Analyze.'
                 ],
             ],
         ],

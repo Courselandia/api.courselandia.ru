@@ -1,30 +1,29 @@
 <?php
 /**
- * Статьи написанные искусственным интеллектом для разных сущностей.
- * Пакет содержит классы для хранения статей написанных искусственным интеллектом.
+ * Анализатор текстов для SEO проверки.
+ * Пакет содержит классы для хранения результатов анализа текстов для SEO.
  *
- * @package App.Models.Article
+ * @package App.Models.Analyzer
  */
 
-namespace App\Modules\Article\Actions\Admin;
+namespace App\Modules\Analyzer\Actions\Admin;
 
 use Cache;
 use Util;
-use Writer;
-use ArticleCategory;
+use AnalyzerCategory;
 use App\Models\Action;
 use App\Models\Entity;
 use ReflectionException;
 use App\Models\Enums\CacheTime;
 use App\Models\Exceptions\ParameterInvalidException;
-use App\Modules\Article\Models\Article;
+use App\Modules\Analyzer\Models\Analyzer;
 use JetBrains\PhpStorm\ArrayShape;
-use App\Modules\Article\Entities\Article as ArticleEntity;
+use App\Modules\Analyzer\Entities\Analyzer as AnalyzerEntity;
 
 /**
- * Класс действия для чтения статьи.
+ * Класс действия для чтения данных об анализе.
  */
-class ArticleReadAction extends Action
+class AnalyzerReadAction extends Action
 {
     /**
      * Сортировка данных.
@@ -63,7 +62,7 @@ class ArticleReadAction extends Action
     #[ArrayShape(['data' => 'array', 'total' => 'int'])] public function run(): array
     {
         $cacheKey = Util::getKey(
-            'article',
+            'analyzer',
             'admin',
             'read',
             'count',
@@ -73,13 +72,13 @@ class ArticleReadAction extends Action
             $this->limit,
         );
 
-        return Cache::tags(['article'])->remember(
+        return Cache::tags(['analyzer'])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
             function () {
-                $query = Article::filter($this->filters ?: [])
+                $query = Analyzer::filter($this->filters ?: [])
                     ->with([
-                        'articleable',
+                        'analyzerable',
                     ]);
 
                 $queryCount = $query->clone();
@@ -97,15 +96,14 @@ class ArticleReadAction extends Action
                 $items = $query->get()->toArray();
 
                 for ($i = 0; $i < count($items); $i++) {
-                    $field = ArticleCategory::driver($items[$i]['category'])->field();
-                    $items[$i]['category_name'] = ArticleCategory::driver($items[$i]['category'])->name();
-                    $items[$i]['category_label'] = ArticleCategory::driver($items[$i]['category'])->label($items[$i]['articleable_id']);
-                    $items[$i]['text_current'] = $items[$i]['articleable'][$field];
-                    $items[$i]['request_template'] = ArticleCategory::driver($items[$i]['category'])->requestTemplate($items[$i]['articleable_id']);
+                    $field = AnalyzerCategory::driver($items[$i]['category'])->field();
+                    $items[$i]['category_name'] = AnalyzerCategory::driver($items[$i]['category'])->name();
+                    $items[$i]['category_label'] = AnalyzerCategory::driver($items[$i]['category'])->label($items[$i]['articleable_id']);
+                    $items[$i]['text'] = $items[$i]['analyzerable'][$field];
                 }
 
                 return [
-                    'data' => Entity::toEntities($items, new ArticleEntity()),
+                    'data' => Entity::toEntities($items, new AnalyzerEntity()),
                     'total' => $queryCount->count(),
                 ];
             }

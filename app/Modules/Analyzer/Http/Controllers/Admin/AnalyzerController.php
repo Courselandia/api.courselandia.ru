@@ -19,8 +19,8 @@ use App\Models\Exceptions\RecordNotExistException;
 use App\Models\Exceptions\ValidateException;
 use App\Modules\Analyzer\Actions\Admin\AnalyzerGetAction;
 use App\Modules\Analyzer\Actions\Admin\AnalyzerReadAction;
+use App\Modules\Analyzer\Actions\Admin\AnalyzerAnalyzeAction;
 use App\Modules\Analyzer\Http\Requests\Admin\AnalyzerReadRequest;
-use App\Modules\Analyzer\Http\Requests\Admin\AnalyzerAnalyzeAction;
 use App\Models\Exceptions\PaymentException;
 use App\Models\Exceptions\LimitException;
 
@@ -99,7 +99,7 @@ class AnalyzerController extends Controller
 
             $data = $action->run();
 
-            Log::info(trans('analyzer::http.controllers.admin.analyzerController.rewrite.log'), [
+            Log::info(trans('analyzer::http.controllers.admin.analyzerController.analyze.log'), [
                 'module' => 'Analyzer',
                 'login' => Auth::getUser()->login,
                 'type' => 'update'

@@ -20197,6 +20197,190 @@
      
 }
 
+    namespace App\Modules\Plagiarism\Facades { 
+            /**
+     * Фасад класса для проведения анализа тексту.
+     *
+     */ 
+        class Plagiarism {
+                    /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function getDefaultDriver()
+        {
+                        /** @var \App\Modules\Plagiarism\Models\PlagiarismManager $instance */
+                        return $instance->getDefaultDriver();
+        }
+                    /**
+         * Get a driver instance.
+         *
+         * @param string|null $driver
+         * @return mixed 
+         * @throws \InvalidArgumentException
+         * @static 
+         */ 
+        public static function driver($driver = null)
+        {            //Method inherited from \Illuminate\Support\Manager         
+                        /** @var \App\Modules\Plagiarism\Models\PlagiarismManager $instance */
+                        return $instance->driver($driver);
+        }
+                    /**
+         * Register a custom driver creator Closure.
+         *
+         * @param string $driver
+         * @param \Closure $callback
+         * @return \App\Modules\Plagiarism\Models\PlagiarismManager 
+         * @static 
+         */ 
+        public static function extend($driver, $callback)
+        {            //Method inherited from \Illuminate\Support\Manager         
+                        /** @var \App\Modules\Plagiarism\Models\PlagiarismManager $instance */
+                        return $instance->extend($driver, $callback);
+        }
+                    /**
+         * Get all of the created "drivers".
+         *
+         * @return array 
+         * @static 
+         */ 
+        public static function getDrivers()
+        {            //Method inherited from \Illuminate\Support\Manager         
+                        /** @var \App\Modules\Plagiarism\Models\PlagiarismManager $instance */
+                        return $instance->getDrivers();
+        }
+                    /**
+         * Get the container instance used by the manager.
+         *
+         * @return \Illuminate\Contracts\Container\Container 
+         * @static 
+         */ 
+        public static function getContainer()
+        {            //Method inherited from \Illuminate\Support\Manager         
+                        /** @var \App\Modules\Plagiarism\Models\PlagiarismManager $instance */
+                        return $instance->getContainer();
+        }
+                    /**
+         * Set the container instance used by the manager.
+         *
+         * @param \Illuminate\Contracts\Container\Container $container
+         * @return \App\Modules\Plagiarism\Models\PlagiarismManager 
+         * @static 
+         */ 
+        public static function setContainer($container)
+        {            //Method inherited from \Illuminate\Support\Manager         
+                        /** @var \App\Modules\Plagiarism\Models\PlagiarismManager $instance */
+                        return $instance->setContainer($container);
+        }
+                    /**
+         * Forget all of the resolved driver instances.
+         *
+         * @return \App\Modules\Plagiarism\Models\PlagiarismManager 
+         * @static 
+         */ 
+        public static function forgetDrivers()
+        {            //Method inherited from \Illuminate\Support\Manager         
+                        /** @var \App\Modules\Plagiarism\Models\PlagiarismManager $instance */
+                        return $instance->forgetDrivers();
+        }
+         
+    }
+     
+}
+
+    namespace App\Modules\Analyzer\Facades { 
+            /**
+     * Фасад класса для написания текстов искусственным интеллектом.
+     *
+     */ 
+        class AnalyzerCategory {
+                    /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function getDefaultDriver()
+        {
+                        /** @var \App\Modules\Analyzer\Categories\AnalyzerCategoryManager $instance */
+                        return $instance->getDefaultDriver();
+        }
+                    /**
+         * Get a driver instance.
+         *
+         * @param string|null $driver
+         * @return mixed 
+         * @throws \InvalidArgumentException
+         * @static 
+         */ 
+        public static function driver($driver = null)
+        {            //Method inherited from \Illuminate\Support\Manager         
+                        /** @var \App\Modules\Analyzer\Categories\AnalyzerCategoryManager $instance */
+                        return $instance->driver($driver);
+        }
+                    /**
+         * Register a custom driver creator Closure.
+         *
+         * @param string $driver
+         * @param \Closure $callback
+         * @return \App\Modules\Analyzer\Categories\AnalyzerCategoryManager 
+         * @static 
+         */ 
+        public static function extend($driver, $callback)
+        {            //Method inherited from \Illuminate\Support\Manager         
+                        /** @var \App\Modules\Analyzer\Categories\AnalyzerCategoryManager $instance */
+                        return $instance->extend($driver, $callback);
+        }
+                    /**
+         * Get all of the created "drivers".
+         *
+         * @return array 
+         * @static 
+         */ 
+        public static function getDrivers()
+        {            //Method inherited from \Illuminate\Support\Manager         
+                        /** @var \App\Modules\Analyzer\Categories\AnalyzerCategoryManager $instance */
+                        return $instance->getDrivers();
+        }
+                    /**
+         * Get the container instance used by the manager.
+         *
+         * @return \Illuminate\Contracts\Container\Container 
+         * @static 
+         */ 
+        public static function getContainer()
+        {            //Method inherited from \Illuminate\Support\Manager         
+                        /** @var \App\Modules\Analyzer\Categories\AnalyzerCategoryManager $instance */
+                        return $instance->getContainer();
+        }
+                    /**
+         * Set the container instance used by the manager.
+         *
+         * @param \Illuminate\Contracts\Container\Container $container
+         * @return \App\Modules\Analyzer\Categories\AnalyzerCategoryManager 
+         * @static 
+         */ 
+        public static function setContainer($container)
+        {            //Method inherited from \Illuminate\Support\Manager         
+                        /** @var \App\Modules\Analyzer\Categories\AnalyzerCategoryManager $instance */
+                        return $instance->setContainer($container);
+        }
+                    /**
+         * Forget all of the resolved driver instances.
+         *
+         * @return \App\Modules\Analyzer\Categories\AnalyzerCategoryManager 
+         * @static 
+         */ 
+        public static function forgetDrivers()
+        {            //Method inherited from \Illuminate\Support\Manager         
+                        /** @var \App\Modules\Analyzer\Categories\AnalyzerCategoryManager $instance */
+                        return $instance->forgetDrivers();
+        }
+         
+    }
+     
+}
+
     namespace danielme85\LaravelLogToDB { 
             /**
      * Class LogToDb
@@ -24533,6 +24717,8 @@ namespace  {
             class OAuth extends \App\Modules\OAuth\Facades\OAuth {}
             class Writer extends \App\Modules\Writer\Facades\Writer {}
             class ArticleCategory extends \App\Modules\Article\Facades\ArticleCategory {}
+            class Plagiarism extends \App\Modules\Plagiarism\Facades\Plagiarism {}
+            class AnalyzerCategory extends \App\Modules\Analyzer\Facades\AnalyzerCategory {}
             class LogToDB extends \danielme85\LaravelLogToDB\LogToDB {}
             class Image extends \Intervention\Image\Facades\Image {}
             class Firebase extends \Kreait\Laravel\Firebase\Facades\Firebase {}
