@@ -8,6 +8,7 @@
 
 namespace App\Modules\Analyzer\Jobs;
 
+use App\Modules\Plagiarism\Entities\Result;
 use Log;
 use Throwable;
 use Plagiarism;
@@ -66,10 +67,15 @@ class AnalyzerSaveResultJob implements ShouldQueue
 
         if ($analyzerEntity && $analyzerEntity->status === Status::PROCESSING) {
             try {
-                $text = Plagiarism::result($analyzerEntity->task_id);
+                /**
+                 * @var Result $result
+                 */
+                $result = Plagiarism::result($analyzerEntity->task_id);
 
                 Analyzer::find($this->id)->update([
-                    'text' => $text,
+                    'unique' => $result->unique,
+                    'water' => $result->water,
+                    'spam' => $result->spam,
                     'status' => Status::READY->value,
                     'tries' => $analyzerEntity->tries + 1,
                 ]);
@@ -82,14 +88,14 @@ class AnalyzerSaveResultJob implements ShouldQueue
                         'tries' => $analyzerEntity->tries + 1,
                     ]);
                 } else {
-                    Log::error('Достигнуто максимальное количество попыток получения анализа текста. ID: ' . $this->id . '. Task ID: ' . $analyzerEntity->task_id);
+                    Log::error('Достигнуто максимальное количество попыток получения анализ текста. ID: ' . $this->id . '. Task ID: ' . $analyzerEntity->task_id);
 
                     Analyzer::find($this->id)->update([
                         'status' => Status::FAILED->value,
                     ]);
                 }
             } catch (Throwable $error) {
-                Log::error('Ошибка получения анализа текста: ' . $error->getMessage() . '. ID: ' . $this->id . '. Task ID: ' . $analyzerEntity->task_id);
+                Log::error('Ошибка получения анализ текста: ' . $error->getMessage() . '. ID: ' . $this->id . '. Task ID: ' . $analyzerEntity->task_id);
                 Analyzer::find($this->id)->update([
                     'status' => Status::FAILED->value,
                 ]);

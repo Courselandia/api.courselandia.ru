@@ -39,9 +39,9 @@ class PlagiarismFake extends Plagiarism
     public function result(string $id): Result
     {
         $result = new Result();
-        $result->unique = 80.05;
-        $result->water = 20;
-        $result->spam = 5;
+        $result->unique = 83.33;
+        $result->water = 22;
+        $result->spam = 8;
 
         return $result;
     }

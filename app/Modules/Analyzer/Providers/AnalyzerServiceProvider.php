@@ -12,6 +12,7 @@ use App;
 use Config;
 use AnalyzerCategory;
 use Illuminate\Support\ServiceProvider;
+use App\Modules\Analyzer\Commands\AnalyzerAnalyzeCommand;
 use App\Modules\Analyzer\Categories\AnalyzerCategoryManager;
 use App\Modules\Analyzer\Categories\CourseTextAnalyzerCategory;
 
@@ -30,7 +31,7 @@ class AnalyzerServiceProvider extends ServiceProvider
         $this->registerTranslations();
         $this->registerConfig();
 
-        $this->loadMigrationsFrom(__DIR__.'/../Database/Migrations');
+        $this->loadMigrationsFrom(__DIR__ . '/../Database/Migrations');
     }
 
     /**
@@ -47,6 +48,10 @@ class AnalyzerServiceProvider extends ServiceProvider
         AnalyzerCategory::extend('course.text', function () {
             return new CourseTextAnalyzerCategory();
         });
+
+        $this->commands([
+            AnalyzerAnalyzeCommand::class,
+        ]);
     }
 
     /**
@@ -57,10 +62,10 @@ class AnalyzerServiceProvider extends ServiceProvider
     protected function registerConfig(): void
     {
         $this->publishes([
-            __DIR__.'/../Config/config.php' => config_path('analyzer.php'),
+            __DIR__ . '/../Config/config.php' => config_path('analyzer.php'),
         ]);
         $this->mergeConfigFrom(
-            __DIR__.'/../Config/config.php',
+            __DIR__ . '/../Config/config.php',
             'analyzer'
         );
     }
@@ -74,7 +79,7 @@ class AnalyzerServiceProvider extends ServiceProvider
     {
         $viewPath = base_path('resources/views/modules/analyzer');
 
-        $sourcePath = __DIR__.'/../Resources/views';
+        $sourcePath = __DIR__ . '/../Resources/views';
 
         $this->publishes([
             $sourcePath => $viewPath
@@ -83,7 +88,7 @@ class AnalyzerServiceProvider extends ServiceProvider
         $this->loadViewsFrom(
             array_merge(
                 array_map(function ($path) {
-                    return $path.'/modules/analyzer';
+                    return $path . '/modules/analyzer';
                 }, Config::get('view.paths')),
                 [$sourcePath]
             ),
@@ -103,7 +108,7 @@ class AnalyzerServiceProvider extends ServiceProvider
         if (is_dir($langPath)) {
             $this->loadTranslationsFrom($langPath, 'analyzer');
         } else {
-            $this->loadTranslationsFrom(__DIR__.'/../Resources/lang', 'analyzer');
+            $this->loadTranslationsFrom(__DIR__ . '/../Resources/lang', 'analyzer');
         }
     }
 

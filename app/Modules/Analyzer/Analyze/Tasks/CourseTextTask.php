@@ -1,25 +1,25 @@
 <?php
 /**
- * Статьи написанные искусственным интеллектом для разных сущностей.
- * Пакет содержит классы для хранения статей написанных искусственным интеллектом.
+ * Анализатор текстов для SEO проверки.
+ * Пакет содержит классы для хранения результатов анализа текстов для SEO.
  *
- * @package App.Models.Article
+ * @package App.Models.Analyzer
  */
 
-namespace App\Modules\Article\Write\Tasks;
+namespace App\Modules\Analyzer\Analyze\Tasks;
 
 use Carbon\Carbon;
 use App\Models\Exceptions\ParameterInvalidException;
-use App\Modules\Article\Jobs\ArticleWriteTextJob;
+use App\Modules\Analyzer\Jobs\AnalyzerAnalyzeTextJob;
 use App\Modules\Course\Enums\Status;
 use App\Modules\Course\Models\Course;
 use Illuminate\Database\Eloquent\Builder;
-use App\Modules\Article\Entities\Article as ArticleEntity;
-use App\Modules\Article\Models\Article;
-use App\Modules\Article\Enums\Status as ArticleStatus;
+use App\Modules\Analyzer\Entities\Analyzer as AnalyzerEntity;
+use App\Modules\Analyzer\Models\Analyzer;
+use App\Modules\Analyzer\Enums\Status as AnalyzerStatus;
 
 /**
- * Написание текстов для описания курсов.
+ * Анализ текстов для описания курсов.
  */
 class CourseTextTask extends Task
 {
@@ -34,7 +34,7 @@ class CourseTextTask extends Task
     }
 
     /**
-     * Запуск написания текстов.
+     * Запуск анализа текстов.
      *
      * @param Carbon|null $delay Дата, на сколько нужно отложить задачу.
      *
@@ -51,14 +51,14 @@ class CourseTextTask extends Task
         foreach ($courses as $course) {
             $this->fireEvent('run', [$course]);
 
-            $entity = new ArticleEntity();
+            $entity = new AnalyzerEntity();
             $entity->category = 'course.text';
-            $entity->status = ArticleStatus::PENDING;
-            $entity->articleable_id = $course->id;
-            $entity->articleable_type = 'App\Modules\Course\Models\Course';
+            $entity->status = AnalyzerStatus::PENDING;
+            $entity->analyzerable_id = $course->id;
+            $entity->analyzerable_type = 'App\Modules\Course\Models\Course';
 
-            $article = Article::create($entity->toArray());
-            $job = ArticleWriteTextJob::dispatch($article->id, 'course.text');
+            $analyzer = Analyzer::create($entity->toArray());
+            $job = AnalyzerAnalyzeTextJob::dispatch($analyzer->id, 'course.text');
 
             if ($delay) {
                 $delay = $delay->addMinute();
@@ -68,15 +68,15 @@ class CourseTextTask extends Task
     }
 
     /**
-     * Получить запрос на курсы, у которых нет написанных статей для описания.
+     * Получить запрос на курсы, у которых нет результатов анализа текста-описаний для курса.
      *
      * @return Builder Построитель запроса.
      */
     private function getQuery(): Builder
     {
         return Course::where('status', Status::ACTIVE->value)
-            ->doesntHave('articles', 'and', function (Builder $query) {
-                $query->where('articles.category', 'course.text');
+            ->doesntHave('analyzers', 'and', function (Builder $query) {
+                $query->where('analyzers.category', 'course.text');
             })
             ->orderBy('id', 'ASC');
     }

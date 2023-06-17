@@ -41,6 +41,42 @@ class AnalyzerFilter extends ModelFilter
     }
 
     /**
+     * Поиск по уникальности.
+     *
+     * @param int $unique Уникальность.
+     *
+     * @return AnalyzerFilter Правила поиска.
+     */
+    public function unique(int $unique): AnalyzerFilter
+    {
+        return $this->where('analyzers.unique', $unique);
+    }
+
+    /**
+     * Поиск по проценту воды.
+     *
+     * @param int $water Процент воды.
+     *
+     * @return AnalyzerFilter Правила поиска.
+     */
+    public function water(int $water): AnalyzerFilter
+    {
+        return $this->where('analyzers.water', $water);
+    }
+
+    /**
+     * Поиск по проценту спама.
+     *
+     * @param int $spam Процент спама.
+     *
+     * @return AnalyzerFilter Правила поиска.
+     */
+    public function spam(int $spam): AnalyzerFilter
+    {
+        return $this->where('analyzers.spam', $spam);
+    }
+
+    /**
      * Поиск по ID сущности.
      *
      * @param int|string $analyzerableId ID сущности.
