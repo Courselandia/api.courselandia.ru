@@ -15,7 +15,7 @@ use App\Modules\Analyzer\Enums\Status;
 use App\Modules\Course\Entities\Course;
 
 /**
- * Сущность для статьи.
+ * Сущность хранения результатов анализа текста.
  */
 class Analyzer extends Entity
 {
