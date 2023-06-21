@@ -29,7 +29,7 @@ class AnalyzerAnalyzeCommand extends Command
      *
      * @var string
      */
-    protected $description = 'Запуск анализа текстов.';
+    protected $description = 'Запуск анализа текста.';
 
     /**
      * Выполнение команды.
@@ -64,11 +64,11 @@ class AnalyzerAnalyzeCommand extends Command
                 }
             }
 
-            $this->info("\n\nЗадания на анализ текстов были отправлены в очередь.");
+            $this->info("\n\nЗадания на анализ текста были отправлены в очередь.");
         } else {
-            $this->info("\n\nНет заданий для анализа текстов.");
+            $this->info("\n\nНет заданий для анализа текста.");
         }
 
-        Log::info('Запуск анализа текстов.');
+        Log::info('Запуск анализа текста.');
     }
 }
