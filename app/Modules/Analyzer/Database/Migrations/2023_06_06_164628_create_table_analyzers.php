@@ -17,7 +17,7 @@ class CreateTableAnalyzers extends Migration
     {
         Schema::create('analyzers', function (Blueprint $table) {
             $table->bigInteger('id', true)->unsigned();
-            $table->bigInteger('task_id')->unsigned()->index()->nullable();
+            $table->string('task_id', 30)->index()->nullable();
 
             $table->text('category');
             $table->float('unique')->default(0)->nullable();

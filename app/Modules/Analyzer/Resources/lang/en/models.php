@@ -2,7 +2,7 @@
 
 return [
     'analyzer' => [
-        'task_id' => 'ID task',
+        'taskId' => 'ID task',
         'category' => 'Category',
         'unique' => 'Unique',
         'water' => 'Water',

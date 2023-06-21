@@ -2,7 +2,7 @@
 
 return [
     'article' => [
-        'task_id' => 'ID задачи',
+        'taskId' => 'ID задачи',
         'category' => 'Категория',
         'unique' => 'Уникальность',
         'water' => 'Процент воды',

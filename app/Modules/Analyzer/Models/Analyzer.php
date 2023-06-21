@@ -95,7 +95,7 @@ class Analyzer extends Eloquent
     ])] protected function getRules(): array
     {
         return [
-            'task_id' => 'nullable|digits_between:0,20',
+            'task_id' => 'nullable|max:30',
             'category' => 'required|between:1,191',
             'unique' => 'nullable|float',
             'water' => 'nullable|digits_between:0,2',
