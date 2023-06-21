@@ -21,7 +21,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
 
 /**
- * Класс контроллер для написания текстов
+ * Класс контроллер для анализа текста.
  */
 class PlagiarismController extends Controller
 {
