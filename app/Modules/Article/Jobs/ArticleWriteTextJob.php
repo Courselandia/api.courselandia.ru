@@ -42,7 +42,7 @@ class ArticleWriteTextJob implements ShouldQueue
     public int $id;
 
     /**
-     * Категория..
+     * Категория.
      *
      * @var string
      */

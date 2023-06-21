@@ -8,9 +8,15 @@
 
 namespace App\Modules\Course\Actions\Admin\Course;
 
+use Cache;
+use DB;
+use Throwable;
+use ReflectionException;
 use App\Models\Action;
+use Illuminate\Http\UploadedFile;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
+use App\Modules\Analyzer\Actions\Admin\AnalyzerUpdateAction;
 use App\Modules\Course\Entities\Course as CourseEntity;
 use App\Modules\Course\Entities\CourseFeature as CourseFeatureEntity;
 use App\Modules\Course\Entities\CourseLearn as CourseLearnEntity;
@@ -29,11 +35,6 @@ use App\Modules\Metatag\Actions\MetatagSetAction;
 use App\Modules\Metatag\Template\Template;
 use App\Modules\Salary\Enums\Level;
 use App\Modules\School\Models\School;
-use Cache;
-use DB;
-use Illuminate\Http\UploadedFile;
-use ReflectionException;
-use Throwable;
 
 /**
  * Класс действия для создания курса.
@@ -395,6 +396,13 @@ class CourseCreateAction extends Action
                     CourseFeature::create($entity->toArray());
                 }
             }
+
+            $action = app(AnalyzerUpdateAction::class);
+            $action->id = $course->id;
+            $action->model = Course::class;
+            $action->category = 'course.text';
+
+            $action->run();
 
             return $course->id;
         });
