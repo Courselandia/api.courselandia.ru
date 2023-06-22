@@ -50,7 +50,7 @@ class AnalyzerUpdateAction extends Action
     /**
      * Выполнение задачи.
      *
-     * @return void
+     * @return boolean
      * @throws ParameterInvalidException
      */
     public function run(): mixed
@@ -90,7 +90,7 @@ class AnalyzerUpdateAction extends Action
                 }
 
                 if ($found === false) {
-                    $text = AnalyzerCategory::driver($this->category)->text($model->analyzerable_id);
+                    $text = AnalyzerCategory::driver($this->category)->text($this->id);
                     $taskId = Plagiarism::request($text);
 
                     $analyzerModel = Analyzer::create([

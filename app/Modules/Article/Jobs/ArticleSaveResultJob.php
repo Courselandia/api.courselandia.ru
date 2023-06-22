@@ -8,6 +8,7 @@
 
 namespace App\Modules\Article\Jobs;
 
+use App\Modules\Analyzer\Actions\Admin\AnalyzerUpdateAction;
 use Log;
 use Throwable;
 use Writer;
@@ -73,6 +74,13 @@ class ArticleSaveResultJob implements ShouldQueue
                     'status' => Status::READY->value,
                     'tries' => $articleEntity->tries + 1,
                 ]);
+
+                $action = app(AnalyzerUpdateAction::class);
+                $action->id = $this->id;
+                $action->model = Article::class;
+                $action->category = 'article.text';
+                $action->run();
+
             } catch (ProcessingException $error) {
                 if ($articleEntity->tries < self::MAX_TRIES) {
                     ArticleSaveResultJob::dispatch($this->id)

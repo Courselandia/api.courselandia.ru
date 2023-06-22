@@ -45,6 +45,7 @@ class ArticleGetAction extends Action
             function () {
                 $article = Article::where('id', $this->id)
                     ->with('articleable')
+                    ->with('analyzers')
                     ->first();
 
                 if ($article) {

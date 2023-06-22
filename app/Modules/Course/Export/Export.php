@@ -12,7 +12,6 @@ use App\Modules\Course\Export\Sources\CourseAllSource;
 use App\Modules\Course\Models\CourseMongoDb;
 use Cache;
 use App\Models\Event;
-use App\Modules\Course\Export\Sources\CourseSource;
 use App\Modules\Course\Export\Sources\CourseDirectionSource;
 use App\Modules\Course\Export\Sources\CourseCategorySource;
 use App\Modules\Course\Export\Sources\CourseProfessionSource;

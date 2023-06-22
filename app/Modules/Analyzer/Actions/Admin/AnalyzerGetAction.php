@@ -48,11 +48,15 @@ class AnalyzerGetAction extends Action
                     ->first();
 
                 if ($analyzer) {
-                    $entity = new AnalyzerEntity($analyzer->toArray());
+                    $analyzer = $analyzer->toArray();
+                    $analyzerable = $analyzer['analyzerable'];
+                    $analyzer['analyzerable'] = null;
+
+                    $entity = new AnalyzerEntity($analyzer);
                     $field = AnalyzerCategory::driver($entity->category)->field();
                     $entity->category_name = AnalyzerCategory::driver($entity->category)->name();
-                    $entity->category_label = AnalyzerCategory::driver($entity->category)->label($analyzer->analyzerable_id);
-                    $entity->text = $entity->analyzerable->{$field};
+                    $entity->category_label = AnalyzerCategory::driver($entity->category)->label($analyzer['analyzerable_id']);
+                    $entity->text = $analyzerable[$field];
 
                     return $entity;
                 }

@@ -3,13 +3,13 @@
 return [
     'admin' => [
         'articleUpdateAction' => [
-            'notExistPublication' => 'Статья не существует.'
+            'notExistArticle' => 'Статья не существует.'
         ],
         'articleUpdateStatusAction' => [
-            'notExistPublication' => 'Статья не существует.'
+            'notExistArticle' => 'Статья не существует.'
         ],
         'articleApplyStatusAction' => [
-            'notExistPublication' => 'Статья не существует.'
+            'notExistArticle' => 'Статья не существует.'
         ],
     ]
 ];

@@ -11,9 +11,11 @@ namespace App\Modules\Article\Actions\Admin;
 use App\Models\Action;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
+use App\Modules\Analyzer\Actions\Admin\AnalyzerUpdateAction;
 use App\Modules\Article\Enums\Status;
 use App\Modules\Article\Entities\Article as ArticleEntity;
 use App\Modules\Article\Models\Article;
+use App\Modules\Course\Models\Course;
 use Cache;
 
 /**
@@ -66,6 +68,12 @@ class ArticleUpdateAction extends Action
                 $action->id = $this->id;
                 $action->run();
             }
+
+            $action = app(AnalyzerUpdateAction::class);
+            $action->id = $this->id;
+            $action->model = Article::class;
+            $action->category = 'article.text';
+            $action->run();
 
             Cache::tags(['article'])->flush();
 

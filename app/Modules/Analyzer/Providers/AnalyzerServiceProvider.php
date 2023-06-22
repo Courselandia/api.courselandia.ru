@@ -9,6 +9,7 @@
 namespace App\Modules\Analyzer\Providers;
 
 use App;
+use App\Modules\Analyzer\Categories\ArticleTextAnalyzerCategory;
 use Config;
 use AnalyzerCategory;
 use Illuminate\Support\ServiceProvider;
@@ -47,6 +48,10 @@ class AnalyzerServiceProvider extends ServiceProvider
 
         AnalyzerCategory::extend('course.text', function () {
             return new CourseTextAnalyzerCategory();
+        });
+
+        AnalyzerCategory::extend('article.text', function () {
+            return new ArticleTextAnalyzerCategory();
         });
 
         $this->commands([

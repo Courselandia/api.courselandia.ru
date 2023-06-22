@@ -10,13 +10,13 @@ namespace App\Modules\Analyzer\Categories;
 
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
-use App\Modules\Course\Actions\Admin\Course\CourseGetAction;
+use App\Modules\Article\Actions\Admin\ArticleGetAction;
 use App\Modules\Analyzer\Contracts\AnalyzerCategory;
 
 /**
- * Анализатор текста для описаний курсов.
+ * Анализатор текста для написанных статей ИИ.
  */
-class CourseTextAnalyzerCategory extends AnalyzerCategory
+class ArticleTextAnalyzerCategory extends AnalyzerCategory
 {
     /**
      * Название категории.
@@ -25,7 +25,7 @@ class CourseTextAnalyzerCategory extends AnalyzerCategory
      */
     public function name(): string
     {
-        return 'Курс / Описание';
+        return 'Статьи / Написанный текст';
     }
 
     /**
@@ -48,15 +48,15 @@ class CourseTextAnalyzerCategory extends AnalyzerCategory
      */
     public function label(int $id): string
     {
-        $action = app(CourseGetAction::class);
+        $action = app(ArticleGetAction::class);
         $action->id = $id;
-        $courseEntity = $action->run();
+        $articleEntity = $action->run();
 
-        if ($courseEntity) {
-            return $courseEntity->name;
+        if ($articleEntity) {
+            return $articleEntity->id;
         } else {
             throw new RecordNotExistException(
-                trans('course::actions.admin.courseUpdateStatusAction.notExistCourse')
+                trans('article::actions.admin.articleUpdateAction.notExistArticle')
             );
         }
     }
@@ -71,15 +71,15 @@ class CourseTextAnalyzerCategory extends AnalyzerCategory
      */
     public function text(int $id): string
     {
-        $action = app(CourseGetAction::class);
+        $action = app(ArticleGetAction::class);
         $action->id = $id;
-        $courseEntity = $action->run();
+        $articleEntity = $action->run();
 
-        if ($courseEntity) {
-            return $courseEntity->text;
+        if ($articleEntity) {
+            return $articleEntity->text;
         } else {
             throw new RecordNotExistException(
-                trans('course::actions.admin.courseUpdateStatusAction.notExistCourse')
+                trans('article::actions.admin.articleUpdateAction.notExistArticle')
             );
         }
     }
