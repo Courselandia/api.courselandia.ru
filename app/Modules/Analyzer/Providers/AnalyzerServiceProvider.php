@@ -10,6 +10,7 @@ namespace App\Modules\Analyzer\Providers;
 
 use App;
 use App\Modules\Analyzer\Categories\ArticleTextAnalyzerCategory;
+use App\Modules\Analyzer\Commands\AnalyzerShiftToCourseTextCommand;
 use Config;
 use AnalyzerCategory;
 use Illuminate\Support\ServiceProvider;
@@ -56,6 +57,7 @@ class AnalyzerServiceProvider extends ServiceProvider
 
         $this->commands([
             AnalyzerAnalyzeCommand::class,
+            AnalyzerShiftToCourseTextCommand::class,
         ]);
     }
 
