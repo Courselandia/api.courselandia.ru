@@ -75,6 +75,8 @@ class ArticleSaveResultJob implements ShouldQueue
                     'tries' => $articleEntity->tries + 1,
                 ]);
 
+                Cache::tags(['article'])->flush();
+
                 $action = app(AnalyzerUpdateAction::class);
                 $action->id = $this->id;
                 $action->model = Article::class;
