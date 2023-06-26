@@ -136,7 +136,7 @@ class ArticleControllerTest extends TestCase
             'PUT',
             'api/private/admin/article/update/' . $article->id,
             [
-                'description' => $faker->text(10000),
+                'apply' => 'test',
             ],
             [
                 'Authorization' => 'Bearer ' . $this->getAdminToken()
