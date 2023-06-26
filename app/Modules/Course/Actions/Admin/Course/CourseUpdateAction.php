@@ -12,7 +12,6 @@ use App\Models\Action;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Modules\Analyzer\Actions\Admin\AnalyzerUpdateAction;
-use App\Modules\Analyzer\Actions\Admin\AnalyzerUpdateJob;
 use App\Modules\Course\Entities\Course as CourseEntity;
 use App\Modules\Course\Entities\CourseFeature as CourseFeatureEntity;
 use App\Modules\Course\Entities\CourseLearn as CourseLearnEntity;

@@ -71,21 +71,32 @@ class AnalyzerUpdateAction extends Action
                 foreach ($model->analyzers as $analyzer) {
                     if ($analyzer->category === $this->category) {
                         $text = AnalyzerCategory::driver($this->category)->text($model->id);
-                        $taskId = Plagiarism::request($text);
 
-                        $analyzerModel = Analyzer::find($analyzer->id);
+                        if ($text) {
+                            $taskId = Plagiarism::request($text);
 
-                        if ($analyzerModel) {
-                            $analyzerModel->update([
-                                'task_id' => $taskId,
-                                'status' => Status::PROCESSING->value,
-                                'unique' => null,
-                                'water' => null,
-                                'spam' => null,
+                            $analyzerModel = Analyzer::find($analyzer->id);
+
+                            if ($analyzerModel) {
+                                $analyzerModel->update([
+                                    'task_id' => $taskId,
+                                    'status' => Status::PROCESSING->value,
+                                    'unique' => null,
+                                    'water' => null,
+                                    'spam' => null,
+                                    'tries' => 0,
+                                ]);
+
+                                $found = true;
+                            }
+                        } else {
+                            Analyzer::create([
+                                'status' => Status::SKIPPED->value,
+                                'category' => $this->category,
                                 'tries' => 0,
+                                'analyzerable_id' => $this->id,
+                                'analyzerable_type' => $this->model,
                             ]);
-
-                            $found = true;
                         }
                     }
                 }
