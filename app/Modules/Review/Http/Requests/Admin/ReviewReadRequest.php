@@ -8,7 +8,9 @@
 
 namespace App\Modules\Review\Http\Requests\Admin;
 
+use App\Models\Enums\EnumList;
 use App\Models\FormRequest;
+use App\Modules\Review\Enums\Status;
 use JetBrains\PhpStorm\ArrayShape;
 use Schema;
 
@@ -53,7 +55,7 @@ class ReviewReadRequest extends FormRequest
             'limit' => 'integer|digits_between:0,20',
             'filters' => 'array|filters:' . implode(',', $columnsFilter) . '|filter_date_range:published_at',
             'filters.rating' => 'integer',
-            'filters.status' => 'boolean',
+            'filters.status' => 'in:' . implode(',', EnumList::getValues(Status::class)),
         ];
     }
 

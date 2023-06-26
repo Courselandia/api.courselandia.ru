@@ -47,14 +47,14 @@ class ArticleApplyAction extends Action
 
             Cache::tags(['article'])->flush();
 
-            /*$action = app(ArticleGetAction::class);
+            $action = app(ArticleGetAction::class);
             $action->id = $this->id;
             $articleEntity = $action->run();
             $articleEntity->status = Status::APPLIED;
 
             Article::find($this->id)->update($articleEntity->toArray());
 
-            Cache::tags(['article'])->flush();*/
+            Cache::tags(['article'])->flush();
 
             $action = app(ArticleGetAction::class);
             $action->id = $this->id;

@@ -80,7 +80,6 @@ class ArticleSaveResultJob implements ShouldQueue
                 $action->model = Article::class;
                 $action->category = 'article.text';
                 $action->run();
-
             } catch (ProcessingException $error) {
                 if ($articleEntity->tries < self::MAX_TRIES) {
                     ArticleSaveResultJob::dispatch($this->id)

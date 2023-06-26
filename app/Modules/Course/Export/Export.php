@@ -8,8 +8,6 @@
 
 namespace App\Modules\Course\Export;
 
-use App\Modules\Course\Export\Sources\CourseAllSource;
-use App\Modules\Course\Models\CourseMongoDb;
 use Cache;
 use App\Models\Event;
 use App\Modules\Course\Export\Sources\CourseDirectionSource;
@@ -19,7 +17,8 @@ use App\Modules\Course\Export\Sources\CourseSchoolSource;
 use App\Modules\Course\Export\Sources\CourseSkillSource;
 use App\Modules\Course\Export\Sources\CourseTeacherSource;
 use App\Modules\Course\Export\Sources\CourseToolSource;
-use App\Modules\Course\Export\Jobs\CourseAllItemJob;
+use App\Modules\Course\Export\Sources\CourseAllSource;
+use App\Modules\Course\Models\CourseMongoDb;
 
 /**
  * Класс для экспортирования курсов в MongoDB для быстрой загрузки.
