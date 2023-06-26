@@ -66,10 +66,10 @@ class CourseTextAnalyzerCategory extends AnalyzerCategory
      *
      * @param int $id ID сущности для которой проводится анализ.
      *
-     * @return string Текст для проверки.
+     * @return string|null Текст для проверки.
      * @throws RecordNotExistException|ParameterInvalidException
      */
-    public function text(int $id): string
+    public function text(int $id): ?string
     {
         $action = app(CourseGetAction::class);
         $action->id = $id;

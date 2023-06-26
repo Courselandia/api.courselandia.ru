@@ -46,14 +46,20 @@ class AnalyzerAnalyzeAction extends Action
 
         if ($analyzerEntity) {
             $text = AnalyzerCategory::driver($analyzerEntity->category)->text($analyzerEntity->analyzerable_id);
-            $taskId = Plagiarism::request($text);
-            $analyzerEntity->task_id = $taskId;
-            $analyzerEntity->status = Status::PROCESSING;
 
-            Analyzer::find($this->id)->update($analyzerEntity->toArray());
+            if ($text) {
+                $taskId = Plagiarism::request($text);
+                $analyzerEntity->task_id = $taskId;
+                $analyzerEntity->status = Status::PROCESSING;
 
-            AnalyzerSaveResultJob::dispatch($this->id)
-                ->delay(now()->addMinutes(2));
+                Analyzer::find($this->id)->update($analyzerEntity->toArray());
+
+                AnalyzerSaveResultJob::dispatch($this->id)
+                    ->delay(now()->addMinutes(2));
+            } else {
+                $analyzerEntity->status = Status::SKIPPED;
+                Analyzer::find($this->id)->update($analyzerEntity->toArray());
+            }
 
             Cache::tags(['analyzer'])->flush();
 

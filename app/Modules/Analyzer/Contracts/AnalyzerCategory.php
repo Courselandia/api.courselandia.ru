@@ -32,9 +32,9 @@ abstract class AnalyzerCategory
      *
      * @param int $id ID сущности для которой осуществляется анализирование текста.
      *
-     * @return string Текст для проверки.
+     * @return string|null Текст для проверки.
      */
-    abstract public function text(int $id): string;
+    abstract public function text(int $id): ?string;
 
     /**
      * Абстрактный метод для получения метки, которая характеризует сущность.

@@ -75,17 +75,24 @@ class AnalyzerAnalyzeTextJob implements ShouldQueue
 
             if ($analyzerEntity && $analyzerEntity->status === Status::PENDING) {
                 $text = AnalyzerCategory::driver($this->category)->text($analyzerEntity->analyzerable_id);
-                $taskId = Plagiarism::request($text);
 
-                Analyzer::find($this->id)->update([
-                    'task_id' => $taskId,
-                    'status' => Status::PROCESSING->value,
-                ]);
+                if ($text) {
+                    $taskId = Plagiarism::request($text);
 
-                Cache::tags(['analyzer'])->flush();
+                    Analyzer::find($this->id)->update([
+                        'task_id' => $taskId,
+                        'status' => Status::PROCESSING->value,
+                    ]);
 
-                AnalyzerSaveResultJob::dispatch($this->id)
-                    ->delay(now()->addMinutes(2));
+                    Cache::tags(['analyzer'])->flush();
+
+                    AnalyzerSaveResultJob::dispatch($this->id)
+                        ->delay(now()->addMinutes(2));
+                } else {
+                    Analyzer::find($this->id)->update([
+                        'status' => Status::SKIPPED->value,
+                    ]);
+                }
             }
         } catch (PaymentException|LimitException $error) {
             Log::error($error->getMessage());

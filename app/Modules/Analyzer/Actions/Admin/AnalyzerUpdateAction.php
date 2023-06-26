@@ -66,6 +66,7 @@ class AnalyzerUpdateAction extends Action
 
             if ($model) {
                 $found = false;
+                $analyzerModel = null;
 
                 foreach ($model->analyzers as $analyzer) {
                     if ($analyzer->category === $this->category) {
@@ -91,22 +92,35 @@ class AnalyzerUpdateAction extends Action
 
                 if ($found === false) {
                     $text = AnalyzerCategory::driver($this->category)->text($this->id);
-                    $taskId = Plagiarism::request($text);
 
-                    $analyzerModel = Analyzer::create([
-                        'task_id' => $taskId,
-                        'status' => Status::PROCESSING->value,
-                        'category' => $this->category,
-                        'tries' => 0,
-                        'analyzerable_id' => $this->id,
-                        'analyzerable_type' => $this->model,
-                    ]);
+                    if ($text) {
+                        $taskId = Plagiarism::request($text);
+
+                        $analyzerModel = Analyzer::create([
+                            'task_id' => $taskId,
+                            'status' => Status::PROCESSING->value,
+                            'category' => $this->category,
+                            'tries' => 0,
+                            'analyzerable_id' => $this->id,
+                            'analyzerable_type' => $this->model,
+                        ]);
+                    } else {
+                        Analyzer::create([
+                            'status' => Status::SKIPPED->value,
+                            'category' => $this->category,
+                            'tries' => 0,
+                            'analyzerable_id' => $this->id,
+                            'analyzerable_type' => $this->model,
+                        ]);
+                    }
                 }
 
                 Cache::tags(['analyzer'])->flush();
 
-                AnalyzerSaveResultJob::dispatch($analyzerModel->id)
-                    ->delay(now()->addMinutes(2));
+                if ($analyzerModel) {
+                    AnalyzerSaveResultJob::dispatch($analyzerModel->id)
+                        ->delay(now()->addMinutes(2));
+                }
             }
 
             return true;

@@ -32,4 +32,9 @@ enum Status: string
      * Неуспешный.
      */
     case FAILED = 'failed';
+
+    /**
+     * Пропущен.
+     */
+    case SKIPPED = 'skipped';
 }
