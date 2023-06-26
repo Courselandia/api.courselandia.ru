@@ -8,6 +8,7 @@
 
 namespace App\Modules\Analyzer\Actions\Admin;
 
+use Config;
 use Cache;
 use Log;
 use Plagiarism;
@@ -53,7 +54,7 @@ class AnalyzerUpdateAction extends Action
      * @return boolean
      * @throws ParameterInvalidException
      */
-    public function run(): mixed
+    public function run(): bool
     {
         try {
             /**
@@ -72,7 +73,7 @@ class AnalyzerUpdateAction extends Action
                     if ($analyzer->category === $this->category) {
                         $text = AnalyzerCategory::driver($this->category)->text($model->id);
 
-                        if ($text) {
+                        if (mb_strlen($text) > Config::get('analyzer.minLengthText')) {
                             $taskId = Plagiarism::request($text);
 
                             $analyzerModel = Analyzer::find($analyzer->id);
@@ -90,13 +91,30 @@ class AnalyzerUpdateAction extends Action
                                 $found = true;
                             }
                         } else {
-                            Analyzer::create([
-                                'status' => Status::SKIPPED->value,
-                                'category' => $this->category,
-                                'tries' => 0,
-                                'analyzerable_id' => $this->id,
-                                'analyzerable_type' => $this->model,
-                            ]);
+                            $found = true;
+
+                            $analyzerModel = Analyzer::find($analyzer->id);
+
+                            if ($analyzerModel) {
+                                $analyzerModel->update([
+                                    'status' => Status::SKIPPED->value,
+                                    'unique' => null,
+                                    'water' => null,
+                                    'spam' => null,
+                                    'tries' => 0,
+                                ]);
+                            } else {
+                                Analyzer::create([
+                                    'status' => Status::SKIPPED->value,
+                                    'category' => $this->category,
+                                    'unique' => null,
+                                    'water' => null,
+                                    'spam' => null,
+                                    'tries' => 0,
+                                    'analyzerable_id' => $this->id,
+                                    'analyzerable_type' => $this->model,
+                                ]);
+                            }
                         }
                     }
                 }
@@ -104,7 +122,7 @@ class AnalyzerUpdateAction extends Action
                 if ($found === false) {
                     $text = AnalyzerCategory::driver($this->category)->text($this->id);
 
-                    if ($text) {
+                    if (mb_strlen($text) > Config::get('analyzer.minLengthText')) {
                         $taskId = Plagiarism::request($text);
 
                         $analyzerModel = Analyzer::create([
@@ -119,6 +137,9 @@ class AnalyzerUpdateAction extends Action
                         Analyzer::create([
                             'status' => Status::SKIPPED->value,
                             'category' => $this->category,
+                            'unique' => null,
+                            'water' => null,
+                            'spam' => null,
                             'tries' => 0,
                             'analyzerable_id' => $this->id,
                             'analyzerable_type' => $this->model,

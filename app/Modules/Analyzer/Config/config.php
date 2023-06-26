@@ -2,4 +2,5 @@
 
 return [
     'name' => 'Analyzer',
+    'minLengthText' => 100,
 ];

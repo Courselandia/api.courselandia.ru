@@ -8,6 +8,7 @@
 
 namespace App\Modules\Analyzer\Jobs;
 
+use Config;
 use Log;
 use Plagiarism;
 use Cache;
@@ -76,7 +77,7 @@ class AnalyzerAnalyzeTextJob implements ShouldQueue
             if ($analyzerEntity && $analyzerEntity->status === Status::PENDING) {
                 $text = AnalyzerCategory::driver($this->category)->text($analyzerEntity->analyzerable_id);
 
-                if ($text) {
+                if (mb_strlen($text) > Config::get('analyzer.minLengthText')) {
                     $taskId = Plagiarism::request($text);
 
                     Analyzer::find($this->id)->update([
@@ -91,6 +92,10 @@ class AnalyzerAnalyzeTextJob implements ShouldQueue
                 } else {
                     Analyzer::find($this->id)->update([
                         'status' => Status::SKIPPED->value,
+                        'unique' => null,
+                        'water' => null,
+                        'spam' => null,
+                        'tries' => 0,
                     ]);
                 }
             }
