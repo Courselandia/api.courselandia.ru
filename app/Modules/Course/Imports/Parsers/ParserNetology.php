@@ -66,6 +66,7 @@ class ParserNetology extends ParserYml
             'Онлайн Модульный набор Высшее образование' => Direction::BUSINESS,
             'Онлайн Курс B2G' => Direction::BUSINESS,
             'Лидерство и управление командой' => Direction::BUSINESS,
+            'Лидер 360 b2c Базовый' => Direction::BUSINESS,
         ];
     }
 
