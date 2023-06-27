@@ -10,6 +10,7 @@ namespace App\Modules\Course\Entities;
 
 use App\Models\Entities;
 use App\Models\Entity;
+use App\Modules\Analyzer\Entities\Analyzer;
 use App\Modules\Course\Enums\Currency;
 use App\Modules\Course\Enums\Duration;
 use App\Modules\Course\Enums\Language;
@@ -421,4 +422,12 @@ class Course extends Entity
      */
     #[Entities(CourseFeature::class)]
     public ?array $features = null;
+
+    /**
+     * Анализ хранения текстов.
+     *
+     * @var Analyzer[]
+     */
+    #[Entities(Analyzer::class)]
+    public ?array $analyzers = null;
 }

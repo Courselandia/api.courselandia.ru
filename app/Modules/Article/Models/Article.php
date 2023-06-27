@@ -8,11 +8,13 @@
 
 namespace App\Modules\Article\Models;
 
+use App\Modules\Analyzer\Models\Analyzer;
 use Eloquent;
 use App\Models\Delete;
 use App\Models\Validate;
 use App\Models\Sortable;
 use EloquentFilter\Filterable;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use JetBrains\PhpStorm\ArrayShape;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -36,6 +38,7 @@ use App\Modules\Article\Filters\ArticleFilter;
  * @property int|string $articleable_type Имя класса сущности для которой написан текст.
  *
  * @property-read Eloquent $articleable
+ * @property-read Analyzer[] $analyzers
  */
 class Article extends Eloquent
 {
@@ -150,5 +153,15 @@ class Article extends Eloquent
     public function articleable(): MorphTo
     {
         return $this->morphTo();
+    }
+
+    /**
+     * Результаты анализа текста.
+     *
+     * @return MorphMany Модели анализа текста.
+     */
+    public function analyzers(): MorphMany
+    {
+        return $this->morphMany(Analyzer::class, 'analyzerable');
     }
 }

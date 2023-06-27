@@ -80,6 +80,7 @@ class ArticleReadAction extends Action
                 $query = Article::filter($this->filters ?: [])
                     ->with([
                         'articleable',
+                        'analyzers',
                     ]);
 
                 $queryCount = $query->clone();

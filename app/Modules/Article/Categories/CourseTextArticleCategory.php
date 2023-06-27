@@ -8,12 +8,15 @@
 
 namespace App\Modules\Article\Categories;
 
+use App\Modules\Analyzer\Enums\Status;
 use Cache;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Modules\Article\Actions\Admin\ArticleGetAction;
 use App\Modules\Course\Actions\Admin\Course\CourseGetAction;
 use App\Modules\Course\Models\Course;
+use App\Modules\Analyzer\Models\Analyzer;
+use App\Modules\Analyzer\Entities\Analyzer as AnalyzerEntity;
 use App\Modules\Article\Contracts\ArticleCategory;
 
 /**
@@ -84,7 +87,27 @@ class CourseTextArticleCategory extends ArticleCategory
             $course->text = $articleEntity->text;
 
             Course::find($articleEntity->articleable->id)->update($course->toArray());
-            Cache::tags(['course'])->flush();
+
+            if ($articleEntity->analyzers) {
+                foreach ($articleEntity->analyzers as $analyzer) {
+                    if ($analyzer->category === 'article.text' && $analyzer->status === Status::READY) {
+                        $analyzerEntity = new AnalyzerEntity();
+                        $analyzerEntity->task_id = $analyzer->task_id;
+                        $analyzerEntity->category = 'course.text';
+                        $analyzerEntity->unique = $analyzer->unique;
+                        $analyzerEntity->water = $analyzer->water;
+                        $analyzerEntity->spam = $analyzer->spam;
+                        $analyzerEntity->tries = $analyzer->tries;
+                        $analyzerEntity->status = $analyzer->status;
+                        $analyzerEntity->analyzerable_id = $course->id;
+                        $analyzerEntity->analyzerable_type = 'App\Modules\Course\Models\Course';
+
+                        Analyzer::create($analyzerEntity->toArray());
+                    }
+                }
+            }
+
+            Cache::tags(['course', 'article'])->flush();
         } else {
             throw new RecordNotExistException(
                 trans('course::actions.admin.courseUpdateStatusAction.notExistCourse')

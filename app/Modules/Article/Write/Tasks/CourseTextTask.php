@@ -57,13 +57,11 @@ class CourseTextTask extends Task
             $entity->articleable_id = $course->id;
             $entity->articleable_type = 'App\Modules\Course\Models\Course';
 
-            $delay = $delay->addMinute();
-
             $article = Article::create($entity->toArray());
-
             $job = ArticleWriteTextJob::dispatch($article->id, 'course.text');
 
             if ($delay) {
+                $delay = $delay->addMinute();
                 $job->delay($delay);
             }
         }

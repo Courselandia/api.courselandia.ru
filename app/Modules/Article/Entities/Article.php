@@ -13,6 +13,7 @@ use App\Models\Entities;
 use App\Models\Entity;
 use App\Modules\Article\Enums\Status;
 use App\Modules\Course\Entities\Course;
+use App\Modules\Analyzer\Entities\Analyzer;
 
 /**
  * Сущность для статьи.
@@ -145,4 +146,12 @@ class Article extends Entity
      */
     #[Entities(['\App\Modules\Course\Models\Course' => Course::class], 'articleable_type')]
     public Course|null $articleable = null;
+
+    /**
+     * Анализ хранения текстов.
+     *
+     * @var Analyzer[]
+     */
+    #[Entities(Analyzer::class)]
+    public ?array $analyzers = null;
 }

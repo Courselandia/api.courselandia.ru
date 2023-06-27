@@ -11,6 +11,7 @@ namespace App\Modules\Course\Actions\Admin\Course;
 use App\Models\Action;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
+use App\Modules\Analyzer\Actions\Admin\AnalyzerUpdateAction;
 use App\Modules\Course\Entities\Course as CourseEntity;
 use App\Modules\Course\Entities\CourseFeature as CourseFeatureEntity;
 use App\Modules\Course\Entities\CourseLearn as CourseLearnEntity;
@@ -304,7 +305,13 @@ class CourseUpdateAction extends Action
         $courseEntity = $action->run();
 
         if ($courseEntity) {
-            DB::transaction(function () use ($courseEntity) {
+            $changedText = false;
+
+            if ($courseEntity->text !== $this->text) {
+                $changedText = true;
+            }
+
+            DB::transaction(function () use ($courseEntity, $changedText) {
                 $templateValues = [
                     'course' => $this->name,
                     'school' => $courseEntity->school->name,
@@ -412,6 +419,15 @@ class CourseUpdateAction extends Action
                     }
                 }
             });
+
+            if ($changedText) {
+                $action = app(AnalyzerUpdateAction::class);
+                $action->id = $courseEntity->id;
+                $action->model = Course::class;
+                $action->category = 'course.text';
+
+                $action->run();
+            }
 
             Cache::tags([
                 'course',

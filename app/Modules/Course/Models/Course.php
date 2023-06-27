@@ -8,7 +8,6 @@
 
 namespace App\Modules\Course\Models;
 
-use Illuminate\Database\Eloquent\Relations\MorphMany;
 use SVG\SVG;
 use Size;
 use ImageStore;
@@ -50,6 +49,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Modules\Course\Database\Factories\CourseFactory;
 use App\Modules\Course\Filters\CourseFilter;
+use App\Modules\Analyzer\Models\Analyzer;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 /**
  * Класс модель для таблицы курсов на основе Eloquent.
@@ -108,6 +109,7 @@ use App\Modules\Course\Filters\CourseFilter;
  * @property-read CourseLearn[] $learns
  * @property-read CourseFeature[] $features
  * @property-read Article[] $articles
+ * @property-read Analyzer[] $analyzers
  */
 class Course extends Eloquent
 {
@@ -479,6 +481,16 @@ class Course extends Eloquent
     public function articles(): MorphMany
     {
         return $this->morphMany(Article::class, 'articleable');
+    }
+
+    /**
+     * Результаты анализа текста.
+     *
+     * @return MorphMany Модели анализа текста.
+     */
+    public function analyzers(): MorphMany
+    {
+        return $this->morphMany(Analyzer::class, 'analyzerable');
     }
 
     /**
