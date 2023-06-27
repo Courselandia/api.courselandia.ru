@@ -66,7 +66,7 @@ class Import
             ->addParser(new ParserMapsYandex(School::GEEKBRAINS, 'https://yandex.ru/maps/org/geekbrains/1402263817/reviews/'))
             ->addParser(new ParserMapsYandex(School::NETOLOGIA, 'https://yandex.ru/maps/org/netologiya/205031471256/reviews/'))
             ->addParser(new ParserMapsYandex(School::SKILL_FACTORY, 'https://yandex.ru/maps/org/skillfactory/237135461560/reviews/'))
-            ->addParser(new ParserMapsYandex(School::CONTENTED, 'https://yandex.ru/maps/org/contented/115157665135/reviews/'))
+            // ->addParser(new ParserMapsYandex(School::CONTENTED, 'https://yandex.ru/maps/org/contented/115157665135/reviews/'))
             ->addParser(new ParserMapsYandex(School::XYZ_SCHOOL, 'https://yandex.ru/maps/org/xyz_school/151268379499/reviews/'))
             ->addParser(new ParserMapsYandex(School::INTERNATIONAL_SCHOOL_PROFESSIONS, 'https://yandex.ru/maps/org/mezhdunarodnaya_shkola_professiy/33978597831/reviews/'))
             ->addParser(new ParserMooc(School::SKILLBOX, 'skillbox'))
@@ -79,11 +79,11 @@ class Import
             ->addParser(new ParserMooc(School::NETOLOGIA, 'https://netology.ru/otzyvy'))
             ->addParser(new ParserNetology(School::NETOLOGIA, 'https://netology.ru/otzyvy'))
             ->addParser(new ParserOtzyvru(School::SKILLBOX, 'https://otzyvru.com/skillbox'))
-            ->addParser(new ParserProgbasics(School::SKILLBOX, 'https://progbasics.ru/schools/skillbox/reviews'))
-            ->addParser(new ParserProgbasics(School::SKYPRO, 'https://progbasics.ru/schools/skypro/reviews'))
+            // ->addParser(new ParserProgbasics(School::SKILLBOX, 'https://progbasics.ru/schools/skillbox/reviews'))
+            // ->addParser(new ParserProgbasics(School::SKYPRO, 'https://progbasics.ru/schools/skypro/reviews'))
             ->addParser(new ParserSpr(School::SKILLBOX, 'https://spr.ru/moskva/uchebnie-i-obrazovatelnie-tsentri-kursi/reviews/skillbox-5153272.html'))
             ->addParser(new ParserZoon(School::SKILLBOX, 'https://zoon.ru/msk/trainings/kompaniya_skillbox_na_leninskom_prospekte/reviews/'))
-            ->addParser(new ParserSkillbox(School::SKILLBOX, 'https://skillbox.ru/otzyvy/'))
+            // ->addParser(new ParserSkillbox(School::SKILLBOX, 'https://skillbox.ru/otzyvy/'))
             ->addParser(new ParserOtzyvmarketing(School::SKILLBOX, 'https://otzyvmarketing.ru/skillbox/'))
             ->addParser(new ParserOtzyvmarketing(School::SKYPRO, 'https://otzyvmarketing.ru/skypro/'));
     }
