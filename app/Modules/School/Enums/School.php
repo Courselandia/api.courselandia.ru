@@ -58,6 +58,41 @@ enum School: int implements EnumLabel
     case INTERNATIONAL_SCHOOL_PROFESSIONS = 9;
 
     /**
+     * Eduson Academy
+     */
+    case EDUSON_ACADEMY = 10;
+
+    /**
+     * Coddy
+     */
+    case CODDY = 11;
+
+    /**
+     * Otus
+     */
+    case OTUS = 12;
+
+    /**
+     * Хекслет
+     */
+    case HEXLET = 13;
+
+    /**
+     * Bang Bang Education
+     */
+    case BANG_BANG_EDUCATION = 14;
+
+    /**
+     * Interra
+     */
+    case INTERRA = 15;
+
+    /**
+     * MAED
+     */
+    case MAED = 16;
+
+    /**
      * Получение лейбл перечисления.
      *
      * @return string|int Вернет лейбл перечисления.
@@ -74,6 +109,13 @@ enum School: int implements EnumLabel
             self::XYZ_SCHOOL => 'XYZ School',
             self::SKILLBOX_ENG_KESPA => 'Skillbox Английский (Kespa)',
             self::INTERNATIONAL_SCHOOL_PROFESSIONS => 'Международная Школа Профессий',
+            self::EDUSON_ACADEMY => 'Eduson Academy',
+            self::CODDY => 'Coddy',
+            self::OTUS => 'Otus',
+            self::HEXLET => 'Хекслет',
+            self::BANG_BANG_EDUCATION => 'Bang Bang Education',
+            self::INTERRA => 'Interra',
+            self::MAED => 'MAED',
         };
     }
 }

@@ -36,6 +36,7 @@
         "orchestra/parser": "^7.0",
         "paquettg/php-html-parser": "^2.2",
         "predis/predis": "^2.0",
+        "ralouphie/mimey": "^1.0",
         "tucker-eric/eloquentfilter": "^3.1",
         "vladimir-yuldashev/laravel-queue-rabbitmq": "^13.0",
         "wamania/php-stemmer": "^3.0"

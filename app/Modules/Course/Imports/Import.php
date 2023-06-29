@@ -8,20 +8,21 @@
 
 namespace App\Modules\Course\Imports;
 
-use App\Modules\Course\Enums\Currency;
-use App\Modules\Metatag\Actions\MetatagSetAction;
-use App\Modules\Metatag\Template\Template;
-use Cache;
-use Throwable;
 use Util;
 use File;
+use Cache;
+use Throwable;
 use ImageStore;
 use App\Models\Error;
-use App\Modules\Course\Entities\ParserCourse;
+use Mimey\MimeTypes;
 use App\Models\Event;
-use App\Modules\Course\Models\Course;
-use App\Modules\Course\Enums\Status;
 use Illuminate\Http\UploadedFile;
+use App\Modules\Course\Enums\Status;
+use App\Modules\Course\Models\Course;
+use App\Modules\Course\Enums\Currency;
+use App\Modules\Metatag\Template\Template;
+use App\Modules\Course\Entities\ParserCourse;
+use App\Modules\Metatag\Actions\MetatagSetAction;
 use App\Modules\Course\Imports\Parsers\ParserNetology;
 use App\Modules\Course\Imports\Parsers\ParserGeekBrains;
 use App\Modules\Course\Imports\Parsers\ParserSkillbox;
@@ -31,6 +32,13 @@ use App\Modules\Course\Imports\Parsers\ParserSkillFactory;
 use App\Modules\Course\Imports\Parsers\ParserXyzSchool;
 use App\Modules\Course\Imports\Parsers\ParserSkillboxEng;
 use App\Modules\Course\Imports\Parsers\ParserInternationalSchoolProfessions;
+use App\Modules\Course\Imports\Parsers\ParserCoddy;
+use App\Modules\Course\Imports\Parsers\ParserEdusonAcademy;
+use App\Modules\Course\Imports\Parsers\ParserHexlet;
+use App\Modules\Course\Imports\Parsers\ParserOtus;
+use App\Modules\Course\Imports\Parsers\ParserBangBangEducation;
+use App\Modules\Course\Imports\Parsers\ParserInterra;
+use App\Modules\Course\Imports\Parsers\ParserMaed;
 
 /**
  * Класс импорта курсов.
@@ -66,15 +74,22 @@ class Import
      */
     public function __construct()
     {
-        $this->addParser(new ParserNetology('https://feeds.advcake.com/feed/download/720bc9eb1b0a9ffdbbfb5a6bb5e1b430')) // Боевой
-            ->addParser(new ParserGeekBrains('https://feeds.advcake.com/feed/download/fb26c1c07ea836c24f519ae06463ad97')) // Боевой
-            ->addParser(new ParserSkillbox('https://feeds.advcake.com/feed/download/04c98be3ff7eb4298b14b863b66f5447')) // Боевой
-            ->addParser(new ParserSkyPro('https://feeds.advcake.com/feed/download/78f9101b00fdc0ee9604c52c1498e8d6')) // Боевой
-            ->addParser(new ParserSkillFactory('https://feeds.advcake.com/feed/download/1b8ef478549c7676fd66df1115ea6197')) // Боевой
-            ->addParser(new ParserContented('https://feeds.advcake.com/feed/download/6d2dd813fb1c90af6a46a09152b8b66e')) // Боевой
-            ->addParser(new ParserXyzSchool('https://feeds.advcake.com/feed/download/beed1d5d836673744f70f869fa8dc96d')) // Боевой
-            ->addParser(new ParserSkillboxEng('https://feeds.advcake.com/feed/download/312e01ad656d54b004998c79a3fbd6d5')) // Боевой
-            ->addParser(new ParserInternationalSchoolProfessions('https://feeds.advcake.com/feed/download/e32dabfde71ef6a97dd8b66a9c142c99')); // Боевой
+        $this->addParser(new ParserNetology('https://feeds.advcake.com/feed/download/720bc9eb1b0a9ffdbbfb5a6bb5e1b430'))
+            ->addParser(new ParserGeekBrains('https://feeds.advcake.com/feed/download/fb26c1c07ea836c24f519ae06463ad97'))
+            ->addParser(new ParserSkillbox('https://feeds.advcake.com/feed/download/04c98be3ff7eb4298b14b863b66f5447'))
+            ->addParser(new ParserSkyPro('https://feeds.advcake.com/feed/download/78f9101b00fdc0ee9604c52c1498e8d6'))
+            ->addParser(new ParserSkillFactory('https://feeds.advcake.com/feed/download/1b8ef478549c7676fd66df1115ea6197'))
+            ->addParser(new ParserContented('https://feeds.advcake.com/feed/download/6d2dd813fb1c90af6a46a09152b8b66e'))
+            ->addParser(new ParserXyzSchool('https://feeds.advcake.com/feed/download/beed1d5d836673744f70f869fa8dc96d'))
+            ->addParser(new ParserSkillboxEng('https://feeds.advcake.com/feed/download/312e01ad656d54b004998c79a3fbd6d5'))
+            ->addParser(new ParserInternationalSchoolProfessions('https://feeds.advcake.com/feed/download/e32dabfde71ef6a97dd8b66a9c142c99'))
+            ->addParser(new ParserEdusonAcademy('https://feeds.advcake.com/feed/download/f6dcb15ae0a559674e0f785786f26582'))
+            ->addParser(new ParserCoddy('https://feeds.advcake.com/feed/download/4b6f8a8e2173c49b1204798eb2033a33'))
+            ->addParser(new ParserOtus('https://feeds.advcake.com/feed/download/03c2de078b28838db48d2cabf352421e'))
+            ->addParser(new ParserHexlet('https://feeds.advcake.com/feed/download/faa81752171de66c811cf1c71bd8b219'))
+            ->addParser(new ParserBangBangEducation('https://feeds.advcake.com/feed/download/0475089f1a85e27f985cd2038bdf7222'))
+            ->addParser(new ParserInterra('https://feeds.advcake.com/feed/download/f3af68784839de1613e471267e3bc492'))
+            ->addParser(new ParserMaed('https://feeds.advcake.com/feed/download/a6128901675d0978230dc93c8801b1c7'));
     }
 
     /**
@@ -286,16 +301,38 @@ class Import
      * Получение файла изображения на базе URL.
      *
      * @param string $imageUrl URL файла изображения.
-     * @return UploadedFile Файл изображения.
+     * @return UploadedFile|null Файл изображения.
      */
-    private function getImage(string $imageUrl): UploadedFile
+    private function getImage(string $imageUrl): ?UploadedFile
     {
         $ext = pathinfo($imageUrl, PATHINFO_EXTENSION);
         $name = pathinfo($imageUrl, PATHINFO_BASENAME);
-        $path = ImageStore::tmp($ext);
-        File::copy($imageUrl, $path);
 
-        return new UploadedFile($path, $name);
+        if (!$ext) {
+            file_get_contents($imageUrl);
+            $contentType = null;
+
+            foreach ($http_response_header as $value) {
+                if (preg_match_all('/content-type\s*:\s*(.*)$/mi', $value, $matches)) {
+                    $contentType = end($matches[1]);
+                }
+            }
+
+            if ($contentType) {
+                $mimes = new MimeTypes();
+                $ext = $mimes->getExtension($contentType);
+                $name = 'img-tmp.' . $ext;
+            }
+        }
+
+        if ($ext && $name) {
+            $path = ImageStore::tmp($ext);
+            File::copy($imageUrl, $path);
+
+            return new UploadedFile($path, $name);
+        }
+
+        return null;
     }
 
     /**
