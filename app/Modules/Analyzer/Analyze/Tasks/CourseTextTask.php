@@ -74,8 +74,8 @@ class CourseTextTask extends Task
      */
     private function getQuery(): Builder
     {
-        return Course::where('status', Status::ACTIVE->value)
-            ->doesntHave('analyzers', 'and', function (Builder $query) {
+        return Course::/*where('status', Status::ACTIVE->value)
+            ->*/doesntHave('analyzers', 'and', function (Builder $query) {
                 $query->where('analyzers.category', 'course.text');
             })
             ->orderBy('id', 'ASC');
