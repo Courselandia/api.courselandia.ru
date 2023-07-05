@@ -9,6 +9,7 @@
 namespace App\Modules\Article\Providers;
 
 use App;
+use App\Modules\Article\Commands\ArticleRewriteCommand;
 use Config;
 use ArticleCategory;
 use Illuminate\Support\ServiceProvider;
@@ -53,6 +54,7 @@ class ArticleServiceProvider extends ServiceProvider
         $this->commands([
             ArticleWriteCommand::class,
             ArticleApplyCommand::class,
+            ArticleRewriteCommand::class,
         ]);
     }
 

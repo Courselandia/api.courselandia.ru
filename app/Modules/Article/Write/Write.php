@@ -29,6 +29,9 @@ class Write
      */
     private array $tasks = [];
 
+    /**
+     * Конструктор.
+     */
     public function __construct()
     {
         $this->addTask(new CourseTextTask());
@@ -85,7 +88,7 @@ class Write
         $now = Carbon::now();
 
         foreach ($tasks as $task) {
-            $task->addEvent('run', function ($obj, $course) {
+            $task->addEvent('run', function () {
                 $this->fireEvent('run');
             });
         }

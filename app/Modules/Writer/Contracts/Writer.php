@@ -17,9 +17,10 @@ abstract class Writer
      * Запрос на написание текста.
      *
      * @param string $request Запрос на написания текста.
+     * @param array|null $options Дополнительные опции настройки сети.
      * @return string ID задачи на генерацию.
      */
-    abstract public function request(string $request): string;
+    abstract public function request(string $request, array $options = null): string;
 
     /**
      * Получить результат.

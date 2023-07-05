@@ -21,10 +21,11 @@ class WriterFake extends Writer
      * Запрос на написание текста.
      *
      * @param string $request Запрос на написания текста.
+     * @param array|null $options Дополнительные опции настройки сети.
      *
      * @return string ID задачи на генерацию.
      */
-    public function request(string $request): string
+    public function request(string $request, array $options = null): string
     {
         return '10';
     }

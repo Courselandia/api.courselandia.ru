@@ -29,19 +29,26 @@ class WriterNeuroTexter extends Writer
      * Запрос на написание текста.
      *
      * @param string $request Запрос на написания текста.
+     * @param array|null $options Дополнительные опции настройки сети.
      *
      * @return string ID задачи на генерацию.
      * @throws ResponseException
      * @throws PaymentException|GuzzleException
      * @throws LimitException
      */
-    public function request(string $request): string
+    public function request(string $request, array $options = null): string
     {
         $client = new Client();
 
         try {
+            $url = 'https://neuro-texter.ru/api/freestyle';
+
+            if (isset($options['rewrite']) && $options['rewrite'] === true) {
+                $url = 'https://neuro-texter.ru/api/rewrite';
+            }
+
             $response = $client->post(
-                'https://neuro-texter.ru/api/freestyle',
+                $url,
                 [
                     'headers' => [
                         'Content-Type' => 'application/json',
@@ -50,6 +57,7 @@ class WriterNeuroTexter extends Writer
                     ],
                     'json' => [
                         'text' => $request,
+                        ... $options ?: [],
                     ],
                 ],
             );
