@@ -86,7 +86,7 @@ class ArticleRewriteTextJob implements ShouldQueue
                 $taskId = Writer::request($this->text, [
                     'rewrite' => true,
                     'strong' => true,
-                    // 'creative' => 8,
+                    'creative' => 7,
                 ]);
 
                 Article::find($this->id)->update([
