@@ -46,18 +46,27 @@ class Rewrite extends Write
     private ?int $spam;
 
     /**
+     * Показатель креативности сети.
+     *
+     * @var int|null
+     */
+    private ?int $creative;
+
+    /**
      * Конструктор.
      *
      * @param ?int $unique Нижний порог уникальность, который нужно переписывать.
      * @param ?int $water Верхний порог количество воды, который нужно переписывать.
      * @param ?int $spam Верхний порог заспамленности, который нужно переписывать.
+     * @param ?int $creative Показатель креативности сети.
      */
-    public function __construct(?int $unique, ?int $water, ?int $spam)
+    public function __construct(?int $unique, ?int $water, ?int $spam, ?int $creative)
     {
         $this->unique = $unique;
         $this->water = $water;
         $this->spam = $spam;
+        $this->creative = $creative;
 
-        $this->addTask(new CourseTextTask($this->unique, $this->water, $this->spam));
+        $this->addTask(new CourseTextTask($this->unique, $this->water, $this->spam, $this->creative));
     }
 }

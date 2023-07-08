@@ -25,7 +25,8 @@ class ArticleRewriteCommand extends Command
     protected $signature = 'article:rewrite
         {--unique= : Переписывать если уникальность ниже данного показателя}
         {--water= : Переписывать если количество воды выше данного показателя}
-        {--spam= : Переписывать если заспамленность выше данного показателя}';
+        {--spam= : Переписывать если заспамленность выше данного показателя}
+        {--creative= : Показатель креативности сети}';
 
     /**
      * Описание консольной команды.
@@ -41,7 +42,7 @@ class ArticleRewriteCommand extends Command
      */
     public function handle(): void
     {
-        $rewrite = new Rewrite($this->option('unique'), $this->option('water'), $this->option('spam'));
+        $rewrite = new Rewrite($this->option('unique'), $this->option('water'), $this->option('spam'), $this->option('creative'));
         $total = $rewrite->getTotal();
 
         if ($total) {

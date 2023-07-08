@@ -59,7 +59,7 @@ class CourseTextTask extends Task
 
             $article->save();
 
-            $job = ArticleRewriteTextJob::dispatch($article->id, 'course.text', $article->text);
+            $job = ArticleRewriteTextJob::dispatch($article->id, 'course.text', $article->text, $this->creative);
 
             if ($delay) {
                 $delay = $delay->addMinute();

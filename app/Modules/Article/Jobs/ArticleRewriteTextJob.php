@@ -56,17 +56,26 @@ class ArticleRewriteTextJob implements ShouldQueue
     public string $text;
 
     /**
+     * Показатель креативности сети.
+     *
+     * @var int|null
+     */
+    protected ?int $creative;
+
+    /**
      * Конструктор.
      *
      * @param int $id ID статьи.
      * @param string $category Категория.
      * @param string $text Текст для переписания.
+     * @param ?int $creative Показатель креативности сети.
      */
-    public function __construct(int $id, string $category, string $text)
+    public function __construct(int $id, string $category, string $text, ?int $creative)
     {
         $this->id = $id;
         $this->category = $category;
         $this->text = $text;
+        $this->creative = $creative;
     }
 
     /**
@@ -86,7 +95,7 @@ class ArticleRewriteTextJob implements ShouldQueue
                 $taskId = Writer::request($this->text, [
                     'rewrite' => true,
                     'strong' => true,
-                    'creative' => 7,
+                    'creative' => $this->creative ?? 7,
                 ]);
 
                 Article::find($this->id)->update([
