@@ -53,6 +53,7 @@ class ParserSkillbox extends ParserYml
             'Инженерия' => Direction::OTHER,
             'Архитектура' => Direction::OTHER,
             'Другое' => Direction::OTHER,
+            'Высшее образование' => Direction::OTHER,
         ];
     }
 
