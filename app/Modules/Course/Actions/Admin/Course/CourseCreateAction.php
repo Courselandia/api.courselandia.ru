@@ -8,6 +8,7 @@
 
 namespace App\Modules\Course\Actions\Admin\Course;
 
+use Typography;
 use Cache;
 use DB;
 use Throwable;
@@ -324,10 +325,10 @@ class CourseCreateAction extends Action
             $courseEntity->image_small_id = $this->image;
             $courseEntity->image_middle_id = $this->image;
             $courseEntity->image_big_id = $this->image;
-            $courseEntity->name = $this->name;
-            $courseEntity->header = $template->convert($this->header_template, $templateValues);
+            $courseEntity->name = Typography::process($this->name, true);
+            $courseEntity->header = Typography::process($template->convert($this->header_template, $templateValues), true);
             $courseEntity->header_template = $this->header_template;
-            $courseEntity->text = $this->text;
+            $courseEntity->text = Typography::process($this->text);
             $courseEntity->link = $this->link;
             $courseEntity->url = $this->url;
             $courseEntity->language = $this->language;
@@ -342,7 +343,17 @@ class CourseCreateAction extends Action
             $courseEntity->duration_unit = $this->duration_unit;
             $courseEntity->lessons_amount = $this->lessons_amount;
             $courseEntity->modules_amount = $this->modules_amount;
-            $courseEntity->program = $this->program;
+
+            $program = $this->program;
+
+            if ($program) {
+                for ($i = 0; $i < count($program); $i++) {
+                    $program[$i]['name'] = Typography::process($program[$i]['name'], true);
+                    $program[$i]['text'] = Typography::process($program[$i]['text']);
+                }
+            }
+
+            $courseEntity->program = $program;
 
             $courseEntity->direction_ids = Data::getDirections($this->directions ?: []);
             $courseEntity->profession_ids = Data::getProfessions($this->professions ?: []);
@@ -380,7 +391,7 @@ class CourseCreateAction extends Action
                 foreach ($this->learns as $learn) {
                     $entity = new CourseLearnEntity();
                     $entity->course_id = $course->id;
-                    $entity->text = $learn;
+                    $entity->text = Typography::process($learn, true);
 
                     CourseLearn::create($entity->toArray());
                 }
@@ -390,7 +401,7 @@ class CourseCreateAction extends Action
                 foreach ($this->features as $feature) {
                     $entity = new CourseFeatureEntity();
                     $entity->course_id = $course->id;
-                    $entity->text = $feature['text'];
+                    $entity->text = Typography::process($feature['text'], true);
                     $entity->icon = $feature['icon'];
 
                     CourseFeature::create($entity->toArray());

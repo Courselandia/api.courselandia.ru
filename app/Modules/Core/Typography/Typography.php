@@ -10,6 +10,8 @@ namespace App\Modules\Core\Typography;
 
 use App\Models\Error;
 use App\Models\Event;
+use App\Modules\Core\Typography\Tasks\CourseFeatureTask;
+use App\Modules\Core\Typography\Tasks\CourseLearnTask;
 use App\Modules\Core\Typography\Tasks\FaqTask;
 use App\Modules\Core\Typography\Tasks\ProfessionTask;
 use App\Modules\Core\Typography\Tasks\PublicationTask;
@@ -46,6 +48,8 @@ class Typography
     public function __construct()
     {
         $this->addTask(new CourseTask())
+            ->addTask(new CourseLearnTask())
+            ->addTask(new CourseFeatureTask())
             ->addTask(new ArticleTask())
             ->addTask(new CategoryTask())
             ->addTask(new DirectionTask())
