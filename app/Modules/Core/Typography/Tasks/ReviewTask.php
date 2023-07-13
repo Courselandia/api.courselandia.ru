@@ -9,6 +9,7 @@
 namespace App\Modules\Core\Typography\Tasks;
 
 use Typography;
+use App\Models\Exceptions\RecordExistException;
 use Illuminate\Database\Eloquent\Builder;
 use App\Modules\Review\Models\Review;
 
@@ -45,9 +46,12 @@ class ReviewTask extends Task
             $review->advantages = Typography::process($review->advantages, true);
             $review->disadvantages = Typography::process($review->disadvantages, true);
 
-            $review->save();
+            try {
+                $review->save();
+                $this->fireEvent('finished', [$review]);
+            } catch (RecordExistException $error) {
 
-            $this->fireEvent('finished', [$review]);
+            }
         }
     }
 
