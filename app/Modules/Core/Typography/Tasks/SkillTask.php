@@ -1,0 +1,62 @@
+<?php
+/**
+ * Модуль ядра системы.
+ * Этот модуль содержит все классы для работы с ядром системы.
+ *
+ * @package App\Modules\Core
+ */
+
+namespace App\Modules\Core\Typography\Tasks;
+
+use Typography;
+use Illuminate\Database\Query\Builder;
+use App\Modules\Skill\Models\Skill;
+
+/**
+ * Типографирование навыков.
+ */
+class SkillTask extends Task
+{
+    /**
+     * Количество запускаемых заданий.
+     *
+     * @return int Количество.
+     */
+    public function count(): int
+    {
+        return $this->getQuery()->count();
+    }
+
+    /**
+     * Запуск типографирования текстов.
+     *
+     * @return void
+     */
+    public function run(): void
+    {
+        $skills = $this
+            ->getQuery()
+            ->clone()
+            ->get();
+
+        foreach ($skills as $skill) {
+            $skill->name = Typography::process($skill->name, true);
+            $skill->header = Typography::process($skill->header, true);
+            $skill->text = Typography::process($skill->text);
+
+            $skill->save();
+
+            $this->fireEvent('finished', [$skill]);
+        }
+    }
+
+    /**
+     * Получить запрос на записи, которые нужно типографировать.
+     *
+     * @return Builder Построитель запроса.
+     */
+    private function getQuery(): Builder
+    {
+        return Skill::orderBy('id', 'ASC');
+    }
+}

@@ -8,9 +8,9 @@
 
 namespace App\Modules\Core\Typography\Tasks;
 
-use App\Modules\Course\Enums\Status;
+use Typography;
 use App\Modules\Course\Models\Course;
-use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Query\Builder;
 
 /**
  * Типографирование курсов.
@@ -40,18 +40,18 @@ class CourseTask extends Task
             ->get();
 
         foreach ($courses as $course) {
-            $course->name = $this->typography($course->name, true);
-            $course->header = $this->typography($course->header, true);
-            $course->text = $this->typography($course->text);
-            $course->name_morphy = $this->typography($course->name_morphy, true);
-            $course->text_morphy = $this->typography($course->text_morphy, true);
+            $course->name = Typography::process($course->name, true);
+            $course->header = Typography::process($course->header, true);
+            $course->text = Typography::process($course->text);
+            $course->name_morphy = Typography::process($course->name_morphy, true);
+            $course->text_morphy = Typography::process($course->text_morphy, true);
 
             $program = $course->program;
 
             if ($program) {
                 for ($i = 0; $i < count($program); $i++) {
-                    $program[$i]['name'] = $this->typography($course->name, $program[$i]['name'], true);
-                    $program[$i]['text'] = $this->typography($course->name, $program[$i]['text']);
+                    $program[$i]['name'] = Typography::process($program[$i]['name'], true);
+                    $program[$i]['text'] = Typography::process($program[$i]['text']);
                 }
 
                 $course->program = $program;
@@ -64,13 +64,12 @@ class CourseTask extends Task
     }
 
     /**
-     * Получить запрос на курсы, которым нужно произвести типографирование.
+     * Получить запрос на записи, которые нужно типографировать.
      *
      * @return Builder Построитель запроса.
      */
     private function getQuery(): Builder
     {
-        return Course::where('status', Status::ACTIVE->value)
-            ->orderBy('id', 'DESC');
+        return Course::orderBy('id', 'ASC');
     }
 }

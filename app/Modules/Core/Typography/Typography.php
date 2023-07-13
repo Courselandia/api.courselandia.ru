@@ -10,8 +10,20 @@ namespace App\Modules\Core\Typography;
 
 use App\Models\Error;
 use App\Models\Event;
-use App\Modules\Core\Typography\Tasks\CourseTask;
+use App\Modules\Core\Typography\Tasks\FaqTask;
+use App\Modules\Core\Typography\Tasks\ProfessionTask;
+use App\Modules\Core\Typography\Tasks\PublicationTask;
+use App\Modules\Core\Typography\Tasks\ReviewTask;
+use App\Modules\Core\Typography\Tasks\SchoolTask;
+use App\Modules\Core\Typography\Tasks\SkillTask;
 use App\Modules\Core\Typography\Tasks\Task;
+use App\Modules\Core\Typography\Tasks\ArticleTask;
+use App\Modules\Core\Typography\Tasks\CategoryTask;
+use App\Modules\Core\Typography\Tasks\CourseTask;
+use App\Modules\Core\Typography\Tasks\DirectionTask;
+use App\Modules\Core\Typography\Tasks\EmploymentTask;
+use App\Modules\Core\Typography\Tasks\TeacherTask;
+use App\Modules\Core\Typography\Tasks\ToolTask;
 
 /**
  * Класс для типографирования всех текстов на сайте.
@@ -33,8 +45,19 @@ class Typography
      */
     public function __construct()
     {
-        $this
-            ->addTask(new CourseTask());
+        $this->addTask(new CourseTask())
+            ->addTask(new ArticleTask())
+            ->addTask(new CategoryTask())
+            ->addTask(new DirectionTask())
+            ->addTask(new EmploymentTask())
+            ->addTask(new FaqTask())
+            ->addTask(new ProfessionTask())
+            ->addTask(new PublicationTask())
+            ->addTask(new ReviewTask())
+            ->addTask(new SchoolTask())
+            ->addTask(new SkillTask())
+            ->addTask(new TeacherTask())
+            ->addTask(new ToolTask());
     }
 
     /**

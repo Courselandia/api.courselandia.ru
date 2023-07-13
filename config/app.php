@@ -210,6 +210,7 @@ return [
         App\Providers\GeoServiceProvider::class,
         App\Providers\SmsServiceProvider::class,
         App\Providers\MorphServiceProvider::class,
+        App\Providers\TypographyServiceProvider::class,
 
         // Modules
 
@@ -327,6 +328,7 @@ return [
         // Own classes
         'Util' => App\Models\Facades\Util::class,
         'Morph' => App\Models\Facades\Morph::class,
+        'Typography' => App\Models\Facades\Typography::class,
         'Device' => App\Models\Facades\Device::class,
         'Bot' => App\Models\Facades\Bot::class,
         'Act' => App\Modules\Act\Facades\Act::class,

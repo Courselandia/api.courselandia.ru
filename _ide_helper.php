@@ -9775,194 +9775,6 @@
                         return $instance->setConnectionName($name);
         }
                     /**
-         * 
-         *
-         * @param null $queue
-         * @param int $attempts
-         * @return mixed 
-         * @throws AMQPProtocolChannelException
-         * @static 
-         */ 
-        public static function laterRaw($delay, $payload, $queue = null, $attempts = 0)
-        {
-                        /** @var \VladimirYuldashev\LaravelQueueRabbitMQ\Queue\RabbitMQQueue $instance */
-                        return $instance->laterRaw($delay, $payload, $queue, $attempts);
-        }
-                    /**
-         * 
-         *
-         * @param null $queue
-         * @return mixed 
-         * @throws AMQPProtocolChannelException
-         * @static 
-         */ 
-        public static function bulkRaw($payload, $queue = null, $options = [])
-        {
-                        /** @var \VladimirYuldashev\LaravelQueueRabbitMQ\Queue\RabbitMQQueue $instance */
-                        return $instance->bulkRaw($payload, $queue, $options);
-        }
-                    /**
-         * 
-         *
-         * @static 
-         */ 
-        public static function getConnection()
-        {
-                        /** @var \VladimirYuldashev\LaravelQueueRabbitMQ\Queue\RabbitMQQueue $instance */
-                        return $instance->getConnection();
-        }
-                    /**
-         * 
-         *
-         * @static 
-         */ 
-        public static function getChannel()
-        {
-                        /** @var \VladimirYuldashev\LaravelQueueRabbitMQ\Queue\RabbitMQQueue $instance */
-                        return $instance->getChannel();
-        }
-                    /**
-         * Job class to use.
-         *
-         * @throws Throwable
-         * @static 
-         */ 
-        public static function getJobClass()
-        {
-                        /** @var \VladimirYuldashev\LaravelQueueRabbitMQ\Queue\RabbitMQQueue $instance */
-                        return $instance->getJobClass();
-        }
-                    /**
-         * Gets a queue/destination, by default the queue option set on the connection.
-         *
-         * @param null $queue
-         * @static 
-         */ 
-        public static function getQueue($queue = null)
-        {
-                        /** @var \VladimirYuldashev\LaravelQueueRabbitMQ\Queue\RabbitMQQueue $instance */
-                        return $instance->getQueue($queue);
-        }
-                    /**
-         * Checks if the given exchange already present/defined in RabbitMQ.
-         * 
-         * Returns false when when the exchange is missing.
-         *
-         * @throws AMQPProtocolChannelException
-         * @static 
-         */ 
-        public static function isExchangeExists($exchange)
-        {
-                        /** @var \VladimirYuldashev\LaravelQueueRabbitMQ\Queue\RabbitMQQueue $instance */
-                        return $instance->isExchangeExists($exchange);
-        }
-                    /**
-         * Declare a exchange in rabbitMQ, when not already declared.
-         *
-         * @static 
-         */ 
-        public static function declareExchange($name, $type = 'direct', $durable = true, $autoDelete = false, $arguments = [])
-        {
-                        /** @var \VladimirYuldashev\LaravelQueueRabbitMQ\Queue\RabbitMQQueue $instance */
-                        return $instance->declareExchange($name, $type, $durable, $autoDelete, $arguments);
-        }
-                    /**
-         * Delete a exchange from rabbitMQ, only when present in RabbitMQ.
-         *
-         * @throws AMQPProtocolChannelException
-         * @static 
-         */ 
-        public static function deleteExchange($name, $unused = false)
-        {
-                        /** @var \VladimirYuldashev\LaravelQueueRabbitMQ\Queue\RabbitMQQueue $instance */
-                        return $instance->deleteExchange($name, $unused);
-        }
-                    /**
-         * Checks if the given queue already present/defined in RabbitMQ.
-         * 
-         * Returns false when when the queue is missing.
-         *
-         * @throws AMQPProtocolChannelException
-         * @static 
-         */ 
-        public static function isQueueExists($name = null)
-        {
-                        /** @var \VladimirYuldashev\LaravelQueueRabbitMQ\Queue\RabbitMQQueue $instance */
-                        return $instance->isQueueExists($name);
-        }
-                    /**
-         * Declare a queue in rabbitMQ, when not already declared.
-         *
-         * @static 
-         */ 
-        public static function declareQueue($name, $durable = true, $autoDelete = false, $arguments = [])
-        {
-                        /** @var \VladimirYuldashev\LaravelQueueRabbitMQ\Queue\RabbitMQQueue $instance */
-                        return $instance->declareQueue($name, $durable, $autoDelete, $arguments);
-        }
-                    /**
-         * Delete a queue from rabbitMQ, only when present in RabbitMQ.
-         *
-         * @throws AMQPProtocolChannelException
-         * @static 
-         */ 
-        public static function deleteQueue($name, $if_unused = false, $if_empty = false)
-        {
-                        /** @var \VladimirYuldashev\LaravelQueueRabbitMQ\Queue\RabbitMQQueue $instance */
-                        return $instance->deleteQueue($name, $if_unused, $if_empty);
-        }
-                    /**
-         * Bind a queue to an exchange.
-         *
-         * @static 
-         */ 
-        public static function bindQueue($queue, $exchange, $routingKey = '')
-        {
-                        /** @var \VladimirYuldashev\LaravelQueueRabbitMQ\Queue\RabbitMQQueue $instance */
-                        return $instance->bindQueue($queue, $exchange, $routingKey);
-        }
-                    /**
-         * Purge the queue of messages.
-         *
-         * @static 
-         */ 
-        public static function purge($queue = null)
-        {
-                        /** @var \VladimirYuldashev\LaravelQueueRabbitMQ\Queue\RabbitMQQueue $instance */
-                        return $instance->purge($queue);
-        }
-                    /**
-         * Acknowledge the message.
-         *
-         * @static 
-         */ 
-        public static function ack($job)
-        {
-                        /** @var \VladimirYuldashev\LaravelQueueRabbitMQ\Queue\RabbitMQQueue $instance */
-                        return $instance->ack($job);
-        }
-                    /**
-         * Reject the message.
-         *
-         * @static 
-         */ 
-        public static function reject($job, $requeue = false)
-        {
-                        /** @var \VladimirYuldashev\LaravelQueueRabbitMQ\Queue\RabbitMQQueue $instance */
-                        return $instance->reject($job, $requeue);
-        }
-                    /**
-         * Close the connection to RabbitMQ.
-         *
-         * @throws Exception
-         * @static 
-         */ 
-        public static function close()
-        {
-                        /** @var \VladimirYuldashev\LaravelQueueRabbitMQ\Queue\RabbitMQQueue $instance */
-                        return $instance->close();
-        }
-                    /**
          * Get the backoff for an object-based queue handler.
          *
          * @param mixed $job
@@ -9971,7 +9783,7 @@
          */ 
         public static function getJobBackoff($job)
         {            //Method inherited from \Illuminate\Queue\Queue         
-                        /** @var \VladimirYuldashev\LaravelQueueRabbitMQ\Queue\RabbitMQQueue $instance */
+                        /** @var \Illuminate\Queue\SyncQueue $instance */
                         return $instance->getJobBackoff($job);
         }
                     /**
@@ -9983,7 +9795,7 @@
          */ 
         public static function getJobExpiration($job)
         {            //Method inherited from \Illuminate\Queue\Queue         
-                        /** @var \VladimirYuldashev\LaravelQueueRabbitMQ\Queue\RabbitMQQueue $instance */
+                        /** @var \Illuminate\Queue\SyncQueue $instance */
                         return $instance->getJobExpiration($job);
         }
                     /**
@@ -9995,7 +9807,7 @@
          */ 
         public static function createPayloadUsing($callback)
         {            //Method inherited from \Illuminate\Queue\Queue         
-                        \VladimirYuldashev\LaravelQueueRabbitMQ\Queue\RabbitMQQueue::createPayloadUsing($callback);
+                        \Illuminate\Queue\SyncQueue::createPayloadUsing($callback);
         }
                     /**
          * Get the container instance being used by the connection.
@@ -10005,7 +9817,7 @@
          */ 
         public static function getContainer()
         {            //Method inherited from \Illuminate\Queue\Queue         
-                        /** @var \VladimirYuldashev\LaravelQueueRabbitMQ\Queue\RabbitMQQueue $instance */
+                        /** @var \Illuminate\Queue\SyncQueue $instance */
                         return $instance->getContainer();
         }
                     /**
@@ -10017,7 +9829,7 @@
          */ 
         public static function setContainer($container)
         {            //Method inherited from \Illuminate\Queue\Queue         
-                        /** @var \VladimirYuldashev\LaravelQueueRabbitMQ\Queue\RabbitMQQueue $instance */
+                        /** @var \Illuminate\Queue\SyncQueue $instance */
                         $instance->setContainer($container);
         }
          
@@ -19141,6 +18953,26 @@
          
     }
             /**
+     * Типографирование текста.
+     *
+     */ 
+        class Typography {
+                    /**
+         * Типографирование текста.
+         *
+         * @param \App\Models\Typography\?string $text Текст для тпиографирования.
+         * @param bool $htmlEntityDecode Преобразует HTML-сущности в соответствующие им символы.
+         * @return \App\Models\Typography\?string Оттипографированный текст.
+         * @static 
+         */ 
+        public static function process($text, $htmlEntityDecode = false)
+        {
+                        /** @var \App\Models\Typography\Typography $instance */
+                        return $instance->process($text, $htmlEntityDecode);
+        }
+         
+    }
+            /**
      * Фасад класса для работы с устройствами.
      *
      */ 
@@ -24704,6 +24536,7 @@ namespace  {
             class Size extends \Intervention\Image\Facades\Image {}
             class Util extends \App\Models\Facades\Util {}
             class Morph extends \App\Models\Facades\Morph {}
+            class Typography extends \App\Models\Facades\Typography {}
             class Device extends \App\Models\Facades\Device {}
             class Bot extends \App\Models\Facades\Bot {}
             class Act extends \App\Modules\Act\Facades\Act {}

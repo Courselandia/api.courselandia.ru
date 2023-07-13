@@ -8,10 +8,9 @@
 
 namespace App\Modules\Core\Http\Controllers\Admin;
 
-use Auth;
-use GuzzleHttp\Exception\GuzzleException;
 use Log;
-use EMT\EMTypograph;
+use Typography;
+use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Routing\Controller;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -52,39 +51,13 @@ class CoreController extends Controller
      */
     public function typography(Request $request): JsonResponse
     {
-        $text = str_replace("\t", '', $request->get('text'));
-        $text = str_replace("\n\r", '', $text);
-        $text = str_replace("\r\n", '', $text);
-        $text = str_replace("\n", '', $text);
-        $text = str_replace("\r", '', $text);
+        $text = Typography::process($request->get('text'));
 
-        if ($text !== '') {
-            $typograph = new EMTypograph();
+        $data = [
+            'success' => true,
+            'text' => $text
+        ];
 
-            $typograph->do_setup('OptAlign.all', false);
-            $typograph->do_setup('Text.paragraphs', false);
-            $typograph->do_setup('Text.breakline', false);
-
-            $result = $typograph->process($text);
-
-            if ($result) {
-                $data = [
-                    'success' => true,
-                    'text' => $result
-                ];
-            } else {
-                $data = [
-                    'success' => false,
-                    'data' => null,
-                ];
-            }
-        } else {
-            $data = [
-                'success' => true,
-                'text' => ''
-            ];
-        }
-
-        return response()->json($data)->setStatusCode($data['success'] ? 200 : 400);
+        return response()->json($data)->setStatusCode(200);
     }
 }
