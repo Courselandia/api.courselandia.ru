@@ -8,6 +8,8 @@
 
 namespace App\Modules\Article\Actions\Admin;
 
+use Cache;
+use Typography;
 use App\Models\Action;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
@@ -15,8 +17,6 @@ use App\Modules\Analyzer\Actions\Admin\AnalyzerUpdateAction;
 use App\Modules\Article\Enums\Status;
 use App\Modules\Article\Entities\Article as ArticleEntity;
 use App\Modules\Article\Models\Article;
-use App\Modules\Course\Models\Course;
-use Cache;
 
 /**
  * Класс действия для обновления статьи.
@@ -58,7 +58,7 @@ class ArticleUpdateAction extends Action
         $articleEntity = $action->run();
 
         if ($articleEntity) {
-            $articleEntity->text = $this->text;
+            $articleEntity->text = Typography::process($this->text);
             $articleEntity->status = Status::READY;
 
             Article::find($this->id)->update($articleEntity->toArray());

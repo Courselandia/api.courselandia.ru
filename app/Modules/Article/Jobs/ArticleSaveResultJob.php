@@ -8,11 +8,11 @@
 
 namespace App\Modules\Article\Jobs;
 
-use App\Modules\Analyzer\Actions\Admin\AnalyzerUpdateAction;
 use Log;
 use Throwable;
 use Writer;
 use Cache;
+use Typography;
 use Illuminate\Bus\Queueable;
 use App\Modules\Article\Models\Article;
 use App\Models\Exceptions\ProcessingException;
@@ -23,6 +23,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use App\Modules\Article\Enums\Status;
+use App\Modules\Analyzer\Actions\Admin\AnalyzerUpdateAction;
 
 /**
  * Задание на получения результата написанного текста.
@@ -70,7 +71,7 @@ class ArticleSaveResultJob implements ShouldQueue
                 $text = Writer::result($articleEntity->task_id);
 
                 Article::find($this->id)->update([
-                    'text' => $text,
+                    'text' => Typography::process($text),
                     'status' => Status::READY->value,
                     'tries' => $articleEntity->tries + 1,
                 ]);

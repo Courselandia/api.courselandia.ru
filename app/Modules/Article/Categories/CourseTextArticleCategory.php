@@ -8,8 +8,8 @@
 
 namespace App\Modules\Article\Categories;
 
-use App\Modules\Analyzer\Enums\Status;
 use Cache;
+use Typography;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Modules\Article\Actions\Admin\ArticleGetAction;
@@ -18,6 +18,7 @@ use App\Modules\Course\Models\Course;
 use App\Modules\Analyzer\Models\Analyzer;
 use App\Modules\Analyzer\Entities\Analyzer as AnalyzerEntity;
 use App\Modules\Article\Contracts\ArticleCategory;
+use App\Modules\Analyzer\Enums\Status;
 
 /**
  * Абстрактный класс для создания собственного драйвера принятия текста.
@@ -84,7 +85,7 @@ class CourseTextArticleCategory extends ArticleCategory
 
         if ($articleEntity) {
             $course = $articleEntity->articleable;
-            $course->text = $articleEntity->text;
+            $course->text = Typography::process($articleEntity->text);
 
             Course::find($articleEntity->articleable->id)->update($course->toArray());
 

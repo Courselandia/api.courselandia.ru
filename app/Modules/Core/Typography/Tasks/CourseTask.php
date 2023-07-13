@@ -10,7 +10,7 @@ namespace App\Modules\Core\Typography\Tasks;
 
 use Typography;
 use App\Modules\Course\Models\Course;
-use Illuminate\Database\Query\Builder;
+use Illuminate\Database\Eloquent\Builder;
 
 /**
  * Типографирование курсов.

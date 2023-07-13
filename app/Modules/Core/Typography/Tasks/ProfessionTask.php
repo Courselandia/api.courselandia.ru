@@ -9,7 +9,7 @@
 namespace App\Modules\Core\Typography\Tasks;
 
 use Typography;
-use Illuminate\Database\Query\Builder;
+use Illuminate\Database\Eloquent\Builder;
 use App\Modules\Profession\Models\Profession;
 
 /**
