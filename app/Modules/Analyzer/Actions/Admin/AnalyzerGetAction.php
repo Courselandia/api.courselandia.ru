@@ -23,7 +23,7 @@ use App\Modules\Analyzer\Models\Analyzer;
 class AnalyzerGetAction extends Action
 {
     /**
-     * ID направления.
+     * ID анализатора.
      *
      * @var int|string|null
      */

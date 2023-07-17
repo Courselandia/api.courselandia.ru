@@ -8,7 +8,6 @@
 
 namespace App\Modules\Article\Categories;
 
-use App\Modules\Analyzer\Enums\Status;
 use Cache;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
@@ -18,6 +17,7 @@ use App\Modules\Course\Models\Course;
 use App\Modules\Analyzer\Models\Analyzer;
 use App\Modules\Analyzer\Entities\Analyzer as AnalyzerEntity;
 use App\Modules\Article\Contracts\ArticleCategory;
+use App\Modules\Analyzer\Enums\Status;
 
 /**
  * Абстрактный класс для создания собственного драйвера принятия текста.
@@ -89,8 +89,45 @@ class CourseTextArticleCategory extends ArticleCategory
             Course::find($articleEntity->articleable->id)->update($course->toArray());
 
             if ($articleEntity->analyzers) {
-                foreach ($articleEntity->analyzers as $analyzer) {
-                    if ($analyzer->category === 'article.text' && $analyzer->status === Status::READY) {
+                $this->moveAnalyzer($course->id, $articleEntity->analyzers);
+            }
+
+            Cache::tags(['course', 'article'])->flush();
+        } else {
+            throw new RecordNotExistException(
+                trans('course::actions.admin.courseUpdateStatusAction.notExistCourse')
+            );
+        }
+    }
+
+    /**
+     * Перенос анализатора текста.
+     *
+     * @param int $id ID курса.
+     * @param AnalyzerEntity[] $analyzers Набор готовых анализаторов данного курса.
+     *
+     * @return void
+     * @throws ParameterInvalidException
+     */
+    private function moveAnalyzer(int $id, array $analyzers): void
+    {
+        if ($analyzers) {
+            foreach ($analyzers as $analyzer) {
+                if ($analyzer->category === 'article.text' && $analyzer->status === Status::READY) {
+                    $analyzerCourse = Analyzer::where('analyzerable_id', $id)
+                        ->where('analyzerable_type', 'App\Modules\Course\Models\Course')
+                        ->where('category', 'course.text')
+                        ->first();
+
+                    if ($analyzerCourse) {
+                        $analyzerCourse->unique = $analyzer->unique;
+                        $analyzerCourse->water = $analyzer->water;
+                        $analyzerCourse->spam = $analyzer->spam;
+                        $analyzerCourse->tries = $analyzer->tries;
+                        $analyzerCourse->status = Status::READY->value;
+
+                        $analyzerCourse->save();
+                    } else {
                         $analyzerEntity = new AnalyzerEntity();
                         $analyzerEntity->task_id = $analyzer->task_id;
                         $analyzerEntity->category = 'course.text';
@@ -99,19 +136,13 @@ class CourseTextArticleCategory extends ArticleCategory
                         $analyzerEntity->spam = $analyzer->spam;
                         $analyzerEntity->tries = $analyzer->tries;
                         $analyzerEntity->status = $analyzer->status;
-                        $analyzerEntity->analyzerable_id = $course->id;
+                        $analyzerEntity->analyzerable_id = $id;
                         $analyzerEntity->analyzerable_type = 'App\Modules\Course\Models\Course';
 
                         Analyzer::create($analyzerEntity->toArray());
                     }
                 }
             }
-
-            Cache::tags(['course', 'article'])->flush();
-        } else {
-            throw new RecordNotExistException(
-                trans('course::actions.admin.courseUpdateStatusAction.notExistCourse')
-            );
         }
     }
 
