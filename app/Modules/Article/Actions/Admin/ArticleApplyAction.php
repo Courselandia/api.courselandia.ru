@@ -47,10 +47,7 @@ class ArticleApplyAction extends Action
 
             Cache::tags(['article'])->flush();
 
-            $article = Article::where('id', $this->id)
-                ->with('articleable')
-                ->with('analyzers')
-                ->first();
+            $article = Article::where('id', $this->id)->first();
 
             $article->status = Status::APPLIED->value;
             $article->save();
