@@ -115,7 +115,6 @@ class CourseTextArticleCategory extends ArticleCategory
             foreach ($analyzers as $analyzer) {
                 if ($analyzer->category === 'article.text' && $analyzer->status === Status::READY) {
                     $analyzerCourse = Analyzer::where('analyzerable_id', $id)
-                        ->where('analyzerable_type', 'App\Modules\Course\Models\Course')
                         ->where('category', 'course.text')
                         ->first();
 
