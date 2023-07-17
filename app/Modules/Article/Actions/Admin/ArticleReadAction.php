@@ -79,7 +79,7 @@ class ArticleReadAction extends Action
             function () {
                 $query = Article::filter($this->filters ?: [])
                     ->with([
-                        'articleable',
+                        'articleable.analyzers',
                         'analyzers',
                     ]);
 
@@ -103,6 +103,12 @@ class ArticleReadAction extends Action
                     $items[$i]['category_label'] = ArticleCategory::driver($items[$i]['category'])->label($items[$i]['articleable_id']);
                     $items[$i]['text_current'] = $items[$i]['articleable'][$field];
                     $items[$i]['request_template'] = ArticleCategory::driver($items[$i]['category'])->requestTemplate($items[$i]['articleable_id']);
+
+                    for ($z = 0; $z < count($items[$i]['articleable']['analyzers']); $z++) {
+                        $category = $items[$i]['articleable']['analyzers'][$z]['category'];
+                        $items[$i]['articleable']['analyzers'][$z]['category_name'] = ArticleCategory::driver($category)->name();
+                        $items[$i]['articleable']['analyzers'][$z]['category_label'] = ArticleCategory::driver($category)->label($items[$i]['articleable_id']);
+                    }
                 }
 
                 return [

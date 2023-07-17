@@ -44,7 +44,7 @@ class ArticleGetAction extends Action
             CacheTime::GENERAL->value,
             function () {
                 $article = Article::where('id', $this->id)
-                    ->with('articleable')
+                    ->with('articleable.analyzers')
                     ->with('analyzers')
                     ->first();
 
@@ -55,6 +55,12 @@ class ArticleGetAction extends Action
                     $entity->category_label = ArticleCategory::driver($entity->category)->label($article->articleable_id);
                     $entity->text_current = $entity->articleable->{$field};
                     $entity->request_template = ArticleCategory::driver($entity->category)->requestTemplate($article->articleable_id);
+
+                    for ($z = 0; $z < count($entity->articleable->analyzers); $z++) {
+                        $category = $entity->articleable->analyzers[$z]->category;
+                        $entity->articleable->analyzers[$z]->category_name = ArticleCategory::driver($category)->name();
+                        $entity->articleable->analyzers[$z]->category_label = ArticleCategory::driver($category)->label($article->articleable_id);
+                    }
 
                     return $entity;
                 }
