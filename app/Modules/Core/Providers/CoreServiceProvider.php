@@ -10,6 +10,7 @@ namespace App\Modules\Core\Providers;
 
 use App\Modules\Core\Commands\CacheFlushCommand;
 use App\Modules\Core\Commands\SitemapGenerateCommand;
+use App\Modules\Core\Commands\TypographyCommand;
 use Config;
 use Illuminate\Support\ServiceProvider;
 
@@ -42,6 +43,7 @@ class CoreServiceProvider extends ServiceProvider
         $this->commands([
             SitemapGenerateCommand::class,
             CacheFlushCommand::class,
+            TypographyCommand::class,
         ]);
     }
 

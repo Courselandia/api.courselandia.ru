@@ -8,6 +8,8 @@
 
 namespace App\Modules\School\Actions\Admin\School;
 
+use Cache;
+use Typography;
 use App\Models\Action;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
@@ -19,7 +21,6 @@ use App\Modules\Metatag\Template\Template;
 use App\Modules\Metatag\Template\TemplateException;
 use App\Modules\School\Entities\School as SchoolEntity;
 use App\Modules\School\Models\School;
-use Cache;
 use Illuminate\Http\UploadedFile;
 
 /**
@@ -156,11 +157,11 @@ class SchoolUpdateAction extends Action
             $action->id = $schoolEntity->metatag_id ?: null;
 
             $schoolEntity->metatag_id = $action->run()->id;
-            $schoolEntity->name = $this->name;
-            $schoolEntity->header = $template->convert($this->header_template, $templateValues);
+            $schoolEntity->name = Typography::process($this->name, true);
+            $schoolEntity->header = Typography::process($template->convert($this->header_template, $templateValues), true);
             $schoolEntity->header_template = $this->header_template;
             $schoolEntity->link = $this->link;
-            $schoolEntity->text = $this->text;
+            $schoolEntity->text = Typography::process($this->text);
             $schoolEntity->site = $this->site;
             $schoolEntity->rating = $this->rating;
             $schoolEntity->status = $this->status;

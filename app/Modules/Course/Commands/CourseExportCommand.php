@@ -29,7 +29,7 @@ class CourseExportCommand extends Command
      *
      * @var string
      */
-    protected $description = 'Экспортирование курсов в файлы для быстрой загрузки.';
+    protected $description = 'Экспортирование курсов в MongoDb для быстрой загрузки.';
 
     /**
      * Выполнение команды.

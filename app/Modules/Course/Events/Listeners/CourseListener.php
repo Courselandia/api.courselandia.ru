@@ -8,9 +8,10 @@
 
 namespace App\Modules\Course\Events\Listeners;
 
-use App\Modules\Course\Enums\Duration;
 use Morph;
 use ImageStore;
+use Typography;
+use App\Modules\Course\Enums\Duration;
 use App\Models\Exceptions\RecordExistException;
 use App\Modules\Course\Models\Course;
 
@@ -39,8 +40,8 @@ class CourseListener
             $course->duration_rate = 12 * $course->duration;
         }
 
-        $course->name_morphy = Morph::get($course->name);
-        $course->text_morphy = Morph::get($course->text);
+        $course->name_morphy = Typography::process(Morph::get($course->name), true);
+        $course->text_morphy = Typography::process(Morph::get($course->text), true);
 
         return true;
     }
@@ -65,8 +66,8 @@ class CourseListener
             $course->duration_rate = 12 * $course->duration;
         }
 
-        $course->name_morphy = Morph::get($course->name);
-        $course->text_morphy = Morph::get($course->text);
+        $course->name_morphy = Typography::process(Morph::get($course->name), true);
+        $course->text_morphy = Typography::process(Morph::get($course->text), true);
 
         return true;
     }

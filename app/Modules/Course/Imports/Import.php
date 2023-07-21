@@ -11,6 +11,7 @@ namespace App\Modules\Course\Imports;
 use Util;
 use File;
 use Cache;
+use Typography;
 use Throwable;
 use ImageStore;
 use App\Models\Error;
@@ -206,7 +207,7 @@ class Import
                 }
 
                 $data = [
-                    'name' => $name,
+                    'name' => Typography::process($name, true),
                     'link' => strtolower(Util::latin(strtolower($name))),
                     'status' => $status,
                     'url' => $courseEntity->url,
@@ -256,11 +257,11 @@ class Import
 
                 $course = Course::create([
                     'uuid' => $courseEntity->uuid,
-                    'name' => $name,
-                    'header' => $template->convert($headerTemplate, $templateValues),
+                    'name' => Typography::process($name, true),
+                    'header' => Typography::process($template->convert($headerTemplate, $templateValues), true),
                     'header_template' => $headerTemplate,
                     'link' => strtolower(Util::latin(strtolower($name))),
-                    'text' => $text,
+                    'text' => Typography::process($text),
                     'status' => $courseEntity->status ? Status::DRAFT->value : Status::DISABLED->value,
                     'url' => $courseEntity->url,
                     'image_small_id' => $image,

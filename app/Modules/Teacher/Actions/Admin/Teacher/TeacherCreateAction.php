@@ -8,6 +8,8 @@
 
 namespace App\Modules\Teacher\Actions\Admin\Teacher;
 
+use Cache;
+use Typography;
 use App\Models\Action;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Image\Entities\Image;
@@ -16,7 +18,6 @@ use App\Modules\Metatag\Template\Template;
 use App\Modules\Metatag\Template\TemplateException;
 use App\Modules\Teacher\Entities\Teacher as TeacherEntity;
 use App\Modules\Teacher\Models\Teacher;
-use Cache;
 use Illuminate\Http\UploadedFile;
 
 /**
@@ -127,9 +128,9 @@ class TeacherCreateAction extends Action
         $metatag = $action->run();
 
         $teacherEntity = new TeacherEntity();
-        $teacherEntity->name = $this->name;
+        $teacherEntity->name = Typography::process($this->name, true);
         $teacherEntity->link = $this->link;
-        $teacherEntity->text = $this->text;
+        $teacherEntity->text = Typography::process($this->text);
         $teacherEntity->rating = $this->rating;
         $teacherEntity->image_small_id = $this->image;
         $teacherEntity->image_middle_id = $this->image;

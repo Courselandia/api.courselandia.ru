@@ -8,6 +8,7 @@
 
 namespace App\Modules\Profession\Actions\Admin;
 
+use Typography;
 use App\Models\Action;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Metatag\Template\Template;
@@ -103,11 +104,11 @@ class ProfessionCreateAction extends Action
         $metatag = $action->run();
 
         $professionEntity = new ProfessionEntity();
-        $professionEntity->name = $this->name;
-        $professionEntity->header = $template->convert($this->header_template, $templateValues);
+        $professionEntity->name = Typography::process($this->name, true);
+        $professionEntity->header = Typography::process($template->convert($this->header_template, $templateValues), rtue);
         $professionEntity->header_template = $this->header_template;
         $professionEntity->link = $this->link;
-        $professionEntity->text = $this->text;
+        $professionEntity->text = Typography::process($this->text);
         $professionEntity->status = $this->status;
         $professionEntity->metatag_id = $metatag->id;
 

@@ -8,6 +8,7 @@
 
 namespace App\Modules\Faq\Actions\Admin;
 
+use Typography;
 use App\Models\Action;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Faq\Entities\Faq as FaqEntity;
@@ -57,8 +58,8 @@ class FaqCreateAction extends Action
     {
         $faqEntity = new FaqEntity();
         $faqEntity->school_id = $this->school_id;
-        $faqEntity->question = $this->question;
-        $faqEntity->answer = $this->answer;
+        $faqEntity->question = Typography::process($this->question, true);
+        $faqEntity->answer = Typography::process($this->answer, true);
         $faqEntity->status = $this->status;
 
         $faq = Faq::create($faqEntity->toArray());

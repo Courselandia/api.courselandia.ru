@@ -8,6 +8,8 @@
 
 namespace App\Modules\Skill\Actions\Admin;
 
+use Cache;
+use Typography;
 use App\Models\Action;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Metatag\Template\Template;
@@ -15,7 +17,6 @@ use App\Modules\Metatag\Template\TemplateException;
 use App\Modules\Skill\Entities\Skill as SkillEntity;
 use App\Modules\Skill\Models\Skill;
 use App\Modules\Metatag\Actions\MetatagSetAction;
-use Cache;
 
 /**
  * Класс действия для создания навыка.
@@ -104,11 +105,11 @@ class SkillCreateAction extends Action
         $metatag = $action->run();
 
         $skillEntity = new SkillEntity();
-        $skillEntity->name = $this->name;
-        $skillEntity->header = $template->convert($this->header_template, $templateValues);
+        $skillEntity->name = Typography::process($this->name, true);
+        $skillEntity->header = Typography::process($template->convert($this->header_template, $templateValues), true);
         $skillEntity->header_template = $this->header_template;
         $skillEntity->link = $this->link;
-        $skillEntity->text = $this->text;
+        $skillEntity->text = Typography::process($this->text);
         $skillEntity->status = $this->status;
         $skillEntity->metatag_id = $metatag->id;
 

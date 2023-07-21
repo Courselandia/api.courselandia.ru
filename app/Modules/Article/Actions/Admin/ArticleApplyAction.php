@@ -58,7 +58,6 @@ class ArticleApplyAction extends Action
             $action->id = $this->id;
 
             return $action->run();
-
         }
 
         throw new RecordNotExistException(

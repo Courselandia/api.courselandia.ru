@@ -8,6 +8,7 @@
 
 namespace App\Modules\Publication\Actions\Admin\Publication;
 
+use Typography;
 use App\Models\Action;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
@@ -123,10 +124,10 @@ class PublicationUpdateAction extends Action
 
             $publicationEntity->metatag_id = $action->run()->id;
             $publicationEntity->published_at = $this->published_at;
-            $publicationEntity->header = $this->header;
+            $publicationEntity->header = Typography::process($this->header, true);
             $publicationEntity->link = $this->link;
-            $publicationEntity->anons = $this->anons;
-            $publicationEntity->article = $this->article;
+            $publicationEntity->anons = Typography::process($this->anons, true);
+            $publicationEntity->article = Typography::process($this->article);
             $publicationEntity->status = $this->status;
 
             if ($this->image) {

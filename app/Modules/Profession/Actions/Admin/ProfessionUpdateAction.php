@@ -8,6 +8,7 @@
 
 namespace App\Modules\Profession\Actions\Admin;
 
+use Typography;
 use App\Models\Action;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
@@ -129,11 +130,11 @@ class ProfessionUpdateAction extends Action
 
             $professionEntity->metatag_id = $action->run()->id;
             $professionEntity->id = $this->id;
-            $professionEntity->name = $this->name;
-            $professionEntity->header = $template->convert($this->header_template, $templateValues);
+            $professionEntity->name = Typography::process($this->name, true);
+            $professionEntity->header = Typography::process($template->convert($this->header_template, $templateValues), true);
             $professionEntity->header_template = $this->header_template;
             $professionEntity->link = $this->link;
-            $professionEntity->text = $this->text;
+            $professionEntity->text = Typography::process($this->text);
             $professionEntity->status = $this->status;
 
             Profession::find($this->id)->update($professionEntity->toArray());

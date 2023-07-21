@@ -8,6 +8,7 @@
 
 namespace App\Modules\Employment\Actions\Admin;
 
+use Typography;
 use App\Models\Action;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Employment\Entities\Employment as EmploymentEntity;
@@ -49,8 +50,8 @@ class EmploymentCreateAction extends Action
     public function run(): EmploymentEntity
     {
         $employmentEntity = new EmploymentEntity();
-        $employmentEntity->name = $this->name;
-        $employmentEntity->text = $this->text;
+        $employmentEntity->name = Typography::process($this->name, true);
+        $employmentEntity->text = Typography::process($this->text);
         $employmentEntity->status = $this->status;
 
         $employment = Employment::create($employmentEntity->toArray());

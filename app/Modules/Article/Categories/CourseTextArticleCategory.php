@@ -9,6 +9,7 @@
 namespace App\Modules\Article\Categories;
 
 use Cache;
+use Typography;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Modules\Article\Actions\Admin\ArticleGetAction;
@@ -84,7 +85,7 @@ class CourseTextArticleCategory extends ArticleCategory
 
         if ($articleEntity) {
             $course = $articleEntity->articleable;
-            $course->text = $articleEntity->text;
+            $course->text = Typography::process($articleEntity->text);
 
             Course::find($articleEntity->articleable->id)->update($course->toArray());
 
