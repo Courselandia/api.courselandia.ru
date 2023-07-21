@@ -8,6 +8,8 @@
 
 namespace App\Modules\Tool\Actions\Admin;
 
+use Cache;
+use Typography;
 use App\Models\Action;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
@@ -18,7 +20,6 @@ use App\Modules\Metatag\Template\TemplateException;
 use App\Modules\Tool\Entities\Tool as ToolEntity;
 use App\Modules\Tool\Models\Tool;
 use App\Modules\Metatag\Actions\MetatagSetAction;
-use Cache;
 
 /**
  * Класс действия для обновления инструментов.
@@ -130,11 +131,11 @@ class ToolUpdateAction extends Action
             $toolEntity->metatag_id = $action->run()->id;
 
             $toolEntity->id = $this->id;
-            $toolEntity->name = $this->name;
-            $toolEntity->header = $template->convert($this->header_template, $templateValues);
+            $toolEntity->name = Typography::process($this->name, true);
+            $toolEntity->header = Typography::process($template->convert($this->header_template, $templateValues), true);
             $toolEntity->header_template = $this->header_template;
             $toolEntity->link = $this->link;
-            $toolEntity->text = $this->text;
+            $toolEntity->text = Typography::process($this->text);
             $toolEntity->status = $this->status;
 
             Tool::find($this->id)->update($toolEntity->toArray());

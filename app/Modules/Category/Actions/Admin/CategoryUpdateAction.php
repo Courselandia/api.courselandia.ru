@@ -8,6 +8,8 @@
 
 namespace App\Modules\Category\Actions\Admin;
 
+use Cache;
+use Typography;
 use App\Models\Action;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
@@ -18,7 +20,6 @@ use App\Modules\Course\Models\Course;
 use App\Modules\Metatag\Actions\MetatagSetAction;
 use App\Modules\Metatag\Template\Template;
 use App\Modules\Metatag\Template\TemplateException;
-use Cache;
 
 /**
  * Класс действия для обновления категорий.
@@ -143,11 +144,11 @@ class CategoryUpdateAction extends Action
 
             $categoryEntity->metatag_id = $action->run()->id;
             $categoryEntity->id = $this->id;
-            $categoryEntity->name = $this->name;
-            $categoryEntity->header = $template->convert($this->header_template, $templateValues);
+            $categoryEntity->name = Typography::process($this->name, true);
+            $categoryEntity->header = Typography::process($template->convert($this->header_template, $templateValues), true);
             $categoryEntity->header_template = $this->header_template;
             $categoryEntity->link = $this->link;
-            $categoryEntity->text = $this->text;
+            $categoryEntity->text = Typography::process($this->text);
             $categoryEntity->status = $this->status;
 
             $category = Category::find($this->id);

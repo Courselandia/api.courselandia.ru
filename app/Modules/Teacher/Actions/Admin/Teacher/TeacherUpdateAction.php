@@ -8,6 +8,8 @@
 
 namespace App\Modules\Teacher\Actions\Admin\Teacher;
 
+use Cache;
+use Typography;
 use App\Models\Action;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
@@ -19,7 +21,6 @@ use App\Modules\Metatag\Template\Template;
 use App\Modules\Metatag\Template\TemplateException;
 use App\Modules\Teacher\Entities\Teacher as TeacherEntity;
 use App\Modules\Teacher\Models\Teacher;
-use Cache;
 use Illuminate\Http\UploadedFile;
 
 /**
@@ -151,9 +152,9 @@ class TeacherUpdateAction extends Action
             $action->id = $teacherEntity->metatag_id ?: null;
 
             $teacherEntity->metatag_id = $action->run()->id;
-            $teacherEntity->name = $this->name;
+            $teacherEntity->name = Typography::process($this->name, true);
             $teacherEntity->link = $this->link;
-            $teacherEntity->text = $this->text;
+            $teacherEntity->text = Typography::process($this->text);
             $teacherEntity->rating = $this->rating;
             $teacherEntity->status = $this->status;
 

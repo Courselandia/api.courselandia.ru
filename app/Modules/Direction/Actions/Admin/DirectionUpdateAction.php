@@ -8,6 +8,8 @@
 
 namespace App\Modules\Direction\Actions\Admin;
 
+use Cache;
+use Typography;
 use App\Models\Action;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
@@ -18,7 +20,6 @@ use App\Modules\Direction\Models\Direction;
 use App\Modules\Metatag\Actions\MetatagSetAction;
 use App\Modules\Metatag\Template\Template;
 use App\Modules\Metatag\Template\TemplateException;
-use Cache;
 
 /**
  * Класс действия для обновления направлений.
@@ -136,12 +137,12 @@ class DirectionUpdateAction extends Action
 
             $directionEntity->metatag_id = $action->run()->id;
             $directionEntity->id = $this->id;
-            $directionEntity->name = $this->name;
-            $directionEntity->header = $template->convert($this->header_template, $templateValues);
+            $directionEntity->name = Typography::process($this->name, true);
+            $directionEntity->header = Typography::process($template->convert($this->header_template, $templateValues), true);
             $directionEntity->header_template = $this->header_template;
             $directionEntity->weight = $this->weight;
             $directionEntity->link = $this->link;
-            $directionEntity->text = $this->text;
+            $directionEntity->text = Typography::process($this->text);
             $directionEntity->status = $this->status;
 
             Direction::find($this->id)->update($directionEntity->toArray());

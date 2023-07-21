@@ -41,7 +41,7 @@ class FaqTask extends Task
 
         foreach ($faqs as $faq) {
             $faq->question = Typography::process($faq->question, true);
-            $faq->answer = Typography::process($faq->answer);
+            $faq->answer = Typography::process($faq->answer, true);
 
             $faq->save();
 

@@ -8,6 +8,7 @@
 
 namespace App\Modules\Publication\Actions\Admin\Publication;
 
+use Typography;
 use App\Models\Action;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Image\Entities\Image;
@@ -109,10 +110,10 @@ class PublicationCreateAction extends Action
 
         $publicationEntity = new PublicationEntity();
         $publicationEntity->published_at = $this->published_at;
-        $publicationEntity->header = $this->header;
+        $publicationEntity->header = Typography::process($this->header, true);
         $publicationEntity->link = $this->link;
-        $publicationEntity->anons = $this->anons;
-        $publicationEntity->article = $this->article;
+        $publicationEntity->anons = Typography::process($this->anons, true);
+        $publicationEntity->article = Typography::process($this->article);
         $publicationEntity->image_small_id = $this->image;
         $publicationEntity->image_middle_id = $this->image;
         $publicationEntity->image_big_id = $this->image;

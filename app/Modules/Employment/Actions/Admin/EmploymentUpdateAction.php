@@ -8,12 +8,13 @@
 
 namespace App\Modules\Employment\Actions\Admin;
 
+use Cache;
+use Typography;
 use App\Models\Action;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Modules\Employment\Entities\Employment as EmploymentEntity;
 use App\Modules\Employment\Models\Employment;
-use Cache;
 
 /**
  * Класс действия для обновления трудоустройства.
@@ -63,8 +64,8 @@ class EmploymentUpdateAction extends Action
 
         if ($employmentEntity) {
             $employmentEntity->id = $this->id;
-            $employmentEntity->name = $this->name;
-            $employmentEntity->text = $this->text;
+            $employmentEntity->name = Typography::process($this->name, true);
+            $employmentEntity->text = Typography::process($this->text);
             $employmentEntity->status = $this->status;
 
             Employment::find($this->id)->update($employmentEntity->toArray());

@@ -8,6 +8,7 @@
 
 namespace App\Modules\Faq\Actions\Admin;
 
+use Typography;
 use App\Models\Action;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
@@ -71,8 +72,8 @@ class FaqUpdateAction extends Action
         if ($faqEntity) {
             $faqEntity->id = $this->id;
             $faqEntity->school_id = $this->school_id;
-            $faqEntity->question = $this->question;
-            $faqEntity->answer = $this->answer;
+            $faqEntity->question = Typography::process($this->question, true);
+            $faqEntity->answer = Typography::process($this->answer, true);
             $faqEntity->status = $this->status;
 
             Faq::find($this->id)->update($faqEntity->toArray());

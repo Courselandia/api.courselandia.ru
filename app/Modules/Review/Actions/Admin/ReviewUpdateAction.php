@@ -8,14 +8,15 @@
 
 namespace App\Modules\Review\Actions\Admin;
 
+use Cache;
+use Typography;
+use Carbon\Carbon;
 use App\Models\Action;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Modules\Review\Entities\Review as ReviewEntity;
 use App\Modules\Review\Enums\Status;
 use App\Modules\Review\Models\Review;
-use Cache;
-use Carbon\Carbon;
 
 /**
  * Класс действия для обновления отзывов.
@@ -124,10 +125,10 @@ class ReviewUpdateAction extends Action
             $reviewEntity->school_id = $this->school_id;
             $reviewEntity->course_id = $this->course_id;
             $reviewEntity->name = $this->name;
-            $reviewEntity->title = $this->title;
-            $reviewEntity->review = $this->review;
-            $reviewEntity->advantages = $this->advantages;
-            $reviewEntity->disadvantages = $this->disadvantages;
+            $reviewEntity->title = Typography::process($this->title, true);
+            $reviewEntity->review = Typography::process($this->review, true);
+            $reviewEntity->advantages = Typography::process($this->advantages, true);
+            $reviewEntity->disadvantages = Typography::process($this->disadvantages, true);
             $reviewEntity->rating = $this->rating;
             $reviewEntity->status = $this->status;
             $reviewEntity->created_at = $this->created_at;
