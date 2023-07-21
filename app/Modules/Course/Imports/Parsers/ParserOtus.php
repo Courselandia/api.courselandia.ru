@@ -64,7 +64,7 @@ class ParserOtus extends ParserYml
             $course->school = $this->getSchool();
             $course->uuid = $offer['attributes']['id'];
             $course->name = $offer['name'];
-            $course->text = $offer['description'];
+            $course->text = $offer['description'] === 'None' ? '' : $offer['description'];
             $course->status = $offer['attributes']['available'] === 'true';
             $course->url = $offer['url'];
             $course->image = $offer['picture'] ?? null;
