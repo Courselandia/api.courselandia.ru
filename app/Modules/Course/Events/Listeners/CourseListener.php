@@ -85,6 +85,8 @@ class CourseListener
         $course->deleteRelation($course->learns(), $course->isForceDeleting());
         $course->deleteRelation($course->employments(), $course->isForceDeleting());
         $course->deleteRelation($course->features(), $course->isForceDeleting());
+        $course->deleteRelation($course->analyzers(), $course->isForceDeleting());
+        $course->deleteRelation($course->articles(), $course->isForceDeleting());
 
         $course->directions()->detach();
         $course->professions()->detach();

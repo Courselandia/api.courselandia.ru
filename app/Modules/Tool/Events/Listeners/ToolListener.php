@@ -26,6 +26,8 @@ class ToolListener
     {
         $tool->deleteRelation($tool->metatag(), $tool->isForceDeleting());
         $tool->courses()->detach();
+        $tool->deleteRelation($tool->analyzers(), $tool->isForceDeleting());
+        $tool->deleteRelation($tool->articles(), $tool->isForceDeleting());
 
         return true;
     }
