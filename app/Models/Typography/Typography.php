@@ -38,11 +38,12 @@ class Typography
                 $typograph->do_setup('OptAlign.all', false);
                 $typograph->do_setup('Text.paragraphs', false);
                 $typograph->do_setup('Text.breakline', false);
+                $typograph->do_setup('Nobr.all', false);
 
                 $result = $typograph->process($value);
 
                 if ($result) {
-                    return $htmlEntityDecode ? html_entity_decode($result) : $result;
+                    return $htmlEntityDecode ? html_entity_decode(strip_tags($result)) : $result;
                 }
             }
         }
