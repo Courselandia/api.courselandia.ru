@@ -319,7 +319,6 @@ class ArticleControllerTest extends TestCase
     public function testApply(): void
     {
         $article = Article::factory()->create();
-        $faker = Faker::create();
 
         $this->json(
             'PUT',

@@ -105,7 +105,7 @@ class ProfessionCreateAction extends Action
 
         $professionEntity = new ProfessionEntity();
         $professionEntity->name = Typography::process($this->name, true);
-        $professionEntity->header = Typography::process($template->convert($this->header_template, $templateValues), rtue);
+        $professionEntity->header = Typography::process($template->convert($this->header_template, $templateValues), true);
         $professionEntity->header_template = $this->header_template;
         $professionEntity->link = $this->link;
         $professionEntity->text = Typography::process($this->text);

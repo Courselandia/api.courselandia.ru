@@ -48,7 +48,7 @@ class ArticleFactory extends Factory
             'task_id' => $this->faker->numberBetween(),
             'category' => 'course.text',
             'request' => $this->faker->text(1000),
-            'text' => $this->faker->text(5000),
+            'text' => $this->faker->text(4000),
             'params' => null,
             'status' => Status::READY->value,
             'articleable_id' => $course->id,
