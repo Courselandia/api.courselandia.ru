@@ -150,7 +150,7 @@ class Analyzer extends Entity
         'App\Modules\Course\Models\Course' => Course::class,
         'App\Modules\Article\Models\Article' => Article::class,
         'App\Modules\Skill\Models\Skill' => Skill::class,
-        'App\Modules\Tool\Models\Skill' => Tool::class,
+        'App\Modules\Tool\Models\Tool' => Tool::class,
     ], 'analyzerable_type')]
     public Course|Article|Skill|Tool|null $analyzerable = null;
 }
