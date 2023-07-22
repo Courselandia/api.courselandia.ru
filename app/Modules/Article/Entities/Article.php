@@ -147,11 +147,11 @@ class Article extends Entity
      * @var Course|null
      */
     #[Entities([
-        '\App\Modules\Course\Models\Course' => Course::class,
-        '\App\Modules\Skill\Models\Skill' => Skill::class,
-        '\App\Modules\Tool\Models\Tool' => Tool::class,
+        'App\Modules\Course\Models\Course' => Course::class,
+        'App\Modules\Skill\Models\Skill' => Skill::class,
+        'App\Modules\Tool\Models\Tool' => Tool::class,
     ], 'articleable_type')]
-    public Course|null $articleable = null;
+    public Course|Skill|Tool|null $articleable = null;
 
     /**
      * Анализ хранения текстов.

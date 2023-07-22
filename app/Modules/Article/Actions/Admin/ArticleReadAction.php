@@ -103,8 +103,6 @@ class ArticleReadAction extends Action
                     $items[$i]['text_current'] = $items[$i]['articleable'][$field];
                     $items[$i]['request_template'] = ArticleCategory::driver($items[$i]['category'])->requestTemplate($items[$i]['articleable_id']);
 
-                    unset($items[$i]['articleable']['status']);
-
                     for ($z = 0; $z < count($items[$i]['articleable']['analyzers']); $z++) {
                         $category = $items[$i]['articleable']['analyzers'][$z]['category'];
                         $items[$i]['articleable']['analyzers'][$z]['category_name'] = ArticleCategory::driver($category)->name();

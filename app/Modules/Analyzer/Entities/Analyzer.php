@@ -14,6 +14,8 @@ use App\Models\Entity;
 use App\Modules\Analyzer\Enums\Status;
 use App\Modules\Course\Entities\Course;
 use App\Modules\Article\Entities\Article;
+use App\Modules\Skill\Entities\Skill;
+use App\Modules\Tool\Entities\Tool;
 
 /**
  * Сущность хранения результатов анализа текста.
@@ -145,8 +147,10 @@ class Analyzer extends Entity
      * @var Course|null
      */
     #[Entities([
-        '\App\Modules\Course\Models\Course' => Course::class,
-        '\App\Modules\Article\Models\Article' => Article::class,
+        'App\Modules\Course\Models\Course' => Course::class,
+        'App\Modules\Article\Models\Article' => Article::class,
+        'App\Modules\Skill\Models\Skill' => Skill::class,
+        'App\Modules\Tool\Models\Skill' => Tool::class,
     ], 'analyzerable_type')]
     public Course|Article|null $analyzerable = null;
 }

@@ -13,6 +13,7 @@ use Carbon\Carbon;
 use ReflectionClass;
 use ReflectionProperty;
 use ReflectionUnionType;
+use stringEncode\Exception;
 
 /**
  * Сущность.
@@ -302,14 +303,33 @@ abstract class Entity
      * @param ReflectionProperty $property Свойство.
      *
      * @return Entity|null Сущность.
+     * @throws Exception
      */
     private function getTypeEntity(ReflectionProperty $property): ?Entity
     {
         $types = $this->getTypes($property);
 
-        foreach ($types as $type) {
-            if (new $type() instanceof Entity) {
-                return new $type();
+        $entityFieldNameClass = $this->getEntityFieldNameClass($property);
+
+        if ($entityFieldNameClass) {
+            $entityAttributes = $this->getEntityAttribute($property);
+
+            if (isset($entityAttributes[$this->$entityFieldNameClass])) {
+                $entityBelongs = $entityAttributes[$this->$entityFieldNameClass];
+
+                foreach ($types as $type) {
+                    if (new $type() instanceof $entityBelongs) {
+                        return new $type();
+                    }
+                }
+            } else {
+                throw new Exception('entity.typeNotExist');
+            }
+        } else {
+            foreach ($types as $type) {
+                if (new $type() instanceof Entity) {
+                    return new $type();
+                }
             }
         }
 
@@ -330,7 +350,13 @@ abstract class Entity
 
         foreach ($types as $type) {
             if (enum_exists($type)) {
-                return $type::from($value);
+                //try {
+                    return $type::from($value);
+                //} catch (\Throwable) {
+                    // print_r($this);
+                    // print_r($this);
+                    // return $value;
+                //}
             }
         }
 
