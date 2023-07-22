@@ -55,8 +55,11 @@ class ParserKursvill extends Parser
                 }
 
                 try {
-                    $date = $review->findElement(WebDriverBy::cssSelector('meta[itemprop="datePublished"]'))->getAttribute('content');
-                    $date = Carbon::createFromFormat('d.m.Y H:i:s', $date . ' 00:00:00');
+                    $dateString = $review->findElement(WebDriverBy::cssSelector('meta[itemprop="datePublished"]'))->getAttribute('content');
+
+                    if ($dateString) {
+                        $date = Carbon::createFromFormat('d.m.Y H:i:s', $dateString . ' 00:00:00');
+                    }
                 } catch (Throwable $error) {
                     $this->addError($this->getSchool()->getLabel() . ', из: ' . $this->getUrl() . ' : Не удается получить дату. ' . $error->getMessage());
                     $hasError = true;

@@ -30,6 +30,10 @@ use App\Modules\Review\Imports\Parsers\ParserVk;
 use App\Modules\Review\Imports\Parsers\ParserOtzyvmarketing;
 use App\Modules\Review\Imports\Parsers\ParserSkillbox;
 use App\Modules\Review\Imports\Parsers\ParserZoon;
+use App\Modules\Review\Imports\Parsers\ParserCoddyschool;
+use App\Modules\Review\Imports\Parsers\ParserGeekhacker;
+use App\Modules\Review\Imports\Parsers\ParserHexlet;
+use App\Modules\Review\Imports\Parsers\ParserKursyOnline;
 
 /**
  * Импорт отзывов с разных источников.
@@ -85,7 +89,27 @@ class Import
             ->addParser(new ParserZoon(School::SKILLBOX, 'https://zoon.ru/msk/trainings/kompaniya_skillbox_na_leninskom_prospekte/reviews/'))
             // ->addParser(new ParserSkillbox(School::SKILLBOX, 'https://skillbox.ru/otzyvy/'))
             ->addParser(new ParserOtzyvmarketing(School::SKILLBOX, 'https://otzyvmarketing.ru/skillbox/'))
-            ->addParser(new ParserOtzyvmarketing(School::SKYPRO, 'https://otzyvmarketing.ru/skypro/'));
+            ->addParser(new ParserOtzyvmarketing(School::SKYPRO, 'https://otzyvmarketing.ru/skypro/'))
+            ->addParser(new ParserMapsYandex(School::EDUSON_ACADEMY, 'https://yandex.ru/maps/org/eduson/64475613644/reviews/?ll=37.652226%2C55.708203&z=13'))
+            ->addParser(new ParserCoddyschool(School::CODDY, 'https://berlin.coddyschool.com/vse-otzyvy/'))
+            ->addParser(new ParserMapsYandex(School::CODDY, 'https://yandex.ru/maps/org/coddy/1796824613/reviews/'))
+            ->addParser(new ParserMooc(School::CODDY, 'coddyschool'))
+            ->addParser(new ParserKursvill(School::OTUS, 'https://kursvill.ru/shkoly/otus.ru/?show=all#reviews'))
+            ->addParser(new ParserMapsYandex(School::OTUS, 'https://yandex.ru/maps/org/otus_onlayn_obrazovaniye/198118878045/reviews/'))
+            ->addParser(new ParserMooc(School::OTUS, 'otus'))
+            ->addParser(new ParserKursvill(School::HEXLET, 'https://kursvill.ru/shkoly/hexlet.io/?show=all#reviews'))
+            ->addParser(new ParserHexlet(School::HEXLET, 'https://ru.hexlet.io/testimonials'))
+            ->addParser(new ParserMapsYandex(School::HEXLET, 'https://yandex.ru/maps/org/khekslet/149793747773/reviews/'))
+            ->addParser(new ParserMooc(School::HEXLET, 'hexlet'))
+            ->addParser(new ParserGeekhacker(School::BANG_BANG_EDUCATION, 'https://geekhacker.ru/otzyvy-bang-bang-education/'))
+            ->addParser(new ParserTutortop(School::BANG_BANG_EDUCATION, 'https://tutortop.ru/school-reviews/bang-bang-education/'))
+            ->addParser(new ParserKatalogKursov(School::BANG_BANG_EDUCATION, 'https://katalog-kursov.ru/reviews/bang-bang-education/'))
+            ->addParser(new ParserKursyOnline(School::BANG_BANG_EDUCATION, 'https://kursy-online.ru/reviews/bangbangeducation-ru/'))
+            ->addParser(new ParserMapsYandex(School::BANG_BANG_EDUCATION, 'https://yandex.ru/maps/org/bang_bang_education/232375753768/reviews/'))
+            ->addParser(new ParserKursvill(School::INTERRA, 'https://kursvill.ru/shkoly/interra/?show=all#reviews'))
+            ->addParser(new ParserKursvill(School::MAED, 'https://kursvill.ru/shkoly/maed/?show=all#reviews'))
+            ->addParser(new ParserMapsYandex(School::MAED, 'https://yandex.ru/maps/org/marketingovoye_obrazovaniye/119627619376/reviews/'))
+            ->addParser(new ParserMooc(School::MAED, 'maed'));
     }
 
     /**

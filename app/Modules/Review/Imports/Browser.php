@@ -8,8 +8,11 @@
 
 namespace App\Modules\Review\Imports;
 
+use Throwable;
 use Facebook\WebDriver\Remote\DesiredCapabilities;
 use Facebook\WebDriver\Remote\RemoteWebDriver;
+use Facebook\WebDriver\Remote\RemoteWebElement;
+use Facebook\WebDriver\WebDriverBy;
 
 /**
  * Класс браузера.
@@ -54,5 +57,22 @@ class Browser
     public function __destruct()
     {
         $this->getDriver()->quit();
+    }
+
+    /**
+     * Получение элемента.
+     *
+     * @param RemoteWebDriver|RemoteWebElement $driver Элемент, в котором осуществляется поиск.
+     * @param WebDriverBy $by Селектор.
+     *
+     * @return RemoteWebElement|null Вернет элемент.
+     */
+    public function findElementIfExists(RemoteWebDriver|RemoteWebElement $driver, WebDriverBy $by): RemoteWebElement|null
+    {
+        try {
+            return $driver->findElement($by);
+        } catch (Throwable $error) {
+            return null;
+        }
     }
 }
