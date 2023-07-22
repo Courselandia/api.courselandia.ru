@@ -43,7 +43,10 @@ class SkillGetAction extends Action
             CacheTime::GENERAL->value,
             function () {
                 $skill = Skill::where('id', $this->id)
-                    ->with('metatag')
+                    ->with([
+                        'metatag',
+                        'analyzers',
+                    ])
                     ->first();
 
                 return $skill ? new SkillEntity($skill->toArray()) : null;

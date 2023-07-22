@@ -43,7 +43,10 @@ class ToolGetAction extends Action
             CacheTime::GENERAL->value,
             function () {
                 $tool = Tool::where('id', $this->id)
-                    ->with('metatag')
+                    ->with([
+                        'metatag',
+                        'analyzers',
+                    ])
                     ->first();
 
                 return $tool ? new ToolEntity($tool->toArray()) : null;

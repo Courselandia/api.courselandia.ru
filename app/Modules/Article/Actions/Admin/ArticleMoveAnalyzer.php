@@ -73,7 +73,7 @@ class ArticleMoveAnalyzer extends Action
     {
         if ($this->analyzers) {
             foreach ($this->analyzers as $analyzer) {
-                if ($analyzer->category === $this->category && $analyzer->status === Status::READY) {
+                if ($analyzer->category === 'article.text' && $analyzer->status === Status::READY) {
                     $analyzerModel = Analyzer::where('analyzerable_id', $this->id)
                         ->where('category', $this->category)
                         ->first();
