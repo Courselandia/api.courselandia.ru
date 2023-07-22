@@ -3,10 +3,10 @@
 return [
     'admin' => [
         'skillUpdateAction' => [
-            'notExistPublication' => 'Навыков не существует.'
+            'notExistPublication' => 'Навык не существует.'
         ],
         'skillUpdateStatusAction' => [
-            'notExistPublication' => 'Навыков не существует.'
+            'notExistPublication' => 'Навык не существует.'
         ],
     ]
 ];

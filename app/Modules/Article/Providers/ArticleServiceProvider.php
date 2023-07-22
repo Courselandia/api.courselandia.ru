@@ -9,6 +9,8 @@
 namespace App\Modules\Article\Providers;
 
 use App;
+use App\Modules\Article\Categories\SkillTextArticleCategory;
+use App\Modules\Article\Categories\ToolTextArticleCategory;
 use App\Modules\Article\Commands\ArticleRewriteCommand;
 use Config;
 use ArticleCategory;
@@ -49,6 +51,14 @@ class ArticleServiceProvider extends ServiceProvider
 
         ArticleCategory::extend('course.text', function () {
             return new CourseTextArticleCategory();
+        });
+
+        ArticleCategory::extend('skill.text', function () {
+            return new SkillTextArticleCategory();
+        });
+
+        ArticleCategory::extend('tool.text', function () {
+            return new ToolTextArticleCategory();
         });
 
         $this->commands([

@@ -10,18 +10,16 @@ namespace App\Modules\Article\Categories;
 
 use Cache;
 use Typography;
+use App\Modules\Course\Models\Course;
+use App\Modules\Article\Actions\Admin\ArticleMoveAnalyzer;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Modules\Article\Actions\Admin\ArticleGetAction;
 use App\Modules\Course\Actions\Admin\Course\CourseGetAction;
-use App\Modules\Course\Models\Course;
-use App\Modules\Analyzer\Models\Analyzer;
-use App\Modules\Analyzer\Entities\Analyzer as AnalyzerEntity;
 use App\Modules\Article\Contracts\ArticleCategory;
-use App\Modules\Analyzer\Enums\Status;
 
 /**
- * Абстрактный класс для создания собственного драйвера принятия текста.
+ * Класс-драйвер написания и принятия текста для курсов.
  */
 class CourseTextArticleCategory extends ArticleCategory
 {
@@ -90,7 +88,8 @@ class CourseTextArticleCategory extends ArticleCategory
             Course::find($articleEntity->articleable->id)->update($course->toArray());
 
             if ($articleEntity->analyzers) {
-                $this->moveAnalyzer($course->id, $articleEntity->analyzers);
+                $action = new ArticleMoveAnalyzer($course->id, $articleEntity->analyzers, 'course.text', Course::class);
+                $action->run();
             }
 
             Cache::tags(['course', 'article'])->flush();
@@ -98,51 +97,6 @@ class CourseTextArticleCategory extends ArticleCategory
             throw new RecordNotExistException(
                 trans('course::actions.admin.courseUpdateStatusAction.notExistCourse')
             );
-        }
-    }
-
-    /**
-     * Перенос анализатора текста.
-     *
-     * @param int $id ID курса.
-     * @param AnalyzerEntity[] $analyzers Набор готовых анализаторов данного курса.
-     *
-     * @return void
-     * @throws ParameterInvalidException
-     */
-    private function moveAnalyzer(int $id, array $analyzers): void
-    {
-        if ($analyzers) {
-            foreach ($analyzers as $analyzer) {
-                if ($analyzer->category === 'article.text' && $analyzer->status === Status::READY) {
-                    $analyzerCourse = Analyzer::where('analyzerable_id', $id)
-                        ->where('category', 'course.text')
-                        ->first();
-
-                    if ($analyzerCourse) {
-                        $analyzerCourse->unique = $analyzer->unique;
-                        $analyzerCourse->water = $analyzer->water;
-                        $analyzerCourse->spam = $analyzer->spam;
-                        $analyzerCourse->tries = $analyzer->tries;
-                        $analyzerCourse->status = Status::READY->value;
-
-                        $analyzerCourse->save();
-                    } else {
-                        $analyzerEntity = new AnalyzerEntity();
-                        $analyzerEntity->task_id = $analyzer->task_id;
-                        $analyzerEntity->category = 'course.text';
-                        $analyzerEntity->unique = $analyzer->unique;
-                        $analyzerEntity->water = $analyzer->water;
-                        $analyzerEntity->spam = $analyzer->spam;
-                        $analyzerEntity->tries = $analyzer->tries;
-                        $analyzerEntity->status = $analyzer->status;
-                        $analyzerEntity->analyzerable_id = $id;
-                        $analyzerEntity->analyzerable_type = 'App\Modules\Course\Models\Course';
-
-                        Analyzer::create($analyzerEntity->toArray());
-                    }
-                }
-            }
         }
     }
 

@@ -13,6 +13,8 @@ use App\Models\Event;
 use Carbon\Carbon;
 use App\Modules\Analyzer\Analyze\Tasks\Task;
 use App\Modules\Analyzer\Analyze\Tasks\CourseTextTask;
+use App\Modules\Analyzer\Analyze\Tasks\SkillTextTask;
+use App\Modules\Analyzer\Analyze\Tasks\ToolTextTask;
 
 /**
  * Анализ статей для разных сущностей.
@@ -31,7 +33,9 @@ class Analyze
 
     public function __construct()
     {
-        $this->addTask(new CourseTextTask());
+        $this->addTask(new CourseTextTask())
+            ->addTask(new SkillTextTask())
+            ->addTask(new ToolTextTask());
     }
 
     /**

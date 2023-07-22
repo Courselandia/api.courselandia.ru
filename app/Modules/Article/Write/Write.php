@@ -8,11 +8,13 @@
 
 namespace App\Modules\Article\Write;
 
+use Carbon\Carbon;
 use App\Models\Error;
 use App\Models\Event;
-use Carbon\Carbon;
 use App\Modules\Article\Write\Tasks\Task;
+use App\Modules\Article\Write\Tasks\SkillTextTask;
 use App\Modules\Article\Write\Tasks\CourseTextTask;
+use App\Modules\Article\Write\Tasks\ToolTextTask;
 
 /**
  * Написание статей для разных сущностей.
@@ -34,7 +36,9 @@ class Write
      */
     public function __construct()
     {
-        $this->addTask(new CourseTextTask());
+        $this->addTask(new CourseTextTask())
+            ->addTask(new SkillTextTask())
+            ->addTask(new ToolTextTask());
     }
 
     /**

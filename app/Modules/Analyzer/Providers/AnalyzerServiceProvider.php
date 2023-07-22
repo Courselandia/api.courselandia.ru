@@ -10,6 +10,8 @@ namespace App\Modules\Analyzer\Providers;
 
 use App;
 use App\Modules\Analyzer\Categories\ArticleTextAnalyzerCategory;
+use App\Modules\Analyzer\Categories\SkillTextAnalyzerCategory;
+use App\Modules\Analyzer\Categories\ToolTextAnalyzerCategory;
 use App\Modules\Analyzer\Commands\AnalyzerShiftToCourseTextCommand;
 use Config;
 use AnalyzerCategory;
@@ -53,6 +55,14 @@ class AnalyzerServiceProvider extends ServiceProvider
 
         AnalyzerCategory::extend('article.text', function () {
             return new ArticleTextAnalyzerCategory();
+        });
+
+        AnalyzerCategory::extend('skill.text', function () {
+            return new SkillTextAnalyzerCategory();
+        });
+
+        AnalyzerCategory::extend('tool.text', function () {
+            return new ToolTextAnalyzerCategory();
         });
 
         $this->commands([
