@@ -10,7 +10,6 @@ namespace App\Modules\Article\Actions\Admin;
 
 use Cache;
 use Util;
-use Writer;
 use ArticleCategory;
 use App\Models\Action;
 use App\Models\Entity;
@@ -103,6 +102,8 @@ class ArticleReadAction extends Action
                     $items[$i]['category_label'] = ArticleCategory::driver($items[$i]['category'])->label($items[$i]['articleable_id']);
                     $items[$i]['text_current'] = $items[$i]['articleable'][$field];
                     $items[$i]['request_template'] = ArticleCategory::driver($items[$i]['category'])->requestTemplate($items[$i]['articleable_id']);
+
+                    unset($items[$i]['articleable']['status']);
 
                     for ($z = 0; $z < count($items[$i]['articleable']['analyzers']); $z++) {
                         $category = $items[$i]['articleable']['analyzers'][$z]['category'];

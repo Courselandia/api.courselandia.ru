@@ -115,7 +115,7 @@ class ToolTextArticleCategory extends ArticleCategory
         $toolEntity = $action->run();
 
         if ($toolEntity) {
-            return 'Напиши статью размером 1000 символов о "' . $toolEntity . '".';
+            return 'Напиши статью размером 1000 символов о "' . $toolEntity->name . '".';
         } else {
             throw new RecordNotExistException(
                 trans('tool::actions.admin.toolUpdateStatusAction.notExistTool')

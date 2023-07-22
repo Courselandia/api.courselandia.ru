@@ -13,6 +13,8 @@ use App\Models\Entities;
 use App\Models\Entity;
 use App\Modules\Article\Enums\Status;
 use App\Modules\Course\Entities\Course;
+use App\Modules\Skill\Entities\Skill;
+use App\Modules\Tool\Entities\Tool;
 use App\Modules\Analyzer\Entities\Analyzer;
 
 /**
@@ -144,7 +146,11 @@ class Article extends Entity
      *
      * @var Course|null
      */
-    #[Entities(['\App\Modules\Course\Models\Course' => Course::class], 'articleable_type')]
+    #[Entities([
+        '\App\Modules\Course\Models\Course' => Course::class,
+        '\App\Modules\Skill\Models\Skill' => Skill::class,
+        '\App\Modules\Tool\Models\Tool' => Tool::class,
+    ], 'articleable_type')]
     public Course|null $articleable = null;
 
     /**

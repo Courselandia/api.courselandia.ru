@@ -115,7 +115,7 @@ class SkillTextArticleCategory extends ArticleCategory
         $skillEntity = $action->run();
 
         if ($skillEntity) {
-            return 'Напиши статью размером 1000 символов о навыке "' . $skillEntity . '".';
+            return 'Напиши статью размером 1000 символов о навыке "' . $skillEntity->name . '".';
         } else {
             throw new RecordNotExistException(
                 trans('skill::actions.admin.skillUpdateStatusAction.notExistSkill')
