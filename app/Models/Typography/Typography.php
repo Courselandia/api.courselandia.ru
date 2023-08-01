@@ -42,6 +42,12 @@ class Typography
                 $typograph->do_setup('Abbr.all', false);
 
                 $typograph->do_setup('Space.all', false);
+                $typograph->do_setup('Symbol.all', false);
+                $typograph->do_setup('Punctmark.all', false);
+                $typograph->do_setup('Number.all', false);
+                $typograph->do_setup('Date.all', false);
+                $typograph->do_setup('Date.all', false);
+                $typograph->do_setup('Text.all', false);
 
                 $result = $typograph->process($value);
 
