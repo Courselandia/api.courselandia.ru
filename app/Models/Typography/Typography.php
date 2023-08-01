@@ -40,14 +40,7 @@ class Typography
                 $typograph->do_setup('Text.breakline', false);
                 $typograph->do_setup('Nobr.all', false);
                 $typograph->do_setup('Abbr.all', false);
-
-                $typograph->do_setup('Space.all', false);
-                $typograph->do_setup('Symbol.all', false);
-                $typograph->do_setup('Punctmark.all', false);
-                $typograph->do_setup('Number.all', false);
-                $typograph->do_setup('Date.all', false);
-                $typograph->do_setup('Date.all', false);
-                $typograph->do_setup('Text.all', false);
+                $typograph->do_setup('Nobr.spaces_nobr_in_surname_abbr', false);
 
                 $result = $typograph->process($value);
 
