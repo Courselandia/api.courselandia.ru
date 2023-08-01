@@ -39,6 +39,7 @@ class Typography
                 $typograph->do_setup('Text.paragraphs', false);
                 $typograph->do_setup('Text.breakline', false);
                 $typograph->do_setup('Nobr.all', false);
+                $typograph->do_setup('Abbr.all', false);
 
                 $result = $typograph->process($value);
 
