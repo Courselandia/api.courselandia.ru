@@ -31,13 +31,13 @@ class AnalyzerFilter extends ModelFilter
     /**
      * Поиск по категории.
      *
-     * @param string $query Строка поиска.
+     * @param string|array $category Категории.
      *
      * @return AnalyzerFilter Правила поиска.
      */
-    public function category(string $query): AnalyzerFilter
+    public function category(string|array $category): AnalyzerFilter
     {
-        return $this->whereLike('analyzers.category', $query);
+        return $this->whereIn('articles.category', is_array($category) ? $category : [$category]);
     }
 
     /**
