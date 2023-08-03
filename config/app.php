@@ -226,6 +226,9 @@ return [
         App\Modules\Act\Providers\ActServiceProvider::class,
         // App\Modules\Act\Providers\RouteServiceProvider::class,
 
+        App\Modules\Task\Providers\TaskServiceProvider::class,
+        App\Modules\Task\Providers\RouteServiceProvider::class,
+
         App\Modules\Alert\Providers\AlertServiceProvider::class,
         App\Modules\Alert\Providers\RouteServiceProvider::class,
 

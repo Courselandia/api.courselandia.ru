@@ -83,6 +83,7 @@ class UserListener
         $user->deleteRelation($user->recovery(), $user->isForceDeleting());
         $user->deleteRelation($user->auths(), $user->isForceDeleting());
         $user->deleteRelation($user->role(), $user->isForceDeleting());
+        $user->deleteRelation($user->tasks(), $user->isForceDeleting());
 
         return true;
     }

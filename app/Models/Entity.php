@@ -350,13 +350,7 @@ abstract class Entity
 
         foreach ($types as $type) {
             if (enum_exists($type)) {
-                //try {
-                    return $type::from($value);
-                //} catch (\Throwable) {
-                    // print_r($this);
-                    // print_r($this);
-                    // return $value;
-                //}
+                return $type::from($value);
             }
         }
 

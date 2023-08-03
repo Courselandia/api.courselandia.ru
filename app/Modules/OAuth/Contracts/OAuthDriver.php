@@ -143,7 +143,7 @@ abstract class OAuthDriver
 
             throw new InvalidFormatException('The token is invalid.');
         } catch (Throwable $error) {
-            throw new InvalidFormatException($error->getMessage());
+            throw new InvalidFormatException('The token is invalid.');
         }
     }
 }

@@ -8,6 +8,7 @@
 
 namespace App\Modules\User\Models;
 
+use App\Modules\Task\Models\Task;
 use App\Modules\User\Filters\UserFilter;
 use CodeBuds\WebPConverter\WebPConverter;
 use Exception;
@@ -55,6 +56,7 @@ use App\Modules\Image\Entities\Image as ImageEntity;
  * @property-read UserVerification $verification
  * @property-read UserAuth $auth
  * @property-read UserRole $role
+ * @property-read Task[] $tasks
  *
  * @mixin Eloquent
  */
@@ -392,5 +394,15 @@ class User extends Authenticatable
     public function role(): HasOne
     {
         return $this->hasOne(UserRole::class, 'user_id', 'id');
+    }
+
+    /**
+     * Задания пользователя.
+     *
+     * @return HasMany Модели заданий.
+     */
+    public function tasks(): HasMany
+    {
+        return $this->hasMany(Task::class);
     }
 }
