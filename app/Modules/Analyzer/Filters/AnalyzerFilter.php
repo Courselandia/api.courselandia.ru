@@ -37,7 +37,7 @@ class AnalyzerFilter extends ModelFilter
      */
     public function category(string|array $category): AnalyzerFilter
     {
-        return $this->whereIn('articles.category', is_array($category) ? $category : [$category]);
+        return $this->whereIn('analyzers.category', is_array($category) ? $category : [$category]);
     }
 
     /**
