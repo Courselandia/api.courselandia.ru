@@ -17,6 +17,7 @@ use App\Modules\Metatag\Template\TemplateException;
 use App\Modules\Tool\Entities\Tool as ToolEntity;
 use App\Modules\Tool\Models\Tool;
 use App\Modules\Metatag\Actions\MetatagSetAction;
+use App\Modules\Analyzer\Actions\Admin\AnalyzerUpdateAction;
 
 /**
  * Класс действия для создания инструмента.
@@ -115,6 +116,12 @@ class ToolCreateAction extends Action
 
         $tool = Tool::create($toolEntity->toArray());
         Cache::tags(['catalog', 'tool'])->flush();
+
+        $action = app(AnalyzerUpdateAction::class);
+        $action->id = $tool->id;
+        $action->model = Tool::class;
+        $action->category = 'tool.text';
+        $action->run();
 
         $action = app(ToolGetAction::class);
         $action->id = $tool->id;

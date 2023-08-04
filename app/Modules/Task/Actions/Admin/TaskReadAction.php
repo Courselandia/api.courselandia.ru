@@ -72,7 +72,7 @@ class TaskReadAction extends Action
             'metatag'
         );
 
-        return Cache::tags(['catalog', 'task'])->remember(
+        return Cache::tags(['task'])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
             function () {

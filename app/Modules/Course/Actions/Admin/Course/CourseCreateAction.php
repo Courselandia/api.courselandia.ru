@@ -412,7 +412,6 @@ class CourseCreateAction extends Action
             $action->id = $course->id;
             $action->model = Course::class;
             $action->category = 'course.text';
-
             $action->run();
 
             return $course->id;

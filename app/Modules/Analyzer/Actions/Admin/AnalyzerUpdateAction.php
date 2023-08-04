@@ -8,12 +8,14 @@
 
 namespace App\Modules\Analyzer\Actions\Admin;
 
+use Auth;
 use Config;
 use Cache;
 use Log;
 use Plagiarism;
 use AnalyzerCategory;
 use App\Models\Action;
+use App\Modules\Task\Jobs\Launcher;
 use App\Models\Exceptions\LimitException;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\PaymentException;
@@ -150,8 +152,11 @@ class AnalyzerUpdateAction extends Action
                 Cache::tags(['analyzer'])->flush();
 
                 if ($analyzerModel) {
-                    AnalyzerSaveResultJob::dispatch($analyzerModel->id)
-                        ->delay(now()->addMinutes(2));
+                    Launcher::dispatch(
+                        'Получение результатов анализа текста',
+                        new AnalyzerSaveResultJob($analyzerModel->id),
+                        Auth::getUser()->id,
+                    )->delay(now()->addMinutes(2));
                 }
             }
 

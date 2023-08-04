@@ -306,13 +306,7 @@ class CourseUpdateAction extends Action
         $courseEntity = $action->run();
 
         if ($courseEntity) {
-            $changedText = false;
-
-            if ($courseEntity->text !== $this->text) {
-                $changedText = true;
-            }
-
-            DB::transaction(function () use ($courseEntity, $changedText) {
+            DB::transaction(function () use ($courseEntity) {
                 $templateValues = [
                     'course' => $this->name,
                     'school' => $courseEntity->school->name,
@@ -431,14 +425,12 @@ class CourseUpdateAction extends Action
                 }
             });
 
-            if ($changedText) {
-                $action = app(AnalyzerUpdateAction::class);
-                $action->id = $courseEntity->id;
-                $action->model = Course::class;
-                $action->category = 'course.text';
+            $action = app(AnalyzerUpdateAction::class);
+            $action->id = $courseEntity->id;
+            $action->model = Course::class;
+            $action->category = 'course.text';
 
-                $action->run();
-            }
+            $action->run();
 
             Cache::tags([
                 'course',

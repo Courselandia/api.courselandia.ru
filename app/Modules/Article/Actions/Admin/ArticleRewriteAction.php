@@ -8,9 +8,11 @@
 
 namespace App\Modules\Article\Actions\Admin;
 
+use Auth;
 use Cache;
 use Writer;
 use App\Models\Action;
+use App\Modules\Task\Jobs\Launcher;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Modules\Article\Enums\Status;
@@ -58,8 +60,11 @@ class ArticleRewriteAction extends Action
 
             Article::find($this->id)->update($articleEntity->toArray());
 
-            ArticleSaveResultJob::dispatch($this->id)
-                ->delay(now()->addMinutes(2));
+            Launcher::dispatch(
+                'Переписание статьи',
+                new ArticleSaveResultJob($this->id),
+                Auth::getUser()->id,
+            )->delay(now()->addMinutes(2));
 
             Cache::tags(['article'])->flush();
 

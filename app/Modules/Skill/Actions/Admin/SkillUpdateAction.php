@@ -20,6 +20,7 @@ use App\Modules\Metatag\Template\TemplateException;
 use App\Modules\Skill\Entities\Skill as SkillEntity;
 use App\Modules\Skill\Models\Skill;
 use App\Modules\Metatag\Actions\MetatagSetAction;
+use App\Modules\Analyzer\Actions\Admin\AnalyzerUpdateAction;
 
 /**
  * Класс действия для обновления навыков.
@@ -139,6 +140,12 @@ class SkillUpdateAction extends Action
 
             Skill::find($this->id)->update($skillEntity->toArray());
             Cache::tags(['catalog', 'skill'])->flush();
+
+            $action = app(AnalyzerUpdateAction::class);
+            $action->id = $skillEntity->id;
+            $action->model = Skill::class;
+            $action->category = 'skill.text';
+            $action->run();
 
             $action = app(SkillGetAction::class);
             $action->id = $this->id;
