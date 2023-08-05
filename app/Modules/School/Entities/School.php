@@ -130,4 +130,11 @@ class School extends Entity
      * @var ?Carbon
      */
     public ?Carbon $deleted_at = null;
+
+    /**
+     * Количество отзывов.
+     *
+     * @var ?int
+     */
+    public ?int $reviews_count = null;
 }
