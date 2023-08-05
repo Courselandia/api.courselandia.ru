@@ -68,6 +68,7 @@ class ParserNetology extends ParserYml
             'Лидерство и управление командой' => Direction::BUSINESS,
             'Лидер 360 b2c Базовый' => Direction::BUSINESS,
             'Психология: управление эмоциями' => Direction::OTHER,
+            'Личная эффективность' => Direction::OTHER,
         ];
     }
 
