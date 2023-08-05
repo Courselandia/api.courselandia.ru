@@ -11,6 +11,7 @@ namespace App\Modules\Task\Entities;
 use App\Models\Entity;
 use Carbon\Carbon;
 use App\Modules\Task\Enums\Status;
+use App\Modules\User\Entities\User;
 
 /**
  * Сущность для задания.
@@ -86,4 +87,11 @@ class Task extends Entity
      * @var ?Carbon
      */
     public ?Carbon $deleted_at = null;
+
+    /**
+     * Школа.
+     *
+     * @var User|null
+     */
+    public ?User $user = null;
 }
