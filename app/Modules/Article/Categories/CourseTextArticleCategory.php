@@ -169,7 +169,7 @@ class CourseTextArticleCategory extends ArticleCategory
             }
 
             if ($courseEntity->text) {
-                $request .= 'Текст, который можно использовать: ' . strip_tags($courseEntity->text);
+                $request .= 'Текст, который можно использовать: ' . html_entity_decode(strip_tags($courseEntity->text));
             }
 
             return $request;
