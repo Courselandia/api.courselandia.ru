@@ -48,7 +48,7 @@ class PartSkill extends PartDirection
             if ($result) {
                 $item = new Item();
                 $item->path = 'courses/skill/' . $result['link'];
-                $item->priority = 0.2;
+                $item->priority = 0.8;
 
                 yield $item;
             }
