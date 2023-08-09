@@ -22,7 +22,11 @@ class ArticleApplyCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'article:apply';
+    protected $signature = 'article:apply
+        {--unique= : Переписывать если уникальность ниже данного показателя}
+        {--water= : Переписывать если количество воды выше данного показателя}
+        {--spam= : Переписывать если заспамленность выше данного показателя}
+    ';
 
     /**
      * Описание консольной команды.
@@ -38,7 +42,7 @@ class ArticleApplyCommand extends Command
      */
     public function handle(): void
     {
-        $apply = new Apply();
+        $apply = new Apply($this->option('unique'), $this->option('water'), $this->option('spam'));
         $total = $apply->total();
 
         if ($total) {

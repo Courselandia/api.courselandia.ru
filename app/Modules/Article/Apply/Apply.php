@@ -24,6 +24,41 @@ class Apply
     use Event;
 
     /**
+     * Отфильтровать статьи по нижнему порогу заспамленности.
+     *
+     * @var int|null
+     */
+    private ?int $unique;
+
+    /**
+     * Отфильтровать статьи по верхнему порогу количества воды.
+     *
+     * @var int|null
+     */
+    private ?int $water;
+
+    /**
+     * Отфильтровать статьи по верхнему порогу заспамленности.
+     *
+     * @var int|null
+     */
+    private ?int $spam;
+
+    /**
+     * Конструктор.
+     *
+     * @param ?int $unique Отфильтровать статьи по нижнему порогу заспамленности.
+     * @param ?int $water Отфильтровать статьи по верхнему порогу количества воды.
+     * @param ?int $spam Отфильтровать статьи по верхнему порогу заспамленности.
+     */
+    public function __construct(?int $unique, ?int $water, ?int $spam)
+    {
+        $this->unique = $unique;
+        $this->water = $water;
+        $this->spam = $spam;
+    }
+
+    /**
      * Вернет общее количество текстов, которые могут быть приняты.
      *
      * @return int
@@ -58,6 +93,25 @@ class Apply
      */
     private function getQuery(): Builder
     {
-        return Article::where('status', Status::READY->value);
+         $query = Article::where('status', Status::READY->value);
+
+         if ($this->unique || $this->water || $this->spam) {
+             $query->whereHas('analyzers', function ($query) {
+                 $query->where('category', 'article.text');
+                 if ($this->unique) {
+                     $query->where('unique', '>=', $this->unique);
+                 }
+
+                 if ($this->water) {
+                     $query->where('water', '<', $this->water);
+                 }
+
+                 if ($this->spam) {
+                     $query->where('spam', '<', $this->water);
+                 }
+             });
+         }
+
+         return $query;
     }
 }
