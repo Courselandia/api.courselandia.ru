@@ -137,4 +137,11 @@ class School extends Entity
      * @var ?int
      */
     public ?int $reviews_count = null;
+
+    /**
+     * Количество курсов.
+     *
+     * @var array|null
+     */
+    public array|null $amount_courses = null;
 }

@@ -45,6 +45,7 @@ class SchoolGetAction extends Action
                 $school = School::where('id', $this->id)
                     ->active()
                     ->with('metatag')
+                    ->withCount('reviews')
                     ->first();
 
                 return $school ? new SchoolEntity($school->toArray()) : null;

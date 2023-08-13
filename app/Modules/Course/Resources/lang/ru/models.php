@@ -39,7 +39,8 @@ return [
         'toolIds' => 'Активные инструменты',
         'levelValues' => 'Активные уровни',
         'hasActiveSchool' => 'Признак, что у курса есть активная школа',
-        'status' => 'Статус.',
+        'status' => 'Статус',
+        'amountCourses' => 'Количество курсов',
     ],
     'courseFeature' => [
         'course_id' => 'ID курса',

@@ -49,6 +49,7 @@ class SchoolLinkAction extends Action
                         $query->where('status', Status::ACTIVE->value);
                     })
                     ->with('metatag')
+                    ->withCount('reviews')
                     ->first();
 
                 return $school ? new SchoolEntity($school->toArray()) : null;
