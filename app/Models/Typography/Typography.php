@@ -42,6 +42,8 @@ class Typography
                 $typograph->do_setup('Abbr.all', false);
                 $typograph->do_setup('Nobr.spaces_nobr_in_surname_abbr', false);
                 $typograph->do_setup('Number.math_chars', false);
+                $typograph->do_setup('Abbr.nobr_before_unit_volt', false);
+                $typograph->do_setup('Space.autospace_after', false);
 
                 $result = $typograph->process($value);
 
