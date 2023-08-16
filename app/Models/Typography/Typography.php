@@ -41,6 +41,7 @@ class Typography
                 $typograph->do_setup('Nobr.all', false);
                 $typograph->do_setup('Abbr.all', false);
                 $typograph->do_setup('Nobr.spaces_nobr_in_surname_abbr', false);
+                $typograph->do_setup('Number.math_chars', false);
 
                 $result = $typograph->process($value);
 
