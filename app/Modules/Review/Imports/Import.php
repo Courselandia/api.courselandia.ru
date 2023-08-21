@@ -8,6 +8,7 @@
 
 namespace App\Modules\Review\Imports;
 
+use App\Models\Exceptions\RecordExistException;
 use Util;
 use Throwable;
 use App\Models\Error;
@@ -221,6 +222,8 @@ class Import
             ]);
 
             return $review->id;
+        } catch (RecordExistException $error) {
+            return null;
         } catch (Throwable $error) {
             $this->addError(
                 $school->getLabel()

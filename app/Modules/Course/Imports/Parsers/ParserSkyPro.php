@@ -53,6 +53,7 @@ class ParserSkyPro extends ParserYml
             'Аналитика данных' => Direction::ANALYTICS,
             'Тестирование' => Direction::PROGRAMMING,
             'Графический дизайнер' => Direction::DESIGN,
+            'Excel и Google Spreadsheets' => Direction::OTHER,
         ];
     }
 
