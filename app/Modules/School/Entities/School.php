@@ -139,6 +139,41 @@ class School extends Entity
     public ?int $reviews_count = null;
 
     /**
+     * Количество отзывов с одной звездой.
+     *
+     * @var ?int
+     */
+    public ?int $reviews_1_star_count = null;
+
+    /**
+     * Количество отзывов с двумя звездами.
+     *
+     * @var ?int
+     */
+    public ?int $reviews_2_stars_count = null;
+
+    /**
+     * Количество отзывов с тремя звездами.
+     *
+     * @var ?int
+     */
+    public ?int $reviews_3_stars_count = null;
+
+    /**
+     * Количество отзывов с четырмя звездами.
+     *
+     * @var ?int
+     */
+    public ?int $reviews_4_stars_count = null;
+
+    /**
+     * Количество отзывов с пятью звездами.
+     *
+     * @var ?int
+     */
+    public ?int $reviews_5_stars_count = null;
+
+    /**
      * Количество курсов.
      *
      * @var array|null
