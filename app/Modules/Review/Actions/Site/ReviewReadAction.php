@@ -53,14 +53,18 @@ class ReviewReadAction extends Action
     public ?int $school_id = null;
 
     /**
-     * Конструктор.
+     * Ссылка на школу.
      *
-     * @param  Review  $review  Репозиторий отзывов.
+     * @var string|null
      */
-    public function __construct(Review $review)
-    {
-        $this->review = $review;
-    }
+    public ?string $link = null;
+
+    /**
+     * Рейтинг для фильтрации.
+     *
+     * @var int|null
+     */
+    public ?int $rating = null;
 
     /**
      * Метод запуска логики.
@@ -70,6 +74,8 @@ class ReviewReadAction extends Action
      */
     #[ArrayShape(['data' => 'array', 'total' => 'int'])] public function run(): array
     {
+        Cache::flush();
+
         $cacheKey = Util::getKey(
             'review',
             'site',
@@ -78,6 +84,8 @@ class ReviewReadAction extends Action
             $this->sorts,
             $this->offset,
             $this->limit,
+            $this->school_id,
+            $this->link,
             'school',
         );
 
@@ -85,12 +93,23 @@ class ReviewReadAction extends Action
             $cacheKey,
             CacheTime::GENERAL->value,
             function () {
-                $query = Review::where('school_id', $this->school_id)
-                    ->where('status', Status::ACTIVE->value)
+                $query = Review::where('status', Status::ACTIVE->value)
                     ->whereHas('school', function ($query) {
                         $query->where('schools.status', true);
+
+                        if ($this->link) {
+                            $query->where('schools.link', $this->link);
+                        }
                     })
                     ->with('school');
+
+                if ($this->school_id) {
+                    $query->where('school_id', $this->school_id);
+                }
+
+                if ($this->rating) {
+                    $query->where('rating', $this->rating);
+                }
 
                 $queryCount = $query->clone();
 
@@ -104,7 +123,9 @@ class ReviewReadAction extends Action
                     $query->limit($this->limit);
                 }
 
+                //\DB::connection()->enableQueryLog();
                 $items = $query->get()->toArray();
+                //print_r(\DB::getQueryLog());
 
                 return [
                     'data' => Entity::toEntities($items, new ReviewEntity()),
