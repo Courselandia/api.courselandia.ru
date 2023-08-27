@@ -74,8 +74,6 @@ class ReviewReadAction extends Action
      */
     #[ArrayShape(['data' => 'array', 'total' => 'int'])] public function run(): array
     {
-        Cache::flush();
-
         $cacheKey = Util::getKey(
             'review',
             'site',
@@ -123,9 +121,7 @@ class ReviewReadAction extends Action
                     $query->limit($this->limit);
                 }
 
-                //\DB::connection()->enableQueryLog();
                 $items = $query->get()->toArray();
-                //print_r(\DB::getQueryLog());
 
                 return [
                     'data' => Entity::toEntities($items, new ReviewEntity()),
