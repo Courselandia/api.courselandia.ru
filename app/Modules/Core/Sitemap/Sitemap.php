@@ -23,6 +23,8 @@ use App\Modules\Core\Sitemap\Parts\PartSkill;
 use App\Modules\Core\Sitemap\Parts\PartTeacher;
 use App\Modules\Core\Sitemap\Parts\PartTool;
 use App\Modules\Core\Sitemap\Parts\PartCourse;
+use App\Modules\Core\Sitemap\Parts\PartReview;
+use App\Modules\Core\Sitemap\Parts\PartStatic;
 
 /**
  * Класс генерации sitemap.xml.
@@ -59,6 +61,7 @@ class Sitemap
     public function __construct()
     {
         $this
+            ->addPart(new PartStatic())
             ->addPart(new PartDirection())
             ->addPart(new PartCategory())
             ->addPart(new PartProfession())
@@ -66,7 +69,8 @@ class Sitemap
             ->addPart(new PartSkill())
             ->addPart(new PartTeacher())
             ->addPart(new PartTool())
-            ->addPart(new PartCourse());
+            ->addPart(new PartCourse())
+            ->addPart(new PartReview());
 
         $this->xml = new DomDocument('1.0', 'utf-8');
     }
