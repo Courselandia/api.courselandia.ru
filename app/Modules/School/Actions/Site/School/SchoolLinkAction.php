@@ -16,6 +16,7 @@ use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Course\Enums\Status;
 use App\Modules\School\Entities\School as SchoolEntity;
 use App\Modules\School\Models\School;
+use App\Modules\Review\Enums\Status as ReviewStatus;
 
 /**
  * Класс действия для получения школы.
@@ -47,7 +48,7 @@ class SchoolLinkAction extends Action
                     ->active()
                     ->withCount([
                         'reviews' => function ($query) {
-                            $query->where('status', \App\Modules\Review\Enums\Status::ACTIVE->value);
+                            $query->where('status', ReviewStatus::ACTIVE->value);
                         },
                         'reviews as reviews_1_star_count' => function ($query) {
                             $query

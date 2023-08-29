@@ -12,6 +12,7 @@ return [
         'imageBigId' => 'ID big image',
         'imageMiddleId' => 'ID middle image',
         'imageSmallId' => 'ID small image',
-        'status' => 'Status'
+        'status' => 'Status',
+        'rating' => 'Rating',
     ],
 ];

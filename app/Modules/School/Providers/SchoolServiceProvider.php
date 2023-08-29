@@ -8,6 +8,7 @@
 
 namespace App\Modules\School\Providers;
 
+use App\Modules\School\Commands\CountRatingCommand;
 use Config;
 use Illuminate\Support\ServiceProvider;
 
@@ -45,6 +46,7 @@ class SchoolServiceProvider extends ServiceProvider
     {
         $this->commands([
             CountAmountCoursesCommand::class,
+            CountRatingCommand::class,
         ]);
     }
 
