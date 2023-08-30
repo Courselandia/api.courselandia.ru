@@ -53,6 +53,7 @@ use App\Modules\School\Filters\SchoolFilter;
  * @property string $status Статус.
  * @property int|string|array|UploadedFile|ImageEntity $image_site_id Изображение сайта.
  * @property int|string|array|UploadedFile|ImageEntity $image_logo_id Изображение логотипа.
+ * @property array $amount_courses Статистика количества курсов.
  *
  * @property-read Metatag $metatag
  * @property-read Teacher[] $teachers
@@ -69,6 +70,15 @@ class School extends Eloquent
     use Status;
     use Validate;
     use Filterable;
+
+    /**
+     * Типизирование атрибутов.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'amount_courses' => 'array',
+    ];
 
     /**
      * Атрибуты, для которых разрешено массовое назначение.
@@ -88,6 +98,7 @@ class School extends Eloquent
         'status',
         'image_logo_id',
         'image_site_id',
+        'amount_courses',
     ];
 
     /**
@@ -108,6 +119,7 @@ class School extends Eloquent
         'status' => 'string',
         'image_logo_id' => 'string',
         'image_site_id' => 'string',
+        'amount_courses' => 'string',
     ])] protected function getRules(): array
     {
         return [
@@ -119,7 +131,8 @@ class School extends Eloquent
             'text' => 'max:65000',
             'rating' => 'nullable|float|float_between:0,5',
             'site' => 'url',
-            'status' => 'required|boolean'
+            'status' => 'required|boolean',
+            'amount_courses' => 'json',
         ];
     }
 
@@ -141,7 +154,8 @@ class School extends Eloquent
             'image_site_id' => trans('school::models.school.imageSiteId'),
             'rating' => trans('school::models.school.rating'),
             'site' => trans('school::models.school.site'),
-            'status' => trans('school::models.school.status')
+            'status' => trans('school::models.school.status'),
+            'amount_courses' => trans('school::models.school.amountCourses'),
         ];
     }
 

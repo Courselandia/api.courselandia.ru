@@ -40,6 +40,7 @@ return [
         'levelValues' => 'Active levels',
         'hasActiveSchool' => 'Course has an active school',
         'status' => 'Status',
+        'amountCourses' => 'Amount of courses',
     ],
     'courseFeature' => [
         'course_id' => 'ID course',

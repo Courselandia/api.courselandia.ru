@@ -27,6 +27,8 @@ return [
                 'offset' => 'Offset',
                 'limit' => 'Limit',
                 'schoolId' => 'ID school',
+                'link' => 'Link',
+                'rating' => 'Rating',
             ],
         ]
     ],

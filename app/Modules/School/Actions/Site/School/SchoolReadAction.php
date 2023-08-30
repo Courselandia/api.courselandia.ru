@@ -72,7 +72,8 @@ class SchoolReadAction extends Action
                     ->active()
                     ->with([
                         'metatag',
-                    ]);
+                    ])
+                    ->withCount('reviews');
 
                 $queryCount = $query->clone();
 

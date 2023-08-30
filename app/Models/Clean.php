@@ -29,7 +29,7 @@ class Clean
 
         foreach ($entities as $entity) {
             foreach ($entity as $key => $value) {
-                if (is_array($entity->$key)) {
+                if (is_array($entity->$key) && array_is_list($entity->$key)) {
                     for ($i = 0; $i < count($entity->$key); $i++) {
                         if ($entity->$key[$i] instanceof Entity) {
                             $entity->$key[$i] = self::do($entity->$key[$i], $removes, $ifNull);

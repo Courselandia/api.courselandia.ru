@@ -19,6 +19,7 @@ return [
                 'rating' => 'Рейтинг',
                 'schoolId' => 'ID школы',
                 'createdAt' => 'Дата создания',
+                'link' => 'Ссылка',
             ],
         ],
         'site' => [
@@ -27,6 +28,7 @@ return [
                 'offset' => 'Отступ',
                 'limit' => 'Лимит',
                 'schoolId' => 'ID школы',
+                'rating' => 'Рейтинг',
             ],
         ]
     ],

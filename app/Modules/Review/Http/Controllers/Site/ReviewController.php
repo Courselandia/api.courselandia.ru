@@ -35,6 +35,8 @@ class ReviewController extends Controller
         $action->sorts = $request->get('sorts');
         $action->offset = $request->get('offset');
         $action->limit = $request->get('limit');
+        $action->link = $request->get('link');
+        $action->rating = $request->get('rating');
 
         $data = $action->run();
 

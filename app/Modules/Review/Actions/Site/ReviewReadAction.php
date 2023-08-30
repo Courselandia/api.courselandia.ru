@@ -8,6 +8,8 @@
 
 namespace App\Modules\Review\Actions\Site;
 
+use Cache;
+use Util;
 use App\Models\Action;
 use App\Models\Entity;
 use App\Models\Enums\CacheTime;
@@ -15,9 +17,7 @@ use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Review\Entities\Review as ReviewEntity;
 use App\Modules\Review\Enums\Status;
 use App\Modules\Review\Models\Review;
-use Cache;
 use JetBrains\PhpStorm\ArrayShape;
-use Util;
 
 /**
  * Класс действия для чтения отзывов.
@@ -53,14 +53,18 @@ class ReviewReadAction extends Action
     public ?int $school_id = null;
 
     /**
-     * Конструктор.
+     * Ссылка на школу.
      *
-     * @param  Review  $review  Репозиторий отзывов.
+     * @var string|null
      */
-    public function __construct(Review $review)
-    {
-        $this->review = $review;
-    }
+    public ?string $link = null;
+
+    /**
+     * Рейтинг для фильтрации.
+     *
+     * @var int|null
+     */
+    public ?int $rating = null;
 
     /**
      * Метод запуска логики.
@@ -78,6 +82,8 @@ class ReviewReadAction extends Action
             $this->sorts,
             $this->offset,
             $this->limit,
+            $this->school_id,
+            $this->link,
             'school',
         );
 
@@ -85,12 +91,23 @@ class ReviewReadAction extends Action
             $cacheKey,
             CacheTime::GENERAL->value,
             function () {
-                $query = Review::where('school_id', $this->school_id)
-                    ->where('status', Status::ACTIVE->value)
+                $query = Review::where('status', Status::ACTIVE->value)
                     ->whereHas('school', function ($query) {
                         $query->where('schools.status', true);
+
+                        if ($this->link) {
+                            $query->where('schools.link', $this->link);
+                        }
                     })
                     ->with('school');
+
+                if ($this->school_id) {
+                    $query->where('school_id', $this->school_id);
+                }
+
+                if ($this->rating) {
+                    $query->where('rating', $this->rating);
+                }
 
                 $queryCount = $query->clone();
 

@@ -27,6 +27,8 @@ class ReviewReadRequest extends FormRequest
         'offset' => 'string',
         'limit' => 'string',
         'school_id' => 'string',
+        'link' => 'string',
+        'rating' => 'string',
     ])] public function rules(): array
     {
         $columns = Schema::getColumnListing('reviews');
@@ -36,7 +38,9 @@ class ReviewReadRequest extends FormRequest
             'sorts' => 'array|sorts:' . $columns,
             'offset' => 'integer|digits_between:0,20',
             'limit' => 'integer|digits_between:0,20',
-            'school_id' => 'required|exists_soft:schools,id',
+            'school_id' => 'exists_soft:schools,id',
+            'link' => 'exists_soft:schools,link',
+            'rating' => 'integer|digits_between:0,1',
         ];
     }
 
@@ -50,6 +54,8 @@ class ReviewReadRequest extends FormRequest
         'offset' => 'string',
         'limit' => 'string',
         'school_id' => 'string',
+        'link' => 'string',
+        'rating' => 'string',
     ])] public function attributes(): array
     {
         return [
@@ -57,6 +63,8 @@ class ReviewReadRequest extends FormRequest
             'offset' => trans('review::http.requests.site.reviewReadRequest.offset'),
             'limit' => trans('review::http.requests.site.reviewReadRequest.limit'),
             'school_id' => trans('review::http.requests.site.reviewReadRequest.schoolId'),
+            'link' => trans('review::http.requests.site.reviewReadRequest.link'),
+            'rating' => trans('review::http.requests.site.reviewReadRequest.link'),
         ];
     }
 }

@@ -8,11 +8,14 @@
 
 namespace App\Modules\School\Providers;
 
+use App\Modules\School\Commands\CountRatingCommand;
 use Config;
 use Illuminate\Support\ServiceProvider;
 
 use App\Modules\School\Models\School as SchoolModel;
 use App\Modules\School\Events\Listeners\SchoolListener;
+
+use App\Modules\School\Commands\CountAmountCoursesCommand;
 
 /**
  * Класс сервис-провайдера для настройки этого модуля.
@@ -41,6 +44,10 @@ class SchoolServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
+        $this->commands([
+            CountAmountCoursesCommand::class,
+            CountRatingCommand::class,
+        ]);
     }
 
     /**
