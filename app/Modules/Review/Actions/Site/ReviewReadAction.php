@@ -84,6 +84,7 @@ class ReviewReadAction extends Action
             $this->limit,
             $this->school_id,
             $this->link,
+            $this->rating,
             'school',
         );
 
