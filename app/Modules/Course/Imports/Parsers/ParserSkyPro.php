@@ -73,7 +73,11 @@ class ParserSkyPro extends ParserYml
             $course->direction = $offer['direction'];
             $course->price = $offer['price'];
             $course->currency = Currency::RUB;
-            $course->price_recurrent = $offer['params']['Ежемесячная цена']['value'] ?? null;
+
+            $priceRecurrent = $offer['params']['Ежемесячная цена']['value'] ?? null;
+            $priceRecurrent = is_numeric($priceRecurrent) ? $priceRecurrent : null;
+
+            $course->price_recurrent = $priceRecurrent;
             $course->duration = $offer['params']['Продолжительность']['value'] ?? null;
 
             if (isset($offer['params']['Продолжительность']['unit']) || isset($offer['params']['Продолжительность']['value'])) {
