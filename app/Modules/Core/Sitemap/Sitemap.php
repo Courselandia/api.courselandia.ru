@@ -61,7 +61,7 @@ class Sitemap
     public function __construct()
     {
         $this
-            //->addPart(new PartStatic())
+            ->addPart(new PartStatic())
             ->addPart(new PartDirection())
             ->addPart(new PartCategory())
             ->addPart(new PartProfession())
@@ -69,8 +69,8 @@ class Sitemap
             ->addPart(new PartSkill())
             ->addPart(new PartTeacher())
             ->addPart(new PartTool())
-            //->addPart(new PartCourse())
-            /*->addPart(new PartReview())*/;
+            ->addPart(new PartCourse())
+            ->addPart(new PartReview());
 
         $this->xml = new DomDocument('1.0', 'utf-8');
     }

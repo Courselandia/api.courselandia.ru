@@ -255,6 +255,7 @@ class CourseController extends Controller
      * @param CourseReadRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
+     * @throws ParameterInvalidException
      */
     public function read(CourseReadRequest $request): JsonResponse
     {

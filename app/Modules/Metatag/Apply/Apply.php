@@ -34,7 +34,7 @@ class Apply
      *
      * @var int
      */
-    public const SLEEP = 2;
+    public const SLEEP = 1;
 
     /**
      * Задания.

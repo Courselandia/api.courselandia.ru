@@ -135,6 +135,13 @@ class CourseReadAction extends Action
     public bool $precache = true;
 
     /**
+     * Включить систему precache даже если она выключена в настройках.
+     *
+     * @var bool
+     */
+    public bool $forcePrecache = false;
+
+    /**
      * Метод запуска логики.
      *
      * @return CourseRead|null Вернет результаты исполнения.
@@ -144,7 +151,7 @@ class CourseReadAction extends Action
     {
         if (
             $this->precache
-            && Config::get('app.course_precache')
+            && (Config::get('app.course_precache') || $this->forcePrecache)
             && !$this->openedSchools
             && !$this->openedCategories
             && !$this->openedProfessions

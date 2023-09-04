@@ -9,6 +9,11 @@
 namespace App\Modules\Core\Sitemap\Parts;
 
 use Generator;
+use Carbon\Carbon;
+use App\Models\Exceptions\ParameterInvalidException;
+use App\Modules\Core\Sitemap\Part;
+use App\Modules\Review\Actions\Site\ReviewReadAction;
+use App\Modules\Review\Entities\Review;
 use App\Modules\Core\Sitemap\Item;
 use App\Modules\Course\Enums\Status;
 use App\Modules\Review\Enums\Status as ReviewStatus;
@@ -18,7 +23,7 @@ use Illuminate\Database\Eloquent\Builder;
 /**
  * Генератор для отзывов.
  */
-class PartReview extends PartDirection
+class PartReview extends Part
 {
     /**
      * Вернет количество генерируемых элементов.
@@ -34,6 +39,7 @@ class PartReview extends PartDirection
      * Генерация элемента.
      *
      * @return Generator<Item> Генерируемый элемент.
+     * @throws ParameterInvalidException
      */
     public function generate(): Generator
     {
@@ -50,6 +56,7 @@ class PartReview extends PartDirection
                 $item = new Item();
                 $item->path = 'reviews/' . $result['link'];
                 $item->priority = 0.8;
+                $item->lastmod = $this->getLastmod($result['link']);
 
                 yield $item;
             }
@@ -80,5 +87,38 @@ class PartReview extends PartDirection
         })
         ->where('status', true)
         ->orderBy('name');
+    }
+
+    /**
+     * Дата последней модификации страницы.
+     *
+     * @param string $link Ссылка на школу.
+     *
+     * @return ?Carbon Дата последней модификации.
+     * @throws ParameterInvalidException
+     */
+    protected function getLastmod(string $link): ?Carbon
+    {
+        $action = app(ReviewReadAction::class);
+        $action->offset = 0;
+        $action->limit = 20;
+        $action->link = $link;
+        $action->sorts = [
+            'created_at' => 'DESC',
+        ];
+
+        $dates = [];
+        $result = $action->run();
+        $reviews = $result['data'];
+
+        foreach ($reviews as $review) {
+            /**
+             * @var Review $review
+             */
+            $dates[] = $review->updated_at;
+            $dates[] = $review->school->updated_at;
+        }
+
+        return max($dates);
     }
 }

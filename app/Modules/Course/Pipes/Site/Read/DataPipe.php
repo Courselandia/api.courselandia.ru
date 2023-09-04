@@ -30,7 +30,6 @@ class DataPipe implements Pipe
         'name_morphy',
         'text_morphy',
         'created_at',
-        'updated_at',
         'deleted_at',
         'metatag',
         'metatag_id',

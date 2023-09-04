@@ -91,6 +91,7 @@ class Normalize
         ->get();
 
         foreach ($courses as $course) {
+            $sourceCourse = $course->replicate();
             $course->direction_ids = $course->directions->pluck('id');
             $course->profession_ids = $course->professions->pluck('id');
             $course->category_ids = $course->categories->pluck('id');
@@ -101,12 +102,34 @@ class Normalize
             $course->has_active_school = (bool)$course->school;
 
             try {
-                $course->save();
+                if ($this->hasToBeChanged($sourceCourse, $course)) {
+                    $course->save();
+                }
 
                 $this->fireEvent('normalized', [$course]);
             } catch (Throwable $error) {
                 $this->addError($error);
             }
         }
+    }
+
+    /**
+     * Проверка нужно ли обновлять курс.
+     *
+     * @param Course $sourceCourse Изначальный курс.
+     * @param Course $targetCourse Полученный курс после изменений.
+     *
+     * @return bool Вернет результат проверки.
+     */
+    private function hasToBeChanged(Course $sourceCourse, Course $targetCourse): bool
+    {
+        return $sourceCourse->direction_ids !== $targetCourse->direction_ids
+            || $sourceCourse->profession_ids !== $targetCourse->profession_ids
+            || $sourceCourse->category_ids !== $targetCourse->category_ids
+            || $sourceCourse->skill_ids !== $targetCourse->skill_ids
+            || $sourceCourse->teacher_ids !== $targetCourse->teacher_ids
+            || $sourceCourse->tool_ids !== $targetCourse->tool_ids
+            || $sourceCourse->level_values !== $targetCourse->level_values
+            || (bool)$sourceCourse->has_active_school !== (bool)$targetCourse->has_active_school;
     }
 }

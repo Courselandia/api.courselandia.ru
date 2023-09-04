@@ -91,6 +91,7 @@ class ReadPipe implements Pipe
                     'lessons_amount',
                     'modules_amount',
                     'status',
+                    'updated_at',
                 ])
                 ->filter($entity->filters ?: [])
                 ->with([

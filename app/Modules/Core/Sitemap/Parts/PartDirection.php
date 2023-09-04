@@ -9,7 +9,7 @@
 namespace App\Modules\Core\Sitemap\Parts;
 
 use App\Models\Exceptions\ParameterInvalidException;
-use App\Modules\Course\Actions\Site\Course\CoursePrecacheReadAction;
+use App\Modules\Course\Actions\Site\Course\CourseReadAction;
 use App\Modules\Course\Entities\Course;
 use App\Modules\Course\Enums\Status;
 use App\Modules\Direction\Models\Direction;
@@ -38,6 +38,7 @@ class PartDirection extends Part
      * Генерация элемента.
      *
      * @return Generator<Item> Генерируемый элемент.
+     * @throws ParameterInvalidException
      */
     public function generate(): Generator
     {
@@ -96,7 +97,8 @@ class PartDirection extends Part
      */
     protected function getLastmod(int $id, string $nameFilter): ?Carbon
     {
-        $action = app(CoursePrecacheReadAction::class);
+        $action = app(CourseReadAction::class);
+        $action->forcePrecache = true;
         $action->offset = 0;
         $action->limit = 36;
         $action->sorts = [
@@ -109,13 +111,15 @@ class PartDirection extends Part
         $courseRead = $action->run();
 
         if ($courseRead) {
-            $itemUpdatedAt = $courseRead->description->updated_at;
+            $dates = [];
+            $dates[] = $courseRead->description?->updated_at;
+            $dates[] = $courseRead->description?->metatag->updated_at;
 
-            $courseUpdatedAt = collect($courseRead->courses)->max(function (Course $course) {
+            $dates[] = collect($courseRead->courses)->max(function (Course $course) {
                 return $course->updated_at;
             });
 
-            return $itemUpdatedAt > $courseUpdatedAt ? $itemUpdatedAt : $courseUpdatedAt;
+            return max($dates);
         }
 
         return null;

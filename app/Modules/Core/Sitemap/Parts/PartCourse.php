@@ -8,16 +8,20 @@
 
 namespace App\Modules\Core\Sitemap\Parts;
 
+use App\Models\Exceptions\ParameterInvalidException;
+use App\Modules\Course\Actions\Site\Course\CourseGetAction;
+use Carbon\Carbon;
 use Generator;
 use App\Modules\Core\Sitemap\Item;
 use App\Modules\Course\Enums\Status;
 use Illuminate\Database\Eloquent\Builder;
 use App\Modules\Course\Models\Course;
+use App\Modules\Core\Sitemap\Part;
 
 /**
  * Генератор для курсов.
  */
-class PartCourse extends PartDirection
+class PartCourse extends Part
 {
     /**
      * Вернет количество генерируемых элементов.
@@ -49,6 +53,7 @@ class PartCourse extends PartDirection
                 $item = new Item();
                 $item->path = 'courses/show/' . $result['school']['link'] . '/' . $result['link'];
                 $item->priority = 1;
+                $item->lastmod = Carbon::parse($result['updated_at']);
 
                 yield $item;
             }
@@ -66,6 +71,7 @@ class PartCourse extends PartDirection
             'id',
             'school_id',
             'link',
+            'updated_at',
         ])
         ->with([
             'school' => function ($query) {

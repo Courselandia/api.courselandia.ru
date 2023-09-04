@@ -65,7 +65,7 @@ class SchoolCountAmountCoursesAction extends Action
             ->get();
 
         foreach ($schools as $school) {
-            $school->amount_courses = [
+            $amountCourses = [
                 'all' => $school->all,
                 'direction_programming' => $school->direction_programming,
                 'direction_marketing' => $school->direction_marketing,
@@ -76,7 +76,16 @@ class SchoolCountAmountCoursesAction extends Action
                 'direction_other' => $school->direction_other,
             ];
 
-            $school->save();
+            $oldAmountCourses = $school->amount_courses;
+            ksort($amountCourses);
+            ksort($oldAmountCourses);
+
+            if ($amountCourses !== $oldAmountCourses) {
+                $school->amount_courses = $amountCourses;
+
+                $school->save();
+                exit;
+            }
 
             $this->fireEvent('saved');
         }

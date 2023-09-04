@@ -45,8 +45,12 @@ class SchoolCountRatingAction extends Action
             ->get();
 
         foreach ($schools as $school) {
-            $school->rating = round($school->reviews_sum_rating / $school->reviews_count, 2);
-            $school->save();
+            $newRating = round($school->reviews_sum_rating / $school->reviews_count, 2);
+
+            if ($newRating !== $school->rating) {
+                $school->rating = $newRating;
+                $school->save();
+            }
 
             $this->fireEvent('saved');
         }
