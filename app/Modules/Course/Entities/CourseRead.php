@@ -9,6 +9,13 @@
 namespace App\Modules\Course\Entities;
 
 use App\Models\Entity;
+use App\Modules\Category\Entities\Category;
+use App\Modules\Direction\Entities\Direction;
+use App\Modules\Profession\Entities\Profession;
+use App\Modules\School\Entities\School;
+use App\Modules\Skill\Entities\Skill;
+use App\Modules\Teacher\Entities\Teacher;
+use App\Modules\Tool\Entities\Tool;
 
 /**
  * Сущность чтения курсов.
@@ -74,9 +81,9 @@ class CourseRead extends Entity
     /**
      * Сущность описания.
      *
-     * @var Entity|null
+     * @var Direction|Profession|School|Skill|Teacher|Tool|Category|null
      */
-    public ?Entity $description = null;
+    public Direction|Profession|School|Skill|Teacher|Tool|Category|null $description = null;
 
     /**
      * Количество.

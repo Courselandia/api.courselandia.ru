@@ -61,7 +61,7 @@ class Sitemap
     public function __construct()
     {
         $this
-            ->addPart(new PartStatic())
+            //->addPart(new PartStatic())
             ->addPart(new PartDirection())
             ->addPart(new PartCategory())
             ->addPart(new PartProfession())
@@ -69,8 +69,8 @@ class Sitemap
             ->addPart(new PartSkill())
             ->addPart(new PartTeacher())
             ->addPart(new PartTool())
-            ->addPart(new PartCourse())
-            ->addPart(new PartReview());
+            //->addPart(new PartCourse())
+            /*->addPart(new PartReview())*/;
 
         $this->xml = new DomDocument('1.0', 'utf-8');
     }
@@ -151,6 +151,10 @@ class Sitemap
                     $url->appendChild($this->xml->createElement('loc', Config::get('app.url') . $item->path));
                     $url->appendChild($this->xml->createElement('changefreq', $item->changefreq));
                     $url->appendChild($this->xml->createElement('priority', $item->priority));
+
+                    if ($item->lastmod) {
+                        $url->appendChild($this->xml->createElement('lastmod', $item->lastmod->format('Y-m-d')));
+                    }
 
                     $this->root->appendChild($url);
 

@@ -49,6 +49,7 @@ class PartSkill extends PartDirection
                 $item = new Item();
                 $item->path = 'courses/skill/' . $result['link'];
                 $item->priority = 0.8;
+                $item->lastmod = $this->getLastmod($result['id'], 'skills-id');
 
                 yield $item;
             }
@@ -63,6 +64,7 @@ class PartSkill extends PartDirection
     private function getQuery(): Builder
     {
         return Skill::select([
+            'skills.id',
             'skills.link',
         ])
         ->whereHas('courses', function ($query) {

@@ -49,6 +49,7 @@ class PartProfession extends PartDirection
                 $item = new Item();
                 $item->path = 'courses/profession/' . $result['link'];
                 $item->priority = 0.8;
+                $item->lastmod = $this->getLastmod($result['id'], 'professions-id');
 
                 yield $item;
             }
@@ -63,6 +64,7 @@ class PartProfession extends PartDirection
     private function getQuery(): Builder
     {
         return Profession::select([
+            'professions.id',
             'professions.link',
         ])
         ->whereHas('courses', function ($query) {

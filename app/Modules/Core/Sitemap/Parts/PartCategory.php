@@ -9,6 +9,7 @@
 namespace App\Modules\Core\Sitemap\Parts;
 
 use Generator;
+use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Core\Sitemap\Item;
 use App\Modules\Course\Enums\Status;
 use App\Modules\Category\Models\Category;
@@ -33,6 +34,7 @@ class PartCategory extends PartDirection
      * Генерация элемента.
      *
      * @return Generator<Item> Генерируемый элемент.
+     * @throws ParameterInvalidException
      */
     public function generate(): Generator
     {
@@ -49,6 +51,7 @@ class PartCategory extends PartDirection
                 $item = new Item();
                 $item->path = 'courses/category/' . $result['link'];
                 $item->priority = 0.8;
+                $item->lastmod = $this->getLastmod($result['id'], 'categories-id');
 
                 yield $item;
             }
@@ -63,6 +66,7 @@ class PartCategory extends PartDirection
     private function getQuery(): Builder
     {
         return Category::select([
+            'categories.id',
             'categories.link',
         ])
         ->whereHas('courses', function ($query) {

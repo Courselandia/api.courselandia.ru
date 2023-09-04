@@ -49,6 +49,7 @@ class PartTool extends PartDirection
                 $item = new Item();
                 $item->path = 'courses/tool/' . $result['link'];
                 $item->priority = 0.8;
+                $item->lastmod = $this->getLastmod($result['id'], 'tools-id');
 
                 yield $item;
             }
@@ -63,6 +64,7 @@ class PartTool extends PartDirection
     private function getQuery(): Builder
     {
         return Tool::select([
+            'tools.id',
             'tools.link',
         ])
         ->whereHas('courses', function ($query) {

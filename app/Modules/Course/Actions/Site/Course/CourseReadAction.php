@@ -8,6 +8,7 @@
 
 namespace App\Modules\Course\Actions\Site\Course;
 
+use App\Models\Exceptions\ParameterInvalidException;
 use Config;
 use App\Models\Action;
 use App\Modules\Course\Entities\CourseRead;
@@ -137,6 +138,7 @@ class CourseReadAction extends Action
      * Метод запуска логики.
      *
      * @return CourseRead|null Вернет результаты исполнения.
+     * @throws ParameterInvalidException
      */
     public function run(): ?CourseRead
     {

@@ -49,6 +49,7 @@ class PartSchool extends PartDirection
                 $item = new Item();
                 $item->path = 'courses/school/' . $result['link'];
                 $item->priority = 0.8;
+                $item->lastmod = $this->getLastmod($result['id'], 'school-id');
 
                 yield $item;
             }
@@ -63,6 +64,7 @@ class PartSchool extends PartDirection
     private function getQuery(): Builder
     {
         return School::select([
+            'schools.id',
             'schools.link',
         ])
         ->whereHas('courses', function ($query) {

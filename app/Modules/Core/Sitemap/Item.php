@@ -8,6 +8,8 @@
 
 namespace App\Modules\Core\Sitemap;
 
+use Carbon\Carbon;
+
 /**
  * Класс структуры генерируемого элемента.
  */
@@ -25,7 +27,7 @@ class Item
      *
      * @var string
      */
-    public string $changefreq = 'daily';
+    public string $changefreq = 'weekly';
 
     /**
      * Приоритетность.
@@ -33,4 +35,11 @@ class Item
      * @var float
      */
     public float $priority = 1;
+
+    /**
+     * Дата последней модификации страницы.
+     *
+     * @var ?Carbon
+     */
+    public ?Carbon $lastmod= null;
 }

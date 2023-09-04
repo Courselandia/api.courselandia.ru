@@ -49,6 +49,7 @@ class PartTeacher extends PartDirection
                 $item = new Item();
                 $item->path = 'courses/teacher/' . $result['link'];
                 $item->priority = 0.1;
+                $item->lastmod = $this->getLastmod($result['id'], 'teachers-id');
 
                 yield $item;
             }
@@ -63,6 +64,7 @@ class PartTeacher extends PartDirection
     private function getQuery(): Builder
     {
         return Teacher::select([
+            'teachers.id',
             'teachers.link',
         ])
         ->whereHas('courses', function ($query) {
