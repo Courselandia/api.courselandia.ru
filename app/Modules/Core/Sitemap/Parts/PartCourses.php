@@ -40,6 +40,6 @@ class PartCourses extends PartDirection
         $item->priority = 0.7;
         $item->lastmod = $this->getLastmod();
 
-        return $item;
+        yield $item;
     }
 }

@@ -42,7 +42,7 @@ class PartReviews extends Part
         $item->priority = 0.7;
         $item->lastmod = $this->getLastmod();
 
-        return $item;
+        yield $item;
     }
 
     /**
@@ -56,8 +56,9 @@ class PartReviews extends Part
             ->whereHas('school', function ($query) {
                 $query->where('schools.status', true);
             })
+            ->orderBy('created_at', 'DESC')
             ->first();
 
-        return $review ? Carbon::parse($review->updated_at) : null;
+        return $review ? Carbon::parse($review->created_at) : null;
     }
 }

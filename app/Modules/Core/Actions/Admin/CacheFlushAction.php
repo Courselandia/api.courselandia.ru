@@ -42,7 +42,7 @@ class CacheFlushAction extends Action
         $client = new Client();
 
         try {
-            $client->request('GET', Config::get('app.url') . '/' . 'cache-flush');
+            $client->request('GET', Config::get('app.url') . '/cache-flush');
         } catch (Exception $error) {
             Log::debug('Не удалось удалить кешь в публичной части: ' . $error->getMessage());
         }
