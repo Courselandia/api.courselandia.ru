@@ -8,6 +8,7 @@
 
 namespace App\Modules\Analyzer\Actions\Admin;
 
+use App\Modules\Plagiarism\Exceptions\TextShortException;
 use Auth;
 use Config;
 use Cache;
@@ -75,7 +76,7 @@ class AnalyzerUpdateAction extends Action
                     if ($analyzer->category === $this->category) {
                         $text = AnalyzerCategory::driver($this->category)->text($model->id);
 
-                        if (mb_strlen($text) > Config::get('analyzer.minLengthText')) {
+                        try {
                             $taskId = Plagiarism::request($text);
 
                             $analyzerModel = Analyzer::find($analyzer->id);
@@ -92,7 +93,7 @@ class AnalyzerUpdateAction extends Action
 
                                 $found = true;
                             }
-                        } else {
+                        } catch (TextShortException $error) {
                             $found = true;
 
                             $analyzerModel = Analyzer::find($analyzer->id);
@@ -124,7 +125,7 @@ class AnalyzerUpdateAction extends Action
                 if ($found === false) {
                     $text = AnalyzerCategory::driver($this->category)->text($this->id);
 
-                    if (mb_strlen($text) > Config::get('analyzer.minLengthText')) {
+                    try {
                         $taskId = Plagiarism::request($text);
 
                         $analyzerModel = Analyzer::create([
@@ -135,7 +136,7 @@ class AnalyzerUpdateAction extends Action
                             'analyzerable_id' => $this->id,
                             'analyzerable_type' => $this->model,
                         ]);
-                    } else {
+                    } catch (TextShortException $error) {
                         Analyzer::create([
                             'status' => Status::SKIPPED->value,
                             'category' => $this->category,

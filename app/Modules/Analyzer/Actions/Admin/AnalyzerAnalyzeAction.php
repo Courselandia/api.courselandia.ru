@@ -8,6 +8,7 @@
 
 namespace App\Modules\Analyzer\Actions\Admin;
 
+use App\Modules\Plagiarism\Exceptions\TextShortException;
 use Cache;
 use Plagiarism;
 use AnalyzerCategory;
@@ -48,14 +49,19 @@ class AnalyzerAnalyzeAction extends Action
             $text = AnalyzerCategory::driver($analyzerEntity->category)->text($analyzerEntity->analyzerable_id);
 
             if ($text) {
-                $taskId = Plagiarism::request($text);
-                $analyzerEntity->task_id = $taskId;
-                $analyzerEntity->status = Status::PROCESSING;
+                try {
+                    $taskId = Plagiarism::request($text);
+                    $analyzerEntity->task_id = $taskId;
+                    $analyzerEntity->status = Status::PROCESSING;
 
-                Analyzer::find($this->id)->update($analyzerEntity->toArray());
+                    Analyzer::find($this->id)->update($analyzerEntity->toArray());
 
-                AnalyzerSaveResultJob::dispatch($this->id)
-                    ->delay(now()->addMinutes(2));
+                    AnalyzerSaveResultJob::dispatch($this->id)
+                        ->delay(now()->addMinutes(2));
+                } catch (TextShortException $error) {
+                    $analyzerEntity->status = Status::SKIPPED;
+                    Analyzer::find($this->id)->update($analyzerEntity->toArray());
+                }
             } else {
                 $analyzerEntity->status = Status::SKIPPED;
                 Analyzer::find($this->id)->update($analyzerEntity->toArray());

@@ -8,6 +8,7 @@
 
 namespace App\Modules\Plagiarism\Http\Controllers\Admin;
 
+use App\Modules\Plagiarism\Exceptions\TextShortException;
 use Log;
 use Auth;
 use Plagiarism;
@@ -59,7 +60,7 @@ class PlagiarismController extends Controller
                 'success' => false,
                 'message' => $error->getMessage(),
             ])->setStatusCode(402);
-        } catch (LimitException $error) {
+        } catch (LimitException|TextShortException $error) {
             return response()->json([
                 'success' => false,
                 'message' => $error->getMessage(),
