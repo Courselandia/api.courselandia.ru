@@ -8,6 +8,7 @@
 
 namespace App\Modules\Analyzer\Jobs;
 
+use App\Modules\Plagiarism\Exceptions\TextShortException;
 use Config;
 use Log;
 use Plagiarism;
@@ -77,7 +78,7 @@ class AnalyzerAnalyzeTextJob implements ShouldQueue
             if ($analyzerEntity && $analyzerEntity->status === Status::PENDING) {
                 $text = AnalyzerCategory::driver($this->category)->text($analyzerEntity->analyzerable_id);
 
-                if (mb_strlen($text) > Config::get('analyzer.minLengthText')) {
+                try {
                     $taskId = Plagiarism::request($text);
 
                     Analyzer::find($this->id)->update([
@@ -89,7 +90,7 @@ class AnalyzerAnalyzeTextJob implements ShouldQueue
 
                     AnalyzerSaveResultJob::dispatch($this->id)
                         ->delay(now()->addMinutes(2));
-                } else {
+                } catch (TextShortException $error) {
                     Analyzer::find($this->id)->update([
                         'status' => Status::SKIPPED->value,
                         'unique' => null,

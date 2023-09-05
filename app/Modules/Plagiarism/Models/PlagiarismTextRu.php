@@ -8,6 +8,7 @@
 
 namespace App\Modules\Plagiarism\Models;
 
+use App\Modules\Plagiarism\Exceptions\TextShortException;
 use Config;
 use GuzzleHttp\Client;
 use App\Models\Exceptions\PaymentException;
@@ -31,6 +32,7 @@ class PlagiarismTextRu extends Plagiarism
      * @return string ID задачи на анализ.
      * @throws ResponseException
      * @throws PaymentException|GuzzleException
+     * @throws TextShortException
      */
     public function request(string $text): string
     {
@@ -61,6 +63,8 @@ class PlagiarismTextRu extends Plagiarism
         if (isset($response['error_code'])) {
             if ($response['error_code'] === 142) {
                 throw new PaymentException($response['error_desc']);
+            } else if ($response['error_code'] === 112) {
+                throw new TextShortException($response['error_desc']);
             } else {
                 throw new ResponseException($response['error_desc']);
             }
