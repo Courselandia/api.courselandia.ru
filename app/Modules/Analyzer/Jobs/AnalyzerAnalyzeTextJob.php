@@ -78,19 +78,29 @@ class AnalyzerAnalyzeTextJob implements ShouldQueue
             if ($analyzerEntity && $analyzerEntity->status === Status::PENDING) {
                 $text = AnalyzerCategory::driver($this->category)->text($analyzerEntity->analyzerable_id);
 
-                try {
-                    $taskId = Plagiarism::request($text);
+                if ($text) {
+                    try {
+                        $taskId = Plagiarism::request($text);
 
-                    Analyzer::find($this->id)->update([
-                        'task_id' => $taskId,
-                        'status' => Status::PROCESSING->value,
-                    ]);
+                        Analyzer::find($this->id)->update([
+                            'task_id' => $taskId,
+                            'status' => Status::PROCESSING->value,
+                        ]);
 
-                    Cache::tags(['analyzer'])->flush();
+                        Cache::tags(['analyzer'])->flush();
 
-                    AnalyzerSaveResultJob::dispatch($this->id)
-                        ->delay(now()->addMinutes(2));
-                } catch (TextShortException $error) {
+                        AnalyzerSaveResultJob::dispatch($this->id)
+                            ->delay(now()->addMinutes(2));
+                    } catch (TextShortException $error) {
+                        Analyzer::find($this->id)->update([
+                            'status' => Status::SKIPPED->value,
+                            'unique' => null,
+                            'water' => null,
+                            'spam' => null,
+                            'tries' => 0,
+                        ]);
+                    }
+                } else {
                     Analyzer::find($this->id)->update([
                         'status' => Status::SKIPPED->value,
                         'unique' => null,

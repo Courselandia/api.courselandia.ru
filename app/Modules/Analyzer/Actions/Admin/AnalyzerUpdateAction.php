@@ -76,29 +76,56 @@ class AnalyzerUpdateAction extends Action
                     if ($analyzer->category === $this->category) {
                         $text = AnalyzerCategory::driver($this->category)->text($model->id);
 
-                        try {
-                            $taskId = Plagiarism::request($text);
+                        if ($text) {
+                            try {
+                                $taskId = Plagiarism::request($text);
 
-                            $analyzerModel = Analyzer::find($analyzer->id);
+                                $analyzerModel = Analyzer::find($analyzer->id);
 
-                            if ($analyzerModel) {
-                                $analyzerModel->update([
-                                    'task_id' => $taskId,
-                                    'status' => Status::PROCESSING->value,
-                                    'unique' => null,
-                                    'water' => null,
-                                    'spam' => null,
-                                    'tries' => 0,
-                                ]);
+                                if ($analyzerModel) {
+                                    $analyzerModel->update([
+                                        'task_id' => $taskId,
+                                        'status' => Status::PROCESSING->value,
+                                        'unique' => null,
+                                        'water' => null,
+                                        'spam' => null,
+                                        'tries' => 0,
+                                    ]);
 
-                                $found = true;
+                                    $found = true;
+                                }
+                            } catch (TextShortException $error) {
+                                $analyzerModel = Analyzer::find($analyzer->id);
+
+                                if ($analyzerModel) {
+                                    $found = true;
+
+                                    $analyzerModel->update([
+                                        'status' => Status::SKIPPED->value,
+                                        'unique' => null,
+                                        'water' => null,
+                                        'spam' => null,
+                                        'tries' => 0,
+                                    ]);
+                                } else {
+                                    Analyzer::create([
+                                        'status' => Status::SKIPPED->value,
+                                        'category' => $this->category,
+                                        'unique' => null,
+                                        'water' => null,
+                                        'spam' => null,
+                                        'tries' => 0,
+                                        'analyzerable_id' => $this->id,
+                                        'analyzerable_type' => $this->model,
+                                    ]);
+                                }
                             }
-                        } catch (TextShortException $error) {
-                            $found = true;
-
+                        } else {
                             $analyzerModel = Analyzer::find($analyzer->id);
 
                             if ($analyzerModel) {
+                                $found = true;
+
                                 $analyzerModel->update([
                                     'status' => Status::SKIPPED->value,
                                     'unique' => null,
@@ -125,18 +152,31 @@ class AnalyzerUpdateAction extends Action
                 if ($found === false) {
                     $text = AnalyzerCategory::driver($this->category)->text($this->id);
 
-                    try {
-                        $taskId = Plagiarism::request($text);
+                    if ($text) {
+                        try {
+                            $taskId = Plagiarism::request($text);
 
-                        $analyzerModel = Analyzer::create([
-                            'task_id' => $taskId,
-                            'status' => Status::PROCESSING->value,
-                            'category' => $this->category,
-                            'tries' => 0,
-                            'analyzerable_id' => $this->id,
-                            'analyzerable_type' => $this->model,
-                        ]);
-                    } catch (TextShortException $error) {
+                            $analyzerModel = Analyzer::create([
+                                'task_id' => $taskId,
+                                'status' => Status::PROCESSING->value,
+                                'category' => $this->category,
+                                'tries' => 0,
+                                'analyzerable_id' => $this->id,
+                                'analyzerable_type' => $this->model,
+                            ]);
+                        } catch (TextShortException $error) {
+                            Analyzer::create([
+                                'status' => Status::SKIPPED->value,
+                                'category' => $this->category,
+                                'unique' => null,
+                                'water' => null,
+                                'spam' => null,
+                                'tries' => 0,
+                                'analyzerable_id' => $this->id,
+                                'analyzerable_type' => $this->model,
+                            ]);
+                        }
+                    } else {
                         Analyzer::create([
                             'status' => Status::SKIPPED->value,
                             'category' => $this->category,
