@@ -9,7 +9,7 @@
 @endsection
 
 @section('button')
-    <a class="button" href="{{ $site }}forget/reset/{{ $user->id }}?code={!! urlencode($code) !!}">
+    <a class="button" href="{{ $site }}/forget/reset/{{ $user->id }}?code={!! urlencode($code) !!}">
         {{ trans('access::views.recovery.button') }}
     </a>
 @endsection

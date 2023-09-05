@@ -53,7 +53,7 @@ class PartDirection extends Part
 
             if ($result) {
                 $item = new Item();
-                $item->path = 'courses/direction/' . $result['link'];
+                $item->path = '/courses/direction/' . $result['link'];
                 $item->priority = 0.8;
                 $item->lastmod = $this->getLastmod($result['id'], 'directions-id');
 
@@ -89,13 +89,13 @@ class PartDirection extends Part
     /**
      * Дата последней модификации страницы.
      *
-     * @param string $nameFilter Название фильтра.
-     * @param int $id ID сущности.
+     * @param ?string $nameFilter Название фильтра.
+     * @param ?int $id ID сущности.
      *
      * @return ?Carbon Дата последней модификации.
      * @throws ParameterInvalidException
      */
-    protected function getLastmod(int $id, string $nameFilter): ?Carbon
+    protected function getLastmod(int $id = null, string $nameFilter = null): ?Carbon
     {
         $action = app(CourseReadAction::class);
         $action->forcePrecache = true;
@@ -104,9 +104,12 @@ class PartDirection extends Part
         $action->sorts = [
             'name' => 'asc',
         ];
-        $action->filters = [
-            $nameFilter => [$id],
-        ];
+
+        if ($id && $nameFilter) {
+            $action->filters = [
+                $nameFilter => [$id],
+            ];
+        }
 
         $courseRead = $action->run();
 

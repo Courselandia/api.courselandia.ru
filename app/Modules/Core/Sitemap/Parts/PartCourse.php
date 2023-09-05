@@ -51,7 +51,7 @@ class PartCourse extends Part
 
             if ($result) {
                 $item = new Item();
-                $item->path = 'courses/show/' . $result['school']['link'] . '/' . $result['link'];
+                $item->path = '/courses/show/' . $result['school']['link'] . '/' . $result['link'];
                 $item->priority = 1;
                 $item->lastmod = Carbon::parse($result['updated_at']);
 

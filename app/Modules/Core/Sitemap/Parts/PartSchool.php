@@ -47,7 +47,7 @@ class PartSchool extends PartDirection
 
             if ($result) {
                 $item = new Item();
-                $item->path = 'courses/school/' . $result['link'];
+                $item->path = '/courses/school/' . $result['link'];
                 $item->priority = 0.8;
                 $item->lastmod = $this->getLastmod($result['id'], 'school-id');
 

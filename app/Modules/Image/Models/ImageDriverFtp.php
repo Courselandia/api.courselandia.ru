@@ -126,7 +126,7 @@ class ImageDriverFtp extends ImageDriver
      */
     public function pathSource(string $folder, int|string $id, string $format): ?string
     {
-        return Config::get('app.api_url').$this->path($folder, $id, $format);
+        return Config::get('app.api_url') . '/' . $this->path($folder, $id, $format);
     }
 
     /**

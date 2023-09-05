@@ -12,7 +12,7 @@
     {{ trans('access::views.reset.content',
         [
         'name' => $user->first_name . ' ' . $user->second_name,
-        'url' => $site . 'contact-us'
+        'url' => $site . '/contact-us'
         ]
     ) }}
 @endsection

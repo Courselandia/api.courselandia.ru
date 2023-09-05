@@ -47,7 +47,7 @@ class PartProfession extends PartDirection
 
             if ($result) {
                 $item = new Item();
-                $item->path = 'courses/profession/' . $result['link'];
+                $item->path = '/courses/profession/' . $result['link'];
                 $item->priority = 0.8;
                 $item->lastmod = $this->getLastmod($result['id'], 'professions-id');
 

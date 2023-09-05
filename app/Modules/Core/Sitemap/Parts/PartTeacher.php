@@ -47,7 +47,7 @@ class PartTeacher extends PartDirection
 
             if ($result) {
                 $item = new Item();
-                $item->path = 'courses/teacher/' . $result['link'];
+                $item->path = '/courses/teacher/' . $result['link'];
                 $item->priority = 0.1;
                 $item->lastmod = $this->getLastmod($result['id'], 'teachers-id');
 

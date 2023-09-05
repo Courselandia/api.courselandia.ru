@@ -25,6 +25,8 @@ use App\Modules\Core\Sitemap\Parts\PartTool;
 use App\Modules\Core\Sitemap\Parts\PartCourse;
 use App\Modules\Core\Sitemap\Parts\PartReview;
 use App\Modules\Core\Sitemap\Parts\PartStatic;
+use App\Modules\Core\Sitemap\Parts\PartCourses;
+use App\Modules\Core\Sitemap\Parts\PartReviews;
 
 /**
  * Класс генерации sitemap.xml.
@@ -62,6 +64,8 @@ class Sitemap
     {
         $this
             ->addPart(new PartStatic())
+            ->addPart(new PartCourses())
+            ->addPart(new PartReviews())
             ->addPart(new PartDirection())
             ->addPart(new PartCategory())
             ->addPart(new PartProfession())
@@ -148,7 +152,7 @@ class Sitemap
             foreach ($part->generate() as $item) {
                 try {
                     $url = $this->xml->createElement('url');
-                    $url->appendChild($this->xml->createElement('loc', Config::get('app.url') . $item->path));
+                    $url->appendChild($this->xml->createElement('loc', Config::get('app.url') . '/' . $item->path));
                     $url->appendChild($this->xml->createElement('changefreq', $item->changefreq));
                     $url->appendChild($this->xml->createElement('priority', $item->priority));
 

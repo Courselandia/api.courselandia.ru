@@ -54,7 +54,7 @@ class PartReview extends Part
 
             if ($result) {
                 $item = new Item();
-                $item->path = 'reviews/' . $result['link'];
+                $item->path = '/reviews/' . $result['link'];
                 $item->priority = 0.8;
                 $item->lastmod = $this->getLastmod($result['link']);
 

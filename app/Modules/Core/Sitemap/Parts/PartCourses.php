@@ -8,20 +8,15 @@
 
 namespace App\Modules\Core\Sitemap\Parts;
 
-use Carbon\Carbon;
 use Generator;
+use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Core\Sitemap\Item;
 
 /**
- * Генератор для статических файлов.
+ * Генератор для общей страницы курсов.
  */
-class PartStatic extends PartDirection
+class PartCourses extends PartDirection
 {
-    private array $paths = [
-        '/agreement',
-        '/privacy-policy',
-    ];
-
     /**
      * Вернет количество генерируемых элементов.
      *
@@ -29,23 +24,22 @@ class PartStatic extends PartDirection
      */
     public function count(): int
     {
-        return count($this->paths);
+        return 1;
     }
 
     /**
      * Генерация элемента.
      *
      * @return Generator<Item> Генерируемый элемент.
+     * @throws ParameterInvalidException
      */
     public function generate(): Generator
     {
-        foreach ($this->paths as $path) {
-            $item = new Item();
-            $item->path = $path;
-            $item->priority = 0.1;
-            $item->lastmod = Carbon::createFromFormat('Y-m-d', '2013-06-01');
+        $item = new Item();
+        $item->path = '/courses';
+        $item->priority = 0.7;
+        $item->lastmod = $this->getLastmod();
 
-            yield $item;
-        }
+        return $item;
     }
 }

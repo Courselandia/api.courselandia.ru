@@ -47,7 +47,7 @@ class PartTool extends PartDirection
 
             if ($result) {
                 $item = new Item();
-                $item->path = 'courses/tool/' . $result['link'];
+                $item->path = '/courses/tool/' . $result['link'];
                 $item->priority = 0.8;
                 $item->lastmod = $this->getLastmod($result['id'], 'tools-id');
 

@@ -64,7 +64,7 @@ class DocumentListener
      */
     public function readed(Eloquent $document): bool
     {
-        $document->path = Config::get('app.api_url').App::make('document.store.driver')->path(
+        $document->path = Config::get('app.api_url') . '/' . App::make('document.store.driver')->path(
                 $document->folder,
                 $document->id,
                 $document->format

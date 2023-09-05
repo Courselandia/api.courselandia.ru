@@ -9,7 +9,7 @@
 @endsection
 
 @section('button')
-    <a class="button" href="{{ $site }}verified/{{ $user->id }}?code={!! urlencode($code) !!}">
+    <a class="button" href="{{ $site }}/verified/{{ $user->id }}?code={!! urlencode($code) !!}">
         {{ trans('access::views.verification.button') }}
     </a>
 @endsection

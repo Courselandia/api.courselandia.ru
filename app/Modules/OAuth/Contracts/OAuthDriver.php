@@ -131,8 +131,8 @@ abstract class OAuthDriver
             if ($value) {
                 if (
                     Carbon::now()->format('U') <= $value->exp
-                    && $value->iss == Config::get('app.url')
-                    && $value->aud == Config::get('app.name')
+                    && $value->iss === Config::get('app.url')
+                    && $value->aud === Config::get('app.name')
                     && $value->type === $type
                 ) {
                     return $value->data;

@@ -54,7 +54,7 @@ class ImageListener
      */
     public function readed(Eloquent $image): bool
     {
-        $image->path = Config::get('app.api_url').App::make('image.store.driver')->path(
+        $image->path = Config::get('app.api_url') . '/' . App::make('image.store.driver')->path(
                 $image->folder,
                 $image->id,
                 $image->format
