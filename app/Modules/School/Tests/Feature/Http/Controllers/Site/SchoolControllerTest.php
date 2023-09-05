@@ -53,11 +53,11 @@ class SchoolControllerTest extends TestCase
      */
     public function testGet(): void
     {
-        $school = School::factory()->create();
+        $course = CourseControllerTest::createCourse();
 
         $this->json(
             'GET',
-            'api/private/site/school/get/' . $school->id,
+            'api/private/site/school/get/' . $course->school->id,
         )->assertStatus(200)->assertJsonStructure([
             'data' => $this->getSchoolStructure(),
             'success',
