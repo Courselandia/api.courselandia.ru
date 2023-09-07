@@ -23,6 +23,7 @@ use App\Modules\Course\Models\Course;
 use App\Modules\Course\Enums\Currency;
 use App\Modules\Metatag\Template\Template;
 use App\Modules\Course\Entities\ParserCourse;
+use App\Modules\Course\Entities\Course as CourseEntity;
 use App\Modules\Metatag\Actions\MetatagSetAction;
 use App\Modules\Course\Imports\Parsers\ParserNetology;
 use App\Modules\Course\Imports\Parsers\ParserGeekBrains;
@@ -230,7 +231,11 @@ class Import
                     $data['image_big_id'] = $image;
                 }
 
-                $course->update($data);
+                $hasToBeChange = $this->hasToBeChanged(new CourseEntity($course->toArray()), new CourseEntity($data));
+
+                if ($hasToBeChange) {
+                    $course->update($data);
+                }
             } else {
                 $template = new Template();
                 $action = app(MetatagSetAction::class);
@@ -310,7 +315,12 @@ class Import
         $name = pathinfo($imageUrl, PATHINFO_BASENAME);
 
         if (!$ext) {
-            file_get_contents($imageUrl);
+            $status = @file_get_contents($imageUrl);
+
+            if (!$status) {
+                return null;
+            }
+
             $contentType = null;
 
             foreach ($http_response_header as $value) {
@@ -326,14 +336,45 @@ class Import
             }
         }
 
-        if ($ext && $name) {
+        if ($name && ($ext === 'jpg' || $ext === 'gif' || $ext === 'png' || $ext === 'webp' || $ext === 'swg')) {
             $path = ImageStore::tmp($ext);
-            File::copy($imageUrl, $path);
+
+            try {
+                File::copy($imageUrl, $path);
+            } catch (Throwable) {
+                return null;
+            }
 
             return new UploadedFile($path, $name);
         }
 
         return null;
+    }
+
+    /**
+     * Проверка нужно ли обновлять курс.
+     *
+     * @param CourseEntity $sourceCourse Изначальный курс.
+     * @param CourseEntity $targetCourse Полученный курс после изменений.
+     *
+     * @return bool Вернет результат проверки.
+     */
+    private function hasToBeChanged(CourseEntity $sourceCourse, CourseEntity $targetCourse): bool
+    {
+        return $sourceCourse->name !== $targetCourse->name
+            || $sourceCourse->link !== $targetCourse->link
+            || $sourceCourse->status !== $targetCourse->status
+            || $sourceCourse->url !== $targetCourse->url
+            || $sourceCourse->price !== $targetCourse->price
+            || $sourceCourse->price_old !== $targetCourse->price_old
+            || $sourceCourse->price_recurrent !== $targetCourse->price_recurrent
+            || $sourceCourse->currency !== $targetCourse->currency
+            || $sourceCourse->school_id !== $targetCourse->school_id
+            || $sourceCourse->duration !== $targetCourse->duration
+            || $sourceCourse->duration_unit !== $targetCourse->duration_unit
+            || $sourceCourse->lessons_amount !== $targetCourse->lessons_amount
+            || $sourceCourse->employment !== $targetCourse->employment
+            || $targetCourse->image_small_id;
     }
 
     /**
