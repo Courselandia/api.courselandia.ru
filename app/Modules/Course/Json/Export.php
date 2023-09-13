@@ -6,22 +6,29 @@
  * @package App\Modules\Course
  */
 
-namespace App\Modules\Course\Export;
+namespace App\Modules\Course\Json;
 
+use Storage;
 use Cache;
 use App\Models\Event;
-use App\Modules\Course\Export\Sources\CourseDirectionSource;
-use App\Modules\Course\Export\Sources\CourseCategorySource;
-use App\Modules\Course\Export\Sources\CourseProfessionSource;
-use App\Modules\Course\Export\Sources\CourseSchoolSource;
-use App\Modules\Course\Export\Sources\CourseSkillSource;
-use App\Modules\Course\Export\Sources\CourseTeacherSource;
-use App\Modules\Course\Export\Sources\CourseToolSource;
-use App\Modules\Course\Export\Sources\CourseAllSource;
-use App\Modules\Course\Models\CourseMongoDb;
+use League\Flysystem\FilesystemException;
+use App\Modules\Course\Json\Sources\SchoolsSource;
+use App\Modules\Course\Json\Sources\CategoriesSource;
+use App\Modules\Course\Json\Sources\DirectionsSource;
+use App\Modules\Course\Json\Sources\CourseDirectionSource;
+use App\Modules\Course\Json\Sources\CourseProfessionSource;
+use App\Modules\Course\Json\Sources\CourseSchoolSource;
+use App\Modules\Course\Json\Sources\CourseSkillSource;
+use App\Modules\Course\Json\Sources\CourseTeacherSource;
+use App\Modules\Course\Json\Sources\CourseToolSource;
+use App\Modules\Course\Json\Sources\CourseAllSource;
+use App\Modules\Course\Json\Sources\CourseCategorySource;
+use App\Modules\Course\Json\Sources\CourseSource;
+use App\Modules\Course\Json\Sources\FaqsSource;
+use App\Modules\Course\Json\Sources\ReviewsSource;
 
 /**
- * Класс для экспортирования курсов в MongoDB для быстрой загрузки.
+ * Класс для экспортирования курсов в файлы json.
  */
 class Export
 {
@@ -39,14 +46,20 @@ class Export
      */
     public function __construct()
     {
-        $this->addSource(new CourseAllSource())
+        $this->addSource(new ReviewsSource())
+            /*->addSource(new FaqsSource())
+            ->addSource(new CourseSource())
+            ->addSource(new SchoolsSource())
+            ->addSource(new DirectionsSource())
+            ->addSource(new CategoriesSource())
+            ->addSource(new CourseCategorySource())
+            ->addSource(new CourseAllSource())
             ->addSource(new CourseDirectionSource())
             ->addSource(new CourseSchoolSource())
-            ->addSource(new CourseCategorySource())
             ->addSource(new CourseProfessionSource())
             ->addSource(new CourseSkillSource())
             ->addSource(new CourseToolSource())
-            ->addSource(new CourseTeacherSource());
+            ->addSource(new CourseTeacherSource())*/;
     }
 
     /**
@@ -67,7 +80,7 @@ class Export
     }
 
     /**
-     * Запуск процесса экспортирование данных в MongoDb.
+     * Запуск процесса экспортирование данных в файлы.
      *
      * @return void
      */
@@ -96,10 +109,12 @@ class Export
      * Очистить старые данные.
      *
      * @return void
+     * @throws FilesystemException
      */
     private function truncate(): void
     {
-        CourseMongoDb::truncate();
+        Storage::drive('public')->deleteDirectory('/json');
+        Storage::drive('public')->createDirectory('/json');
     }
 
     /**

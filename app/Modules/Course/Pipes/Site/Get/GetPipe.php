@@ -38,8 +38,9 @@ class GetPipe implements Pipe
     {
         $link = $entity->link;
         $school = $entity->school;
+        $id = $entity->school;
 
-        $cacheKey = Util::getKey('course', 'site', $school, $link);
+        $cacheKey = Util::getKey('course', 'site', $school, $link, $id);
 
         $course = Cache::tags([
             'course',
@@ -55,9 +56,8 @@ class GetPipe implements Pipe
         ])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
-            function () use ($school, $link) {
-                $course = Course::where('link', $link)
-                    ->with([
+            function () use ($school, $link, $id) {
+                $query = Course::with([
                         'metatag',
                         'professions' => function ($query) {
                             $query->where('status', true);
@@ -96,10 +96,22 @@ class GetPipe implements Pipe
                     ])
                     ->where('status', Status::ACTIVE->value)
                     ->whereHas('school', function ($query) use ($school) {
-                        $query->where('status', true)
-                            ->where('link', $school);
-                    })
-                    ->first();
+                        $query->where('status', true);
+
+                        if ($school) {
+                            $query->where('link', $school);
+                        }
+                    });
+
+                if ($link) {
+                    $query->where('link', $link);
+                }
+
+                if ($id) {
+                    $query->where('courses.id', $id);
+                }
+
+                $course = $query->first();
 
                 return $course ? new CourseEntity($course->toArray()) : null;
             }

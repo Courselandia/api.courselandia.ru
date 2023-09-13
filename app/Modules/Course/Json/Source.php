@@ -6,13 +6,13 @@
  * @package App\Modules\Course
  */
 
-namespace App\Modules\Course\Export;
+namespace App\Modules\Course\Json;
 
 use App\Models\Error;
 use App\Models\Event;
 
 /**
- * Абстрактный класс для создания источника формирования данных для экспорта.
+ * Абстрактный класс для создания источника формирования JSON файла.
  */
 abstract class Source
 {

@@ -6,15 +6,15 @@
  * @package App\Modules\Course
  */
 
-namespace App\Modules\Course\Export\Jobs;
+namespace App\Modules\Course\Json\Jobs;
 
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Course\Actions\Site\Course\CourseReadAction;
 
 /**
- * Задача для формирования курсов.
+ * Задача для формирования профессии.
  */
-class CourseAllItemJob extends CourseItemJob
+class CourseProfessionItemJob extends JsonItemJob
 {
     /**
      * Выполнение задачи.
@@ -26,15 +26,22 @@ class CourseAllItemJob extends CourseItemJob
     {
         $action = app(CourseReadAction::class);
         $action->sorts = ['name' => 'ASC'];
-        $action->filters = [];
+        $action->filters = ['professions-id' => $this->id];
         $action->offset = 0;
         $action->limit = 36;
+        $action->section = 'profession';
+        $action->sectionLink = $this->link;
         $action->precache = false;
 
         $entityCourseRead = $action->run();
 
         if ($entityCourseRead) {
-            $this->save($entityCourseRead);
+            $data = [
+                'data' => $entityCourseRead->toArray(),
+                'success' => true,
+            ];
+
+            $this->save($data);
         }
     }
 }

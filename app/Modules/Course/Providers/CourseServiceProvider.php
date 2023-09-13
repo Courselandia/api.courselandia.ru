@@ -8,6 +8,7 @@
 
 namespace App\Modules\Course\Providers;
 
+use App\Modules\Course\Commands\CourseJsonCommand;
 use Config;
 use Illuminate\Support\ServiceProvider;
 use App\Modules\Course\Commands\CourseExportCommand;
@@ -49,6 +50,7 @@ class CourseServiceProvider extends ServiceProvider
             CourseFillCommand::class,
             CourseExportCommand::class,
             CourseNormalizeCommand::class,
+            CourseJsonCommand::class,
         ]);
     }
 

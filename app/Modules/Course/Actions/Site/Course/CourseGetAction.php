@@ -36,6 +36,13 @@ class CourseGetAction extends Action
     public string|null $link = null;
 
     /**
+     * ID курса.
+     *
+     * @var string|int|null
+     */
+    public string|int|null $id = null;
+
+    /**
      * Метод запуска логики.
      *
      * @return CourseEntity|null Вернет результаты исполнения.
@@ -45,6 +52,7 @@ class CourseGetAction extends Action
         $decorator = app(CourseGetDecorator::class);
         $decorator->school = $this->school;
         $decorator->link = $this->link;
+        $decorator->id = $this->id;
 
         return $decorator->setActions([
             GetPipe::class,

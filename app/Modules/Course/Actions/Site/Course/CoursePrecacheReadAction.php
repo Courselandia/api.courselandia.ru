@@ -21,16 +21,16 @@ class CoursePrecacheReadAction extends Action
     /**
      * Отступ.
      *
-     * @var int
+     * @var int|null
      */
-    public int $offset = 0;
+    public ?int $offset = 0;
 
     /**
      * Лимит.
      *
-     * @var int
+     * @var int|null
      */
-    public int $limit = 0;
+    public ?int $limit = 0;
 
     /**
      * Сортировка.

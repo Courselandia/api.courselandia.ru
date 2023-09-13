@@ -10,26 +10,26 @@ namespace App\Modules\Course\Commands;
 
 use Log;
 use Illuminate\Console\Command;
-use App\Modules\Course\Export\Export;
+use App\Modules\Course\Json\Export;
 
 /**
- * Экспорт курсов в MongoDb для их быстрой загрузки.
+ * Экспорт курсов в файлы для их быстрой загрузки.
  */
-class CourseExportCommand extends Command
+class CourseJsonCommand extends Command
 {
     /**
      * Название консольной команды.
      *
      * @var string
      */
-    protected $signature = 'course:export';
+    protected $signature = 'course:json';
 
     /**
      * Описание консольной команды.
      *
      * @var string
      */
-    protected $description = 'Экспортирование курсов в MongoDb для быстрой загрузки.';
+    protected $description = 'Экспортирование курсов в файлы JSON для быстрой загрузки.';
 
     /**
      * Выполнение команды.
@@ -38,7 +38,7 @@ class CourseExportCommand extends Command
      */
     public function handle(): void
     {
-        $this->line('Создаем очереди на отправку в экспорт...');
+        $this->line('Создаем очереди на отправку в JSON файлы...');
 
         $export = new Export();
         $bar = $this->output->createProgressBar($export->getTotal());
@@ -52,6 +52,6 @@ class CourseExportCommand extends Command
         $bar->finish();
 
         $this->info("\n\nЭкспорт был отправлен в очереди.");
-        Log::info('Отправка экспорта курсов в очереди.');
+        Log::info('Отправка JSON экспорта курсов в очереди.');
     }
 }
