@@ -8,16 +8,16 @@
 
 namespace App\Modules\Course\Json\Sources;
 
-use App\Modules\Course\Json\Jobs\CourseSkillItemJob;
+use App\Modules\Course\Json\Jobs\CategoryItemJob;
 use App\Modules\Course\Enums\Status;
 use App\Modules\Course\Json\Source;
-use App\Modules\Skill\Models\Skill;
+use App\Modules\Category\Models\Category;
 use Illuminate\Database\Eloquent\Builder;
 
 /**
- * Источник для формирования курсов навыков.
+ * Источник для формирования категорий.
  */
-class CourseSkillSource extends Source
+class CategorySource extends Source
 {
     /**
      * Общее количество генерируемых данных.
@@ -46,7 +46,7 @@ class CourseSkillSource extends Source
                 ?->toArray();
 
             if ($result) {
-                CourseSkillItemJob::dispatch('courses/skills/' . $result['link'] . '.json', $result['id'], $result['link'])
+                CategoryItemJob::dispatch('categories/' . $result['link'] . '.json', $result['id'], $result['link'])
                     ->delay(now()->addMinute());
 
                 $this->fireEvent('export');
@@ -61,13 +61,13 @@ class CourseSkillSource extends Source
      */
     private function getQuery(): Builder
     {
-        return Skill::whereHas('courses', function ($query) {
+        return Category::whereHas('courses', function ($query) {
             $query->where('status', Status::ACTIVE->value)
                 ->whereHas('school', function ($query) {
                     $query->where('status', true);
                 });
         })
-        ->where('status', true)
-        ->orderBy('id');
+            ->where('status', true)
+            ->orderBy('id');
     }
 }

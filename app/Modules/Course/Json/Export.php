@@ -8,6 +8,7 @@
 
 namespace App\Modules\Course\Json;
 
+use App\Modules\Course\Json\Sources\CategorySource;
 use Storage;
 use Cache;
 use App\Models\Event;
@@ -46,7 +47,9 @@ class Export
      */
     public function __construct()
     {
-        $this->addSource(new ReviewsSource())
+        $this
+            ->addSource(new CategorySource())
+            //->addSource(new ReviewsSource())
             /*->addSource(new FaqsSource())
             ->addSource(new CourseSource())
             ->addSource(new SchoolsSource())

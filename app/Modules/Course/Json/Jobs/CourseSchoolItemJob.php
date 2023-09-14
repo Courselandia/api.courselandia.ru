@@ -12,7 +12,7 @@ use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Course\Actions\Site\Course\CourseReadAction;
 
 /**
- * Задача для формирования школы.
+ * Задача для формирования курсов школы.
  */
 class CourseSchoolItemJob extends JsonItemJob
 {

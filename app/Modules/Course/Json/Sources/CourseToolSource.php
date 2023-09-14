@@ -15,7 +15,7 @@ use App\Modules\Tool\Models\Tool;
 use Illuminate\Database\Eloquent\Builder;
 
 /**
- * Источник для формирования инструментов.
+ * Источник для формирования курсов инструментов.
  */
 class CourseToolSource extends Source
 {

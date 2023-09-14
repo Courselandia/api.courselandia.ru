@@ -15,7 +15,7 @@ use App\Modules\Teacher\Models\Teacher;
 use Illuminate\Database\Eloquent\Builder;
 
 /**
- * Источник для формирования учителей.
+ * Источник для формирования курсов учителей.
  */
 class CourseTeacherSource extends Source
 {

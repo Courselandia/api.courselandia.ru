@@ -15,7 +15,7 @@ use App\Modules\Direction\Models\Direction;
 use Illuminate\Database\Eloquent\Builder;
 
 /**
- * Источник для формирования направлений.
+ * Источник для формирования курсов направлений.
  */
 class CourseDirectionSource extends Source
 {

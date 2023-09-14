@@ -15,7 +15,7 @@ use App\Modules\Category\Models\Category;
 use Illuminate\Database\Eloquent\Builder;
 
 /**
- * Источник для формирования категорий.
+ * Источник для формирования курсов категорий.
  */
 class CourseCategorySource extends Source
 {

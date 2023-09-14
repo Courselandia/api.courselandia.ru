@@ -15,7 +15,7 @@ use App\Modules\Profession\Models\Profession;
 use Illuminate\Database\Eloquent\Builder;
 
 /**
- * Источник для формирования профессий.
+ * Источник для формирования курсов профессий.
  */
 class CourseProfessionSource extends Source
 {

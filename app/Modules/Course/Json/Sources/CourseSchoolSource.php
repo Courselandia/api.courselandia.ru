@@ -15,7 +15,7 @@ use App\Modules\Course\Json\Source;
 use Illuminate\Database\Eloquent\Builder;
 
 /**
- * Источник для формирования школ.
+ * Источник для формирования курсов  школ.
  */
 class CourseSchoolSource extends Source
 {
