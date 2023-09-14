@@ -38,7 +38,7 @@ class CourseJsonCommand extends Command
      */
     public function handle(): void
     {
-        $this->line('Создаем очереди на отправку в JSON файлы...');
+        $this->line('Создаем очереди на отправку данных в JSON файлы...');
 
         $export = new Export();
         $bar = $this->output->createProgressBar($export->getTotal());
@@ -52,6 +52,6 @@ class CourseJsonCommand extends Command
         $bar->finish();
 
         $this->info("\n\nЭкспорт был отправлен в очереди.");
-        Log::info('Отправка JSON экспорта курсов в очереди.');
+        Log::info('Создание очередей на отправку данных в JSON файлы.');
     }
 }
