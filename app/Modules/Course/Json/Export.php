@@ -106,7 +106,6 @@ class Export
         Cache::flush();
 
         $this->offLimits();
-        $this->truncate();
         $this->exports();
     }
 
@@ -120,18 +119,6 @@ class Export
         ini_set('memory_limit', '2048M');
         ini_set('max_execution_time', '0');
         ignore_user_abort(true);
-    }
-
-    /**
-     * Очистить старые данные.
-     *
-     * @return void
-     * @throws FilesystemException
-     */
-    private function truncate(): void
-    {
-        Storage::drive('public')->deleteDirectory('/json');
-        Storage::drive('public')->createDirectory('/json');
     }
 
     /**

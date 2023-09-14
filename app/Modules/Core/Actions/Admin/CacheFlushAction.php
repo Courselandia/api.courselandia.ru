@@ -8,13 +8,9 @@
 
 namespace App\Modules\Core\Actions\Admin;
 
-use Log;
 use Cache;
 use Artisan;
-use Config;
 use App\Models\Action;
-use Exception;
-use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 
 /**
@@ -38,14 +34,6 @@ class CacheFlushAction extends Action
 
         Artisan::call('config:cache');
         Artisan::call('route:cache');
-
-        $client = new Client();
-
-        try {
-            $client->request('GET', Config::get('app.url') . '/cache-flush');
-        } catch (Exception $error) {
-            Log::debug('Не удалось удалить кешь в публичной части: ' . $error->getMessage());
-        }
 
         return true;
     }

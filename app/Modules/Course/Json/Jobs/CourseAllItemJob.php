@@ -29,7 +29,6 @@ class CourseAllItemJob extends JsonItemJob
         $action->filters = [];
         $action->offset = 0;
         $action->limit = 36;
-        $action->precache = false;
 
         $entityCourseRead = $action->run();
 

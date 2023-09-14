@@ -31,7 +31,6 @@ class CourseToolItemJob extends JsonItemJob
         $action->limit = 36;
         $action->section = 'tool';
         $action->sectionLink = $this->link;
-        $action->precache = false;
 
         $entityCourseRead = $action->run();
 

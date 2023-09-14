@@ -30,9 +30,9 @@ class Kernel extends ConsoleKernel
 
         $schedule->command('course:import')->dailyAt('00:00');
         // $schedule->command('article:write')->dailyAt('02:00');
-        $schedule->command('metatag:apply --update')->dailyAt('02:00');
+        $schedule->command('metatag:apply --update')->dailyAt('01:00');
         $schedule->command('course:normalize')->dailyAt('06:00');
-        $schedule->command('course:export')->dailyAt('07:00');
+        $schedule->command('course:json')->dailyAt('07:00');
         $schedule->command('sitemap:generate')->dailyAt('13:00');
         $schedule->command('school:count-amount-courses')->dailyAt('08:00');
         $schedule->command('review:import')->weekly();

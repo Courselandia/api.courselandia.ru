@@ -147,11 +147,4 @@ class CourseRead extends Entity
      * @var bool
      */
     public bool $onlyWithImage = false;
-
-    /**
-     * Прикешированные данные.
-     *
-     * @var bool
-     */
-    public bool $precache = false;
 }
