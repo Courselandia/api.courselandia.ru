@@ -8,7 +8,6 @@
 
 namespace App\Modules\Course\Json;
 
-use App\Modules\Course\Json\Sources\CategorySource;
 use Storage;
 use Cache;
 use App\Models\Event;
@@ -27,6 +26,13 @@ use App\Modules\Course\Json\Sources\CourseCategorySource;
 use App\Modules\Course\Json\Sources\CourseSource;
 use App\Modules\Course\Json\Sources\FaqsSource;
 use App\Modules\Course\Json\Sources\ReviewsSource;
+use App\Modules\Course\Json\Sources\CategorySource;
+use App\Modules\Course\Json\Sources\DirectionSource;
+use App\Modules\Course\Json\Sources\ProfessionSource;
+use App\Modules\Course\Json\Sources\SchoolSource;
+use App\Modules\Course\Json\Sources\SkillSource;
+use App\Modules\Course\Json\Sources\TeacherSource;
+use App\Modules\Course\Json\Sources\ToolSource;
 
 /**
  * Класс для экспортирования курсов в файлы json.
@@ -48,7 +54,13 @@ class Export
     public function __construct()
     {
         $this
-            ->addSource(new CategorySource())
+            ->addSource(new ToolSource())
+            //->addSource(new TeacherSource())
+            //->addSource(new SkillSource())
+            //->addSource(new SchoolSource())
+            //->addSource(new ProfessionSource())
+            //->addSource(new DirectionSource())
+            //->addSource(new CategorySource())
             //->addSource(new ReviewsSource())
             /*->addSource(new FaqsSource())
             ->addSource(new CourseSource())
