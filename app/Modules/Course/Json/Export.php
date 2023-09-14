@@ -33,6 +33,7 @@ use App\Modules\Course\Json\Sources\SchoolSource;
 use App\Modules\Course\Json\Sources\SkillSource;
 use App\Modules\Course\Json\Sources\TeacherSource;
 use App\Modules\Course\Json\Sources\ToolSource;
+use App\Modules\Course\Json\Sources\RatedCoursesSource;
 
 /**
  * Класс для экспортирования курсов в файлы json.
@@ -54,15 +55,16 @@ class Export
     public function __construct()
     {
         $this
+            ->addSource(new RatedCoursesSource())
             ->addSource(new ToolSource())
-            //->addSource(new TeacherSource())
-            //->addSource(new SkillSource())
-            //->addSource(new SchoolSource())
-            //->addSource(new ProfessionSource())
-            //->addSource(new DirectionSource())
-            //->addSource(new CategorySource())
-            //->addSource(new ReviewsSource())
-            /*->addSource(new FaqsSource())
+            ->addSource(new TeacherSource())
+            ->addSource(new SkillSource())
+            ->addSource(new SchoolSource())
+            ->addSource(new ProfessionSource())
+            ->addSource(new DirectionSource())
+            ->addSource(new CategorySource())
+            ->addSource(new ReviewsSource())
+            ->addSource(new FaqsSource())
             ->addSource(new CourseSource())
             ->addSource(new SchoolsSource())
             ->addSource(new DirectionsSource())
@@ -74,7 +76,7 @@ class Export
             ->addSource(new CourseProfessionSource())
             ->addSource(new CourseSkillSource())
             ->addSource(new CourseToolSource())
-            ->addSource(new CourseTeacherSource())*/;
+            ->addSource(new CourseTeacherSource());
     }
 
     /**
