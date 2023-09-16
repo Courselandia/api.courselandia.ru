@@ -31,7 +31,6 @@ class PartCourses extends PartDirection
      * Генерация элемента.
      *
      * @return Generator<Item> Генерируемый элемент.
-     * @throws ParameterInvalidException
      */
     public function generate(): Generator
     {

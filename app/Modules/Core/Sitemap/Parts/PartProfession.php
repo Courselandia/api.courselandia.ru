@@ -8,6 +8,7 @@
 
 namespace App\Modules\Core\Sitemap\Parts;
 
+use App\Models\Exceptions\ParameterInvalidException;
 use Generator;
 use App\Modules\Core\Sitemap\Item;
 use App\Modules\Course\Enums\Status;
@@ -49,7 +50,7 @@ class PartProfession extends PartDirection
                 $item = new Item();
                 $item->path = '/courses/profession/' . $result['link'];
                 $item->priority = 0.8;
-                $item->lastmod = $this->getLastmod($result['id'], 'professions-id');
+                $item->lastmod = $this->getLastmod('professions', $result['link']);
 
                 yield $item;
             }

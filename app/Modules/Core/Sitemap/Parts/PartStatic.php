@@ -11,11 +11,12 @@ namespace App\Modules\Core\Sitemap\Parts;
 use Carbon\Carbon;
 use Generator;
 use App\Modules\Core\Sitemap\Item;
+use App\Modules\Core\Sitemap\Part;
 
 /**
  * Генератор для статических файлов.
  */
-class PartStatic extends PartDirection
+class PartStatic extends Part
 {
     private array $paths = [
         '/agreement',

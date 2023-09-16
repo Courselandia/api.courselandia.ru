@@ -8,13 +8,11 @@
 
 namespace App\Modules\Core\Sitemap\Parts;
 
-use App\Models\Exceptions\ParameterInvalidException;
-use App\Modules\Course\Actions\Site\Course\CourseReadAction;
-use App\Modules\Course\Entities\Course;
+use Storage;
+use Generator;
+use Carbon\Carbon;
 use App\Modules\Course\Enums\Status;
 use App\Modules\Direction\Models\Direction;
-use Carbon\Carbon;
-use Generator;
 use App\Modules\Core\Sitemap\Item;
 use App\Modules\Core\Sitemap\Part;
 use Illuminate\Database\Eloquent\Builder;
@@ -38,7 +36,6 @@ class PartDirection extends Part
      * Генерация элемента.
      *
      * @return Generator<Item> Генерируемый элемент.
-     * @throws ParameterInvalidException
      */
     public function generate(): Generator
     {
@@ -55,7 +52,7 @@ class PartDirection extends Part
                 $item = new Item();
                 $item->path = '/courses/direction/' . $result['link'];
                 $item->priority = 0.8;
-                $item->lastmod = $this->getLastmod($result['id'], 'directions-id');
+                $item->lastmod = $this->getLastmod('directions', $result['link']);
 
                 yield $item;
             }
@@ -89,37 +86,35 @@ class PartDirection extends Part
     /**
      * Дата последней модификации страницы.
      *
-     * @param ?string $nameFilter Название фильтра.
-     * @param ?int $id ID сущности.
+     * @param ?string $directory Название директории.
+     * @param ?string $link Ссылка на файл.
      *
      * @return ?Carbon Дата последней модификации.
-     * @throws ParameterInvalidException
      */
-    protected function getLastmod(int $id = null, string $nameFilter = null): ?Carbon
+    protected function getLastmod(string $directory = null, string $link = null): ?Carbon
     {
-        $action = app(CourseReadAction::class);
-        $action->forcePrecache = true;
-        $action->offset = 0;
-        $action->limit = 36;
-        $action->sorts = [
-            'name' => 'asc',
-        ];
-
-        if ($id && $nameFilter) {
-            $action->filters = [
-                $nameFilter => [$id],
-            ];
+        if ($directory && $link) {
+            $path = '/json/courses/' . $directory . '/' . $link . '.json';
+        } else {
+            $path = '/json/courses.json';
         }
 
-        $courseRead = $action->run();
+        if (Storage::drive('public')->exists($path)) {
+            $json = Storage::drive('public')->get($path);
+            $data = json_decode($json, true);
 
-        if ($courseRead) {
             $dates = [];
-            $dates[] = $courseRead->description?->updated_at;
-            $dates[] = $courseRead->description?->metatag->updated_at;
 
-            $dates[] = collect($courseRead->courses)->max(function (Course $course) {
-                return $course->updated_at;
+            if (isset($data['data']['description']['updated_at'])) {
+                $dates[] = Carbon::parse($data['data']['description']['updated_at']);
+            }
+
+            if (isset($data['data']['description']['metatag']['updated_at'])) {
+                $dates[] = Carbon::parse($data['data']['description']['metatag']['updated_at']);
+            }
+
+            $dates[] = collect($data['data']['courses'])->max(function (array $course) {
+                return Carbon::parse($course['updated_at']);
             });
 
             return max($dates);
