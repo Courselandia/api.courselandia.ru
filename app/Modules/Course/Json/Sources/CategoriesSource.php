@@ -33,7 +33,7 @@ class CategoriesSource extends Source
      */
     public function export(): void
     {
-        CategoriesItemJob::dispatch('categories.json')
+        CategoriesItemJob::dispatch('courses/categories.json')
             ->delay(now()->addMinute());
 
         $this->fireEvent('export');
