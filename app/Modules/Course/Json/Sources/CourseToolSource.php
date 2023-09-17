@@ -46,7 +46,7 @@ class CourseToolSource extends Source
                 ?->toArray();
 
             if ($result) {
-                CourseToolItemJob::dispatch('courses/tools/' . $result['link'] . '.json', $result['id'], $result['link'])
+                CourseToolItemJob::dispatch('courses/tool/' . $result['link'] . '.json', $result['id'], $result['link'])
                     ->delay(now()->addMinute());
 
                 $this->fireEvent('export');

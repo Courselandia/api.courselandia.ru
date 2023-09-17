@@ -46,7 +46,7 @@ class CourseTeacherSource extends Source
                 ?->toArray();
 
             if ($result) {
-                CourseTeacherItemJob::dispatch('courses/teachers/' . $result['link'] . '.json', $result['id'], $result['link'])
+                CourseTeacherItemJob::dispatch('courses/teacher/' . $result['link'] . '.json', $result['id'], $result['link'])
                     ->delay(now()->addMinute());
 
                 $this->fireEvent('export');

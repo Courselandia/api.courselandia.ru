@@ -33,7 +33,7 @@ class DirectionsSource extends Source
      */
     public function export(): void
     {
-        DirectionsItemJob::dispatch('courses/directions.json')
+        DirectionsItemJob::dispatch('directions.json')
             ->delay(now()->addMinute());
 
         $this->fireEvent('export');

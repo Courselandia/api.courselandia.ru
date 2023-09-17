@@ -46,7 +46,7 @@ class CourseSkillSource extends Source
                 ?->toArray();
 
             if ($result) {
-                CourseSkillItemJob::dispatch('courses/skills/' . $result['link'] . '.json', $result['id'], $result['link'])
+                CourseSkillItemJob::dispatch('courses/skill/' . $result['link'] . '.json', $result['id'], $result['link'])
                     ->delay(now()->addMinute());
 
                 $this->fireEvent('export');

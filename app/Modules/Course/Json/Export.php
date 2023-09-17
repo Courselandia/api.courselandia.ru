@@ -11,7 +11,6 @@ namespace App\Modules\Course\Json;
 use Cache;
 use App\Models\Event;
 use App\Modules\Course\Json\Sources\SchoolsSource;
-use App\Modules\Course\Json\Sources\CategoriesSource;
 use App\Modules\Course\Json\Sources\DirectionsSource;
 use App\Modules\Course\Json\Sources\CourseDirectionSource;
 use App\Modules\Course\Json\Sources\CourseProfessionSource;
@@ -66,7 +65,6 @@ class Export
             ->addSource(new CourseSource())
             ->addSource(new SchoolsSource())
             ->addSource(new DirectionsSource())
-            ->addSource(new CategoriesSource())
             ->addSource(new CourseCategorySource())
             ->addSource(new CourseAllSource())
             ->addSource(new CourseDirectionSource())

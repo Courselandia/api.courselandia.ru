@@ -46,7 +46,7 @@ class CourseProfessionSource extends Source
                 ?->toArray();
 
             if ($result) {
-                CourseProfessionItemJob::dispatch('courses/professions/' . $result['link'] . '.json', $result['id'], $result['link'])
+                CourseProfessionItemJob::dispatch('courses/profession/' . $result['link'] . '.json', $result['id'], $result['link'])
                     ->delay(now()->addMinute());
 
                 $this->fireEvent('export');

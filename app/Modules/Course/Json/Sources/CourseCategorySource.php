@@ -46,7 +46,7 @@ class CourseCategorySource extends Source
                 ?->toArray();
 
             if ($result) {
-                CourseCategoryItemJob::dispatch('courses/categories/' . $result['link'] . '.json', $result['id'], $result['link'])
+                CourseCategoryItemJob::dispatch('courses/category/' . $result['link'] . '.json', $result['id'], $result['link'])
                     ->delay(now()->addMinute());
 
                 $this->fireEvent('export');

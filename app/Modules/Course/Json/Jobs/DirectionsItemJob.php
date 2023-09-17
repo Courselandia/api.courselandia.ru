@@ -8,7 +8,6 @@
 
 namespace App\Modules\Course\Json\Jobs;
 
-use ReflectionException;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Course\Actions\Site\Course\CourseDirectionReadAction;
 
@@ -22,7 +21,6 @@ class DirectionsItemJob extends JsonItemJob
      *
      * @return void
      * @throws ParameterInvalidException
-     * @throws ReflectionException
      */
     public function handle(): void
     {

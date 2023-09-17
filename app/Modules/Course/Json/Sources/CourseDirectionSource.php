@@ -46,7 +46,7 @@ class CourseDirectionSource extends Source
                 ?->toArray();
 
             if ($result) {
-                CourseDirectionItemJob::dispatch('courses/directions/' . $result['link'] . '.json', $result['id'], $result['link'])
+                CourseDirectionItemJob::dispatch('courses/direction/' . $result['link'] . '.json', $result['id'], $result['link'])
                     ->delay(now()->addMinute());
 
                 $this->fireEvent('export');
