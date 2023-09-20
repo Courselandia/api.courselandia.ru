@@ -43,4 +43,11 @@ class CourseGet extends Entity
      * @var string|null
      */
     public string|null $link = null;
+
+    /**
+     * ID курса.
+     *
+     * @var string|int|null
+     */
+    public string|null $id = null;
 }

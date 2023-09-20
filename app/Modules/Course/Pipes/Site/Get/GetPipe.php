@@ -38,7 +38,7 @@ class GetPipe implements Pipe
     {
         $link = $entity->link;
         $school = $entity->school;
-        $id = $entity->school;
+        $id = $entity->id;
 
         $cacheKey = Util::getKey('course', 'site', $school, $link, $id);
 
