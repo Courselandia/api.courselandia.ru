@@ -30,6 +30,7 @@ class DataPipe implements Pipe
     {
         unset($entity->link);
         unset($entity->school);
+        unset($entity->id);
 
         return $next($entity);
     }

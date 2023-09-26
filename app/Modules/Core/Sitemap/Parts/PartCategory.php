@@ -34,7 +34,6 @@ class PartCategory extends PartDirection
      * Генерация элемента.
      *
      * @return Generator<Item> Генерируемый элемент.
-     * @throws ParameterInvalidException
      */
     public function generate(): Generator
     {
@@ -51,7 +50,7 @@ class PartCategory extends PartDirection
                 $item = new Item();
                 $item->path = '/courses/category/' . $result['link'];
                 $item->priority = 0.8;
-                $item->lastmod = $this->getLastmod($result['id'], 'categories-id');
+                $item->lastmod = $this->getLastmod('categories', $result['link']);
 
                 yield $item;
             }

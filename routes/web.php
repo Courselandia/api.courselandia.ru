@@ -5,6 +5,10 @@ Route::get('/', function () {
     return response()->json(['Welcome to API.']);
 });
 
+Route::get('/test', function () {
+    return response()->view('test');
+});
+
 Route::any('/ckfinder/connector', '\CKSource\CKFinderBridge\Controller\CKFinderController@requestAction')
     ->name('ckfinder_connector');
 

@@ -48,23 +48,25 @@ abstract class Entity
         $properties = $reflection->getProperties(ReflectionProperty::IS_PUBLIC);
 
         foreach ($properties as $property) {
-            $value = $this->{$property->getName()};
+            if (isset($this->{$property->getName()})) {
+                $value = $this->{$property->getName()};
 
-            if ($value instanceof Entity) {
-                $values[$property->getName()] = $value->toArray();
-            } elseif (is_array($value) && array_is_list($value) && $this->isArrayWithEntities($value)) {
-                $values[$property->getName()] = [];
+                if ($value instanceof Entity) {
+                    $values[$property->getName()] = $value->toArray();
+                } elseif (is_array($value) && array_is_list($value) && $this->isArrayWithEntities($value)) {
+                    $values[$property->getName()] = [];
 
-                for ($i = 0; $i < count($value); $i++) {
-                    /**
-                     * @var Entity $value
-                     */
-                    $values[$property->getName()][] = $value[$i]->toArray();
+                    for ($i = 0; $i < count($value); $i++) {
+                        /**
+                         * @var Entity $value
+                         */
+                        $values[$property->getName()][] = $value[$i]->toArray();
+                    }
+                } elseif ($this->isEnum($property)) {
+                    $values[$property->getName()] = $value?->value;
+                } else {
+                    $values[$property->getName()] = $value;
                 }
-            } elseif ($this->isEnum($property)) {
-                $values[$property->getName()] = $value?->value;
-            } else {
-                $values[$property->getName()] = $value;
             }
         }
 

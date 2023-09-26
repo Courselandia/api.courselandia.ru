@@ -10,12 +10,12 @@ namespace App\Modules\Course\Providers;
 
 use Config;
 use Illuminate\Support\ServiceProvider;
-use App\Modules\Course\Commands\CourseExportCommand;
 use App\Modules\Course\Commands\CourseFillCommand;
 use App\Modules\Course\Commands\CourseImportCommand;
 use App\Modules\Course\Commands\CourseNormalizeCommand;
 use App\Modules\Course\Models\Course as CourseModel;
 use App\Modules\Course\Events\Listeners\CourseListener;
+use App\Modules\Course\Commands\CourseJsonCommand;
 
 /**
  * Класс сервис-провайдера для настройки этого модуля.
@@ -47,8 +47,8 @@ class CourseServiceProvider extends ServiceProvider
         $this->commands([
             CourseImportCommand::class,
             CourseFillCommand::class,
-            CourseExportCommand::class,
             CourseNormalizeCommand::class,
+            CourseJsonCommand::class,
         ]);
     }
 

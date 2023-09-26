@@ -128,20 +128,6 @@ class CourseReadAction extends Action
     public bool $openedTools = false;
 
     /**
-     * Использовать ли систему precache для ускорения ответа.
-     *
-     * @var bool
-     */
-    public bool $precache = true;
-
-    /**
-     * Включить систему precache даже если она выключена в настройках.
-     *
-     * @var bool
-     */
-    public bool $forcePrecache = false;
-
-    /**
      * Метод запуска логики.
      *
      * @return CourseRead|null Вернет результаты исполнения.
@@ -149,28 +135,6 @@ class CourseReadAction extends Action
      */
     public function run(): ?CourseRead
     {
-        if (
-            $this->precache
-            && (Config::get('app.course_precache') || $this->forcePrecache)
-            && !$this->openedSchools
-            && !$this->openedCategories
-            && !$this->openedProfessions
-            && !$this->openedTeachers
-            && !$this->openedSkills
-            && !$this->openedTools
-        ) {
-            $action = app(CoursePrecacheReadAction::class);
-            $action->offset = $this->offset;
-            $action->limit = $this->limit;
-            $action->sorts = $this->sorts;
-            $action->filters = $this->filters;
-            $result = $action->run();
-
-            if ($result) {
-                return $result;
-            }
-        }
-
         $decorator = app(CourseReadDecorator::class);
         $decorator->sorts = $this->sorts;
         $decorator->filters = $this->filters;

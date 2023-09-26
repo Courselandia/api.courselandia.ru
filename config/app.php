@@ -129,8 +129,6 @@ return [
 
     'cipher' => 'AES-256-CBC',
 
-    'course_precache' => env('COURSE_PRECACHE', false),
-
     /*
     |--------------------------------------------------------------------------
     | Maintenance Mode Driver

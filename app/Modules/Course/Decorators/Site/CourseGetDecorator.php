@@ -32,6 +32,13 @@ class CourseGetDecorator extends Decorator
     public string|null $link = null;
 
     /**
+     * ID курса.
+     *
+     * @var string|int|null
+     */
+    public string|int|null $id = null;
+
+    /**
      * Метод обработчик события после выполнения всех действий декоратора.
      *
      * @return CourseGet Вернет данные школы.
@@ -41,6 +48,7 @@ class CourseGetDecorator extends Decorator
         $courseRead = new CourseGet();
         $courseRead->school = $this->school;
         $courseRead->link = $this->link;
+        $courseRead->id = $this->id;
 
         return app(Pipeline::class)
             ->send($courseRead)

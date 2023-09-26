@@ -8,6 +8,7 @@
 
 namespace App\Modules\Core\Sitemap\Parts;
 
+use App\Models\Exceptions\ParameterInvalidException;
 use Generator;
 use App\Modules\Core\Sitemap\Item;
 use App\Modules\Course\Enums\Status;
@@ -49,7 +50,7 @@ class PartTool extends PartDirection
                 $item = new Item();
                 $item->path = '/courses/tool/' . $result['link'];
                 $item->priority = 0.8;
-                $item->lastmod = $this->getLastmod($result['id'], 'tools-id');
+                $item->lastmod = $this->getLastmod('tools', $result['link']);
 
                 yield $item;
             }

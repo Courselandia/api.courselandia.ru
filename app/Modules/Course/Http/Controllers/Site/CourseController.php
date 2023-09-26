@@ -265,7 +265,7 @@ class CourseController extends Controller
         $action->offset = $request->get('offset');
         $action->section = $request->get('section');
         $action->sectionLink = $request->get('sectionLink');
-        $action->limit = $request->get('limit', 36);
+        $action->limit = $request->get('limit');
         $action->disabled = true;
         $action->openedSchools = $request->get('openedSchools', false);
         $action->openedCategories = $request->get('openedCategories', false);
