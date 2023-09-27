@@ -49,7 +49,7 @@ class PartSkill extends PartDirection
                 $item = new Item();
                 $item->path = '/courses/skill/' . $result['link'];
                 $item->priority = 0.8;
-                $item->lastmod = $this->getLastmod('skills', $result['link']);
+                $item->lastmod = $this->getLastmod('skill', $result['link']);
 
                 yield $item;
             }

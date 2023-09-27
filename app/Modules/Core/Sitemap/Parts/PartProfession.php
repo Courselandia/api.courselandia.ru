@@ -50,7 +50,7 @@ class PartProfession extends PartDirection
                 $item = new Item();
                 $item->path = '/courses/profession/' . $result['link'];
                 $item->priority = 0.8;
-                $item->lastmod = $this->getLastmod('professions', $result['link']);
+                $item->lastmod = $this->getLastmod('profession', $result['link']);
 
                 yield $item;
             }

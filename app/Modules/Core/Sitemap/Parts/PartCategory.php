@@ -50,7 +50,7 @@ class PartCategory extends PartDirection
                 $item = new Item();
                 $item->path = '/courses/category/' . $result['link'];
                 $item->priority = 0.8;
-                $item->lastmod = $this->getLastmod('categories', $result['link']);
+                $item->lastmod = $this->getLastmod('category', $result['link']);
 
                 yield $item;
             }

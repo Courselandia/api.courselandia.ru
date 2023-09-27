@@ -52,7 +52,7 @@ class PartDirection extends Part
                 $item = new Item();
                 $item->path = '/courses/direction/' . $result['link'];
                 $item->priority = 0.8;
-                $item->lastmod = $this->getLastmod('directions', $result['link']);
+                $item->lastmod = $this->getLastmod('direction', $result['link']);
 
                 yield $item;
             }
