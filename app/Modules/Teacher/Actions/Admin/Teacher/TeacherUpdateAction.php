@@ -8,9 +8,14 @@
 
 namespace App\Modules\Teacher\Actions\Admin\Teacher;
 
+use Carbon\Carbon;
+use Config;
+use DB;
 use Cache;
+use Throwable;
 use Typography;
 use App\Models\Action;
+use App\Modules\Teacher\Enums\SocialMedia;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Modules\Course\Enums\Status;
@@ -22,6 +27,10 @@ use App\Modules\Metatag\Template\TemplateException;
 use App\Modules\Teacher\Entities\Teacher as TeacherEntity;
 use App\Modules\Teacher\Models\Teacher;
 use Illuminate\Http\UploadedFile;
+use App\Modules\Teacher\Entities\TeacherExperience as TeacherExperienceEntity;
+use App\Modules\Teacher\Models\TeacherExperience;
+use App\Modules\Teacher\Models\TeacherSocialMedia;
+use App\Modules\Teacher\Entities\TeacherSocialMedia as TeacherSocialMediaEntity;
 
 /**
  * Класс действия для обновления учителя.
@@ -120,6 +129,20 @@ class TeacherUpdateAction extends Action
     public ?array $directions = null;
 
     /**
+     * Опыт работы учителя.
+     *
+     * @var array|null
+     */
+    public ?array $experiences = null;
+
+    /**
+     * Социальные сети учителя.
+     *
+     * @var array|null
+     */
+    public ?array $socialMedias = null;
+
+    /**
      * ID школ.
      *
      * @var int[]
@@ -132,7 +155,7 @@ class TeacherUpdateAction extends Action
      * @return TeacherEntity Вернет результаты исполнения.
      * @throws RecordNotExistException
      * @throws ParameterInvalidException
-     * @throws TemplateException
+     * @throws TemplateException|Throwable
      */
     public function run(): TeacherEntity
     {
@@ -141,54 +164,96 @@ class TeacherUpdateAction extends Action
         $teacherEntity = $action->run();
 
         if ($teacherEntity) {
-            $countTeacherCourses = Course::where('courses.status', Status::ACTIVE->value)
-                ->whereHas('school', function ($query) {
-                    $query->where('schools.status', true);
-                })
-                ->whereHas('teachers', function ($query) {
-                    $query->where('teachers.id', $this->id);
-                })
-                ->count();
+            DB::transaction(function () use ($teacherEntity) {
+                $countTeacherCourses = Course::where('courses.status', Status::ACTIVE->value)
+                    ->whereHas('school', function ($query) {
+                        $query->where('schools.status', true);
+                    })
+                    ->whereHas('teachers', function ($query) {
+                        $query->where('teachers.id', $this->id);
+                    })
+                    ->count();
 
-            $templateValues = [
-                'teacher' => $this->name,
-                'countTeacherCourses' => $countTeacherCourses,
-            ];
+                $templateValues = [
+                    'teacher' => $this->name,
+                    'countTeacherCourses' => $countTeacherCourses,
+                ];
 
-            $template = new Template();
+                $template = new Template();
 
-            $action = app(MetatagSetAction::class);
-            $action->description = $template->convert($this->description_template, $templateValues);
-            $action->title = $template->convert($this->title_template, $templateValues);
-            $action->description_template = $this->description_template;
-            $action->title_template = $this->title_template;
-            $action->keywords = $this->keywords;
-            $action->id = $teacherEntity->metatag_id ?: null;
+                $action = app(MetatagSetAction::class);
+                $action->description = $template->convert($this->description_template, $templateValues);
+                $action->title = $template->convert($this->title_template, $templateValues);
+                $action->description_template = $this->description_template;
+                $action->title_template = $this->title_template;
+                $action->keywords = $this->keywords;
+                $action->id = $teacherEntity->metatag_id ?: null;
 
-            $teacherEntity->metatag_id = $action->run()->id;
-            $teacherEntity->name = Typography::process($this->name, true);
-            $teacherEntity->link = $this->link;
-            $teacherEntity->city = $this->city;
-            $teacherEntity->copied = $this->copied;
-            $teacherEntity->text = Typography::process($this->text);
-            $teacherEntity->rating = $this->rating;
-            $teacherEntity->status = $this->status;
+                $teacherEntity->metatag_id = $action->run()->id;
+                $teacherEntity->name = Typography::process($this->name, true);
+                $teacherEntity->link = $this->link;
+                $teacherEntity->city = $this->city;
+                $teacherEntity->copied = $this->copied;
+                $teacherEntity->text = Typography::process($this->text);
+                $teacherEntity->rating = $this->rating;
+                $teacherEntity->status = $this->status;
 
-            if ($this->image) {
-                $teacherEntity->image_big_id = $this->image;
-                $teacherEntity->image_middle_id = $this->image;
-                $teacherEntity->image_small_id = $this->image;
-            }
+                if ($this->image) {
+                    $teacherEntity->image_big_id = $this->image;
+                    $teacherEntity->image_middle_id = $this->image;
+                    $teacherEntity->image_small_id = $this->image;
+                }
 
-            $teacher = Teacher::find($this->id);
-            $teacher->update($teacherEntity->toArray());
-            $teacher->directions()->sync($this->directions ?: []);
-            $teacher->schools()->sync($this->schools ?: []);
+                $teacher = Teacher::find($this->id);
+                $teacher->update($teacherEntity->toArray());
+                $teacher->directions()->sync($this->directions ?: []);
+                $teacher->schools()->sync($this->schools ?: []);
+
+                TeacherExperience::whereIn('id', collect($teacherEntity->experiences)->pluck('id')->toArray())
+                    ->forceDelete();
+
+                if ($this->experiences) {
+                    foreach ($this->experiences as $experience) {
+                        $entity = new TeacherExperienceEntity();
+                        $entity->teacher_id = $teacher->id;
+                        $entity->place = $experience['place'];
+                        $entity->position = $experience['position'];
+                        $entity->weight = $experience['weight'];
+
+                        $action->started = $experience['started'] ? Carbon::createFromFormat(
+                            'Y-m-d H:i:s O',
+                            $experience['started']
+                        )->setTimezone(Config::get('app.timezone')) : null;
+
+                        $action->finished = $experience['finished'] ? Carbon::createFromFormat(
+                            'Y-m-d H:i:s O',
+                            $experience['finished']
+                        )->setTimezone(Config::get('app.timezone')) : null;
+
+                        TeacherExperience::create($entity->toArray());
+                    }
+                }
+
+                TeacherSocialMedia::whereIn('id', collect($teacherEntity->socialMedias)->pluck('id')->toArray())
+                    ->forceDelete();
+
+                if ($this->socialMedias) {
+                    foreach ($this->socialMedias as $socialMedia) {
+                        $entity = new TeacherSocialMediaEntity();
+                        $entity->teacher_id = $teacher->id;
+                        $entity->name = SocialMedia::from($socialMedia['name']);
+                        $entity->value = $socialMedia['value'];
+
+                        TeacherSocialMedia::create($entity->toArray());
+                    }
+                }
+            });
 
             Cache::tags(['catalog', 'teacher', 'direction', 'school'])->flush();
 
             $action = app(TeacherGetAction::class);
             $action->id = $this->id;
+
             return $action->run();
         }
 

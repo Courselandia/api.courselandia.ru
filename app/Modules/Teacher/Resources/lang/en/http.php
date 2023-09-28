@@ -20,6 +20,8 @@ return [
                 'rating' => 'Rating',
                 'copied' => 'Copied',
                 'status' => 'Status',
+                'experiences' => 'Experiences',
+                'socialMedias' => 'Social Medias',
             ],
             'teacherUpdateStatusRequest' => [
                 'status' => 'Status',

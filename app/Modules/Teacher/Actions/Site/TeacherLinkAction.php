@@ -52,6 +52,8 @@ class TeacherLinkAction extends Action
                     ->with([
                         'metatag',
                         'schools',
+                        'experiences',
+                        'socialMedias',
                         'schools' => function ($query) {
                             $query->where('status', true)
                                 ->whereHas('courses', function ($query) {

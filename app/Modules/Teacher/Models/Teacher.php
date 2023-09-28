@@ -13,6 +13,7 @@ use App\Modules\Direction\Models\Direction;
 use App\Modules\School\Models\School;
 use Exception;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Size;
 use Eloquent;
 use ImageStore;
@@ -42,7 +43,7 @@ use App\Modules\Teacher\Filters\TeacherFilter;
  * @property int|string $id ID учителя.
  * @property int|string $metatag_id ID метатегов.
  * @property string $name Название.
- * @property string $city Город.
+ * @property string|null $city Город.
  * @property string $link Ссылка.
  * @property bool $copied Скопирован.
  * @property string $text Текст.
@@ -56,6 +57,8 @@ use App\Modules\Teacher\Filters\TeacherFilter;
  * @property-read Direction[] $directions
  * @property-read School[] $schools
  * @property-read Course[] $courses
+ * @property-read TeacherExperience[] $experiences
+ * @property-read TeacherSocialMedia[] $socialMedias
  */
 class Teacher extends Eloquent
 {
@@ -366,5 +369,25 @@ class Teacher extends Eloquent
     public function courses(): BelongsToMany
     {
         return $this->belongsToMany(Course::class);
+    }
+
+    /**
+     * Опыт работы учителя.
+     *
+     * @return HasMany Модели опыт работы учителя.
+     */
+    public function experiences(): HasMany
+    {
+        return $this->hasMany(TeacherExperience::class);
+    }
+
+    /**
+     * Социальные сети учителя.
+     *
+     * @return HasMany Модели социальных сетей учителя.
+     */
+    public function socialMedias(): HasMany
+    {
+        return $this->hasMany(TeacherSocialMedia::class);
     }
 }

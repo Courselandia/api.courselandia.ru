@@ -8,11 +8,11 @@
 
 namespace App\Modules\Teacher\Entities;
 
+use Carbon\Carbon;
 use App\Models\Entities;
 use App\Models\Entity;
 use App\Modules\Direction\Entities\Direction;
 use App\Modules\School\Entities\School;
-use Carbon\Carbon;
 use App\Modules\Image\Entities\Image;
 use App\Modules\Metatag\Entities\Metatag;
 use Illuminate\Http\UploadedFile;
@@ -149,4 +149,20 @@ class Teacher extends Entity
      */
     #[Entities(School::class)]
     public ?array $schools = null;
+
+    /**
+     * Опыт работы учителя.
+     *
+     * @var TeacherExperience[]
+     */
+    #[Entities(TeacherExperience::class)]
+    public ?array $experiences = null;
+
+    /**
+     * Социальные сети учителя.
+     *
+     * @var TeacherExperience[]
+     */
+    #[Entities(TeacherSocialMedia::class)]
+    public ?array $socialMedias = null;
 }

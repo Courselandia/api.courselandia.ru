@@ -29,6 +29,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
 use Log;
 use ReflectionException;
+use Throwable;
 
 /**
  * Класс контроллер для работы с учителями в административной части.
@@ -95,7 +96,7 @@ class TeacherController extends Controller
      * @param TeacherCreateRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException
+     * @throws ParameterInvalidException|Throwable
      */
     public function create(TeacherCreateRequest $request): JsonResponse
     {
@@ -113,6 +114,9 @@ class TeacherController extends Controller
             $action->description_template = $request->get('description_template');
             $action->title_template = $request->get('title_template');
             $action->schools = $request->get('schools');
+            $action->directions = $request->get('directions');
+            $action->experiences = $request->get('experiences');
+            $action->socialMedias = $request->get('socialMedias');
 
             if ($request->hasFile('image') && $request->file('image')->isValid()) {
                 $action->image = $request->file('image');
@@ -155,7 +159,7 @@ class TeacherController extends Controller
      * @param TeacherUpdateRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException
+     * @throws ParameterInvalidException|Throwable
      */
     public function update(int|string $id, TeacherUpdateRequest $request): JsonResponse
     {
@@ -174,6 +178,9 @@ class TeacherController extends Controller
             $action->description_template = $request->get('description_template');
             $action->title_template = $request->get('title_template');
             $action->schools = $request->get('schools');
+            $action->directions = $request->get('directions');
+            $action->experiences = $request->get('experiences');
+            $action->socialMedias = $request->get('socialMedias');
 
             if ($request->hasFile('image') && $request->file('image')->isValid()) {
                 $action->image = $request->file('image');

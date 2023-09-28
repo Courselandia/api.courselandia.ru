@@ -29,7 +29,11 @@ class TeacherCreateRequest extends FormRequest
         'schools.*' => 'string',
         'rating' => 'string',
         'copied' => 'string',
-        'status' => 'string'
+        'status' => 'string',
+        'experiences' => 'string',
+        'experiences.*' => 'string',
+        'socialMedias' => 'string',
+        'socialMedias.*' => 'string',
     ])] public function rules(): array
     {
         return [
@@ -41,6 +45,10 @@ class TeacherCreateRequest extends FormRequest
             'rating' => 'nullable|float',
             'copied' => 'boolean',
             'status' => 'boolean',
+            'experiences' => 'array',
+            'experiences.*' => 'array:place,position,started,finished,weight',
+            'socialMedias' => 'array',
+            'socialMedias.*' => 'array:name,value',
         ];
     }
 
@@ -57,7 +65,11 @@ class TeacherCreateRequest extends FormRequest
         'schools.*' => 'string',
         'rating' => 'string',
         'copied' => 'string',
-        'status' => 'string'
+        'status' => 'string',
+        'experiences' => 'string',
+        'experiences.*' => 'string',
+        'socialMedias' => 'string',
+        'socialMedias.*' => 'string',
     ])] public function attributes(): array
     {
         return [
@@ -69,6 +81,10 @@ class TeacherCreateRequest extends FormRequest
             'rating' => trans('teacher::http.requests.admin.teacherCreateRequest.rating'),
             'copied' => trans('teacher::http.requests.admin.teacherCreateRequest.copied'),
             'status' => trans('teacher::http.requests.admin.teacherCreateRequest.status'),
+            'experiences' => trans('teacher::http.requests.admin.teacherCreateRequest.experiences'),
+            'experiences.*' => trans('teacher::http.requests.admin.teacherCreateRequest.experiences'),
+            'socialMedias' => trans('teacher::http.requests.admin.teacherCreateRequest.socialMedias'),
+            'socialMedias.*' => trans('teacher::http.requests.admin.teacherCreateRequest.socialMedias'),
         ];
     }
 }

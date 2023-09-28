@@ -20,6 +20,8 @@ return [
                 'rating' => 'Рейтинг',
                 'copied' => 'Скопировано',
                 'status' => 'Статус',
+                'experiences' => 'Опыт работы',
+                'socialMedias' => 'Социальные сетиё ',
             ],
             'teacherUpdateStatusRequest' => [
                 'status' => 'Статус',

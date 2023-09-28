@@ -28,7 +28,9 @@ class TeacherUpdateRequest extends TeacherCreateRequest
         'schools.*' => 'string',
         'rating' => 'string',
         'copied' => 'string',
-        'status' => 'string'
+        'status' => 'string',
+        'experiences' => 'string',
+        'experiences.*' => 'string',
     ])] public function rules(): array
     {
         return [
@@ -40,6 +42,8 @@ class TeacherUpdateRequest extends TeacherCreateRequest
             'rating' => 'nullable|float',
             'copied' => 'boolean',
             'status' => 'boolean',
+            'experiences' => 'array',
+            'experiences.*' => 'array:place,position,started,finished,weight',
         ];
     }
 
@@ -56,7 +60,9 @@ class TeacherUpdateRequest extends TeacherCreateRequest
         'schools.*' => 'string',
         'rating' => 'string',
         'copied' => 'string',
-        'status' => 'string'
+        'status' => 'string',
+        'experiences' => 'string',
+        'experiences.*' => 'string',
     ])] public function attributes(): array
     {
         return [
@@ -68,6 +74,8 @@ class TeacherUpdateRequest extends TeacherCreateRequest
             'rating' => trans('teacher::http.requests.admin.teacherCreateRequest.rating'),
             'copied' => trans('teacher::http.requests.admin.teacherCreateRequest.copied'),
             'status' => trans('teacher::http.requests.admin.teacherCreateRequest.status'),
+            'experiences' => trans('teacher::http.requests.admin.teacherCreateRequest.experiences'),
+            'experiences.*' => trans('teacher::http.requests.admin.teacherCreateRequest.experiences'),
         ];
     }
 }
