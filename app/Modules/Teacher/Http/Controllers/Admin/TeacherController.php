@@ -103,6 +103,8 @@ class TeacherController extends Controller
             $action = app(TeacherCreateAction::class);
             $action->name = $request->get('name');
             $action->link = $request->get('link');
+            $action->city = $request->get('city');
+            $action->copied = $request->get('copied');
             $action->text = $request->get('text');
             $action->rating = $request->get('rating');
             $action->status = $request->get('status');
@@ -162,6 +164,8 @@ class TeacherController extends Controller
             $action->id = $id;
             $action->name = $request->get('name');
             $action->link = $request->get('link');
+            $action->city = $request->get('city');
+            $action->copied = $request->get('copied');
             $action->text = $request->get('text');
             $action->rating = $request->get('rating');
             $action->status = $request->get('status');

@@ -18,6 +18,7 @@ return [
                 'directions' => 'Directions',
                 'schools' => 'Schools',
                 'rating' => 'Rating',
+                'copied' => 'Copied',
                 'status' => 'Status',
             ],
             'teacherUpdateStatusRequest' => [

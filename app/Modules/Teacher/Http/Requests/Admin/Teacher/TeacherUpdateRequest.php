@@ -27,6 +27,7 @@ class TeacherUpdateRequest extends TeacherCreateRequest
         'schools' => 'string',
         'schools.*' => 'string',
         'rating' => 'string',
+        'copied' => 'string',
         'status' => 'string'
     ])] public function rules(): array
     {
@@ -37,6 +38,7 @@ class TeacherUpdateRequest extends TeacherCreateRequest
             'schools' => 'array',
             'schools.*' => 'integer',
             'rating' => 'nullable|float',
+            'copied' => 'boolean',
             'status' => 'boolean',
         ];
     }
@@ -53,6 +55,7 @@ class TeacherUpdateRequest extends TeacherCreateRequest
         'schools' => 'string',
         'schools.*' => 'string',
         'rating' => 'string',
+        'copied' => 'string',
         'status' => 'string'
     ])] public function attributes(): array
     {
@@ -63,6 +66,7 @@ class TeacherUpdateRequest extends TeacherCreateRequest
             'schools' => trans('teacher::http.requests.admin.teacherCreateRequest.schools'),
             'schools.*' => trans('teacher::http.requests.admin.teacherCreateRequest.schools'),
             'rating' => trans('teacher::http.requests.admin.teacherCreateRequest.rating'),
+            'copied' => trans('teacher::http.requests.admin.teacherCreateRequest.copied'),
             'status' => trans('teacher::http.requests.admin.teacherCreateRequest.status'),
         ];
     }

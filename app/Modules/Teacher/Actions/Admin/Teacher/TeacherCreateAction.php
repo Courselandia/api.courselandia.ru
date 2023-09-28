@@ -47,6 +47,20 @@ class TeacherCreateAction extends Action
     public ?string $text = null;
 
     /**
+     * Город.
+     *
+     * @var string|null
+     */
+    public ?string $city = null;
+
+    /**
+     * Скопирован.
+     *
+     * @var string|null
+     */
+    public ?string $copied = null;
+
+    /**
      * Рейтинг.
      *
      * @var float|null
@@ -132,8 +146,11 @@ class TeacherCreateAction extends Action
         $teacherEntity->link = $this->link;
         $teacherEntity->text = Typography::process($this->text);
         $teacherEntity->rating = $this->rating;
+        $teacherEntity->city = $this->city;
+        $teacherEntity->copied = $this->copied;
         $teacherEntity->image_small_id = $this->image;
         $teacherEntity->image_middle_id = $this->image;
+        $teacherEntity->image_big_id = $this->image;
         $teacherEntity->status = $this->status;
         $teacherEntity->metatag_id = $metatag->id;
 

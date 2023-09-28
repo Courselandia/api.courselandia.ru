@@ -42,12 +42,15 @@ use App\Modules\Teacher\Filters\TeacherFilter;
  * @property int|string $id ID учителя.
  * @property int|string $metatag_id ID метатегов.
  * @property string $name Название.
+ * @property string $city Город.
  * @property string $link Ссылка.
+ * @property bool $copied Скопирован.
  * @property string $text Текст.
  * @property string $rating Рейтинг.
  * @property string $status Статус.
  * @property int|string|array|UploadedFile|ImageEntity $image_small_id Изображение маленькое.
  * @property int|string|array|UploadedFile|ImageEntity $image_middle_id Изображение среднее.
+ * @property int|string|array|UploadedFile|ImageEntity $image_big_id Изображение большое.
  *
  * @property-read Metatag $metatag
  * @property-read Direction[] $directions
@@ -74,11 +77,14 @@ class Teacher extends Eloquent
         'metatag_id',
         'name',
         'link',
+        'copied',
+        'city',
         'text',
         'rating',
         'status',
         'image_small_id',
         'image_middle_id',
+        'image_big_id',
     ];
 
     /**
@@ -91,6 +97,8 @@ class Teacher extends Eloquent
         'metatag_id' => 'string',
         'name' => 'string',
         'link' => 'string',
+        'copied' => 'string',
+        'city' => 'string',
         'text' => 'string',
         'rating' => 'string',
         'status' => 'string',
@@ -101,6 +109,8 @@ class Teacher extends Eloquent
             'name' => 'required|between:1,191',
             'link' => 'required|between:1,191|alpha_dash|unique_soft:teachers,link,'.$this->id.',id',
             'text' => 'max:65000',
+            'city' => 'max:191',
+            'copied' => 'boolean',
             'rating' => 'nullable|float|float_between:0,5',
             'status' => 'required|boolean'
         ];
@@ -117,9 +127,12 @@ class Teacher extends Eloquent
             'metatag_id' => trans('teacher::models.teacher.metatagId'),
             'name' => trans('teacher::models.teacher.name'),
             'link' => trans('teacher::models.teacher.link'),
+            'copied' => trans('teacher::models.teacher.copied'),
+            'city' => trans('teacher::models.teacher.city'),
             'text' => trans('teacher::models.teacher.text'),
             'image_small_id' => trans('teacher::models.teacher.imageSmallId'),
             'image_middle_id' => trans('teacher::models.teacher.imageMiddleId'),
+            'image_big_id' => trans('teacher::models.teacher.imageBigId'),
             'rating' => trans('teacher::models.teacher.rating'),
             'status' => trans('teacher::models.teacher.status')
         ];
@@ -248,6 +261,65 @@ class Teacher extends Eloquent
      * @return ImageEntity|null Среднее изображение.
      */
     public function getImageMiddleIdAttribute(mixed $value): ?ImageEntity
+    {
+        if (is_numeric($value) || is_string($value)) {
+            return ImageStore::get(new RepositoryQueryBuilder($value));
+        }
+
+        return $value;
+    }
+
+    /**
+     * Преобразователь атрибута - запись: больше изображение.
+     *
+     * @param  mixed  $value  Значение атрибута.
+     *
+     * @return void
+     * @throws FileNotFoundException|Exception
+     */
+    public function setImageBigIdAttribute(mixed $value): void
+    {
+        $name = 'image_big_id';
+        $folder = 'teachers';
+
+        $this->attributes[$name] = Image::set(
+            $name,
+            $value,
+            function (string $name, UploadedFile $value) use ($folder) {
+                $path = ImageStore::tmp($value->getClientOriginalExtension());
+
+                Size::make($value)->resize(
+                    1000,
+                    null,
+                    function ($constraint) {
+                        $constraint->aspectRatio();
+                        $constraint->upsize();
+                    }
+                )->save($path);
+
+                $imageWebp = WebPConverter::createWebpImage($path, ['saveFile' => true]);
+
+                ImageStore::setFolder($folder);
+                $image = new ImageEntity();
+                $image->path = $imageWebp['path'];
+
+                if (isset($this->attributes[$name]) && $this->attributes[$name] !== '') {
+                    return ImageStore::update($this->attributes[$name], $image);
+                }
+
+                return ImageStore::create($image);
+            }
+        );
+    }
+
+    /**
+     * Преобразователь атрибута - получение: большое изображение.
+     *
+     * @param  mixed  $value  Значение атрибута.
+     *
+     * @return ImageEntity|null Среднее изображение.
+     */
+    public function getImageBigIdAttribute(mixed $value): ?ImageEntity
     {
         if (is_numeric($value) || is_string($value)) {
             return ImageStore::get(new RepositoryQueryBuilder($value));

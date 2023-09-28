@@ -18,6 +18,7 @@ return [
                 'directions' => 'Направления',
                 'schools' => 'Школы',
                 'rating' => 'Рейтинг',
+                'copied' => 'Скопировано',
                 'status' => 'Статус',
             ],
             'teacherUpdateStatusRequest' => [

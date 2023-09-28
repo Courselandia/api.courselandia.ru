@@ -65,6 +65,20 @@ class Teacher extends Entity
     public ?float $rating = null;
 
     /**
+     * Город.
+     *
+     * @var string|null
+     */
+    public ?string $city = null;
+
+    /**
+     * Скопировано.
+     *
+     * @var bool|null
+     */
+    public ?bool $copied = null;
+
+    /**
      * Изображение маленькое.
      *
      * @var int|UploadedFile|Image|null
@@ -77,6 +91,13 @@ class Teacher extends Entity
      * @var int|UploadedFile|Image|null
      */
     public int|UploadedFile|Image|null $image_middle_id = null;
+
+    /**
+     * Изображение большое.
+     *
+     * @var int|UploadedFile|Image|null
+     */
+    public int|UploadedFile|Image|null $image_big_id = null;
 
     /**
      * Метатеги.

@@ -7,8 +7,11 @@ return [
         'link' => 'Link',
         'text' => 'Text',
         'rating' => 'Rating',
+        'imageBigId' => 'ID big image',
         'imageMiddleId' => 'ID middle image',
         'imageSmallId' => 'ID small image',
-        'status' => 'Status'
+        'status' => 'Status',
+        'city' => 'City',
+        'copied' => 'Copied',
     ],
 ];

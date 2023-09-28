@@ -64,6 +64,20 @@ class TeacherUpdateAction extends Action
     public ?float $rating = null;
 
     /**
+     * Город.
+     *
+     * @var string|null
+     */
+    public ?string $city = null;
+
+    /**
+     * Скопирован.
+     *
+     * @var string|null
+     */
+    public ?string $copied = null;
+
+    /**
      * Изображение.
      *
      * @var int|UploadedFile|Image|null
@@ -154,11 +168,14 @@ class TeacherUpdateAction extends Action
             $teacherEntity->metatag_id = $action->run()->id;
             $teacherEntity->name = Typography::process($this->name, true);
             $teacherEntity->link = $this->link;
+            $teacherEntity->city = $this->city;
+            $teacherEntity->copied = $this->copied;
             $teacherEntity->text = Typography::process($this->text);
             $teacherEntity->rating = $this->rating;
             $teacherEntity->status = $this->status;
 
             if ($this->image) {
+                $teacherEntity->image_big_id = $this->image;
                 $teacherEntity->image_middle_id = $this->image;
                 $teacherEntity->image_small_id = $this->image;
             }

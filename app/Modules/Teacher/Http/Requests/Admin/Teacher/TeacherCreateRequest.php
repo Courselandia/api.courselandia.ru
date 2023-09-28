@@ -28,6 +28,7 @@ class TeacherCreateRequest extends FormRequest
         'schools' => 'string',
         'schools.*' => 'string',
         'rating' => 'string',
+        'copied' => 'string',
         'status' => 'string'
     ])] public function rules(): array
     {
@@ -38,6 +39,7 @@ class TeacherCreateRequest extends FormRequest
             'schools' => 'array',
             'schools.*' => 'exists_soft:schools,id',
             'rating' => 'nullable|float',
+            'copied' => 'boolean',
             'status' => 'boolean',
         ];
     }
@@ -54,6 +56,7 @@ class TeacherCreateRequest extends FormRequest
         'schools' => 'string',
         'schools.*' => 'string',
         'rating' => 'string',
+        'copied' => 'string',
         'status' => 'string'
     ])] public function attributes(): array
     {
@@ -64,6 +67,7 @@ class TeacherCreateRequest extends FormRequest
             'schools' => trans('teacher::http.requests.admin.teacherCreateRequest.schools'),
             'schools.*' => trans('teacher::http.requests.admin.teacherCreateRequest.schools'),
             'rating' => trans('teacher::http.requests.admin.teacherCreateRequest.rating'),
+            'copied' => trans('teacher::http.requests.admin.teacherCreateRequest.copied'),
             'status' => trans('teacher::http.requests.admin.teacherCreateRequest.status'),
         ];
     }

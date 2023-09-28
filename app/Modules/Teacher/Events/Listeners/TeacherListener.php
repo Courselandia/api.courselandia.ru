@@ -28,8 +28,13 @@ class TeacherListener
         if ($teacher->image_small_id) {
             ImageStore::destroy($teacher->image_small_id->id);
         }
+
         if ($teacher->image_middle_id) {
             ImageStore::destroy($teacher->image_middle_id->id);
+        }
+
+        if ($teacher->image_big_id) {
+            ImageStore::destroy($teacher->image_big_id->id);
         }
 
         $teacher->deleteRelation($teacher->metatag(), $teacher->isForceDeleting());
