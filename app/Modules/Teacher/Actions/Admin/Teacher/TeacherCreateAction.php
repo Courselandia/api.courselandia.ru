@@ -187,16 +187,16 @@ class TeacherCreateAction extends Action
                 foreach ($this->experiences as $experience) {
                     $entity = new TeacherExperienceEntity();
                     $entity->teacher_id = $teacher->id;
-                    $entity->place = $experience['place'];
-                    $entity->position = $experience['position'];
-                    $entity->weight = $experience['weight'];
+                    $entity->place = $experience['place'] ?? null;
+                    $entity->position = $experience['position'] ?? null;
+                    $entity->weight = $experience['weight'] ?? 0;
 
-                    $action->started = $experience['started'] ? Carbon::createFromFormat(
+                    $action->started = (isset($experience['started']) && $experience['started']) ? Carbon::createFromFormat(
                         'Y-m-d H:i:s O',
                         $experience['started']
                     )->setTimezone(Config::get('app.timezone')) : null;
 
-                    $action->finished = $experience['finished'] ? Carbon::createFromFormat(
+                    $action->finished = (isset($experience['finished']) && $experience['finished']) ? Carbon::createFromFormat(
                         'Y-m-d H:i:s O',
                         $experience['finished']
                     )->setTimezone(Config::get('app.timezone')) : null;

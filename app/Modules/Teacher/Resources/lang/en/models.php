@@ -14,4 +14,17 @@ return [
         'city' => 'City',
         'copied' => 'Copied',
     ],
+    'teacherExperience' => [
+        'teacher_id' => 'ID teacher',
+        'place' => 'Place',
+        'position' => 'Position',
+        'started' => 'Started',
+        'finished' => 'Finished',
+        'weight' => 'Weight',
+    ],
+    'teacherSocialMedia' => [
+        'teacher_id' => 'ID teacher',
+        'name' => 'Name',
+        'value' => 'Value',
+    ],
 ];

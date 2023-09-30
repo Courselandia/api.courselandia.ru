@@ -10,6 +10,8 @@ namespace App\Modules\Teacher\Tests\Feature\Http\Controllers\Admin;
 
 use App\Modules\Direction\Models\Direction;
 use App\Modules\School\Models\School;
+use App\Modules\Teacher\Enums\SocialMedia;
+use Carbon\Carbon;
 use Util;
 use App\Models\Test\TokenTest;
 use App\Modules\Teacher\Models\Teacher;
@@ -129,7 +131,7 @@ class TeacherControllerTest extends TestCase
                 'status' => true,
             ],
             [
-                'Authorization' => 'Bearer ' . $this->getAdminToken()
+                'Authorization' => 'Bearer ' . $this->getAdminToken(),
             ]
         )->assertStatus(200)->assertJsonStructure([
             'success',
@@ -160,6 +162,21 @@ class TeacherControllerTest extends TestCase
                 'image' => UploadedFile::fake()->image('teacher.jpg', 1500, 1500),
                 'directions' => $directions->pluck('id'),
                 'schools' => $schools->pluck('id'),
+                'experiences' => [
+                    [
+                        'place' => $faker->text(191),
+                        'position' => $faker->text(191),
+                        'weight' => $faker->numberBetween(1, 20),
+                        'started' => Carbon::now()->addMonths(-5)->format('Y-m-d H:i:s O'),
+                        'finished' => Carbon::now()->addMonths(-3)->format('Y-m-d H:i:s O'),
+                    ],
+                ],
+                'socialMedias' => [
+                    [
+                        'name' => SocialMedia::FACEBOOK->value,
+                        'value' => $faker->text(191),
+                    ],
+                ],
             ],
             [
                 'Authorization' => 'Bearer ' . $this->getAdminToken()
@@ -227,6 +244,21 @@ class TeacherControllerTest extends TestCase
                 'image' => UploadedFile::fake()->image('teacher.jpg', 1500, 1500),
                 'directions' => $directions->pluck('id'),
                 'schools' => $schools->pluck('id'),
+                'experiences' => [
+                    [
+                        'place' => $faker->text(191),
+                        'position' => $faker->text(191),
+                        'weight' => $faker->numberBetween(1, 20),
+                        'started' => Carbon::now()->addMonths(-5)->format('Y-m-d H:i:s O'),
+                        'finished' => Carbon::now()->addMonths(-3)->format('Y-m-d H:i:s O'),
+                    ],
+                ],
+                'socialMedias' => [
+                    [
+                        'name' => SocialMedia::FACEBOOK->value,
+                        'value' => $faker->text(191),
+                    ],
+                ],
             ],
             [
                 'Authorization' => 'Bearer ' . $this->getAdminToken()

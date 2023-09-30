@@ -78,8 +78,8 @@ class TeacherExperience extends Eloquent
             'teacher_id' => 'required|digits_between:0,20',
             'place' => 'required|between:1,191',
             'position' => 'required|between:1,191',
-            'started' => 'required|date',
-            'finished' => 'required|date',
+            'started' => 'date',
+            'finished' => 'date',
             'weight' => 'integer|digits_between:0,5',
         ];
     }

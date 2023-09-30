@@ -234,7 +234,7 @@ class TeacherUpdateAction extends Action
                     }
                 }
 
-                TeacherSocialMedia::whereIn('id', collect($teacherEntity->socialMedias)->pluck('id')->toArray())
+                TeacherSocialMedia::whereIn('id', collect($teacherEntity->social_medias)->pluck('id')->toArray())
                     ->forceDelete();
 
                 if ($this->socialMedias) {

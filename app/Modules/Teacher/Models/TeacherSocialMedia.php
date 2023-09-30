@@ -40,6 +40,11 @@ class TeacherSocialMedia extends Eloquent
     use Validate;
     use Filterable;
 
+    public function getTable(): string
+    {
+        return 'teacher_social_medias';
+    }
+
     /**
      * Атрибуты, для которых разрешено массовое назначение.
      *

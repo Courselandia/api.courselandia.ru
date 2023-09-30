@@ -14,4 +14,17 @@ return [
         'city' => 'Город',
         'copied' => 'Скопирован',
     ],
+    'teacherExperience' => [
+        'teacher_id' => 'ID учителя',
+        'place' => 'Место работы',
+        'position' => 'Должность',
+        'started' => 'Дата начала работы',
+        'finished' => 'Дата окончания работы',
+        'weight' => 'Вес',
+    ],
+    'teacherSocialMedia' => [
+        'teacher_id' => 'ID учителя',
+        'name' => 'Name',
+        'value' => 'Value',
+    ],
 ];

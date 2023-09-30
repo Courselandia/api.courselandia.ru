@@ -164,5 +164,5 @@ class Teacher extends Entity
      * @var TeacherExperience[]
      */
     #[Entities(TeacherSocialMedia::class)]
-    public ?array $socialMedias = null;
+    public ?array $social_medias = null;
 }
