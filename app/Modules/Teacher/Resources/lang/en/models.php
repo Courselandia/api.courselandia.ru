@@ -12,6 +12,7 @@ return [
         'imageSmallId' => 'ID small image',
         'status' => 'Status',
         'city' => 'City',
+        'comment' => 'Comment',
         'copied' => 'Copied',
     ],
     'teacherExperience' => [

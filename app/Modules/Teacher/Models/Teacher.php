@@ -44,6 +44,7 @@ use App\Modules\Teacher\Filters\TeacherFilter;
  * @property int|string $metatag_id ID метатегов.
  * @property string $name Название.
  * @property string|null $city Город.
+ * @property string|null $comment Комментарий.
  * @property string $link Ссылка.
  * @property bool $copied Скопирован.
  * @property string $text Текст.
@@ -82,6 +83,7 @@ class Teacher extends Eloquent
         'link',
         'copied',
         'city',
+        'comment',
         'text',
         'rating',
         'status',
@@ -102,6 +104,7 @@ class Teacher extends Eloquent
         'link' => 'string',
         'copied' => 'string',
         'city' => 'string',
+        'comment' => 'string',
         'text' => 'string',
         'rating' => 'string',
         'status' => 'string',
@@ -113,6 +116,7 @@ class Teacher extends Eloquent
             'link' => 'required|between:1,191|alpha_dash|unique_soft:teachers,link,'.$this->id.',id',
             'text' => 'max:65000',
             'city' => 'max:191',
+            'comment' => 'max:191',
             'copied' => 'boolean',
             'rating' => 'nullable|float|float_between:0,5',
             'status' => 'required|boolean'
@@ -132,6 +136,7 @@ class Teacher extends Eloquent
             'link' => trans('teacher::models.teacher.link'),
             'copied' => trans('teacher::models.teacher.copied'),
             'city' => trans('teacher::models.teacher.city'),
+            'comment' => trans('teacher::models.teacher.comment'),
             'text' => trans('teacher::models.teacher.text'),
             'image_small_id' => trans('teacher::models.teacher.imageSmallId'),
             'image_middle_id' => trans('teacher::models.teacher.imageMiddleId'),

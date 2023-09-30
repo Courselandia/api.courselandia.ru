@@ -80,6 +80,13 @@ class TeacherUpdateAction extends Action
     public ?string $city = null;
 
     /**
+     * Комментарий.
+     *
+     * @var string|null
+     */
+    public ?string $comment = null;
+
+    /**
      * Скопирован.
      *
      * @var string|null
@@ -193,6 +200,7 @@ class TeacherUpdateAction extends Action
                 $teacherEntity->name = Typography::process($this->name, true);
                 $teacherEntity->link = $this->link;
                 $teacherEntity->city = $this->city;
+                $teacherEntity->comment = $this->comment;
                 $teacherEntity->copied = $this->copied;
                 $teacherEntity->text = Typography::process($this->text);
                 $teacherEntity->rating = $this->rating;

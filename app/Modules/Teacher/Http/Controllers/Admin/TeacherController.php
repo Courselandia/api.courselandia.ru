@@ -105,6 +105,7 @@ class TeacherController extends Controller
             $action->name = $request->get('name');
             $action->link = $request->get('link');
             $action->city = $request->get('city');
+            $action->comment = $request->get('comment');
             $action->copied = $request->get('copied');
             $action->text = $request->get('text');
             $action->rating = $request->get('rating');
@@ -169,6 +170,7 @@ class TeacherController extends Controller
             $action->name = $request->get('name');
             $action->link = $request->get('link');
             $action->city = $request->get('city');
+            $action->comment = $request->get('comment');
             $action->copied = $request->get('copied');
             $action->text = $request->get('text');
             $action->rating = $request->get('rating');

@@ -17,6 +17,7 @@ class UpdateTableTeachersAdditional extends Migration
     {
         Schema::table('teachers', function (Blueprint $table) {
             $table->string('city', 191)->nullable();
+            $table->string('comment', 191)->nullable();
             $table->boolean('copied')->default(false);
             $table->string('image_big_id')->nullable()->index();
         });
@@ -31,6 +32,7 @@ class UpdateTableTeachersAdditional extends Migration
     {
         Schema::create('teachers', function (Blueprint $table) {
             $table->dropColumn('city');
+            $table->dropColumn('comment');
             $table->dropColumn('copied');
             $table->dropColumn('image_big_id');
         });

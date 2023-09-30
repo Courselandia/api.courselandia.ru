@@ -12,6 +12,7 @@ return [
         'imageSmallId' => 'Маленькая картинка',
         'status' => 'Статус',
         'city' => 'Город',
+        'comment' => 'Комментарий',
         'copied' => 'Скопирован',
     ],
     'teacherExperience' => [

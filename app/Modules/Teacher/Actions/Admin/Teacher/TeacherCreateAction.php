@@ -63,6 +63,13 @@ class TeacherCreateAction extends Action
     public ?string $city = null;
 
     /**
+     * Комментарий.
+     *
+     * @var string|null
+     */
+    public ?string $comment = null;
+
+    /**
      * Скопирован.
      *
      * @var string|null
@@ -172,6 +179,7 @@ class TeacherCreateAction extends Action
             $teacherEntity->text = Typography::process($this->text);
             $teacherEntity->rating = $this->rating;
             $teacherEntity->city = $this->city;
+            $teacherEntity->comment = $this->comment;
             $teacherEntity->copied = $this->copied;
             $teacherEntity->image_small_id = $this->image;
             $teacherEntity->image_middle_id = $this->image;

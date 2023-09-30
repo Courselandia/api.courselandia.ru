@@ -72,6 +72,13 @@ class Teacher extends Entity
     public ?string $city = null;
 
     /**
+     * Комментарий.
+     *
+     * @var string|null
+     */
+    public ?string $comment = null;
+
+    /**
      * Скопировано.
      *
      * @var bool|null
