@@ -383,7 +383,7 @@ class Teacher extends Eloquent
      */
     public function experiences(): HasMany
     {
-        return $this->hasMany(TeacherExperience::class);
+        return $this->hasMany(TeacherExperience::class)->orderBy('weight', 'ASC');
     }
 
     /**

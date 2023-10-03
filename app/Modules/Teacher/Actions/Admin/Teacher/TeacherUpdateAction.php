@@ -228,15 +228,15 @@ class TeacherUpdateAction extends Action
                         $entity->position = $experience['position'];
                         $entity->weight = $experience['weight'];
 
-                        $action->started = $experience['started'] ? Carbon::createFromFormat(
-                            'Y-m-d H:i:s O',
+                        $entity->started = $experience['started'] ? Carbon::createFromFormat(
+                            'Y-m-d',
                             $experience['started']
-                        )->setTimezone(Config::get('app.timezone')) : null;
+                        ) : null;
 
-                        $action->finished = $experience['finished'] ? Carbon::createFromFormat(
-                            'Y-m-d H:i:s O',
+                        $entity->finished = $experience['finished'] ? Carbon::createFromFormat(
+                            'Y-m-d',
                             $experience['finished']
-                        )->setTimezone(Config::get('app.timezone')) : null;
+                        ) : null;
 
                         TeacherExperience::create($entity->toArray());
                     }

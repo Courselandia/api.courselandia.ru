@@ -199,15 +199,15 @@ class TeacherCreateAction extends Action
                     $entity->position = $experience['position'] ?? null;
                     $entity->weight = $experience['weight'] ?? 0;
 
-                    $action->started = (isset($experience['started']) && $experience['started']) ? Carbon::createFromFormat(
-                        'Y-m-d H:i:s O',
+                    $entity->started = (isset($experience['started']) && $experience['started']) ? Carbon::createFromFormat(
+                        'Y-m-d',
                         $experience['started']
-                    )->setTimezone(Config::get('app.timezone')) : null;
+                    ) : null;
 
-                    $action->finished = (isset($experience['finished']) && $experience['finished']) ? Carbon::createFromFormat(
-                        'Y-m-d H:i:s O',
+                    $entity->finished = (isset($experience['finished']) && $experience['finished']) ? Carbon::createFromFormat(
+                        'Y-m-d',
                         $experience['finished']
-                    )->setTimezone(Config::get('app.timezone')) : null;
+                    ) : null;
 
                     TeacherExperience::create($entity->toArray());
                 }
