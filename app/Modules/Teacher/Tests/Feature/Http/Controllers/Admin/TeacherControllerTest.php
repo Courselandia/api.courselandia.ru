@@ -8,6 +8,7 @@
 
 namespace App\Modules\Teacher\Tests\Feature\Http\Controllers\Admin;
 
+use App\Modules\Course\Models\Course;
 use App\Modules\Direction\Models\Direction;
 use App\Modules\School\Models\School;
 use App\Modules\Teacher\Enums\SocialMedia;
@@ -60,6 +61,43 @@ class TeacherControllerTest extends TestCase
         )->assertStatus(200)->assertJsonStructure([
             'data' => [
                 '*' => $this->getTeacherStructure()
+            ],
+            'total',
+            'success',
+        ]);
+    }
+
+    /**
+     * Чтение курсов учителя.
+     *
+     * @return void
+     */
+    public function testReadCourses(): void
+    {
+        $teacher = Teacher::factory()->create();
+        $directions = Direction::factory()->count(3)->create();
+        $schools = School::factory()->count(2)->create();
+        $courses = Course::factory()->count(2)->create();
+
+        $teacher->directions()->sync($directions);
+        $teacher->schools()->sync($schools);
+        $teacher->courses()->sync($courses);
+
+        $this->json(
+            'GET',
+            'api/private/admin/teacher/read/courses/' . $teacher->id,
+            [
+            ],
+            [
+                'Authorization' => 'Bearer ' . $this->getAdminToken()
+            ]
+        )->assertStatus(200)->assertJsonStructure([
+            'data' => [
+                '*' => [
+                    'id',
+                    'name',
+                    'uuid',
+                ]
             ],
             'total',
             'success',
