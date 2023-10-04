@@ -12,6 +12,7 @@ use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordExistException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Models\Exceptions\ValidateException;
+use App\Modules\Course\Actions\Admin\Course\CourseReadAction;
 use App\Modules\Metatag\Template\TemplateException;
 use App\Modules\Teacher\Actions\Admin\Teacher\TeacherCreateAction;
 use App\Modules\Teacher\Actions\Admin\Teacher\TeacherDestroyAction;
@@ -82,6 +83,26 @@ class TeacherController extends Controller
         $action->filters = $request->get('filters');
         $action->offset = $request->get('offset');
         $action->limit = $request->get('limit');
+
+        $data = $action->run();
+
+        $data['success'] = true;
+
+        return response()->json($data);
+    }
+
+    /**
+     * Получение курсов учителя.
+     *
+     * @param int|string $id ID учителя.
+     *
+     * @return JsonResponse Вернет JSON ответ.
+     * @throws ParameterInvalidException
+     */
+    public function courses(int|string $id): JsonResponse
+    {
+        $action = app(CourseReadAction::class);
+        $action->teacherId = $id;
 
         $data = $action->run();
 

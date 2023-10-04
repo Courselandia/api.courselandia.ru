@@ -16,6 +16,9 @@ Route::group([
         Route::get('read/', 'Admin\TeacherController@read')
             ->name('read');
 
+        Route::get('read/courses/{id}', 'Admin\TeacherController@courses')
+            ->name('read.courses');
+
         Route::get('get/{id}', 'Admin\TeacherController@get')
             ->name('get');
 
