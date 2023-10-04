@@ -105,6 +105,31 @@ class TeacherControllerTest extends TestCase
     }
 
     /**
+     * Отсоединение курсов от учителя.
+     *
+     * @return void
+     */
+    public function testDetachCourses(): void
+    {
+        $teacher = Teacher::factory()->create();
+        $courses = Course::factory()->count(2)->create();
+        $teacher->courses()->sync($courses);
+
+        $this->json(
+            'DELETE',
+            'api/private/admin/teacher/detach/courses/' . $teacher->id,
+            [
+                'ids' => [$courses[0]->id, $courses[1]->id],
+            ],
+            [
+                'Authorization' => 'Bearer ' . $this->getAdminToken()
+            ]
+        )->assertStatus(200)->assertJsonStructure([
+            'success',
+        ]);
+    }
+
+    /**
      * Получение записи.
      *
      * @return void

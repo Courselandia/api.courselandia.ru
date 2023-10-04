@@ -19,7 +19,7 @@ Route::group([
         Route::get('read/courses/{id}', 'Admin\TeacherController@courses')
             ->name('read.courses');
 
-        Route::get('detach/courses/{id}', 'Admin\TeacherController@detachCourses')
+        Route::delete('detach/courses/{id}', 'Admin\TeacherController@detachCourses')
             ->name('detach.courses');
 
         Route::get('get/{id}', 'Admin\TeacherController@get')
