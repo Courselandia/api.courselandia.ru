@@ -393,6 +393,6 @@ class Teacher extends Eloquent
      */
     public function socialMedias(): HasMany
     {
-        return $this->hasMany(TeacherSocialMedia::class);
+        return $this->hasMany(TeacherSocialMedia::class)->orderBy('name', 'ASC');
     }
 }
