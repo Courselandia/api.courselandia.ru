@@ -8,6 +8,12 @@
 
 namespace App\Modules\Teacher\Http\Controllers\Admin;
 
+use Auth;
+use Log;
+use Throwable;
+use ReflectionException;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Routing\Controller;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordExistException;
 use App\Models\Exceptions\RecordNotExistException;
@@ -16,21 +22,17 @@ use App\Modules\Course\Actions\Admin\Course\CourseReadAction;
 use App\Modules\Metatag\Template\TemplateException;
 use App\Modules\Teacher\Actions\Admin\Teacher\TeacherCreateAction;
 use App\Modules\Teacher\Actions\Admin\Teacher\TeacherDestroyAction;
+use App\Modules\Teacher\Actions\Admin\Teacher\TeacherDetachCoursesAction;
 use App\Modules\Teacher\Actions\Admin\Teacher\TeacherGetAction;
 use App\Modules\Teacher\Actions\Admin\Teacher\TeacherReadAction;
 use App\Modules\Teacher\Actions\Admin\Teacher\TeacherUpdateAction;
 use App\Modules\Teacher\Actions\Admin\Teacher\TeacherUpdateStatusAction;
 use App\Modules\Teacher\Http\Requests\Admin\Teacher\TeacherCreateRequest;
 use App\Modules\Teacher\Http\Requests\Admin\Teacher\TeacherDestroyRequest;
+use App\Modules\Teacher\Http\Requests\Admin\Teacher\TeacherDetachCoursesRequest;
 use App\Modules\Teacher\Http\Requests\Admin\Teacher\TeacherReadRequest;
 use App\Modules\Teacher\Http\Requests\Admin\Teacher\TeacherUpdateRequest;
 use App\Modules\Teacher\Http\Requests\Admin\Teacher\TeacherUpdateStatusRequest;
-use Auth;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Routing\Controller;
-use Log;
-use ReflectionException;
-use Throwable;
 
 /**
  * Класс контроллер для работы с учителями в административной части.
@@ -107,6 +109,37 @@ class TeacherController extends Controller
         $data = $action->run();
 
         $data['success'] = true;
+
+        return response()->json($data);
+    }
+
+    /**
+     * Отсоединение курсов от учителя.
+     *
+     * @param int|string $id ID учителя.
+     * @param TeacherDetachCoursesRequest $request Запрос.
+     *
+     * @return JsonResponse Вернет JSON ответ.
+     */
+    public function detachCourses(int|string $id, TeacherDetachCoursesRequest $request): JsonResponse
+    {
+        $action = app(TeacherDetachCoursesAction::class);
+        $action->id = $id;
+        $action->ids = $request->get('ids');
+        $action->run();
+
+        Log::info(
+            trans('teacher::http.controllers.admin.teacherController.detachCourses.log'),
+            [
+                'module' => 'Teacher',
+                'login' => Auth::getUser()->login,
+                'type' => 'detach'
+            ]
+        );
+
+        $data = [
+            'success' => true
+        ];
 
         return response()->json($data);
     }

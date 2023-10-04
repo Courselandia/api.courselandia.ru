@@ -43,6 +43,9 @@ return [
                 'destroy' => [
                     'log' => 'Destroy the teacher.'
                 ],
+                'detachCourses' => [
+                    'log' => 'Detach courses from the teacher.'
+                ],
                 'destroyImage' => [
                     'log' => 'Destroy the image of the teacher.'
                 ]
