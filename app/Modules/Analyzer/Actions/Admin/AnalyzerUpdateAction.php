@@ -196,7 +196,7 @@ class AnalyzerUpdateAction extends Action
                     Launcher::dispatch(
                         'Получение результатов анализа текста',
                         new AnalyzerSaveResultJob($analyzerModel->id),
-                        Auth::getUser()->id,
+                        Auth::getUser() ? Auth::getUser()->id : null,
                     )->delay(now()->addMinutes(2));
                 }
             }

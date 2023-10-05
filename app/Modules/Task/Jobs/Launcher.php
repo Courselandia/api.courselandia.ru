@@ -63,10 +63,10 @@ class Launcher implements ShouldQueue
     /**
      * @param string $name Название задания.
      * @param ShouldQueue $task Задание, которое должно быть выполнено в менеджере задач.
-     * @param int $userId ID пользователя, запускающего задание.
+     * @param int|null $userId ID пользователя, запускающего задание.
      * @param Task $taskModel Модель задачи.
      */
-    public function __construct(string $name, ShouldQueue $task, int $userId, Task $taskModel)
+    public function __construct(string $name, ShouldQueue $task, int|null $userId, Task $taskModel)
     {
         $this->name = $name;
         $this->task = $task;
@@ -114,7 +114,7 @@ class Launcher implements ShouldQueue
     {
         $taskEntity = new TaskEntity();
         $taskEntity->name = $arguments[0];
-        $taskEntity->user_id = $arguments[2];
+        $taskEntity->user_id = $arguments[2] ?? null;
         $taskEntity->status = Status::WAITING;
 
         $taskModel = Task::create($taskEntity->toArray());

@@ -17,7 +17,7 @@ class CreateTableTasks extends Migration
     {
         Schema::create('tasks', function (Blueprint $table) {
             $table->bigInteger('id', true)->unsigned();
-            $table->bigInteger('user_id')->unsigned()->index('user_id');
+            $table->bigInteger('user_id')->unsigned()->index('user_id')->nullable();
 
             $table->string('name', 191)->index('name');
             $table->text('reason')->nullable();
