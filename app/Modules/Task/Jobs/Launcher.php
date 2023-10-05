@@ -49,9 +49,9 @@ class Launcher implements ShouldQueue
     /**
      * ID пользователя, запускающего задание.
      *
-     * @var int
+     * @var int|null
      */
-    private int $userId;
+    private int|null $userId;
 
     /**
      * Модель задачи.
