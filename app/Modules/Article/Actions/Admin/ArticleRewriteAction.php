@@ -63,7 +63,7 @@ class ArticleRewriteAction extends Action
             Launcher::dispatch(
                 'Переписание статьи',
                 new ArticleSaveResultJob($this->id),
-                Auth::getUser()->id,
+                Auth::getUser() ? Auth::getUser()->id : null,
             )->delay(now()->addMinutes(2));
 
             Cache::tags(['article'])->flush();
