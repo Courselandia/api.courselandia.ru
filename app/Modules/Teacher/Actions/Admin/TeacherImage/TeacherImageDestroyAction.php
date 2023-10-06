@@ -58,8 +58,13 @@ class TeacherImageDestroyAction extends Action
                 ImageStore::destroy($teacher->image_middle_id->id);
             }
 
+            if ($teacher->image_big_id) {
+                ImageStore::destroy($teacher->image_big_id->id);
+            }
+
             $teacher->image_small_id = null;
             $teacher->image_middle_id = null;
+            $teacher->image_big_id = null;
 
             $teacher->save();
             Cache::tags(['catalog', 'teacher', 'direction', 'school'])->flush();

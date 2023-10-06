@@ -18,7 +18,10 @@ return [
                 'directions' => 'Directions',
                 'schools' => 'Schools',
                 'rating' => 'Rating',
+                'copied' => 'Copied',
                 'status' => 'Status',
+                'experiences' => 'Experiences',
+                'socialMedias' => 'Social Medias',
             ],
             'teacherUpdateStatusRequest' => [
                 'status' => 'Status',
@@ -39,6 +42,9 @@ return [
                 ],
                 'destroy' => [
                     'log' => 'Destroy the teacher.'
+                ],
+                'detachCourses' => [
+                    'log' => 'Detach courses from the teacher.'
                 ],
                 'destroyImage' => [
                     'log' => 'Destroy the image of the teacher.'

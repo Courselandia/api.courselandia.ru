@@ -46,6 +46,8 @@ class TeacherGetAction extends Action
                     'metatag',
                     'directions',
                     'schools',
+                    'experiences',
+                    'socialMedias',
                 ])->find($this->id);
 
                 if ($result) {

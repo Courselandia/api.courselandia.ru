@@ -27,7 +27,10 @@ class TeacherUpdateRequest extends TeacherCreateRequest
         'schools' => 'string',
         'schools.*' => 'string',
         'rating' => 'string',
-        'status' => 'string'
+        'copied' => 'string',
+        'status' => 'string',
+        'experiences' => 'string',
+        'experiences.*' => 'string',
     ])] public function rules(): array
     {
         return [
@@ -37,7 +40,10 @@ class TeacherUpdateRequest extends TeacherCreateRequest
             'schools' => 'array',
             'schools.*' => 'integer',
             'rating' => 'nullable|float',
+            'copied' => 'boolean',
             'status' => 'boolean',
+            'experiences' => 'array',
+            'experiences.*' => 'array:place,position,started,finished,weight',
         ];
     }
 
@@ -53,7 +59,10 @@ class TeacherUpdateRequest extends TeacherCreateRequest
         'schools' => 'string',
         'schools.*' => 'string',
         'rating' => 'string',
-        'status' => 'string'
+        'copied' => 'string',
+        'status' => 'string',
+        'experiences' => 'string',
+        'experiences.*' => 'string',
     ])] public function attributes(): array
     {
         return [
@@ -63,7 +72,10 @@ class TeacherUpdateRequest extends TeacherCreateRequest
             'schools' => trans('teacher::http.requests.admin.teacherCreateRequest.schools'),
             'schools.*' => trans('teacher::http.requests.admin.teacherCreateRequest.schools'),
             'rating' => trans('teacher::http.requests.admin.teacherCreateRequest.rating'),
+            'copied' => trans('teacher::http.requests.admin.teacherCreateRequest.copied'),
             'status' => trans('teacher::http.requests.admin.teacherCreateRequest.status'),
+            'experiences' => trans('teacher::http.requests.admin.teacherCreateRequest.experiences'),
+            'experiences.*' => trans('teacher::http.requests.admin.teacherCreateRequest.experiences'),
         ];
     }
 }

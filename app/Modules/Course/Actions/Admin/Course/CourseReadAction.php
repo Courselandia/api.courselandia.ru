@@ -53,6 +53,13 @@ class CourseReadAction extends Action
     public ?int $limit = null;
 
     /**
+     * ID учителя.
+     *
+     * @var int|string|null
+     */
+    public int|string|null $teacherId = null;
+
+    /**
      * Метод запуска логики.
      *
      * @return mixed Вернет результаты исполнения.
@@ -69,6 +76,7 @@ class CourseReadAction extends Action
             $this->filters,
             $this->offset,
             $this->limit,
+            $this->teacherId,
             'school',
             'directions',
             'professions',
@@ -85,6 +93,7 @@ class CourseReadAction extends Action
             'process',
             'employment',
             'review',
+            'teacher',
         ])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
@@ -106,6 +115,12 @@ class CourseReadAction extends Action
 
                 if ($this->limit) {
                     $query->limit($this->limit);
+                }
+
+                if ($this->teacherId) {
+                    $query->whereHas('teachers', function ($query) {
+                        $query->where('teachers.id', $this->teacherId);
+                    });
                 }
 
                 $items = $query->get()->toArray();

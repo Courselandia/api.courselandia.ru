@@ -46,7 +46,9 @@ class TeacherGetAction extends Action
                     ->with([
                         'metatag',
                         'directions',
-                        'schools'
+                        'schools',
+                        'experiences',
+                        'socialMedias',
                     ])
                     ->first();
 

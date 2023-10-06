@@ -18,7 +18,10 @@ return [
                 'directions' => 'Направления',
                 'schools' => 'Школы',
                 'rating' => 'Рейтинг',
+                'copied' => 'Скопировано',
                 'status' => 'Статус',
+                'experiences' => 'Опыт работы',
+                'socialMedias' => 'Социальные сетиё ',
             ],
             'teacherUpdateStatusRequest' => [
                 'status' => 'Статус',
@@ -39,6 +42,9 @@ return [
                 ],
                 'destroy' => [
                     'log' => 'Удаление учителя.'
+                ],
+                'detachCourses' => [
+                    'log' => 'Отсоединение курсов от учителя.'
                 ],
                 'destroyImage' => [
                     'log' => 'Удаление изображения учителя.'

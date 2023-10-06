@@ -8,11 +8,11 @@
 
 namespace App\Modules\Teacher\Entities;
 
+use Carbon\Carbon;
 use App\Models\Entities;
 use App\Models\Entity;
 use App\Modules\Direction\Entities\Direction;
 use App\Modules\School\Entities\School;
-use Carbon\Carbon;
 use App\Modules\Image\Entities\Image;
 use App\Modules\Metatag\Entities\Metatag;
 use Illuminate\Http\UploadedFile;
@@ -65,6 +65,27 @@ class Teacher extends Entity
     public ?float $rating = null;
 
     /**
+     * Город.
+     *
+     * @var string|null
+     */
+    public ?string $city = null;
+
+    /**
+     * Комментарий.
+     *
+     * @var string|null
+     */
+    public ?string $comment = null;
+
+    /**
+     * Скопировано.
+     *
+     * @var bool|null
+     */
+    public ?bool $copied = null;
+
+    /**
      * Изображение маленькое.
      *
      * @var int|UploadedFile|Image|null
@@ -77,6 +98,13 @@ class Teacher extends Entity
      * @var int|UploadedFile|Image|null
      */
     public int|UploadedFile|Image|null $image_middle_id = null;
+
+    /**
+     * Изображение большое.
+     *
+     * @var int|UploadedFile|Image|null
+     */
+    public int|UploadedFile|Image|null $image_big_id = null;
 
     /**
      * Метатеги.
@@ -128,4 +156,20 @@ class Teacher extends Entity
      */
     #[Entities(School::class)]
     public ?array $schools = null;
+
+    /**
+     * Опыт работы учителя.
+     *
+     * @var TeacherExperience[]
+     */
+    #[Entities(TeacherExperience::class)]
+    public ?array $experiences = null;
+
+    /**
+     * Социальные сети учителя.
+     *
+     * @var TeacherExperience[]
+     */
+    #[Entities(TeacherSocialMedia::class)]
+    public ?array $social_medias = null;
 }

@@ -35,6 +35,9 @@ class TeacherFactory extends Factory
         'metatag_id' => '\Illuminate\Database\Eloquent\Factories\Factory',
         'name' => 'string',
         'link' => 'string',
+        'city' => 'string',
+        'comment' => 'string',
+        'copied' => 'string',
         'text' => 'string',
         'rating' => 'float',
         'status' => 'bool'
@@ -43,6 +46,9 @@ class TeacherFactory extends Factory
         return [
             'metatag_id' => Metatag::factory(),
             'name' => $this->faker->text(160),
+            'city' => $this->faker->text(160),
+            'comment' => $this->faker->text(160),
+            'copied' => true,
             'link' => Util::latin($this->faker->text(160)),
             'text' => $this->faker->text(1000),
             'rating' => 4.27,

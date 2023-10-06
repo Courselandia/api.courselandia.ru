@@ -60,6 +60,7 @@ class TeacherImageUpdateAction extends Action
             if ($teacher) {
                 $teacher->image_small_id = $this->image;
                 $teacher->image_middle_id = $this->image;
+                $teacher->image_big_id = $this->image;
 
                 Teacher::find($this->id)->update($teacher->toArray());
                 Cache::tags(['catalog', 'teacher', 'direction', 'school'])->flush();

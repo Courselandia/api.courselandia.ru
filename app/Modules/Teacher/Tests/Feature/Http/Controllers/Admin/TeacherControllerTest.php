@@ -8,8 +8,11 @@
 
 namespace App\Modules\Teacher\Tests\Feature\Http\Controllers\Admin;
 
+use App\Modules\Course\Models\Course;
 use App\Modules\Direction\Models\Direction;
 use App\Modules\School\Models\School;
+use App\Modules\Teacher\Enums\SocialMedia;
+use Carbon\Carbon;
 use Util;
 use App\Models\Test\TokenTest;
 use App\Modules\Teacher\Models\Teacher;
@@ -60,6 +63,68 @@ class TeacherControllerTest extends TestCase
                 '*' => $this->getTeacherStructure()
             ],
             'total',
+            'success',
+        ]);
+    }
+
+    /**
+     * Чтение курсов учителя.
+     *
+     * @return void
+     */
+    public function testReadCourses(): void
+    {
+        $teacher = Teacher::factory()->create();
+        $directions = Direction::factory()->count(3)->create();
+        $schools = School::factory()->count(2)->create();
+        $courses = Course::factory()->count(2)->create();
+
+        $teacher->directions()->sync($directions);
+        $teacher->schools()->sync($schools);
+        $teacher->courses()->sync($courses);
+
+        $this->json(
+            'GET',
+            'api/private/admin/teacher/read/courses/' . $teacher->id,
+            [
+            ],
+            [
+                'Authorization' => 'Bearer ' . $this->getAdminToken()
+            ]
+        )->assertStatus(200)->assertJsonStructure([
+            'data' => [
+                '*' => [
+                    'id',
+                    'name',
+                    'uuid',
+                ]
+            ],
+            'total',
+            'success',
+        ]);
+    }
+
+    /**
+     * Отсоединение курсов от учителя.
+     *
+     * @return void
+     */
+    public function testDetachCourses(): void
+    {
+        $teacher = Teacher::factory()->create();
+        $courses = Course::factory()->count(2)->create();
+        $teacher->courses()->sync($courses);
+
+        $this->json(
+            'DELETE',
+            'api/private/admin/teacher/detach/courses/' . $teacher->id,
+            [
+                'ids' => [$courses[0]->id, $courses[1]->id],
+            ],
+            [
+                'Authorization' => 'Bearer ' . $this->getAdminToken()
+            ]
+        )->assertStatus(200)->assertJsonStructure([
             'success',
         ]);
     }
@@ -129,7 +194,7 @@ class TeacherControllerTest extends TestCase
                 'status' => true,
             ],
             [
-                'Authorization' => 'Bearer ' . $this->getAdminToken()
+                'Authorization' => 'Bearer ' . $this->getAdminToken(),
             ]
         )->assertStatus(200)->assertJsonStructure([
             'success',
@@ -160,6 +225,21 @@ class TeacherControllerTest extends TestCase
                 'image' => UploadedFile::fake()->image('teacher.jpg', 1500, 1500),
                 'directions' => $directions->pluck('id'),
                 'schools' => $schools->pluck('id'),
+                'experiences' => [
+                    [
+                        'place' => $faker->text(191),
+                        'position' => $faker->text(191),
+                        'weight' => $faker->numberBetween(1, 20),
+                        'started' => Carbon::now()->addMonths(-5)->format('Y-m-d H:i:s O'),
+                        'finished' => Carbon::now()->addMonths(-3)->format('Y-m-d H:i:s O'),
+                    ],
+                ],
+                'socialMedias' => [
+                    [
+                        'name' => SocialMedia::FACEBOOK->value,
+                        'value' => $faker->text(191),
+                    ],
+                ],
             ],
             [
                 'Authorization' => 'Bearer ' . $this->getAdminToken()
@@ -227,6 +307,21 @@ class TeacherControllerTest extends TestCase
                 'image' => UploadedFile::fake()->image('teacher.jpg', 1500, 1500),
                 'directions' => $directions->pluck('id'),
                 'schools' => $schools->pluck('id'),
+                'experiences' => [
+                    [
+                        'place' => $faker->text(191),
+                        'position' => $faker->text(191),
+                        'weight' => $faker->numberBetween(1, 20),
+                        'started' => Carbon::now()->addMonths(-5)->format('Y-m-d H:i:s O'),
+                        'finished' => Carbon::now()->addMonths(-3)->format('Y-m-d H:i:s O'),
+                    ],
+                ],
+                'socialMedias' => [
+                    [
+                        'name' => SocialMedia::FACEBOOK->value,
+                        'value' => $faker->text(191),
+                    ],
+                ],
             ],
             [
                 'Authorization' => 'Bearer ' . $this->getAdminToken()
