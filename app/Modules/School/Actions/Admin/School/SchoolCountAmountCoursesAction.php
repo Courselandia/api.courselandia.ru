@@ -77,6 +77,7 @@ class SchoolCountAmountCoursesAction extends Action
             ];
 
             $oldAmountCourses = $school->amount_courses;
+            $oldAmountCourses = $oldAmountCourses ?? [];
             ksort($amountCourses);
             ksort($oldAmountCourses);
 
