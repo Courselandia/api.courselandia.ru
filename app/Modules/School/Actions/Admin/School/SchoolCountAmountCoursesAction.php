@@ -84,7 +84,6 @@ class SchoolCountAmountCoursesAction extends Action
                 $school->amount_courses = $amountCourses;
 
                 $school->save();
-                exit;
             }
 
             $this->fireEvent('saved');
