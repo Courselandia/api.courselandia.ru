@@ -12,6 +12,6 @@ Route::group([
         Route::post('clean/', 'Admin\CoreController@clean')
             ->name('clean');
 
-        Route::get('typography/', 'Admin\CoreController@typography')
+        Route::post('typography/', 'Admin\CoreController@typography')
             ->name('typography');
     });
