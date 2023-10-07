@@ -27,6 +27,7 @@ class SchoolsItemJob extends JsonItemJob
     public function handle(): void
     {
         $action = app(SchoolReadAction::class);
+        $action->sorts = ['name' => 'ASC'];
         $data = $action->run();
 
         if ($data) {

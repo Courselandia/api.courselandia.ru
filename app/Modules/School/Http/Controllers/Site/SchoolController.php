@@ -95,7 +95,7 @@ class SchoolController extends Controller
     public function read(SchoolReadRequest $request): JsonResponse
     {
         $action = app(SchoolReadAction::class);
-        $action->sorts = $request->get('sorts');
+        $action->sorts = $request->get('sorts', ['name' => 'ASC']);
         $action->offset = $request->get('offset');
         $action->limit = $request->get('limit');
 
