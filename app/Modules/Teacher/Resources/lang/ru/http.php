@@ -15,6 +15,7 @@ return [
             ],
             'teacherCreateRequest' => [
                 'image' => 'Изображение',
+                'imageCroppedOptions' => 'Настройки порезанноего изображения',
                 'directions' => 'Направления',
                 'schools' => 'Школы',
                 'rating' => 'Рейтинг',

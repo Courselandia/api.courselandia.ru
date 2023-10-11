@@ -11,7 +11,7 @@ namespace App\Modules\Teacher\Actions\Admin\Teacher;
 use App\Modules\Teacher\Enums\SocialMedia;
 use DB;
 use Cache;
-use Config;
+use ImageStore;
 use Throwable;
 use Typography;
 use Carbon\Carbon;
@@ -89,6 +89,20 @@ class TeacherCreateAction extends Action
      * @var int|UploadedFile|Image|null
      */
     public int|UploadedFile|Image|null $image = null;
+
+    /**
+     * Порезанное изображение в бинарных данных.
+     *
+     * @var string|null
+     */
+    public string|null $imageCropped = null;
+
+    /**
+     * Опции порезанного изображения.
+     *
+     * @var array|null
+     */
+    public array|null $imageCroppedOptions = null;
 
     /**
      * Статус.
@@ -182,10 +196,20 @@ class TeacherCreateAction extends Action
             $teacherEntity->comment = $this->comment;
             $teacherEntity->copied = $this->copied;
             $teacherEntity->image_small_id = $this->image;
-            $teacherEntity->image_middle_id = $this->image;
             $teacherEntity->image_big_id = $this->image;
             $teacherEntity->status = $this->status;
             $teacherEntity->metatag_id = $metatag->id;
+
+            if ($this->imageCropped) {
+                list(, $data) = explode(';', $this->imageCropped);
+                list(, $data) = explode(',', $data);
+                $data = base64_decode($data);
+                $imageName = ImageStore::tmp('webp');
+                file_put_contents($imageName, $data);
+
+                $teacherEntity->image_middle_id = new UploadedFile($imageName, basename($imageName), 'image/webp');
+                $teacherEntity->image_cropped_options = $this->imageCroppedOptions;
+            }
 
             $teacher = Teacher::create($teacherEntity->toArray());
             $teacher->directions()->sync($this->directions ?: []);

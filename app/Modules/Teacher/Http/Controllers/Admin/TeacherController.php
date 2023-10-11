@@ -177,6 +177,11 @@ class TeacherController extends Controller
                 $action->image = $request->file('image');
             }
 
+            if ($request->get('imageCropped')) {
+                $action->imageCropped = $request->get('imageCropped');
+                $action->imageCroppedOptions = $request->get('imageCroppedOptions');
+            }
+
             $data = $action->run();
 
             Log::info(

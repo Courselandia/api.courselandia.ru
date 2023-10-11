@@ -107,6 +107,13 @@ class Teacher extends Entity
     public int|UploadedFile|Image|null $image_big_id = null;
 
     /**
+     * Опции порезанного изображения.
+     *
+     * @var array|null
+     */
+    public array|null $image_cropped_options = null;
+
+    /**
      * Метатеги.
      *
      * @var Metatag|null

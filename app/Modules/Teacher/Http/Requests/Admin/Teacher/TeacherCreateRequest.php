@@ -23,6 +23,8 @@ class TeacherCreateRequest extends FormRequest
      */
     #[ArrayShape([
         'image' => 'string',
+        'imageCropped' => 'string',
+        'imageCroppedOptions' => 'string',
         'directions' => 'string',
         'directions.*' => 'string',
         'schools' => 'string',
@@ -38,6 +40,7 @@ class TeacherCreateRequest extends FormRequest
     {
         return [
             'image' => 'nullable|media:jpg,png,gif,webp,svg',
+            'imageCroppedOptions' => 'nullable|array',
             'directions' => 'array',
             'directions.*' => 'exists_soft:directions,id',
             'schools' => 'array',
@@ -59,6 +62,8 @@ class TeacherCreateRequest extends FormRequest
      */
     #[ArrayShape([
         'image' => 'string',
+        'imageCropped' => 'string',
+        'imageCroppedOptions' => 'string',
         'directions' => 'string',
         'directions.*' => 'string',
         'schools' => 'string',
@@ -74,6 +79,7 @@ class TeacherCreateRequest extends FormRequest
     {
         return [
             'image' => trans('teacher::http.requests.admin.teacherCreateRequest.image'),
+            'imageCroppedOptions' => trans('teacher::http.requests.admin.teacherCreateRequest.imageCroppedOptions'),
             'directions' => trans('teacher::http.requests.admin.teacherCreateRequest.directions'),
             'directions.*' => trans('teacher::http.requests.admin.teacherCreateRequest.directions'),
             'schools' => trans('teacher::http.requests.admin.teacherCreateRequest.schools'),

@@ -8,12 +8,7 @@
 
 namespace App\Modules\Teacher\Models;
 
-use App\Modules\Course\Models\Course;
-use App\Modules\Direction\Models\Direction;
-use App\Modules\School\Models\School;
 use Exception;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Size;
 use Eloquent;
 use ImageStore;
@@ -29,6 +24,9 @@ use App\Modules\Image\Helpers\Image;
 use App\Modules\Metatag\Models\Metatag;
 use Illuminate\Http\UploadedFile;
 use JetBrains\PhpStorm\ArrayShape;
+use App\Modules\Course\Models\Course;
+use App\Modules\Direction\Models\Direction;
+use App\Modules\School\Models\School;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -36,6 +34,8 @@ use App\Modules\Teacher\Database\Factories\TeacherFactory;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Modules\Teacher\Filters\TeacherFilter;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * Класс модель для таблицы учителя на основе Eloquent.
@@ -90,6 +90,11 @@ class Teacher extends Eloquent
         'image_small_id',
         'image_middle_id',
         'image_big_id',
+        'image_cropped_options',
+    ];
+
+    protected $casts = [
+        'image_cropped_options' => 'array',
     ];
 
     /**
@@ -108,6 +113,7 @@ class Teacher extends Eloquent
         'text' => 'string',
         'rating' => 'string',
         'status' => 'string',
+        'image_cropped_options' => 'string',
     ])] protected function getRules(): array
     {
         return [
@@ -119,7 +125,8 @@ class Teacher extends Eloquent
             'comment' => 'max:191',
             'copied' => 'boolean',
             'rating' => 'nullable|float|float_between:0,5',
-            'status' => 'required|boolean'
+            'status' => 'required|boolean',
+            'image_cropped_options' => 'nullable|json',
         ];
     }
 
@@ -140,6 +147,7 @@ class Teacher extends Eloquent
             'text' => trans('teacher::models.teacher.text'),
             'image_small_id' => trans('teacher::models.teacher.imageSmallId'),
             'image_middle_id' => trans('teacher::models.teacher.imageMiddleId'),
+            'image_cropped_options' => trans('teacher::models.teacher.imageCroppedOptions'),
             'image_big_id' => trans('teacher::models.teacher.imageBigId'),
             'rating' => trans('teacher::models.teacher.rating'),
             'status' => trans('teacher::models.teacher.status')
@@ -237,16 +245,11 @@ class Teacher extends Eloquent
             function (string $name, UploadedFile $value) use ($folder) {
                 $path = ImageStore::tmp($value->getClientOriginalExtension());
 
-                Size::make($value)->resize(
-                    500,
-                    null,
-                    function ($constraint) {
-                        $constraint->aspectRatio();
-                        $constraint->upsize();
-                    }
-                )->save($path);
+                Size::make($value)->save($path);
 
-                $imageWebp = WebPConverter::createWebpImage($path, ['saveFile' => true]);
+                $imageWebp = $value->getClientOriginalExtension() !== 'webp'
+                    ? WebPConverter::createWebpImage($path, ['saveFile' => true])
+                    : ['path' => $path];
 
                 ImageStore::setFolder($folder);
                 $image = new ImageEntity();
@@ -296,14 +299,7 @@ class Teacher extends Eloquent
             function (string $name, UploadedFile $value) use ($folder) {
                 $path = ImageStore::tmp($value->getClientOriginalExtension());
 
-                Size::make($value)->resize(
-                    1000,
-                    null,
-                    function ($constraint) {
-                        $constraint->aspectRatio();
-                        $constraint->upsize();
-                    }
-                )->save($path);
+                Size::make($value)->save($path);
 
                 $imageWebp = WebPConverter::createWebpImage($path, ['saveFile' => true]);
 

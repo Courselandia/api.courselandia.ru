@@ -14,6 +14,7 @@ return [
         'city' => 'City',
         'comment' => 'Comment',
         'copied' => 'Copied',
+        'imageCroppedOptions' => 'Image Cropped Options',
     ],
     'teacherExperience' => [
         'teacher_id' => 'ID teacher',

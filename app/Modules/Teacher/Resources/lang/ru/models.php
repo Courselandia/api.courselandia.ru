@@ -14,6 +14,7 @@ return [
         'city' => 'Город',
         'comment' => 'Комментарий',
         'copied' => 'Скопирован',
+        'imageCroppedOptions' => 'Настройки порезанноего изображения',
     ],
     'teacherExperience' => [
         'teacher_id' => 'ID учителя',
