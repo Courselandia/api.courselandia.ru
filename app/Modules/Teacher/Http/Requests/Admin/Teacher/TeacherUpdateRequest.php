@@ -22,6 +22,7 @@ class TeacherUpdateRequest extends TeacherCreateRequest
      */
     #[ArrayShape([
         'image' => 'string',
+        'imageCroppedOptions' => 'string',
         'directions' => 'string',
         'directions.*' => 'string',
         'schools' => 'string',
@@ -34,7 +35,8 @@ class TeacherUpdateRequest extends TeacherCreateRequest
     ])] public function rules(): array
     {
         return [
-            'image' => 'nullable|media:jpg,png,gif,webp,svg',
+            'image' => 'nullable|file|media:jpg,png,gif,webp,svg',
+            'imageCroppedOptions' => 'nullable|array',
             'directions' => 'array',
             'directions.*' => 'integer',
             'schools' => 'array',
@@ -54,6 +56,7 @@ class TeacherUpdateRequest extends TeacherCreateRequest
      */
     #[ArrayShape([
         'image' => 'string',
+        'imageCroppedOptions' => 'string',
         'directions' => 'string',
         'directions.*' => 'string',
         'schools' => 'string',
@@ -67,6 +70,7 @@ class TeacherUpdateRequest extends TeacherCreateRequest
     {
         return [
             'image' => trans('teacher::http.requests.admin.teacherCreateRequest.image'),
+            'imageCroppedOptions' => trans('teacher::http.requests.admin.teacherCreateRequest.imageCroppedOptions'),
             'directions' => trans('teacher::http.requests.admin.teacherCreateRequest.directions'),
             'directions.*' => trans('teacher::http.requests.admin.teacherCreateRequest.directions'),
             'schools' => trans('teacher::http.requests.admin.teacherCreateRequest.schools'),

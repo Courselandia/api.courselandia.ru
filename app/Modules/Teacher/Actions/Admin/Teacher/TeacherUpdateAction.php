@@ -12,6 +12,7 @@ use Carbon\Carbon;
 use Config;
 use DB;
 use Cache;
+use ImageStore;
 use Throwable;
 use Typography;
 use App\Models\Action;
@@ -99,6 +100,20 @@ class TeacherUpdateAction extends Action
      * @var int|UploadedFile|Image|null
      */
     public int|UploadedFile|Image|null $image = null;
+
+    /**
+     * Порезанное изображение в бинарных данных.
+     *
+     * @var string|null
+     */
+    public string|null $imageCropped = null;
+
+    /**
+     * Опции порезанного изображения.
+     *
+     * @var array|null
+     */
+    public array|null $imageCroppedOptions = null;
 
     /**
      * Статус.
@@ -207,9 +222,20 @@ class TeacherUpdateAction extends Action
                 $teacherEntity->status = $this->status;
 
                 if ($this->image) {
+                    echo "HERE \n\n";
                     $teacherEntity->image_big_id = $this->image;
-                    $teacherEntity->image_middle_id = $this->image;
                     $teacherEntity->image_small_id = $this->image;
+                }
+
+                if ($this->imageCropped) {
+                    list(, $data) = explode(';', $this->imageCropped);
+                    list(, $data) = explode(',', $data);
+                    $data = base64_decode($data);
+                    $imageName = ImageStore::tmp('webp');
+                    file_put_contents($imageName, $data);
+
+                    $teacherEntity->image_middle_id = new UploadedFile($imageName, basename($imageName), 'image/webp');
+                    $teacherEntity->image_cropped_options = $this->imageCroppedOptions;
                 }
 
                 $teacher = Teacher::find($this->id);

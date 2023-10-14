@@ -193,7 +193,14 @@ class Teacher extends Eloquent
             function (string $name, UploadedFile $value) use ($folder) {
                 $path = ImageStore::tmp($value->getClientOriginalExtension());
 
-                Size::make($value)->fit(150, 150)->save($path);
+                Size::make($value)->resize(
+                    500,
+                    null,
+                    function ($constraint) {
+                        $constraint->aspectRatio();
+                        $constraint->upsize();
+                    }
+                )->save($path);
 
                 $imageWebp = WebPConverter::createWebpImage($path, ['saveFile' => true]);
 

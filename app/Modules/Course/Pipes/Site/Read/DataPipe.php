@@ -103,9 +103,7 @@ class DataPipe implements Pipe
         unset($entity->limit);
 
         $description = $entity->description ? clone $entity->description : null;
-        //print_r($entity);
         $entity = Clean::do($entity, self::REMOVES);
-        //$entity = Clean::do($entity, self::REMOVES_IF_NULL, true);
 
         /**
          * @var CourseRead $entity

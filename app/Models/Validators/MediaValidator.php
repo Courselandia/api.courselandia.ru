@@ -24,7 +24,7 @@ class MediaValidator
      *
      * @return bool Вернет результат валидации.
      */
-    public function validate(?string $attribute, UploadedFile | string $value, array $parameters): bool
+    public function validate(?string $attribute, mixed $value, array $parameters): bool
     {
         if (!$value instanceof UploadedFile) {
             return false;

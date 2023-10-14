@@ -23,7 +23,6 @@ class TeacherCreateRequest extends FormRequest
      */
     #[ArrayShape([
         'image' => 'string',
-        'imageCropped' => 'string',
         'imageCroppedOptions' => 'string',
         'directions' => 'string',
         'directions.*' => 'string',
@@ -39,7 +38,7 @@ class TeacherCreateRequest extends FormRequest
     ])] public function rules(): array
     {
         return [
-            'image' => 'nullable|media:jpg,png,gif,webp,svg',
+            'image' => 'nullable|file|media:jpg,png,gif,webp,svg',
             'imageCroppedOptions' => 'nullable|array',
             'directions' => 'array',
             'directions.*' => 'exists_soft:directions,id',
@@ -62,7 +61,6 @@ class TeacherCreateRequest extends FormRequest
      */
     #[ArrayShape([
         'image' => 'string',
-        'imageCropped' => 'string',
         'imageCroppedOptions' => 'string',
         'directions' => 'string',
         'directions.*' => 'string',
