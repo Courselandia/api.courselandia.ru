@@ -8,6 +8,7 @@
 
 namespace App\Modules\Teacher\Providers;
 
+use App\Modules\Teacher\Commands\UploadPhotosCommand;
 use Config;
 use Illuminate\Support\ServiceProvider;
 
@@ -41,6 +42,9 @@ class TeacherServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
+        $this->commands([
+            UploadPhotosCommand::class,
+        ]);
     }
 
     /**
