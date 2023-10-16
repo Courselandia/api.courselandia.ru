@@ -8,6 +8,7 @@
 
 namespace App\Modules\Teacher\Upload;
 
+use Throwable;
 use Storage;
 use App\Models\Event;
 use GuzzleHttp\Client;
@@ -40,21 +41,34 @@ class Photo
 
         foreach ($items as $item) {
             if ($item['photo']) {
-                $urlToImage = self::DOMAIN . $item['photo']['origin'];
+                $parse = parse_url($item['photo']['origin']);
+
+                if (isset($parse['host'])) {
+                    $urlToImage = $item['photo']['origin'];
+                } else {
+                    $urlToImage = self::DOMAIN . $item['photo']['origin'];
+                }
 
                 $ext = pathinfo($urlToImage, PATHINFO_EXTENSION);
                 $nameFile = 'teachers/' . $item['slug'];
                 $path = $nameFile . '.' . $ext;
 
+                if ($ext === 'webp') {
+                    $path = $nameFile . '.jpeg';
+                }
+
                 if (!Storage::disk('local')->exists($path)) {
-                    if ($ext === 'webp') {
-                        $im = imagecreatefromwebp($urlToImage);
-                        $path = $nameFile . '.jpeg';
-                        Storage::disk('local')->put($path, '');
-                        imagejpeg($im, Storage::disk('local')->path($path));
-                    } else {
-                        $bites = file_get_contents($urlToImage);
-                        Storage::disk('local')->put('/teachers/' . $item['slug'] . '.' . $ext, $bites);
+                    try {
+                        if ($ext === 'webp') {
+                            $im = imagecreatefromwebp($urlToImage);
+                            Storage::disk('local')->put($path, '');
+                            imagejpeg($im, Storage::disk('local')->path($path));
+                        } else {
+                            $bites = file_get_contents($urlToImage);
+                            Storage::disk('local')->put($path, $bites);
+                        }
+                    } catch (Throwable) {
+                        continue;
                     }
                 }
 

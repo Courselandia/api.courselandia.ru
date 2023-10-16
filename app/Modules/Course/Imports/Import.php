@@ -247,7 +247,7 @@ class Import
                     'currency' => $courseEntity->currency?->value || Currency::RUB,
                 ];
 
-                $templateTitle = 'Курс {course} от {school:genitive} [price:по цене {price}|бесплатно] — Courselandia';
+                $templateTitle = 'Курс {course} от {school:genitive} [price:по цене {price}/бесплатно] — Courselandia';
                 $templateDescription = 'Приступите к программе обучения прям сейчас онлайн-курса {course} от {school:genitive} выбрав его в каталоге Courselandia, легкий поиск, возможность сравнивать курсы по разным параметрам';
                 $headerTemplate = '{course} от {school:genitive}';
 
