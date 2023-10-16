@@ -23,6 +23,7 @@ use App\Modules\Course\Enums\Status;
 use App\Modules\Course\Models\Course;
 use App\Modules\Direction\Enums\Direction;
 use Illuminate\Database\Eloquent\Builder;
+use Throwable;
 
 /**
  * Экспортирование курсов в формате YML.
@@ -54,6 +55,11 @@ class Export
         $this->xml = new DomDocument('1.0', 'utf-8');
     }
 
+    /**
+     * Запуск экспорта.
+     *
+     * @throws DOMException
+     */
     public function run(): void
     {
         Cache::flush();
@@ -88,6 +94,7 @@ class Export
      * Экспортирование курсов.
      *
      * @return void
+     * @throws DOMException
      */
     private function exports(): void
     {
@@ -149,73 +156,62 @@ class Export
         $offers = $this->xml->createElement('offers');
 
         foreach ($this->getOffer() as $offerEntity) {
-            $offer = $this->xml->createElement('offer');
-            $offer->setAttribute('id', $offerEntity->id);
-            $offer->appendChild($this->xml->createElement('name', $offerEntity->name));
-            $offer->appendChild($this->xml->createElement('url', $offerEntity->url));
-            $offer->appendChild($this->xml->createElement('categoryId', $offerEntity->categoryId));
-            $offer->appendChild($this->xml->createElement('currencyId', $offerEntity->currencyId));
-            $offer->appendChild($this->xml->createElement('picture', $offerEntity->picture));
-            $offer->appendChild($this->xml->createElement('description', $offerEntity->description));
+            try {
+                $offer = $this->xml->createElement('offer');
+                $offer->setAttribute('id', $offerEntity->id);
+                $offer->appendChild($this->xml->createElement('name', $offerEntity->name));
+                $offer->appendChild($this->xml->createElement('url', $offerEntity->url));
+                $offer->appendChild($this->xml->createElement('categoryId', $offerEntity->categoryId));
+                $offer->appendChild($this->xml->createElement('currencyId', $offerEntity->currencyId));
+                $offer->appendChild($this->xml->createElement('picture', $offerEntity->picture));
+                $offer->appendChild($this->xml->createElement('description', $offerEntity->description));
 
-            if ($offerEntity->price_recurrent) {
-                $param = $this->xml->createElement('param', $offerEntity->price_recurrent);
-                $param->setAttribute('name', 'Ежемесячная цена');
-                $param->setAttribute('unit', 'месяц');
-                $offer->appendChild($param);
-            }
-
-            if ($offerEntity->price_old) {
-                $param = $this->xml->createElement('price', $offerEntity->price_old);
-                $offer->appendChild($param);
-
-                $param = $this->xml->createElement('param', $offerEntity->price);
-                $param->setAttribute('name', 'Цена по скидке');
-                $offer->appendChild($param);
-            } else {
-                $param = $this->xml->createElement('price', $offerEntity->price);
-                $offer->appendChild($param);
-            }
-
-            if ($offerEntity->duration && $offerEntity->duration_unit) {
-                $param = $this->xml->createElement('param', $offerEntity->duration);
-                $param->setAttribute('name', 'Продолжительность');
-                $param->setAttribute('unit', $offerEntity->duration_unit);
-                $offer->appendChild($param);
-            }
-
-            if ($offerEntity->program) {
-                for ($i = 0; $i < count($offerEntity->program); $i++) {
-                    $param = $this->xml->createElement('param', $this->getNormalizeAlphabet($offerEntity->program[$i]->description));
-                    $param->setAttribute('name', 'План');
-                    $param->setAttribute('unit', $offerEntity->program[$i]->unit);
-                    $param->setAttribute('order', $i + 1);
+                if ($offerEntity->price_recurrent) {
+                    $param = $this->xml->createElement('param', $offerEntity->price_recurrent);
+                    $param->setAttribute('name', 'Ежемесячная цена');
+                    $param->setAttribute('unit', 'месяц');
                     $offer->appendChild($param);
                 }
-            }
 
-            $offers->appendChild($offer);
-            $this->fireEvent('export', [$offer]);
+                if ($offerEntity->price_old) {
+                    $param = $this->xml->createElement('price', $offerEntity->price_old);
+                    $offer->appendChild($param);
+
+                    $param = $this->xml->createElement('param', $offerEntity->price);
+                    $param->setAttribute('name', 'Цена по скидке');
+                    $offer->appendChild($param);
+                } else {
+                    $param = $this->xml->createElement('price', $offerEntity->price);
+                    $offer->appendChild($param);
+                }
+
+                if ($offerEntity->duration && $offerEntity->duration_unit) {
+                    $param = $this->xml->createElement('param', $offerEntity->duration);
+                    $param->setAttribute('name', 'Продолжительность');
+                    $param->setAttribute('unit', $offerEntity->duration_unit);
+                    $offer->appendChild($param);
+                }
+
+                if ($offerEntity->program) {
+                    for ($i = 0; $i < count($offerEntity->program); $i++) {
+                        $value = $this->getNormalizeAlphabet($offerEntity->program[$i]->description);
+                        $param = $this->xml->createElement('param');
+                        $param->setAttribute('name', 'План');
+                        $param->setAttribute('unit', $offerEntity->program[$i]->unit);
+                        $param->setAttribute('order', $i + 1);
+                        $param->appendChild($this->xml->createCDATASection($value));
+                        $offer->appendChild($param);
+                    }
+                }
+
+                $offers->appendChild($offer);
+                $this->fireEvent('export', [$offer]);
+            } catch (DOMException $error) {
+                $this->addError($error);
+            }
         }
 
         $this->root->getElementsByTagName('shop')->item(0)->appendChild($offers);
-
-        try {
-            //$this->getQuery()->get();
-
-            /*
-            $schoolEntity = $this->getSchool();
-            $shop = $this->xml->createElement('shop');
-            $shop->appendChild($this->xml->createElement('name', $schoolEntity->name));
-            $shop->appendChild($this->xml->createElement('company', $schoolEntity->company));
-            $shop->appendChild($this->xml->createElement('url', $schoolEntity->url));
-            $shop->appendChild($this->xml->createElement('email', $schoolEntity->email));
-            $shop->appendChild($this->xml->createElement('picture', $schoolEntity->picture));
-            $shop->appendChild($this->xml->createElement('description', $schoolEntity->description));
-            $this->root->appendChild($shop);*/
-        } catch (DOMException $error) {
-            //$this->addError($error);
-        }
     }
 
     /**
@@ -239,33 +235,37 @@ class Export
                     continue;
                 }
 
-                $offer = new Offer();
-                $offer->id = $result['id'];
-                $offer->name = $this->getNormalizeAlphabet($result['name']);
-                $offer->url = Config::get('app.url') . '/courses/show/' . $result['school']['link'] . '/' . $result['link'];
-                $offer->categoryId = $this->getNegotiatedCategory(Direction::from($result['directions'][0]['id']));
-                $offer->price_recurrent = $result['price_recurrent'];
-                $offer->price = $result['price'] ?? 0;
-                $offer->price_old = $result['price_old'];
-                $offer->currencyId = 'RUR';
+                try {
+                    $offer = new Offer();
+                    $offer->id = $result['id'];
+                    $offer->name = $this->getNormalizeAlphabet($result['name']);
+                    $offer->url = Config::get('app.url') . '/courses/show/' . $result['school']['link'] . '/' . $result['link'];
+                    $offer->categoryId = $this->getNegotiatedCategory(Direction::from($result['directions'][0]['id']));
+                    $offer->price_recurrent = $result['price_recurrent'];
+                    $offer->price = $result['price'] ?? 0;
+                    $offer->price_old = $result['price_old'];
+                    $offer->currencyId = 'RUR';
 
-                if ($result['duration'] && $result['duration_unit']) {
-                    $offer->duration = $this->getDuration($result['duration'], Duration::from($result['duration_unit']));
-                    $offer->duration_unit = $this->getNegotiatedDuration(Duration::from($result['duration_unit']));
-                }
-
-                $offer->picture = $result['image_middle_id']->path;
-                $offer->description = strip_tags($result['text']);
-
-                if ($result['program']) {
-                    $offer->program = [];
-
-                    for ($z = 0; $z < count($result['program']); $z++) {
-                        $offer->program[] = $this->getProgramItem($result['program'][$z]);
+                    if ($result['duration'] && $result['duration_unit']) {
+                        $offer->duration = $this->getDuration($result['duration'], Duration::from($result['duration_unit']));
+                        $offer->duration_unit = $this->getNegotiatedDuration(Duration::from($result['duration_unit']));
                     }
-                }
 
-                yield $offer;
+                    $offer->picture = $result['image_middle_id']->path;
+                    $offer->description = strip_tags($result['text']);
+
+                    if ($result['program']) {
+                        $offer->program = [];
+
+                        for ($z = 0; $z < count($result['program']); $z++) {
+                            $offer->program[] = $this->getProgramItem($result['program'][$z]);
+                        }
+                    }
+
+                    yield $offer;
+                } catch (Throwable $error) {
+                    $this->addError($error);
+                }
             }
         }
     }

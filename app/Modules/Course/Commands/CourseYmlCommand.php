@@ -9,6 +9,7 @@
 namespace App\Modules\Course\Commands;
 
 use Log;
+use DOMException;
 use Illuminate\Console\Command;
 use App\Modules\Course\Yml\Export;
 
@@ -35,6 +36,7 @@ class CourseYmlCommand extends Command
      * Выполнение команды.
      *
      * @return void
+     * @throws DOMException
      */
     public function handle(): void
     {
