@@ -94,6 +94,7 @@ class Export
         $this->generateRootElement();
         $this->generateSchoolElement();
         $this->generateCurrenciesElement();
+        $this->generateOffersElement();
         $this->saveInFile();
     }
 
@@ -159,14 +160,7 @@ class Export
 
             if ($offerEntity->price_recurrent) {
                 $param = $this->xml->createElement('param', $offerEntity->price_recurrent);
-                $param->setAttribute('name', 'Оплата в рассрочку');
-                $param->setAttribute('unit', 'месяц');
-                $offer->appendChild($param);
-            }
-
-            if ($offerEntity->price_old) {
-                $param = $this->xml->createElement('param', $offerEntity->price_old);
-                $param->setAttribute('name', 'Оплата в рассрочку');
+                $param->setAttribute('name', 'Ежемесячная цена');
                 $param->setAttribute('unit', 'месяц');
                 $offer->appendChild($param);
             }
@@ -192,7 +186,7 @@ class Export
 
             if ($offerEntity->program) {
                 for ($i = 0; $i < count($offerEntity->program); $i++) {
-                    $param = $this->xml->createElement('param', $offerEntity->program[$i]->description);
+                    $param = $this->xml->createElement('param', $this->getNormalizeAlphabet($offerEntity->program[$i]->description));
                     $param->setAttribute('name', 'План');
                     $param->setAttribute('unit', $offerEntity->program[$i]->unit);
                     $param->setAttribute('order', $i + 1);
@@ -201,6 +195,7 @@ class Export
             }
 
             $offers->appendChild($offer);
+            $this->fireEvent('export', [$offer]);
         }
 
         $this->root->getElementsByTagName('shop')->item(0)->appendChild($offers);
@@ -240,14 +235,14 @@ class Export
                 ?->toArray();
 
             if ($result) {
-                if (!$result['text'] && count($result['directions']) && $result['image_middle_id']) {
+                if (!$result['text'] || !count($result['directions']) || !$result['image_middle_id']) {
                     continue;
                 }
 
                 $offer = new Offer();
                 $offer->id = $result['id'];
-                $offer->name = $result['name'];
-                $offer->url = Course::get('app.url') . '/courses/show/' . $result['school']['link'] . '/' . $result['link'];
+                $offer->name = $this->getNormalizeAlphabet($result['name']);
+                $offer->url = Config::get('app.url') . '/courses/show/' . $result['school']['link'] . '/' . $result['link'];
                 $offer->categoryId = $this->getNegotiatedCategory(Direction::from($result['directions'][0]['id']));
                 $offer->price_recurrent = $result['price_recurrent'];
                 $offer->price = $result['price'] ?? 0;
@@ -259,14 +254,14 @@ class Export
                     $offer->duration_unit = $this->getNegotiatedDuration(Duration::from($result['duration_unit']));
                 }
 
-                $offer->picture = $result['image_middle_id']['path'];
+                $offer->picture = $result['image_middle_id']->path;
                 $offer->description = strip_tags($result['text']);
 
                 if ($result['program']) {
                     $offer->program = [];
 
-                    for ($i = 0; $i < count($result['program']); $i++) {
-                        $offer->program[] = $this->getProgramItem($result['program']);
+                    for ($z = 0; $z < count($result['program']); $z++) {
+                        $offer->program[] = $this->getProgramItem($result['program'][$z]);
                     }
                 }
 
@@ -353,13 +348,7 @@ class Export
      */
     private function getQuery(): Builder
     {
-        return Course::select([
-            'id',
-            'school_id',
-            'link',
-            'updated_at',
-        ])
-        ->with([
+        return Course::with([
             'school' => function ($query) {
                 $query->select([
                     'schools.id',
@@ -370,10 +359,10 @@ class Export
                 $query->where('status', true);
             },
         ])
-        ->where('status', Status::ACTIVE->value)
-        ->whereHas('school', function ($query) {
-            $query->where('status', true);
-        });
+            ->where('status', Status::ACTIVE->value)
+            ->whereHas('school', function ($query) {
+                $query->where('status', true);
+            });
     }
 
     /**
@@ -474,17 +463,32 @@ class Export
         $programItem->unit = $item['name'];
         $programItem->description = strip_tags($item['text']);
 
-        if ($item['children']) {
+        if (isset($item['children'])) {
             $description = '';
 
             for ($i = 0; $i < count($item['children']); $i++) {
                 $programItemInside = $this->getProgramItem($item['children'][$i]);
-                $description = $programItemInside->unit . "\n" . $programItemInside->description . "\n";
+                $description .= $programItemInside->unit . "\n" . strip_tags($programItemInside->description) . "\n";
             }
 
             $programItem->description .= "\n" . $description;
         }
 
         return $programItem;
+    }
+
+    /**
+     * Перевод значений для XML тгов.
+     *
+     * @param string $string Строка для перевода.
+     * @return string Обработанная строка.
+     */
+    private function getNormalizeAlphabet(string $string): string
+    {
+        return str_replace(
+            ['A', '&', '"', '&',],
+            ['A', '&', '\'', '',],
+            trim($string)
+        );
     }
 }
