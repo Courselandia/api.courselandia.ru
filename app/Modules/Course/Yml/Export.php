@@ -149,6 +149,56 @@ class Export
 
         foreach ($this->getOffer() as $offerEntity) {
             $offer = $this->xml->createElement('offer');
+            $offer->setAttribute('id', $offerEntity->id);
+            $offer->appendChild($this->xml->createElement('name', $offerEntity->name));
+            $offer->appendChild($this->xml->createElement('url', $offerEntity->url));
+            $offer->appendChild($this->xml->createElement('categoryId', $offerEntity->categoryId));
+            $offer->appendChild($this->xml->createElement('currencyId', $offerEntity->currencyId));
+            $offer->appendChild($this->xml->createElement('picture', $offerEntity->picture));
+            $offer->appendChild($this->xml->createElement('description', $offerEntity->description));
+
+            if ($offerEntity->price_recurrent) {
+                $param = $this->xml->createElement('param', $offerEntity->price_recurrent);
+                $param->setAttribute('name', 'Оплата в рассрочку');
+                $param->setAttribute('unit', 'месяц');
+                $offer->appendChild($param);
+            }
+
+            if ($offerEntity->price_old) {
+                $param = $this->xml->createElement('param', $offerEntity->price_old);
+                $param->setAttribute('name', 'Оплата в рассрочку');
+                $param->setAttribute('unit', 'месяц');
+                $offer->appendChild($param);
+            }
+
+            if ($offerEntity->price_old) {
+                $param = $this->xml->createElement('price', $offerEntity->price_old);
+                $offer->appendChild($param);
+
+                $param = $this->xml->createElement('param', $offerEntity->price);
+                $param->setAttribute('name', 'Цена по скидке');
+                $offer->appendChild($param);
+            } else {
+                $param = $this->xml->createElement('price', $offerEntity->price);
+                $offer->appendChild($param);
+            }
+
+            if ($offerEntity->duration && $offerEntity->duration_unit) {
+                $param = $this->xml->createElement('param', $offerEntity->duration);
+                $param->setAttribute('name', 'Продолжительность');
+                $param->setAttribute('unit', $offerEntity->duration_unit);
+                $offer->appendChild($param);
+            }
+
+            if ($offerEntity->program) {
+                for ($i = 0; $i < count($offerEntity->program); $i++) {
+                    $param = $this->xml->createElement('param', $offerEntity->program[$i]->description);
+                    $param->setAttribute('name', 'План');
+                    $param->setAttribute('unit', $offerEntity->program[$i]->unit);
+                    $param->setAttribute('order', $i + 1);
+                    $offer->appendChild($param);
+                }
+            }
 
             $offers->appendChild($offer);
         }
@@ -169,7 +219,7 @@ class Export
             $shop->appendChild($this->xml->createElement('description', $schoolEntity->description));
             $this->root->appendChild($shop);*/
         } catch (DOMException $error) {
-            $this->addError($error);
+            //$this->addError($error);
         }
     }
 
@@ -190,7 +240,7 @@ class Export
                 ?->toArray();
 
             if ($result) {
-                if (!$result['text']) {
+                if (!$result['text'] && count($result['directions']) && $result['image_middle_id']) {
                     continue;
                 }
 
@@ -198,11 +248,7 @@ class Export
                 $offer->id = $result['id'];
                 $offer->name = $result['name'];
                 $offer->url = Course::get('app.url') . '/courses/show/' . $result['school']['link'] . '/' . $result['link'];
-
-                if (count($result['directions'])) {
-                    $offer->categoryId = $this->getNegotiatedCategory(Direction::from($result['directions'][0]['id']));
-                }
-
+                $offer->categoryId = $this->getNegotiatedCategory(Direction::from($result['directions'][0]['id']));
                 $offer->price_recurrent = $result['price_recurrent'];
                 $offer->price = $result['price'] ?? 0;
                 $offer->price_old = $result['price_old'];
@@ -213,11 +259,16 @@ class Export
                     $offer->duration_unit = $this->getNegotiatedDuration(Duration::from($result['duration_unit']));
                 }
 
-                if ($result['image_middle_id']) {
-                    $offer->picture = $result['image_middle_id']['path'];
-                }
-
+                $offer->picture = $result['image_middle_id']['path'];
                 $offer->description = strip_tags($result['text']);
+
+                if ($result['program']) {
+                    $offer->program = [];
+
+                    for ($i = 0; $i < count($result['program']); $i++) {
+                        $offer->program[] = $this->getProgramItem($result['program']);
+                    }
+                }
 
                 yield $offer;
             }
@@ -237,7 +288,7 @@ class Export
 
             foreach ($currencyEntities as $currencyEntity) {
                 $currency = $this->xml->createElement('currency');
-                $currency->setAttribute('id', $currencyEntity->id->name);
+                $currency->setAttribute('id', $currencyEntity->id);
                 $currency->setAttribute('rate', $currencyEntity->rate);
 
                 $currencies->appendChild($currency);
@@ -408,5 +459,32 @@ class Export
         }
 
         return 'месяц';
+    }
+
+    /**
+     * Получение пункта программы.
+     *
+     * @param array $item Массив данных пункта программы.
+     *
+     * @return ProgramItem Сущность пункта программы.
+     */
+    private function getProgramItem(array $item): ProgramItem
+    {
+        $programItem = new ProgramItem();
+        $programItem->unit = $item['name'];
+        $programItem->description = strip_tags($item['text']);
+
+        if ($item['children']) {
+            $description = '';
+
+            for ($i = 0; $i < count($item['children']); $i++) {
+                $programItemInside = $this->getProgramItem($item['children'][$i]);
+                $description = $programItemInside->unit . "\n" . $programItemInside->description . "\n";
+            }
+
+            $programItem->description .= "\n" . $description;
+        }
+
+        return $programItem;
     }
 }

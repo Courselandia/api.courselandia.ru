@@ -79,9 +79,9 @@ class Offer
     /**
      * Путь к изображению.
      *
-     * @var string|null
+     * @var string
      */
-    public string|null $picture = null;
+    public string $picture;
 
     /**
      * Валюта.
@@ -96,4 +96,11 @@ class Offer
      * @var string
      */
     public string $description;
+
+    /**
+     * Программа.
+     *
+     * @var ProgramItem[]|null
+     */
+    public array|null $program = null;
 }
