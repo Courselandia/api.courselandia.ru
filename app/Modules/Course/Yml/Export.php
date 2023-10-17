@@ -201,10 +201,10 @@ class Export
 
                 if ($offerEntity->program) {
                     for ($i = 0; $i < count($offerEntity->program); $i++) {
-                        $value = $this->getCleanString($offerEntity->program[$i]->description);
+                        $value = $this->getCleanString(trim($offerEntity->program[$i]->description));
                         $param = $this->xml->createElement('param');
                         $param->setAttribute('name', 'План');
-                        $param->setAttribute('unit', $this->getNormalizeAlphabet($offerEntity->program[$i]->unit));
+                        $param->setAttribute('unit', $this->getNormalizeAlphabet(trim($offerEntity->program[$i]->unit)));
                         $param->setAttribute('order', $i + 1);
                         $param->appendChild($this->xml->createCDATASection($value));
                         $offer->appendChild($param);
