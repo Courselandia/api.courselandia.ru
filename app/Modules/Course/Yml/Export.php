@@ -18,12 +18,12 @@ use DOMDocument;
 use DOMElement;
 use Carbon\Carbon;
 use DOMException;
+use Throwable;
 use App\Modules\Course\Enums\Duration;
 use App\Modules\Course\Enums\Status;
 use App\Modules\Course\Models\Course;
 use App\Modules\Direction\Enums\Direction;
 use Illuminate\Database\Eloquent\Builder;
-use Throwable;
 
 /**
  * Экспортирование курсов в формате YML.
@@ -190,6 +190,13 @@ class Export
                     $param->setAttribute('name', 'Продолжительность');
                     $param->setAttribute('unit', $offerEntity->duration_unit);
                     $offer->appendChild($param);
+
+                    if ($offerEntity->price_recurrent) {
+                        $param = $this->xml->createElement('param', $offerEntity->duration);
+                        $param->setAttribute('name', 'Оплата в рассрочку');
+                        $param->setAttribute('unit', 'месяц');
+                        $offer->appendChild($param);
+                    }
                 }
 
                 if ($offerEntity->program) {
