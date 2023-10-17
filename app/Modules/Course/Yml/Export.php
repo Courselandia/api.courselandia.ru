@@ -259,7 +259,7 @@ class Export
                     }
 
                     $offer->picture = $result['image_middle_id']->path;
-                    $offer->description = strip_tags($result['text']);
+                    $offer->description = $result['text'];
 
                     if ($result['program']) {
                         $offer->program = [];
@@ -468,14 +468,14 @@ class Export
     {
         $programItem = new ProgramItem();
         $programItem->unit = $item['name'];
-        $programItem->description = strip_tags($item['text']);
+        $programItem->description = $item['text'];
 
         if (isset($item['children'])) {
             $description = '';
 
             for ($i = 0; $i < count($item['children']); $i++) {
                 $programItemInside = $this->getProgramItem($item['children'][$i]);
-                $description .= $programItemInside->unit . "\n" . strip_tags($programItemInside->description) . "\n";
+                $description .= $programItemInside->unit . "\n" . $programItemInside->description . "\n";
             }
 
             $programItem->description .= "\n" . $description;
