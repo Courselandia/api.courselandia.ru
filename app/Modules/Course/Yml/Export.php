@@ -159,12 +159,12 @@ class Export
             try {
                 $offer = $this->xml->createElement('offer');
                 $offer->setAttribute('id', $offerEntity->id);
-                $offer->appendChild($this->xml->createElement('name', $this->getNormalizeAlphabet($offerEntity->name)));
+                $offer->appendChild($this->xml->createElement('name', $this->removeSpecSymbols($offerEntity->name)));
                 $offer->appendChild($this->xml->createElement('url', $offerEntity->url));
                 $offer->appendChild($this->xml->createElement('categoryId', $offerEntity->categoryId));
                 $offer->appendChild($this->xml->createElement('currencyId', $offerEntity->currencyId));
                 $offer->appendChild($this->xml->createElement('picture', $offerEntity->picture));
-                $offer->appendChild($this->xml->createElement('description', $this->getCleanString($this->getNormalizeAlphabet($offerEntity->description))));
+                $offer->appendChild($this->xml->createElement('description', $this->removeSpecSymbols($this->removeHtml($offerEntity->description))));
 
                 if ($offerEntity->price_recurrent) {
                     $param = $this->xml->createElement('param', $offerEntity->price_recurrent);
@@ -201,10 +201,10 @@ class Export
 
                 if ($offerEntity->program) {
                     for ($i = 0; $i < count($offerEntity->program); $i++) {
-                        $value = $this->getCleanString(trim($offerEntity->program[$i]->description));
+                        $value = $this->removeHtml($offerEntity->program[$i]->description);
                         $param = $this->xml->createElement('param');
                         $param->setAttribute('name', 'План');
-                        $param->setAttribute('unit', $this->getNormalizeAlphabet(trim($offerEntity->program[$i]->unit)));
+                        $param->setAttribute('unit', $offerEntity->program[$i]->unit);
                         $param->setAttribute('order', $i + 1);
                         $param->appendChild($this->xml->createCDATASection($value));
                         $offer->appendChild($param);
@@ -475,7 +475,7 @@ class Export
 
             for ($i = 0; $i < count($item['children']); $i++) {
                 $programItemInside = $this->getProgramItem($item['children'][$i]);
-                $description .= $programItemInside->unit . "\n" . $programItemInside->description . "\n";
+                $description .= trim($programItemInside->unit) . ": \n" . trim($programItemInside->description) . ";\n";
             }
 
             $programItem->description .= "\n" . $description;
@@ -485,12 +485,12 @@ class Export
     }
 
     /**
-     * Перевод значений для XML тгов.
+     * Удаление спецсимволов недопустимых в XML тэге.
      *
      * @param string $string Строка для перевода.
      * @return string Обработанная строка.
      */
-    private function getNormalizeAlphabet(string $string): string
+    private function removeSpecSymbols(string $string): string
     {
         return str_replace(
             ['A', '&', '"', '&',],
@@ -500,23 +500,16 @@ class Export
     }
 
     /**
-     * Очистка строки.
+     * Удаление HTML тэгов.
      *
      * @param string $string Строка для очистки.
      * @return string Очищенная строка.
      */
-    private static function getCleanString(string $string): string
+    private static function removeHtml(string $string): string
     {
-        return str_replace(
-            [
-                '&nbsp;',
-                '&mdash;',
-                '&laquo;',
-                '&raquo;',
-                '&ndash;',
-                '&quot;',
-            ]
-            , ' ', strip_tags($string)
-        );
+        $string = strip_tags($string);
+        $string = str_replace('', '', $string);
+
+        return html_entity_decode($string);
     }
 }
