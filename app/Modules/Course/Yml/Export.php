@@ -507,6 +507,8 @@ class Export
      */
     private static function removeHtml(string $string): string
     {
+        $string = str_replace('<li>', '', $string);
+        $string = str_replace('</li>', ' ', $string);
         $string = strip_tags($string);
         $string = str_replace('', '', $string);
 
