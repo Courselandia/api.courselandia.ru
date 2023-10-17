@@ -159,12 +159,12 @@ class Export
             try {
                 $offer = $this->xml->createElement('offer');
                 $offer->setAttribute('id', $offerEntity->id);
-                $offer->appendChild($this->xml->createElement('name', $offerEntity->name));
+                $offer->appendChild($this->xml->createElement('name', $this->getNormalizeAlphabet($offerEntity->name)));
                 $offer->appendChild($this->xml->createElement('url', $offerEntity->url));
                 $offer->appendChild($this->xml->createElement('categoryId', $offerEntity->categoryId));
                 $offer->appendChild($this->xml->createElement('currencyId', $offerEntity->currencyId));
                 $offer->appendChild($this->xml->createElement('picture', $offerEntity->picture));
-                $offer->appendChild($this->xml->createElement('description', $offerEntity->description));
+                $offer->appendChild($this->xml->createElement('description', $this->getCleanString($this->getNormalizeAlphabet($offerEntity->description))));
 
                 if ($offerEntity->price_recurrent) {
                     $param = $this->xml->createElement('param', $offerEntity->price_recurrent);
@@ -201,10 +201,10 @@ class Export
 
                 if ($offerEntity->program) {
                     for ($i = 0; $i < count($offerEntity->program); $i++) {
-                        $value = $this->getNormalizeAlphabet($offerEntity->program[$i]->description);
+                        $value = $this->getCleanString($offerEntity->program[$i]->description);
                         $param = $this->xml->createElement('param');
                         $param->setAttribute('name', 'План');
-                        $param->setAttribute('unit', $offerEntity->program[$i]->unit);
+                        $param->setAttribute('unit', $this->getNormalizeAlphabet($offerEntity->program[$i]->unit));
                         $param->setAttribute('order', $i + 1);
                         $param->appendChild($this->xml->createCDATASection($value));
                         $offer->appendChild($param);
@@ -245,7 +245,7 @@ class Export
                 try {
                     $offer = new Offer();
                     $offer->id = $result['id'];
-                    $offer->name = $this->getNormalizeAlphabet($result['name']);
+                    $offer->name = $result['name'];
                     $offer->url = Config::get('app.url') . '/courses/show/' . $result['school']['link'] . '/' . $result['link'];
                     $offer->categoryId = $this->getNegotiatedCategory(Direction::from($result['directions'][0]['id']));
                     $offer->price_recurrent = $result['price_recurrent'];
@@ -496,6 +496,27 @@ class Export
             ['A', '&', '"', '&',],
             ['A', '&', '\'', '',],
             trim($string)
+        );
+    }
+
+    /**
+     * Очистка строки.
+     *
+     * @param string $string Строка для очистки.
+     * @return string Очищенная строка.
+     */
+    private static function getCleanString(string $string): string
+    {
+        return str_replace(
+            [
+                '&nbsp;',
+                '&mdash;',
+                '&laquo;',
+                '&raquo;',
+                '&ndash;',
+                '&quot;',
+            ]
+            , ' ', strip_tags($string)
         );
     }
 }
