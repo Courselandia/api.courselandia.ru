@@ -60,6 +60,14 @@ class ParserSkyPro extends ParserYml
             'Продуктовая аналитика' => Direction::ANALYTICS,
             'BI аналитика' => Direction::ANALYTICS,
             'Программирование для анализа данных' => Direction::PROGRAMMING,
+            'HTML и CSS- разработка' => Direction::PROGRAMMING,
+            'Frontend-разработка' => Direction::PROGRAMMING,
+            'Тестирование ПО' => Direction::PROGRAMMING,
+            'Backend-разработка' => Direction::PROGRAMMING,
+            'SQL' => Direction::PROGRAMMING,
+            'Бизнес-аналитика' => Direction::ANALYTICS,
+            'BI-аналитика' => Direction::ANALYTICS,
+            'QA-тестирование' => Direction::PROGRAMMING,
         ];
     }
 

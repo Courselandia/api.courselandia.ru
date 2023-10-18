@@ -75,6 +75,10 @@ class ParserInterra extends ParserYml
             'Создание сайта в Figma' => Direction::DESIGN,
             'Сторителлинг. Искусство создания цепляющих историй' => Direction::OTHER,
             'Формирование отдела продаж'  => Direction::BUSINESS,
+            'Таргетированная реклама в Facebook и Instagram'  => Direction::MARKETING,
+            'Быстрый старт в Telegram'  => Direction::MARKETING,
+            'Профессия Telegram-маркетолог'  => Direction::MARKETING,
+            'Профессия Influence-маркетолог'  => Direction::MARKETING,
         ];
     }
 
