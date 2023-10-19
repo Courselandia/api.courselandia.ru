@@ -119,6 +119,18 @@ class CourseFilter extends ModelFilter
     }
 
     /**
+     * Поиск по названию.
+     *
+     * @param string $query Строка поиска.
+     *
+     * @return CourseFilter Правила поиска.
+     */
+    public function name(string $query): CourseFilter
+    {
+        return $this->whereLike('courses.name', $query);
+    }
+
+    /**
      * Поиск по описанию.
      *
      * @param string $query Строка поиска.
