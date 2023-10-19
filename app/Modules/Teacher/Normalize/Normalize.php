@@ -62,7 +62,8 @@ class Normalize
     private function do(): void
     {
         $teachers = Teacher::with([
-            'courses',
+            'courses.directions',
+            'courses.school',
         ])
         ->get();
 
@@ -88,7 +89,7 @@ class Normalize
 
             $teacher->directions()->sync($directions);
             $teacher->schools()->sync($schools);
-            $teacher->rating = count($teacher->courses) ? ($rating / count($teacher->courses)) : null;
+            $teacher->rating = count($teacher->courses) ? round($rating / count($teacher->courses), 2) : 0;
 
             try {
                 if ($ratingOld !== $teacher->rating) {

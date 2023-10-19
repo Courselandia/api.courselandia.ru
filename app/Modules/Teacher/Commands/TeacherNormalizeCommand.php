@@ -51,6 +51,8 @@ class TeacherNormalizeCommand extends Command
         $normalize->run();
         $bar->finish();
 
+        $this->info("\n");
+
         if ($normalize->hasError()) {
             $errors = $normalize->getErrors();
 
@@ -61,7 +63,7 @@ class TeacherNormalizeCommand extends Command
             }
         }
 
-        $this->info("\n\nНормализация была завершена.");
+        $this->info("\nНормализация была завершена.");
         Log::info('Нормализация учителей.');
     }
 }
