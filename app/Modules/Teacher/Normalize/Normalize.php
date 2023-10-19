@@ -71,7 +71,8 @@ class Normalize
             $directions = [];
             $schools = [];
             $rating = 0;
-            $ratingOld = $teacher->rating;
+            $oldDirectionsCount = count($teacher->directions);
+            $oldSchoolsCount = count($teacher->schools);
 
             foreach ($teacher->courses as $course) {
                 $rating += $course->rating;
@@ -89,10 +90,11 @@ class Normalize
 
             $teacher->directions()->sync($directions);
             $teacher->schools()->sync($schools);
-            $teacher->rating = count($teacher->courses) ? round($rating / count($teacher->courses), 2) : 0;
+            $ratingNew = count($teacher->courses) ? $rating / count($teacher->courses) : 0;
 
             try {
-                if ($ratingOld !== $teacher->rating) {
+                if ($oldDirectionsCount !== count($directions) || $oldSchoolsCount !== count($schools)) {
+                    $teacher->rating = round($ratingNew, 2);
                     $teacher->save();
                 }
 
