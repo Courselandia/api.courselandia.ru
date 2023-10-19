@@ -8,6 +8,7 @@
 
 namespace App\Modules\Teacher\Providers;
 
+use App\Modules\Teacher\Commands\TeacherNormalizeCommand;
 use App\Modules\Teacher\Commands\UploadPhotosCommand;
 use Config;
 use Illuminate\Support\ServiceProvider;
@@ -44,6 +45,7 @@ class TeacherServiceProvider extends ServiceProvider
     {
         $this->commands([
             UploadPhotosCommand::class,
+            TeacherNormalizeCommand::class,
         ]);
     }
 

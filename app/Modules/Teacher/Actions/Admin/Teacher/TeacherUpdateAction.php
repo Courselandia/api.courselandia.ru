@@ -222,7 +222,6 @@ class TeacherUpdateAction extends Action
                 $teacherEntity->status = $this->status;
 
                 if ($this->image) {
-                    echo "HERE \n\n";
                     $teacherEntity->image_big_id = $this->image;
                     $teacherEntity->image_small_id = $this->image;
                 }
