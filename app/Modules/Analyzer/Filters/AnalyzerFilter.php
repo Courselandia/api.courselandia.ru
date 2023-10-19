@@ -43,37 +43,37 @@ class AnalyzerFilter extends ModelFilter
     /**
      * Поиск по уникальности.
      *
-     * @param int $unique Уникальность.
+     * @param float[] $unique Уникальность.
      *
      * @return AnalyzerFilter Правила поиска.
      */
-    public function unique(int $unique): AnalyzerFilter
+    public function unique(array $unique): AnalyzerFilter
     {
-        return $this->where('analyzers.unique', $unique);
+        return $this->whereBetween('analyzers.unique', $unique);
     }
 
     /**
      * Поиск по проценту воды.
      *
-     * @param int $water Процент воды.
+     * @param float[] $water Процент воды.
      *
      * @return AnalyzerFilter Правила поиска.
      */
-    public function water(int $water): AnalyzerFilter
+    public function water(array $water): AnalyzerFilter
     {
-        return $this->where('analyzers.water', $water);
+        return $this->whereBetween('analyzers.water', $water);
     }
 
     /**
      * Поиск по проценту спама.
      *
-     * @param int $spam Процент спама.
+     * @param float[] $spam Процент спама.
      *
      * @return AnalyzerFilter Правила поиска.
      */
-    public function spam(int $spam): AnalyzerFilter
+    public function spam(array $spam): AnalyzerFilter
     {
-        return $this->where('analyzers.spam', $spam);
+        return $this->whereBetween('analyzers.spam', $spam);
     }
 
     /**
