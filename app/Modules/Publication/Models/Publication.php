@@ -181,7 +181,9 @@ class Publication extends Eloquent
 
                 Size::make($value)->fit(150, 150)->save($path);
 
-                $imageWebp = WebPConverter::createWebpImage($path, ['saveFile' => true]);
+                $imageWebp = $value->getClientOriginalExtension() !== 'webp'
+                    ? WebPConverter::createWebpImage($path, ['saveFile' => true])
+                    : ['path' => $path];
 
                 ImageStore::setFolder($folder);
                 $image = new ImageEntity();
@@ -240,7 +242,9 @@ class Publication extends Eloquent
                     }
                 )->save($path);
 
-                $imageWebp = WebPConverter::createWebpImage($path, ['saveFile' => true]);
+                $imageWebp = $value->getClientOriginalExtension() !== 'webp'
+                    ? WebPConverter::createWebpImage($path, ['saveFile' => true])
+                    : ['path' => $path];
 
                 ImageStore::setFolder($folder);
                 $image = new ImageEntity();
@@ -299,7 +303,9 @@ class Publication extends Eloquent
                     }
                 )->save($path);
 
-                $imageWebp = WebPConverter::createWebpImage($path, ['saveFile' => true]);
+                $imageWebp = $value->getClientOriginalExtension() !== 'webp'
+                    ? WebPConverter::createWebpImage($path, ['saveFile' => true])
+                    : ['path' => $path];
 
                 ImageStore::setFolder($folder);
                 $image = new ImageEntity();

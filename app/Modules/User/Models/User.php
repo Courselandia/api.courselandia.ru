@@ -216,7 +216,9 @@ class User extends Authenticatable
 
             Size::make($value)->fit(60, 60)->save($path);
 
-            $imageWebp = WebPConverter::createWebpImage($path, ['saveFile' => true]);
+            $imageWebp = $value->getClientOriginalExtension() !== 'webp'
+                ? WebPConverter::createWebpImage($path, ['saveFile' => true])
+                : ['path' => $path];
 
             ImageStore::setFolder($folder);
             $image = new ImageEntity();
@@ -271,7 +273,9 @@ class User extends Authenticatable
                 }
             )->save($path);
 
-            $imageWebp = WebPConverter::createWebpImage($path, ['saveFile' => true]);
+            $imageWebp = $value->getClientOriginalExtension() !== 'webp'
+                ? WebPConverter::createWebpImage($path, ['saveFile' => true])
+                : ['path' => $path];
 
             ImageStore::setFolder($folder);
             $image = new ImageEntity();
@@ -326,7 +330,9 @@ class User extends Authenticatable
                 }
             )->save($path);
 
-            $imageWebp = WebPConverter::createWebpImage($path, ['saveFile' => true]);
+            $imageWebp = $value->getClientOriginalExtension() !== 'webp'
+                ? WebPConverter::createWebpImage($path, ['saveFile' => true])
+                : ['path' => $path];
 
             ImageStore::setFolder($folder);
             $image = new ImageEntity();

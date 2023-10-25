@@ -524,7 +524,9 @@ class Course extends Eloquent
 
                 $image->fit(150, 150)->save($path);
 
-                $imageWebp = WebPConverter::createWebpImage($path, ['saveFile' => true]);
+                $imageWebp = $value->getClientOriginalExtension() !== 'webp'
+                    ? WebPConverter::createWebpImage($path, ['saveFile' => true])
+                    : ['path' => $path];
 
                 ImageStore::setFolder($folder);
                 $image = new ImageEntity();

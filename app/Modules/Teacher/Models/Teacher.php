@@ -202,7 +202,9 @@ class Teacher extends Eloquent
                     }
                 )->save($path);
 
-                $imageWebp = WebPConverter::createWebpImage($path, ['saveFile' => true]);
+                $imageWebp = $value->getClientOriginalExtension() !== 'webp'
+                    ? WebPConverter::createWebpImage($path, ['saveFile' => true])
+                    : ['path' => $path];
 
                 ImageStore::setFolder($folder);
                 $image = new ImageEntity();
@@ -308,7 +310,9 @@ class Teacher extends Eloquent
 
                 Size::make($value)->save($path);
 
-                $imageWebp = WebPConverter::createWebpImage($path, ['saveFile' => true]);
+                $imageWebp = $value->getClientOriginalExtension() !== 'webp'
+                    ? WebPConverter::createWebpImage($path, ['saveFile' => true])
+                    : ['path' => $path];
 
                 ImageStore::setFolder($folder);
                 $image = new ImageEntity();

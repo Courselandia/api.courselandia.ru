@@ -46,7 +46,7 @@ class CoreControllerTest extends TestCase
     public function testTypography(): void
     {
         $this->json(
-            'GET',
+            'POST',
             'api/private/admin/core/typography/',
             [
                 'text' => 'Проверка "текста" на , наличие - типографики.',

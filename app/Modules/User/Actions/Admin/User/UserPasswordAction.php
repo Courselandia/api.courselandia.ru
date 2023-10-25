@@ -56,7 +56,7 @@ class UserPasswordAction extends Action
 
                 Cache::tags(['user'])->flush();
 
-                return new UserEntity($user->toArray());
+                return $user;
             }
         }
 

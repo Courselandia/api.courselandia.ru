@@ -230,8 +230,8 @@ class TeacherControllerTest extends TestCase
                         'place' => $faker->text(191),
                         'position' => $faker->text(191),
                         'weight' => $faker->numberBetween(1, 20),
-                        'started' => Carbon::now()->addMonths(-5)->format('Y-m-d H:i:s O'),
-                        'finished' => Carbon::now()->addMonths(-3)->format('Y-m-d H:i:s O'),
+                        'started' => Carbon::now()->addMonths(-5)->format('Y-m-d'),
+                        'finished' => Carbon::now()->addMonths(-3)->format('Y-m-d'),
                     ],
                 ],
                 'socialMedias' => [
@@ -312,8 +312,8 @@ class TeacherControllerTest extends TestCase
                         'place' => $faker->text(191),
                         'position' => $faker->text(191),
                         'weight' => $faker->numberBetween(1, 20),
-                        'started' => Carbon::now()->addMonths(-5)->format('Y-m-d H:i:s O'),
-                        'finished' => Carbon::now()->addMonths(-3)->format('Y-m-d H:i:s O'),
+                        'started' => Carbon::now()->addMonths(-5)->format('Y-m-d'),
+                        'finished' => Carbon::now()->addMonths(-3)->format('Y-m-d'),
                     ],
                 ],
                 'socialMedias' => [
@@ -529,7 +529,6 @@ class TeacherControllerTest extends TestCase
 
         if ($image) {
             $structure['image_small_id'] = $this->getImageStructure();
-            $structure['image_middle_id'] = $this->getImageStructure();
         }
 
         if ($direction) {
