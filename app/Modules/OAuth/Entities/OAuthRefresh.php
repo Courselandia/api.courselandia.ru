@@ -13,7 +13,7 @@ use Carbon\Carbon;
 /**
  * Сущность для токена обновления.
  */
-class OAuthRefresh extends TokenPair
+class OAuthRefresh extends Token
 {
     /**
      * ID токена на обновления.

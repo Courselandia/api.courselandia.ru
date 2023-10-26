@@ -27,7 +27,7 @@ class OAuthTokenEloquentListener
     public function creating(OAuthTokenEloquent $oAuthTokenEloquent): bool
     {
         $result = $oAuthTokenEloquent->newQuery()
-            ->where('oauth_client_id', $oAuthTokenEloquent->oauth_client_id)
+            ->where('user_id', $oAuthTokenEloquent->user_id)
             ->where('token', $oAuthTokenEloquent->token)
             ->first();
 
@@ -50,7 +50,7 @@ class OAuthTokenEloquentListener
     {
         $result = $oAuthTokenEloquent->newQuery()
             ->where('id', '!=', $oAuthTokenEloquent->id)
-            ->where('oauth_client_id', $oAuthTokenEloquent->oauth_client_id)
+            ->where('user_id', $oAuthTokenEloquent->user_id)
             ->where('token', $oAuthTokenEloquent->token)
             ->first();
 

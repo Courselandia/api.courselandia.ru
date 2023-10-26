@@ -1,15 +1,9 @@
 <?php
 
 return [
-    'oAuthClient' => [
-        'userId' => 'ID пользователя',
-        'secret' => 'Секретный ключ',
-        'expiresAt' => 'Дата действия'
-    ],
     'oAuthDriverDatabase' => [
-        "noClient" => "Клиент не существует.",
+        'userId' => 'ID пользователя',
         'noUser' => "Пользователь не существует.",
-        'noValidSecretCode' => "Секретный код не существует.",
         'noRefreshCode' => "Код обновления не существует.",
         'noValidToken' => "Токен неверен."
     ],
@@ -19,7 +13,6 @@ return [
         'expiresAt' => 'Дата действия'
     ],
     'oAuthToken' => [
-        'oauthClientId' => 'ID клиента',
         'token' => 'Токена',
         'expiresAt' => 'Дата действия'
     ]

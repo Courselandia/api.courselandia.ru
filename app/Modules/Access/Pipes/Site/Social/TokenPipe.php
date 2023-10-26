@@ -13,7 +13,6 @@ use App\Models\Entity;
 use App\Models\Exceptions\InvalidPasswordException;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\UserNotExistException;
-use App\Modules\Access\Actions\AccessApiClientAction;
 use App\Modules\Access\Actions\AccessApiTokenAction;
 use App\Modules\Access\Actions\AccessGateAction;
 use App\Modules\Access\Entities\AccessSocial;
@@ -23,7 +22,7 @@ use ReflectionException;
 /**
  * Регистрация нового пользователя через социальные сети: получение клиента.
  */
-class ClientPipe implements Pipe
+class TokenPipe implements Pipe
 {
     /**
      * Метод, который будет вызван у pipeline.
@@ -37,23 +36,18 @@ class ClientPipe implements Pipe
     public function handle(Entity|AccessSocial $entity, Closure $next): mixed
     {
         try {
-            $action = app(AccessApiClientAction::class);
+            $action = app(AccessApiTokenAction::class);
             $action->login = $entity->login;
             $action->force = true;
-            $client = $action->run();
-
-            $action = app(AccessApiTokenAction::class);
-            $action->secret = $client->secret;
             $token = $action->run();
 
             $action = app(AccessGateAction::class);
-            $action->id = $client->user->id;
+            $action->id = $token->user->id;
 
             $user = $action->run();
 
             $entity->create = false;
             $entity->user = $user;
-            $entity->client = $client;
             $entity->token = $token;
 
         } catch (UserNotExistException $error) {

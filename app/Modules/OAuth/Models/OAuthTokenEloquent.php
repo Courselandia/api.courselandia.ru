@@ -14,7 +14,6 @@ use Eloquent;
 use App\Models\Validate;
 use App\Models\Delete;
 use EloquentFilter\Filterable;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use JetBrains\PhpStorm\ArrayShape;
 
@@ -22,11 +21,10 @@ use JetBrains\PhpStorm\ArrayShape;
  * Класс модель для аутентификации через API для хранения токенов на основе Eloquent.
  *
  * @property int|string $id ID токена.
- * @property int $oauth_client_id ID клиента.
+ * @property int $user_id ID пользователя.
  * @property string $token Токен.
  * @property string $expires_at Дата истечения.
  *
- * @property-read OAuthClientEloquent $client
  * @property-read OAuthRefreshTokenEloquent $refreshToken
  */
 class OAuthTokenEloquent extends Eloquent
@@ -50,7 +48,7 @@ class OAuthTokenEloquent extends Eloquent
      */
     protected $fillable = [
         'id',
-        'oauth_client_id',
+        'user_id',
         'token',
         'expires_at'
     ];
@@ -70,13 +68,13 @@ class OAuthTokenEloquent extends Eloquent
      * @return array Вернет массив правил.
      */
     #[ArrayShape([
-        'oauth_client_id' => 'string',
+        'user_id' => 'string',
         'token' => 'string',
         'expires_at' => 'string'
     ])] protected function getRules(): array
     {
         return [
-            'oauth_client_id' => 'required|integer|digits_between:1,20',
+            'user_id' => 'required|integer|digits_between:1,20',
             'token' => 'required|between:1,500',
             'expires_at' => 'required|date'
         ];
@@ -88,13 +86,13 @@ class OAuthTokenEloquent extends Eloquent
      * @return array Массив возможных ошибок валидации.
      */
     #[ArrayShape([
-        'oauth_client_id' => 'string',
+        'user_id' => 'string',
         'token' => 'string',
         'expires_at' => 'string'
     ])] protected function getNames(): array
     {
         return [
-            'oauth_client_id' => trans('oauth::models.oAuthToken.oauthClientId'),
+            'user_id' => trans('oauth::models.oAuthToken.userId'),
             'token' => trans('oauth::models.oAuthToken.token'),
             'expires_at' => trans('oauth::models.oAuthToken.expiresAt')
         ];
@@ -108,16 +106,6 @@ class OAuthTokenEloquent extends Eloquent
     public function modelFilter(): string
     {
         return $this->provideFilter(OAuthTokenEloquentFilter::class);
-    }
-
-    /**
-     * Получить клиента.
-     *
-     * @return HasOne Модель пользователя.
-     */
-    public function client(): HasOne
-    {
-        return $this->hasOne(OAuthClientEloquent::class, 'id', 'oauth_client_id');
     }
 
     /**

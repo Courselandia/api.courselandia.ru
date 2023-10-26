@@ -13,7 +13,7 @@ use Carbon\Carbon;
 /**
  * Сущность для токена.
  */
-class OAuthToken extends TokenPair
+class OAuthToken extends Token
 {
     /**
      * ID токена на обновления.
@@ -23,11 +23,11 @@ class OAuthToken extends TokenPair
     public string|int|null $id = null;
 
     /**
-     * ID клиента.
+     * ID пользователя.
      *
      * @var string|int|null
      */
-    public string|int|null $oauth_client_id = null;
+    public string|int|null $user_id = null;
 
     /**
      * Токен.

@@ -29,7 +29,6 @@ Route::group([
 Route::group([
     'middleware' => ['locale', 'ajax'],
 ], function () {
-    Route::post('client', 'AccessApiController@client')->name('client');
     Route::post('token', 'AccessApiController@token')->name('token');
     Route::post('refresh', 'AccessApiController@refresh')->name('refresh');
 });

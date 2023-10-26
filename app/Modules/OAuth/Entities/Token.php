@@ -8,15 +8,23 @@
 
 namespace App\Modules\OAuth\Entities;
 
+use App\Models\Entity;
 /**
  * Сущность для токена.
  */
-class Token extends TokenPair
+class Token extends Entity
 {
     /**
-     * Секретный ключ.
+     * Токен доступа.
      *
-     * @var ?string
+     * @var string|null
      */
-    public ?string $secret = null;
+    public ?string $accessToken = null;
+
+    /**
+     * Токен обновления.
+     *
+     * @var string|null
+     */
+    public ?string $refreshToken = null;
 }

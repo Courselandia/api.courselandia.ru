@@ -13,7 +13,6 @@ use App\Models\Entity;
 use App\Models\Exceptions\InvalidPasswordException;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\UserNotExistException;
-use App\Modules\Access\Actions\AccessApiClientAction;
 use App\Modules\Access\Actions\AccessApiTokenAction;
 use App\Modules\Access\Actions\AccessGateAction;
 use App\Modules\Access\Entities\AccessSignUp;
@@ -35,9 +34,7 @@ class GetPipe implements Pipe
      *
      * @return mixed Вернет значение полученное после выполнения следующего pipe.
      * @throws ReflectionException
-     * @throws InvalidPasswordException
      * @throws ParameterInvalidException
-     * @throws UserNotExistException
      */
     public function handle(Entity|AccessSignUp|AccessSocial|AccessVerify $entity, Closure $next): mixed
     {
@@ -45,17 +42,12 @@ class GetPipe implements Pipe
         $action->id = $entity->id;
         $user = $action->run();
 
-        $action = app(AccessApiClientAction::class);
+        $action = app(AccessApiTokenAction::class);
         $action->login = $user->login;
         $action->force = true;
-        $client = $action->run();
-
-        $action = app(AccessApiTokenAction::class);
-        $action->secret = $client->secret;
         $token = $action->run();
 
         $entity->user = $user;
-        $entity->client = $client;
         $entity->token = $token;
 
         return $next($entity);

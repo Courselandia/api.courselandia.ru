@@ -60,7 +60,6 @@ class AccessApiRefreshAction extends Action
         $data = OAuth::decode($this->refreshToken, 'refreshToken');
 
         $accessApiToken = new AccessApiToken();
-        $accessApiToken->secret = $token->secret;
         $accessApiToken->accessToken = $token->accessToken;
         $accessApiToken->refreshToken = $token->refreshToken;
 

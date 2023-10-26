@@ -9,7 +9,6 @@
 namespace App\Modules\OAuth\Repositories;
 
 use App\Models\Entity;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Rep\Repository;
 use App\Models\Rep\RepositoryQueryBuilder;
 use App\Models\Rep\RepositoryEloquent;
@@ -21,43 +20,11 @@ use Illuminate\Database\Eloquent\Builder;
  *
  * @method OAuthToken|Entity|null get(RepositoryQueryBuilder $repositoryQueryBuilder = null, Entity $entity = null)
  * @method OAuthToken[]|Entity[] read(RepositoryQueryBuilder $repositoryQueryBuilder = null, Entity $entity = null)
+ * @method Builder query(RepositoryQueryBuilder $repositoryQueryBuilder = null)
+ * @method int|string create(OAuthToken $token)
+ * @method int|string update(int|string $id, OAuthToken $token)
  */
 class OAuthTokenEloquent extends Repository
 {
     use RepositoryEloquent;
-
-    /**
-     * Получение запроса на выборку.
-     *
-     * @param RepositoryQueryBuilder|null $repositoryQueryBuilder Конструктор запроса к репозиторию.
-     *
-     * @return Builder Запрос.
-     * @throws ParameterInvalidException
-     */
-    protected function query(RepositoryQueryBuilder $repositoryQueryBuilder = null): Builder
-    {
-        $query = $this->newInstance()->newQuery();
-
-        if ($repositoryQueryBuilder) {
-            $query = $this->queryHelper($query, $repositoryQueryBuilder);
-
-            $conditions = $repositoryQueryBuilder->getConditions();
-
-            foreach ($conditions as $condition) {
-                if ($condition->getColumn() === 'oauth_clients.user_id') {
-                    $query->whereHas(
-                        'client',
-                        function ($query) use ($condition) {
-                            /**
-                             * @var Builder $query
-                             */
-                            $query->where('user_id', $condition->getOperator(), $condition->getValue());
-                        }
-                    );
-                }
-            }
-        }
-
-        return $query;
-    }
 }

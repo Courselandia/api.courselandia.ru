@@ -8,10 +8,12 @@
 
 namespace App\Modules\Access\Entities;
 
+use App\Modules\User\Entities\User;
+
 /**
  * Сущность для хранения API токена.
  */
-class AccessApiToken extends AccessApiClient
+class AccessApiToken
 {
     /**
      * Токен доступа.
@@ -26,4 +28,11 @@ class AccessApiToken extends AccessApiClient
      * @var string|null
      */
     public ?string $refreshToken = null;
+
+    /**
+     * Сущность пользователя.
+     *
+     * @var User
+     */
+    public User $user;
 }

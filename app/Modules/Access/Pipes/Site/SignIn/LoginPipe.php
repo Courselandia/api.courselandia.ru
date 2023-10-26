@@ -11,7 +11,6 @@ use App\Models\Entity;
 use App\Models\Exceptions\InvalidPasswordException;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\UserNotExistException;
-use App\Modules\Access\Actions\AccessApiClientAction;
 use App\Modules\Access\Actions\AccessApiTokenAction;
 use App\Modules\Access\Entities\AccessSignIn;
 use App\Modules\OAuth\Entities\Token;
@@ -37,21 +36,15 @@ class LoginPipe implements Pipe
      */
     public function handle(Entity|AccessSignIn $entity, Closure $next): mixed
     {
-        $action = app(AccessApiClientAction::class);
+        $action = app(AccessApiTokenAction::class);
         $action->login = $entity->login;
         $action->password = $entity->password;
         $action->remember = $entity->remember;
 
-        $entity->client = $action->run();
-
-        $action = app(AccessApiTokenAction::class);
-        $action->secret = $entity->client->secret;
-
         $token = $action->run();
 
-        $entity->id = $entity->client->user->id;
+        $entity->id = $token->user->id;
         $entity->token = new Token();
-        $entity->token->secret = $entity->client->secret;
         $entity->token->accessToken = $token->accessToken;
         $entity->token->refreshToken = $token->refreshToken;
 

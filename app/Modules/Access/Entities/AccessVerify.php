@@ -38,13 +38,6 @@ class AccessVerify extends Entity
     public ?UserEntity $user;
 
     /**
-     * Сущность для хранения API клиента.
-     *
-     * @var AccessApiClient|null
-     */
-    public ?AccessApiClient $client;
-
-    /**
      * Сущность для хранения API токена.
      *
      * @var AccessApiToken|null

@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'accessApiClientAction' => [
+    'accessApiTokenAction' => [
         'notExistUser' => "The user doesn't exist or not find it.",
         'passwordNotMatch' => 'The password does not match for the user.'
     ],

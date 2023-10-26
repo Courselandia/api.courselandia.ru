@@ -31,7 +31,6 @@ class DataPipe implements Pipe
     {
         $accessVerified = new AccessVerified();
         $accessVerified->user = $entity->user;
-        $accessVerified->secret = $entity->client->secret;
         $accessVerified->accessToken = $entity->token->accessToken;
         $accessVerified->refreshToken = $entity->token->refreshToken;
 

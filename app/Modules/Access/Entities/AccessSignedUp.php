@@ -24,13 +24,6 @@ class AccessSignedUp extends Entity
     public ?UserEntity $user = null;
 
     /**
-     * Секретный ключ.
-     *
-     * @var string|null
-     */
-    public ?string $secret = null;
-
-    /**
      * Токен авторизации.
      *
      * @var string|null

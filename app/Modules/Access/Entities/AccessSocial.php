@@ -101,13 +101,6 @@ class AccessSocial extends Entity
     public ?UserEntity $user = null;
 
     /**
-     * Сущность для хранения API клиента.
-     *
-     * @var AccessApiClient|null
-     */
-    public ?AccessApiClient $client = null;
-
-    /**
      * Сущность для хранения API токена.
      *
      * @var AccessApiToken|null

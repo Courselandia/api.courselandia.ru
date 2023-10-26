@@ -88,16 +88,13 @@ return [
         ],
     ],
     'requests' => [
-        'accessApiClientRequest' => [
-            'login' => 'Login',
-            'password' => 'Password',
-            'remember' => 'Remember'
-        ],
         'accessApiRefreshRequest' => [
             'refreshToken' => 'Refresh token'
         ],
         'accessApiTokenRequest' => [
-            'secret' => 'Secret key'
+            'login' => 'Login',
+            'password' => 'Password',
+            'remember' => 'Remember',
         ],
         'site' => [
             'accessForgetRequest' => [

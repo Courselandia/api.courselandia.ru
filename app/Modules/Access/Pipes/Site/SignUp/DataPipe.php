@@ -33,7 +33,6 @@ class DataPipe implements Pipe
     {
         $accessSignedUp = new AccessSignedUp();
         $accessSignedUp->user = $entity->user;
-        $accessSignedUp->secret = $entity->client->secret;
         $accessSignedUp->accessToken = $entity->token->accessToken;
         $accessSignedUp->refreshToken = $entity->token->refreshToken;
 

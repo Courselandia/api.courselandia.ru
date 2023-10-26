@@ -108,7 +108,6 @@ class AccessControllerTest extends TestCase
             'success',
             'data' => [
                 'user' => $this->getGateStructure(),
-                'secret',
                 'accessToken',
                 'refreshToken',
             ],
@@ -141,7 +140,6 @@ class AccessControllerTest extends TestCase
             'success',
             'data' => [
                 'user' => $this->getGateStructure(),
-                'secret',
                 'accessToken',
                 'refreshToken'
             ]
@@ -222,7 +220,6 @@ class AccessControllerTest extends TestCase
             'success',
             'data' => [
                 'user' => $this->getGateStructure(),
-                'secret',
                 'accessToken',
                 'refreshToken'
             ]
@@ -324,7 +321,6 @@ class AccessControllerTest extends TestCase
             'success',
             'data' => [
                 'user' => $this->getGateStructure(),
-                'secret',
                 'accessToken',
                 'refreshToken'
             ]

@@ -65,11 +65,4 @@ class AccessSignIn extends Entity
      * @var User
      */
     public User $user;
-
-    /**
-     * Сущность для хранения API клиента.
-     *
-     * @var AccessApiClient|null
-     */
-    public ?AccessApiClient $client = null;
 }

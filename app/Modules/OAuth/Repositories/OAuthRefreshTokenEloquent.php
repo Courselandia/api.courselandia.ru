@@ -21,6 +21,8 @@ use Illuminate\Database\Eloquent\Builder;
  *
  * @method OAuthRefresh|Entity|null get(RepositoryQueryBuilder $repositoryQueryBuilder = null, Entity $entity = null)
  * @method OAuthRefresh[]|Entity[] read(RepositoryQueryBuilder $repositoryQueryBuilder = null, Entity $entity = null)
+ * @method int|string create(OAuthRefresh $token)
+ * @method int|string update(int|string $id, OAuthRefresh $token)
  */
 class OAuthRefreshTokenEloquent extends Repository
 {
@@ -44,14 +46,14 @@ class OAuthRefreshTokenEloquent extends Repository
             $conditions = $repositoryQueryBuilder->getConditions();
 
             foreach ($conditions as $condition) {
-                if ($condition->getColumn() === 'oauth_clients.user_id') {
+                if ($condition->getColumn() === 'oauth_tokens.user_id') {
                     $query->whereHas(
-                        'token.client',
+                        'token',
                         function ($query) use ($condition) {
                             /**
                              * @var Builder $query
                              */
-                            $query->where('oauth_clients.user_id', $condition->getOperator()->value, $condition->getValue());
+                            $query->where('oauth_tokens.user_id', $condition->getOperator()->value, $condition->getValue());
                         }
                     );
                 }

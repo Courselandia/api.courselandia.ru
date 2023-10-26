@@ -21,10 +21,12 @@ class AccessApiTokenRequest extends FormRequest
      *
      * @return array Массив правил проверки.
      */
-    #[ArrayShape(['secret' => 'string'])] public function rules(): array
+    #[ArrayShape(['login' => 'string', 'password' => 'string', 'remember' => 'bool'])] public function rules(): array
     {
         return [
-            'secret' => 'required|string'
+            'login' => 'required|between:1,199',
+            'password' => 'required|between:4,25',
+            'remember' => 'nullable|boolean'
         ];
     }
 
@@ -33,10 +35,12 @@ class AccessApiTokenRequest extends FormRequest
      *
      * @return array Массив атрибутов.
      */
-    #[ArrayShape(['secret' => 'string'])] public function attributes(): array
+    #[ArrayShape(['login' => 'string', 'password' => 'string', 'remember' => 'string'])] public function attributes(): array
     {
         return [
-            'secret' => trans('access::http.requests.accessApiTokenRequest.secret')
+            'login' => trans('access::http.requests.accessApiTokenRequest.login'),
+            'password' => trans('access::http.requests.accessApiTokenRequest.password'),
+            'remember' => trans('access::http.requests.accessApiTokenRequest.remember'),
         ];
     }
 }

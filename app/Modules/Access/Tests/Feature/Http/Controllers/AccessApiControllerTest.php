@@ -19,74 +19,18 @@ class AccessApiControllerTest extends TestCase
     use AccessTest;
 
     /**
-     * Генерация клиента.
-     *
-     * @return void
-     */
-    public function testClient(): void
-    {
-        $this->json(
-            'POST',
-            'api/client',
-            [
-                'login' => $this->getAdmin('login'),
-                'password' => $this->getAdmin('password'),
-                'remember' => true
-            ]
-        )->assertStatus(200)->assertJsonStructure([
-            'success',
-            'data' => [
-                'user' => $this->getUserStructure(),
-                'secret',
-            ]
-        ]);
-    }
-
-    /**
-     * Генерация несуществующего клиента.
-     *
-     * @return void
-     */
-    public function testClientNotValid(): void
-    {
-        $this->json(
-            'POST',
-            'api/client',
-            [
-                'login' => $this->getUnknownUser('login'),
-                'password' => $this->getUnknownUser('password'),
-                'remember' => true
-            ]
-        )->assertStatus(401)->assertJsonStructure([
-            'success',
-            'message'
-        ]);
-    }
-
-    /**
      * Генерация токена.
      *
      * @return void
      */
     public function testToken(): void
     {
-        $client = $this->json(
-            'POST',
-            'api/client',
-            [
-                'login' => $this->getAdmin('login'),
-                'password' => $this->getAdmin('password'),
-                'remember' => true
-            ]
-        )->getContent();
-
-        $client = json_decode($client, true);
-
         $this->json(
             'POST',
             'api/token',
             [
-                'secret' => $client['data']['secret'],
+                'login' => $this->getAdmin('login'),
+                'password' => $this->getAdmin('password'),
                 'remember' => true
             ]
         )->assertStatus(200)->assertJsonStructure([
@@ -110,7 +54,8 @@ class AccessApiControllerTest extends TestCase
             'POST',
             'api/token',
             [
-                'secret' => '123',
+                'login' => '123',
+                'password' => $this->getAdmin('password'),
                 'remember' => true
             ]
         )->assertStatus(401)->assertJsonStructure([
@@ -126,23 +71,12 @@ class AccessApiControllerTest extends TestCase
      */
     public function testRefresh(): void
     {
-        $client = $this->json(
-            'POST',
-            'api/client',
-            [
-                'login' => $this->getAdmin('login'),
-                'password' => $this->getAdmin('password'),
-                'remember' => true
-            ]
-        )->getContent();
-
-        $client = json_decode($client, true);
-
         $token = $this->json(
             'POST',
             'api/token',
             [
-                'secret' => $client['data']['secret'],
+                'login' => $this->getAdmin('login'),
+                'password' => $this->getAdmin('password'),
                 'remember' => true
             ]
         )->getContent();

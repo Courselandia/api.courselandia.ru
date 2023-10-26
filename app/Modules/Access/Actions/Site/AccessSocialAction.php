@@ -15,7 +15,7 @@ use App\Modules\Access\Pipes\Site\SignIn\AuthPipe;
 use App\Modules\Access\Pipes\Site\SignUp\RolePipe;
 use App\Modules\Access\Pipes\Site\SignUp\VerificationPipe;
 use App\Modules\Access\Pipes\Site\Social\CheckPipe;
-use App\Modules\Access\Pipes\Site\Social\ClientPipe;
+use App\Modules\Access\Pipes\Site\Social\TokenPipe;
 use App\Modules\Access\Pipes\Site\Social\DataPipe;
 use App\Modules\Access\Pipes\Site\SignUp\DataPipe as DataPipeSignUp;
 use App\Modules\Access\Pipes\Site\SignUp\CreatePipe;
@@ -91,7 +91,7 @@ class AccessSocialAction extends Action
 
         return $decorator->setActions([
             CheckPipe::class,
-            ClientPipe::class,
+            TokenPipe::class,
             DataPipe::class,
             CreatePipe::class,
             RolePipe::class,

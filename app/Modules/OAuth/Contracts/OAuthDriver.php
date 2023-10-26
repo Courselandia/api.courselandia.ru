@@ -15,7 +15,6 @@ use Throwable;
 use Firebase\JWT\JWT;
 use App\Modules\OAuth\Entities\Token;
 use App\Models\Exceptions\InvalidFormatException;
-use App\Modules\OAuth\Entities\TokenPair;
 
 /**
  * Абстрактный класс позволяющий проектировать собственные классы для хранения токенов.
@@ -23,27 +22,18 @@ use App\Modules\OAuth\Entities\TokenPair;
 abstract class OAuthDriver
 {
     /**
-     * Абстрактный метод создания секретного ключа.
-     *
-     * @param  int  $userId  ID пользователя.
-     *
-     * @return string Вернет секретный ключ клиента.
-     */
-    abstract public function secret(int $userId): string;
-
-    /**
      * Абстрактный метод получения токена.
      *
-     * @param  string  $secret  Секретный ключ клиента.
+     * @param int $userId ID пользователя.
      *
      * @return Token Токен.
      */
-    abstract public function token(string $secret): Token;
+    abstract public function token(int $userId): Token;
 
     /**
      * Абстрактный метод обновления токена.
      *
-     * @param  string  $refreshToken  Токен обновления.
+     * @param string $refreshToken Токен обновления.
      *
      * @return Token Токен.
      */
@@ -52,7 +42,7 @@ abstract class OAuthDriver
     /**
      * Проверка токена.
      *
-     * @param  string  $token  Токен.
+     * @param string $token Токен.
      *
      * @return bool Вернет результат проверки.
      */
@@ -68,13 +58,13 @@ abstract class OAuthDriver
     /**
      * Выдача токена.
      *
-     * @param  stdClass  $value  Значение для сохранения в токене.
-     * @param  Carbon  $expiresAtToken  Время жизни токена.
-     * @param  Carbon|null  $expiresAtRefreshToken  Время жизни токена обновления.
+     * @param stdClass $value Значение для сохранения в токене.
+     * @param Carbon $expiresAtToken Время жизни токена.
+     * @param Carbon|null $expiresAtRefreshToken Время жизни токена обновления.
      *
-     * @return TokenPair Вернет пару токена.
+     * @return Token Вернет пару токена.
      */
-    public function issue(stdClass $value, Carbon $expiresAtToken, Carbon $expiresAtRefreshToken = null): TokenPair
+    public function issue(stdClass $value, Carbon $expiresAtToken, Carbon $expiresAtRefreshToken = null): Token
     {
         $time = Carbon::now()->format('U');
         $key = Config::get('app.key');
@@ -105,18 +95,18 @@ abstract class OAuthDriver
 
         $refreshToken = JWT::encode($refreshToken, $key);
 
-        $tokenPair = new TokenPair();
-        $tokenPair->accessToken = $accessToken;
-        $tokenPair->refreshToken = $refreshToken;
+        $token = new Token();
+        $token->accessToken = $accessToken;
+        $token->refreshToken = $refreshToken;
 
-        return $tokenPair;
+        return $token;
     }
 
     /**
      * Декодирование токена.
      *
-     * @param  string  $token  Токен.
-     * @param  string  $type  Тип токена.
+     * @param string $token Токен.
+     * @param string $type Тип токена.
      *
      * @return stdClass Вернет объект с токеном и токеном обновления.
      * @throws InvalidFormatException

@@ -20,8 +20,6 @@ use App\Modules\Access\Http\Requests\AccessApiTokenRequest;
 use App\Modules\Access\Http\Requests\AccessApiRefreshRequest;
 use App\Modules\Access\Actions\AccessApiTokenAction;
 use App\Modules\Access\Actions\AccessApiRefreshAction;
-use App\Modules\Access\Http\Requests\AccessApiClientRequest;
-use App\Modules\Access\Actions\AccessApiClientAction;
 use ReflectionException;
 
 /**
@@ -29,36 +27,6 @@ use ReflectionException;
  */
 class AccessApiController extends Controller
 {
-    /**
-     * Генерация клиента.
-     *
-     * @param  AccessApiClientRequest  $request  Запрос на генерацию API клиента.
-     *
-     * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException|ReflectionException
-     */
-    public function client(AccessApiClientRequest $request): JsonResponse
-    {
-        try {
-            $action = app(AccessApiClientAction::class);
-            $action->login = $request->post('login');
-            $action->password = $request->post('password');
-            $action->remember = $request->post('remember', false);
-
-            $accessApiClientEntity = $action->run();
-
-            return response()->json([
-                'success' => true,
-                'data' => $accessApiClientEntity,
-            ]);
-        } catch (UserNotExistException|InvalidPasswordException $error) {
-            return response()->json([
-                'success' => false,
-                'message' => $error->getMessage()
-            ])->setStatusCode(401);
-        }
-    }
-
     /**
      * Генерация токена.
      *
@@ -71,7 +39,8 @@ class AccessApiController extends Controller
     {
         try {
             $action = app(AccessApiTokenAction::class);
-            $action->secret = $request->post('secret');
+            $action->login = $request->post('login');
+            $action->password = $request->post('password');
             $action->remember = $request->post('remember', false);
 
             $accessApiTokenEntity = $action->run();
@@ -80,7 +49,7 @@ class AccessApiController extends Controller
                 'success' => true,
                 'data' => $accessApiTokenEntity,
             ]);
-        } catch (InvalidFormatException|RecordNotExistException $error) {
+        } catch (UserNotExistException|InvalidPasswordException $error) {
             return response()->json([
                 'success' => false,
                 'message' => $error->getMessage()

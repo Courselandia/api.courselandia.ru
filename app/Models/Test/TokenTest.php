@@ -22,15 +22,9 @@ trait TokenTest
      */
     public function getAdminToken(): ?string
     {
-        $client = $this->json('POST', 'api/client', [
-            'login' => $this->getAdmin('login'),
-            'password' => $this->getAdmin('password')
-        ])->getContent();
-
-        $client = json_decode($client, true);
-
         $token = $this->json('POST', 'api/token', [
-            'secret' => $client['data']['secret']
+            'login' => $this->getAdmin('login'),
+            'password' => $this->getAdmin('password'),
         ])->getContent();
 
         $token = json_decode($token, true);
@@ -45,15 +39,9 @@ trait TokenTest
      */
     public function getUserToken(): ?string
     {
-        $client = $this->json('POST', 'api/client', [
-            'login' => $this->getUser('login'),
-            'password' => $this->getUser('password')
-        ])->getContent();
-
-        $client = json_decode($client, true);
-
         $token = $this->json('POST', 'api/token', [
-            'secret' => $client['data']['secret']
+            'login' => $this->getUser('login'),
+            'password' => $this->getUser('password'),
         ])->getContent();
 
         $token = json_decode($token, true);
@@ -68,15 +56,9 @@ trait TokenTest
      */
     public function getManagerToken(): ?string
     {
-        $client = $this->json('POST', 'api/client', [
-            'login' => $this->getManager('login'),
-            'password' => $this->getManager('password')
-        ])->getContent();
-
-        $client = json_decode($client, true);
-
         $token = $this->json('POST', 'api/token', [
-            'secret' => $client['data']['secret']
+            'login' => $this->getManager('login'),
+            'password' => $this->getManager('password'),
         ])->getContent();
 
         $token = json_decode($token, true);
@@ -91,15 +73,9 @@ trait TokenTest
      */
     public function getUnverifiedToken(): ?string
     {
-        $client = $this->json('POST', 'api/client', [
-            'login' => $this->getUnverified('login'),
-            'password' => $this->getUnverified('password')
-        ])->getContent();
-
-        $client = json_decode($client, true);
-
         $token = $this->json('POST', 'api/token', [
-            'secret' => $client['data']['secret']
+            'login' => $this->getUnverified('login'),
+            'password' => $this->getUnverified('password'),
         ])->getContent();
 
         $token = json_decode($token, true);
@@ -117,15 +93,9 @@ trait TokenTest
      */
     public function getToken(string $login, string $password): ?string
     {
-        $client = $this->json('POST', 'api/client', [
-            'login' => $login,
-            'password' => $password
-        ])->getContent();
-
-        $client = json_decode($client, true);
-
         $token = $this->json('POST', 'api/token', [
-            'secret' => $client['data']['secret']
+            'login' => $login,
+            'password' => $password,
         ])->getContent();
 
         $token = json_decode($token, true);

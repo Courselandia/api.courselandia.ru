@@ -85,16 +85,13 @@ return [
         ]
     ],
     'requests' => [
-        'accessApiClientRequest' => [
-            'login' => 'Логин',
-            'password' => 'Пароль',
-            'remember' => 'Заполнить'
-        ],
         'accessApiRefreshRequest' => [
             'refreshToken' => 'Токен обновления'
         ],
         'accessApiTokenRequest' => [
-            'secret' => 'Секретный ключ'
+            'login' => 'Логин',
+            'password' => 'Пароль',
+            'remember' => 'Заполнить',
         ],
         'site' => [
             'accessForgetRequest' => [
