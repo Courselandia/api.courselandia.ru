@@ -149,6 +149,25 @@ class OAuthDriverDatabase extends OAuthDriver
         );
 
         if ($user) {
+            $query = new RepositoryQueryBuilder();
+            $query->addCondition(new RepositoryCondition('user_id', $userId));
+            $tokenEntity = $this->oAuthTokenEloquent->get($query);
+            $now = Carbon::now();
+
+            if ($tokenEntity && $now->diffInSeconds($tokenEntity->expires_at) > Config::get('token.token_life', 3600)) {
+                $query = new RepositoryQueryBuilder();
+                $query->addCondition(new RepositoryCondition('oauth_token_id', $tokenEntity->id));
+                $refreshTokenEntity = $this->oAuthRefreshTokenEloquent->get($query);
+
+                if ($refreshTokenEntity) {
+                    $token = new Token();
+                    $token->accessToken = $tokenEntity->token;
+                    $token->refreshToken = $refreshTokenEntity->refresh_token;
+
+                    return $token;
+                }
+            }
+
             $expiresAtToken = Carbon::now()->addSeconds($this->getSecondsTokenLife());
             $expiresAtRefreshToken = Carbon::now()->addSeconds($this->getSecondsRefreshTokenLife());
 
@@ -245,6 +264,19 @@ class OAuthDriverDatabase extends OAuthDriver
             $refreshTokenEntity = $this->oAuthRefreshTokenEloquent->get($query);
 
             if ($refreshTokenEntity) {
+                $query = new RepositoryQueryBuilder();
+                $query->addCondition(new RepositoryCondition('oauth_token_id', $refreshTokenEntity->oauth_token_id));
+                $tokenEntity = $this->oAuthTokenEloquent->get($query);
+                $now = Carbon::now();
+
+                if ($tokenEntity && $now->diffInSeconds($tokenEntity->expires_at) > Config::get('token.token_life', 3600)) {
+                    $token = new Token();
+                    $token->accessToken = $tokenEntity->token;
+                    $token->refreshToken = $refreshToken;
+
+                    return $token;
+                }
+
                 $expiresAtToken = Carbon::now()->addSeconds($this->getSecondsTokenLife());
                 $expiresAtRefreshToken = Carbon::now()->addSeconds($this->getSecondsRefreshTokenLife());
 
