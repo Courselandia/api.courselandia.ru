@@ -30,7 +30,7 @@ class Kernel extends ConsoleKernel
 
         $schedule->command('course:import')->dailyAt('00:00');
         // $schedule->command('article:write')->dailyAt('02:00');
-        $schedule->command('metatag:apply --update')->dailyAt('01:00');
+        //$schedule->command('metatag:apply --update')->dailyAt('01:00');
         $schedule->command('course:normalize')->dailyAt('06:00');
         $schedule->command('teacher:normalize')->dailyAt('06:30');
         $schedule->command('course:json')->dailyAt('07:00');
