@@ -96,8 +96,6 @@ class WriterNeuroTexter extends Writer
         $client = new Client();
 
         try {
-            echo Config::get('writer.services.neuroTexter.token') . "\n\n";
-
             $response = $client->get(
                 'https://neuro-texter.ru/api/task/' . $id,
                 [
