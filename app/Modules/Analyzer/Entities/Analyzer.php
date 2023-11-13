@@ -121,6 +121,13 @@ class Analyzer extends Entity
     public string|null $analyzerable_type = null;
 
     /**
+     * Статус сущности.
+     *
+     * @var int|bool|string|null
+     */
+    public string|bool|null $analyzerable_status = null;
+
+    /**
      * Дата создания.
      *
      * @var ?Carbon

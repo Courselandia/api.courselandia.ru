@@ -33,6 +33,10 @@ class AnalyzerReadRequest extends FormRequest
     ])] public function rules(): array
     {
         $columns = Schema::getColumnListing('analyzers');
+        $columns = [
+            ...$columns,
+            'analyzerable-status',
+        ];
         $columns = implode(',', $columns);
 
         return [

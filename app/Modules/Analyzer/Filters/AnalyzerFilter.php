@@ -9,6 +9,8 @@
 namespace App\Modules\Analyzer\Filters;
 
 use App\Modules\Analyzer\Enums\Status;
+use App\Modules\Course\Enums\Status as CourseStatus;
+use App\Modules\Article\Enums\Status as ArticleStatus;
 use EloquentFilter\ModelFilter;
 
 /**
@@ -16,6 +18,17 @@ use EloquentFilter\ModelFilter;
  */
 class AnalyzerFilter extends ModelFilter
 {
+    /**
+     * Массив сопоставлений атрибутом поиска отношений с методом его реализации.
+     *
+     * @var array
+     */
+    public $relations = [
+        'analyzerable' => [
+            'analyzerable-status'  => 'analyzerableStatus',
+        ]
+    ];
+
     /**
      * Поиск по ID.
      *
@@ -110,5 +123,25 @@ class AnalyzerFilter extends ModelFilter
     public function status(array|Status|string $statuses): AnalyzerFilter
     {
         return $this->whereIn('analyzers.status', is_array($statuses) ? $statuses : [$statuses]);
+    }
+
+    /**
+     * Поиск по статусу сущности.
+     *
+     * @param bool $status Статус.
+     *
+     * @return AnalyzerFilter Правила поиска.
+     */
+    public function analyzerableStatus(bool $status): AnalyzerFilter
+    {
+        return $this->related('analyzerable', function ($query) use ($status) {
+            $statusValue = [CourseStatus::ACTIVE->value, 1, ArticleStatus::APPLIED, ArticleStatus::READY];
+
+            if ($status) {
+                return $query->whereIn('status', $statusValue);
+            } else {
+                return $query->whereNotIn('status', $statusValue);
+            }
+        });
     }
 }

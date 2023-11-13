@@ -100,6 +100,7 @@ class AnalyzerReadAction extends Action
                     $items[$i]['category_name'] = AnalyzerCategory::driver($items[$i]['category'])->name();
                     $items[$i]['category_label'] = AnalyzerCategory::driver($items[$i]['category'])->label($items[$i]['analyzerable_id']);
                     $items[$i]['text'] = $items[$i]['analyzerable'][$field];
+                    $items[$i]['analyzerable_status'] = $items[$i]['analyzerable']['status'];
                     $items[$i]['analyzerable'] = null;
                 }
 
