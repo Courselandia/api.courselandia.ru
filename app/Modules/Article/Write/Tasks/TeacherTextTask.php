@@ -11,16 +11,16 @@ namespace App\Modules\Article\Write\Tasks;
 use Carbon\Carbon;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Article\Jobs\ArticleWriteTextJob;
-use App\Modules\Skill\Models\Skill;
+use App\Modules\Teacher\Models\Teacher;
 use Illuminate\Database\Eloquent\Builder;
 use App\Modules\Article\Entities\Article as ArticleEntity;
 use App\Modules\Article\Models\Article;
 use App\Modules\Article\Enums\Status as ArticleStatus;
 
 /**
- * Написание текстов для описания навыка.
+ * Написание текстов для описания учителей.
  */
-class SkillTextTask extends Task
+class TeacherTextTask extends Task
 {
     /**
      * Количество запускаемых заданий.
@@ -42,22 +42,22 @@ class SkillTextTask extends Task
      */
     public function run(Carbon $delay = null): void
     {
-        $skills = $this
+        $teachers = $this
             ->getQuery()
             ->clone()
             ->get();
 
-        foreach ($skills as $skill) {
-            $this->fireEvent('run', [$skill]);
+        foreach ($teachers as $teacher) {
+            $this->fireEvent('run', [$teacher]);
 
             $entity = new ArticleEntity();
-            $entity->category = 'skill.text';
+            $entity->category = 'teacher.text';
             $entity->status = ArticleStatus::PENDING;
-            $entity->articleable_id = $skill->id;
-            $entity->articleable_type = 'App\Modules\Skill\Models\Skill';
+            $entity->articleable_id = $teacher->id;
+            $entity->articleable_type = 'App\Modules\Teacher\Models\Teacher';
 
             $article = Article::create($entity->toArray());
-            $job = ArticleWriteTextJob::dispatch($article->id, 'skill.text');
+            $job = ArticleWriteTextJob::dispatch($article->id, 'teacher.text');
 
             if ($delay) {
                 $delay = $delay->addMinute();
@@ -67,16 +67,17 @@ class SkillTextTask extends Task
     }
 
     /**
-     * Получить запрос на навыки, у которых нет написанных статей для описания.
+     * Получить запрос на направления, у которых нет написанных статей для описания.
      *
      * @return Builder Построитель запроса.
      */
     private function getQuery(): Builder
     {
-        return Skill::where('status', true)
+        return Teacher::where('status', true)
             ->doesntHave('articles', 'and', function (Builder $query) {
-                $query->where('articles.category', 'skill.text');
+                $query->where('articles.category', 'teacher.text');
             })
+            ->where('copied', true)
             ->orderBy('id', 'ASC');
     }
 }

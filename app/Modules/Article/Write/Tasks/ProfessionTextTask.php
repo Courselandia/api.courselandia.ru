@@ -11,16 +11,16 @@ namespace App\Modules\Article\Write\Tasks;
 use Carbon\Carbon;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Article\Jobs\ArticleWriteTextJob;
-use App\Modules\Skill\Models\Skill;
+use App\Modules\Profession\Models\Profession;
 use Illuminate\Database\Eloquent\Builder;
 use App\Modules\Article\Entities\Article as ArticleEntity;
 use App\Modules\Article\Models\Article;
 use App\Modules\Article\Enums\Status as ArticleStatus;
 
 /**
- * Написание текстов для описания навыка.
+ * Написание текстов для описания профессий.
  */
-class SkillTextTask extends Task
+class ProfessionTextTask extends Task
 {
     /**
      * Количество запускаемых заданий.
@@ -42,22 +42,22 @@ class SkillTextTask extends Task
      */
     public function run(Carbon $delay = null): void
     {
-        $skills = $this
+        $professions = $this
             ->getQuery()
             ->clone()
             ->get();
 
-        foreach ($skills as $skill) {
-            $this->fireEvent('run', [$skill]);
+        foreach ($professions as $profession) {
+            $this->fireEvent('run', [$profession]);
 
             $entity = new ArticleEntity();
-            $entity->category = 'skill.text';
+            $entity->category = 'profession.text';
             $entity->status = ArticleStatus::PENDING;
-            $entity->articleable_id = $skill->id;
-            $entity->articleable_type = 'App\Modules\Skill\Models\Skill';
+            $entity->articleable_id = $profession->id;
+            $entity->articleable_type = 'App\Modules\Profession\Models\Profession';
 
             $article = Article::create($entity->toArray());
-            $job = ArticleWriteTextJob::dispatch($article->id, 'skill.text');
+            $job = ArticleWriteTextJob::dispatch($article->id, 'profession.text');
 
             if ($delay) {
                 $delay = $delay->addMinute();
@@ -67,15 +67,15 @@ class SkillTextTask extends Task
     }
 
     /**
-     * Получить запрос на навыки, у которых нет написанных статей для описания.
+     * Получить запрос на проефссии, у которых нет написанных статей для описания.
      *
      * @return Builder Построитель запроса.
      */
     private function getQuery(): Builder
     {
-        return Skill::where('status', true)
+        return Profession::where('status', true)
             ->doesntHave('articles', 'and', function (Builder $query) {
-                $query->where('articles.category', 'skill.text');
+                $query->where('articles.category', 'profession.text');
             })
             ->orderBy('id', 'ASC');
     }
