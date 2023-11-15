@@ -13,6 +13,11 @@ use App\Modules\Article\Write\Tasks\Task;
 use App\Modules\Article\Rewrite\Tasks\CourseTextTask;
 use App\Modules\Article\Rewrite\Tasks\SkillTextTask;
 use App\Modules\Article\Rewrite\Tasks\ToolTextTask;
+use App\Modules\Article\Rewrite\Tasks\DirectionTextTask;
+use App\Modules\Article\Rewrite\Tasks\ProfessionTextTask;
+use App\Modules\Article\Rewrite\Tasks\CategoryTextTask;
+use App\Modules\Article\Rewrite\Tasks\SchoolTextTask;
+use App\Modules\Article\Rewrite\Tasks\TeacherTextTask;
 
 /**
  * Переписывание статей для разных сущностей.
@@ -71,6 +76,11 @@ class Rewrite extends Write
 
         $this->addTask(new CourseTextTask($this->unique, $this->water, $this->spam, $this->creative))
             ->addTask(new SkillTextTask($this->unique, $this->water, $this->spam, $this->creative))
-            ->addTask(new ToolTextTask($this->unique, $this->water, $this->spam, $this->creative));
+            ->addTask(new ToolTextTask($this->unique, $this->water, $this->spam, $this->creative))
+            ->addTask(new DirectionTextTask($this->unique, $this->water, $this->spam, $this->creative))
+            ->addTask(new ProfessionTextTask($this->unique, $this->water, $this->spam, $this->creative))
+            ->addTask(new CategoryTextTask($this->unique, $this->water, $this->spam, $this->creative))
+            ->addTask(new SchoolTextTask($this->unique, $this->water, $this->spam, $this->creative))
+            ->addTask(new TeacherTextTask($this->unique, $this->water, $this->spam, $this->creative));
     }
 }

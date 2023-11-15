@@ -11,11 +11,16 @@ namespace App\Modules\Article\Entities;
 use Carbon\Carbon;
 use App\Models\Entities;
 use App\Models\Entity;
+use App\Modules\Analyzer\Entities\Analyzer;
 use App\Modules\Article\Enums\Status;
 use App\Modules\Course\Entities\Course;
 use App\Modules\Skill\Entities\Skill;
 use App\Modules\Tool\Entities\Tool;
-use App\Modules\Analyzer\Entities\Analyzer;
+use App\Modules\Direction\Entities\Direction;
+use App\Modules\Profession\Entities\Profession;
+use App\Modules\Category\Entities\Category;
+use App\Modules\School\Entities\School;
+use App\Modules\Teacher\Entities\Teacher;
 
 /**
  * Сущность для статьи.
@@ -150,8 +155,13 @@ class Article extends Entity
         'App\Modules\Course\Models\Course' => Course::class,
         'App\Modules\Skill\Models\Skill' => Skill::class,
         'App\Modules\Tool\Models\Tool' => Tool::class,
+        'App\Modules\Tool\Models\Direction' => Direction::class,
+        'App\Modules\Tool\Models\Profession' => Profession::class,
+        'App\Modules\Tool\Models\Category' => Category::class,
+        'App\Modules\Tool\Models\School' => School::class,
+        'App\Modules\Tool\Models\Teacher' => Teacher::class,
     ], 'articleable_type')]
-    public Course|Skill|Tool|null $articleable = null;
+    public Course|Skill|Tool|Direction|Profession|Category|School|Teacher|null $articleable = null;
 
     /**
      * Анализ хранения текстов.

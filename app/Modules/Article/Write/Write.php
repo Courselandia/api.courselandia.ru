@@ -12,6 +12,11 @@ use Carbon\Carbon;
 use App\Models\Error;
 use App\Models\Event;
 use App\Modules\Article\Write\Tasks\Task;
+use App\Modules\Article\Write\Tasks\CategoryTextTask;
+use App\Modules\Article\Write\Tasks\DirectionTextTask;
+use App\Modules\Article\Write\Tasks\ProfessionTextTask;
+use App\Modules\Article\Write\Tasks\SchoolTextTask;
+use App\Modules\Article\Write\Tasks\TeacherTextTask;
 use App\Modules\Article\Write\Tasks\SkillTextTask;
 use App\Modules\Article\Write\Tasks\CourseTextTask;
 use App\Modules\Article\Write\Tasks\ToolTextTask;
@@ -38,7 +43,12 @@ class Write
     {
         $this->addTask(new CourseTextTask())
             ->addTask(new SkillTextTask())
-            ->addTask(new ToolTextTask());
+            ->addTask(new ToolTextTask())
+            ->addTask(new CategoryTextTask())
+            ->addTask(new DirectionTextTask())
+            ->addTask(new ProfessionTextTask())
+            ->addTask(new SchoolTextTask())
+            ->addTask(new TeacherTextTask());
     }
 
     /**

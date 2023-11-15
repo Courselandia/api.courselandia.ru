@@ -9,9 +9,6 @@
 namespace App\Modules\Article\Providers;
 
 use App;
-use App\Modules\Article\Categories\SkillTextArticleCategory;
-use App\Modules\Article\Categories\ToolTextArticleCategory;
-use App\Modules\Article\Commands\ArticleRewriteCommand;
 use Config;
 use ArticleCategory;
 use Illuminate\Support\ServiceProvider;
@@ -19,6 +16,14 @@ use App\Modules\Article\Commands\ArticleApplyCommand;
 use App\Modules\Article\Commands\ArticleWriteCommand;
 use App\Modules\Article\Categories\ArticleCategoryManager;
 use App\Modules\Article\Categories\CourseTextArticleCategory;
+use App\Modules\Article\Categories\CategoryTextArticleCategory;
+use App\Modules\Article\Categories\DirectionTextArticleCategory;
+use App\Modules\Article\Categories\ProfessionTextArticleCategory;
+use App\Modules\Article\Categories\SchoolTextArticleCategory;
+use App\Modules\Article\Categories\SkillTextArticleCategory;
+use App\Modules\Article\Categories\TeacherTextArticleCategory;
+use App\Modules\Article\Categories\ToolTextArticleCategory;
+use App\Modules\Article\Commands\ArticleRewriteCommand;
 
 /**
  * Класс сервис-провайдера для настройки этого модуля.
@@ -59,6 +64,26 @@ class ArticleServiceProvider extends ServiceProvider
 
         ArticleCategory::extend('tool.text', function () {
             return new ToolTextArticleCategory();
+        });
+
+        ArticleCategory::extend('direction.text', function () {
+            return new DirectionTextArticleCategory();
+        });
+
+        ArticleCategory::extend('profession.text', function () {
+            return new ProfessionTextArticleCategory();
+        });
+
+        ArticleCategory::extend('school.text', function () {
+            return new SchoolTextArticleCategory();
+        });
+
+        ArticleCategory::extend('teacher.text', function () {
+            return new TeacherTextArticleCategory();
+        });
+
+        ArticleCategory::extend('category.text', function () {
+            return new CategoryTextArticleCategory();
         });
 
         $this->commands([
