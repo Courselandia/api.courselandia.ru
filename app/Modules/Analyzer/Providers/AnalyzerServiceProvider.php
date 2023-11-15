@@ -10,7 +10,12 @@ namespace App\Modules\Analyzer\Providers;
 
 use App;
 use App\Modules\Analyzer\Categories\ArticleTextAnalyzerCategory;
+use App\Modules\Analyzer\Categories\CategoryTextAnalyzerCategory;
+use App\Modules\Analyzer\Categories\DirectionTextAnalyzerCategory;
+use App\Modules\Analyzer\Categories\ProfessionTextAnalyzerCategory;
+use App\Modules\Analyzer\Categories\SchoolTextAnalyzerCategory;
 use App\Modules\Analyzer\Categories\SkillTextAnalyzerCategory;
+use App\Modules\Analyzer\Categories\TeacherTextAnalyzerCategory;
 use App\Modules\Analyzer\Categories\ToolTextAnalyzerCategory;
 use App\Modules\Analyzer\Commands\AnalyzerShiftToCourseTextCommand;
 use Config;
@@ -63,6 +68,26 @@ class AnalyzerServiceProvider extends ServiceProvider
 
         AnalyzerCategory::extend('tool.text', function () {
             return new ToolTextAnalyzerCategory();
+        });
+
+        AnalyzerCategory::extend('direction.text', function () {
+            return new DirectionTextAnalyzerCategory();
+        });
+
+        AnalyzerCategory::extend('profession.text', function () {
+            return new ProfessionTextAnalyzerCategory();
+        });
+
+        AnalyzerCategory::extend('category.text', function () {
+            return new CategoryTextAnalyzerCategory();
+        });
+
+        AnalyzerCategory::extend('school.text', function () {
+            return new SchoolTextAnalyzerCategory();
+        });
+
+        AnalyzerCategory::extend('teacher.text', function () {
+            return new TeacherTextAnalyzerCategory();
         });
 
         $this->commands([
