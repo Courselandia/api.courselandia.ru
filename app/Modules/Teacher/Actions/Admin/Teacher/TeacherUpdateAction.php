@@ -285,9 +285,6 @@ class TeacherUpdateAction extends Action
 
             Cache::tags(['catalog', 'teacher', 'direction', 'school'])->flush();
 
-            $action = app(TeacherGetAction::class);
-            $action->id = $this->id;
-
             if (!$this->copied) {
                 $action = app(AnalyzerUpdateAction::class);
                 $action->id = $this->id;
@@ -295,6 +292,9 @@ class TeacherUpdateAction extends Action
                 $action->category = 'teacher.text';
                 $action->run();
             }
+
+            $action = app(TeacherGetAction::class);
+            $action->id = $this->id;
 
             return $action->run();
         }
