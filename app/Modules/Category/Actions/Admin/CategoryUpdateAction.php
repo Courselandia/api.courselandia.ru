@@ -8,6 +8,7 @@
 
 namespace App\Modules\Category\Actions\Admin;
 
+use App\Modules\Analyzer\Actions\Admin\AnalyzerUpdateAction;
 use Cache;
 use Typography;
 use App\Models\Action;
@@ -157,6 +158,12 @@ class CategoryUpdateAction extends Action
             $category->directions()->sync($this->directions);
             $category->professions()->sync($this->professions);
             Cache::tags(['catalog', 'category', 'direction', 'profession'])->flush();
+
+            $action = app(AnalyzerUpdateAction::class);
+            $action->id = $categoryEntity->id;
+            $action->model = Category::class;
+            $action->category = 'category.text';
+            $action->run();
 
             $action = app(CategoryGetAction::class);
             $action->id = $this->id;

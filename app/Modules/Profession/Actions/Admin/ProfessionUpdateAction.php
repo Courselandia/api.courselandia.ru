@@ -8,6 +8,7 @@
 
 namespace App\Modules\Profession\Actions\Admin;
 
+use App\Modules\Analyzer\Actions\Admin\AnalyzerUpdateAction;
 use Typography;
 use App\Models\Action;
 use App\Models\Exceptions\ParameterInvalidException;
@@ -139,6 +140,12 @@ class ProfessionUpdateAction extends Action
 
             Profession::find($this->id)->update($professionEntity->toArray());
             Cache::tags(['catalog', 'category', 'direction', 'salary', 'profession'])->flush();
+
+            $action = app(AnalyzerUpdateAction::class);
+            $action->id = $professionEntity->id;
+            $action->model = Profession::class;
+            $action->category = 'profession.text';
+            $action->run();
 
             $action = app(ProfessionGetAction::class);
             $action->id = $this->id;

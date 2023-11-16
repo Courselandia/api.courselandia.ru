@@ -8,6 +8,7 @@
 
 namespace App\Modules\School\Actions\Admin\School;
 
+use App\Modules\Analyzer\Actions\Admin\AnalyzerUpdateAction;
 use Cache;
 use Typography;
 use App\Models\Action;
@@ -149,6 +150,12 @@ class SchoolCreateAction extends Action
 
         $school = School::create($schoolEntity->toArray());
         Cache::tags(['catalog', 'school', 'teacher', 'review', 'faq'])->flush();
+
+        $action = app(AnalyzerUpdateAction::class);
+        $action->id = $school->id;
+        $action->model = School::class;
+        $action->category = 'school.text';
+        $action->run();
 
         $action = app(SchoolGetAction::class);
         $action->id = $school->id;

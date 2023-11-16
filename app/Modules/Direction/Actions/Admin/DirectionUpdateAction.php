@@ -8,6 +8,7 @@
 
 namespace App\Modules\Direction\Actions\Admin;
 
+use App\Modules\Analyzer\Actions\Admin\AnalyzerUpdateAction;
 use Cache;
 use Typography;
 use App\Models\Action;
@@ -148,6 +149,12 @@ class DirectionUpdateAction extends Action
             Direction::find($this->id)->update($directionEntity->toArray());
 
             Cache::tags(['catalog', 'category', 'direction', 'profession', 'teacher'])->flush();
+
+            $action = app(AnalyzerUpdateAction::class);
+            $action->id = $directionEntity->id;
+            $action->model = Direction::class;
+            $action->category = 'direction.text';
+            $action->run();
 
             $action = app(DirectionGetAction::class);
             $action->id = $this->id;

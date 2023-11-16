@@ -17,6 +17,7 @@ use App\Modules\Direction\Models\Direction;
 use App\Modules\Metatag\Actions\MetatagSetAction;
 use App\Modules\Metatag\Template\Template;
 use App\Modules\Metatag\Template\TemplateException;
+use App\Modules\Analyzer\Actions\Admin\AnalyzerUpdateAction;
 
 /**
  * Класс действия для создания направления.
@@ -123,6 +124,12 @@ class DirectionCreateAction extends Action
         $direction = Direction::create($directionEntity->toArray());
 
         Cache::tags(['catalog', 'category', 'direction', 'profession', 'teacher'])->flush();
+
+        $action = app(AnalyzerUpdateAction::class);
+        $action->id = $direction->id;
+        $action->model = Direction::class;
+        $action->category = 'direction.text';
+        $action->run();
 
         $action = app(DirectionGetAction::class);
         $action->id = $direction->id;

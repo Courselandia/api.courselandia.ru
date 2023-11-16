@@ -8,6 +8,7 @@
 
 namespace App\Modules\Teacher\Actions\Admin\Teacher;
 
+use App\Modules\Analyzer\Actions\Admin\AnalyzerUpdateAction;
 use Carbon\Carbon;
 use Config;
 use DB;
@@ -286,6 +287,14 @@ class TeacherUpdateAction extends Action
 
             $action = app(TeacherGetAction::class);
             $action->id = $this->id;
+
+            if (!$this->copied) {
+                $action = app(AnalyzerUpdateAction::class);
+                $action->id = $this->id;
+                $action->model = Teacher::class;
+                $action->category = 'teacher.text';
+                $action->run();
+            }
 
             return $action->run();
         }

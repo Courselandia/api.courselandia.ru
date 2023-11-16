@@ -8,6 +8,7 @@
 
 namespace App\Modules\Teacher\Actions\Admin\Teacher;
 
+use App\Modules\Analyzer\Actions\Admin\AnalyzerUpdateAction;
 use App\Modules\Teacher\Enums\SocialMedia;
 use DB;
 use Cache;
@@ -252,6 +253,14 @@ class TeacherCreateAction extends Action
         });
 
         Cache::tags(['catalog', 'teacher', 'direction', 'school'])->flush();
+
+        if (!$this->copied) {
+            $action = app(AnalyzerUpdateAction::class);
+            $action->id = $id;
+            $action->model = Teacher::class;
+            $action->category = 'teacher.text';
+            $action->run();
+        }
 
         $action = app(TeacherGetAction::class);
         $action->id = $id;
