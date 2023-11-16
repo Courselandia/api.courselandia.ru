@@ -15,6 +15,11 @@ use App\Modules\Analyzer\Analyze\Tasks\Task;
 use App\Modules\Analyzer\Analyze\Tasks\CourseTextTask;
 use App\Modules\Analyzer\Analyze\Tasks\SkillTextTask;
 use App\Modules\Analyzer\Analyze\Tasks\ToolTextTask;
+use App\Modules\Analyzer\Analyze\Tasks\DirectionTextTask;
+use App\Modules\Analyzer\Analyze\Tasks\ProfessionTextTask;
+use App\Modules\Analyzer\Analyze\Tasks\CategoryTextTask;
+use App\Modules\Analyzer\Analyze\Tasks\SchoolTextTask;
+use App\Modules\Analyzer\Analyze\Tasks\TeacherTextTask;
 
 /**
  * Анализ статей для разных сущностей.
@@ -35,7 +40,12 @@ class Analyze
     {
         $this->addTask(new CourseTextTask())
             ->addTask(new SkillTextTask())
-            ->addTask(new ToolTextTask());
+            ->addTask(new ToolTextTask())
+            ->addTask(new DirectionTextTask())
+            ->addTask(new ProfessionTextTask())
+            ->addTask(new CategoryTextTask())
+            ->addTask(new SchoolTextTask())
+            ->addTask(new TeacherTextTask());
     }
 
     /**

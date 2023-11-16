@@ -11,16 +11,16 @@ namespace App\Modules\Analyzer\Analyze\Tasks;
 use Carbon\Carbon;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Analyzer\Jobs\AnalyzerAnalyzeTextJob;
-use App\Modules\Tool\Models\Tool;
+use App\Modules\Teacher\Models\Teacher;
 use Illuminate\Database\Eloquent\Builder;
 use App\Modules\Analyzer\Entities\Analyzer as AnalyzerEntity;
 use App\Modules\Analyzer\Models\Analyzer;
 use App\Modules\Analyzer\Enums\Status as AnalyzerStatus;
 
 /**
- * Анализ текстов для описания инструментов.
+ * Анализ текстов для описания учителей.
  */
-class ToolTextTask extends Task
+class TeacherTextTask extends Task
 {
     /**
      * Количество запускаемых заданий.
@@ -42,22 +42,22 @@ class ToolTextTask extends Task
      */
     public function run(Carbon $delay = null): void
     {
-        $tools = $this
+        $teachers = $this
             ->getQuery()
             ->clone()
             ->get();
 
-        foreach ($tools as $tool) {
-            $this->fireEvent('run', [$tool]);
+        foreach ($teachers as $teacher) {
+            $this->fireEvent('run', [$teacher]);
 
             $entity = new AnalyzerEntity();
-            $entity->category = 'tool.text';
+            $entity->category = 'teacher.text';
             $entity->status = AnalyzerStatus::PENDING;
-            $entity->analyzerable_id = $tool->id;
-            $entity->analyzerable_type = 'App\Modules\Tool\Models\Tool';
+            $entity->analyzerable_id = $teacher->id;
+            $entity->analyzerable_type = 'App\Modules\Teacher\Models\Teacher';
 
             $analyzer = Analyzer::create($entity->toArray());
-            $job = AnalyzerAnalyzeTextJob::dispatch($analyzer->id, 'tool.text');
+            $job = AnalyzerAnalyzeTextJob::dispatch($analyzer->id, 'teacher.text');
 
             if ($delay) {
                 $delay = $delay->addMinute();
@@ -67,16 +67,17 @@ class ToolTextTask extends Task
     }
 
     /**
-     * Получить запрос на инструменты, у которых нет результатов анализа текста-описаний.
+     * Получить запрос на учителей, у которых нет результатов анализа текста-описаний.
      *
      * @return Builder Построитель запроса.
      */
     private function getQuery(): Builder
     {
-        return Tool::where('status', true)
+        return Teacher::where('status', true)
             ->doesntHave('analyzers', 'and', function (Builder $query) {
-                $query->where('analyzers.category', 'tool.text');
+                $query->where('analyzers.category', 'teacher.text');
             })
+            ->where('copied', false)
             ->orderBy('id', 'ASC');
     }
 }

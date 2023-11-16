@@ -11,16 +11,16 @@ namespace App\Modules\Analyzer\Analyze\Tasks;
 use Carbon\Carbon;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Analyzer\Jobs\AnalyzerAnalyzeTextJob;
-use App\Modules\Tool\Models\Tool;
+use App\Modules\School\Models\School;
 use Illuminate\Database\Eloquent\Builder;
 use App\Modules\Analyzer\Entities\Analyzer as AnalyzerEntity;
 use App\Modules\Analyzer\Models\Analyzer;
 use App\Modules\Analyzer\Enums\Status as AnalyzerStatus;
 
 /**
- * Анализ текстов для описания инструментов.
+ * Анализ текстов для описания школ.
  */
-class ToolTextTask extends Task
+class SchoolTextTask extends Task
 {
     /**
      * Количество запускаемых заданий.
@@ -42,22 +42,22 @@ class ToolTextTask extends Task
      */
     public function run(Carbon $delay = null): void
     {
-        $tools = $this
+        $schools = $this
             ->getQuery()
             ->clone()
             ->get();
 
-        foreach ($tools as $tool) {
-            $this->fireEvent('run', [$tool]);
+        foreach ($schools as $school) {
+            $this->fireEvent('run', [$school]);
 
             $entity = new AnalyzerEntity();
-            $entity->category = 'tool.text';
+            $entity->category = 'school.text';
             $entity->status = AnalyzerStatus::PENDING;
-            $entity->analyzerable_id = $tool->id;
-            $entity->analyzerable_type = 'App\Modules\Tool\Models\Tool';
+            $entity->analyzerable_id = $school->id;
+            $entity->analyzerable_type = 'App\Modules\School\Models\School';
 
             $analyzer = Analyzer::create($entity->toArray());
-            $job = AnalyzerAnalyzeTextJob::dispatch($analyzer->id, 'tool.text');
+            $job = AnalyzerAnalyzeTextJob::dispatch($analyzer->id, 'school.text');
 
             if ($delay) {
                 $delay = $delay->addMinute();
@@ -67,15 +67,15 @@ class ToolTextTask extends Task
     }
 
     /**
-     * Получить запрос на инструменты, у которых нет результатов анализа текста-описаний.
+     * Получить запрос на школы, у которых нет результатов анализа текста-описаний.
      *
      * @return Builder Построитель запроса.
      */
     private function getQuery(): Builder
     {
-        return Tool::where('status', true)
+        return School::where('status', true)
             ->doesntHave('analyzers', 'and', function (Builder $query) {
-                $query->where('analyzers.category', 'tool.text');
+                $query->where('analyzers.category', 'school.text');
             })
             ->orderBy('id', 'ASC');
     }
