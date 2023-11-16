@@ -8,6 +8,8 @@
 
 namespace App\Modules\School\Models;
 
+use App\Modules\Analyzer\Models\Analyzer;
+use App\Modules\Article\Models\Article;
 use App\Modules\Course\Models\Course;
 use App\Modules\Faq\Models\Faq;
 use App\Modules\Review\Models\Review;
@@ -15,6 +17,7 @@ use App\Modules\Teacher\Models\Teacher;
 use Exception;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Size;
 use Eloquent;
 use ImageStore;
@@ -60,6 +63,8 @@ use App\Modules\School\Filters\SchoolFilter;
  * @property-read Review[] $reviews
  * @property-read Faq[] $faqs
  * @property-read Course[] $courses
+ * @property-read Article[] $articles
+ * @property-read Analyzer[] $analyzers
  */
 class School extends Eloquent
 {
@@ -349,5 +354,25 @@ class School extends Eloquent
     public function courses(): HasMany
     {
         return $this->hasMany(Course::class);
+    }
+
+    /**
+     * Статьи написанные искусственным интеллектом.
+     *
+     * @return MorphMany Модели статей.
+     */
+    public function articles(): MorphMany
+    {
+        return $this->morphMany(Article::class, 'articleable');
+    }
+
+    /**
+     * Результаты анализа текста.
+     *
+     * @return MorphMany Модели анализа текста.
+     */
+    public function analyzers(): MorphMany
+    {
+        return $this->morphMany(Analyzer::class, 'analyzerable');
     }
 }

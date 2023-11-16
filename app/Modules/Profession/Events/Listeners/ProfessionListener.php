@@ -27,6 +27,8 @@ class ProfessionListener
         $profession->deleteRelation($profession->metatag(), $profession->isForceDeleting());
         $profession->deleteRelation($profession->salaries(), $profession->isForceDeleting());
         $profession->courses()->detach();
+        $profession->deleteRelation($profession->analyzers(), $profession->isForceDeleting());
+        $profession->deleteRelation($profession->articles(), $profession->isForceDeleting());
 
         return true;
     }

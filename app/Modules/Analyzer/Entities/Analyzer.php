@@ -16,6 +16,11 @@ use App\Modules\Course\Entities\Course;
 use App\Modules\Article\Entities\Article;
 use App\Modules\Skill\Entities\Skill;
 use App\Modules\Tool\Entities\Tool;
+use App\Modules\Direction\Entities\Direction;
+use App\Modules\Profession\Entities\Profession;
+use App\Modules\Category\Entities\Category;
+use App\Modules\School\Entities\School;
+use App\Modules\Teacher\Entities\Teacher;
 
 /**
  * Сущность хранения результатов анализа текста.
@@ -158,6 +163,11 @@ class Analyzer extends Entity
         'App\Modules\Article\Models\Article' => Article::class,
         'App\Modules\Skill\Models\Skill' => Skill::class,
         'App\Modules\Tool\Models\Tool' => Tool::class,
+        'App\Modules\Direction\Models\Direction' => Direction::class,
+        'App\Modules\Profession\Models\Profession' => Profession::class,
+        'App\Modules\Category\Models\Category' => Category::class,
+        'App\Modules\School\Models\School' => School::class,
+        'App\Modules\Teacher\Models\Teacher' => Teacher::class,
     ], 'analyzerable_type')]
-    public Course|Article|Skill|Tool|null $analyzerable = null;
+    public Course|Article|Skill|Tool|Direction|Profession|Category|School|Teacher|null $analyzerable = null;
 }

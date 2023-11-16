@@ -10,6 +10,7 @@ namespace App\Modules\Category\Entities;
 
 use App\Models\Entities;
 use App\Models\Entity;
+use App\Modules\Analyzer\Entities\Analyzer;
 use App\Modules\Direction\Entities\Direction;
 use App\Modules\Profession\Entities\Profession;
 use Carbon\Carbon;
@@ -119,4 +120,12 @@ class Category extends Entity
      */
     #[Entities(Profession::class)]
     public ?array $professions = null;
+
+    /**
+     * Анализ хранения текстов.
+     *
+     * @var Analyzer[]
+     */
+    #[Entities(Analyzer::class)]
+    public ?array $analyzers = null;
 }

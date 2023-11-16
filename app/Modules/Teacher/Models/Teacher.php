@@ -8,7 +8,10 @@
 
 namespace App\Modules\Teacher\Models;
 
+use App\Modules\Analyzer\Models\Analyzer;
+use App\Modules\Article\Models\Article;
 use Exception;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Size;
 use Eloquent;
 use ImageStore;
@@ -60,6 +63,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property-read Course[] $courses
  * @property-read TeacherExperience[] $experiences
  * @property-read TeacherSocialMedia[] $socialMedias
+ * @property-read Article[] $articles
+ * @property-read Analyzer[] $analyzers
  */
 class Teacher extends Eloquent
 {
@@ -401,5 +406,25 @@ class Teacher extends Eloquent
     public function socialMedias(): HasMany
     {
         return $this->hasMany(TeacherSocialMedia::class)->orderBy('name', 'ASC');
+    }
+
+    /**
+     * Статьи написанные искусственным интеллектом.
+     *
+     * @return MorphMany Модели статей.
+     */
+    public function articles(): MorphMany
+    {
+        return $this->morphMany(Article::class, 'articleable');
+    }
+
+    /**
+     * Результаты анализа текста.
+     *
+     * @return MorphMany Модели анализа текста.
+     */
+    public function analyzers(): MorphMany
+    {
+        return $this->morphMany(Analyzer::class, 'analyzerable');
     }
 }

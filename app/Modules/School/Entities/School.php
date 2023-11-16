@@ -8,7 +8,9 @@
 
 namespace App\Modules\School\Entities;
 
+use App\Models\Entities;
 use App\Models\Entity;
+use App\Modules\Analyzer\Entities\Analyzer;
 use Carbon\Carbon;
 use App\Modules\Image\Entities\Image;
 use App\Modules\Metatag\Entities\Metatag;
@@ -179,4 +181,12 @@ class School extends Entity
      * @var array|null
      */
     public array|null $amount_courses = null;
+
+    /**
+     * Анализ хранения текстов.
+     *
+     * @var Analyzer[]
+     */
+    #[Entities(Analyzer::class)]
+    public ?array $analyzers = null;
 }

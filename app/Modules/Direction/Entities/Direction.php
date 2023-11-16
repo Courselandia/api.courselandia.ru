@@ -10,6 +10,7 @@ namespace App\Modules\Direction\Entities;
 
 use App\Models\Entities;
 use App\Models\Entity;
+use App\Modules\Analyzer\Entities\Analyzer;
 use Carbon\Carbon;
 use App\Modules\Metatag\Entities\Metatag;
 use App\Modules\Category\Entities\Category;
@@ -117,4 +118,12 @@ class Direction extends Entity
      */
     #[Entities(Category::class)]
     public ?array $categories = null;
+
+    /**
+     * Анализ хранения текстов.
+     *
+     * @var Analyzer[]
+     */
+    #[Entities(Analyzer::class)]
+    public ?array $analyzers = null;
 }

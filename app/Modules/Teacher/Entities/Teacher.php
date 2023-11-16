@@ -8,6 +8,7 @@
 
 namespace App\Modules\Teacher\Entities;
 
+use App\Modules\Analyzer\Entities\Analyzer;
 use Carbon\Carbon;
 use App\Models\Entities;
 use App\Models\Entity;
@@ -179,4 +180,12 @@ class Teacher extends Entity
      */
     #[Entities(TeacherSocialMedia::class)]
     public ?array $social_medias = null;
+
+    /**
+     * Анализ хранения текстов.
+     *
+     * @var Analyzer[]
+     */
+    #[Entities(Analyzer::class)]
+    public ?array $analyzers = null;
 }

@@ -8,6 +8,8 @@
 
 namespace App\Modules\Category\Models;
 
+use App\Modules\Analyzer\Models\Analyzer;
+use App\Modules\Article\Models\Article;
 use App\Modules\Course\Models\Course;
 use App\Modules\Direction\Models\Direction;
 use App\Modules\Profession\Models\Profession;
@@ -19,6 +21,7 @@ use App\Models\Sortable;
 use EloquentFilter\Filterable;
 use App\Modules\Metatag\Models\Metatag;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use JetBrains\PhpStorm\ArrayShape;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -43,6 +46,8 @@ use App\Modules\Category\Filters\CategoryFilter;
  * @property-read Direction[] $directions
  * @property-read Profession[] $professions
  * @property-read Course[] $courses
+ * @property-read Article[] $articles
+ * @property-read Analyzer[] $analyzers
  */
 class Category extends Eloquent
 {
@@ -172,5 +177,25 @@ class Category extends Eloquent
     public function courses(): BelongsToMany
     {
         return $this->belongsToMany(Course::class, 'course_category');
+    }
+
+    /**
+     * Статьи написанные искусственным интеллектом.
+     *
+     * @return MorphMany Модели статей.
+     */
+    public function articles(): MorphMany
+    {
+        return $this->morphMany(Article::class, 'articleable');
+    }
+
+    /**
+     * Результаты анализа текста.
+     *
+     * @return MorphMany Модели анализа текста.
+     */
+    public function analyzers(): MorphMany
+    {
+        return $this->morphMany(Analyzer::class, 'analyzerable');
     }
 }

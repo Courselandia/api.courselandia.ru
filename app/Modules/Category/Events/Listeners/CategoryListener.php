@@ -28,6 +28,8 @@ class CategoryListener
         $category->directions()->detach();
         $category->professions()->detach();
         $category->courses()->detach();
+        $category->deleteRelation($category->analyzers(), $category->isForceDeleting());
+        $category->deleteRelation($category->articles(), $category->isForceDeleting());
 
         return true;
     }

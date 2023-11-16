@@ -43,7 +43,10 @@ class SchoolGetAction extends Action
             CacheTime::GENERAL->value,
             function () {
                 $school = School::where('id', $this->id)
-                    ->with('metatag')
+                    ->with([
+                        'metatag',
+                        'analyzers',
+                    ])
                     ->first();
 
                 return $school ? new SchoolEntity($school->toArray()) : null;

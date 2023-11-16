@@ -46,6 +46,7 @@ class CategoryGetAction extends Action
                     'metatag',
                     'directions',
                     'professions',
+                    'analyzers',
                 ])->find($this->id);
 
                 if ($result) {

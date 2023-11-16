@@ -43,7 +43,10 @@ class DirectionGetAction extends Action
             CacheTime::GENERAL->value,
             function () {
                 $direction = Direction::where('id', $this->id)
-                    ->with('metatag')
+                    ->with([
+                        'metatag',
+                        'analyzers',
+                    ])
                     ->first();
 
                 return $direction ? new DirectionEntity($direction->toArray()) : null;

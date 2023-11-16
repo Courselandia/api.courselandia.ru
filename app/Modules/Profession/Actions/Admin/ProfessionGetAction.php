@@ -46,6 +46,7 @@ class ProfessionGetAction extends Action
                 $profession = Profession::where('id', $id)
                     ->with([
                         'metatag',
+                        'analyzers',
                     ])->first();
 
                 return $profession ? new ProfessionEntity($profession->toArray()) : null;

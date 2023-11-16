@@ -43,6 +43,8 @@ class TeacherListener
         $teacher->directions()->detach();
         $teacher->schools()->detach();
         $teacher->courses()->detach();
+        $teacher->deleteRelation($teacher->analyzers(), $teacher->isForceDeleting());
+        $teacher->deleteRelation($teacher->articles(), $teacher->isForceDeleting());
 
         return true;
     }

@@ -49,6 +49,7 @@ class TeacherGetAction extends Action
                         'schools',
                         'experiences',
                         'socialMedias',
+                        'analyzers',
                     ])
                     ->first();
 

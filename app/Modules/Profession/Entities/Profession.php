@@ -10,6 +10,7 @@ namespace App\Modules\Profession\Entities;
 
 use App\Models\Entities;
 use App\Models\Entity;
+use App\Modules\Analyzer\Entities\Analyzer;
 use App\Modules\Salary\Entities\Salary;
 use Carbon\Carbon;
 use App\Modules\Metatag\Entities\Metatag;
@@ -110,4 +111,12 @@ class Profession extends Entity
      */
     #[Entities(Salary::class)]
     public ?array $salaries = null;
+
+    /**
+     * Анализ хранения текстов.
+     *
+     * @var Analyzer[]
+     */
+    #[Entities(Analyzer::class)]
+    public ?array $analyzers = null;
 }
