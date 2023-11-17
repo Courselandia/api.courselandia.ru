@@ -77,7 +77,7 @@ class TeacherTextTask extends Task
             ->doesntHave('articles', 'and', function (Builder $query) {
                 $query->where('articles.category', 'teacher.text');
             })
-            ->where('copied', false)
+            ->where('copied', true)
             ->orderBy('id', 'ASC');
     }
 }

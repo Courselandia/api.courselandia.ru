@@ -109,7 +109,7 @@ class TeacherTextTask extends Task
         ->with('articles.analyzers', function ($query) {
             $query->where('category', 'article.text');
         })
-        ->where('copied', false)
+        ->where('copied', true)
         ->orderBy('id', 'ASC');
     }
 }
