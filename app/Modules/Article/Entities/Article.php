@@ -155,11 +155,11 @@ class Article extends Entity
         'App\Modules\Course\Models\Course' => Course::class,
         'App\Modules\Skill\Models\Skill' => Skill::class,
         'App\Modules\Tool\Models\Tool' => Tool::class,
-        'App\Modules\Tool\Models\Direction' => Direction::class,
-        'App\Modules\Tool\Models\Profession' => Profession::class,
-        'App\Modules\Tool\Models\Category' => Category::class,
-        'App\Modules\Tool\Models\School' => School::class,
-        'App\Modules\Tool\Models\Teacher' => Teacher::class,
+        'App\Modules\Direction\Models\Direction' => Direction::class,
+        'App\Modules\Profession\Models\Profession' => Profession::class,
+        'App\Modules\Category\Models\Category' => Category::class,
+        'App\Modules\School\Models\School' => School::class,
+        'App\Modules\Teacher\Models\Teacher' => Teacher::class,
     ], 'articleable_type')]
     public Course|Skill|Tool|Direction|Profession|Category|School|Teacher|null $articleable = null;
 
