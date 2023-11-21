@@ -107,6 +107,7 @@ class ArticleShiftEntityTextToArticleCommand extends Command
             }
 
             $bar->finish();
+            $this->line("\n");
         }
     }
 
@@ -162,6 +163,7 @@ class ArticleShiftEntityTextToArticleCommand extends Command
             }
 
             $bar->finish();
+            $this->line("\n");
         }
     }
 
@@ -217,6 +219,7 @@ class ArticleShiftEntityTextToArticleCommand extends Command
             }
 
             $bar->finish();
+            $this->line("\n");
         }
     }
 
@@ -272,6 +275,7 @@ class ArticleShiftEntityTextToArticleCommand extends Command
             }
 
             $bar->finish();
+            $this->line("\n");
         }
     }
 }
