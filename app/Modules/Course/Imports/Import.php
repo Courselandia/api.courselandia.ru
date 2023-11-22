@@ -84,7 +84,7 @@ class Import
             ->addParser(new ParserContented('https://feeds.advcake.com/feed/download/6d2dd813fb1c90af6a46a09152b8b66e'))
             ->addParser(new ParserXyzSchool('https://feeds.advcake.com/feed/download/beed1d5d836673744f70f869fa8dc96d'))
             ->addParser(new ParserSkillboxEng('https://feeds.advcake.com/feed/download/312e01ad656d54b004998c79a3fbd6d5'))
-            ->addParser(new ParserInternationalSchoolProfessions('https://feeds.advcake.com/feed/download/e32dabfde71ef6a97dd8b66a9c142c99'))
+            ->addParser(new ParserInternationalSchoolProfessions('https://feeds.advcake.com/feed/download/2755679bb42d2521e4a2347bf10bd43b'))
             ->addParser(new ParserEdusonAcademy('https://feeds.advcake.com/feed/download/f6dcb15ae0a559674e0f785786f26582'))
             ->addParser(new ParserCoddy('https://feeds.advcake.com/feed/download/4b6f8a8e2173c49b1204798eb2033a33'))
             ->addParser(new ParserOtus('https://feeds.advcake.com/feed/download/03c2de078b28838db48d2cabf352421e'))
