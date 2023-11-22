@@ -57,6 +57,7 @@ class ParserSkillbox extends ParserYml
             'Проекты' => Direction::OTHER,
             'Нейросети и no-code' => Direction::PROGRAMMING,
             'Lerna' => Direction::OTHER,
+            'Здоровье' => Direction::OTHER,
         ];
     }
 
