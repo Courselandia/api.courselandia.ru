@@ -304,6 +304,9 @@ return [
 
         App\Modules\Plagiarism\Providers\PlagiarismServiceProvider::class,
         App\Modules\Plagiarism\Providers\RouteServiceProvider::class,
+
+        App\Modules\Page\Providers\PageServiceProvider::class,
+        App\Modules\Page\Providers\RouteServiceProvider::class,
     ],
 
     /*
