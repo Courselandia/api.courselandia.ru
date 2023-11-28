@@ -1,23 +1,23 @@
 <?php
 /**
- * Модуль ядра системы.
- * Этот модуль содержит все классы для работы с ядром системы.
+ * Модуль sitemap.xml.
+ * Этот модуль содержит все классы для работы с генерацией sitemap.xml.
  *
- * @package App\Modules\Core
+ * @package App\Modules\Sitemap
  */
 
-namespace App\Modules\Core\Sitemap\Parts;
+namespace App\Modules\Sitemap\Sitemap\Parts;
 
-use Generator;
-use App\Modules\Core\Sitemap\Item;
+use App\Modules\Category\Models\Category;
 use App\Modules\Course\Enums\Status;
-use App\Modules\Teacher\Models\Teacher;
+use App\Modules\Sitemap\Sitemap\Item;
+use Generator;
 use Illuminate\Database\Eloquent\Builder;
 
 /**
- * Генератор для учителей.
+ * Генератор для категорий.
  */
-class PartTeacher extends PartDirection
+class PartCategory extends PartDirection
 {
     /**
      * Вернет количество генерируемых элементов.
@@ -47,9 +47,9 @@ class PartTeacher extends PartDirection
 
             if ($result) {
                 $item = new Item();
-                $item->path = '/courses/teacher/' . $result['link'];
-                $item->priority = 0.1;
-                $item->lastmod = $this->getLastmod('teacher', $result['link']);
+                $item->path = '/courses/category/' . $result['link'];
+                $item->priority = 0.8;
+                $item->lastmod = $this->getLastmod('category', $result['link']);
 
                 yield $item;
             }
@@ -63,9 +63,9 @@ class PartTeacher extends PartDirection
      */
     private function getQuery(): Builder
     {
-        return Teacher::select([
-            'teachers.id',
-            'teachers.link',
+        return Category::select([
+            'categories.id',
+            'categories.link',
         ])
         ->whereHas('courses', function ($query) {
             $query->select([

@@ -1,24 +1,23 @@
 <?php
 /**
- * Модуль ядра системы.
- * Этот модуль содержит все классы для работы с ядром системы.
+ * Модуль sitemap.xml.
+ * Этот модуль содержит все классы для работы с генерацией sitemap.xml.
  *
- * @package App\Modules\Core
+ * @package App\Modules\Sitemap
  */
 
-namespace App\Modules\Core\Sitemap\Parts;
+namespace App\Modules\Sitemap\Sitemap\Parts;
 
-use Generator;
-use App\Models\Exceptions\ParameterInvalidException;
-use App\Modules\Core\Sitemap\Item;
 use App\Modules\Course\Enums\Status;
-use App\Modules\Category\Models\Category;
+use App\Modules\Profession\Models\Profession;
+use App\Modules\Sitemap\Sitemap\Item;
+use Generator;
 use Illuminate\Database\Eloquent\Builder;
 
 /**
- * Генератор для категорий.
+ * Генератор для профессий.
  */
-class PartCategory extends PartDirection
+class PartProfession extends PartDirection
 {
     /**
      * Вернет количество генерируемых элементов.
@@ -48,9 +47,9 @@ class PartCategory extends PartDirection
 
             if ($result) {
                 $item = new Item();
-                $item->path = '/courses/category/' . $result['link'];
+                $item->path = '/courses/profession/' . $result['link'];
                 $item->priority = 0.8;
-                $item->lastmod = $this->getLastmod('category', $result['link']);
+                $item->lastmod = $this->getLastmod('profession', $result['link']);
 
                 yield $item;
             }
@@ -64,9 +63,9 @@ class PartCategory extends PartDirection
      */
     private function getQuery(): Builder
     {
-        return Category::select([
-            'categories.id',
-            'categories.link',
+        return Profession::select([
+            'professions.id',
+            'professions.link',
         ])
         ->whereHas('courses', function ($query) {
             $query->select([

@@ -1,24 +1,23 @@
 <?php
 /**
- * Модуль ядра системы.
- * Этот модуль содержит все классы для работы с ядром системы.
+ * Модуль sitemap.xml.
+ * Этот модуль содержит все классы для работы с генерацией sitemap.xml.
  *
- * @package App\Modules\Core
+ * @package App\Modules\Sitemap
  */
 
-namespace App\Modules\Core\Sitemap\Parts;
+namespace App\Modules\Sitemap\Sitemap\Parts;
 
-use App\Models\Exceptions\ParameterInvalidException;
-use Generator;
-use App\Modules\Core\Sitemap\Item;
 use App\Modules\Course\Enums\Status;
-use App\Modules\Tool\Models\Tool;
+use App\Modules\Sitemap\Sitemap\Item;
+use App\Modules\Skill\Models\Skill;
+use Generator;
 use Illuminate\Database\Eloquent\Builder;
 
 /**
- * Генератор для инструментов.
+ * Генератор для навыков.
  */
-class PartTool extends PartDirection
+class PartSkill extends PartDirection
 {
     /**
      * Вернет количество генерируемых элементов.
@@ -48,9 +47,9 @@ class PartTool extends PartDirection
 
             if ($result) {
                 $item = new Item();
-                $item->path = '/courses/tool/' . $result['link'];
+                $item->path = '/courses/skill/' . $result['link'];
                 $item->priority = 0.8;
-                $item->lastmod = $this->getLastmod('tool', $result['link']);
+                $item->lastmod = $this->getLastmod('skill', $result['link']);
 
                 yield $item;
             }
@@ -64,9 +63,9 @@ class PartTool extends PartDirection
      */
     private function getQuery(): Builder
     {
-        return Tool::select([
-            'tools.id',
-            'tools.link',
+        return Skill::select([
+            'skills.id',
+            'skills.link',
         ])
         ->whereHas('courses', function ($query) {
             $query->select([

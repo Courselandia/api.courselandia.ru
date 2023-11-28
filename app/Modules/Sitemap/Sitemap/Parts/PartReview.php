@@ -1,23 +1,23 @@
 <?php
 /**
- * Модуль ядра системы.
- * Этот модуль содержит все классы для работы с ядром системы.
+ * Модуль sitemap.xml.
+ * Этот модуль содержит все классы для работы с генерацией sitemap.xml.
  *
- * @package App\Modules\Core
+ * @package App\Modules\Sitemap
  */
 
-namespace App\Modules\Core\Sitemap\Parts;
+namespace App\Modules\Sitemap\Sitemap\Parts;
 
-use Generator;
-use Carbon\Carbon;
 use App\Models\Exceptions\ParameterInvalidException;
-use App\Modules\Core\Sitemap\Part;
+use App\Modules\Course\Enums\Status;
 use App\Modules\Review\Actions\Site\ReviewReadAction;
 use App\Modules\Review\Entities\Review;
-use App\Modules\Core\Sitemap\Item;
-use App\Modules\Course\Enums\Status;
 use App\Modules\Review\Enums\Status as ReviewStatus;
 use App\Modules\School\Models\School;
+use App\Modules\Sitemap\Sitemap\Item;
+use App\Modules\Sitemap\Sitemap\Part;
+use Carbon\Carbon;
+use Generator;
 use Illuminate\Database\Eloquent\Builder;
 
 /**

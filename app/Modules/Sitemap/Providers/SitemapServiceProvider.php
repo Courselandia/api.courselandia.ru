@@ -1,22 +1,21 @@
 <?php
 /**
- * Модуль ядра системы.
- * Этот модуль содержит все классы для работы с ядром системы.
+ * Модуль sitemap.xml.
+ * Этот модуль содержит все классы для работы с генерацией sitemap.xml.
  *
- * @package App\Modules\Core
+ * @package App\Modules\Sitemap
  */
 
-namespace App\Modules\Core\Providers;
+namespace App\Modules\Sitemap\Providers;
 
 use Config;
-use App\Modules\Core\Commands\CacheFlushCommand;
-use App\Modules\Core\Commands\TypographyCommand;
+use App\Modules\Sitemap\Commands\SitemapGenerateCommand;
 use Illuminate\Support\ServiceProvider;
 
 /**
  * Класс сервис-провайдера для настройки этого модуля.
  */
-class CoreServiceProvider extends ServiceProvider
+class SitemapServiceProvider extends ServiceProvider
 {
     /**
      * Обработчик события загрузки приложения.
@@ -27,9 +26,8 @@ class CoreServiceProvider extends ServiceProvider
     {
         $this->registerTranslations();
         $this->registerConfig();
-        $this->registerViews();
 
-        $this->loadMigrationsFrom(__DIR__.'/../Database/Migrations');
+        $this->loadMigrationsFrom(__DIR__ . '/../Database/Migrations');
     }
 
     /**
@@ -40,8 +38,7 @@ class CoreServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->commands([
-            CacheFlushCommand::class,
-            TypographyCommand::class,
+            SitemapGenerateCommand::class,
         ]);
     }
 
@@ -53,11 +50,11 @@ class CoreServiceProvider extends ServiceProvider
     protected function registerConfig(): void
     {
         $this->publishes([
-            __DIR__.'/../Config/config.php' => config_path('core.php'),
+            __DIR__ . '/../Config/config.php' => config_path('sitemap.php'),
         ]);
         $this->mergeConfigFrom(
-            __DIR__.'/../Config/config.php',
-            'core'
+            __DIR__ . '/../Config/config.php',
+            'sitemap'
         );
     }
 
@@ -68,9 +65,9 @@ class CoreServiceProvider extends ServiceProvider
      */
     public function registerViews(): void
     {
-        $viewPath = base_path('resources/views/modules/core');
+        $viewPath = base_path('resources/views/modules/sitemap');
 
-        $sourcePath = __DIR__.'/../Resources/views';
+        $sourcePath = __DIR__ . '/../Resources/views';
 
         $this->publishes([
             $sourcePath => $viewPath
@@ -79,11 +76,11 @@ class CoreServiceProvider extends ServiceProvider
         $this->loadViewsFrom(
             array_merge(
                 array_map(function ($path) {
-                    return $path.'/modules/core';
+                    return $path . '/modules/sitemap';
                 }, Config::get('view.paths')),
                 [$sourcePath]
             ),
-            'core'
+            'sitemap'
         );
     }
 
@@ -94,12 +91,12 @@ class CoreServiceProvider extends ServiceProvider
      */
     public function registerTranslations(): void
     {
-        $langPath = base_path('resources/lang/modules/core');
+        $langPath = base_path('resources/lang/modules/sitemap');
 
         if (is_dir($langPath)) {
-            $this->loadTranslationsFrom($langPath, 'core');
+            $this->loadTranslationsFrom($langPath, 'sitemap');
         } else {
-            $this->loadTranslationsFrom(__DIR__.'/../Resources/lang', 'core');
+            $this->loadTranslationsFrom(__DIR__ . '/../Resources/lang', 'sitemap');
         }
     }
 

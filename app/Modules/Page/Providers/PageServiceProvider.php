@@ -11,8 +11,6 @@ namespace App\Modules\Page\Providers;
 use Config;
 use Illuminate\Support\ServiceProvider;
 
-use App\Modules\Page\Models\Page as PageModel;
-
 /**
  * Класс сервис-провайдера для настройки этого модуля.
  */

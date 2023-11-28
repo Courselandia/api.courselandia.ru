@@ -1,16 +1,15 @@
 <?php
 /**
- * Модуль ядра системы.
- * Этот модуль содержит все классы для работы с ядром системы.
+ * Модуль sitemap.xml.
+ * Этот модуль содержит все классы для работы с генерацией sitemap.xml.
  *
- * @package App\Modules\Core
+ * @package App\Modules\Sitemap
  */
 
-namespace App\Modules\Core\Sitemap\Parts;
+namespace App\Modules\Sitemap\Sitemap\Parts;
 
+use App\Modules\Sitemap\Sitemap\Item;
 use Generator;
-use App\Models\Exceptions\ParameterInvalidException;
-use App\Modules\Core\Sitemap\Item;
 
 /**
  * Генератор для общей страницы курсов.

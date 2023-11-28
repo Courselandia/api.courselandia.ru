@@ -1,17 +1,17 @@
 <?php
 /**
- * Модуль ядра системы.
- * Этот модуль содержит все классы для работы с ядром системы.
+ * Модуль sitemap.xml.
+ * Этот модуль содержит все классы для работы с генерацией sitemap.xml.
  *
- * @package App\Modules\Core
+ * @package App\Modules\Sitemap
  */
 
-namespace App\Modules\Core\Sitemap\Parts;
+namespace App\Modules\Sitemap\Sitemap\Parts;
 
-use Generator;
-use App\Modules\Core\Sitemap\Item;
 use App\Modules\Course\Enums\Status;
 use App\Modules\School\Models\School;
+use App\Modules\Sitemap\Sitemap\Item;
+use Generator;
 use Illuminate\Database\Eloquent\Builder;
 
 /**

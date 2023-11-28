@@ -1,16 +1,16 @@
 <?php
 /**
- * Модуль ядра системы.
- * Этот модуль содержит все классы для работы с ядром системы.
+ * Модуль sitemap.xml.
+ * Этот модуль содержит все классы для работы с генерацией sitemap.xml.
  *
- * @package App\Modules\Core
+ * @package App\Modules\Sitemap
  */
 
-namespace App\Modules\Core\Commands;
+namespace App\Modules\Sitemap\Commands;
 
-use Log;
-use App\Modules\Core\Sitemap\Sitemap;
+use App\Modules\Sitemap\Sitemap\Generate;
 use Illuminate\Console\Command;
+use Log;
 
 /**
  * Генерация файла sitemap.xml.
@@ -38,7 +38,7 @@ class SitemapGenerateCommand extends Command
      */
     public function handle(): void
     {
-        $sitemap = new Sitemap();
+        $sitemap = new Generate();
 
         $this->line('Генерация файла sitemap.xml.');
         $bar = $this->output->createProgressBar($sitemap->getTotal());
@@ -48,7 +48,7 @@ class SitemapGenerateCommand extends Command
             $bar->advance();
         });
 
-        $sitemap->generate();
+        $sitemap->run();
 
         $bar->finish();
 

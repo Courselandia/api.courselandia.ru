@@ -1,37 +1,37 @@
 <?php
 /**
- * Модуль ядра системы.
- * Этот модуль содержит все классы для работы с ядром системы.
+ * Модуль sitemap.xml.
+ * Этот модуль содержит все классы для работы с генерацией sitemap.xml.
  *
- * @package App\Modules\Core
+ * @package App\Modules\Sitemap
  */
 
-namespace App\Modules\Core\Sitemap;
+namespace App\Modules\Sitemap\Sitemap;
 
+use App\Models\Error;
+use App\Models\Event;
+use App\Modules\Sitemap\Sitemap\Parts\PartCategory;
+use App\Modules\Sitemap\Sitemap\Parts\PartCourse;
+use App\Modules\Sitemap\Sitemap\Parts\PartCourses;
+use App\Modules\Sitemap\Sitemap\Parts\PartDirection;
+use App\Modules\Sitemap\Sitemap\Parts\PartProfession;
+use App\Modules\Sitemap\Sitemap\Parts\PartReview;
+use App\Modules\Sitemap\Sitemap\Parts\PartReviews;
+use App\Modules\Sitemap\Sitemap\Parts\PartSchool;
+use App\Modules\Sitemap\Sitemap\Parts\PartSkill;
+use App\Modules\Sitemap\Sitemap\Parts\PartStatic;
+use App\Modules\Sitemap\Sitemap\Parts\PartTeacher;
+use App\Modules\Sitemap\Sitemap\Parts\PartTool;
 use Config;
 use DomDocument;
 use DOMElement;
 use DOMException;
 use Storage;
-use App\Models\Error;
-use App\Models\Event;
-use App\Modules\Core\Sitemap\Parts\PartDirection;
-use App\Modules\Core\Sitemap\Parts\PartCategory;
-use App\Modules\Core\Sitemap\Parts\PartProfession;
-use App\Modules\Core\Sitemap\Parts\PartSchool;
-use App\Modules\Core\Sitemap\Parts\PartSkill;
-use App\Modules\Core\Sitemap\Parts\PartTeacher;
-use App\Modules\Core\Sitemap\Parts\PartTool;
-use App\Modules\Core\Sitemap\Parts\PartCourse;
-use App\Modules\Core\Sitemap\Parts\PartReview;
-use App\Modules\Core\Sitemap\Parts\PartStatic;
-use App\Modules\Core\Sitemap\Parts\PartCourses;
-use App\Modules\Core\Sitemap\Parts\PartReviews;
 
 /**
  * Класс генерации sitemap.xml.
  */
-class Sitemap
+class Generate
 {
     use Event;
     use Error;
@@ -84,7 +84,7 @@ class Sitemap
      *
      * @return void
      */
-    public function generate(): void
+    public function run(): void
     {
         $this->offLimits();
         $this->generateRootElement();
