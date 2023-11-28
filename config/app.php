@@ -307,6 +307,9 @@ return [
 
         App\Modules\Page\Providers\PageServiceProvider::class,
         App\Modules\Page\Providers\RouteServiceProvider::class,
+
+        App\Modules\Sitemap\Providers\SitemapServiceProvider::class,
+        App\Modules\Sitemap\Providers\RouteServiceProvider::class,
     ],
 
     /*

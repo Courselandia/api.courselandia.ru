@@ -106,6 +106,7 @@ class Import
         ignore_user_abort(true);
 
         $parsers = $this->getParsers();
+        $this->clearIds();
 
         foreach ($parsers as $parser) {
             foreach ($parser->read() as $courseEntity) {
@@ -418,7 +419,7 @@ class Import
      * @param int|string $id ID курса.
      * @return $this
      */
-    public function addId(int|string $id): self
+    private function addId(int|string $id): self
     {
         $this->ids[] = $id;
 
@@ -430,7 +431,7 @@ class Import
      *
      * @return $this
      */
-    public function clearIds(): self
+    private function clearIds(): self
     {
         $this->ids = [];
 
@@ -442,7 +443,7 @@ class Import
      *
      * @return Parser[]
      */
-    public function getIds(): array
+    private function getIds(): array
     {
         return $this->ids;
     }

@@ -10,6 +10,8 @@ namespace App\Modules\Sitemap\Sitemap;
 
 use App\Models\Error;
 use App\Models\Event;
+use App\Modules\Course\Imports\Parser;
+use App\Modules\Page\Models\Page;
 use App\Modules\Sitemap\Sitemap\Parts\PartCategory;
 use App\Modules\Sitemap\Sitemap\Parts\PartCourse;
 use App\Modules\Sitemap\Sitemap\Parts\PartCourses;
@@ -22,6 +24,7 @@ use App\Modules\Sitemap\Sitemap\Parts\PartSkill;
 use App\Modules\Sitemap\Sitemap\Parts\PartStatic;
 use App\Modules\Sitemap\Sitemap\Parts\PartTeacher;
 use App\Modules\Sitemap\Sitemap\Parts\PartTool;
+use Carbon\Carbon;
 use Config;
 use DomDocument;
 use DOMElement;
@@ -58,6 +61,13 @@ class Generate
     private DOMElement $root;
 
     /**
+     * ID обновленных страниц.
+     *
+     * @var int[]|string[]
+     */
+    private array $ids = [];
+
+    /**
      * Конструктор.
      */
     public function __construct()
@@ -87,9 +97,11 @@ class Generate
     public function run(): void
     {
         $this->offLimits();
+        $this->clearIds();
         $this->generateRootElement();
         $this->generateUrlTags();
         $this->saveInFile();
+        $this->deleteInactivePages();
     }
 
     /**
@@ -147,20 +159,15 @@ class Generate
     private function generateUrlTags(): void
     {
         $parts = $this->getParts();
+        $this->clearIds();
 
         foreach ($parts as $part) {
             foreach ($part->generate() as $item) {
                 try {
-                    $url = $this->xml->createElement('url');
-                    $url->appendChild($this->xml->createElement('loc', Config::get('app.url') . $item->path));
-                    $url->appendChild($this->xml->createElement('changefreq', $item->changefreq));
-                    $url->appendChild($this->xml->createElement('priority', $item->priority));
-
-                    if ($item->lastmod) {
-                        $url->appendChild($this->xml->createElement('lastmod', $item->lastmod->format('Y-m-d')));
-                    }
-
+                    $url = $this->getUrlElement($item);
                     $this->root->appendChild($url);
+                    $id = $this->saveInDb($item);
+                    $this->addId($id);
 
                     $this->fireEvent('generated', [$item]);
                 } catch (DOMException $error) {
@@ -168,6 +175,51 @@ class Generate
                 }
             }
         }
+    }
+
+    /**
+     * Создание XML элемента URL.
+     *
+     * @param Item $item Генерируемый элемент.
+     *
+     * @return DOMElement Вернет созданный элемент.
+     * @throws DOMException
+     */
+    private function getUrlElement(Item $item): DOMElement
+    {
+        $url = $this->xml->createElement('url');
+        $url->appendChild($this->xml->createElement('loc', Config::get('app.url') . $item->path));
+        $url->appendChild($this->xml->createElement('changefreq', $item->changefreq));
+        $url->appendChild($this->xml->createElement('priority', $item->priority));
+
+        if ($item->lastmod) {
+            $url->appendChild($this->xml->createElement('lastmod', $item->lastmod->format('Y-m-d')));
+        }
+
+        return $url;
+    }
+
+    /**
+     * Сохранение страницы в базе данных.
+     *
+     * @param Item $item Генерируемый элемент.
+     *
+     * @return int|string Вернет ID страницы.
+     */
+    private function saveInDb(Item $item): int|string
+    {
+        $page = Page::where('path', $item->path)
+            ->first();
+
+        if (!$page) {
+            $page = new Page();
+        }
+
+        $page->path = $item->path;
+        $page->lastmod = $item->lastmod ?? Carbon::now();
+        $page->save();
+
+        return $page->getKey();
     }
 
     /**
@@ -215,5 +267,51 @@ class Generate
     public function getParts(): array
     {
         return $this->parts;
+    }
+
+    /**
+     * Добавление ID обновленной страницы.
+     *
+     * @param int|string $id ID страницы.
+     * @return $this
+     */
+    private function addId(int|string $id): self
+    {
+        $this->ids[] = $id;
+
+        return $this;
+    }
+
+    /**
+     * Удаление всех ID обновленных страниц.
+     *
+     * @return $this
+     */
+    private function clearIds(): self
+    {
+        $this->ids = [];
+
+        return $this;
+    }
+
+    /**
+     * Получение всех ID обновленных страниц.
+     *
+     * @return Parser[]
+     */
+    private function getIds(): array
+    {
+        return $this->ids;
+    }
+
+    /**
+     * Удаление всех не активных страниц.
+     *
+     * @return void
+     */
+    private function deleteInactivePages(): void
+    {
+        Page::whereNotIn('id', $this->getIds())
+            ->delete();
     }
 }

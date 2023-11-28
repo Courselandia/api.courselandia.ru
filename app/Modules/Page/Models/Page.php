@@ -70,7 +70,7 @@ class Page extends Eloquent
     ])] protected function getRules(): array
     {
         return [
-            'path' => 'required|between:1,191|alpha_dash|unique_soft:pages,path,' . $this->id . ',i',
+            'path' => 'required|between:1,191|unique_soft:pages,path,' . $this->id . ',id',
             'lastmod' => 'required|date',
         ];
     }
@@ -84,7 +84,7 @@ class Page extends Eloquent
     {
         return [
             'path' => trans('page::models.page.path'),
-            'lastmod' => trans('page::models.page.publishedAt'),
+            'lastmod' => trans('page::models.page.lastmod'),
         ];
     }
 
