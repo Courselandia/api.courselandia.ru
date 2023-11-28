@@ -310,6 +310,9 @@ return [
 
         App\Modules\Sitemap\Providers\SitemapServiceProvider::class,
         App\Modules\Sitemap\Providers\RouteServiceProvider::class,
+
+        App\Modules\Crawl\Providers\CrawlServiceProvider::class,
+        App\Modules\Crawl\Providers\RouteServiceProvider::class,
     ],
 
     /*

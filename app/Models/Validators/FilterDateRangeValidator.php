@@ -20,9 +20,9 @@ class FilterDateRangeValidator
     /**
      * Валидация.
      *
-     * @param  string|null  $attribute  Название атрибута.
-     * @param  mixed  $values  Значение для валидации.
-     * @param  array  $params  Настройки.
+     * @param string|null $attribute Название атрибута.
+     * @param mixed $values Значение для валидации.
+     * @param array $params Настройки.
      *
      * @return bool Вернет результат валидации.
      */
@@ -39,7 +39,7 @@ class FilterDateRangeValidator
             foreach ($params as $filed) {
                 if (isset($values[$filed])) {
                     if (is_array($values[$filed])) {
-                        $nameField = $filed.'.*';
+                        $nameField = $filed . '.*';
                         $data[$filed] = $values[$filed];
                         $rules[$nameField] = 'date_format:Y-m-d O';
 

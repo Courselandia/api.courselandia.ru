@@ -35,7 +35,6 @@ class Page extends Eloquent
     use HasFactory;
     use Sortable;
     use SoftDeletes;
-    use Status;
     use Validate;
     use Filterable;
 

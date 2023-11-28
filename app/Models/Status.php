@@ -23,20 +23,20 @@ trait Status
     /**
      * Проверка статуса.
      *
-     * @param  Builder  $query  Запрос.
-     * @param  bool  $status  Статус активности.
+     * @param Builder $query Запрос.
+     * @param bool $status Статус активности.
      *
      * @return Builder Построитель запросов.
      */
     private function statusIs(Builder $query, bool $status = true): Builder
     {
-        return $query->where($this->getTable().'.status', $status);
+        return $query->where($this->getTable() . '.status', $status);
     }
 
     /**
      * Заготовка запроса активных записей.
      *
-     * @param  Builder  $query  Запрос.
+     * @param Builder $query Запрос.
      *
      * @return Builder Построитель запросов.
      */
@@ -48,7 +48,7 @@ trait Status
     /**
      * Заготовка запроса не активных записей.
      *
-     * @param  Builder  $query  Запрос.
+     * @param Builder $query Запрос.
      *
      * @return Builder Построитель запросов.
      */
