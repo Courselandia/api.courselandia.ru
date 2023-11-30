@@ -51,7 +51,7 @@ class Crawl extends Entity
      *
      * @var ?Carbon
      */
-    public ?Carbon $indexed_at = null;
+    public ?Carbon $crawled_at = null;
 
     /**
      * Поисковая система.

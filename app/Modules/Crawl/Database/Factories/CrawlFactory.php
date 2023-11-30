@@ -8,6 +8,7 @@
 
 namespace App\Modules\Crawl\Database\Factories;
 
+use App\Modules\Crawl\Enums\Engine;
 use Carbon\Carbon;
 use App\Modules\Crawl\Models\Crawl;
 use App\Modules\Page\Models\Page;
@@ -34,8 +35,10 @@ class CrawlFactory extends Factory
     {
         return [
             'page_id' => Page::factory(),
-            'path' => $this->faker->filePath(),
-            'lastmod' => Carbon::now(),
+            'task_id' => $this->faker->name(),
+            'pushed_at' => Carbon::now(),
+            'crawled_at' => Carbon::now(),
+            'engine' => Engine::YANDEX->value,
         ];
     }
 }

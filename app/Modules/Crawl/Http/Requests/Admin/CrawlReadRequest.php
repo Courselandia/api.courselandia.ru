@@ -36,7 +36,7 @@ class CrawlReadRequest extends FormRequest
             'sorts' => 'array|sorts:' . $columns,
             'offset' => 'integer|digits_between:0,20',
             'limit' => 'integer|digits_between:0,20',
-            'filters' => 'array|filters:' . $columns . '|filter_date_range:pushed_at|filter_date_range:crawl_at',
+            'filters' => 'array|filters:' . $columns . '|filter_date_range:pushed_at|filter_date_range:crawled_at',
         ];
     }
 

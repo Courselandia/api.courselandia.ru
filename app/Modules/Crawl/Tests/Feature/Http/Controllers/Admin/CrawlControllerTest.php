@@ -67,7 +67,7 @@ class CrawlControllerTest extends TestCase
             'page_id',
             'task_id',
             'pushed_at',
-            'crawl_at',
+            'crawled_at',
             'engine',
             'created_at',
             'updated_at',

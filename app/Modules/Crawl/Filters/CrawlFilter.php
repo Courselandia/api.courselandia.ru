@@ -78,14 +78,14 @@ class CrawlFilter extends ModelFilter
      *
      * @return $this Правила поиска.
      */
-    public function crawlAt(array $dates): self
+    public function crawledAt(array $dates): self
     {
         $dates = [
             Carbon::createFromFormat('Y-m-d O', $dates[0])->startOfDay()->setTimezone(Config::get('app.timezone')),
             Carbon::createFromFormat('Y-m-d O', $dates[1])->endOfDay()->setTimezone(Config::get('app.timezone')),
         ];
 
-        return $this->whereBetween('crawls.crawl_at', $dates);
+        return $this->whereBetween('crawls.crawled_at', $dates);
     }
 
     /**

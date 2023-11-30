@@ -21,7 +21,7 @@ class CreateTableCrawls extends Migration
 
             $table->string('task_id', 191)->nullable()->index('task_id');
             $table->datetime('pushed_at')->nullable()->index('pushed_at');
-            $table->datetime('crawl_at')->nullable()->index('crawl_at');
+            $table->datetime('crawled_at')->nullable()->index('crawled_at');
             $table->string('engine', 50);
 
 

@@ -30,7 +30,7 @@ use App\Modules\Page\Models\Page;
  * @property int|string $page_id ID страницы.
  * @property string $task_id ID задания.
  * @property Carbon $pushed_at Дата отправки на индексацию.
- * @property string $crawl_at Дата индексации.
+ * @property string $crawled_at Дата индексации.
  * @property string $engine Поисковая система.
  *
  * @property-read Page $page
@@ -51,7 +51,7 @@ class Crawl extends Eloquent
      */
     protected $dates = [
         'pushed_at',
-        'crawl_at',
+        'crawled_at',
     ];
 
     /**
@@ -64,7 +64,7 @@ class Crawl extends Eloquent
         'page_id',
         'task_id',
         'pushed_at',
-        'crawl_at',
+        'crawled_at',
         'engine',
     ];
 
@@ -77,7 +77,7 @@ class Crawl extends Eloquent
         'page_id' => 'string',
         'task_id' => 'string',
         'pushed_at' => 'string',
-        'crawl_at' => 'string',
+        'crawled_at' => 'string',
         'engine' => 'string',
     ])] protected function getRules(): array
     {
@@ -85,7 +85,7 @@ class Crawl extends Eloquent
             'page_id' => 'required|digits_between:0,20',
             'task_id' => 'max:191',
             'pushed_at' => 'date',
-            'crawl_at' => 'date',
+            'crawled_at' => 'date',
             'engine' => 'required|between:1,50',
         ];
     }
@@ -101,7 +101,7 @@ class Crawl extends Eloquent
             'page_id' => trans('direction::models.crawl.pageId'),
             'task_id' => trans('direction::models.crawl.taskId'),
             'pushed_at' => trans('direction::models.crawl.pushedAt'),
-            'crawl_at' => trans('direction::models.crawl.crawlAt'),
+            'crawled_at' => trans('direction::models.crawl.crawledAt'),
             'engine' => trans('direction::models.crawl.engine'),
         ];
     }
