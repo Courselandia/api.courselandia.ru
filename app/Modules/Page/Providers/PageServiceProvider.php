@@ -8,6 +8,8 @@
 
 namespace App\Modules\Page\Providers;
 
+use App\Modules\Page\Events\Listeners\PageListener;
+use App\Modules\Page\Models\Page as PageModel;
 use Config;
 use Illuminate\Support\ServiceProvider;
 
@@ -27,6 +29,8 @@ class PageServiceProvider extends ServiceProvider
         $this->registerConfig();
 
         $this->loadMigrationsFrom(__DIR__.'/../Database/Migrations');
+
+        PageModel::observe(PageListener::class);
     }
 
     /**

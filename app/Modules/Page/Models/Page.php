@@ -8,9 +8,9 @@
 
 namespace App\Modules\Page\Models;
 
+use App\Modules\Crawl\Models\Crawl;
 use Eloquent;
 use Carbon\Carbon;
-use App\Models\Status;
 use App\Models\Delete;
 use App\Models\Validate;
 use App\Models\Sortable;
@@ -21,6 +21,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Modules\Page\Database\Factories\PageFactory;
 use App\Modules\Page\Filters\PageFilter;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
  * Класс модель для таблицы страниц на основе Eloquent.
@@ -28,6 +29,8 @@ use App\Modules\Page\Filters\PageFilter;
  * @property int|string $id ID страницы.
  * @property string $path Путь к странице.
  * @property Carbon $lastmod Дата обновления.
+ *
+ * @property-read Crawl $crawl Дата обновления.
  */
 class Page extends Eloquent
 {
@@ -105,5 +108,15 @@ class Page extends Eloquent
     protected static function newFactory(): Factory
     {
         return PageFactory::new();
+    }
+
+    /**
+     * Получить запись индексации.
+     *
+     * @return HasOne Модель индексации.
+     */
+    public function crawl(): HasOne
+    {
+        return $this->hasOne(Crawl::class);
     }
 }
