@@ -244,7 +244,7 @@ class Import
                     'course' => $name,
                     'school' => $courseEntity->school->getLabel(),
                     'price' => $courseEntity->price,
-                    'currency' => $courseEntity->currency?->value || Currency::RUB,
+                    'currency' => $courseEntity->currency || Currency::RUB,
                 ];
 
                 $templateTitle = 'Курс {course} от {school:genitive} [price:по цене {price}/бесплатно] — Courselandia';
