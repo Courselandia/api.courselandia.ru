@@ -86,7 +86,7 @@ class YandexCredential
             'headers' => [
                 'Content-Type' => 'application/json',
                 'Accept' => 'application/json',
-                'Authorization' => 'OAuth ' . Config::get('crawl.yandex_token'),
+                'Authorization' => 'OAuth ' . Config::get('crawl.yandex.token'),
             ],
         ];
     }
