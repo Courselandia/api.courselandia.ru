@@ -8,49 +8,24 @@
 
 namespace App\Modules\Crawl\Engines\Services;
 
-use App\Models\Exceptions\InvalidCodeException;
-use App\Models\Exceptions\LimitException;
-use App\Models\Exceptions\ParameterInvalidException;
-use App\Models\Exceptions\ProcessingException;
-use App\Models\Exceptions\ResponseException;
 use App\Modules\Crawl\Contracts\EngineService;
-use App\Modules\Crawl\Engines\Credentials\YandexCredential;
-use App\Modules\Crawl\Engines\Providers\YandexProvider;
-use App\Modules\Crawl\Engines\Tokens\YandexToken;
+use App\Modules\Crawl\Engines\Providers\GoogleProvider;
+use Google\Exception;
 use GuzzleHttp\Exception\GuzzleException;
 
 /**
- * Работа с поисковой системой Yandex.
+ * Работа с поисковой системой Google.
  */
-class YandexService implements EngineService
+class GoogleService implements EngineService
 {
-    /**
-     * Токен Yandex.
-     *
-     * @var YandexToken
-     */
-    private YandexToken $token;
-
-    /**
-     * Конструктор.
-     *
-     * @throws InvalidCodeException|ResponseException|GuzzleException
-     */
-    public function __construct()
-    {
-        $credential = new YandexCredential();
-        $this->token = $credential->get();
-    }
-
     /**
      * Получение лимита возможности отправить на индексацию.
      *
      * @return int Вернет остаток квоты на переобход.
-     * @throws ResponseException|GuzzleException
      */
     public function getLimit(): int
     {
-        $provider = new YandexProvider($this->token);
+        $provider = new GoogleProvider();
 
         return $provider->getLimit();
     }
@@ -60,11 +35,11 @@ class YandexService implements EngineService
      *
      * @param string $url URL для индексации.
      * @return string Вернет ID задачи.
-     * @throws LimitException|ParameterInvalidException|ResponseException|GuzzleException|InvalidCodeException
+     * @throws GuzzleException|Exception
      */
     public function push(string $url): string
     {
-        $provider = new YandexProvider($this->token);
+        $provider = new GoogleProvider();
 
         return $provider->push($url);
     }
@@ -74,11 +49,11 @@ class YandexService implements EngineService
      *
      * @param string $taskId ID задачи.
      * @return bool Вернет true если индексация прошла.
-     * @throws ParameterInvalidException|ProcessingException|ResponseException|GuzzleException|InvalidCodeException
+     * @throws Exception|GuzzleException
      */
     public function isPushed(string $taskId): bool
     {
-        $provider = new YandexProvider($this->token);
+        $provider = new GoogleProvider();
 
         return $provider->isPushed($taskId);
     }

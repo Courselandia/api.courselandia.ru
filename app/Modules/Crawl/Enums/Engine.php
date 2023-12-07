@@ -10,6 +10,9 @@ namespace App\Modules\Crawl\Enums;
 
 use App\Models\Enums\EnumLabel;
 
+/**
+ * Поисковая система.
+ */
 enum Engine: string implements EnumLabel
 {
     /**

@@ -9,16 +9,16 @@
 namespace App\Modules\Crawl\Contracts;
 
 /**
- * Абстрактный класс для работы с поисковой системой.
+ * Интерфейс для работы с поисковой системой.
  */
-abstract class EngineService
+interface EngineService
 {
     /**
      * Получение лимита возможности отправить на индексацию.
      *
      * @return int Вернет остаток квоты на переобход.
      */
-    abstract public function getLimit(): int;
+    public function getLimit(): int;
 
     /**
      * Отправка URL на индексацию.
@@ -26,7 +26,7 @@ abstract class EngineService
      * @param string $url URL для индексации.
      * @return string Вернет ID задачи.
      */
-    abstract public function push(string $url): string;
+    public function push(string $url): string;
 
     /**
      * Вернет статус индексации.
@@ -34,5 +34,5 @@ abstract class EngineService
      * @param string $taskId ID задачи.
      * @return bool Вернет true если индексация прошла.
      */
-    abstract public function isPushed(string $taskId): bool;
+    public function isPushed(string $taskId): bool;
 }
