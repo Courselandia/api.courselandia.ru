@@ -6,28 +6,35 @@
  * @package App\Modules\Crawl
  */
 
-namespace App\Modules\Crawl\Contracts;
+namespace App\Modules\Crawl\Push\Pushers;
 
+use App\Modules\Crawl\Contracts\Pusher;
 use App\Modules\Crawl\Enums\Engine;
 
 /**
- * Интерфейс отправителя на индексацию.
+ * Отправка URL сайта на индексацию для тестирования (фейковый).
  */
-interface Pusher
+class FakePusher implements Pusher
 {
     /**
      * Получение поисковой системы данного отправителя.
      *
      * @return Engine Поисковая система.
      */
-    public function getEngine(): Engine;
+    public function getEngine(): Engine
+    {
+        return Engine::YANDEX;
+    }
 
     /**
      * Получение лимита на переобход.
      *
      * @return int Вернет остаток квоты на переобход.
      */
-    public function getLimit(): int;
+    public function getLimit(): int
+    {
+        return 100;
+    }
 
     /**
      * Отправка URL на индексацию.
@@ -35,5 +42,8 @@ interface Pusher
      * @param string $url URL для индексации.
      * @return string Вернет ID задачи.
      */
-    public function push(string $url): string;
+    public function push(string $url): string
+    {
+        return (string)rand(100000, 10000000);
+    }
 }

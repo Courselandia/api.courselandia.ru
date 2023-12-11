@@ -8,6 +8,9 @@
 
 namespace App\Modules\Crawl\Push\Pushers;
 
+use App\Models\Exceptions\InvalidCodeException;
+use App\Models\Exceptions\LimitException;
+use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\ResponseException;
 use App\Modules\Crawl\Contracts\Pusher;
 use App\Modules\Crawl\Engines\Services\YandexService;
@@ -40,5 +43,19 @@ class YandexPusher implements Pusher
         $service = new YandexService();
 
         return $service->getLimit();
+    }
+
+    /**
+     * Отправка URL на индексацию.
+     *
+     * @param string $url URL для индексации.
+     * @return string Вернет ID задачи.
+     * @throws InvalidCodeException|LimitException|ParameterInvalidException|ResponseException|GuzzleException
+     */
+    public function push(string $url): string
+    {
+        $service = new YandexService();
+
+        return $service->push($url);
     }
 }
