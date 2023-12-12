@@ -9,28 +9,28 @@
 namespace App\Modules\Crawl\Commands;
 
 use Log;
-use App\Modules\Crawl\Push\Push;
+use App\Modules\Crawl\Check\Check;
 use Illuminate\Console\Command;
 use App\Models\Exceptions\ParameterInvalidException;
 
 /**
- * Отправка страниц на индексацию в поисковые системы.
+ * Проверка страниц на индексацию в поисковых системах.
  */
-class PushCommand extends Command
+class CheckCommand extends Command
 {
     /**
      * Название консольной команды.
      *
      * @var string
      */
-    protected $signature = 'crawl:push';
+    protected $signature = 'crawl:check';
 
     /**
      * Описание консольной команды.
      *
      * @var string
      */
-    protected $description = 'Запуск отправки страниц на индексацию в поисковые системы.';
+    protected $description = 'Запуск проверки страниц на индексацию в поисковых системах.';
 
     /**
      * Выполнение команды.
@@ -40,27 +40,27 @@ class PushCommand extends Command
      */
     public function handle(): void
     {
-        $push = new Push();
-        $total = $push->total();
+        $check = new Check();
+        $total = $check->total();
 
         if ($total) {
-            $this->line('Запуск заданий на индексацию страниц...');
+            $this->line('Запуск заданий на проверку индексации...');
 
             $bar = $this->output->createProgressBar($total);
             $bar->start();
 
-            $push->addEvent('pushed', function () use ($bar) {
+            $check->addEvent('checked', function () use ($bar) {
                 $bar->advance();
             });
 
-            $push->run();
+            $check->run();
             $bar->finish();
 
-            $this->info("\n\nЗадания на индексацию страниц были запущены.");
+            $this->info("\n\nЗадания на проверку индексации страниц были запущены.");
         } else {
-            $this->info("\n\nНет страниц на индексацию.");
+            $this->info("\n\nНет страниц для проверки.");
         }
 
-        Log::info('Запуск заданий на индексацию страниц.');
+        Log::info('Запуск заданий для проверки индексации страниц.');
     }
 }
