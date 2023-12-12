@@ -77,6 +77,7 @@ class CrawlReadAction extends Action
             CacheTime::GENERAL->value,
             function () {
                 $query = Crawl::filter($this->filters ?: [])
+                    ->whereHas('page')
                     ->with([
                         'page',
                     ]);

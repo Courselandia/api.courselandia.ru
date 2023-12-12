@@ -109,6 +109,7 @@ class Check
     private function getQuery(Checker $checker): Builder
     {
         return Crawl::where('crawls.engine', $checker->getEngine()->value)
+            ->whereHas('page')
             ->whereNull('crawled_at')
             ->whereNotNull('task_id')
             ->orderBy('pushed_at', 'ASC');
