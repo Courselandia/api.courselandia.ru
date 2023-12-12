@@ -8,17 +8,17 @@
 
 namespace App\Modules\Crawl\Push;
 
-use App\Models\Event;
-use App\Modules\Crawl\Jobs\PushJob;
-use Carbon\Carbon;
 use DB;
+use Carbon\Carbon;
+use App\Models\Event;
+use App\Models\Entity;
+use App\Modules\Crawl\Jobs\PushJob;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Crawl\Contracts\Pusher;
 use App\Modules\Crawl\Push\Pushers\GooglePusher;
 use App\Modules\Crawl\Push\Pushers\YandexPusher;
 use App\Modules\Page\Models\Page;
 use App\Modules\Page\Entities\Page as PageEntity;
-use App\Models\Entity;
 use Illuminate\Database\Eloquent\Builder;
 
 /**
@@ -55,7 +55,7 @@ class Push
         $count = 0;
 
         foreach ($pushers as $pusher) {
-            $count += $this->getQuery($pusher)->count();
+            $count += $this->getQuery($pusher)->get()->count();
         }
 
         return $count;
@@ -98,7 +98,6 @@ class Push
         foreach ($pushers as $pusher) {
             $pages = $this->getPages($pusher);
             $this->push($pusher, $pages);
-            $this->fireEvent('pushed');
         }
     }
 
@@ -152,8 +151,8 @@ class Push
 
         foreach ($pages as $page) {
             $delay->addSeconds(5);
-            PushJob::dispatch($pusher, $page)
-                ->delay($delay);
+            PushJob::dispatch($pusher, $page)->delay($delay);
+            $this->fireEvent('pushed');
         }
     }
 
