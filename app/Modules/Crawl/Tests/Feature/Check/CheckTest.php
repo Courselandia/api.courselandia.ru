@@ -6,19 +6,20 @@
  * @package App\Modules\Crawl
  */
 
-namespace App\Modules\Crawl\Tests\Feature\Push;
+namespace App\Modules\Crawl\Tests\Feature\Check;
 
 use App\Models\Exceptions\ParameterInvalidException;
-use App\Modules\Crawl\Push\Push;
-use App\Modules\Crawl\Push\Pushers\FakePusher;
+use App\Modules\Crawl\Check\Check;
+use App\Modules\Crawl\Models\Crawl;
+use App\Modules\Crawl\Check\Checkers\FakeChecker;
 use App\Modules\Page\Models\Page;
 use Carbon\Carbon;
 use Tests\TestCase;
 
 /**
- * Тестирование отправки URL сайта на индексацию.
+ * Тестирование проверки индексации страниц сайта.
  */
-class PushTest extends TestCase
+class CheckTest extends TestCase
 {
     /**
      * Тестирование запуска.
@@ -28,26 +29,41 @@ class PushTest extends TestCase
      */
     public function testRun(): void
     {
-        Page::factory()->create([
+        $page = Page::factory()->create([
             'path' => '/',
             'lastmod' => Carbon::now()->addMonths(-5),
         ]);
 
-        Page::factory()->create([
+        Crawl::factory()->create([
+            'crawled_at' => null,
+            'page_id' => $page->id,
+        ]);
+
+        $page = Page::factory()->create([
             'path' => '/test-1',
             'lastmod' => Carbon::now()->addMonths(-4),
         ]);
 
-        Page::factory()->create([
+        Crawl::factory()->create([
+            'crawled_at' => null,
+            'page_id' => $page->id,
+        ]);
+
+        $page = Page::factory()->create([
             'path' => '/test-2',
             'lastmod' => Carbon::now()->addMonths(-3),
         ]);
 
-        $push = new Push();
-        $push->clearPushers()
-            ->addPusher(new FakePusher());
-        $total = $push->total();
-        $push->run();
+        Crawl::factory()->create([
+            'crawled_at' => null,
+            'page_id' => $page->id,
+        ]);
+
+        $check = new Check();
+        $check->clearCheckers()
+            ->addChecker(new FakeChecker());
+        $total = $check->total();
+        $check->run();
 
         $this->assertIsNumeric($total);
         $this->assertEquals(3, $total);

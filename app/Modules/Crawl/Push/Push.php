@@ -107,7 +107,7 @@ class Push
      * Берем те страницы, которые либо не были проиндексированы этим модулем.
      * Либо берем те страницы, которые были обновлены этим модулем, но дата их индексации больше даты обновления - pages.lastmod > crawls.crawled_at.
      *
-     * @param Pusher $pusher
+     * @param Pusher $pusher Отправитель на индексацию.
      * @return Builder
      */
     private function getQuery(Pusher $pusher): Builder
@@ -184,7 +184,7 @@ class Push
      *
      * @return self
      */
-    public function clearPusher(): self
+    public function clearPushers(): self
     {
         $this->pushers = [];
 
