@@ -2,9 +2,9 @@
 
 return [
     'crawl' => [
-        'page_id' => 'ID page',
-        'task_id' => 'id task',
-        'pushed_at' => 'Pushed date',
+        'pageId' => 'ID page',
+        'taskId' => 'id task',
+        'pushedAt' => 'Pushed date',
         'crawledAt' => 'Indexed date',
         'engine' => 'Engine',
     ],

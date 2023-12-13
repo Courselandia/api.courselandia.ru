@@ -84,7 +84,7 @@ class PushJob implements ShouldQueue
             $crawl->crawled_at = null;
             $crawl->save();
         } catch (ParameterInvalidException|LimitException $error) {
-            Log::warning($error->getMessage());
+            Log::warning($error->getMessage() . ' Path: ' . $this->page->path);
         }
     }
 }

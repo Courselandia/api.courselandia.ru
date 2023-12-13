@@ -15,6 +15,7 @@ use Throwable;
 use Firebase\JWT\JWT;
 use App\Modules\OAuth\Entities\Token;
 use App\Models\Exceptions\InvalidFormatException;
+use Firebase\JWT\Key;
 
 /**
  * Абстрактный класс позволяющий проектировать собственные классы для хранения токенов.
@@ -81,7 +82,7 @@ abstract class OAuthDriver
             'time' => $time
         ];
 
-        $accessToken = JWT::encode($accessToken, $key);
+        $accessToken = JWT::encode($accessToken, $key, 'HS256');
 
         $refreshToken = [
             'iss' => Config::get('app.url'),
@@ -93,7 +94,7 @@ abstract class OAuthDriver
             'time' => $time
         ];
 
-        $refreshToken = JWT::encode($refreshToken, $key);
+        $refreshToken = JWT::encode($refreshToken, $key, 'HS256');
 
         $token = new Token();
         $token->accessToken = $accessToken;
@@ -116,19 +117,15 @@ abstract class OAuthDriver
         $key = Config::get('app.key');
 
         try {
-            $value = JWT::decode($token, $key, ['HS256']);
+            $value = JWT::decode($token, new Key($key, 'HS256'));
 
-            if ($value) {
-                if (
-                    Carbon::now()->format('U') <= $value->exp
-                    && $value->iss === Config::get('app.url')
-                    && $value->aud === Config::get('app.name')
-                    && $value->type === $type
-                ) {
-                    return $value->data;
-                }
-
-                throw new InvalidFormatException('The token is invalid.');
+            if (
+                Carbon::now()->format('U') <= $value->exp
+                && $value->iss === Config::get('app.url')
+                && $value->aud === Config::get('app.name')
+                && $value->type === $type
+            ) {
+                return $value->data;
             }
 
             throw new InvalidFormatException('The token is invalid.');

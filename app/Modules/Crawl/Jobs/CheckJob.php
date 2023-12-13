@@ -73,7 +73,7 @@ class CheckJob implements ShouldQueue
                 Crawl::find($this->crawl->id)->update($this->crawl->toArray());
             }
         } catch (ParameterInvalidException $error) {
-            Log::warning($error->getMessage());
+            Log::warning($error->getMessage() . ' Task ID: ' . $this->crawl->task_id);
 
             $this->crawl->crawled_at = Carbon::now();
             Crawl::find($this->crawl->id)->update($this->crawl->toArray());
