@@ -72,7 +72,7 @@ class YandexCredential
      */
     public function receiveHost(): string
     {
-        return Config::get('crawl.yandex_webmaster_host');
+        return Config::get('crawl.yandex.webmaster_host');
     }
 
     /**
