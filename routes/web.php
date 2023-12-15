@@ -6,6 +6,11 @@ Route::get('/', function () {
 });
 
 Route::get('/test', function () {
+    $pathConfig = Config::get('crawl.google.service_account_credentials_json');
+    $pathStorage = storage_path($pathConfig);
+
+    echo $pathStorage . "<br>";
+
     return response()->view('test');
 });
 
