@@ -11,6 +11,10 @@ Route::get('/test', function () {
 
     echo $pathStorage . "<br>";
 
+    echo Storage::get($pathConfig);
+
+    echo "<br>";
+
     return response()->view('test');
 });
 
