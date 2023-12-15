@@ -62,6 +62,6 @@
         <server name="YANDEX_TOKEN" value="y0_AgAEA7qkS9mIAArq9wAAAADzbnlcf4VaSB3HTou-dMEDGAEjmLkA7FM"/>
         <server name="YANDEX_WEBMASTER_HOST" value="https:courselandia.ru:443"/>
         <server name="GOOGLE_APPLICATION_NAME" value="Google-indexing"/>
-        <server name="GOOGLE_SERVICE_ACCOUNT_CREDENTIALS_JSON" value="/app/courselandia-google.json"/>
+        <server name="GOOGLE_SERVICE_ACCOUNT_CREDENTIALS_JSON" value="courselandia-google.json"/>
     </php>
 </phpunit>
