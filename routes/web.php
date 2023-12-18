@@ -1,6 +1,5 @@
 <?php
 
-use App\Modules\Crawl\Engines\Services\YandexService;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -8,14 +7,6 @@ Route::get('/', function () {
 });
 
 Route::get('/test', function () {
-    $service = new YandexService();
-
-    echo "Start: <br>";
-
-    $taskId = $service->push('https://courselandia.ru/');
-
-    echo $taskId . "<br>";
-
     return response()->view('test');
 });
 
