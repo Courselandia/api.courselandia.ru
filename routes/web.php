@@ -10,7 +10,11 @@ Route::get('/', function () {
 Route::get('/test', function () {
     $service = new YandexService();
 
-    $service->push('https://courselandia.ru/');
+    echo "Start: <br>";
+
+    $taskId = $service->push('https://courselandia.ru/');
+
+    echo $taskId . "<br>";
 
     return response()->view('test');
 });
