@@ -40,7 +40,7 @@ class Push
      */
     public function __construct()
     {
-        $this/*->addPusher(new YandexPusher())*/
+        $this->addPusher(new YandexPusher())
             ->addPusher(new GooglePusher());
     }
 
