@@ -61,7 +61,7 @@ class YandexCredential
                 throw new InvalidCodeException(trans('crawl::engines.credentials.yandexCredential.tokenInvalid'));
             }
 
-            throw new ResponseException($error->getMessage() . ' :: ' . Config::get('crawl.yandex.webmaster_host'));
+            throw new ResponseException($error->getMessage());
         }
     }
 
