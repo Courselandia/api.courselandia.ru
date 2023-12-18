@@ -25,7 +25,7 @@ class GoogleProvider
      */
     public function getLimit(): int
     {
-        return 200;
+        return 2000;
     }
 
     /**
