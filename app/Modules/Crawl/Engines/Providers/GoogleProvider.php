@@ -75,6 +75,13 @@ class GoogleProvider
         $body = $response->getBody();
         $content = json_decode($body, true);
 
-        return $content['latestUpdate']['type'] === 'URL_UPDATED';
+        try {
+            return $content['latestUpdate']['type'] === 'URL_UPDATED';
+        } catch (\Throwable $error) {
+
+            \Log::debug(print_r($content, true));
+
+            throw $error;
+        }
     }
 }
