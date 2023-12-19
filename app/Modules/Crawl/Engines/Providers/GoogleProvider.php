@@ -81,6 +81,11 @@ class GoogleProvider
             throw new ParameterInvalidException(trans('crawl::engines.providers.googleProvider.taskNotExist'));
         }
 
-        return $content['latestUpdate']['type'] === 'URL_UPDATED';
+        try {
+            return $content['latestUpdate']['type'] === 'URL_UPDATED';
+        } catch (\Throwable $error) {
+            \Log::error(print_r($content, true));
+            throw $error;
+        }
     }
 }
