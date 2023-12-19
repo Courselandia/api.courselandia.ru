@@ -78,7 +78,7 @@ class GoogleProvider
         $content = json_decode($body, true);
 
         if (isset($content['error']['code']) && $content['error']['code'] === 404) {
-            throw new ParameterInvalidException(trans('crawl::engines.providers.yandexProvider.taskNotExist'));
+            throw new ParameterInvalidException(trans('crawl::engines.providers.googleProvider.taskNotExist'));
         }
 
         return $content['latestUpdate']['type'] === 'URL_UPDATED';
