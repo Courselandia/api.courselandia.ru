@@ -29,6 +29,13 @@ class Push
     use Event;
 
     /**
+     * Количество секунд на которые нужно отложить отправку.
+     *
+     * @var int
+     */
+    const DELAY = 3;
+
+    /**
      * Отправители на индексацию.
      *
      * @var Pusher[]
@@ -150,7 +157,7 @@ class Push
         $delay = Carbon::now();
 
         foreach ($pages as $page) {
-            $delay->addSeconds(5);
+            $delay->addSeconds(self::DELAY);
             PushJob::dispatch($pusher, $page)->delay($delay);
             $this->fireEvent('pushed');
         }

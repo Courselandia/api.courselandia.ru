@@ -28,6 +28,13 @@ class Check
     use Event;
 
     /**
+     * Количество секунд на которые нужно отложить проверку.
+     *
+     * @var int
+     */
+    const DELAY = 3;
+
+    /**
      * Проверятели индексации.
      *
      * @var Checker[]
@@ -141,7 +148,7 @@ class Check
         $delay = Carbon::now();
 
         foreach ($crawls as $crawl) {
-            $delay->addSeconds(5);
+            $delay->addSeconds(self::DELAY);
             CheckJob::dispatch($checker, $crawl)->delay($delay);
             $this->fireEvent('checked');
         }
