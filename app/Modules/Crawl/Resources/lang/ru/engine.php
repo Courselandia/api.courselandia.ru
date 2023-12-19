@@ -10,8 +10,11 @@ return [
         'yandexProvider' => [
             'urlAlreadyAdded' => 'URL уже добавлен для Яндекса.',
             'quotaExceeded' => 'Превышена лимит для Яндекс.',
-            'taskNotExist' => 'Задание не найдено.',
+            'taskNotExist' => 'Задание в Yandex не найдено.',
             'failed' => 'Робот не смог обойти страницу.',
+        ],
+        'googleProvider' => [
+            'taskNotExist' => 'Задание в Google не найдено.',
         ],
     ],
 ];

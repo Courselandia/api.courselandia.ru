@@ -8,6 +8,7 @@
 
 namespace App\Modules\Crawl\Engines\Providers;
 
+use App\Models\Exceptions\ParameterInvalidException;
 use Config;
 use Google\Client;
 use Google\Exception;
@@ -62,6 +63,7 @@ class GoogleProvider
      *
      * @return bool Вернет true если переобход произошел.
      * @throws Exception|GuzzleException
+     * @throws ParameterInvalidException
      */
     public function isPushed(string $taskId): bool
     {
@@ -75,13 +77,10 @@ class GoogleProvider
         $body = $response->getBody();
         $content = json_decode($body, true);
 
-        try {
-            return $content['latestUpdate']['type'] === 'URL_UPDATED';
-        } catch (\Throwable $error) {
-
-            \Log::debug(print_r($content, true));
-
-            throw $error;
+        if (isset($content['error']['code']) && $content['error']['code'] === 404) {
+            throw new ParameterInvalidException(trans('crawl::engines.providers.yandexProvider.taskNotExist'));
         }
+
+        return $content['latestUpdate']['type'] === 'URL_UPDATED';
     }
 }
