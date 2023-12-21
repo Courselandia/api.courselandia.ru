@@ -13,6 +13,7 @@ use App\Modules\School\Models\School;
 use App\Modules\Course\Enums\Status;
 use App\Modules\Course\Json\Source;
 use Illuminate\Database\Eloquent\Builder;
+use Storage;
 
 /**
  * Источник для формирования школ.
@@ -46,12 +47,36 @@ class SchoolSource extends Source
                 ?->toArray();
 
             if ($result) {
-                SchoolItemJob::dispatch('schools/' . $result['link'] . '.json', $result['id'], $result['link'])
+                SchoolItemJob::dispatch('/json/schools/' . $result['link'] . '.json', $result['id'], $result['link'])
                     ->delay(now()->addMinute());
 
                 $this->fireEvent('export');
             }
         }
+    }
+
+    /**
+     * Запуск удаления не активных данных.
+     *
+     * @return void.
+     */
+    public function delete(): void
+    {
+        $schools = School::whereNotIn('id', $this->getIds())
+            ->get()
+            ?->toArray();
+
+        $paths = [];
+
+        foreach ($schools as $school) {
+            $path = '/json/schools/' . $school['link'] . '.json';
+
+            if (Storage::drive('public')->exists($path)) {
+                $paths[] = $path;
+            }
+        }
+
+        Storage::drive('public')->delete($paths);
     }
 
     /**

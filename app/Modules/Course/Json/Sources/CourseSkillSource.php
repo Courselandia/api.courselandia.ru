@@ -13,6 +13,7 @@ use App\Modules\Course\Enums\Status;
 use App\Modules\Course\Json\Source;
 use App\Modules\Skill\Models\Skill;
 use Illuminate\Database\Eloquent\Builder;
+use Storage;
 
 /**
  * Источник для формирования курсов навыков.
@@ -46,12 +47,38 @@ class CourseSkillSource extends Source
                 ?->toArray();
 
             if ($result) {
-                CourseSkillItemJob::dispatch('courses/skill/' . $result['link'] . '.json', $result['id'], $result['link'])
+                CourseSkillItemJob::dispatch('/json/courses/skill/' . $result['link'] . '.json', $result['id'], $result['link'])
                     ->delay(now()->addMinute());
+
+                $this->addId($result['id']);
 
                 $this->fireEvent('export');
             }
         }
+    }
+
+    /**
+     * Запуск удаления не активных данных.
+     *
+     * @return void.
+     */
+    public function delete(): void
+    {
+        $skills = Skill::whereNotIn('id', $this->getIds())
+            ->get()
+            ?->toArray();
+
+        $paths = [];
+
+        foreach ($skills as $skill) {
+            $path = '/json/courses/skill/' . $skill['link'] . '.json';
+
+            if (Storage::drive('public')->exists($path)) {
+                $paths[] = $path;
+            }
+        }
+
+        Storage::drive('public')->delete($paths);
     }
 
     /**

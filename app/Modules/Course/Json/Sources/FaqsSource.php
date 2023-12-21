@@ -13,6 +13,7 @@ use App\Modules\Course\Enums\Status;
 use App\Modules\Course\Json\Source;
 use App\Modules\School\Models\School;
 use Illuminate\Database\Eloquent\Builder;
+use Storage;
 
 /**
  * Источник для формирования FAQ's.
@@ -46,12 +47,36 @@ class FaqsSource extends Source
                 ?->toArray();
 
             if ($result) {
-                FaqsItemJob::dispatch('faqs/' . $result['link'] . '.json', $result['id'], $result['link'])
+                FaqsItemJob::dispatch('/json/faqs/' . $result['link'] . '.json', $result['id'], $result['link'])
                     ->delay(now()->addMinute());
 
                 $this->fireEvent('export');
             }
         }
+    }
+
+    /**
+     * Запуск удаления не активных данных.
+     *
+     * @return void.
+     */
+    public function delete(): void
+    {
+        $schools = School::whereNotIn('id', $this->getIds())
+            ->get()
+            ?->toArray();
+
+        $paths = [];
+
+        foreach ($schools as $school) {
+            $path = '/json/faqs/' . $school['link'] . '.json';
+
+            if (Storage::drive('public')->exists($path)) {
+                $paths[] = $path;
+            }
+        }
+
+        Storage::drive('public')->delete($paths);
     }
 
     /**

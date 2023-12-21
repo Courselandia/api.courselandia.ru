@@ -13,6 +13,7 @@ use App\Modules\Course\Enums\Status;
 use App\Modules\Course\Json\Source;
 use App\Modules\Course\Models\Course;
 use Illuminate\Database\Eloquent\Builder;
+use Storage;
 
 /**
  * Источник для формирования просмотра курса.
@@ -46,12 +47,39 @@ class CourseSource extends Source
                 ?->toArray();
 
             if ($result) {
-                CourseItemJob::dispatch('courses/show/' . $result['school']['link'] . '/' . $result['link'] . '.json', $result['id'], $result['link'])
+                CourseItemJob::dispatch('/json/courses/show/' . $result['school']['link'] . '/' . $result['link'] . '.json', $result['id'], $result['link'])
                     ->delay(now()->addMinute());
+
+                $this->addId($result['id']);
 
                 $this->fireEvent('export');
             }
         }
+    }
+
+    /**
+     * Запуск удаления не активных данных.
+     *
+     * @return void.
+     */
+    public function delete(): void
+    {
+        $courses = Course::whereNotIn('id', $this->getIds())
+            ->with('school')
+            ->get()
+            ?->toArray();
+
+        $paths = [];
+
+        foreach ($courses as $course) {
+            $path = '/json/courses/show/' . $course['school']['link'] . '/' . $course['link'] . '.json';
+
+            if (Storage::drive('public')->exists($path)) {
+                $paths[] = $path;
+            }
+        }
+
+        Storage::drive('public')->delete($paths);
     }
 
     /**

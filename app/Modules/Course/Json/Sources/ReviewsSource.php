@@ -13,6 +13,7 @@ use App\Modules\Course\Enums\Status;
 use App\Modules\Course\Json\Source;
 use App\Modules\School\Models\School;
 use Illuminate\Database\Eloquent\Builder;
+use Storage;
 
 /**
  * Источник для формирования отзывов.
@@ -46,12 +47,36 @@ class ReviewsSource extends Source
                 ?->toArray();
 
             if ($result) {
-                ReviewsItemJob::dispatch('reviews/' . $result['link'] . '.json', $result['id'], $result['link'])
+                ReviewsItemJob::dispatch('/json/reviews/' . $result['link'] . '.json', $result['id'], $result['link'])
                     ->delay(now()->addMinute());
 
                 $this->fireEvent('export');
             }
         }
+    }
+
+    /**
+     * Запуск удаления не активных данных.
+     *
+     * @return void.
+     */
+    public function delete(): void
+    {
+        $schools = School::whereNotIn('id', $this->getIds())
+            ->get()
+            ?->toArray();
+
+        $paths = [];
+
+        foreach ($schools as $school) {
+            $path = '/json/reviews/' . $school['link'] . '.json';
+
+            if (Storage::drive('public')->exists($path)) {
+                $paths[] = $path;
+            }
+        }
+
+        Storage::drive('public')->delete($paths);
     }
 
     /**

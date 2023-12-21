@@ -8,6 +8,7 @@
 
 namespace App\Modules\Course\Json\Sources;
 
+use Storage;
 use App\Modules\Course\Json\Jobs\CourseCategoryItemJob;
 use App\Modules\Course\Enums\Status;
 use App\Modules\Course\Json\Source;
@@ -46,12 +47,38 @@ class CourseCategorySource extends Source
                 ?->toArray();
 
             if ($result) {
-                CourseCategoryItemJob::dispatch('courses/category/' . $result['link'] . '.json', $result['id'], $result['link'])
+                CourseCategoryItemJob::dispatch('/json/courses/category/' . $result['link'] . '.json', $result['id'], $result['link'])
                     ->delay(now()->addMinute());
+
+                $this->addId($result['id']);
 
                 $this->fireEvent('export');
             }
         }
+    }
+
+    /**
+     * Запуск удаления не активных данных.
+     *
+     * @return void.
+     */
+    public function delete(): void
+    {
+        $categories = Category::whereNotIn('id', $this->getIds())
+            ->get()
+            ?->toArray();
+
+        $paths = [];
+
+        foreach ($categories as $category) {
+            $path = '/json/courses/category/' . $category['link'] . '.json';
+
+            if (Storage::drive('public')->exists($path)) {
+                $paths[] = $path;
+            }
+        }
+
+        Storage::drive('public')->delete($paths);
     }
 
     /**

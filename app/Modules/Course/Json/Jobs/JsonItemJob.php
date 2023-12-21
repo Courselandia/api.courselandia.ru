@@ -69,6 +69,6 @@ abstract class JsonItemJob implements ShouldQueue
      */
     protected function save(array $data): void
     {
-        Storage::drive('public')->put('/json/' . $this->path, json_encode($data));
+        Storage::drive('public')->put($this->path, json_encode($data));
     }
 }

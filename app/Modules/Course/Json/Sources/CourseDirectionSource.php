@@ -13,6 +13,7 @@ use App\Modules\Course\Enums\Status;
 use App\Modules\Course\Json\Source;
 use App\Modules\Direction\Models\Direction;
 use Illuminate\Database\Eloquent\Builder;
+use Storage;
 
 /**
  * Источник для формирования курсов направлений.
@@ -46,12 +47,38 @@ class CourseDirectionSource extends Source
                 ?->toArray();
 
             if ($result) {
-                CourseDirectionItemJob::dispatch('courses/direction/' . $result['link'] . '.json', $result['id'], $result['link'])
+                CourseDirectionItemJob::dispatch('/json/courses/direction/' . $result['link'] . '.json', $result['id'], $result['link'])
                     ->delay(now()->addMinute());
+
+                $this->addId($result['id']);
 
                 $this->fireEvent('export');
             }
         }
+    }
+
+    /**
+     * Запуск удаления не активных данных.
+     *
+     * @return void.
+     */
+    public function delete(): void
+    {
+        $directions = Direction::whereNotIn('id', $this->getIds())
+            ->get()
+            ?->toArray();
+
+        $paths = [];
+
+        foreach ($directions as $direction) {
+            $path = '/json/courses/direction/' . $direction['link'] . '.json';
+
+            if (Storage::drive('public')->exists($path)) {
+                $paths[] = $path;
+            }
+        }
+
+        Storage::drive('public')->delete($paths);
     }
 
     /**

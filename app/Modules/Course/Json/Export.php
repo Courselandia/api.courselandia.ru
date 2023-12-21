@@ -132,6 +132,7 @@ class Export
             });
 
             $source->export();
+            $source->delete();
         }
     }
 

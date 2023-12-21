@@ -33,7 +33,7 @@ class SchoolsSource extends Source
      */
     public function export(): void
     {
-        SchoolsItemJob::dispatch('schools.json')
+        SchoolsItemJob::dispatch('/json/schools.json')
             ->delay(now()->addMinute());
 
         $this->fireEvent('export');

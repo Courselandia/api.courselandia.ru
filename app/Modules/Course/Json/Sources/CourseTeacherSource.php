@@ -13,6 +13,7 @@ use App\Modules\Course\Enums\Status;
 use App\Modules\Course\Json\Source;
 use App\Modules\Teacher\Models\Teacher;
 use Illuminate\Database\Eloquent\Builder;
+use Storage;
 
 /**
  * Источник для формирования курсов учителей.
@@ -46,12 +47,38 @@ class CourseTeacherSource extends Source
                 ?->toArray();
 
             if ($result) {
-                CourseTeacherItemJob::dispatch('courses/teacher/' . $result['link'] . '.json', $result['id'], $result['link'])
+                CourseTeacherItemJob::dispatch('/json/courses/teacher/' . $result['link'] . '.json', $result['id'], $result['link'])
                     ->delay(now()->addMinute());
+
+                $this->addId($result['id']);
 
                 $this->fireEvent('export');
             }
         }
+    }
+
+    /**
+     * Запуск удаления не активных данных.
+     *
+     * @return void.
+     */
+    public function delete(): void
+    {
+        $teachers = Teacher::whereNotIn('id', $this->getIds())
+            ->get()
+            ?->toArray();
+
+        $paths = [];
+
+        foreach ($teachers as $teacher) {
+            $path = '/json/courses/teacher/' . $teacher['link'] . '.json';
+
+            if (Storage::drive('public')->exists($path)) {
+                $paths[] = $path;
+            }
+        }
+
+        Storage::drive('public')->delete($paths);
     }
 
     /**

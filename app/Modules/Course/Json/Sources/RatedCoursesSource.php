@@ -33,7 +33,7 @@ class RatedCoursesSource extends Source
      */
     public function export(): void
     {
-        RatedCoursesItemJob::dispatch('courses/rated.json')
+        RatedCoursesItemJob::dispatch('/json/courses/rated.json')
             ->delay(now()->addMinute());
 
         $this->fireEvent('export');

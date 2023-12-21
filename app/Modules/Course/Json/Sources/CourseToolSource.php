@@ -13,6 +13,7 @@ use App\Modules\Course\Enums\Status;
 use App\Modules\Course\Json\Source;
 use App\Modules\Tool\Models\Tool;
 use Illuminate\Database\Eloquent\Builder;
+use Storage;
 
 /**
  * Источник для формирования курсов инструментов.
@@ -46,12 +47,38 @@ class CourseToolSource extends Source
                 ?->toArray();
 
             if ($result) {
-                CourseToolItemJob::dispatch('courses/tool/' . $result['link'] . '.json', $result['id'], $result['link'])
+                CourseToolItemJob::dispatch('/json/courses/tool/' . $result['link'] . '.json', $result['id'], $result['link'])
                     ->delay(now()->addMinute());
+
+                $this->addId($result['id']);
 
                 $this->fireEvent('export');
             }
         }
+    }
+
+    /**
+     * Запуск удаления не активных данных.
+     *
+     * @return void.
+     */
+    public function delete(): void
+    {
+        $tools = Tool::whereNotIn('id', $this->getIds())
+            ->get()
+            ?->toArray();
+
+        $paths = [];
+
+        foreach ($tools as $tool) {
+            $path = '/json/courses/tool/' . $tool['link'] . '.json';
+
+            if (Storage::drive('public')->exists($path)) {
+                $paths[] = $path;
+            }
+        }
+
+        Storage::drive('public')->delete($paths);
     }
 
     /**

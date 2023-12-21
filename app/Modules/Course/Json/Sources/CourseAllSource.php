@@ -33,7 +33,7 @@ class CourseAllSource extends Source
      */
     public function export(): void
     {
-        CourseAllItemJob::dispatch('courses.json')
+        CourseAllItemJob::dispatch('/json/courses.json')
             ->delay(now()->addMinute());
 
         $this->fireEvent('export');

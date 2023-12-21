@@ -13,6 +13,7 @@ use App\Modules\Course\Enums\Status;
 use App\Modules\Course\Json\Source;
 use App\Modules\Profession\Models\Profession;
 use Illuminate\Database\Eloquent\Builder;
+use Storage;
 
 /**
  * Источник для формирования профессий.
@@ -46,12 +47,36 @@ class ProfessionSource extends Source
                 ?->toArray();
 
             if ($result) {
-                ProfessionItemJob::dispatch('professions/' . $result['link'] . '.json', $result['id'], $result['link'])
+                ProfessionItemJob::dispatch('/json/professions/' . $result['link'] . '.json', $result['id'], $result['link'])
                     ->delay(now()->addMinute());
 
                 $this->fireEvent('export');
             }
         }
+    }
+
+    /**
+     * Запуск удаления не активных данных.
+     *
+     * @return void.
+     */
+    public function delete(): void
+    {
+        $professions = Profession::whereNotIn('id', $this->getIds())
+            ->get()
+            ?->toArray();
+
+        $paths = [];
+
+        foreach ($professions as $profession) {
+            $path = '/json/professions/' . $profession['link'] . '.json';
+
+            if (Storage::drive('public')->exists($path)) {
+                $paths[] = $path;
+            }
+        }
+
+        Storage::drive('public')->delete($paths);
     }
 
     /**
