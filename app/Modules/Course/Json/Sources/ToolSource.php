@@ -62,7 +62,11 @@ class ToolSource extends Source
      */
     public function delete(): void
     {
-        $tools = Tool::whereNotIn('id', $this->getIds())
+        $activeIds = $this->getQuery()
+            ->get()
+            ->pluck('id');
+
+        $tools = Tool::whereNotIn('id', $activeIds)
             ->get()
             ?->toArray();
 

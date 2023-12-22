@@ -51,8 +51,6 @@ class CourseSchoolSource extends Source
                 CourseSchoolItemJob::dispatch('/json/courses/school/' . $result['link'] . '.json', $result['id'], $result['link'])
                     ->delay(now()->addMinute());
 
-                $this->addId($result['id']);
-
                 $this->fireEvent('export');
             }
         }
@@ -65,7 +63,11 @@ class CourseSchoolSource extends Source
      */
     public function delete(): void
     {
-        $schools = School::whereNotIn('id', $this->getIds())
+        $activeIds = $this->getQuery()
+            ->get()
+            ->pluck('id');
+
+        $schools = School::whereNotIn('id', $activeIds)
             ->get()
             ?->toArray();
 

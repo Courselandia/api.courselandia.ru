@@ -50,8 +50,6 @@ class CourseToolSource extends Source
                 CourseToolItemJob::dispatch('/json/courses/tool/' . $result['link'] . '.json', $result['id'], $result['link'])
                     ->delay(now()->addMinute());
 
-                $this->addId($result['id']);
-
                 $this->fireEvent('export');
             }
         }
@@ -64,7 +62,11 @@ class CourseToolSource extends Source
      */
     public function delete(): void
     {
-        $tools = Tool::whereNotIn('id', $this->getIds())
+        $activeIds = $this->getQuery()
+            ->get()
+            ->pluck('id');
+
+        $tools = Tool::whereNotIn('id', $activeIds)
             ->get()
             ?->toArray();
 

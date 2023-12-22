@@ -62,7 +62,11 @@ class SkillSource extends Source
      */
     public function delete(): void
     {
-        $skills = Skill::whereNotIn('id', $this->getIds())
+        $activeIds = $this->getQuery()
+            ->get()
+            ->pluck('id');
+
+        $skills = Skill::whereNotIn('id', $activeIds)
             ->get()
             ?->toArray();
 

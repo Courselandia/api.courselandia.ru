@@ -62,7 +62,11 @@ class ProfessionSource extends Source
      */
     public function delete(): void
     {
-        $professions = Profession::whereNotIn('id', $this->getIds())
+        $activeIds = $this->getQuery()
+            ->get()
+            ->pluck('id');
+
+        $professions = Profession::whereNotIn('id', $activeIds)
             ->get()
             ?->toArray();
 

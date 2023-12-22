@@ -50,8 +50,6 @@ class CourseProfessionSource extends Source
                 CourseProfessionItemJob::dispatch('/json/courses/profession/' . $result['link'] . '.json', $result['id'], $result['link'])
                     ->delay(now()->addMinute());
 
-                $this->addId($result['id']);
-
                 $this->fireEvent('export');
             }
         }
@@ -64,7 +62,11 @@ class CourseProfessionSource extends Source
      */
     public function delete(): void
     {
-        $professions = Profession::whereNotIn('id', $this->getIds())
+        $activeIds = $this->getQuery()
+            ->get()
+            ->pluck('id');
+
+        $professions = Profession::whereNotIn('id', $activeIds)
             ->get()
             ?->toArray();
 

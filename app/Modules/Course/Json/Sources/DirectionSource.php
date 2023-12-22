@@ -50,8 +50,6 @@ class DirectionSource extends Source
                 DirectionItemJob::dispatch('/json/directions/' . $result['link'] . '.json', $result['id'], $result['link'])
                     ->delay(now()->addMinute());
 
-                $this->addId($result['id']);
-
                 $this->fireEvent('export');
             }
         }
@@ -64,7 +62,11 @@ class DirectionSource extends Source
      */
     public function delete(): void
     {
-        $directions = Direction::whereNotIn('id', $this->getIds())
+        $activeIds = $this->getQuery()
+            ->get()
+            ->pluck('id');
+
+        $directions = Direction::whereNotIn('id', $activeIds)
             ->get()
             ?->toArray();
 

@@ -50,8 +50,6 @@ class CategorySource extends Source
                 CategoryItemJob::dispatch('/json/categories/' . $result['link'] . '.json', $result['id'], $result['link'])
                     ->delay(now()->addMinute());
 
-                $this->addId($result['id']);
-
                 $this->fireEvent('export');
             }
         }
@@ -64,7 +62,11 @@ class CategorySource extends Source
      */
     public function delete(): void
     {
-        $categories = Category::whereNotIn('id', $this->getIds())
+        $activeIds = $this->getQuery()
+            ->get()
+            ->pluck('id');
+
+        $categories = Category::whereNotIn('id', $activeIds)
             ->get()
             ?->toArray();
 

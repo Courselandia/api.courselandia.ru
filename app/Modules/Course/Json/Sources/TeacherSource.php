@@ -62,7 +62,11 @@ class TeacherSource extends Source
      */
     public function delete(): void
     {
-        $teachers = Teacher::whereNotIn('id', $this->getIds())
+        $activeIds = $this->getQuery()
+            ->get()
+            ->pluck('id');
+
+        $teachers = Teacher::whereNotIn('id', $activeIds)
             ->get()
             ?->toArray();
 

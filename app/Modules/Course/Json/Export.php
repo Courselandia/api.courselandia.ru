@@ -131,8 +131,8 @@ class Export
                 $this->fireEvent('export');
             });
 
-            $source->export();
             $source->delete();
+            $source->export();
         }
     }
 

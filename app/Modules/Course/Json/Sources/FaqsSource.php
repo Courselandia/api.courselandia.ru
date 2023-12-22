@@ -62,7 +62,11 @@ class FaqsSource extends Source
      */
     public function delete(): void
     {
-        $schools = School::whereNotIn('id', $this->getIds())
+        $activeIds = $this->getQuery()
+            ->get()
+            ->pluck('id');
+
+        $schools = School::whereNotIn('id', $activeIds)
             ->get()
             ?->toArray();
 
