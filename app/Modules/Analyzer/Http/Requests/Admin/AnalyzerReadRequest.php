@@ -29,7 +29,7 @@ class AnalyzerReadRequest extends FormRequest
         'offset' => 'string',
         'limit' => 'string',
         'filters' => 'string',
-        'filters.status' => 'string',
+        'filters.status.*' => 'string',
     ])] public function rules(): array
     {
         $columns = Schema::getColumnListing('analyzers');
@@ -44,7 +44,7 @@ class AnalyzerReadRequest extends FormRequest
             'offset' => 'integer|digits_between:0,20',
             'limit' => 'integer|digits_between:0,20',
             'filters' => 'array|filters:' . $columns . '|filter_date_range:published_at',
-            'filters.status' => 'in:' . implode(',', EnumList::getValues(Status::class)),
+            'filters.status.*' => 'in:' . implode(',', EnumList::getValues(Status::class)),
         ];
     }
 
@@ -58,7 +58,7 @@ class AnalyzerReadRequest extends FormRequest
         'offset' => 'string',
         'limit' => 'string',
         'filters' => 'string',
-        'filters.status' => 'string',
+        'filters.status.*' => 'string',
     ])] public function attributes(): array
     {
         return [
@@ -66,7 +66,7 @@ class AnalyzerReadRequest extends FormRequest
             'offset' => trans('analyzer::http.requests.admin.analyzerReadRequest.offset'),
             'limit' => trans('analyzer::http.requests.admin.analyzerReadRequest.limit'),
             'filters' => trans('analyzer::http.requests.admin.analyzerReadRequest.filters'),
-            'filters.status' => trans('analyzer::http.requests.admin.analyzerReadRequest.status'),
+            'filters.status.*' => trans('analyzer::http.requests.admin.analyzerReadRequest.status'),
         ];
     }
 }

@@ -80,13 +80,13 @@ class TaskFilter extends ModelFilter
     /**
      * Поиск по статусу.
      *
-     * @param Status $status Статус.
+     * @param array|Status|string $statuses Статусы.
      *
      * @return TaskFilter Правила поиска.
      */
-    public function status(Status $status): TaskFilter
+    public function status(array|Status|string $statuses): TaskFilter
     {
-        return $this->where('tasks.status', $status->value);
+        return $this->where('tasks.status', is_array($statuses) ? $statuses : [$statuses]);
     }
 
     /**

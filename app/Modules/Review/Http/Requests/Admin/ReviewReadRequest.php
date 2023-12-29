@@ -30,7 +30,7 @@ class ReviewReadRequest extends FormRequest
         'limit' => 'string',
         'filters' => 'string',
         'filters.rating' => 'string',
-        'filters.status' => 'string',
+        'filters.status.*' => 'string',
     ])] public function rules(): array
     {
         $columns = Schema::getColumnListing('reviews');
@@ -55,7 +55,7 @@ class ReviewReadRequest extends FormRequest
             'limit' => 'integer|digits_between:0,20',
             'filters' => 'array|filters:' . implode(',', $columnsFilter) . '|filter_date_range:published_at',
             'filters.rating' => 'integer',
-            'filters.status' => 'in:' . implode(',', EnumList::getValues(Status::class)),
+            'filters.status.*' => 'in:' . implode(',', EnumList::getValues(Status::class)),
         ];
     }
 
@@ -70,7 +70,7 @@ class ReviewReadRequest extends FormRequest
         'limit' => 'string',
         'filters' => 'string',
         'filters.rating' => 'string',
-        'filters.status' => 'string',
+        'filters.status.*' => 'string',
     ])] public function attributes(): array
     {
         return [
@@ -79,7 +79,7 @@ class ReviewReadRequest extends FormRequest
             'limit' => trans('review::http.requests.admin.reviewReadRequest.limit'),
             'filters' => trans('review::http.requests.admin.reviewReadRequest.filters'),
             'filters.rating' => trans('review::http.requests.admin.reviewReadRequest.rating'),
-            'filters.status' => trans('review::http.requests.admin.reviewReadRequest.status'),
+            'filters.status.*' => trans('review::http.requests.admin.reviewReadRequest.status'),
         ];
     }
 }

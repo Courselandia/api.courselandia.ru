@@ -29,7 +29,7 @@ class TaskReadRequest extends FormRequest
         'offset' => 'string',
         'limit' => 'string',
         'filters' => 'string',
-        'filters.status' => 'string',
+        'filters.status.*' => 'string',
     ])] public function rules(): array
     {
         $columns = Schema::getColumnListing('tasks');
@@ -51,7 +51,7 @@ class TaskReadRequest extends FormRequest
             'offset' => 'integer|digits_between:0,20',
             'limit' => 'integer|digits_between:0,20',
             'filters' => 'array|filters:' . implode(',', $columnsFilter) . '|filter_date_range:launched_at|filter_date_range:finished_at|filter_date_range:created_at',
-            'filters.status' => 'in:' . implode(',', EnumList::getValues(Status::class)),
+            'filters.status.*' => 'in:' . implode(',', EnumList::getValues(Status::class)),
         ];
     }
 
@@ -65,7 +65,7 @@ class TaskReadRequest extends FormRequest
         'offset' => 'string',
         'limit' => 'string',
         'filters' => 'string',
-        'filters.status' => 'string',
+        'filters.status.*' => 'string',
     ])] public function attributes(): array
     {
         return [
@@ -73,7 +73,7 @@ class TaskReadRequest extends FormRequest
             'offset' => trans('task::http.requests.admin.taskReadRequest.offset'),
             'limit' => trans('task::http.requests.admin.taskReadRequest.limit'),
             'filters' => trans('task::http.requests.admin.taskReadRequest.filters'),
-            'filters.status' => trans('task::http.requests.admin.taskReadRequest.status'),
+            'filters.status.*' => trans('task::http.requests.admin.taskReadRequest.status'),
         ];
     }
 }

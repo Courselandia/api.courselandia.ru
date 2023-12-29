@@ -135,7 +135,12 @@ class AnalyzerFilter extends ModelFilter
     public function analyzerableStatus(bool $status): AnalyzerFilter
     {
         return $this->related('analyzerable', function ($query) use ($status) {
-            $statusValue = [CourseStatus::ACTIVE->value, 1, ArticleStatus::APPLIED, ArticleStatus::READY];
+            $statusValue = [
+                CourseStatus::ACTIVE->value,
+                ArticleStatus::APPLIED,
+                ArticleStatus::READY,
+                1,
+            ];
 
             if ($status) {
                 return $query->whereIn('status', $statusValue);

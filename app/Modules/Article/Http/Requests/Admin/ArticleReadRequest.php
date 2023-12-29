@@ -29,7 +29,7 @@ class ArticleReadRequest extends FormRequest
         'offset' => 'string',
         'limit' => 'string',
         'filters' => 'string',
-        'filters.status' => 'string',
+        'filters.status.*' => 'string',
     ])] public function rules(): array
     {
         $columns = Schema::getColumnListing('articles');
@@ -40,7 +40,7 @@ class ArticleReadRequest extends FormRequest
             'offset' => 'integer|digits_between:0,20',
             'limit' => 'integer|digits_between:0,20',
             'filters' => 'array|filters:' . $columns . '|filter_date_range:published_at',
-            'filters.status' => 'in:' . implode(',', EnumList::getValues(Status::class)),
+            'filters.status.*' => 'in:' . implode(',', EnumList::getValues(Status::class)),
         ];
     }
 
@@ -62,7 +62,7 @@ class ArticleReadRequest extends FormRequest
             'offset' => trans('article::http.requests.admin.articleReadRequest.offset'),
             'limit' => trans('article::http.requests.admin.articleReadRequest.limit'),
             'filters' => trans('article::http.requests.admin.articleReadRequest.filters'),
-            'filters.status' => trans('article::http.requests.admin.articleReadRequest.status'),
+            'filters.status.*' => trans('article::http.requests.admin.articleReadRequest.status'),
         ];
     }
 }
