@@ -41,7 +41,6 @@ class SourceCourse extends Source
      */
     public function export(): void
     {
-        $this->deleteAllIndexes();
         $this->addMapping();
         $count = $this->count();
         $query = $this->getQuery();
@@ -67,16 +66,31 @@ class SourceCourse extends Source
     }
 
     /**
-     * Удаляем все индексы.
+     * Запуск процесса удаления старых записей.
      *
      * @return void
      */
-    private function deleteAllIndexes(): void
+    public function delete(): void
     {
-        try {
-            Elasticsearch::indices()->delete(['index' => 'courses']);
-        } catch (Throwable $error) {
+        $activeIds = $this->getQuery()
+            ->get()
+            ->pluck('id');
 
+        $courses = Course::whereNotIn('id', $activeIds)
+            ->get()
+            ?->toArray();
+
+        foreach ($courses as $course) {
+            Elasticsearch::deleteByQuery([
+                'index' => 'courses',
+                'body' => [
+                    'query' => [
+                        'match' => [
+                            'id' => $course['id'],
+                        ],
+                    ]
+                ],
+            ]);
         }
     }
 
@@ -213,10 +227,10 @@ class SourceCourse extends Source
             'features',
             'professions.salaries'
         ])
-            ->where('status', Status::ACTIVE->value)
-            ->whereHas('school', function ($query) {
-                $query->where('status', true);
-            })
-            ->orderBy('name');
+        ->where('status', Status::ACTIVE->value)
+        ->whereHas('school', function ($query) {
+            $query->where('status', true);
+        })
+        ->orderBy('courses.id');
     }
 }

@@ -93,6 +93,7 @@ class Export
                 $this->fireEvent('export');
             });
 
+            $source->delete();
             $source->export();
 
             if ($source->hasError()) {

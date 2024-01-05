@@ -44,7 +44,7 @@ class CourseElastic extends Command
         $bar = $this->output->createProgressBar($export->count());
         $bar->start();
 
-        $export->addEvent('read', function () use ($bar) {
+        $export->addEvent('export', function () use ($bar) {
             $bar->advance();
         });
 

@@ -32,4 +32,11 @@ abstract class Source
      * @return void
      */
     abstract public function export(): void;
+
+    /**
+     * Запуск процесса удаления старых записей.
+     *
+     * @return void
+     */
+    abstract public function delete(): void;
 }
