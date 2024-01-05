@@ -8,6 +8,7 @@
 
 namespace App\Modules\Course\Providers;
 
+use App\Modules\Course\Commands\CourseElastic;
 use App\Modules\Course\Commands\CourseYmlCommand;
 use Config;
 use Illuminate\Support\ServiceProvider;
@@ -51,6 +52,7 @@ class CourseServiceProvider extends ServiceProvider
             CourseNormalizeCommand::class,
             CourseJsonCommand::class,
             CourseYmlCommand::class,
+            CourseElastic::class,
         ]);
     }
 

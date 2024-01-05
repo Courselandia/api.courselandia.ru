@@ -40,7 +40,8 @@
         "ralouphie/mimey": "^1.0",
         "tucker-eric/eloquentfilter": "^3.1",
         "vladimir-yuldashev/laravel-queue-rabbitmq": "^13.0",
-        "wamania/php-stemmer": "^3.0"
+        "wamania/php-stemmer": "^3.0",
+        "mailerlite/laravel-elasticsearch": "^11.0.0"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.7.0",

@@ -19,13 +19,15 @@ services:
         depends_on:
             - db
             - db-test
+            - mongo
             - mongo-test
-            - nginx
             - mailhog
             - redis
-            - mongo
             - smtp
             - rabbitmq
+            - browser
+            - elasticsearch
+            - elasticsearch-test
 
     queue:
         build:
@@ -102,14 +104,7 @@ services:
         networks:
             - network
         depends_on:
-            - db
-            - db-test
-            - mongo-test
-            - mailhog
-            - redis
-            - mongo
-            - smtp
-            - rabbitmq
+            - app
 
     mailhog:
         image: mailhog/mailhog:latest
@@ -206,6 +201,50 @@ services:
         networks:
             - network
 
+    elasticsearch:
+        image: elasticsearch:8.7.0
+        container_name: api-courselandia-ru-elasticsearch
+        restart: unless-stopped
+        ports:
+            - ${DOCKER_ELASTIC_PORT}:9200
+        environment:
+            - cluster.name=${DOCKER_ELASTIC_CLUSTER_NAME}
+            - xpack.security.enabled=false
+            - discovery.type=single-node
+        ulimits:
+            memlock:
+                soft: -1
+                hard: -1
+            nofile:
+                soft: 65536
+                hard: 65536
+        volumes:
+            - elasticsearch-data:/usr/share/elasticsearch/data
+        networks:
+            - network
+
+    elasticsearch-test:
+        image: elasticsearch:8.7.0
+        container_name: api-courselandia-ru-elasticsearch-test
+        restart: unless-stopped
+        ports:
+            - ${DOCKER_ELASTIC_TEST_PORT}:9200
+        environment:
+            - cluster.name=${DOCKER_ELASTIC_TEST_CLUSTER_NAME}
+            - xpack.security.enabled=false
+            - discovery.type=single-node
+        ulimits:
+            memlock:
+                soft: -1
+                hard: -1
+            nofile:
+                soft: 65536
+                hard: 65536
+        tmpfs:
+            - /var/lib/store/elasticsearch
+        networks:
+            - network
+
 networks:
     network:
         driver: bridge
@@ -219,4 +258,5 @@ volumes:
         driver: local
     rabbitmq:
         driver: local
-
+    elasticsearch-data:
+        driver: local

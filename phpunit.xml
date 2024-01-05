@@ -63,5 +63,7 @@
         <server name="YANDEX_WEBMASTER_HOST" value="https:courselandia.ru:443"/>
         <server name="GOOGLE_APPLICATION_NAME" value="Google-indexing"/>
         <server name="GOOGLE_SERVICE_ACCOUNT_CREDENTIALS_JSON" value="app/courselandia-google.json"/>
+        <server name="ELASTICSEARCH_HOST" value="elasticsearch-test"/>
+        <server name="ELASTICSEARCH_PORT" value="9200"/>
     </php>
 </phpunit>
