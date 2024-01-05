@@ -8,6 +8,8 @@
 
 namespace App\Modules\Course\Json;
 
+use Carbon\Carbon;
+use Storage;
 use Cache;
 use App\Models\Event;
 use App\Modules\Course\Json\Sources\SchoolsSource;
@@ -38,6 +40,13 @@ use App\Modules\Course\Json\Sources\RatedCoursesSource;
 class Export
 {
     use Event;
+
+    /**
+     * Количество дней, когда файл считается устаревшим.
+     *
+     * @var int
+     */
+    const OLD_FILE_IN_DAYS = 2;
 
     /**
      * Источники.
@@ -103,6 +112,7 @@ class Export
 
         $this->offLimits();
         $this->exports();
+        $this->clean();
     }
 
     /**
@@ -133,6 +143,29 @@ class Export
 
             $source->delete();
             $source->export();
+        }
+    }
+
+    /**
+     * Удаление старых файлов.
+     *
+     * @return void
+     */
+    private function clean(): void
+    {
+        $this->fireEvent('clean');
+
+        $files = Storage::drive('public')->allFiles('/json');
+
+        foreach ($files as $file) {
+            $dateUpdate = Carbon::createFromTimestamp(filemtime(Storage::drive('public')->path($file)));
+            $dateNow = Carbon::now();
+
+            $diffDays = $dateNow->diffInDays($dateUpdate);
+
+            if ($diffDays > self::OLD_FILE_IN_DAYS) {
+                Storage::drive('public')->delete($file);
+            }
         }
     }
 

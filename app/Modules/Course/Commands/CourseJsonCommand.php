@@ -48,10 +48,14 @@ class CourseJsonCommand extends Command
             $bar->advance();
         });
 
-        $export->run();
-        $bar->finish();
+        $export->addEvent('clean', function () use ($bar) {
+            $bar->finish();
+            $this->line("\n\nУдаление старых файлов...");
+        });
 
-        $this->info("\n\nЭкспорт был отправлен в очереди.");
+        $export->run();
+
+        $this->info("\nЭкспорт был отправлен в очереди.");
         Log::info('Создание очередей на отправку данных в JSON файлы.');
     }
 }
