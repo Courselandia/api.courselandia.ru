@@ -8,8 +8,6 @@
 
 namespace App\Modules\Course\Providers;
 
-use App\Modules\Course\Commands\CourseElastic;
-use App\Modules\Course\Commands\CourseYmlCommand;
 use Config;
 use Illuminate\Support\ServiceProvider;
 use App\Modules\Course\Commands\CourseFillCommand;
@@ -18,6 +16,9 @@ use App\Modules\Course\Commands\CourseNormalizeCommand;
 use App\Modules\Course\Models\Course as CourseModel;
 use App\Modules\Course\Events\Listeners\CourseListener;
 use App\Modules\Course\Commands\CourseJsonCommand;
+use App\Modules\Course\Commands\CourseElastic;
+use App\Modules\Course\Commands\CourseElasticClean;
+use App\Modules\Course\Commands\CourseYmlCommand;
 
 /**
  * Класс сервис-провайдера для настройки этого модуля.
@@ -53,6 +54,7 @@ class CourseServiceProvider extends ServiceProvider
             CourseJsonCommand::class,
             CourseYmlCommand::class,
             CourseElastic::class,
+            CourseElasticClean::class,
         ]);
     }
 

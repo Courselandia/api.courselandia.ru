@@ -20,6 +20,13 @@ abstract class Source
     use Event;
 
     /**
+     * Возвращает название индекса.
+     *
+     * @return string Название индекса.
+     */
+    abstract public function name(): string;
+
+    /**
      * Возвращает количество обрабатываемых записей.
      *
      * @return int Количество.

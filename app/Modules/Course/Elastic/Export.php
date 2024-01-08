@@ -9,9 +9,18 @@
 namespace App\Modules\Course\Elastic;
 
 use Cache;
+use Throwable;
+use Elasticsearch;
 use App\Models\Error;
 use App\Models\Event;
 use App\Modules\Course\Elastic\Sources\SourceCourse;
+use App\Modules\Course\Elastic\Sources\SourceSkill;
+use App\Modules\Course\Elastic\Sources\SourceTool;
+use App\Modules\Course\Elastic\Sources\SourceCategory;
+use App\Modules\Course\Elastic\Sources\SourceDirection;
+use App\Modules\Course\Elastic\Sources\SourceProfession;
+use App\Modules\Course\Elastic\Sources\SourceTeacher;
+use App\Modules\Course\Elastic\Sources\SourceSchool;
 
 /**
  * Экспортируем данные курсов в Elasticsearch.
@@ -26,8 +35,15 @@ class Export
      */
     public function __construct()
     {
-        $this
-            ->addSource(new SourceCourse());
+        $this->addSource(new SourceCourse())
+            ->addSource(new SourceDirection())
+            ->addSource(new SourceSchool())
+            ->addSource(new SourceSkill())
+            ->addSource(new SourceTool())
+            ->addSource(new SourceCategory())
+            ->addSource(new SourceProfession())
+            ->addSource(new SourceTeacher())
+        ;
     }
 
     /**
@@ -48,6 +64,30 @@ class Export
 
         $this->offLimits();
         $this->exports();
+    }
+
+    /**
+     * Удаление всех индексов.
+     *
+     * @return void
+     */
+    public function clean(): void
+    {
+        $sources = $this->getSources();
+
+        foreach ($sources as $source) {
+            $exist = Elasticsearch::indices()->exists([
+                'index' => $source->name(),
+            ]);
+
+            if ($exist) {
+                try {
+                    Elasticsearch::indices()->delete(['index' => $source->name()]);
+                } catch (Throwable $error) {
+                    $this->addError($error);
+                }
+            }
+        }
     }
 
     /**

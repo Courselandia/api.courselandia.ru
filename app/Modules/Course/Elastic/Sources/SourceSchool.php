@@ -11,13 +11,13 @@ namespace App\Modules\Course\Elastic\Sources;
 use Elasticsearch;
 use App\Modules\Course\Elastic\Source;
 use App\Modules\Course\Enums\Status;
-use App\Modules\Course\Models\Course;
+use App\Modules\School\Models\School;
 use Illuminate\Database\Eloquent\Builder;
 
 /**
- * Экспортирование курсов.
+ * Экспортирование школ.
  */
-class SourceCourse extends Source
+class SourceSchool extends Source
 {
     /**
      * Возвращает название индекса.
@@ -26,7 +26,7 @@ class SourceCourse extends Source
      */
     public function name(): string
     {
-        return 'courses';
+        return 'schools';
     }
 
     /**
@@ -36,11 +36,7 @@ class SourceCourse extends Source
      */
     public function count(): int
     {
-        return Course::where('status', Status::ACTIVE->value)
-            ->whereHas('school', function ($query) {
-                $query->where('status', true);
-            })
-            ->count();
+        return $this->getQuery()->count();
     }
 
     /**
@@ -55,16 +51,15 @@ class SourceCourse extends Source
         $query = $this->getQuery();
 
         for ($i = 0; $i < $count; $i++) {
-            $course = $query->clone()
+            $item = $query->clone()
                 ->offset($i)
                 ->limit(1)
-                ->first()
-                ?->toArray();
+                ->first();
 
-            if ($course) {
+            if ($item) {
                 $data = [
                     'index' => $this->name(),
-                    'body' => $course,
+                    'body' => $item->toArray(),
                 ];
 
                 Elasticsearch::index($data);
@@ -90,19 +85,19 @@ class SourceCourse extends Source
                 ->get()
                 ->pluck('id');
 
-            $courses = Course::whereNotIn('id', $activeIds)
+            $schools = School::whereNotIn('id', $activeIds)
                 ->get()
                 ?->toArray();
 
-            foreach ($courses as $course) {
+            foreach ($schools as $school) {
                 Elasticsearch::deleteByQuery([
                     'index' => $this->name(),
                     'body' => [
                         'query' => [
                             'match' => [
-                                'id' => $course['id'],
+                                'id' => $school['id'],
                             ],
-                        ]
+                        ],
                     ],
                 ]);
             }
@@ -121,21 +116,6 @@ class SourceCourse extends Source
         ]);
 
         if (!$exist) {
-            $propertyNested = [
-                'type' => 'nested',
-                'properties' => [
-                    'id' => [
-                        "type" => 'integer',
-                    ],
-                    'name' => [
-                        'type' => 'keyword',
-                    ],
-                    'link' => [
-                        'type' => 'keyword',
-                    ],
-                ],
-            ];
-
             $imageNested = [
                 'type' => 'nested',
                 'properties' => [
@@ -162,9 +142,6 @@ class SourceCourse extends Source
                             'id' => [
                                 'type' => 'integer',
                             ],
-                            'school_id' => [
-                                'type' => 'integer',
-                            ],
                             'name' => [
                                 'type' => 'text',
                                 'analyzer' => 'russian',
@@ -174,46 +151,26 @@ class SourceCourse extends Source
                                     ],
                                 ],
                             ],
+                            'header' => [
+                                'type' => 'text',
+                                'analyzer' => 'russian',
+                            ],
+                            'link' => [
+                                'type' => 'keyword',
+                            ],
                             'text' => [
                                 'type' => 'text',
                                 'analyzer' => 'russian',
                             ],
                             'rating' => [
                                 'type' => 'integer',
+
                             ],
-                            'price' => [
-                                'type' => 'float',
+                            'site' => [
+                                'type' => 'text',
                             ],
-                            'price_old' => [
-                                'type' => 'float',
-                            ],
-                            'price_recurrent' => [
-                                'type' => 'float',
-                            ],
-                            'online' => [
-                                'type' => 'integer',
-                            ],
-                            'professions' => $propertyNested,
-                            'categories' => $propertyNested,
-                            'skills' => $propertyNested,
-                            'teachers' => $propertyNested,
-                            'tools' => $propertyNested,
-                            'school' => $propertyNested,
-                            'directions' => $propertyNested,
-                            'image_big_id' => $imageNested,
-                            'image_middle_id' => $imageNested,
-                            'image_small_id' => $imageNested,
-                            'levels' => [
-                                'type' => 'nested',
-                                'properties' => [
-                                    'id' => [
-                                        'type' => 'integer',
-                                    ],
-                                    'level' => [
-                                        'type' => 'keyword',
-                                    ],
-                                ],
-                            ],
+                            'image_site_id' => $imageNested,
+                            'image_logo_id' => $imageNested,
                             'metatag' => [
                                 'type' => 'nested',
                                 'properties' => [
@@ -228,6 +185,35 @@ class SourceCourse extends Source
                                     'title' => [
                                         'type' => 'text',
                                         'analyzer' => 'russian',
+                                    ],
+                                ],
+                            ],
+                            'amount_courses' => [
+                                'type' => 'nested',
+                                'properties' => [
+                                    'all' => [
+                                        'type' => 'integer',
+                                    ],
+                                    'direction_games' => [
+                                        'type' => 'integer',
+                                    ],
+                                    'direction_other' => [
+                                        'type' => 'integer',
+                                    ],
+                                    'direction_design' => [
+                                        'type' => 'integer',
+                                    ],
+                                    'direction_business' => [
+                                        'type' => 'integer',
+                                    ],
+                                    'direction_analytics' => [
+                                        'type' => 'integer',
+                                    ],
+                                    'direction_marketing' => [
+                                        'type' => 'integer',
+                                    ],
+                                    'direction_programming' => [
+                                        'type' => 'integer',
                                     ],
                                 ],
                             ],
@@ -247,49 +233,11 @@ class SourceCourse extends Source
      */
     private function getQuery(): Builder
     {
-        return Course::with([
-            'professions' => function ($query) {
-                $query->where('status', true);
-            },
-            'professions.salaries' => function ($query) {
-                $query->where('status', true);
-            },
-            'categories' => function ($query) {
-                $query->where('status', true);
-            },
-            'skills' => function ($query) {
-                $query->where('status', true);
-            },
-            'teachers' => function ($query) {
-                $query->where('status', true);
-            },
-            'tools' => function ($query) {
-                $query->where('status', true);
-            },
-            'processes' => function ($query) {
-                $query->where('status', true);
-            },
-            'school' => function ($query) {
-                $query->where('status', true);
-            },
-            'school.faqs' => function ($query) {
-                $query->where('status', true);
-            },
-            'directions' => function ($query) {
-                $query->where('status', true);
-            },
-            'directions.categories',
-            'metatag',
-            'levels',
-            'learns',
-            'employments',
-            'features',
-            'professions.salaries'
-        ])
-        ->where('status', Status::ACTIVE->value)
-        ->whereHas('school', function ($query) {
-            $query->where('status', true);
+        return School::whereHas('courses', function ($query) {
+            $query->where('status', Status::ACTIVE->value);
         })
-        ->orderBy('courses.id');
+        ->where('status', true)
+        ->with('metatag')
+        ->orderBy('name');
     }
 }
