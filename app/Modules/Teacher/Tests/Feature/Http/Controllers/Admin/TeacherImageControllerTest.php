@@ -11,7 +11,6 @@ namespace App\Modules\Teacher\Tests\Feature\Http\Controllers\Admin;
 use App\Models\Test\TokenTest;
 use App\Modules\Teacher\Models\Teacher;
 use Illuminate\Http\UploadedFile;
-use JetBrains\PhpStorm\Pure;
 use Tests\TestCase;
 
 /**
@@ -145,7 +144,7 @@ class TeacherImageControllerTest extends TestCase
      *
      * @return array Массив структуры данных учителя.
      */
-    #[Pure] private function getTeacherStructure(bool $image = false): array
+    private function getTeacherStructure(bool $image = false): array
     {
         $structure = [
             'id',

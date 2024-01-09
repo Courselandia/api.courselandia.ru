@@ -10,7 +10,6 @@ namespace App\Models;
 
 use Exception;
 use Illuminate\Contracts\Validation\Validator;
-use JetBrains\PhpStorm\Pure;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -46,7 +45,7 @@ class FormRequestValidationException extends Exception
      * @param  FormRequest  $response  Запрос.
      * @param  Validator  $validator  Валидатор.
      */
-    #[Pure] public function __construct(FormRequest $response, Validator $validator)
+    public function __construct(FormRequest $response, Validator $validator)
     {
         parent::__construct();
 

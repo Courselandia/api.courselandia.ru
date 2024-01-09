@@ -10,7 +10,6 @@ namespace App\Modules\School\Tests\Feature\Http\Controllers\Site;
 
 use App\Modules\Course\Tests\Feature\Http\Controllers\Site\CourseControllerTest;
 use App\Modules\School\Models\School;
-use JetBrains\PhpStorm\Pure;
 use Tests\TestCase;
 
 /**
@@ -119,7 +118,7 @@ class SchoolControllerTest extends TestCase
      *
      * @return array Массив структуры данных школы.
      */
-    #[Pure] private function getSchoolStructure(): array
+    private function getSchoolStructure(): array
     {
         return [
             'id',

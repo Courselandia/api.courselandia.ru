@@ -30,7 +30,6 @@ use App\Models\Test\TokenTest;
 use App\Modules\Course\Models\Course;
 use Faker\Factory as Faker;
 use Illuminate\Http\UploadedFile;
-use JetBrains\PhpStorm\Pure;
 use Tests\TestCase;
 
 /**
@@ -406,7 +405,7 @@ class CourseControllerTest extends TestCase
      *
      * @return array Массив структуры данных публикации.
      */
-    #[Pure] private function getCourseStructure(bool $full = false, bool $image = false): array
+    private function getCourseStructure(bool $full = false, bool $image = false): array
     {
         $structure = [
             'id',

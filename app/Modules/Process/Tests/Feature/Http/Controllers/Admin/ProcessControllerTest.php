@@ -11,7 +11,6 @@ namespace App\Modules\Process\Tests\Feature\Http\Controllers\Admin;
 use App\Models\Test\TokenTest;
 use App\Modules\Process\Models\Process;
 use Faker\Factory as Faker;
-use JetBrains\PhpStorm\Pure;
 use Tests\TestCase;
 
 /**
@@ -327,7 +326,7 @@ class ProcessControllerTest extends TestCase
      *
      * @return array Массив структуры данных объяснения как проходит обучение.
      */
-    #[Pure] private function getProcessStructure(): array
+    private function getProcessStructure(): array
     {
         return [
             'id',

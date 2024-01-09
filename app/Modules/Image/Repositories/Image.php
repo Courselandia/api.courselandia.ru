@@ -16,7 +16,6 @@ use App\Models\Rep\Repository;
 use App\Models\Exceptions\InvalidFormatException;
 use Exception;
 use Generator;
-use JetBrains\PhpStorm\Pure;
 
 /**
  * Абстрактный класс построения репозитория.
@@ -205,7 +204,7 @@ abstract class Image extends Repository
      *
      * @return bool Возвращает true если расширение относиться к изображению.
      */
-    #[Pure] public function isImageByExtension(string $extension): bool
+    public function isImageByExtension(string $extension): bool
     {
         return $this->isRastorGtByExtension($extension) || $this->isVektorByExtension($extension);
     }

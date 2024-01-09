@@ -13,7 +13,6 @@ use App\Modules\User\Models\User;
 use App\Modules\User\Models\UserRole;
 use App\Modules\User\Models\UserVerification;
 use Illuminate\Http\UploadedFile;
-use JetBrains\PhpStorm\Pure;
 use Tests\TestCase;
 
 /**
@@ -132,7 +131,7 @@ class UserImageControllerTest extends TestCase
      *
      * @return array Массив структуры данных псевдонима.
      */
-    #[Pure] private function getUserStructure(): array
+    private function getUserStructure(): array
     {
         return [
             'id',

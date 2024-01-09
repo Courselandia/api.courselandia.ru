@@ -9,7 +9,6 @@
 namespace App\Modules\Publication\Tests\Feature\Http\Controllers\Site;
 
 use Carbon\Carbon;
-use JetBrains\PhpStorm\Pure;
 use Tests\TestCase;
 use App\Models\Test\TokenTest;
 use App\Modules\Publication\Models\Publication;
@@ -115,7 +114,7 @@ class PublicationControllerTest extends TestCase
      *
      * @return array Массив структуры данных публикации.
      */
-    #[Pure] private function getPublicationStructure(): array
+    private function getPublicationStructure(): array
     {
         return [
             'id',

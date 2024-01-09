@@ -9,7 +9,6 @@
 namespace App\Modules\Review\Tests\Feature\Http\Controllers\Site;
 
 use App\Modules\Review\Models\Review;
-use JetBrains\PhpStorm\Pure;
 use Tests\TestCase;
 
 /**
@@ -63,7 +62,7 @@ class ReviewControllerTest extends TestCase
      *
      * @return array Массив структуры данных отзывов.
      */
-    #[Pure] private function getReviewStructure(): array
+    private function getReviewStructure(): array
     {
         return [
             'id',

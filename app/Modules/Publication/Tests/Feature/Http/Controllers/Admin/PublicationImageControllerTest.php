@@ -11,7 +11,6 @@ namespace App\Modules\Publication\Tests\Feature\Http\Controllers\Admin;
 use App\Models\Test\TokenTest;
 use App\Modules\Publication\Models\Publication;
 use Illuminate\Http\UploadedFile;
-use JetBrains\PhpStorm\Pure;
 use Tests\TestCase;
 
 /**
@@ -141,7 +140,7 @@ class PublicationImageControllerTest extends TestCase
      *
      * @return array Массив структуры данных публикации.
      */
-    #[Pure] private function getPublicationStructure(bool $image = false): array
+    private function getPublicationStructure(bool $image = false): array
     {
         $structure = [
             'id',

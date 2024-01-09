@@ -15,7 +15,6 @@ use App\Modules\User\Models\UserRole;
 use App\Modules\User\Models\UserVerification;
 use Faker\Factory as Faker;
 use Illuminate\Http\UploadedFile;
-use JetBrains\PhpStorm\Pure;
 use Tests\TestCase;
 
 /**
@@ -461,7 +460,7 @@ class UserControllerTest extends TestCase
      *
      * @return array Массив структуры данных псевдонима.
      */
-    #[Pure] private function getUserStructure(): array
+    private function getUserStructure(): array
     {
         return [
             'id',

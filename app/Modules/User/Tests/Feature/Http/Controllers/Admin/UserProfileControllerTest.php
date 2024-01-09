@@ -11,7 +11,6 @@ namespace App\Modules\User\Tests\Feature\Http\Controllers\Admin;
 use App\Models\Test\TokenTest;
 use Faker\Factory as Faker;
 use Illuminate\Http\UploadedFile;
-use JetBrains\PhpStorm\Pure;
 use Tests\TestCase;
 
 /**
@@ -164,7 +163,7 @@ class UserProfileControllerTest extends TestCase
      *
      * @return array Массив структуры данных псевдонима.
      */
-    #[Pure] private function getUserStructure(): array
+    private function getUserStructure(): array
     {
         return [
             'id',

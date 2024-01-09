@@ -12,7 +12,6 @@ use App\Models\Test\TokenTest;
 use App\Modules\Faq\Models\Faq;
 use App\Modules\School\Models\School;
 use Faker\Factory as Faker;
-use JetBrains\PhpStorm\Pure;
 use Tests\TestCase;
 
 /**
@@ -268,7 +267,7 @@ class FaqControllerTest extends TestCase
      *
      * @return array Массив структуры данных FAQ.
      */
-    #[Pure] private function getFaqStructure(): array
+    private function getFaqStructure(): array
     {
         return [
             'id',

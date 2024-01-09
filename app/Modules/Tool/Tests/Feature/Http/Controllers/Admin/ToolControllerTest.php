@@ -12,7 +12,6 @@ use Util;
 use App\Models\Test\TokenTest;
 use App\Modules\Tool\Models\Tool;
 use Faker\Factory as Faker;
-use JetBrains\PhpStorm\Pure;
 use Tests\TestCase;
 
 /**
@@ -337,7 +336,7 @@ class ToolControllerTest extends TestCase
      *
      * @return array Массив структуры данных инструмента.
      */
-    #[Pure] private function getToolStructure(): array
+    private function getToolStructure(): array
     {
         return [
             'id',

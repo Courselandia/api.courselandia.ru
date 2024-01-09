@@ -9,7 +9,6 @@
 namespace App\Modules\Faq\Tests\Feature\Http\Controllers\Site;
 
 use App\Modules\Faq\Models\Faq;
-use JetBrains\PhpStorm\Pure;
 use Tests\TestCase;
 
 /**
@@ -42,7 +41,7 @@ class FaqControllerTest extends TestCase
      *
      * @return array Массив структуры данных вопрос-ответа.
      */
-    #[Pure] private function getFaqStructure(): array
+    private function getFaqStructure(): array
     {
         return [
             'id',

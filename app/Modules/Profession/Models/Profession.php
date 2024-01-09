@@ -10,7 +10,6 @@ namespace App\Modules\Profession\Models;
 
 use App\Modules\Analyzer\Models\Analyzer;
 use App\Modules\Article\Models\Article;
-use App\Modules\Category\Models\Category;
 use App\Modules\Course\Models\Course;
 use App\Modules\Salary\Models\Salary;
 use Eloquent;

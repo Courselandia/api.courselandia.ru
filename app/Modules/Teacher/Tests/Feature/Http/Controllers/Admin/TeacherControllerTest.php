@@ -18,7 +18,6 @@ use App\Models\Test\TokenTest;
 use App\Modules\Teacher\Models\Teacher;
 use Faker\Factory as Faker;
 use Illuminate\Http\UploadedFile;
-use JetBrains\PhpStorm\Pure;
 use Tests\TestCase;
 
 /**
@@ -506,7 +505,7 @@ class TeacherControllerTest extends TestCase
      *
      * @return array Массив структуры данных учителя.
      */
-    #[Pure] private function getTeacherStructure(
+    private function getTeacherStructure(
         bool $image = false,
         bool $direction = false,
         bool $school = false
