@@ -149,7 +149,7 @@ class CourseReadAction extends Action
 
         return $decorator->setActions([
             ReadPipe::class,
-            DescriptionPipe::class,
+            /*DescriptionPipe::class,
             FilterDirectionPipe::class,
             FilterCategoryPipe::class,
             FilterProfessionPipe::class,
@@ -163,7 +163,7 @@ class CourseReadAction extends Action
             FilterFreePipe::class,
             FilterDurationPipe::class,
             FilterOnlinePipe::class,
-            FilterLevelPipe::class,
+            FilterLevelPipe::class,*/
             DataPipe::class,
         ])->run();
     }
