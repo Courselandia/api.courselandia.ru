@@ -14,7 +14,6 @@ use App\Models\Delete;
 use App\Models\Validate;
 use App\Models\Sortable;
 use EloquentFilter\Filterable;
-use JetBrains\PhpStorm\ArrayShape;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -64,15 +63,7 @@ class TeacherExperience extends Eloquent
      *
      * @return array Вернет массив правил.
      */
-    #[ArrayShape([
-        'id' => 'string',
-        'teacher_id' => 'string',
-        'place' => 'string',
-        'position' => 'string',
-        'started' => 'string',
-        'finished' => 'string',
-        'weight' => 'string',
-    ])] protected function getRules(): array
+    protected function getRules(): array
     {
         return [
             'teacher_id' => 'required|digits_between:0,20',

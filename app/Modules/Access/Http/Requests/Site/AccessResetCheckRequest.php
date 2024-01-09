@@ -9,7 +9,6 @@
 namespace App\Modules\Access\Http\Requests\Site;
 
 use App\Models\FormRequest;
-use JetBrains\PhpStorm\ArrayShape;
 
 /**
  * Класс для проверки возможности изменения пароля пользователя.
@@ -21,7 +20,7 @@ class AccessResetCheckRequest extends FormRequest
      *
      * @return array Массив правил проверки.
      */
-    #[ArrayShape(['code' => 'string'])] public function rules(): array
+    public function rules(): array
     {
         return [
             'code' => 'required'
@@ -33,7 +32,7 @@ class AccessResetCheckRequest extends FormRequest
      *
      * @return array Массив атрибутов.
      */
-    #[ArrayShape(['code' => 'string'])] public function attributes(): array
+    public function attributes(): array
     {
         return [
             'code' => trans('access::http.requests.site.accessResetCheckRequest.code')

@@ -17,7 +17,6 @@ use App\Models\Sortable;
 use App\Models\Enums\EnumList;
 use App\Modules\User\Models\User;
 use EloquentFilter\Filterable;
-use JetBrains\PhpStorm\ArrayShape;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -79,15 +78,7 @@ class Task extends Eloquent
      *
      * @return array Вернет массив правил.
      */
-    #[ArrayShape([
-        'id' => 'string',
-        'user_id' => 'string',
-        'name' => 'string',
-        'reason' => 'string',
-        'status' => 'string',
-        'launched_at' => 'string',
-        'finished_at' => 'string',
-    ])] protected function getRules(): array
+    protected function getRules(): array
     {
         return [
             'user_id' => 'digits_between:0,20',

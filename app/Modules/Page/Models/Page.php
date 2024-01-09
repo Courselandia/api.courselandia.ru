@@ -15,7 +15,6 @@ use App\Models\Delete;
 use App\Models\Validate;
 use App\Models\Sortable;
 use EloquentFilter\Filterable;
-use JetBrains\PhpStorm\ArrayShape;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -66,10 +65,7 @@ class Page extends Eloquent
      *
      * @return array Вернет массив правил.
      */
-    #[ArrayShape([
-        'path' => 'string',
-        'lastmod' => 'string',
-    ])] protected function getRules(): array
+    protected function getRules(): array
     {
         return [
             'path' => 'required|between:1,191|unique_soft:pages,path,' . $this->id . ',id',

@@ -22,7 +22,6 @@ use App\Models\Sortable;
 use EloquentFilter\Filterable;
 use App\Models\Validate;
 use Illuminate\Http\UploadedFile;
-use JetBrains\PhpStorm\ArrayShape;
 use App\Models\BelongsToOneTrait;
 use App\Modules\Image\Helpers\Image;
 use App\Models\Rep\RepositoryQueryBuilder;
@@ -99,18 +98,7 @@ class User extends Authenticatable
      *
      * @return array Вернет массив правил.
      */
-    #[ArrayShape([
-        'image_small_id' => 'string',
-        'image_middle_id' => 'string',
-        'image_big_id' => 'string',
-        'login' => 'string',
-        'password' => 'string',
-        'first_name' => 'string',
-        'second_name' => 'string',
-        'phone' => 'string',
-        'two_factor' => 'string',
-        'status' => 'string'
-    ])] protected function getRules(): array
+    protected function getRules(): array
     {
         return [
             'image_small_id' => 'max:255',

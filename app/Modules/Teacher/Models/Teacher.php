@@ -26,7 +26,6 @@ use App\Modules\Image\Entities\Image as ImageEntity;
 use App\Modules\Image\Helpers\Image;
 use App\Modules\Metatag\Models\Metatag;
 use Illuminate\Http\UploadedFile;
-use JetBrains\PhpStorm\ArrayShape;
 use App\Modules\Course\Models\Course;
 use App\Modules\Direction\Models\Direction;
 use App\Modules\School\Models\School;
@@ -107,19 +106,7 @@ class Teacher extends Eloquent
      *
      * @return array Вернет массив правил.
      */
-    #[ArrayShape([
-        'id' => 'string',
-        'metatag_id' => 'string',
-        'name' => 'string',
-        'link' => 'string',
-        'copied' => 'string',
-        'city' => 'string',
-        'comment' => 'string',
-        'text' => 'string',
-        'rating' => 'string',
-        'status' => 'string',
-        'image_cropped_options' => 'string',
-    ])] protected function getRules(): array
+    protected function getRules(): array
     {
         return [
             'metatag_id' => 'digits_between:0,20',

@@ -9,7 +9,6 @@
 namespace App\Modules\Log\Http\Requests\Admin;
 
 use App\Models\FormRequest;
-use JetBrains\PhpStorm\ArrayShape;
 
 /**
  * Класс запрос для чтения логов.
@@ -21,12 +20,7 @@ class LogReadRequest extends FormRequest
      *
      * @return array Массив правил проверки.
      */
-    #[ArrayShape([
-        'sorts' => 'string',
-        'offset' => 'string',
-        'limit' => 'string',
-        'filters' => 'string'
-    ])] public function rules(): array
+    public function rules(): array
     {
         $columnsSorts = [
             'id',
@@ -64,12 +58,7 @@ class LogReadRequest extends FormRequest
      *
      * @return array Массив атрибутов.
      */
-    #[ArrayShape([
-        'sorts' => 'string',
-        'offset' => 'string',
-        'limit' => 'string',
-        'filters' => 'string'
-    ])] public function attributes(): array
+    public function attributes(): array
     {
         return [
             'sorts' => trans('log::http.requests.admin.logReadRequest.sorts'),

@@ -9,7 +9,6 @@
 namespace App\Modules\Writer\Http\Requests\Admin;
 
 use App\Models\FormRequest;
-use JetBrains\PhpStorm\ArrayShape;
 
 /**
  * Класс запрос для создания учителя.
@@ -21,9 +20,7 @@ class WriterWriteRequest extends FormRequest
      *
      * @return array Массив правил проверки.
      */
-    #[ArrayShape([
-        'request' => 'string',
-    ])] public function rules(): array
+    public function rules(): array
     {
         return [
             'request' => 'max:30000',
@@ -35,9 +32,7 @@ class WriterWriteRequest extends FormRequest
      *
      * @return array Массив атрибутов.
      */
-    #[ArrayShape([
-        'request' => 'string',
-    ])] public function attributes(): array
+    public function attributes(): array
     {
         return [
             'request' => trans('writer::http.requests.admin.writerWriteRequest.request'),

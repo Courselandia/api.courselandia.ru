@@ -24,7 +24,6 @@ use App\Modules\Metatag\Template\Tags\TagSchool;
 use App\Modules\Metatag\Template\Tags\TagSkill;
 use App\Modules\Metatag\Template\Tags\TagTeacher;
 use App\Modules\Metatag\Template\Tags\TagTool;
-use JetBrains\PhpStorm\ArrayShape;
 
 /**
  * Шаблонизирование строки.
@@ -181,10 +180,7 @@ class Template
      *
      * @return array
      */
-    #[ArrayShape([
-        'name' => 'string',
-        'configs' => 'array',
-    ])] private function convertTagStringToSettings(string $tagString): array
+    private function convertTagStringToSettings(string $tagString): array
     {
         $tag = str_replace(['{', '}'], '', $tagString);
         $tagNameAndConfigs = explode(':', $tag);

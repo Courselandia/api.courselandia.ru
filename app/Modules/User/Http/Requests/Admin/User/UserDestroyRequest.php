@@ -9,7 +9,6 @@
 namespace App\Modules\User\Http\Requests\Admin\User;
 
 use App\Models\FormRequest;
-use JetBrains\PhpStorm\ArrayShape;
 
 /**
  * Класс запрос для удаления пользователя.
@@ -20,7 +19,7 @@ class UserDestroyRequest extends FormRequest
      * Возвращает правила проверки.
      *
      */
-    #[ArrayShape(['ids' => 'string'])] public function rules(): array
+    public function rules(): array
     {
         return [
             'ids' => 'required|array',
@@ -32,7 +31,7 @@ class UserDestroyRequest extends FormRequest
      *
      * @return array Массив атрибутов.
      */
-    #[ArrayShape(['ids' => 'string'])] public function attributes(): array
+    public function attributes(): array
     {
         return [
             'ids' => trans('user::http.requests.admin.user.userDestroyRequest.ids')

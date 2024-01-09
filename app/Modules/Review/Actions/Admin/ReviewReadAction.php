@@ -15,7 +15,6 @@ use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Review\Entities\Review as ReviewEntity;
 use App\Modules\Review\Models\Review;
 use Cache;
-use JetBrains\PhpStorm\ArrayShape;
 use Util;
 
 /**
@@ -57,7 +56,7 @@ class ReviewReadAction extends Action
      * @return mixed Вернет результаты исполнения.
      * @throws ParameterInvalidException
      */
-    #[ArrayShape(['data' => 'array', 'total' => 'int'])] public function run(): array
+    public function run(): array
     {
         $cacheKey = Util::getKey(
             'review',

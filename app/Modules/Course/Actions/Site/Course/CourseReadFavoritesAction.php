@@ -14,7 +14,6 @@ use App\Modules\Course\Entities\CourseRead;
 use App\Modules\Course\Pipes\Site\Read\ReadPipe;
 use App\Modules\Course\Pipes\Site\Rated\DataPipe;
 use App\Modules\Course\Decorators\Site\CourseReadDecorator;
-use JetBrains\PhpStorm\ArrayShape;
 
 /**
  * Класс действия для получения избранного.
@@ -33,7 +32,7 @@ class CourseReadFavoritesAction extends Action
      *
      * @return array Вернет результаты исполнения.
      */
-    #[ArrayShape(['data' => 'array', 'total' => 'int'])] public function run(): array
+    public function run(): array
     {
         $decorator = app(CourseReadDecorator::class);
 

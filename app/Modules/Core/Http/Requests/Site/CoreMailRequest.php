@@ -9,7 +9,6 @@
 namespace App\Modules\Core\Http\Requests\Site;
 
 use App\Models\FormRequest;
-use JetBrains\PhpStorm\ArrayShape;
 
 /**
  * Класс запрос для отправки тестового сообщения.
@@ -21,9 +20,7 @@ class CoreMailRequest extends FormRequest
      *
      * @return array Массив правил проверки.
      */
-    #[ArrayShape([
-        'email' => 'string',
-    ])] public function rules(): array
+    public function rules(): array
     {
         return [
             'email' => 'required|email',
@@ -35,9 +32,7 @@ class CoreMailRequest extends FormRequest
      *
      * @return array Массив атрибутов.
      */
-    #[ArrayShape([
-        'email' => 'string',
-    ])] public function attributes(): array
+    public function attributes(): array
     {
         return [
             'email' => 'Email',

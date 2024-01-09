@@ -11,7 +11,6 @@ namespace App\Modules\Review\Http\Requests\Admin;
 use App\Models\Enums\EnumList;
 use App\Models\FormRequest;
 use App\Modules\Review\Enums\Status;
-use JetBrains\PhpStorm\ArrayShape;
 use Schema;
 
 /**
@@ -24,14 +23,7 @@ class ReviewReadRequest extends FormRequest
      *
      * @return array Массив правил проверки.
      */
-    #[ArrayShape([
-        'sorts' => 'string',
-        'offset' => 'string',
-        'limit' => 'string',
-        'filters' => 'string',
-        'filters.rating' => 'string',
-        'filters.status.*' => 'string',
-    ])] public function rules(): array
+    public function rules(): array
     {
         $columns = Schema::getColumnListing('reviews');
 
@@ -64,14 +56,7 @@ class ReviewReadRequest extends FormRequest
      *
      * @return array Массив атрибутов.
      */
-    #[ArrayShape([
-        'sorts' => 'string',
-        'offset' => 'string',
-        'limit' => 'string',
-        'filters' => 'string',
-        'filters.rating' => 'string',
-        'filters.status.*' => 'string',
-    ])] public function attributes(): array
+    public function attributes(): array
     {
         return [
             'sorts' => trans('review::http.requests.admin.reviewReadRequest.sorts'),

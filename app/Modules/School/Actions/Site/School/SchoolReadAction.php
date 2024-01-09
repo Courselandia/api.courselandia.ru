@@ -15,7 +15,6 @@ use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\School\Entities\School as SchoolEntity;
 use App\Modules\School\Models\School;
 use Cache;
-use JetBrains\PhpStorm\ArrayShape;
 use ReflectionException;
 use Util;
 
@@ -51,7 +50,7 @@ class SchoolReadAction extends Action
      * @return mixed Вернет результаты исполнения.
      * @throws ParameterInvalidException|ReflectionException
      */
-    #[ArrayShape(['data' => 'array', 'total' => 'int'])] public function run(): array
+    public function run(): array
     {
         $cacheKey = Util::getKey(
             'school',

@@ -15,7 +15,6 @@ use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Publication\Entities\Publication as PublicationEntity;
 use App\Modules\Publication\Models\Publication;
 use Cache;
-use JetBrains\PhpStorm\ArrayShape;
 use ReflectionException;
 use Util;
 
@@ -58,7 +57,7 @@ class PublicationReadAction extends Action
      * @return mixed Вернет результаты исполнения.
      * @throws ParameterInvalidException|ReflectionException
      */
-    #[ArrayShape(['data' => 'array', 'total' => 'int'])] public function run(): array
+    public function run(): array
     {
         $cacheKey = Util::getKey(
             'publication',

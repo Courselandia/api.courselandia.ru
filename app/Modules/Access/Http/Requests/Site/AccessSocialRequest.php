@@ -9,7 +9,6 @@
 namespace App\Modules\Access\Http\Requests\Site;
 
 use App\Models\FormRequest;
-use JetBrains\PhpStorm\ArrayShape;
 
 /**
  * Класс для авторизации и регистрации пользователя через социальные сети.
@@ -21,7 +20,7 @@ class AccessSocialRequest extends FormRequest
      *
      * @return array Массив правил проверки.
      */
-    #[ArrayShape(['uid' => 'string', 'social' => 'string', 'login' => 'string'])] public function rules(): array
+    public function rules(): array
     {
         return [
             'uid' => 'required',
@@ -35,7 +34,7 @@ class AccessSocialRequest extends FormRequest
      *
      * @return array Массив атрибутов.
      */
-    #[ArrayShape(['uid' => 'string', 'social' => 'string', 'login' => 'string'])] public function attributes(): array
+    public function attributes(): array
     {
         return [
             'uid' => trans('access::http.requests.site.accessSocialRequest.uid'),

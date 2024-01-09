@@ -11,7 +11,6 @@ namespace App\Modules\User\Database\Factories;
 use App\Modules\User\Enums\Role;
 use App\Modules\User\Models\UserRole;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use JetBrains\PhpStorm\ArrayShape;
 
 /**
  * Фабрика модели ролей пользователя.
@@ -30,7 +29,7 @@ class UserRoleFactory extends Factory
      *
      * @return array
      */
-    #[ArrayShape(['name' => 'string'])] public function definition(): array
+    public function definition(): array
     {
         return [
             'name' => Role::USER->value,

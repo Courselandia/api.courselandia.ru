@@ -15,7 +15,6 @@ use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Salary\Entities\Salary as SalaryEntity;
 use App\Modules\Salary\Models\Salary;
 use Cache;
-use JetBrains\PhpStorm\ArrayShape;
 use ReflectionException;
 use Util;
 
@@ -58,7 +57,7 @@ class SalaryReadAction extends Action
      * @return mixed Вернет результаты исполнения.
      * @throws ParameterInvalidException|ReflectionException
      */
-    #[ArrayShape(['data' => 'array', 'total' => 'int'])] public function run(): array
+    public function run(): array
     {
         $cacheKey = Util::getKey(
             'salary',

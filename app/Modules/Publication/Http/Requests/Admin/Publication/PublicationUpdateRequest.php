@@ -8,8 +8,6 @@
 
 namespace App\Modules\Publication\Http\Requests\Admin\Publication;
 
-use JetBrains\PhpStorm\ArrayShape;
-
 /**
  * Класс запрос для создания публикаций.
  */
@@ -20,7 +18,7 @@ class PublicationUpdateRequest extends PublicationCreateRequest
      *
      * @return array Массив правил проверки.
      */
-    #[ArrayShape(['image' => 'string', 'published_at' => 'string', 'status' => 'string',])] public function rules(
+    public function rules(
     ): array
     {
         return [
@@ -35,11 +33,7 @@ class PublicationUpdateRequest extends PublicationCreateRequest
      *
      * @return array Массив атрибутов.
      */
-    #[ArrayShape([
-        'image' => 'string',
-        'published_at' => 'string',
-        'status' => 'string',
-    ])] public function attributes(): array
+    public function attributes(): array
     {
         return [
             'image' => trans('publication::http.requests.admin.publicationCreateRequest.image'),

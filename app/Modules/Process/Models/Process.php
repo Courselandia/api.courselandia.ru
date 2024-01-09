@@ -15,7 +15,6 @@ use App\Models\Validate;
 use App\Models\Sortable;
 use EloquentFilter\Filterable;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use JetBrains\PhpStorm\ArrayShape;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -61,11 +60,7 @@ class Process extends Eloquent
      *
      * @return array Вернет массив правил.
      */
-    #[ArrayShape([
-        'name' => 'string',
-        'text' => 'string',
-        'status' => 'string'
-    ])] protected function getRules(): array
+    protected function getRules(): array
     {
         return [
             'name' => 'required|between:1,191|unique_soft:processes,name,' . $this->id . ',id',

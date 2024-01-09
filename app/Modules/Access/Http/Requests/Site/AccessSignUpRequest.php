@@ -9,7 +9,6 @@
 namespace App\Modules\Access\Http\Requests\Site;
 
 use App\Models\FormRequest;
-use JetBrains\PhpStorm\ArrayShape;
 
 /**
  * Класс для регистрации пользователя.
@@ -21,14 +20,7 @@ class AccessSignUpRequest extends FormRequest
      *
      * @return array Массив правил проверки.
      */
-    #[ArrayShape([
-        'login' => 'string',
-        'password' => 'string',
-        'first_name' => 'string',
-        'second_name' => 'string',
-        'company' => 'string',
-        'phone' => 'string'
-    ])] public function rules(): array
+    public function rules(): array
     {
         return [
             'login' => 'required|between:1,199',
@@ -45,14 +37,7 @@ class AccessSignUpRequest extends FormRequest
      *
      * @return array Массив атрибутов.
      */
-    #[ArrayShape([
-        'login' => 'string',
-        'password' => 'string',
-        'first_name' => 'string',
-        'second_name' => 'string',
-        'company' => 'string',
-        'phone' => 'string'
-    ])] public function attributes(): array
+    public function attributes(): array
     {
         return [
             'login' => trans('access::http.requests.site.accessSignUpRequest.login'),

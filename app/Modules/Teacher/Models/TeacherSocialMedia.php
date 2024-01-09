@@ -13,7 +13,6 @@ use App\Models\Delete;
 use App\Models\Validate;
 use App\Models\Sortable;
 use EloquentFilter\Filterable;
-use JetBrains\PhpStorm\ArrayShape;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -62,12 +61,7 @@ class TeacherSocialMedia extends Eloquent
      *
      * @return array Вернет массив правил.
      */
-    #[ArrayShape([
-        'id' => 'string',
-        'teacher_id' => 'string',
-        'name' => 'string',
-        'value' => 'string',
-    ])] protected function getRules(): array
+    protected function getRules(): array
     {
         return [
             'teacher_id' => 'required|digits_between:0,20',

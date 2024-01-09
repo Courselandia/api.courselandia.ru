@@ -13,7 +13,6 @@ use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Rep\RepositoryFilter;
 use App\Models\Rep\RepositoryQueryBuilder;
 use App\Modules\Log\Repositories\Log;
-use JetBrains\PhpStorm\ArrayShape;
 
 /**
  * Класс действия для чтения логов.
@@ -71,7 +70,7 @@ class LogReadAction extends Action
      * @return array Вернет результаты исполнения.
      * @throws ParameterInvalidException
      */
-    #[ArrayShape(['data' => 'array', 'total' => 'int'])] public function run(): array
+    public function run(): array
     {
         $query = new RepositoryQueryBuilder();
         $query->setFilters(RepositoryFilter::getFilters($this->filters))

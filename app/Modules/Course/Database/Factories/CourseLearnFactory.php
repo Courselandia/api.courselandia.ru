@@ -9,7 +9,6 @@
 namespace App\Modules\Course\Database\Factories;
 
 use App\Modules\Course\Models\CourseLearn;
-use JetBrains\PhpStorm\ArrayShape;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -29,9 +28,7 @@ class CourseLearnFactory extends Factory
      *
      * @return array
      */
-    #[ArrayShape([
-        'text' => 'string',
-    ])] public function definition(): array
+    public function definition(): array
     {
         return [
             'text' => $this->faker->text(160),

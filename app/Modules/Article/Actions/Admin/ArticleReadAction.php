@@ -17,7 +17,6 @@ use ReflectionException;
 use App\Models\Enums\CacheTime;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Article\Models\Article;
-use JetBrains\PhpStorm\ArrayShape;
 use App\Modules\Article\Entities\Article as ArticleEntity;
 
 /**
@@ -59,7 +58,7 @@ class ArticleReadAction extends Action
      * @return mixed Вернет результаты исполнения.
      * @throws ParameterInvalidException|ReflectionException
      */
-    #[ArrayShape(['data' => 'array', 'total' => 'int'])] public function run(): array
+    public function run(): array
     {
         $cacheKey = Util::getKey(
             'article',

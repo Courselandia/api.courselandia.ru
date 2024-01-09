@@ -9,7 +9,6 @@
 namespace App\Modules\Category\Http\Requests\Admin;
 
 use App\Models\FormRequest;
-use JetBrains\PhpStorm\ArrayShape;
 
 /**
  * Класс запрос для создания категории.
@@ -21,13 +20,7 @@ class CategoryCreateRequest extends FormRequest
      *
      * @return array Массив правил проверки.
      */
-    #[ArrayShape([
-        'directions' => 'string',
-        'directions.*' => 'string',
-        'professions' => 'string',
-        'professions.*' => 'string',
-        'status' => 'boolean',
-    ])] public function rules(): array
+    public function rules(): array
     {
         return [
             'directions' => 'array',
@@ -43,13 +36,7 @@ class CategoryCreateRequest extends FormRequest
      *
      * @return array Массив атрибутов.
      */
-    #[ArrayShape([
-        'directions' => 'string',
-        'directions.*' => 'string',
-        'professions' => 'string',
-        'professions.*' => 'string',
-        'boolean' => 'string'
-    ])] public function attributes(): array
+    public function attributes(): array
     {
         return [
             'directions' => trans('category::http.requests.admin.categoryCreateRequest.directions'),

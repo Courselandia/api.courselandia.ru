@@ -8,8 +8,6 @@
 
 namespace App\Modules\Teacher\Http\Requests\Admin\Teacher;
 
-use JetBrains\PhpStorm\ArrayShape;
-
 /**
  * Класс запрос для создания учителя.
  */
@@ -20,19 +18,7 @@ class TeacherUpdateRequest extends TeacherCreateRequest
      *
      * @return array Массив правил проверки.
      */
-    #[ArrayShape([
-        'image' => 'string',
-        'imageCroppedOptions' => 'string',
-        'directions' => 'string',
-        'directions.*' => 'string',
-        'schools' => 'string',
-        'schools.*' => 'string',
-        'rating' => 'string',
-        'copied' => 'string',
-        'status' => 'string',
-        'experiences' => 'string',
-        'experiences.*' => 'string',
-    ])] public function rules(): array
+    public function rules(): array
     {
         return [
             'image' => 'nullable|file|media:jpg,png,gif,webp,svg',
@@ -54,19 +40,7 @@ class TeacherUpdateRequest extends TeacherCreateRequest
      *
      * @return array Массив атрибутов.
      */
-    #[ArrayShape([
-        'image' => 'string',
-        'imageCroppedOptions' => 'string',
-        'directions' => 'string',
-        'directions.*' => 'string',
-        'schools' => 'string',
-        'schools.*' => 'string',
-        'rating' => 'string',
-        'copied' => 'string',
-        'status' => 'string',
-        'experiences' => 'string',
-        'experiences.*' => 'string',
-    ])] public function attributes(): array
+    public function attributes(): array
     {
         return [
             'image' => trans('teacher::http.requests.admin.teacherCreateRequest.image'),

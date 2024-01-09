@@ -16,7 +16,6 @@ use App\Models\Enums\CacheTime;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Task\Entities\Task as TaskEntity;
 use App\Modules\Task\Models\Task;
-use JetBrains\PhpStorm\ArrayShape;
 use ReflectionException;
 
 /**
@@ -58,7 +57,7 @@ class TaskReadAction extends Action
      * @return mixed Вернет результаты исполнения.
      * @throws ParameterInvalidException|ReflectionException
      */
-    #[ArrayShape(['data' => 'array', 'total' => 'int'])] public function run(): array
+    public function run(): array
     {
         $cacheKey = Util::getKey(
             'task',

@@ -10,7 +10,6 @@ namespace App\Modules\Analyzer\Database\Factories;
 
 use App\Modules\Analyzer\Enums\Status;
 use App\Modules\Course\Models\Course;
-use JetBrains\PhpStorm\ArrayShape;
 use App\Modules\Analyzer\Models\Analyzer;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -31,17 +30,7 @@ class AnalyzerFactory extends Factory
      *
      * @return array
      */
-    #[ArrayShape([
-        'task_id' => 'integer',
-        'category' => 'string',
-        'unique' => 'string',
-        'water' => 'string',
-        'spam' => 'string',
-        'params' => 'string',
-        'status' => 'string',
-        'analyzerable_id' => 'integer',
-        'analyzerable_type' => 'string',
-    ])] public function definition(): array
+    public function definition(): array
     {
         $course = Course::factory()->create();
 

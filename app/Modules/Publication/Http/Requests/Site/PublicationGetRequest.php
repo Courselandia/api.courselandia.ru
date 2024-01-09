@@ -9,7 +9,6 @@
 namespace App\Modules\Publication\Http\Requests\Site;
 
 use App\Models\FormRequest;
-use JetBrains\PhpStorm\ArrayShape;
 
 /**
  * Класс запрос для получения публикаций.
@@ -21,7 +20,7 @@ class PublicationGetRequest extends FormRequest
      *
      * @return array Массив правил проверки.
      */
-    #[ArrayShape(['id' => 'string', 'link' => 'string'])] public function rules(): array
+    public function rules(): array
     {
         return [
             'id' => 'integer|digits_between:0,20',
@@ -34,7 +33,7 @@ class PublicationGetRequest extends FormRequest
      *
      * @return array Массив атрибутов.
      */
-    #[ArrayShape(['id' => 'string', 'link' => 'string'])] public function attributes(): array
+    public function attributes(): array
     {
         return [
             'id' => trans('publication::http.requests.site.publicationGetRequest.id'),

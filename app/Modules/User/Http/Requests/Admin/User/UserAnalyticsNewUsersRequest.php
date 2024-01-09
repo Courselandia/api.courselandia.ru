@@ -12,7 +12,6 @@ use App\Models\Enums\DateGroup;
 use App\Models\Enums\DatePeriod;
 use App\Models\Enums\EnumList;
 use App\Models\FormRequest;
-use JetBrains\PhpStorm\ArrayShape;
 
 /**
  * Класс запрос для чтения статистики новых пользователей на сайте.
@@ -24,12 +23,7 @@ class UserAnalyticsNewUsersRequest extends FormRequest
      *
      * @return array Массив правил проверки.
      */
-    #[ArrayShape([
-        'group' => 'string',
-        'datePeriod' => 'string',
-        'dateFrom' => 'string',
-        'dateTo' => 'string'
-    ])] public function rules(): array
+    public function rules(): array
     {
         return [
             'group' => 'nullable|in:' . implode(',' , EnumList::getValues(DateGroup::class)),
@@ -44,12 +38,7 @@ class UserAnalyticsNewUsersRequest extends FormRequest
      *
      * @return array Массив атрибутов.
      */
-    #[ArrayShape([
-        'group' => 'string',
-        'datePeriod' => 'string',
-        'dateFrom' => 'string',
-        'dateTo' => 'string'
-    ])] public function attributes(): array
+    public function attributes(): array
     {
         return [
             'group' => trans('user::http.requests.admin.userAnalytics.userAnalyticsNewUsersRequest.group'),

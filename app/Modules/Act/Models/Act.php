@@ -14,7 +14,6 @@ use Eloquent;
 use App\Models\Validate;
 use App\Models\Delete;
 use EloquentFilter\Filterable;
-use JetBrains\PhpStorm\ArrayShape;
 
 /**
  * Класс модель для действий на основе Eloquent.
@@ -48,7 +47,7 @@ class Act extends Eloquent
      *
      * @return array Вернет массив правил.
      */
-    #[ArrayShape(['index' => 'string', 'count' => 'string', 'minutes' => 'string'])] protected function getRules(
+    protected function getRules(
     ): array
     {
         return [
@@ -63,7 +62,7 @@ class Act extends Eloquent
      *
      * @return array Массив возможных ошибок валидации.
      */
-    #[ArrayShape(['index' => 'string', 'count' => 'string', 'minutes' => 'string'])] protected function getNames(
+    protected function getNames(
     ): array
     {
         return [

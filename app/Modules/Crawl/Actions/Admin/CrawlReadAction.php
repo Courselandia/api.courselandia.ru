@@ -15,7 +15,6 @@ use App\Models\Entity;
 use App\Models\Enums\CacheTime;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Crawl\Models\Crawl;
-use JetBrains\PhpStorm\ArrayShape;
 use ReflectionException;
 use App\Modules\Crawl\Entities\Crawl as CrawlEntity;
 
@@ -58,7 +57,7 @@ class CrawlReadAction extends Action
      * @return mixed Вернет результаты исполнения.
      * @throws ParameterInvalidException|ReflectionException
      */
-    #[ArrayShape(['data' => 'array', 'total' => 'int'])] public function run(): array
+    public function run(): array
     {
         $cacheKey = Util::getKey(
             'crawl',

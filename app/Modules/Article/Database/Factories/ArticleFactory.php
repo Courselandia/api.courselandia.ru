@@ -10,7 +10,6 @@ namespace App\Modules\Article\Database\Factories;
 
 use App\Modules\Article\Enums\Status;
 use App\Modules\Course\Models\Course;
-use JetBrains\PhpStorm\ArrayShape;
 use App\Modules\Article\Models\Article;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -31,16 +30,7 @@ class ArticleFactory extends Factory
      *
      * @return array
      */
-    #[ArrayShape([
-        'task_id' => 'integer',
-        'category' => 'string',
-        'request' => 'string',
-        'text' => 'string',
-        'params' => 'string',
-        'status' => 'string',
-        'articleable_id' => 'integer',
-        'articleable_type' => 'string',
-    ])] public function definition(): array
+    public function definition(): array
     {
         $course = Course::factory()->create();
 

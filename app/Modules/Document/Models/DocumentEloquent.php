@@ -15,7 +15,6 @@ use App\Models\Delete;
 use App\Models\Validate;
 use EloquentFilter\Filterable;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use JetBrains\PhpStorm\ArrayShape;
 
 /**
  * Класс модель для таблицы документов на основе Eloquent.
@@ -90,11 +89,7 @@ class DocumentEloquent extends Eloquent
      *
      * @return array Вернет массив правил.
      */
-    #[ArrayShape([
-        'format' => 'string',
-        'folder' => 'string',
-        'cache' => 'string',
-    ])] protected function getRules(): array
+    protected function getRules(): array
     {
         return [
             'format' => 'required|between:1,20',
@@ -108,12 +103,7 @@ class DocumentEloquent extends Eloquent
      *
      * @return array Массив возможных ошибок валидации.
      */
-    #[ArrayShape([
-        'byte' => 'string',
-        'folder' => 'string',
-        'format' => 'string',
-        'cache' => 'string',
-    ])] protected function getNames(): array
+    protected function getNames(): array
     {
         return [
             'byte' => trans('document::models.document.byte'),

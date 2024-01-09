@@ -32,7 +32,6 @@ use App\Modules\Image\Entities\Image as ImageEntity;
 use App\Modules\Image\Helpers\Image;
 use App\Modules\Metatag\Models\Metatag;
 use Illuminate\Http\UploadedFile;
-use JetBrains\PhpStorm\ArrayShape;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -111,21 +110,7 @@ class School extends Eloquent
      *
      * @return array Вернет массив правил.
      */
-    #[ArrayShape([
-        'id' => 'string',
-        'metatag_id' => 'string',
-        'name' => 'string',
-        'header' => 'string',
-        'header_template' => 'string',
-        'link' => 'string',
-        'text' => 'string',
-        'rating' => 'string',
-        'site' => 'string',
-        'status' => 'string',
-        'image_logo_id' => 'string',
-        'image_site_id' => 'string',
-        'amount_courses' => 'string',
-    ])] protected function getRules(): array
+    protected function getRules(): array
     {
         return [
             'metatag_id' => 'digits_between:0,20',

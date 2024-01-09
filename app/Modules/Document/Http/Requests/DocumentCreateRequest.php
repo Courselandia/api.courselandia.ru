@@ -9,7 +9,6 @@
 namespace App\Modules\Document\Http\Requests;
 
 use App\Models\FormRequest;
-use JetBrains\PhpStorm\ArrayShape;
 
 /**
  * Класс проверки запроса для создания документа.
@@ -21,7 +20,7 @@ class DocumentCreateRequest extends FormRequest
      *
      * @return array Правила валидирования.
      */
-    #[ArrayShape(['file' => 'string', 'id' => 'string', 'format' => 'string'])] public function rules(): array
+    public function rules(): array
     {
         return [
             'file' => 'required|document',
@@ -35,7 +34,7 @@ class DocumentCreateRequest extends FormRequest
      *
      * @return array Массив атрибутов.
      */
-    #[ArrayShape(['file' => 'string', 'id' => 'string', 'format' => 'string'])] public function attributes(): array
+    public function attributes(): array
     {
         return [
             'file' => trans('document::http.requests.documentCreate.file'),

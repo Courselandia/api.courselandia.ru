@@ -16,7 +16,6 @@ use App\Models\Validate;
 use EloquentFilter\Filterable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\Status;
-use JetBrains\PhpStorm\ArrayShape;
 
 /**
  * Класс модель для таблицы предупреждений на основе Eloquent.
@@ -58,14 +57,7 @@ class Alert extends Eloquent
      *
      * @return array Вернет массив правил.
      */
-    #[ArrayShape([
-        'title' => 'string',
-        'description' => 'string',
-        'url' => 'string',
-        'tag' => 'string',
-        'color' => 'string',
-        'status' => 'string'
-    ])] protected function getRules(): array
+    protected function getRules(): array
     {
         return [
             'title' => 'required|between:1,191',
@@ -82,14 +74,7 @@ class Alert extends Eloquent
      *
      * @return array Массив возможных ошибок валидации.
      */
-    #[ArrayShape([
-        'pattern' => 'string',
-        'description' => 'string',
-        'url' => 'string',
-        'tag' => 'string',
-        'color' => 'string',
-        'status' => 'string'
-    ])] protected function getNames(): array
+    protected function getNames(): array
     {
         return [
             'pattern' => trans('alert::models.alert.pattern'),

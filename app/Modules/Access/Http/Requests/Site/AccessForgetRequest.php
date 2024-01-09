@@ -9,7 +9,6 @@
 namespace App\Modules\Access\Http\Requests\Site;
 
 use App\Models\FormRequest;
-use JetBrains\PhpStorm\ArrayShape;
 
 /**
  * Класс для отправки email для восстановления пароля.
@@ -21,7 +20,7 @@ class AccessForgetRequest extends FormRequest
      *
      * @return array Массив правил проверки.
      */
-    #[ArrayShape(['login' => 'string'])] public function rules(): array
+    public function rules(): array
     {
         return [
             'login' => 'required|between:1,199',
@@ -33,7 +32,7 @@ class AccessForgetRequest extends FormRequest
      *
      * @return array Массив атрибутов.
      */
-    #[ArrayShape(['login' => 'string'])] public function attributes(): array
+    public function attributes(): array
     {
         return [
             'login' => trans('access::http.requests.site.accessForgetRequest.login')

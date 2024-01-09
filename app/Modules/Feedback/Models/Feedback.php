@@ -16,7 +16,6 @@ use App\Models\Validate;
 use EloquentFilter\Filterable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\Delete;
-use JetBrains\PhpStorm\ArrayShape;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -63,12 +62,7 @@ class Feedback extends Eloquent
      *
      * @return array Вернет массив правил.
      */
-    #[ArrayShape([
-        'name' => 'string',
-        'email' => 'string',
-        'phone' => 'string',
-        'message' => 'string'
-    ])] protected function getRules(): array
+    protected function getRules(): array
     {
         return [
             'name' => 'required|between:1,191',
@@ -83,12 +77,7 @@ class Feedback extends Eloquent
      *
      * @return array Массив возможных ошибок валидации.
      */
-    #[ArrayShape([
-        'name' => 'string',
-        'email' => 'string',
-        'phone' => 'string',
-        'message' => 'string'
-    ])] protected function getNames(): array
+    protected function getNames(): array
     {
         return [
             'name' => trans('feedback::models.feedback.name'),

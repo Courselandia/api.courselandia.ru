@@ -15,7 +15,6 @@ use App\Modules\Feedback\Entities\Feedback as FeedbackEntity;
 use App\Modules\Feedback\Models\Feedback;
 use App\Models\Action;
 use Cache;
-use JetBrains\PhpStorm\ArrayShape;
 use ReflectionException;
 use Util;
 
@@ -58,7 +57,7 @@ class FeedbackReadAction extends Action
      * @return array Вернет результаты исполнения.
      * @throws ParameterInvalidException|ReflectionException
      */
-    #[ArrayShape(['data' => 'array', 'total' => 'int'])] public function run(): array
+    public function run(): array
     {
         $cacheKey = Util::getKey(
             'feedback',

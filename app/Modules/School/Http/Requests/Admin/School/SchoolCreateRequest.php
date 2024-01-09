@@ -9,7 +9,6 @@
 namespace App\Modules\School\Http\Requests\Admin\School;
 
 use App\Models\FormRequest;
-use JetBrains\PhpStorm\ArrayShape;
 
 /**
  * Класс запрос для создания школ.
@@ -21,12 +20,7 @@ class SchoolCreateRequest extends FormRequest
      *
      * @return array Массив правил проверки.
      */
-    #[ArrayShape([
-        'imageLogo' => 'string',
-        'imageSite' => 'string',
-        'rating' => 'string',
-        'status' => 'string',
-    ])] public function rules(): array
+    public function rules(): array
     {
         return [
             'imageLogo' => 'nullable|media:jpg,png,gif,webp,svg',
@@ -41,12 +35,7 @@ class SchoolCreateRequest extends FormRequest
      *
      * @return array Массив атрибутов.
      */
-    #[ArrayShape([
-        'imageLogo' => 'string',
-        'imageSite' => 'string',
-        'rating' => 'string',
-        'status' => 'string',
-    ])] public function attributes(): array
+    public function attributes(): array
     {
         return [
             'imageLogo' => trans('school::http.requests.admin.schoolCreateRequest.imageLogo'),

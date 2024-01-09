@@ -9,7 +9,6 @@
 namespace App\Modules\Course\Http\Requests\Admin\Course;
 
 use App\Models\FormRequest;
-use JetBrains\PhpStorm\ArrayShape;
 
 /**
  * Класс запрос для удаления категории.
@@ -21,7 +20,7 @@ class CourseDestroyRequest extends FormRequest
      *
      * @return array Массив правил проверки.
      */
-    #[ArrayShape(['ids' => 'string'])] public function rules(): array
+    public function rules(): array
     {
         return [
             'ids' => 'required|array',
@@ -33,7 +32,7 @@ class CourseDestroyRequest extends FormRequest
      *
      * @return array Массив атрибутов.
      */
-    #[ArrayShape(['ids' => 'string'])] public function attributes(): array
+    public function attributes(): array
     {
         return [
             'ids' => trans('course::http.requests.admin.courseDestroyRequest.ids')

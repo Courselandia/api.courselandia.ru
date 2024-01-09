@@ -15,7 +15,6 @@ use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Faq\Entities\Faq as FaqEntity;
 use App\Modules\Faq\Models\Faq;
 use Cache;
-use JetBrains\PhpStorm\ArrayShape;
 use Util;
 
 /**
@@ -36,7 +35,7 @@ class FaqReadAction extends Action
      * @return mixed Вернет результаты исполнения.
      * @throws ParameterInvalidException
      */
-    #[ArrayShape(['data' => 'array', 'total' => 'int'])] public function run(): array
+    public function run(): array
     {
         $cacheKey = Util::getKey(
             'faq',

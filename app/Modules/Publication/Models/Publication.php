@@ -26,7 +26,6 @@ use App\Modules\Image\Entities\Image as ImageEntity;
 use App\Modules\Image\Helpers\Image;
 use App\Modules\Metatag\Models\Metatag;
 use Illuminate\Http\UploadedFile;
-use JetBrains\PhpStorm\ArrayShape;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -95,18 +94,7 @@ class Publication extends Eloquent
      *
      * @return array Вернет массив правил.
      */
-    #[ArrayShape([
-        'metatag_id' => 'string',
-        'published_at' => 'string',
-        'header' => 'string',
-        'link' => 'string',
-        'anons' => 'string',
-        'article' => 'string',
-        'image_big_id' => 'string',
-        'image_middle_id' => 'string',
-        'image_small_id' => 'string',
-        'status' => 'string'
-    ])] protected function getRules(): array
+    protected function getRules(): array
     {
         return [
             'metatag_id' => 'digits_between:0,20',

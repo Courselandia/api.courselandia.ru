@@ -10,7 +10,6 @@ namespace App\Modules\Feedback\Database\Factories;
 
 use App\Modules\Feedback\Models\Feedback;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use JetBrains\PhpStorm\ArrayShape;
 
 /**
  * Фабрика модели обратной связи.
@@ -29,12 +28,7 @@ class FeedbackFactory extends Factory
      *
      * @return array
      */
-    #[ArrayShape([
-        'name' => 'string',
-        'email' => 'string',
-        'phone' => 'string',
-        'message' => 'string'
-    ])] public function definition(): array
+    public function definition(): array
     {
         return [
             'name' => $this->faker->name,

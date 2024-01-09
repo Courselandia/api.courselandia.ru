@@ -16,7 +16,6 @@ use EloquentFilter\Filterable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\Delete;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use JetBrains\PhpStorm\ArrayShape;
 
 /**
  * Класс модель для таблицы хранения данных об аутентификации пользователей на основе Eloquent.
@@ -67,20 +66,7 @@ class UserAuth extends Eloquent
      *
      * @return array Вернет массив правил.
      */
-    #[ArrayShape([
-        'user_id' => 'string',
-        'os' => 'string',
-        'device' => 'string',
-        'browser' => 'string',
-        'agent' => 'string',
-        'ip' => 'string',
-        'latitude' => 'string',
-        'longitude' => 'string',
-        'country_code' => 'string',
-        'region_code' => 'string',
-        'city' => 'string',
-        'zip' => 'string',
-    ])] protected function getRules(): array
+    protected function getRules(): array
     {
         return [
             'user_id' => 'required|integer|digits_between:1,20',
@@ -103,20 +89,7 @@ class UserAuth extends Eloquent
      *
      * @return array Массив возможных ошибок валидации.
      */
-    #[ArrayShape([
-        'user_id' => 'string',
-        'os' => 'string',
-        'device' => 'string',
-        'browser' => 'string',
-        'agent' => 'string',
-        'ip' => 'string',
-        'latitude' => 'string',
-        'longitude' => 'string',
-        'country_code' => 'string',
-        'region_code' => 'string',
-        'city' => 'string',
-        'zip' => 'string',
-    ])] protected function getNames(): array
+    protected function getNames(): array
     {
         return [
             'user_id' => trans('user::models.userAuth.userId'),

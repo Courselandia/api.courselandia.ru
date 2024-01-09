@@ -23,7 +23,6 @@ use App\Modules\Metatag\Models\Metatag;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
-use JetBrains\PhpStorm\ArrayShape;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -80,15 +79,7 @@ class Profession extends Eloquent
      *
      * @return array Вернет массив правил.
      */
-    #[ArrayShape([
-        'metatag_id' => 'string',
-        'name' => 'string',
-        'header' => 'string',
-        'header_template' => 'string',
-        'link' => 'string',
-        'text' => 'string',
-        'status' => 'string'
-    ])] protected function getRules(): array
+    protected function getRules(): array
     {
         return [
             'metatag_id' => 'digits_between:0,20',

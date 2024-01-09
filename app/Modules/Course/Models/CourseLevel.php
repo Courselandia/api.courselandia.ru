@@ -17,7 +17,6 @@ use App\Models\Validate;
 use App\Models\Sortable;
 use EloquentFilter\Filterable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use JetBrains\PhpStorm\ArrayShape;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -57,10 +56,7 @@ class CourseLevel extends Eloquent
      *
      * @return array Вернет массив правил.
      */
-    #[ArrayShape([
-        'course_id' => 'string',
-        'level' => 'string',
-    ])] protected function getRules(): array
+    protected function getRules(): array
     {
         return [
             'course_id' => 'required|digits_between:0,20|exists_soft:courses,id',

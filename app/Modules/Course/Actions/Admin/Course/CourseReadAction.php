@@ -17,7 +17,6 @@ use App\Models\Action;
 use App\Models\Enums\CacheTime;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Course\Models\Course;
-use JetBrains\PhpStorm\ArrayShape;
 
 /**
  * Класс действия для чтения курсов.
@@ -65,7 +64,7 @@ class CourseReadAction extends Action
      * @return mixed Вернет результаты исполнения.
      * @throws ParameterInvalidException
      */
-    #[ArrayShape(['data' => 'array', 'total' => 'int'])] public function run(): array
+    public function run(): array
     {
         $cacheKey = Util::getKey(
             'course',

@@ -43,7 +43,6 @@ use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Http\UploadedFile;
-use JetBrains\PhpStorm\ArrayShape;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -187,45 +186,7 @@ class Course extends Eloquent
      *
      * @return array Вернет массив правил.
      */
-    #[ArrayShape([
-        'uuid' => 'string',
-        'metatag_id' => 'string',
-        'school_id' => 'string',
-        'image_big_id' => 'string',
-        'image_middle_id' => 'string',
-        'image_small_id' => 'string',
-        'name' => 'string',
-        'header' => 'string',
-        'header_template' => 'string',
-        'text' => 'string',
-        'name_morphy' => 'string',
-        'text_morphy' => 'string',
-        'link' => 'string',
-        'url' => 'string',
-        'language' => 'string',
-        'rating' => 'string',
-        'price' => 'string',
-        'price_old' => 'string',
-        'price_recurrent' => 'string',
-        'currency' => 'string',
-        'online' => 'string',
-        'employment' => 'string',
-        'duration' => 'string',
-        'duration_rate' => 'string',
-        'duration_unit' => 'string',
-        'lessons_amount' => 'string',
-        'modules_amount' => 'string',
-        'program' => 'string',
-        'direction_ids' => 'string',
-        'profession_ids' => 'string',
-        'category_ids' => 'string',
-        'skill_ids' => 'string',
-        'teacher_ids' => 'string',
-        'tool_ids' => 'string',
-        'level_values' => 'string',
-        'has_active_school' => 'string',
-        'status' => 'string',
-    ])] protected function getRules(): array
+    protected function getRules(): array
     {
         return [
             'uuid' => 'max:191',

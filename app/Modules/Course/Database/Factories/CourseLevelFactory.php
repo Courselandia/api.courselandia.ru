@@ -10,7 +10,6 @@ namespace App\Modules\Course\Database\Factories;
 
 use App\Modules\Course\Models\CourseLevel;
 use App\Modules\Salary\Enums\Level;
-use JetBrains\PhpStorm\ArrayShape;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -30,9 +29,7 @@ class CourseLevelFactory extends Factory
      *
      * @return array
      */
-    #[ArrayShape([
-        'level' => 'string',
-    ])] public function definition(): array
+    public function definition(): array
     {
         return [
             'level' => Level::JUNIOR->value,

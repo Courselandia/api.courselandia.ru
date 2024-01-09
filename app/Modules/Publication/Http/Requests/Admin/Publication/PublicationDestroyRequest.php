@@ -9,7 +9,6 @@
 namespace App\Modules\Publication\Http\Requests\Admin\Publication;
 
 use App\Models\FormRequest;
-use JetBrains\PhpStorm\ArrayShape;
 
 /**
  * Класс запрос для удаления публикации.
@@ -21,7 +20,7 @@ class PublicationDestroyRequest extends FormRequest
      *
      * @return array Массив правил проверки.
      */
-    #[ArrayShape(['ids' => 'string'])] public function rules(): array
+    public function rules(): array
     {
         return [
             'ids' => 'required|array',
@@ -33,7 +32,7 @@ class PublicationDestroyRequest extends FormRequest
      *
      * @return array Массив атрибутов.
      */
-    #[ArrayShape(['ids' => 'string'])] public function attributes(): array
+    public function attributes(): array
     {
         return [
             'ids' => trans('publication::http.requests.admin.publicationDestroyRequest.ids')

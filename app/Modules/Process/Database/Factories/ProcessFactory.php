@@ -8,7 +8,6 @@
 
 namespace App\Modules\Process\Database\Factories;
 
-use JetBrains\PhpStorm\ArrayShape;
 use App\Modules\Process\Models\Process;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -29,11 +28,7 @@ class ProcessFactory extends Factory
      *
      * @return array
      */
-    #[ArrayShape([
-        'name' => 'string',
-        'text' => 'string',
-        'status' => 'bool'
-    ])] public function definition(): array
+    public function definition(): array
     {
         return [
             'name' => $this->faker->text(160),

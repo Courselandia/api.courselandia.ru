@@ -11,7 +11,6 @@ namespace App\Modules\Publication\Database\Factories;
 use App\Modules\Metatag\Models\Metatag;
 use Util;
 use Carbon\Carbon;
-use JetBrains\PhpStorm\ArrayShape;
 use App\Modules\Publication\Models\Publication;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -32,15 +31,7 @@ class PublicationFactory extends Factory
      *
      * @return array
      */
-    #[ArrayShape([
-        'metatag_id' => '\Illuminate\Database\Eloquent\Factories\Factory',
-        'published_at' => '\Carbon\Carbon',
-        'header' => 'string',
-        'link' => 'string',
-        'anons' => 'string',
-        'article' => 'string',
-        'status' => 'bool'
-    ])] public function definition(): array
+    public function definition(): array
     {
         return [
             'metatag_id' => Metatag::factory(),

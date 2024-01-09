@@ -9,7 +9,6 @@
 namespace App\Modules\Course\Database\Factories;
 
 use App\Modules\Course\Models\CourseFeature;
-use JetBrains\PhpStorm\ArrayShape;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -29,10 +28,7 @@ class CourseFeatureFactory extends Factory
      *
      * @return array
      */
-    #[ArrayShape([
-        'icon' => 'string',
-        'text' => 'string',
-    ])] public function definition(): array
+    public function definition(): array
     {
         return [
             'icon' => 'brief',

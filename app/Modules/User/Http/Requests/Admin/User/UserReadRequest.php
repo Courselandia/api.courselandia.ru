@@ -10,7 +10,6 @@ namespace App\Modules\User\Http\Requests\Admin\User;
 
 use Schema;
 use App\Models\FormRequest;
-use JetBrains\PhpStorm\ArrayShape;
 
 /**
  * Класс запрос для чтения пользователей.
@@ -22,13 +21,7 @@ class UserReadRequest extends FormRequest
      *
      * @return array Массив правил проверки.
      */
-    #[ArrayShape([
-        'sorts' => 'string',
-        'offset' => 'string',
-        'limit' => 'string',
-        'filters' => 'string',
-        'filters.status' => 'string',
-    ])] public function rules(): array
+    public function rules(): array
     {
         $columnsSort = Schema::getColumnListing('users');
         $columnsSort[] = 'role-name';
@@ -60,13 +53,7 @@ class UserReadRequest extends FormRequest
      *
      * @return array Массив атрибутов.
      */
-    #[ArrayShape([
-        'sorts' => 'string',
-        'offset' => 'string',
-        'limit' => 'string',
-        'filters' => 'string',
-        'filters.status' => 'string',
-    ])] public function attributes(): array
+    public function attributes(): array
     {
         return [
             'sorts' => trans('user::http.requests.admin.user.userReadRequest.sorts'),

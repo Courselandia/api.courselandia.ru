@@ -9,7 +9,6 @@
 namespace App\Modules\Page\Database\Factories;
 
 use Carbon\Carbon;
-use JetBrains\PhpStorm\ArrayShape;
 use App\Modules\Page\Models\Page;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -30,10 +29,7 @@ class PageFactory extends Factory
      *
      * @return array
      */
-    #[ArrayShape([
-        'path' => 'string',
-        'lastmod' => '\Carbon\Carbon',
-    ])] public function definition(): array
+    public function definition(): array
     {
         return [
             'path' => $this->faker->filePath(),

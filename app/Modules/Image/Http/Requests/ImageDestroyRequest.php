@@ -9,7 +9,6 @@
 namespace App\Modules\Image\Http\Requests;
 
 use App\Models\FormRequest;
-use JetBrains\PhpStorm\ArrayShape;
 
 /**
  * Класс проверки запроса для удаления изображения.
@@ -21,7 +20,7 @@ class ImageDestroyRequest extends FormRequest
      *
      * @return array Правила валидирования.
      */
-    #[ArrayShape(['id' => 'string', 'format' => 'string'])] public function rules(): array
+    public function rules(): array
     {
         return [
             'id' => 'required|integer|digits_between:1,20',
@@ -34,7 +33,7 @@ class ImageDestroyRequest extends FormRequest
      *
      * @return array Массив атрибутов.
      */
-    #[ArrayShape(['id' => 'string', 'format' => 'string'])] public function attributes(): array
+    public function attributes(): array
     {
         return [
             'id' => trans('image::http.requests.imageDestroy.id'),

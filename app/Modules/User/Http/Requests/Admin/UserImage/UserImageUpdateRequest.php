@@ -9,7 +9,6 @@
 namespace App\Modules\User\Http\Requests\Admin\UserImage;
 
 use App\Models\FormRequest;
-use JetBrains\PhpStorm\ArrayShape;
 
 /**
  * Класс запрос для создания изображения для пользователя
@@ -21,7 +20,7 @@ class UserImageUpdateRequest extends FormRequest
      *
      * @return array Массив правил проверки.
      */
-    #[ArrayShape(['image' => 'string'])] public function rules(): array
+    public function rules(): array
     {
         return [
             'image' => 'required|file|media:jpg,png,gif,webp'
@@ -33,7 +32,7 @@ class UserImageUpdateRequest extends FormRequest
      *
      * @return array Массив атрибутов.
      */
-    #[ArrayShape(['image' => 'string'])] public function attributes(): array
+    public function attributes(): array
     {
         return [
             'image' => trans('user::http.requests.admin.user.userImageUpdateRequest.image')

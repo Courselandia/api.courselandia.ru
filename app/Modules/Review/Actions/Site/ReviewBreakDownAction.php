@@ -18,7 +18,6 @@ use App\Modules\Review\Entities\ReviewBreakDown;
 use App\Models\Action;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Review\Models\Review;
-use JetBrains\PhpStorm\ArrayShape;
 
 /**
  * Класс действия для получения разбивки по рейтингу.
@@ -38,7 +37,7 @@ class ReviewBreakDownAction extends Action
      * @return mixed Вернет результаты исполнения.
      * @throws ParameterInvalidException
      */
-    #[ArrayShape(['data' => 'array', 'total' => 'int'])] public function run(): array
+    public function run(): array
     {
         $cacheKey = Util::getKey('review', 'site', 'breakDown');
 

@@ -15,7 +15,6 @@ use App\Models\Entity;
 use App\Models\Enums\CacheTime;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Direction\Models\Direction;
-use JetBrains\PhpStorm\ArrayShape;
 use ReflectionException;
 use App\Modules\Direction\Entities\Direction as DirectionEntity;
 
@@ -58,7 +57,7 @@ class DirectionReadAction extends Action
      * @return mixed Вернет результаты исполнения.
      * @throws ParameterInvalidException|ReflectionException
      */
-    #[ArrayShape(['data' => 'array', 'total' => 'int'])] public function run(): array
+    public function run(): array
     {
         $cacheKey = Util::getKey(
             'direction',

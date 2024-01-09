@@ -10,7 +10,6 @@ namespace App\Modules\Salary\Database\Factories;
 
 use App\Modules\Profession\Models\Profession;
 use App\Modules\Salary\Enums\Level;
-use JetBrains\PhpStorm\ArrayShape;
 use App\Modules\Salary\Models\Salary;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -31,12 +30,7 @@ class SalaryFactory extends Factory
      *
      * @return array
      */
-    #[ArrayShape([
-        'profession_id' => '\Illuminate\Database\Eloquent\Factories\Factory',
-        'level' => 'string',
-        'salary' => 'integer',
-        'status' => 'bool'
-    ])] public function definition(): array
+    public function definition(): array
     {
         return [
             'profession_id' => Profession::factory(),
