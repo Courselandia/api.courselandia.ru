@@ -124,15 +124,15 @@ class ReadPipe implements Pipe
 
                 $result = Elasticsearch::search($data);
 
-                //print_r($result);
-                //exit;
+                print_r($result);
+                exit;
 
                 $courses = collect($result['hits']['hits'])->map(function (array $item) {
                     return $item['_source'];
                 })->toArray();
 
-                //print_r($result);
-                //exit;
+                print_r($result);
+                exit;
 
                 //print_r($result['aggregations']);
 

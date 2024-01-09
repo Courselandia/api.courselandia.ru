@@ -395,15 +395,33 @@ class ElasticQueryCourseFilter extends ElasticQuery
             ],
             'aggs' => [
                 $name => [
+                    'terms' => [
+                        'field' => 'id',
+                        'size' => $size ?? 10000,
+                    ],
+                    /*'aggs' => [
+                        'fields' => [
+                            'top_hits' => [
+                                'size' => 1,
+                                '_source' => [
+                                    'include' => $includeFields,
+                                ],
+                            ],
+                        ],
+                    ],*/
+                ],
+            ],
+            /*
+            'aggs' => [
+                $name => [
                     'nested' => [
                         'path' => $name,
                     ],
                     'aggs' => [
                         $name => [
                             'terms' => [
-                                'field' => $name . '.name',
+                                'field' => $name . '.id',
                                 'size' => $size ?? 10000,
-                                'min_doc_count' => 0,
                             ],
                             'aggs' => [
                                 'fields' => [
@@ -418,7 +436,7 @@ class ElasticQueryCourseFilter extends ElasticQuery
                         ],
                     ],
                 ],
-            ],
+            ],*/
         ];
     }
 
