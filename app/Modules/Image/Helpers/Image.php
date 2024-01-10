@@ -9,6 +9,7 @@
 namespace App\Modules\Image\Helpers;
 
 use Illuminate\Http\UploadedFile;
+use App\Modules\Image\Entities\Image as ImageEntity;
 
 /**
  * Вспомогательный класс.
@@ -24,7 +25,7 @@ class Image
      *
      * @return null|int|string Вернет ID записи изображения.
      */
-    public static function set(string $name, array|int|string|UploadedFile|null $value, callable $callback): null|int|string
+    public static function set(string $name, array|int|string|UploadedFile|ImageEntity|null $value, callable $callback): null|int|string
     {
         if (!$value) {
             return null;
@@ -36,6 +37,8 @@ class Image
             return $value;
         } elseif ($value instanceof UploadedFile) {
             return $callback($name, $value);
+        } elseif ($value instanceof ImageEntity) {
+            return $value->id;
         }
 
         return null;
