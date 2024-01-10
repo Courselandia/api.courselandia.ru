@@ -29,11 +29,6 @@ class PushTest extends TestCase
     public function testRun(): void
     {
         Page::factory()->create([
-            'path' => '/',
-            'lastmod' => Carbon::now()->addMonths(-5),
-        ]);
-
-        Page::factory()->create([
             'path' => '/test-1',
             'lastmod' => Carbon::now()->addMonths(-4),
         ]);
@@ -41,6 +36,11 @@ class PushTest extends TestCase
         Page::factory()->create([
             'path' => '/test-2',
             'lastmod' => Carbon::now()->addMonths(-3),
+        ]);
+
+        Page::factory()->create([
+            'path' => '/test-3',
+            'lastmod' => Carbon::now()->addMonths(-5),
         ]);
 
         $push = new Push();

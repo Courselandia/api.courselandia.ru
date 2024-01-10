@@ -20,7 +20,6 @@ use App\Modules\Metatag\Models\Metatag;
 use App\Modules\Review\Models\Review;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use App\Models\Enums\EnumList;
-use App\Models\Rep\RepositoryQueryBuilder;
 use App\Modules\Category\Models\Category;
 use App\Modules\Course\Enums\Currency;
 use App\Modules\Course\Enums\Status;
@@ -512,7 +511,7 @@ class Course extends Eloquent
     public function getImageSmallIdAttribute(mixed $value): ?ImageEntity
     {
         if (is_numeric($value) || is_string($value)) {
-            return ImageStore::get(new RepositoryQueryBuilder($value));
+            return ImageStore::get($value);
         }
 
         return $value;
@@ -581,7 +580,7 @@ class Course extends Eloquent
     public function getImageMiddleIdAttribute(mixed $value): ?ImageEntity
     {
         if (is_numeric($value) || is_string($value)) {
-            return ImageStore::get(new RepositoryQueryBuilder($value));
+            return ImageStore::get($value);
         }
 
         return $value;
@@ -650,7 +649,7 @@ class Course extends Eloquent
     public function getImageBigIdAttribute(mixed $value): ?ImageEntity
     {
         if (is_numeric($value) || is_string($value)) {
-            return ImageStore::get(new RepositoryQueryBuilder($value));
+            return ImageStore::get($value);
         }
 
         return $value;

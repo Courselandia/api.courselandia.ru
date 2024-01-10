@@ -13,6 +13,7 @@ use App\Models\Exceptions\RecordNotExistException;
 use App\Models\Repository;
 use App\Modules\OAuth\Entities\OAuthToken;
 use Carbon\Carbon;
+use App\Modules\OAuth\Models\OAuthTokenEloquent as OAuthTokenEloquentModel;
 
 /**
  * Класс репозитория токенов на основе Eloquent.
@@ -24,7 +25,7 @@ class OAuthTokenEloquent extends Repository
      *
      * @param string|int|null $userId ID пользователя.
      * @param string|null $token Токен.
-     * @param string|int|null $oauthTokenId ID токена обновления.
+     * @param string|int|null $oauthTokenId ID токена.
      * @param Carbon|null $expiresAt Дата действия.
      * @return OAuthToken|null Сущность токена.
      *
@@ -37,10 +38,10 @@ class OAuthTokenEloquent extends Repository
         ?Carbon $expiresAt = null
     ): ?OAuthToken
     {
-        $query = $this->newInstance();
+        $query = $this->newInstance()->newQuery();
 
         if ($userId) {
-            $query->where('id', $userId);
+            $query->where('user_id', $userId);
         }
 
         if ($token) {
@@ -48,16 +49,16 @@ class OAuthTokenEloquent extends Repository
         }
 
         if ($oauthTokenId) {
-            $query->where('oauth_token_id', $oauthTokenId);
+            $query->where('id', $oauthTokenId);
         }
 
         if ($expiresAt) {
             $query->where('expires_at', '<=', $expiresAt);
         }
 
-        $item = $query->get();
+        $item = $query->first();
 
-        return $item ? new OAuthToken($item) : null;
+        return $item ? new OAuthToken($item->toArray()) : null;
     }
 
     /**
@@ -95,7 +96,7 @@ class OAuthTokenEloquent extends Repository
      */
     public function update(string|int $id, OAuthToken $entity): int|string
     {
-        $model = $this->newInstance()->find($id);
+        $model = $this->newInstance()->newQuery()->find($id);
 
         if ($model) {
             $model->user_id = $entity->user_id;

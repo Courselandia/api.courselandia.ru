@@ -62,7 +62,7 @@ class ImageEloquent extends Image
         /**
          * @var ImageEloquentModel $model
          */
-        $model = $this->newInstance()->find($id);
+        $model = $this->newInstance()->newQuery()->find($id);
 
         if ($model) {
             $pro = getImageSize($entity->path);
@@ -119,7 +119,7 @@ class ImageEloquent extends Image
         /**
          * @var ImageEloquentModel $image
          */
-        $image = $this->newInstance()->find($id);
+        $image = $this->newInstance()->newQuery()->find($id);
 
         if ($image) {
             $entity = $entity ? clone $entity->set($image->toArray()) : clone $this->getEntity()->set(

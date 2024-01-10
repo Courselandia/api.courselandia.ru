@@ -21,7 +21,6 @@ use App\Models\Validate;
 use App\Models\Sortable;
 use CodeBuds\WebPConverter\WebPConverter;
 use EloquentFilter\Filterable;
-use App\Models\Rep\RepositoryQueryBuilder;
 use App\Modules\Image\Entities\Image as ImageEntity;
 use App\Modules\Image\Helpers\Image;
 use App\Modules\Metatag\Models\Metatag;
@@ -196,7 +195,7 @@ class Publication extends Eloquent
     public function getImageSmallIdAttribute(mixed $value): ?ImageEntity
     {
         if (is_numeric($value) || is_string($value)) {
-            return ImageStore::get(new RepositoryQueryBuilder($value));
+            return ImageStore::get($value);
         }
 
         return $value;
@@ -257,7 +256,7 @@ class Publication extends Eloquent
     public function getImageMiddleIdAttribute(mixed $value): ?ImageEntity
     {
         if (is_numeric($value) || is_string($value)) {
-            return ImageStore::get(new RepositoryQueryBuilder($value));
+            return ImageStore::get($value);
         }
 
         return $value;
@@ -318,7 +317,7 @@ class Publication extends Eloquent
     public function getImageBigIdAttribute(mixed $value): ?ImageEntity
     {
         if (is_numeric($value) || is_string($value)) {
-            return ImageStore::get(new RepositoryQueryBuilder($value));
+            return ImageStore::get($value);
         }
 
         return $value;

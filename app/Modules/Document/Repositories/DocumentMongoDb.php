@@ -59,7 +59,7 @@ class DocumentMongoDb extends Document
         /**
          * @var DocumentMongoDbModel $model
          */
-        $model = $this->newInstance()->find($id);
+        $model = $this->newInstance()->newQuery()->find($id);
 
         if ($model) {
             $model->path = $entity->path;
@@ -111,7 +111,7 @@ class DocumentMongoDb extends Document
             return $document;
         }
 
-        $query = $this->newInstance()->find($id);
+        $query = $this->newInstance()->newQuery()->find($id);
 
         /**
          * @var DocumentMongoDbModel $document
@@ -174,7 +174,7 @@ class DocumentMongoDb extends Document
             $offset += 1;
 
             /**
-             * @var DocumentEloquentModel|DocumentMongoDbModel $document
+             * @var DocumentMongoDbModel $document
              */
             $document = $this->newInstance()
                 ->newQuery()

@@ -8,7 +8,6 @@
 
 namespace App\Modules\Document\Http\Controllers;
 
-use App\Models\Rep\RepositoryQueryBuilder;
 use Util;
 use DocumentStore;
 use Storage;
@@ -38,7 +37,7 @@ class DocumentController extends Controller
         $id = substr($info['basename'], 0, Util::strlen($info['basename']) - Util::strlen($info['extension']) - 1);
         $format = strtolower($info['extension']);
 
-        $document = DocumentStore::get(new RepositoryQueryBuilder($id));
+        $document = DocumentStore::get($id);
 
         if ($document->format === $format) {
             return (new Response(DocumentStore::getByte($id)))

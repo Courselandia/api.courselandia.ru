@@ -31,8 +31,8 @@ class Log extends Repository
      */
     public function read(?array $filters = null, ?array $sorts = null, ?int $offset = null, ?int $limit = null): array
     {
-        $query = $this->newInstance();
-        $query->filter($filters);
+        $query = $this->newInstance()->newQuery();
+        $query->filter($filters ?: []);
         $query->sorted($sorts ?: []);
 
         if ($offset) {
@@ -44,6 +44,13 @@ class Log extends Repository
         }
 
         $items = $query->get()->toArray();
+
+        $items = collect($items)->map(static function (array $item) {
+            return [
+                'id' => $item['_id'] ?? $item['id'],
+                ...$item,
+            ];
+        })->toArray();
 
         return Entity::toEntities($items, new LogEntity());
     }
@@ -58,8 +65,8 @@ class Log extends Repository
      */
     public function count(?array $filters = null): int
     {
-        $query = $this->newInstance();
-        $query->filter($filters);
+        $query = $this->newInstance()->newQuery();
+        $query->filter($filters ?: []);
 
         return $query->count();
     }
@@ -74,9 +81,9 @@ class Log extends Repository
      */
     public function get(string|int $id): ?LogEntity
     {
-        $log = $this->newInstance()->find($id);
+        $log = $this->newInstance()->newQuery()->find($id);
 
-        return $log ? new LogEntity($log) : null;
+        return $log ? new LogEntity($log->toArray()) : null;
     }
 
     /**

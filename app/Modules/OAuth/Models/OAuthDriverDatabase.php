@@ -168,7 +168,6 @@ class OAuthDriverDatabase extends OAuthDriver
             $valueAccessToken->user = $userId;
 
             $issuedToken = $this->issue($valueAccessToken, $expiresAtToken, $expiresAtRefreshToken);
-
             $tokenEntity = $this->oAuthTokenEloquent->get($userId, $issuedToken->accessToken);
 
             try {

@@ -24,7 +24,6 @@ use App\Models\Validate;
 use Illuminate\Http\UploadedFile;
 use App\Models\BelongsToOneTrait;
 use App\Modules\Image\Helpers\Image;
-use App\Models\Rep\RepositoryQueryBuilder;
 use App\Modules\User\Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -230,7 +229,7 @@ class User extends Authenticatable
     public function getImageSmallIdAttribute(mixed $value): ?ImageEntity
     {
         if (is_numeric($value) || is_string($value)) {
-            return ImageStore::get(new RepositoryQueryBuilder($value));
+            return ImageStore::get($value);
         }
 
         return $value;
@@ -287,7 +286,7 @@ class User extends Authenticatable
     public function getImageMiddleIdAttribute(mixed $value): ?ImageEntity
     {
         if (is_numeric($value) || is_string($value)) {
-            return ImageStore::get(new RepositoryQueryBuilder($value));
+            return ImageStore::get($value);
         }
 
         return $value;
@@ -344,7 +343,7 @@ class User extends Authenticatable
     public function getImageBigIdAttribute(mixed $value): ?ImageEntity
     {
         if (is_numeric($value) || is_string($value)) {
-            return ImageStore::get(new RepositoryQueryBuilder($value));
+            return ImageStore::get($value);
         }
 
         return $value;

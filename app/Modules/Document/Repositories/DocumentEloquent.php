@@ -59,7 +59,7 @@ class DocumentEloquent extends Document
         /**
          * @var DocumentEloquentModel $model
          */
-        $model = $this->newInstance()->find($id);
+        $model = $this->newInstance()->newQuery()->find($id);
 
         if ($model) {
 
@@ -111,7 +111,7 @@ class DocumentEloquent extends Document
             return $document;
         }
 
-        $query = $this->newInstance()->find($id);
+        $query = $this->newInstance()->newQuery()->find($id);
 
         /**
          * @var DocumentEloquentModel $document

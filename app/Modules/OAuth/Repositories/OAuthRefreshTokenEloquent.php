@@ -30,7 +30,7 @@ class OAuthRefreshTokenEloquent extends Repository
      */
     public function get(string|int|null $oauthTokenId = null, string|int|null $refreshToken = null): ?OAuthRefresh
     {
-        $query = $this->newInstance();
+        $query = $this->newInstance()->newQuery();
 
         if ($oauthTokenId) {
             $query->where('oauth_token_id', $oauthTokenId);
@@ -40,9 +40,9 @@ class OAuthRefreshTokenEloquent extends Repository
             $query->where('refresh_token', $refreshToken);
         }
 
-        $item = $query->get();
+        $item = $query->first();
 
-        return $item ? new OAuthRefresh($item) : null;
+        return $item ? new OAuthRefresh($item->toArray()) : null;
     }
 
     /**

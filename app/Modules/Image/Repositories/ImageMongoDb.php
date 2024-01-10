@@ -62,7 +62,7 @@ class ImageMongoDb extends Image
         /**
          * @var ImageMongoDbModel $model
          */
-        $model = $this->newInstance()->find($id);
+        $model = $this->newInstance()->newQuery()->find($id);
 
         if ($model) {
             $pro = getImageSize($entity->path);
@@ -120,7 +120,7 @@ class ImageMongoDb extends Image
         /**
          * @var ImageMongoDbModel $image
          */
-        $image = $this->newInstance()->find($id);
+        $image = $this->newInstance()->newQuery()->find($id);
 
         if ($image) {
             $entity = $entity ? clone $entity->set($image->toArray()) : clone $this->getEntity()->set(
