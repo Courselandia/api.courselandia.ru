@@ -79,7 +79,7 @@ class ImageLogo implements CastsAttributes
                 $image = new ImageEntity();
                 $image->path = $imageWebp['path'];
 
-                if (isset($attributes[$key]) && $$attributes[$key] !== '') {
+                if (isset($attributes[$key]) && $attributes[$key] !== '') {
                     return ImageStore::update($attributes[$key], $image);
                 }
 

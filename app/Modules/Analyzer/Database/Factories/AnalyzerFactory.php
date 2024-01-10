@@ -37,9 +37,9 @@ class AnalyzerFactory extends Factory
         return [
             'task_id' => $this->faker->numberBetween(),
             'category' => 'course.text',
-            'unique' => $this->faker->numberBetween(1, 100),
-            'water' => $this->faker->numberBetween(1, 100),
-            'spam' => $this->faker->numberBetween(1, 100),
+            'unique' => $this->faker->numberBetween(1, 99),
+            'water' => $this->faker->numberBetween(1, 99),
+            'spam' => $this->faker->numberBetween(1, 99),
             'params' => null,
             'status' => Status::READY->value,
             'analyzerable_id' => $course->id,
