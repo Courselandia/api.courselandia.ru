@@ -32,6 +32,9 @@ use App\Modules\Publication\Database\Factories\PublicationFactory;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Modules\Publication\Filters\PublicationFilter;
+use App\Modules\Publication\Images\ImageBig;
+use App\Modules\Publication\Images\ImageMiddle;
+use App\Modules\Publication\Images\ImageSmall;
 
 /**
  * Класс модель для таблицы публикаций на основе Eloquent.
@@ -86,6 +89,17 @@ class Publication extends Eloquent
         'image_big_id',
         'image_middle_id',
         'image_small_id'
+    ];
+
+    /**
+     * Типизирование атрибутов.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'image_small_id' => ImageSmall::class,
+        'image_middle_id' => ImageMiddle::class,
+        'image_big_id' => ImageBig::class,
     ];
 
     /**
@@ -145,121 +159,6 @@ class Publication extends Eloquent
     protected static function newFactory(): Factory
     {
         return PublicationFactory::new();
-    }
-
-    /**
-     * Преобразователь атрибута - запись: маленькое изображение.
-     *
-     * @param mixed $value Значение атрибута.
-     *
-     * @return void
-     * @throws FileNotFoundException|Exception
-     */
-    public function setImageSmallIdAttribute(mixed $value): void
-    {
-        $name = 'image_small_id';
-        $folder = 'publications';
-
-        $this->attributes[$name] = Image::set(
-            $name,
-            $value,
-            function (string $name, UploadedFile $value) use ($folder) {
-                $path = ImageStore::tmp($value->getClientOriginalExtension());
-
-                Size::make($value)->fit(150, 150)->save($path);
-
-                $imageWebp = $value->getClientOriginalExtension() !== 'webp'
-                    ? WebPConverter::createWebpImage($path, ['saveFile' => true])
-                    : ['path' => $path];
-
-                ImageStore::setFolder($folder);
-                $image = new ImageEntity();
-                $image->path = $imageWebp['path'];
-
-                if (isset($this->attributes[$name]) && $this->attributes[$name] !== '') {
-                    return ImageStore::update($this->attributes[$name], $image);
-                }
-
-                return ImageStore::create($image);
-            }
-        );
-    }
-
-    /**
-     * Преобразователь атрибута - получение: маленькое изображение.
-     *
-     * @param mixed $value Значение атрибута.
-     *
-     * @return ImageEntity|null Маленькое изображение.
-     */
-    public function getImageSmallIdAttribute(mixed $value): ?ImageEntity
-    {
-        if (is_numeric($value) || is_string($value)) {
-            return ImageStore::get($value);
-        }
-
-        return $value;
-    }
-
-    /**
-     * Преобразователь атрибута - запись: среднее изображение.
-     *
-     * @param mixed $value Значение атрибута.
-     *
-     * @return void
-     * @throws FileNotFoundException|Exception
-     */
-    public function setImageMiddleIdAttribute(mixed $value): void
-    {
-        $name = 'image_middle_id';
-        $folder = 'publications';
-
-        $this->attributes[$name] = Image::set(
-            $name,
-            $value,
-            function (string $name, UploadedFile $value) use ($folder) {
-                $path = ImageStore::tmp($value->getClientOriginalExtension());
-
-                Size::make($value)->resize(
-                    400,
-                    null,
-                    function ($constraint) {
-                        $constraint->aspectRatio();
-                        $constraint->upsize();
-                    }
-                )->save($path);
-
-                $imageWebp = $value->getClientOriginalExtension() !== 'webp'
-                    ? WebPConverter::createWebpImage($path, ['saveFile' => true])
-                    : ['path' => $path];
-
-                ImageStore::setFolder($folder);
-                $image = new ImageEntity();
-                $image->path = $imageWebp['path'];
-
-                if (isset($this->attributes[$name]) && $this->attributes[$name] !== '') {
-                    return ImageStore::update($this->attributes[$name], $image);
-                }
-
-                return ImageStore::create($image);
-            }
-        );
-    }
-
-    /**
-     * Преобразователь атрибута - получение: среднее изображение.
-     *
-     * @param mixed $value Значение атрибута.
-     *
-     * @return ImageEntity|null Среднее изображение.
-     */
-    public function getImageMiddleIdAttribute(mixed $value): ?ImageEntity
-    {
-        if (is_numeric($value) || is_string($value)) {
-            return ImageStore::get($value);
-        }
-
-        return $value;
     }
 
     /**

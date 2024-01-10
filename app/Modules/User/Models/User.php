@@ -8,12 +8,6 @@
 
 namespace App\Modules\User\Models;
 
-use App\Modules\Task\Models\Task;
-use App\Modules\User\Filters\UserFilter;
-use CodeBuds\WebPConverter\WebPConverter;
-use Exception;
-use Size;
-use ImageStore;
 use Eloquent;
 use App\Models\Status;
 use App\Models\Flags;
@@ -23,7 +17,6 @@ use EloquentFilter\Filterable;
 use App\Models\Validate;
 use Illuminate\Http\UploadedFile;
 use App\Models\BelongsToOneTrait;
-use App\Modules\Image\Helpers\Image;
 use App\Modules\User\Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -33,6 +26,11 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Modules\Image\Entities\Image as ImageEntity;
+use App\Modules\User\Images\ImageBig;
+use App\Modules\User\Images\ImageMiddle;
+use App\Modules\User\Images\ImageSmall;
+use App\Modules\Task\Models\Task;
+use App\Modules\User\Filters\UserFilter;
 
 /**
  * Класс модель для таблицы пользователей на основе Eloquent.
@@ -90,6 +88,17 @@ class User extends Authenticatable
         'two_factor',
         'status',
         'flags'
+    ];
+
+    /**
+     * Типизирование атрибутов.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'image_small_id' => ImageSmall::class,
+        'image_middle_id' => ImageMiddle::class,
+        'image_big_id' => ImageBig::class,
     ];
 
     /**
@@ -183,170 +192,6 @@ class User extends Authenticatable
     public function routeNotificationForNexmo(): ?string
     {
         return $this->phone;
-    }
-
-    /**
-     * Преобразователь атрибута - запись: маленькое изображение.
-     *
-     * @param mixed $value Значение атрибута.
-     *
-     * @return void
-     * @throws Exception
-     */
-    public function setImageSmallIdAttribute(mixed $value): void
-    {
-        $name = 'image_small_id';
-        $folder = 'users';
-
-        $this->attributes[$name] = Image::set($name, $value, function (string $name, UploadedFile $value) use ($folder) {
-            $path = ImageStore::tmp($value->getClientOriginalExtension());
-
-            Size::make($value)->fit(60, 60)->save($path);
-
-            $imageWebp = $value->getClientOriginalExtension() !== 'webp'
-                ? WebPConverter::createWebpImage($path, ['saveFile' => true])
-                : ['path' => $path];
-
-            ImageStore::setFolder($folder);
-            $image = new ImageEntity();
-            $image->path = $imageWebp['path'];
-
-            if (isset($this->attributes[$name]) && $this->attributes[$name] !== '') {
-                return ImageStore::update($this->attributes[$name], $image);
-            }
-
-            return ImageStore::create($image);
-        });
-    }
-
-    /**
-     * Преобразователь атрибута - получение: маленькое изображение.
-     *
-     * @param  mixed  $value  Значение атрибута.
-     *
-     * @return ImageEntity|null Маленькое изображение.
-     */
-    public function getImageSmallIdAttribute(mixed $value): ?ImageEntity
-    {
-        if (is_numeric($value) || is_string($value)) {
-            return ImageStore::get($value);
-        }
-
-        return $value;
-    }
-
-    /**
-     * Преобразователь атрибута - запись: среднее изображение.
-     *
-     * @param mixed $value Значение атрибута.
-     *
-     * @return void
-     * @throws Exception
-     */
-    public function setImageMiddleIdAttribute(mixed $value): void
-    {
-        $name = 'image_middle_id';
-        $folder = 'users';
-
-        $this->attributes[$name] = Image::set($name, $value, function (string $name, UploadedFile $value) use ($folder) {
-            $path = ImageStore::tmp($value->getClientOriginalExtension());
-
-            Size::make($value)->resize(
-                350,
-                null,
-                function ($constraint) {
-                    $constraint->aspectRatio();
-                    $constraint->upsize();
-                }
-            )->save($path);
-
-            $imageWebp = $value->getClientOriginalExtension() !== 'webp'
-                ? WebPConverter::createWebpImage($path, ['saveFile' => true])
-                : ['path' => $path];
-
-            ImageStore::setFolder($folder);
-            $image = new ImageEntity();
-            $image->path = $imageWebp['path'];
-
-            if (isset($this->attributes[$name]) && $this->attributes[$name] !== '') {
-                return ImageStore::update($this->attributes[$name], $image);
-            }
-
-            return ImageStore::create($image);
-        });
-    }
-
-    /**
-     * Преобразователь атрибута - получение: среднее изображение.
-     *
-     * @param  mixed  $value  Значение атрибута.
-     *
-     * @return ImageEntity|null Среднее изображение.
-     */
-    public function getImageMiddleIdAttribute(mixed $value): ?ImageEntity
-    {
-        if (is_numeric($value) || is_string($value)) {
-            return ImageStore::get($value);
-        }
-
-        return $value;
-    }
-
-    /**
-     * Преобразователь атрибута - запись: большое изображение.
-     *
-     * @param mixed $value Значение атрибута.
-     *
-     * @return void
-     * @throws Exception
-     */
-    public function setImageBigIdAttribute(mixed $value): void
-    {
-        $name = 'image_big_id';
-        $folder = 'users';
-
-        $this->attributes[$name] = Image::set($name, $value, function (string $name, UploadedFile $value) use ($folder) {
-            $path = ImageStore::tmp($value->getClientOriginalExtension());
-
-            Size::make($value)->resize(
-                1200,
-                null,
-                function ($constraint) {
-                    $constraint->aspectRatio();
-                    $constraint->upsize();
-                }
-            )->save($path);
-
-            $imageWebp = $value->getClientOriginalExtension() !== 'webp'
-                ? WebPConverter::createWebpImage($path, ['saveFile' => true])
-                : ['path' => $path];
-
-            ImageStore::setFolder($folder);
-            $image = new ImageEntity();
-            $image->path = $imageWebp['path'];
-
-            if (isset($this->attributes[$name]) && $this->attributes[$name] !== '') {
-                return ImageStore::update($this->attributes[$name], $image);
-            }
-
-            return ImageStore::create($image);
-        });
-    }
-
-    /**
-     * Преобразователь атрибута - получение: среднее изображение.
-     *
-     * @param  mixed  $value  Значение атрибута.
-     *
-     * @return ImageEntity|null Среднее изображение.
-     */
-    public function getImageBigIdAttribute(mixed $value): ?ImageEntity
-    {
-        if (is_numeric($value) || is_string($value)) {
-            return ImageStore::get($value);
-        }
-
-        return $value;
     }
 
     /**
