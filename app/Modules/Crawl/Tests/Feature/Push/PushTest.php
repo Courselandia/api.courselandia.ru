@@ -9,6 +9,7 @@
 namespace App\Modules\Crawl\Tests\Feature\Push;
 
 use App\Models\Exceptions\ParameterInvalidException;
+use App\Modules\Crawl\Models\Crawl;
 use App\Modules\Crawl\Push\Push;
 use App\Modules\Crawl\Push\Pushers\FakePusher;
 use App\Modules\Page\Models\Page;
@@ -28,7 +29,8 @@ class PushTest extends TestCase
      */
     public function testRun(): void
     {
-        Page::all()->delete();
+        Page::truncate();
+        Crawl::truncate();
 
         Page::factory()->create([
             'path' => '/test-1',
