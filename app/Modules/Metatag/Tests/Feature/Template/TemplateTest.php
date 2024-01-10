@@ -37,7 +37,7 @@ class TemplateTest extends TestCase
         $tmp = 'Курс {course} от {school:genitive} [price:по цене {price}/бесплатно] — Courselandia';
 
         $result = $template->convert($tmp, $templateValues);
-        $this->assertEquals('Курс Программирование на Java от Нетология по цене 160 000 руб. — Courselandia', $result);
+        $this->assertEquals('Курс Программирование на Java от Нетологии по цене 160 000 руб. — Courselandia', $result);
     }
 
     /**

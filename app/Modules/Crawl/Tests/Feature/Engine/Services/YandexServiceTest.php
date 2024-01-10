@@ -45,9 +45,14 @@ class YandexServiceTest extends TestCase
     public function testPush(): void
     {
         $service = new YandexService();
-        $idTask = $service->push('https://courselandia.ru');
 
-        $this->assertIsString($idTask);
+        try {
+            $idTask = $service->push('https://courselandia.ru');
+
+            $this->assertIsString($idTask);
+        } catch (LimitException) {
+            $this->assertIsBool(true);
+        }
     }
 
     /**

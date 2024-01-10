@@ -28,6 +28,8 @@ class PushTest extends TestCase
      */
     public function testRun(): void
     {
+        Page::all()->delete();
+
         Page::factory()->create([
             'path' => '/test-1',
             'lastmod' => Carbon::now()->addMonths(-4),
