@@ -14,10 +14,7 @@ use Config;
 use stdClass;
 use Carbon\Carbon;
 use App\Models\Enums\CacheTime;
-use App\Models\Enums\OperatorQuery;
 use App\Models\Exceptions\ParameterInvalidException;
-use App\Models\Rep\RepositoryCondition;
-use App\Models\Rep\RepositoryQueryBuilder;
 use App\Modules\OAuth\Entities\OAuthRefresh;
 use App\Modules\OAuth\Entities\OAuthToken;
 use App\Modules\User\Models\User;
@@ -149,15 +146,11 @@ class OAuthDriverDatabase extends OAuthDriver
         );
 
         if ($user) {
-            $query = new RepositoryQueryBuilder();
-            $query->addCondition(new RepositoryCondition('user_id', $userId));
-            $tokenEntity = $this->oAuthTokenEloquent->get($query);
+            $tokenEntity = $this->oAuthTokenEloquent->get($userId);
             $now = Carbon::now();
 
             if ($tokenEntity && $now->diffInSeconds($tokenEntity->expires_at) > Config::get('token.token_life', 3600)) {
-                $query = new RepositoryQueryBuilder();
-                $query->addCondition(new RepositoryCondition('oauth_token_id', $tokenEntity->id));
-                $refreshTokenEntity = $this->oAuthRefreshTokenEloquent->get($query);
+                $refreshTokenEntity = $this->oAuthRefreshTokenEloquent->get($tokenEntity->id);
 
                 if ($refreshTokenEntity) {
                     $token = new Token();
@@ -176,11 +169,7 @@ class OAuthDriverDatabase extends OAuthDriver
 
             $issuedToken = $this->issue($valueAccessToken, $expiresAtToken, $expiresAtRefreshToken);
 
-            $query = new RepositoryQueryBuilder();
-            $query->addCondition(new RepositoryCondition('user_id', $userId))
-                ->addCondition(new RepositoryCondition('token', $issuedToken->accessToken));
-
-            $tokenEntity = $this->oAuthTokenEloquent->get($query);
+            $tokenEntity = $this->oAuthTokenEloquent->get($userId, $issuedToken->accessToken);
 
             try {
                 if ($tokenEntity) {
@@ -198,11 +187,7 @@ class OAuthDriverDatabase extends OAuthDriver
 
             }
 
-            $query = new RepositoryQueryBuilder();
-            $query->addCondition(new RepositoryCondition('oauth_token_id', $tokenEntity->id))
-                ->addCondition(new RepositoryCondition('refresh_token', $issuedToken->refreshToken));
-
-            $refreshToken = $this->oAuthRefreshTokenEloquent->get($query);
+            $refreshToken = $this->oAuthRefreshTokenEloquent->get($tokenEntity->id, $issuedToken->refreshToken);
 
             try {
                 if ($refreshToken) {
@@ -258,15 +243,10 @@ class OAuthDriverDatabase extends OAuthDriver
         );
 
         if ($user) {
-            $query = new RepositoryQueryBuilder();
-            $query->addCondition(new RepositoryCondition('refresh_token', $refreshToken));
-
-            $refreshTokenEntity = $this->oAuthRefreshTokenEloquent->get($query);
+            $refreshTokenEntity = $this->oAuthRefreshTokenEloquent->get(null, $refreshToken);
 
             if ($refreshTokenEntity) {
-                $query = new RepositoryQueryBuilder();
-                $query->addCondition(new RepositoryCondition('oauth_token_id', $refreshTokenEntity->oauth_token_id));
-                $tokenEntity = $this->oAuthTokenEloquent->get($query);
+                $tokenEntity = $this->oAuthTokenEloquent->get(null, null, $refreshTokenEntity->oauth_token_id);
                 $now = Carbon::now();
 
                 if ($tokenEntity && $now->diffInSeconds($tokenEntity->expires_at) > Config::get('token.token_life', 3600)) {
@@ -284,12 +264,7 @@ class OAuthDriverDatabase extends OAuthDriver
                 $valueAccessToken->user = $value->user;
 
                 $issuedToken = $this->issue($valueAccessToken, $expiresAtToken, $expiresAtRefreshToken);
-
-                $query = new RepositoryQueryBuilder();
-                $query->addCondition(new RepositoryCondition('user_id', $userId))
-                    ->addCondition(new RepositoryCondition('token', $issuedToken->accessToken));
-
-                $tokenEntity = $this->oAuthTokenEloquent->get($query);
+                $tokenEntity = $this->oAuthTokenEloquent->get($userId, $issuedToken->accessToken);
 
                 try {
                     if ($tokenEntity) {
@@ -307,11 +282,7 @@ class OAuthDriverDatabase extends OAuthDriver
 
                 }
 
-                $query = new RepositoryQueryBuilder();
-                $query->addCondition(new RepositoryCondition('oauth_token_id', $tokenEntity->id))
-                    ->addCondition(new RepositoryCondition('refresh_token', $issuedToken->refreshToken));
-
-                $refreshTokenEntity = $this->oAuthRefreshTokenEloquent->get($query);
+                $refreshTokenEntity = $this->oAuthRefreshTokenEloquent->get($tokenEntity->id, $issuedToken->refreshToken);
 
                 try {
                     if ($refreshTokenEntity) {
@@ -369,11 +340,7 @@ class OAuthDriverDatabase extends OAuthDriver
         );
 
         if ($user) {
-            $query = new RepositoryQueryBuilder();
-            $query->addCondition(new RepositoryCondition('token', $token))
-                ->addCondition(new RepositoryCondition('user_id', $value->user));
-
-            $record = $this->oAuthTokenEloquent->get($query);
+            $record = $this->oAuthTokenEloquent->get($value->user, $token);
 
             return (bool)$record;
         }
@@ -389,13 +356,10 @@ class OAuthDriverDatabase extends OAuthDriver
      */
     public function clean(): void
     {
-        $query = new RepositoryQueryBuilder();
-        $query->addCondition(new RepositoryCondition('expires_at', Carbon::now(), OperatorQuery::LTE));
-
-        $tokens = $this->oAuthTokenEloquent->read($query);
+        $tokens = $this->oAuthTokenEloquent->get(null, null, null, Carbon::now());
 
         foreach ($tokens as $token) {
-            $this->oAuthTokenEloquent->destroy($token->id, true);
+            $this->oAuthTokenEloquent->destroy($token->id);
         }
 
         OAuthRefreshTokenEloquentModel::doesntHave('token')->delete();

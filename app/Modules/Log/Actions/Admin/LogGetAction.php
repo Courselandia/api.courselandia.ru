@@ -10,7 +10,6 @@ namespace App\Modules\Log\Actions\Admin;
 
 use App\Models\Action;
 use App\Models\Exceptions\ParameterInvalidException;
-use App\Models\Rep\RepositoryQueryBuilder;
 use App\Modules\Log\Entities\Log as LogEntity;
 use App\Modules\Log\Repositories\Log;
 
@@ -52,7 +51,7 @@ class LogGetAction extends Action
     public function run(): ?LogEntity
     {
         if ($this->id) {
-            return $this->log->get(new RepositoryQueryBuilder($this->id));
+            return $this->log->get($this->id);
         }
 
         return null;

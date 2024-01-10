@@ -10,8 +10,6 @@ namespace App\Modules\Log\Actions\Admin;
 
 use App\Models\Action;
 use App\Models\Exceptions\ParameterInvalidException;
-use App\Models\Rep\RepositoryFilter;
-use App\Models\Rep\RepositoryQueryBuilder;
 use App\Modules\Log\Repositories\Log;
 
 /**
@@ -72,15 +70,9 @@ class LogReadAction extends Action
      */
     public function run(): array
     {
-        $query = new RepositoryQueryBuilder();
-        $query->setFilters(RepositoryFilter::getFilters($this->filters))
-            ->setSorts($this->sorts)
-            ->setOffset($this->offset)
-            ->setLimit($this->limit);
-
         return [
-            'data' => $this->log->read($query),
-            'total' => $this->log->count($query),
+            'data' => $this->log->read($this->filters, $this->sorts, $this->offset, $this->limit),
+            'total' => $this->log->count($this->filters),
         ];
     }
 }

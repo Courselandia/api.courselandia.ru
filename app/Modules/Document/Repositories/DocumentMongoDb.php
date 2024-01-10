@@ -9,35 +9,29 @@
 namespace App\Modules\Document\Repositories;
 
 use DB;
-use App\Models\Entity;
+use Generator;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
-use App\Models\Rep\RepositoryQueryBuilder;
-use App\Modules\Document\Models\DocumentEloquent as DocumentEloquentModel;
 use App\Modules\Document\Models\DocumentMongoDb as DocumentMongoDbModel;
 use App\Modules\Document\Entities\Document as DocumentEntity;
-use App\Models\Rep\RepositoryMongoDb;
-use Generator;
 
 /**
  * Класс репозитория документов на основе MongoDb.
  */
 class DocumentMongoDb extends Document
 {
-    use RepositoryMongoDb;
-
     /**
      * Создание.
      *
-     * @param Entity|DocumentEntity $entity Данные для добавления.
+     * @param DocumentEntity $entity Данные для добавления.
      *
      * @return int|string Вернет ID последней вставленной строки.
      * @throws ParameterInvalidException
      */
-    public function create(Entity|DocumentEntity $entity): int|string
+    public function create(DocumentEntity $entity): int|string
     {
         /**
-         * @var DocumentEloquentModel $model
+         * @var DocumentMongoDbModel $model
          */
         $model = $this->newInstance();
 
@@ -54,16 +48,16 @@ class DocumentMongoDb extends Document
     /**
      * Обновление.
      *
-     * @param  int|string  $id  Id записи для обновления.
-     * @param  Entity|DocumentEntity  $entity  Данные для добавления.
+     * @param int|string $id Id записи для обновления.
+     * @param DocumentEntity $entity Данные для добавления.
      *
      * @return int|string Вернет ID вставленной строки.
      * @throws RecordNotExistException|ParameterInvalidException
      */
-    public function update(int|string $id, Entity|DocumentEntity $entity): int|string
+    public function update(int|string $id, DocumentEntity $entity): int|string
     {
         /**
-         * @var DocumentEloquentModel $model
+         * @var DocumentMongoDbModel $model
          */
         $model = $this->newInstance()->find($id);
 
@@ -78,7 +72,7 @@ class DocumentMongoDb extends Document
             return $id;
         }
 
-        throw new RecordNotExistException('The document #'.$id.' does not exist.');
+        throw new RecordNotExistException('The document #' . $id . ' does not exist.');
     }
 
     /**
@@ -101,17 +95,15 @@ class DocumentMongoDb extends Document
     /**
      * Получить по первичному ключу.
      *
-     * @param  RepositoryQueryBuilder|null  $repositoryQueryBuilder  Запрос к репозиторию.
-     * @param  Entity|DocumentEntity|null  $entity  Сущность.
+     * @param int|string $id Id записи.
+     * @param DocumentEntity|null $entity Сущность.
      *
-     * @return Entity|DocumentEntity|null Данные.
+     * @return DocumentEntity|null Данные.
      * @throws ParameterInvalidException
      */
-    public function get(
-        RepositoryQueryBuilder $repositoryQueryBuilder = null,
-        Entity|DocumentEntity $entity = null
-    ): Entity|DocumentEntity|null {
-        $document = $this->getById($repositoryQueryBuilder->getId());
+    public function get(int|string $id, DocumentEntity $entity = null): DocumentEntity|null
+    {
+        $document = $this->getById($id);
 
         if ($document) {
             $document->byte = null;
@@ -119,10 +111,10 @@ class DocumentMongoDb extends Document
             return $document;
         }
 
-        $query = $this->query($repositoryQueryBuilder);
+        $query = $this->newInstance()->find($id);
 
         /**
-         * @var DocumentEloquentModel|DocumentMongoDbModel $document
+         * @var DocumentMongoDbModel $document
          */
         $document = $query->first();
 
@@ -135,7 +127,7 @@ class DocumentMongoDb extends Document
             $entity->pathSource = $document->pathSource;
 
             $entity->byte = null;
-            $this->setById($repositoryQueryBuilder->getId(), $entity);
+            $this->setById($id, $entity);
 
             return $entity;
         }
@@ -169,12 +161,12 @@ class DocumentMongoDb extends Document
     /**
      * Получение всех записей.
      *
-     * @param  Entity|DocumentEntity|null  $entity  Сущность.
+     * @param DocumentEntity|null $entity Сущность.
      *
      * @return Generator|DocumentEntity|null Генератор.
      * @throws ParameterInvalidException
      */
-    public function all(Entity|DocumentEntity $entity = null): Generator|DocumentEntity|null
+    public function all(DocumentEntity $entity = null): Generator|DocumentEntity|null
     {
         $offset = -1;
 

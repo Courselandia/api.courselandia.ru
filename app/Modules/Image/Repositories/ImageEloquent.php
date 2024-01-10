@@ -10,13 +10,9 @@ namespace App\Modules\Image\Repositories;
 
 use DB;
 use Generator;
-use App\Models\Entity;
-use App\Models\Rep\RepositoryEloquent;
-use App\Models\Rep\RepositoryQueryBuilder;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Modules\Image\Entities\Image as ImageEntity;
 use App\Modules\Image\Models\ImageEloquent as ImageEloquentModel;
-use App\Modules\Image\Models\ImageMongoDb as ImageMongoDbModel;
 use App\Models\Exceptions\ParameterInvalidException;
 
 /**
@@ -24,17 +20,15 @@ use App\Models\Exceptions\ParameterInvalidException;
  */
 class ImageEloquent extends Image
 {
-    use RepositoryEloquent;
-
     /**
      * Создание.
      *
-     * @param Entity|ImageEntity $entity Данные для добавления.
+     * @param ImageEntity $entity Данные для добавления.
      *
      * @return int|string Вернет ID последней вставленной строки.
      * @throws ParameterInvalidException
      */
-    public function create(Entity|ImageEntity $entity): int|string
+    public function create(ImageEntity $entity): int|string
     {
         /**
          * @var ImageEloquentModel $model
@@ -58,12 +52,12 @@ class ImageEloquent extends Image
      * Обновление.
      *
      * @param int|string $id Id записи для обновления.
-     * @param Entity|ImageEntity $entity Данные для добавления.
+     * @param ImageEntity $entity Данные для добавления.
      *
      * @return int|string Вернет ID вставленной строки.
      * @throws RecordNotExistException|ParameterInvalidException
      */
-    public function update(int|string $id, Entity|ImageEntity $entity): int|string
+    public function update(int|string $id, ImageEntity $entity): int|string
     {
         /**
          * @var ImageEloquentModel $model
@@ -107,17 +101,14 @@ class ImageEloquent extends Image
     /**
      * Получить по первичному ключу.
      *
-     * @param RepositoryQueryBuilder|null $repositoryQueryBuilder Запрос к репозиторию.
-     * @param Entity|ImageEntity|null $entity Сущность.
+     * @param int|string $id Id записи.
+     * @param ImageEntity|null $entity Сущность.
      *
-     * @return Entity|ImageEntity|null Данные.
+     * @return ImageEntity|null Данные.
      * @throws ParameterInvalidException
      */
-    public function get(
-        RepositoryQueryBuilder $repositoryQueryBuilder = null,
-        Entity|ImageEntity $entity = null
-    ): Entity|ImageEntity|null {
-        $image = $this->getById($repositoryQueryBuilder->getId());
+    public function get(int|string $id, ImageEntity $entity = null): ImageEntity|null {
+        $image = $this->getById($id);
 
         if ($image) {
             $image->byte = null;
@@ -125,12 +116,10 @@ class ImageEloquent extends Image
             return $image;
         }
 
-        $query = $this->query($repositoryQueryBuilder);
-
         /**
-         * @var ImageEloquentModel|ImageMongoDbModel $image
+         * @var ImageEloquentModel $image
          */
-        $image = $query->first();
+        $image = $this->newInstance()->find($id);
 
         if ($image) {
             $entity = $entity ? clone $entity->set($image->toArray()) : clone $this->getEntity()->set(
@@ -142,7 +131,7 @@ class ImageEloquent extends Image
             $entity->pathSource = $image->pathSource;
 
             $entity->byte = null;
-            $this->setById($repositoryQueryBuilder->getId(), $entity);
+            $this->setById($id, $entity);
 
             return $entity;
         }
@@ -176,12 +165,12 @@ class ImageEloquent extends Image
     /**
      * Получение всех записей.
      *
-     * @param Entity|ImageEntity|null $entity Сущность.
+     * @param ImageEntity|null $entity Сущность.
      *
      * @return Generator|ImageEntity|null Генератор.
      * @throws ParameterInvalidException
      */
-    public function all(Entity|ImageEntity $entity = null): Generator|ImageEntity|null
+    public function all(ImageEntity $entity = null): Generator|ImageEntity|null
     {
         $offset = -1;
 
@@ -189,7 +178,7 @@ class ImageEloquent extends Image
             $offset += 1;
 
             /**
-             * @var ImageEloquentModel|ImageMongoDbModel $image
+             * @var ImageEloquentModel $image
              */
             $image = $this->newInstance()
                 ->newQuery()

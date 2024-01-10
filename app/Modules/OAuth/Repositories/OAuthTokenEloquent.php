@@ -8,23 +8,120 @@
 
 namespace App\Modules\OAuth\Repositories;
 
-use App\Models\Entity;
-use App\Models\Rep\Repository;
-use App\Models\Rep\RepositoryQueryBuilder;
-use App\Models\Rep\RepositoryEloquent;
+use App\Models\Exceptions\ParameterInvalidException;
+use App\Models\Exceptions\RecordNotExistException;
+use App\Models\Repository;
 use App\Modules\OAuth\Entities\OAuthToken;
-use Illuminate\Database\Eloquent\Builder;
+use Carbon\Carbon;
 
 /**
  * Класс репозитория токенов на основе Eloquent.
- *
- * @method OAuthToken|Entity|null get(RepositoryQueryBuilder $repositoryQueryBuilder = null, Entity $entity = null)
- * @method OAuthToken[]|Entity[] read(RepositoryQueryBuilder $repositoryQueryBuilder = null, Entity $entity = null)
- * @method Builder query(RepositoryQueryBuilder $repositoryQueryBuilder = null)
- * @method int|string create(OAuthToken $token)
- * @method int|string update(int|string $id, OAuthToken $token)
  */
 class OAuthTokenEloquent extends Repository
 {
-    use RepositoryEloquent;
+    /**
+     * Получение токена.
+     *
+     * @param string|int|null $userId ID пользователя.
+     * @param string|null $token Токен.
+     * @param string|int|null $oauthTokenId ID токена обновления.
+     * @param Carbon|null $expiresAt Дата действия.
+     * @return OAuthToken|null Сущность токена.
+     *
+     * @throws ParameterInvalidException
+     */
+    public function get(
+        string|int|null $userId = null,
+        ?string $token = null,
+        string|int|null $oauthTokenId = null,
+        ?Carbon $expiresAt = null
+    ): ?OAuthToken
+    {
+        $query = $this->newInstance();
+
+        if ($userId) {
+            $query->where('id', $userId);
+        }
+
+        if ($token) {
+            $query->where('token', $token);
+        }
+
+        if ($oauthTokenId) {
+            $query->where('oauth_token_id', $oauthTokenId);
+        }
+
+        if ($expiresAt) {
+            $query->where('expires_at', '<=', $expiresAt);
+        }
+
+        $item = $query->get();
+
+        return $item ? new OAuthToken($item) : null;
+    }
+
+    /**
+     * Создание токена.
+     *
+     * @param OAuthToken $entity Сущность токена.
+     *
+     * @return int|string ID токена.
+     *
+     * @throws ParameterInvalidException
+     */
+    public function create(OAuthToken $entity): int|string
+    {
+        $model = $this->newInstance();
+
+        $model->user_id = $entity->user_id;
+        $model->token = $entity->token;
+        $model->expires_at = $entity->expires_at;
+
+        $model->save();
+
+        return $model->id;
+    }
+
+    /**
+     * Обновление токена.
+     *
+     * @param string|int $id ID токена.
+     * @param OAuthToken $entity Сущность токена.
+     *
+     * @return int|string ID токена.
+     *
+     * @throws ParameterInvalidException
+     * @throws RecordNotExistException
+     */
+    public function update(string|int $id, OAuthToken $entity): int|string
+    {
+        $model = $this->newInstance()->find($id);
+
+        if ($model) {
+            $model->user_id = $entity->user_id;
+            $model->token = $entity->token;
+            $model->expires_at = $entity->expires_at;
+
+            $model->save();
+
+            return $id;
+        }
+
+        throw new RecordNotExistException('The token #' . $id . ' does not exist.');
+    }
+
+    /**
+     * Удаление.
+     *
+     * @param int|string|array|null $id Id записи для удаления.
+     *
+     * @return bool Вернет булево значение успешности операции.
+     * @throws ParameterInvalidException
+     */
+    public function destroy(int|string|array $id = null): bool
+    {
+        $model = $this->newInstance();
+
+        return $model->destroy($id);
+    }
 }

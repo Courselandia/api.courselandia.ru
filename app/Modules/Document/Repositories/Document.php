@@ -8,12 +8,11 @@
 
 namespace App\Modules\Document\Repositories;
 
-use App\Models\Entity;
-use App\Modules\Document\Entities\Document as DocumentEntity;
-use File;
-use App\Models\Rep\Repository;
 use Exception;
+use File;
 use Generator;
+use App\Models\Repository;
+use App\Modules\Document\Entities\Document as DocumentEntity;
 
 /**
  * Абстрактный класс построения репозитория.
@@ -38,7 +37,7 @@ abstract class Document extends Repository
     /**
      * Получение документа по ее ID из базы ранее полученных документов.
      *
-     * @param  int|string  $id  ID документа.
+     * @param int|string $id ID документа.
      *
      * @return DocumentEntity|null Сущность документа.
      */
@@ -50,8 +49,8 @@ abstract class Document extends Repository
     /**
      * Установка данных документа по ее ID в базу ранее полученных документов.
      *
-     * @param  int|string  $id  ID документа.
-     * @param  DocumentEntity  $document  Сущность документа.
+     * @param int|string $id ID документа.
+     * @param DocumentEntity $document Сущность документа.
      *
      * @return void
      */
@@ -63,11 +62,11 @@ abstract class Document extends Repository
     /**
      * Получение всех записей.
      *
-     * @param  Entity|DocumentEntity|null  $entity  Сущность.
+     * @param DocumentEntity|null $entity Сущность.
      *
      * @return Generator|DocumentEntity|null Генератор.
      */
-    abstract public function all(Entity|DocumentEntity $entity = null): Generator|DocumentEntity|null;
+    abstract public function all(DocumentEntity $entity = null): Generator|DocumentEntity|null;
 
     /**
      * Получить количество всех документов.
@@ -79,27 +78,27 @@ abstract class Document extends Repository
     /**
      * Создание.
      *
-     * @param  Entity|DocumentEntity  $entity  Данные для добавления.
+     * @param DocumentEntity $entity Данные для добавления.
      *
      * @return int|string Вернет ID последней вставленной строки.
      */
-    abstract public function create(Entity|DocumentEntity $entity): int|string;
+    abstract public function create(DocumentEntity $entity): int|string;
 
     /**
      * Обновление.
      *
-     * @param  int|string  $id  Id записи для обновления.
-     * @param  Entity|DocumentEntity  $entity  Данные для добавления.
+     * @param int|string $id Id записи для обновления.
+     * @param DocumentEntity $entity Данные для добавления.
      *
      * @return int|string Вернет ID вставленной строки.
      */
-    abstract public function update(int|string $id, Entity|DocumentEntity $entity): int|string;
+    abstract public function update(int|string $id, DocumentEntity $entity): int|string;
 
     /**
      * Обновление байт кода картинки.
      *
-     * @param  int|string  $id  Id записи для обновления.
-     * @param  string  $byte  Байт код картинки.
+     * @param int|string $id Id записи для обновления.
+     * @param string $byte Байт код картинки.
      *
      * @return bool Вернет булево значение успешности операции.
      */
@@ -108,7 +107,7 @@ abstract class Document extends Repository
     /**
      * Удаление.
      *
-     * @param  int|string|array|null  $id  Id записи для удаления.
+     * @param int|string|array|null $id Id записи для удаления.
      *
      * @return bool Вернет булево значение успешности операции.
      */
@@ -118,7 +117,7 @@ abstract class Document extends Repository
      * Создание копии документа.
      * Копия создается во временной папке с псевдослучайным названием.
      *
-     * @param  string  $path  Путь к документу из которого нужно сделать копию.
+     * @param string $path Путь к документу из которого нужно сделать копию.
      *
      * @return string Возвращает путь к копии.
      * @throws Exception
@@ -134,20 +133,20 @@ abstract class Document extends Repository
     /**
      * Получение пути к файлу для временного документа.
      *
-     * @param  mixed  $format  Формат документа в нумерованном виде или текстовом.
+     * @param mixed $format Формат документа в нумерованном виде или текстовом.
      *
      * @return string Путь к временному документу.
      * @throws Exception
      */
     public function tmp(string $format): string
     {
-        return storage_path('app/tmp/doc_'.time().mt_rand(1, 100000).'.'.$format);
+        return storage_path('app/tmp/doc_' . time() . mt_rand(1, 100000) . '.' . $format);
     }
 
     /**
      * Установка папки хранения.
      *
-     * @param  string  $folder  Название папки.
+     * @param string $folder Название папки.
      *
      * @return $this Вернет текущий объект.
      */
