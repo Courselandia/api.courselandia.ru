@@ -11,8 +11,6 @@ namespace App\Modules\User\Entities;
 use App\Models\EntityNew;
 use Hash;
 use Carbon\Carbon;
-use Spatie\LaravelData\Attributes\WithCast;
-use Spatie\LaravelData\Casts\DateTimeInterfaceCast;
 
 /**
  * Сущность для верификации пользователя.
@@ -52,7 +50,6 @@ class UserVerification extends EntityNew
      *
      * @var ?Carbon
      */
-    #[WithCast(DateTimeInterfaceCast::class)]
     public ?Carbon $created_at = null;
 
     /**
@@ -60,7 +57,6 @@ class UserVerification extends EntityNew
      *
      * @var ?Carbon
      */
-    #[WithCast(DateTimeInterfaceCast::class)]
     public ?Carbon $updated_at = null;
 
     /**
@@ -68,7 +64,6 @@ class UserVerification extends EntityNew
      *
      * @var ?Carbon
      */
-    #[WithCast(DateTimeInterfaceCast::class)]
     public ?Carbon $deleted_at = null;
 
     /**

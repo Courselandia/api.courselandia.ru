@@ -10,8 +10,6 @@ namespace App\Modules\User\Entities;
 
 use App\Models\EntityNew;
 use Carbon\Carbon;
-use Spatie\LaravelData\Attributes\WithCast;
-use Spatie\LaravelData\Casts\DateTimeInterfaceCast;
 use Str;
 use Illuminate\Http\UploadedFile;
 use App\Modules\Image\Entities\Image;
@@ -138,7 +136,6 @@ class User extends EntityNew
      *
      * @var Carbon|null
      */
-    #[WithCast(DateTimeInterfaceCast::class)]
     public Carbon|null $created_at = null;
 
     /**
@@ -146,7 +143,6 @@ class User extends EntityNew
      *
      * @var Carbon|null
      */
-    #[WithCast(DateTimeInterfaceCast::class)]
     public Carbon|null $updated_at = null;
 
     /**
@@ -154,7 +150,6 @@ class User extends EntityNew
      *
      * @var Carbon|null
      */
-    #[WithCast(DateTimeInterfaceCast::class)]
     public Carbon|null $deleted_at = null;
 
     /**

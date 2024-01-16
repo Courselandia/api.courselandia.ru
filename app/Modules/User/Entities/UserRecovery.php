@@ -11,8 +11,6 @@ namespace App\Modules\User\Entities;
 use Hash;
 use App\Models\EntityNew;
 use Carbon\Carbon;
-use Spatie\LaravelData\Attributes\WithCast;
-use Spatie\LaravelData\Casts\DateTimeInterfaceCast;
 
 /**
  * Сущность для восстановления пароля пользователя.
@@ -52,7 +50,6 @@ class UserRecovery extends EntityNew
      *
      * @var Carbon|null
      */
-    #[WithCast(DateTimeInterfaceCast::class)]
     public Carbon|null $created_at = null;
 
     /**
@@ -60,7 +57,6 @@ class UserRecovery extends EntityNew
      *
      * @var Carbon|null
      */
-    #[WithCast(DateTimeInterfaceCast::class)]
     public Carbon|null $updated_at = null;
 
     /**
@@ -68,7 +64,6 @@ class UserRecovery extends EntityNew
      *
      * @var Carbon|null
      */
-    #[WithCast(DateTimeInterfaceCast::class)]
     public Carbon|null $deleted_at = null;
 
     /**
