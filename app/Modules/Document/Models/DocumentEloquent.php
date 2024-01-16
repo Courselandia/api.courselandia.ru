@@ -14,6 +14,7 @@ use Eloquent;
 use App\Models\Delete;
 use App\Models\Validate;
 use EloquentFilter\Filterable;
+use Illuminate\Database\Eloquent\Concerns\HasTimestamps;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
@@ -35,6 +36,7 @@ class DocumentEloquent extends Eloquent
     use SoftDeletes;
     use Validate;
     use Filterable;
+    use HasTimestamps;
 
     /**
      * Название таблицы базы данных.

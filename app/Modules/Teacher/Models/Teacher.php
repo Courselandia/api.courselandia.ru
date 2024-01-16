@@ -13,6 +13,7 @@ use App\Modules\Article\Models\Article;
 use App\Modules\Teacher\Images\ImageBig;
 use App\Modules\Teacher\Images\ImageMiddle;
 use App\Modules\Teacher\Images\ImageSmall;
+use Illuminate\Database\Eloquent\Concerns\HasTimestamps;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Eloquent;
 use App\Models\Status;
@@ -70,6 +71,7 @@ class Teacher extends Eloquent
     use Status;
     use Validate;
     use Filterable;
+    use HasTimestamps;
 
     /**
      * Атрибуты, для которых разрешено массовое назначение.

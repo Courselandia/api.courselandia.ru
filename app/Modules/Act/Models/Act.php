@@ -14,6 +14,7 @@ use Eloquent;
 use App\Models\Validate;
 use App\Models\Delete;
 use EloquentFilter\Filterable;
+use Illuminate\Database\Eloquent\Concerns\HasTimestamps;
 
 /**
  * Класс модель для действий на основе Eloquent.
@@ -29,6 +30,7 @@ class Act extends Eloquent
     use Sortable;
     use Validate;
     use Filterable;
+    use HasTimestamps;
 
     /**
      * Атрибуты, для которых разрешено массовое назначение.

@@ -14,6 +14,7 @@ use App\Modules\Feedback\Filters\FeedbackFilter;
 use Eloquent;
 use App\Models\Validate;
 use EloquentFilter\Filterable;
+use Illuminate\Database\Eloquent\Concerns\HasTimestamps;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\Delete;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -36,6 +37,7 @@ class Feedback extends Eloquent
     use SoftDeletes;
     use Validate;
     use Filterable;
+    use HasTimestamps;
 
     /**
      * Название таблицы.

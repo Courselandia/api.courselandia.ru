@@ -13,6 +13,7 @@ use App\Models\Delete;
 use App\Models\Validate;
 use App\Models\Sortable;
 use EloquentFilter\Filterable;
+use Illuminate\Database\Eloquent\Concerns\HasTimestamps;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -38,6 +39,7 @@ class TeacherSocialMedia extends Eloquent
     use SoftDeletes;
     use Validate;
     use Filterable;
+    use HasTimestamps;
 
     public function getTable(): string
     {

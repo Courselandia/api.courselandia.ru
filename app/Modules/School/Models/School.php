@@ -16,6 +16,7 @@ use App\Modules\Review\Models\Review;
 use App\Modules\School\Images\ImageLogo;
 use App\Modules\School\Images\ImageSite;
 use App\Modules\Teacher\Models\Teacher;
+use Illuminate\Database\Eloquent\Concerns\HasTimestamps;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
@@ -69,6 +70,7 @@ class School extends Eloquent
     use Status;
     use Validate;
     use Filterable;
+    use HasTimestamps;
 
     /**
      * Типизирование атрибутов.

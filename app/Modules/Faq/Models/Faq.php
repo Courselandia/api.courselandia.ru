@@ -14,6 +14,7 @@ use App\Models\Delete;
 use App\Models\Validate;
 use App\Models\Sortable;
 use EloquentFilter\Filterable;
+use Illuminate\Database\Eloquent\Concerns\HasTimestamps;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -40,6 +41,7 @@ class Faq extends Eloquent
     use SoftDeletes;
     use Validate;
     use Filterable;
+    use HasTimestamps;
 
     /**
      * Атрибуты, для которых разрешено массовое назначение.

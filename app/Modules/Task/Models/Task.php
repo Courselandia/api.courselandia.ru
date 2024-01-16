@@ -17,6 +17,7 @@ use App\Models\Sortable;
 use App\Models\Enums\EnumList;
 use App\Modules\User\Models\User;
 use EloquentFilter\Filterable;
+use Illuminate\Database\Eloquent\Concerns\HasTimestamps;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -47,6 +48,7 @@ class Task extends Eloquent
     use Status;
     use Validate;
     use Filterable;
+    use HasTimestamps;
 
     /**
      * Типизирование атрибутов.

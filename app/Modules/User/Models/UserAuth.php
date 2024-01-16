@@ -13,6 +13,7 @@ use App\Modules\User\Filters\UserAuthFilter;
 use Eloquent;
 use App\Models\Validate;
 use EloquentFilter\Filterable;
+use Illuminate\Database\Eloquent\Concerns\HasTimestamps;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\Delete;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -39,6 +40,7 @@ class UserAuth extends Eloquent
     use SoftDeletes;
     use Validate;
     use Filterable;
+    use HasTimestamps;
 
     /**
      * Атрибуты, для которых разрешено массовое назначение.

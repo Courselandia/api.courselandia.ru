@@ -8,13 +8,13 @@
 
 namespace App\Modules\Act\Entities;
 
-use App\Models\Entity;
+use App\Models\EntityNew;
 use Carbon\Carbon;
 
 /**
  * Сущность для действий.
  */
-class Act extends Entity
+class Act extends EntityNew
 {
     /**
      * Дата.
@@ -50,4 +50,26 @@ class Act extends Entity
      * @var Carbon|null
      */
     public ?Carbon $updated_at = null;
+
+    /**
+     * @param string|int|null $id ID.
+     * @param string|null $index Индекс.
+     * @param int|null $count Количество.
+     * @param int|null $minutes Минут.
+     * @param Carbon|null $updated_at Дата обновления.
+     */
+    public function __construct(
+        string|int|null $id = null,
+        ?string $index = null,
+        ?int $count = null,
+        ?int $minutes = null,
+        ?Carbon $updated_at = null
+    )
+    {
+        $this->id = $id;
+        $this->index = $index;
+        $this->count = $count;
+        $this->minutes = $minutes;
+        $this->updated_at = $updated_at;
+    }
 }

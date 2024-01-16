@@ -19,6 +19,7 @@ use App\Models\Validate;
 use App\Models\Sortable;
 use EloquentFilter\Filterable;
 use App\Modules\Metatag\Models\Metatag;
+use Illuminate\Database\Eloquent\Concerns\HasTimestamps;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -54,6 +55,7 @@ class Tool extends Eloquent
     use Status;
     use Validate;
     use Filterable;
+    use HasTimestamps;
 
     /**
      * Атрибуты, для которых разрешено массовое назначение.

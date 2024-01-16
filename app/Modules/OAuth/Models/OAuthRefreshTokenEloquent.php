@@ -14,6 +14,7 @@ use Eloquent;
 use App\Models\Validate;
 use App\Models\Delete;
 use EloquentFilter\Filterable;
+use Illuminate\Database\Eloquent\Concerns\HasTimestamps;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
@@ -32,6 +33,7 @@ class OAuthRefreshTokenEloquent extends Eloquent
     use Sortable;
     use Validate;
     use Filterable;
+    use HasTimestamps;
 
     /**
      * Название таблицы базы данных.

@@ -11,6 +11,7 @@ namespace App\Modules\Publication\Models;
 use DB;
 use Exception;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Concerns\HasTimestamps;
 use Size;
 use Eloquent;
 use ImageStore;
@@ -62,6 +63,7 @@ class Publication extends Eloquent
     use Status;
     use Validate;
     use Filterable;
+    use HasTimestamps;
 
     /**
      * Атрибуты, для которых разрешено массовое назначение.

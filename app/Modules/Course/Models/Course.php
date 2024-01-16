@@ -14,6 +14,7 @@ use App\Modules\Course\Enums\Duration;
 use App\Modules\Course\Enums\Language;
 use App\Modules\Metatag\Models\Metatag;
 use App\Modules\Review\Models\Review;
+use Illuminate\Database\Eloquent\Concerns\HasTimestamps;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use App\Models\Enums\EnumList;
 use App\Modules\Category\Models\Category;
@@ -113,6 +114,7 @@ class Course extends Eloquent
     use SoftDeletes;
     use Validate;
     use Filterable;
+    use HasTimestamps;
 
     /**
      * Типизирование атрибутов.

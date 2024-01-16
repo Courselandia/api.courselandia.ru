@@ -14,6 +14,7 @@ use App\Models\Status;
 use App\Models\Delete;
 use App\Models\Validate;
 use EloquentFilter\Filterable;
+use Illuminate\Database\Eloquent\Concerns\HasTimestamps;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Modules\Metatag\Database\Factories\MetatagFactory;
@@ -37,6 +38,7 @@ class Metatag extends Eloquent
     use Validate;
     use HasFactory;
     use Filterable;
+    use HasTimestamps;
 
     /**
      * Атрибуты, для которых разрешено массовое назначение.
