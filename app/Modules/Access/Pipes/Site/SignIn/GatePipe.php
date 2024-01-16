@@ -8,10 +8,10 @@ namespace App\Modules\Access\Pipes\Site\SignIn;
 
 use Closure;
 use App\Models\Contracts\Pipe;
-use App\Models\DTO;
+use App\Models\Data;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Access\Actions\AccessGateAction;
-use App\Modules\Access\DTO\Decorators\AccessSignIn;
+use App\Modules\Access\Data\Decorators\AccessSignIn;
 
 /**
  * Авторизация пользователя: Получение данных о пользователя.
@@ -21,13 +21,13 @@ class GatePipe implements Pipe
     /**
      * Метод, который будет вызван у pipeline.
      *
-     * @param DTO|AccessSignIn $data DTO.
+     * @param Data|AccessSignIn $data Данные.
      * @param Closure $next Ссылка на следующий pipe.
      *
      * @return mixed Вернет значение полученное после выполнения следующего pipe.
      * @throws ParameterInvalidException
      */
-    public function handle(DTO|AccessSignIn $data, Closure $next): mixed
+    public function handle(Data|AccessSignIn $data, Closure $next): mixed
     {
         $action = new AccessGateAction($data->id);
 

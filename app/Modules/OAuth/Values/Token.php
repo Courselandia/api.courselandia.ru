@@ -6,7 +6,7 @@
  * @package App\Modules\OAuth
  */
 
-namespace App\Modules\OAuth\VO;
+namespace App\Modules\OAuth\Values;
 
 use App\Models\Value;
 

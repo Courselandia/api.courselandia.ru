@@ -10,7 +10,7 @@ namespace App\Modules\Access\Decorators\Site;
 
 use App\Models\Decorator;
 use App\Modules\Access\Entities\AccessVerified;
-use App\Modules\Access\DTO\Decorators\AccessVerify;
+use App\Modules\Access\Data\Decorators\AccessVerify;
 use Illuminate\Pipeline\Pipeline;
 
 /**

@@ -8,7 +8,7 @@
 
 namespace App\Modules\Access\Pipes\Site\Social;
 
-use App\Models\DTO;
+use App\Models\Data;
 use Cache;
 use Closure;
 use Util;
@@ -16,7 +16,7 @@ use App\Models\Contracts\Pipe;
 use App\Models\Enums\CacheTime;
 use App\Modules\User\Models\User;
 use App\Modules\User\Entities\User as UserEntity;
-use App\Modules\Access\DTO\Decorators\AccessSocial;
+use App\Modules\Access\Data\Decorators\AccessSocial;
 
 /**
  * Регистрация нового пользователя через социальные сети: Получение данных для авторизованного пользователя.
@@ -26,12 +26,12 @@ class DataPipe implements Pipe
     /**
      * Метод, который будет вызван у pipeline.
      *
-     * @param DTO|AccessSocial $data DTO.
+     * @param Data|AccessSocial $data Данные.
      * @param Closure $next Ссылка на следующий pipe.
      *
      * @return mixed Вернет значение полученное после выполнения следующего pipe.
      */
-    public function handle(DTO|AccessSocial $data, Closure $next): mixed
+    public function handle(Data|AccessSocial $data, Closure $next): mixed
     {
         if ($data->create && !isset($data->user->password)) {
             $data->password = UserEntity::generatePassword();

@@ -69,11 +69,7 @@ class CategoryLinkAction extends Action
                     ->first();
 
                 if ($result) {
-                    $item = $result->toArray();
-                    $entity = new CategoryEntity();
-                    $entity->set($item);
-
-                    return $entity;
+                    return CategoryEntity::from($result->toArray());
                 }
 
                 return null;

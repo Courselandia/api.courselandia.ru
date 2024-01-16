@@ -28,28 +28,28 @@ class AccessUpdate extends EntityNew
      *
      * @var string|null
      */
-    public string|null $first_name;
+    public string|null $first_name = null;
 
     /**
      * Фамилия.
      *
      * @var string|null
      */
-    public string|null $second_name;
+    public string|null $second_name = null;
 
     /**
      * Телефон.
      *
      * @var string|null
      */
-    public string|null $phone;
+    public string|null $phone = null;
 
     /**
      * Сущность пользователя.
      *
      * @var User|null
      */
-    public User|null $user;
+    public User|null $user = null;
 
     /**
      * @param string|int $id ID пользователя.
@@ -60,9 +60,9 @@ class AccessUpdate extends EntityNew
      */
     public function __construct(
         string|int $id,
-        ?string $first_name,
-        ?string $second_name,
-        ?string $phone,
+        ?string $first_name = null,
+        ?string $second_name = null,
+        ?string $phone = null,
         ?User $user = null
     )
     {

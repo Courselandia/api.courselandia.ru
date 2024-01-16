@@ -9,7 +9,7 @@
 namespace App\Modules\Access\Entities;
 
 use App\Models\EntityNew;
-use App\Modules\OAuth\VO\Token;
+use App\Modules\OAuth\Values\Token;
 use App\Modules\User\Entities\User;
 
 /**
@@ -57,14 +57,14 @@ class AccessSignIn extends EntityNew
      *
      * @var bool
      */
-    public bool $remember;
+    public bool $remember = false;
 
     /**
      * Двухфакторная аутентификация.
      *
      * @var bool
      */
-    public bool $two_factor;
+    public bool $two_factor = false;
 
     /**
      * @param int|string $id ID пользователя.

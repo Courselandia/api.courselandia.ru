@@ -11,7 +11,7 @@ namespace App\Modules\Access\Decorators\Site;
 use App\Models\Decorator;
 use App\Modules\Access\Entities\AccessSignedIn;
 use Illuminate\Pipeline\Pipeline;
-use App\Modules\Access\DTO\Decorators\AccessSignIn as AccessSignInDto;
+use App\Modules\Access\Data\Decorators\AccessSignIn as AccessSignInData;
 
 /**
  * Класс декоратор для авторизации пользователя.
@@ -19,18 +19,18 @@ use App\Modules\Access\DTO\Decorators\AccessSignIn as AccessSignInDto;
 class AccessSignInDecorator extends Decorator
 {
     /**
-     * DTO для авторизации пользователя.
+     * Данные для авторизации пользователя.
      *
-     * @var AccessSignInDto
+     * @var AccessSignInData
      */
-    private AccessSignInDto $data;
+    private AccessSignInData $data;
 
     /**
-     * DTO для авторизации пользователя.
+     * Данные для авторизации пользователя.
      *
-     * @param AccessSignInDto $data
+     * @param AccessSignInData $data
      */
-    public function __construct(AccessSignInDto $data)
+    public function __construct(AccessSignInData $data)
     {
         $this->data = $data;
     }
@@ -43,7 +43,7 @@ class AccessSignInDecorator extends Decorator
     public function run(): AccessSignedIn
     {
         /**
-         * @var AccessSignInDto $data
+         * @var AccessSignInData $data
          */
         $data = app(Pipeline::class)
             ->send($this->data)

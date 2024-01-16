@@ -55,7 +55,7 @@ class AllowMiddlewareTest extends TestCase
             5
         );
 
-        if(!$request instanceof Request) {
+        if (!$request instanceof Request) {
             $this->fail();
         }
 
@@ -93,7 +93,7 @@ class AllowMiddlewareTest extends TestCase
 
         $this->assertTrue(
             $response->getStatusCode() === 401,
-            'The status code has to be 401 but got '.$response->getStatusCode().'.'
+            'The status code has to be 401 but got ' . $response->getStatusCode() . '.'
         );
 
         Act::delete($this->name);

@@ -8,9 +8,10 @@
 
 namespace App\Modules\Analyzer\Entities;
 
+use App\Modules\Analyzer\Casts\Analyzerable;
+use Attribute;
 use Carbon\Carbon;
-use App\Models\Entities;
-use App\Models\Entity;
+use App\Models\EntityNew;
 use App\Modules\Analyzer\Enums\Status;
 use App\Modules\Course\Entities\Course;
 use App\Modules\Article\Entities\Article;
@@ -21,11 +22,12 @@ use App\Modules\Profession\Entities\Profession;
 use App\Modules\Category\Entities\Category;
 use App\Modules\School\Entities\School;
 use App\Modules\Teacher\Entities\Teacher;
+use Spatie\LaravelData\Attributes\WithCast;
 
 /**
  * Сущность хранения результатов анализа текста.
  */
-class Analyzer extends Entity
+class Analyzer extends EntityNew
 {
     /**
      * ID записи.
@@ -95,21 +97,21 @@ class Analyzer extends Entity
      *
      * @var array|null
      */
-    public array|null $params = null;
+    public ?array $params = null;
 
     /**
      * Количество попыток получить проверенный текст.
      *
      * @var int|null
      */
-    public int|null $tries = 0;
+    public ?int $tries = null;
 
     /**
      * Статус.
      *
      * @var Status|null
      */
-    public Status|null $status = null;
+    public ?Status $status = null;
 
     /**
      * ID сущности.
@@ -123,7 +125,7 @@ class Analyzer extends Entity
      *
      * @var int|string|null
      */
-    public string|null $analyzerable_type = null;
+    public ?string $analyzerable_type = null;
 
     /**
      * Статус сущности.
@@ -156,18 +158,51 @@ class Analyzer extends Entity
     /**
      * Сущность.
      *
-     * @var Course|null
+     * @var array|null
      */
-    #[Entities([
-        'App\Modules\Course\Models\Course' => Course::class,
-        'App\Modules\Article\Models\Article' => Article::class,
-        'App\Modules\Skill\Models\Skill' => Skill::class,
-        'App\Modules\Tool\Models\Tool' => Tool::class,
-        'App\Modules\Direction\Models\Direction' => Direction::class,
-        'App\Modules\Profession\Models\Profession' => Profession::class,
-        'App\Modules\Category\Models\Category' => Category::class,
-        'App\Modules\School\Models\School' => School::class,
-        'App\Modules\Teacher\Models\Teacher' => Teacher::class,
-    ], 'analyzerable_type')]
-    public Course|Article|Skill|Tool|Direction|Profession|Category|School|Teacher|null $analyzerable = null;
+    #[WithCast(Analyzerable::class)]
+    public array|null $analyzerable = null;
+
+    public function __construct(
+        int|string|null  $id = null,
+        int|string|null  $task_id = null,
+        ?string          $category = null,
+        ?string          $category_name = null,
+        ?string          $category_label = null,
+        ?float           $unique = null,
+        ?int             $water = null,
+        ?int             $spam = null,
+        ?string          $text = null,
+        ?array           $params = null,
+        ?int             $tries = null,
+        Status|null      $status = null,
+        int|string|null  $analyzerable_id = null,
+        ?string          $analyzerable_type = null,
+        string|bool|null $analyzerable_status = null,
+        ?Carbon          $created_at = null,
+        ?Carbon          $updated_at = null,
+        ?Carbon          $deleted_at = null,
+        array|null       $analyzerable = null,
+    )
+    {
+        $this->id = $id;
+        $this->task_id = $task_id;
+        $this->category = $category;
+        $this->category_name = $category_name;
+        $this->category_label = $category_label;
+        $this->unique = $unique;
+        $this->water = $water;
+        $this->spam = $spam;
+        $this->text = $text;
+        $this->params = $params;
+        $this->tries = $tries;
+        $this->status = $status;
+        $this->analyzerable_id = $analyzerable_id;
+        $this->analyzerable_type = $analyzerable_type;
+        $this->analyzerable_status = $analyzerable_status;
+        $this->created_at = $created_at;
+        $this->updated_at = $updated_at;
+        $this->deleted_at = $deleted_at;
+        $this->analyzerable = $analyzerable;
+    }
 }

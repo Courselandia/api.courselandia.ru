@@ -6,14 +6,14 @@
  * @package App\Modules\User
  */
 
-namespace App\Modules\Access\DTO\Actions;
+namespace App\Modules\Access\Data\Actions;
 
-use App\Models\DTO;
+use App\Models\Data;
 
 /**
- * DTO для действия регистрация нового пользователя.
+ * Данные для действия регистрация нового пользователя.
  */
-class AccessSignUp extends DTO
+class AccessSignUp extends Data
 {
     /**
      * Логин.
@@ -34,21 +34,21 @@ class AccessSignUp extends DTO
      *
      * @var string|null
      */
-    public string|null $first_name;
+    public string|null $first_name = null;
 
     /**
      * Фамилия.
      *
      * @var string|null
      */
-    public string|null $second_name;
+    public string|null $second_name = null;
 
     /**
      * Телефон.
      *
      * @var string|null
      */
-    public string|null $phone;
+    public string|null $phone = null;
 
     /**
      * Верифицировать пользователя.
@@ -68,9 +68,9 @@ class AccessSignUp extends DTO
     public function __construct(
         string  $login,
         string  $password,
-        ?string $first_name,
-        ?string $second_name,
-        ?string $phone,
+        ?string $first_name = null,
+        ?string $second_name = null,
+        ?string $phone = null,
         bool    $verify = false,
     )
     {

@@ -10,14 +10,14 @@ namespace App\Modules\Access\Actions\Site;
 
 use App\Models\Action;
 use App\Modules\Access\Decorators\Site\AccessSignUpDecorator;
-use App\Modules\Access\DTO\Actions\AccessSignUp;
+use App\Modules\Access\Data\Actions\AccessSignUp;
 use App\Modules\Access\Entities\AccessSignedUp;
 use App\Modules\Access\Pipes\Site\SignUp\CreatePipe;
 use App\Modules\Access\Pipes\Site\SignUp\RolePipe;
 use App\Modules\Access\Pipes\Site\SignUp\VerificationPipe;
 use App\Modules\Access\Pipes\Gate\GetPipe;
 use App\Modules\Access\Pipes\Site\SignIn\AuthPipe;
-use App\Modules\Access\DTO\Decorators\AccessSignUp as AccessSignUpDtoDecorator;
+use App\Modules\Access\Data\Decorators\AccessSignUp as AccessSignUpDataDecorator;
 
 /**
  * Регистрация нового пользователя.
@@ -25,7 +25,7 @@ use App\Modules\Access\DTO\Decorators\AccessSignUp as AccessSignUpDtoDecorator;
 class AccessSignUpAction extends Action
 {
     /**
-     * DTO для действия регистрация нового пользователя.
+     * Данные для действия регистрация нового пользователя.
      *
      * @var AccessSignUp
      */
@@ -43,7 +43,7 @@ class AccessSignUpAction extends Action
      */
     public function run(): AccessSignedUp
     {
-        $decorator = new AccessSignUpDecorator(AccessSignUpDtoDecorator::from($this->data->toArray()));
+        $decorator = new AccessSignUpDecorator(AccessSignUpDataDecorator::from($this->data->toArray()));
 
         return $decorator->setActions([
             CreatePipe::class,

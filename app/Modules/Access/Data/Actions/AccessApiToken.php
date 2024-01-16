@@ -6,14 +6,14 @@
  * @package App\Modules\User
  */
 
-namespace App\Modules\Access\DTO\Actions;
+namespace App\Modules\Access\Data\Actions;
 
-use App\Models\DTO;
+use App\Models\Data;
 
 /**
- * DTO для действия генерации токена.
+ * Данные для действия генерации токена.
  */
-class AccessApiToken extends DTO
+class AccessApiToken extends Data
 {
     /**
      * Логин.
@@ -34,14 +34,14 @@ class AccessApiToken extends DTO
      *
      * @var bool
      */
-    public bool $force;
+    public bool $force = false;
 
     /**
      * Запомнить пользователя.
      *
      * @var bool
      */
-    public bool $remember;
+    public bool $remember = false;
 
     /**
      * @param string $login Логин.

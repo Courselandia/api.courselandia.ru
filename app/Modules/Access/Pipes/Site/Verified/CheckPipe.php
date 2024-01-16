@@ -12,12 +12,12 @@ use Cache;
 use Closure;
 use Config;
 use Util;
-use App\Models\DTO;
+use App\Models\Data;
 use App\Models\Enums\CacheTime;
 use ReflectionException;
 use App\Models\Contracts\Pipe;
 use App\Models\Exceptions\ParameterInvalidException;
-use App\Modules\Access\DTO\Decorators\AccessVerify;
+use App\Modules\Access\Data\Decorators\AccessVerify;
 use App\Modules\User\Models\User;
 use App\Modules\User\Models\UserVerification;
 use App\Models\Exceptions\UserNotExistException;
@@ -33,7 +33,7 @@ class CheckPipe implements Pipe
     /**
      * Метод, который будет вызван у pipeline.
      *
-     * @param DTO|AccessVerify $data DTO.
+     * @param Data|AccessVerify $data Данные.
      * @param Closure $next Ссылка на следующий pipe.
      *
      * @return mixed Вернет значение полученное после выполнения следующего pipe.
@@ -43,7 +43,7 @@ class CheckPipe implements Pipe
      * @throws ParameterInvalidException
      * @throws ReflectionException|UserVerifiedException
      */
-    public function handle(DTO|AccessVerify $data, Closure $next): mixed
+    public function handle(Data|AccessVerify $data, Closure $next): mixed
     {
         $id = $data->id;
         $cacheKey = Util::getKey('access', 'user', 'model', $id);

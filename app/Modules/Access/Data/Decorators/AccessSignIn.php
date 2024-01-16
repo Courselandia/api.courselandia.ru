@@ -6,16 +6,16 @@
  * @package App\Modules\User
  */
 
-namespace App\Modules\Access\DTO\Decorators;
+namespace App\Modules\Access\Data\Decorators;
 
-use App\Models\DTO;
-use App\Modules\OAuth\VO\Token;
+use App\Models\Data;
+use App\Modules\OAuth\Values\Token;
 use App\Modules\User\Entities\User;
 
 /**
- * DTO для декоратора авторизации.
+ * Данные для декоратора авторизации.
  */
-class AccessSignIn extends DTO
+class AccessSignIn extends Data
 {
     /**
      * ID пользователя.
@@ -43,19 +43,19 @@ class AccessSignIn extends DTO
      *
      * @var User|null
      */
-    public ?User $user;
+    public ?User $user = null;
 
     /**
      * @var Token|null
      */
-    public ?Token $token;
+    public ?Token $token = null;
 
     /**
      * Сущность для хранения API токена.
      *
      * @var bool
      */
-    public bool $remember;
+    public bool $remember = false;
 
     /**
      * @param int|null $id ID пользователя.
@@ -68,8 +68,8 @@ class AccessSignIn extends DTO
         ?int   $id,
         string $login,
         string $password,
-        ?User  $user,
-        ?Token $token,
+        ?User  $user = null,
+        ?Token $token = null,
         bool   $remember = false,
     )
     {

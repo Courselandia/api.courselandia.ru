@@ -6,17 +6,16 @@
  * @package App\Modules\User
  */
 
-namespace App\Modules\Access\DTO\Decorators;
+namespace App\Modules\Access\Data\Decorators;
 
-use App\Models\DTO;
-use App\Models\EntityNew;
+use App\Models\Data;
 use App\Modules\Access\Entities\AccessApiToken;
 use App\Modules\User\Entities\User;
 
 /**
- * DTO для декоратора верификации пользователя.
+ * Данные для декоратора верификации пользователя.
  */
-class AccessVerify extends DTO
+class AccessVerify extends Data
 {
     /**
      * ID пользователя.
@@ -37,14 +36,14 @@ class AccessVerify extends DTO
      *
      * @var User|null
      */
-    public ?User $user;
+    public ?User $user = null;
 
     /**
      * Сущность для хранения API токена.
      *
      * @var AccessApiToken|null
      */
-    public ?AccessApiToken $token;
+    public ?AccessApiToken $token = null;
 
     /**
      * @param int|string $id ID пользователя.

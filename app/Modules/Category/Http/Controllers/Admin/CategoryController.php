@@ -18,6 +18,8 @@ use App\Modules\Category\Actions\Admin\CategoryGetAction;
 use App\Modules\Category\Actions\Admin\CategoryReadAction;
 use App\Modules\Category\Actions\Admin\CategoryUpdateAction;
 use App\Modules\Category\Actions\Admin\CategoryUpdateStatusAction;
+use App\Modules\Category\Data\CategoryCreate;
+use App\Modules\Category\Data\CategoryUpdate;
 use App\Modules\Category\Http\Requests\Admin\CategoryCreateRequest;
 use App\Modules\Category\Http\Requests\Admin\CategoryDestroyRequest;
 use App\Modules\Category\Http\Requests\Admin\CategoryReadRequest;
@@ -45,8 +47,7 @@ class CategoryController extends Controller
      */
     public function get(int|string $id): JsonResponse
     {
-        $action = app(CategoryGetAction::class);
-        $action->id = $id;
+        $action = new CategoryGetAction($id);
         $data = $action->run();
 
         if ($data) {
@@ -76,11 +77,12 @@ class CategoryController extends Controller
      */
     public function read(CategoryReadRequest $request): JsonResponse
     {
-        $action = app(CategoryReadAction::class);
-        $action->sorts = $request->get('sorts');
-        $action->filters = $request->get('filters');
-        $action->offset = $request->get('offset');
-        $action->limit = $request->get('limit');
+        $action = new CategoryReadAction(
+            $request->get('sorts'),
+            $request->get('filters'),
+            $request->get('offset'),
+            $request->get('limit'),
+        );
 
         $data = $action->run();
 
@@ -100,18 +102,8 @@ class CategoryController extends Controller
     public function create(CategoryCreateRequest $request): JsonResponse
     {
         try {
-            $action = app(CategoryCreateAction::class);
-            $action->name = $request->get('name');
-            $action->header_template = $request->get('header_template');
-            $action->link = $request->get('link');
-            $action->text = $request->get('text');
-            $action->directions = $request->get('directions');
-            $action->professions = $request->get('professions');
-            $action->status = $request->get('status');
-            $action->description_template = $request->get('description_template');
-            $action->title_template = $request->get('title_template');
-            $action->keywords = $request->get('keywords');
-
+            $data = CategoryCreate::from($request->all());
+            $action = new CategoryCreateAction($data);
             $data = $action->run();
 
             Log::info(
@@ -154,18 +146,11 @@ class CategoryController extends Controller
     public function update(int|string $id, CategoryUpdateRequest $request): JsonResponse
     {
         try {
-            $action = app(CategoryUpdateAction::class);
-            $action->id = $id;
-            $action->name = $request->get('name');
-            $action->header_template = $request->get('header_template');
-            $action->link = $request->get('link');
-            $action->text = $request->get('text');
-            $action->directions = $request->get('directions');
-            $action->professions = $request->get('professions');
-            $action->status = $request->get('status');
-            $action->title = $request->get('title');
-            $action->description_template = $request->get('description_template');
-            $action->title_template = $request->get('title_template');
+            $data = CategoryUpdate::from([
+                ...$request->all(),
+                'id' => $id,
+            ]);
+            $action = new CategoryUpdateAction($data);
             $data = $action->run();
 
             Log::info(
@@ -208,10 +193,7 @@ class CategoryController extends Controller
     public function updateStatus(int|string $id, CategoryUpdateStatusRequest $request): JsonResponse
     {
         try {
-            $action = app(CategoryUpdateStatusAction::class);
-            $action->id = $id;
-            $action->status = $request->get('status');
-
+            $action = new CategoryUpdateStatusAction($id, $request->get('status'));
             $data = $action->run();
 
             Log::info(trans('category::http.controllers.admin.categoryController.update.log'), [
@@ -248,8 +230,7 @@ class CategoryController extends Controller
      */
     public function destroy(CategoryDestroyRequest $request): JsonResponse
     {
-        $action = app(CategoryDestroyAction::class);
-        $action->ids = $request->get('ids');
+        $action = new CategoryDestroyAction($request->get('ids'));
         $action->run();
 
         Log::info(

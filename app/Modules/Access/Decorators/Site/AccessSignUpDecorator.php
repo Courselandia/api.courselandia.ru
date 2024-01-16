@@ -10,7 +10,7 @@ namespace App\Modules\Access\Decorators\Site;
 
 use App\Models\Decorator;
 use App\Modules\Access\Entities\AccessSignedUp;
-use App\Modules\Access\DTO\Decorators\AccessSignUp as AccessSignUp;
+use App\Modules\Access\Data\Decorators\AccessSignUp as AccessSignUp;
 use Illuminate\Pipeline\Pipeline;
 
 /**
@@ -19,14 +19,14 @@ use Illuminate\Pipeline\Pipeline;
 class AccessSignUpDecorator extends Decorator
 {
     /**
-     * DTO для декоратора регистрации.
+     * Данные для декоратора регистрации.
      *
      * @var AccessSignUp
      */
     private AccessSignUp $data;
 
     /**
-     * @param AccessSignUp $data DTO для декоратора регистрации.
+     * @param AccessSignUp $data Данные для декоратора регистрации.
      */
     public function __construct(AccessSignUp $data)
     {

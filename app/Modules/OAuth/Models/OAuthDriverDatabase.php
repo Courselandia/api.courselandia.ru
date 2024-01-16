@@ -20,7 +20,7 @@ use App\Modules\OAuth\Entities\OAuthToken;
 use App\Modules\OAuth\Models\OAuthRefreshTokenEloquent as OAuthRefreshTokenEloquentModel;
 use App\Modules\OAuth\Repositories\OAuthRefreshTokenEloquent;
 use App\Modules\OAuth\Repositories\OAuthTokenEloquent;
-use App\Modules\OAuth\VO\Token;
+use App\Modules\OAuth\Values\Token;
 use App\Modules\User\Models\User;
 use Cache;
 use Carbon\Carbon;

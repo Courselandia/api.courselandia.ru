@@ -8,7 +8,7 @@
 
 namespace App\Modules\Access\Pipes\Site\Update;
 
-use App\Models\DTO;
+use App\Models\Data;
 use App\Models\Enums\CacheTime;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
@@ -20,7 +20,7 @@ use App\Models\Exceptions\UserNotExistException;
 use App\Modules\User\Models\User;
 use ReflectionException;
 use Util;
-use App\Modules\Access\DTO\Decorators\AccessUpdate;
+use App\Modules\Access\Data\Decorators\AccessUpdate;
 
 /**
  * Изменение информации о пользователе: обновляем данные о пользователе.
@@ -30,7 +30,7 @@ class UserPipe implements Pipe
     /**
      * Метод, который будет вызван у pipeline.
      *
-     * @param DTO|AccessUpdate $data DTO для декоратора изменения информации о пользователе.
+     * @param Data|AccessUpdate $data Данные для декоратора изменения информации о пользователе.
      * @param Closure $next Ссылка на следующий pipe.
      *
      * @return mixed Вернет значение полученное после выполнения следующего pipe.
@@ -39,7 +39,7 @@ class UserPipe implements Pipe
      * @throws UserNotExistException
      * @throws ReflectionException
      */
-    public function handle(DTO|AccessUpdate $data, Closure $next): mixed
+    public function handle(Data|AccessUpdate $data, Closure $next): mixed
     {
         $id = $data->id;
         $cacheKey = Util::getKey('access', 'user', 'model', $id, 'role', 'verification');

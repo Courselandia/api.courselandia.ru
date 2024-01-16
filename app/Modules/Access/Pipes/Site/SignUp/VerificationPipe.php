@@ -8,13 +8,13 @@
 
 namespace App\Modules\Access\Pipes\Site\SignUp;
 
-use App\Models\DTO;
+use App\Models\Data;
 use Cache;
 use Exception;
 use Closure;
 use App\Models\Entity;
-use App\Modules\Access\DTO\Decorators\AccessSocial;
-use App\Modules\Access\DTO\Decorators\AccessSignUp;
+use App\Modules\Access\Data\Decorators\AccessSocial;
+use App\Modules\Access\Data\Decorators\AccessSignUp;
 use App\Models\Contracts\Pipe;
 use App\Modules\User\Models\User;
 use App\Modules\User\Models\UserVerification;
@@ -29,13 +29,13 @@ class VerificationPipe implements Pipe
     /**
      * Метод, который будет вызван у pipeline.
      *
-     * @param Entity|AccessSocial|AccessSignUp $data DTO.
+     * @param Entity|AccessSocial|AccessSignUp $data Данные.
      * @param Closure $next Ссылка на следующий pipe.
      *
      * @return mixed Вернет значение полученное после выполнения следующего pipe.
      * @throws Exception
      */
-    public function handle(DTO|AccessSocial|AccessSignUp $data, Closure $next): mixed
+    public function handle(Data|AccessSocial|AccessSignUp $data, Closure $next): mixed
     {
         if ($data->create) {
             UserVerification::create([

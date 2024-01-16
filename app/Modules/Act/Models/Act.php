@@ -49,11 +49,10 @@ class Act extends Eloquent
      *
      * @return array Вернет массив правил.
      */
-    protected function getRules(
-    ): array
+    protected function getRules(): array
     {
         return [
-            'index' => 'required|between:1,191|unique:acts,index,'.$this->id.',id',
+            'index' => 'required|between:1,191|unique:acts,index,' . $this->id . ',id',
             'count' => 'required|integer',
             'minutes' => 'required|integer'
         ];
@@ -64,8 +63,7 @@ class Act extends Eloquent
      *
      * @return array Массив возможных ошибок валидации.
      */
-    protected function getNames(
-    ): array
+    protected function getNames(): array
     {
         return [
             'index' => trans('act::models.act.index'),

@@ -8,12 +8,12 @@
 
 namespace App\Models;
 
-use Spatie\LaravelData\Data;
+use Spatie\LaravelData\Data as DataNative;
 
 /**
  * Data Transfer Object - объект передачи данных.
  */
-abstract class DTO extends Data
+abstract class Data extends DataNative
 {
 
 }

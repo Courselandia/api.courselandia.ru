@@ -8,12 +8,12 @@
 
 namespace App\Modules\Access\Pipes\Site\SignUp;
 
-use App\Models\DTO;
+use App\Models\Data;
 use Cache;
 use Closure;
 use App\Models\Contracts\Pipe;
-use App\Modules\Access\DTO\Decorators\AccessSocial;
-use App\Modules\Access\DTO\Decorators\AccessSignUp;
+use App\Modules\Access\Data\Decorators\AccessSocial;
+use App\Modules\Access\Data\Decorators\AccessSignUp;
 use App\Modules\User\Models\User;
 
 /**
@@ -24,12 +24,12 @@ class CreatePipe implements Pipe
     /**
      * Метод, который будет вызван у pipeline.
      *
-     * @param DTO|AccessSocial|AccessSignUp $data DTO.
+     * @param Data|AccessSocial|AccessSignUp $data Данные.
      * @param Closure $next Ссылка на следующий pipe.
      *
      * @return mixed Вернет значение полученное после выполнения следующего pipe.
      */
-    public function handle(DTO|AccessSocial|AccessSignUp $data, Closure $next): mixed
+    public function handle(Data|AccessSocial|AccessSignUp $data, Closure $next): mixed
     {
         if ($data->create) {
             $dataUser = [

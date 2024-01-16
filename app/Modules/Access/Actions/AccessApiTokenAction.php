@@ -13,9 +13,9 @@ use App\Models\Enums\CacheTime;
 use App\Models\Exceptions\InvalidPasswordException;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\UserNotExistException;
-use App\Modules\Access\DTO\Actions\AccessApiToken as AccessApiTokenDto;
+use App\Modules\Access\Data\Actions\AccessApiToken as AccessApiTokenData;
 use App\Modules\Access\Entities\AccessApiToken;
-use App\Modules\OAuth\VO\Token;
+use App\Modules\OAuth\Values\Token;
 use App\Modules\User\Entities\User as UserEntity;
 use App\Modules\User\Models\User;
 use Cache;
@@ -31,13 +31,13 @@ use Util;
 class AccessApiTokenAction extends Action
 {
     /**
-     * DTO для генерации токена.
+     * Данные для генерации токена.
      *
-     * @var AccessApiTokenDto
+     * @var AccessApiTokenData
      */
-    private AccessApiTokenDto $data;
+    private AccessApiTokenData $data;
 
-    public function __construct(AccessApiTokenDto $data)
+    public function __construct(AccessApiTokenData $data)
     {
         $this->data = $data;
     }

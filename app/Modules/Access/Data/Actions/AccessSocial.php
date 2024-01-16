@@ -6,14 +6,14 @@
  * @package App\Modules\User
  */
 
-namespace App\Modules\Access\DTO\Actions;
+namespace App\Modules\Access\Data\Actions;
 
-use App\Models\DTO;
+use App\Models\Data;
 
 /**
- * DTO для действия регистрации или входа через социальную сеть.
+ * Данные для действия регистрации или входа через социальную сеть.
  */
-class AccessSocial extends DTO
+class AccessSocial extends Data
 {
     /**
      * Логин.
@@ -27,14 +27,14 @@ class AccessSocial extends DTO
      *
      * @var string|null
      */
-    public string|null $first_name;
+    public string|null $first_name = null;
 
     /**
      * Фамилия.
      *
      * @var string|null
      */
-    public string|null $second_name;
+    public string|null $second_name = null;
 
     /**
      * Индификатор социальной сети.
@@ -67,10 +67,10 @@ class AccessSocial extends DTO
      */
     public function __construct(
         string  $login,
-        ?string $first_name,
-        ?string $second_name,
         string  $uid,
         string  $social,
+        ?string $first_name = null,
+        ?string $second_name = null,
         bool    $verified = false,
     )
     {

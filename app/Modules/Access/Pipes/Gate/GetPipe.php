@@ -9,17 +9,17 @@
 namespace App\Modules\Access\Pipes\Gate;
 
 use App\Models\Contracts\Pipe;
-use App\Models\DTO;
+use App\Models\Data;
 use App\Models\Entity;
 use App\Models\Exceptions\InvalidPasswordException;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\UserNotExistException;
 use App\Modules\Access\Actions\AccessApiTokenAction;
 use App\Modules\Access\Actions\AccessGateAction;
-use App\Modules\Access\DTO\Actions\AccessApiToken as AccessApiTokenDto;
-use App\Modules\Access\DTO\Decorators\AccessSocial;
-use App\Modules\Access\DTO\Decorators\AccessSignUp;
-use App\Modules\Access\DTO\Decorators\AccessVerify;
+use App\Modules\Access\Data\Actions\AccessApiToken as AccessApiTokenData;
+use App\Modules\Access\Data\Decorators\AccessSocial;
+use App\Modules\Access\Data\Decorators\AccessSignUp;
+use App\Modules\Access\Data\Decorators\AccessVerify;
 use Closure;
 use ReflectionException;
 
@@ -31,18 +31,18 @@ class GetPipe implements Pipe
     /**
      * Метод, который будет вызван у pipeline.
      *
-     * @param Entity|AccessSocial|AccessSignUp|AccessVerify $data DTO.
+     * @param Entity|AccessSocial|AccessSignUp|AccessVerify $data Данные.
      * @param Closure $next Ссылка на следующий pipe.
      *
      * @return mixed Вернет значение полученное после выполнения следующего pipe.
      * @throws InvalidPasswordException|ParameterInvalidException|UserNotExistException|ReflectionException
      */
-    public function handle(DTO|AccessSocial|AccessSignUp|AccessVerify $data, Closure $next): mixed
+    public function handle(Data|AccessSocial|AccessSignUp|AccessVerify $data, Closure $next): mixed
     {
         $action = new AccessGateAction($data->id);
         $user = $action->run();
 
-        $action = new AccessApiTokenAction(AccessApiTokenDto::from([
+        $action = new AccessApiTokenAction(AccessApiTokenData::from([
             'login' => $user->login,
             'force' => true,
         ]));

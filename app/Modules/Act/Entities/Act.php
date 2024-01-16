@@ -17,7 +17,7 @@ use Carbon\Carbon;
 class Act extends EntityNew
 {
     /**
-     * Дата.
+     * ID.
      *
      * @var string|int|null
      */
@@ -60,10 +60,10 @@ class Act extends EntityNew
      */
     public function __construct(
         string|int|null $id = null,
-        ?string $index = null,
-        ?int $count = null,
-        ?int $minutes = null,
-        ?Carbon $updated_at = null
+        ?string         $index = null,
+        ?int            $count = null,
+        ?int            $minutes = null,
+        ?Carbon         $updated_at = null
     )
     {
         $this->id = $id;

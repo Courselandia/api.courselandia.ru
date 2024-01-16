@@ -9,7 +9,7 @@
 namespace App\Modules\OAuth\Contracts;
 
 use App\Models\Exceptions\InvalidFormatException;
-use App\Modules\OAuth\VO\Token;
+use App\Modules\OAuth\Values\Token;
 use Carbon\Carbon;
 use Config;
 use Firebase\JWT\JWT;

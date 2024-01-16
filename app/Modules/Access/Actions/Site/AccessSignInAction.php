@@ -10,8 +10,8 @@ namespace App\Modules\Access\Actions\Site;
 
 use App\Models\Action;
 use App\Modules\Access\Decorators\Site\AccessSignInDecorator;
-use App\Modules\Access\DTO\Actions\AccessSignIn;
-use App\Modules\Access\DTO\Decorators\AccessSignIn as AccessSignInDtoDecorator;
+use App\Modules\Access\Data\Actions\AccessSignIn;
+use App\Modules\Access\Data\Decorators\AccessSignIn as AccessSignInDataDecorator;
 use App\Modules\Access\Entities\AccessSignedIn as AccessSignedInEntity;
 use App\Modules\Access\Pipes\Site\SignIn\LoginPipe;
 use App\Modules\Access\Pipes\Site\SignIn\GatePipe;
@@ -36,7 +36,7 @@ class AccessSignInAction extends Action
      */
     public function run(): AccessSignedInEntity
     {
-        $decorator = new AccessSignInDecorator(AccessSignInDtoDecorator::from($this->data->toArray()));
+        $decorator = new AccessSignInDecorator(AccessSignInDataDecorator::from($this->data->toArray()));
 
         return $decorator->setActions([
             LoginPipe::class,

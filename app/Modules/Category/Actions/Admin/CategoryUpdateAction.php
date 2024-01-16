@@ -8,7 +8,7 @@
 
 namespace App\Modules\Category\Actions\Admin;
 
-use App\Modules\Analyzer\Actions\Admin\AnalyzerUpdateAction;
+use App\Modules\Metatag\Data\MetatagSet;
 use Cache;
 use Typography;
 use App\Models\Action;
@@ -21,6 +21,8 @@ use App\Modules\Course\Models\Course;
 use App\Modules\Metatag\Actions\MetatagSetAction;
 use App\Modules\Metatag\Template\Template;
 use App\Modules\Metatag\Template\TemplateException;
+use App\Modules\Analyzer\Actions\Admin\AnalyzerUpdateAction;
+use App\Modules\Category\Data\CategoryUpdate;
 
 /**
  * Класс действия для обновления категорий.
@@ -28,81 +30,19 @@ use App\Modules\Metatag\Template\TemplateException;
 class CategoryUpdateAction extends Action
 {
     /**
-     * ID категории.
+     * Данные для действия обновления категории.
      *
-     * @var int|string|null
+     * @var CategoryUpdate
      */
-    public int|string|null $id = null;
+    private CategoryUpdate $data;
 
     /**
-     * Название.
-     *
-     * @var string|null
+     * @param CategoryUpdate $data Данные для действия обновления категории.
      */
-    public ?string $name = null;
-
-    /**
-     * Шаблон заголовка.
-     *
-     * @var string|null
-     */
-    public ?string $header_template = null;
-
-    /**
-     * Ссылка.
-     *
-     * @var string|null
-     */
-    public ?string $link = null;
-
-    /**
-     * Статья.
-     *
-     * @var string|null
-     */
-    public ?string $text = null;
-
-    /**
-     * Статус.
-     *
-     * @var bool|null
-     */
-    public ?bool $status = null;
-
-    /**
-     * Шаблон описания.
-     *
-     * @var string|null
-     */
-    public ?string $description_template = null;
-
-    /**
-     * Ключевые слова.
-     *
-     * @var string|null
-     */
-    public ?string $keywords = null;
-
-    /**
-     * Шаблон заголовка.
-     *
-     * @var string|null
-     */
-    public ?string $title_template = null;
-
-    /**
-     * ID направлений.
-     *
-     * @var int[]
-     */
-    public ?array $directions = null;
-
-    /**
-     * ID профессий.
-     *
-     * @var int[]
-     */
-    public ?array $professions = null;
+    public function __construct(CategoryUpdate $data)
+    {
+        $this->data = $data;
+    }
 
     /**
      * Метод запуска логики.
@@ -114,8 +54,7 @@ class CategoryUpdateAction extends Action
      */
     public function run(): CategoryEntity
     {
-        $action = app(CategoryGetAction::class);
-        $action->id = $this->id;
+        $action = new CategoryGetAction($this->data->id);
         $categoryEntity = $action->run();
 
         if ($categoryEntity) {
@@ -124,49 +63,46 @@ class CategoryUpdateAction extends Action
                     $query->where('schools.status', true);
                 })
                 ->whereHas('categories', function ($query) {
-                    $query->where('categories.id', $this->id);
+                    $query->where('categories.id', $this->data->id);
                 })
                 ->count();
 
             $templateValues = [
-                'category' => $this->name,
+                'category' => $this->data->name,
                 'countCategoryCourses' => $countCategoryCourses,
             ];
 
             $template = new Template();
 
-            $action = app(MetatagSetAction::class);
-            $action->description = $template->convert($this->description_template, $templateValues);
-            $action->title = $template->convert($this->title_template, $templateValues);
-            $action->description_template = $this->description_template;
-            $action->title_template = $this->title_template;
-            $action->keywords = $this->keywords;
-            $action->id = $categoryEntity->metatag_id ?: null;
+            $action = new MetatagSetAction(MetatagSet::from([
+                'description' => $template->convert($this->data->description_template, $templateValues),
+                'title' => $template->convert($this->data->title_template, $templateValues),
+                'description_template' => $this->data->description_template,
+                'title_template' => $this->data->title_template,
+                'keywords' => $this->data->keywords,
+                'id' => $categoryEntity->metatag_id ?: null,
+            ]));
 
             $categoryEntity->metatag_id = $action->run()->id;
-            $categoryEntity->id = $this->id;
-            $categoryEntity->name = Typography::process($this->name, true);
-            $categoryEntity->header = Typography::process($template->convert($this->header_template, $templateValues), true);
-            $categoryEntity->header_template = $this->header_template;
-            $categoryEntity->link = $this->link;
-            $categoryEntity->text = Typography::process($this->text);
-            $categoryEntity->status = $this->status;
+            $categoryEntity->id = $this->data->id;
+            $categoryEntity->name = Typography::process($this->data->name, true);
+            $categoryEntity->header = Typography::process($template->convert($this->data->header_template, $templateValues), true);
+            $categoryEntity->header_template = $this->data->header_template;
+            $categoryEntity->link = $this->data->link;
+            $categoryEntity->text = Typography::process($this->data->text);
+            $categoryEntity->status = $this->data->status;
 
-            $category = Category::find($this->id);
+            $category = Category::find($this->data->id);
             $category->update($categoryEntity->toArray());
 
-            $category->directions()->sync($this->directions);
-            $category->professions()->sync($this->professions);
+            $category->directions()->sync($this->data->directions);
+            $category->professions()->sync($this->data->professions);
             Cache::tags(['catalog', 'category', 'direction', 'profession'])->flush();
 
-            $action = app(AnalyzerUpdateAction::class);
-            $action->id = $categoryEntity->id;
-            $action->model = Category::class;
-            $action->category = 'category.text';
+            $action = new AnalyzerUpdateAction($categoryEntity->id, Category::class, 'category.text');
             $action->run();
 
-            $action = app(CategoryGetAction::class);
-            $action->id = $this->id;
+            $action = new CategoryGetAction($this->data->id);
 
             return $action->run();
         }

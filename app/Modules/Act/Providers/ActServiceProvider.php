@@ -28,7 +28,7 @@ class ActServiceProvider extends ServiceProvider
         $this->registerTranslations();
         $this->registerConfig();
 
-        $this->loadMigrationsFrom(__DIR__.'/../Database/Migrations');
+        $this->loadMigrationsFrom(__DIR__ . '/../Database/Migrations');
     }
 
     /**
@@ -51,10 +51,10 @@ class ActServiceProvider extends ServiceProvider
     protected function registerConfig(): void
     {
         $this->publishes([
-            __DIR__.'/../Config/config.php' => config_path('act.php'),
+            __DIR__ . '/../Config/config.php' => config_path('act.php'),
         ]);
         $this->mergeConfigFrom(
-            __DIR__.'/../Config/config.php',
+            __DIR__ . '/../Config/config.php',
             'act'
         );
     }
@@ -68,7 +68,7 @@ class ActServiceProvider extends ServiceProvider
     {
         $viewPath = base_path('resources/views/modules/act');
 
-        $sourcePath = __DIR__.'/../Resources/views';
+        $sourcePath = __DIR__ . '/../Resources/views';
 
         $this->publishes([
             $sourcePath => $viewPath
@@ -77,7 +77,7 @@ class ActServiceProvider extends ServiceProvider
         $this->loadViewsFrom(
             array_merge(
                 array_map(function ($path) {
-                    return $path.'/modules/act';
+                    return $path . '/modules/act';
                 }, Config::get('view.paths')),
                 [$sourcePath]
             ),
@@ -97,7 +97,7 @@ class ActServiceProvider extends ServiceProvider
         if (is_dir($langPath)) {
             $this->loadTranslationsFrom($langPath, 'act');
         } else {
-            $this->loadTranslationsFrom(__DIR__.'/../Resources/lang', 'act');
+            $this->loadTranslationsFrom(__DIR__ . '/../Resources/lang', 'act');
         }
     }
 

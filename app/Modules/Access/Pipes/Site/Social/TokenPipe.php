@@ -9,7 +9,7 @@
 namespace App\Modules\Access\Pipes\Site\Social;
 
 use Closure;
-use App\Models\DTO;
+use App\Models\Data;
 use App\Models\Contracts\Pipe;
 use ReflectionException;
 use App\Models\Exceptions\InvalidPasswordException;
@@ -17,8 +17,8 @@ use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\UserNotExistException;
 use App\Modules\Access\Actions\AccessApiTokenAction;
 use App\Modules\Access\Actions\AccessGateAction;
-use App\Modules\Access\DTO\Actions\AccessApiToken;
-use App\Modules\Access\DTO\Decorators\AccessSocial;
+use App\Modules\Access\Data\Actions\AccessApiToken;
+use App\Modules\Access\Data\Decorators\AccessSocial;
 
 /**
  * Регистрация нового пользователя через социальные сети: получение клиента.
@@ -28,7 +28,7 @@ class TokenPipe implements Pipe
     /**
      * Метод, который будет вызван у pipeline.
      *
-     * @param DTO|AccessSocial $data DTO.
+     * @param Data|AccessSocial $data Данные.
      * @param Closure $next Ссылка на следующий pipe.
      *
      * @return mixed Вернет значение полученное после выполнения следующего pipe.
@@ -36,7 +36,7 @@ class TokenPipe implements Pipe
      * @throws ParameterInvalidException
      * @throws ReflectionException
      */
-    public function handle(DTO|AccessSocial $data, Closure $next): mixed
+    public function handle(Data|AccessSocial $data, Closure $next): mixed
     {
         try {
             $action = new AccessApiTokenAction(AccessApiToken::from([

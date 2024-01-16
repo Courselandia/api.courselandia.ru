@@ -12,7 +12,7 @@ use App\Models\Action;
 use App\Models\Enums\CacheTime;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Access\Entities\AccessApiToken;
-use App\Modules\OAuth\VO\Token;
+use App\Modules\OAuth\Values\Token;
 use App\Modules\User\Entities\User as UserEntity;
 use App\Modules\User\Models\User;
 use Cache;

@@ -21,7 +21,7 @@ use App\Modules\Access\Http\Requests\AccessApiTokenRequest;
 use App\Modules\Access\Http\Requests\AccessApiRefreshRequest;
 use App\Modules\Access\Actions\AccessApiTokenAction;
 use App\Modules\Access\Actions\AccessApiRefreshAction;
-use App\Modules\Access\DTO\Actions\AccessApiToken;
+use App\Modules\Access\Data\Actions\AccessApiToken;
 
 /**
  * Класс контроллер для генерации ключей доступа к API.

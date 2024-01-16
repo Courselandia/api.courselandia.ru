@@ -9,8 +9,8 @@
 namespace App\Modules\Access\Pipes\Site\Social;
 
 use App\Models\Contracts\Pipe;
-use App\Models\DTO;
-use App\Modules\Access\DTO\Decorators\AccessSocial;
+use App\Models\Data;
+use App\Modules\Access\Data\Decorators\AccessSocial;
 use Closure;
 use Config;
 use Kreait\Firebase\Contract\Auth;
@@ -40,12 +40,12 @@ class CheckPipe implements Pipe
     /**
      * Метод, который будет вызван у pipeline.
      *
-     * @param DTO|AccessSocial $data DTO.
+     * @param Data|AccessSocial $data Данные.
      * @param Closure $next Ссылка на следующий pipe.
      *
      * @return mixed Вернет значение полученное после выполнения следующего pipe.
      */
-    public function handle(DTO|AccessSocial $data, Closure $next): mixed
+    public function handle(Data|AccessSocial $data, Closure $next): mixed
     {
         if ($this->check($data->uid)) {
             return $next($data);

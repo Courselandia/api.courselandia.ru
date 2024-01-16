@@ -8,9 +8,7 @@
 
 namespace App\Modules\Analyzer\Actions\Admin;
 
-use App\Modules\Plagiarism\Exceptions\TextShortException;
 use Auth;
-use Config;
 use Cache;
 use Log;
 use Plagiarism;
@@ -24,6 +22,7 @@ use App\Modules\Analyzer\Enums\Status;
 use App\Modules\Analyzer\Jobs\AnalyzerSaveResultJob;
 use App\Modules\Analyzer\Models\Analyzer;
 use App\Modules\Course\Models\Course;
+use App\Modules\Plagiarism\Exceptions\TextShortException;
 
 /**
  * Задание на проведения создание или обновления анализа и его запуск.
@@ -35,21 +34,33 @@ class AnalyzerUpdateAction extends Action
      *
      * @var int
      */
-    public int $id;
+    private int $id;
 
     /**
      * Название класса анализируемой модели.
      *
      * @var string
      */
-    public string $model;
+    private string $model;
 
     /**
      * Категория.
      *
      * @var string
      */
-    public string $category;
+    private string $category;
+
+    /**
+     * @param int $id ID анализируемой модели.
+     * @param string $model Название класса анализируемой модели.
+     * @param string $category Категория.
+     */
+    public function __construct(int $id, string $model, string $category)
+    {
+        $this->id = $id;
+        $this->model = $model;
+        $this->category = $category;
+    }
 
     /**
      * Выполнение задачи.

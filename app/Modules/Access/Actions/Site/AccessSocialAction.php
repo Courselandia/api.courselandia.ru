@@ -10,8 +10,8 @@ namespace App\Modules\Access\Actions\Site;
 
 use App\Models\Action;
 use App\Modules\Access\Decorators\Site\AccessSocialDecorator;
-use App\Modules\Access\DTO\Actions\AccessSocial as AccessSocialDto;
-use App\Modules\Access\DTO\Decorators\AccessSocial as AccessSocialDTODecorator;
+use App\Modules\Access\Data\Actions\AccessSocial as AccessSocialData;
+use App\Modules\Access\Data\Decorators\AccessSocial as AccessSocialDataDecorator;
 use App\Modules\Access\Entities\AccessSocial as AccessSocialEntity;
 use App\Modules\Access\Pipes\Gate\GetPipe;
 use App\Modules\Access\Pipes\Site\SignIn\AuthPipe;
@@ -28,13 +28,13 @@ use App\Modules\Access\Pipes\Site\Social\TokenPipe;
 class AccessSocialAction extends Action
 {
     /**
-     * DTO для действия регистрации или входа через социальную сеть.
+     * Данные для действия регистрации или входа через социальную сеть.
      *
-     * @var AccessSocialDto
+     * @var AccessSocialData
      */
-    private AccessSocialDto $data;
+    private AccessSocialData $data;
 
-    public function __construct(AccessSocialDto $data)
+    public function __construct(AccessSocialData $data)
     {
         $this->data = $data;
     }
@@ -46,7 +46,7 @@ class AccessSocialAction extends Action
      */
     public function run(): AccessSocialEntity
     {
-        $decorator = new AccessSocialDecorator(AccessSocialDTODecorator::from($this->data->toArray()));
+        $decorator = new AccessSocialDecorator(AccessSocialDataDecorator::from($this->data->toArray()));
 
         return $decorator->setActions([
             CheckPipe::class,

@@ -41,49 +41,49 @@ class AccessSignUp extends EntityNew
      *
      * @var string|null
      */
-    public string|null $first_name;
+    public string|null $first_name = null;
 
     /**
      * Фамилия.
      *
      * @var string|null
      */
-    public string|null $second_name;
+    public string|null $second_name = null;
 
     /**
      * Телефон.
      *
      * @var string|null
      */
-    public string|null $phone;
+    public string|null $phone = null;
 
     /**
      * Уникальный индикационный номер для авторизации через соц сети.
      *
      * @var string|null
      */
-    public string|null $uid;
+    public string|null $uid = null;
 
     /**
      * Статус верификации.
      *
      * @var bool
      */
-    public bool $verified;
+    public bool $verified = false;
 
     /**
      * Двухфакторная аутентификация.
      *
      * @var bool
      */
-    public bool $two_factor;
+    public bool $two_factor = false;
 
     /**
      * Создать пользователя.
      *
      * @var bool
      */
-    public bool $create;
+    public bool $create = true;
 
     /**
      * @param string|int $id ID пользователя.
@@ -101,10 +101,10 @@ class AccessSignUp extends EntityNew
         string|int $id,
         string     $login,
         string     $password,
-        ?string    $first_name,
-        ?string    $second_name,
-        ?string    $phone,
-        ?string    $uid,
+        ?string    $first_name = null,
+        ?string    $second_name = null,
+        ?string    $phone = null,
+        ?string    $uid = null,
         bool       $verified = false,
         bool       $two_factor = false,
         bool       $create = true,

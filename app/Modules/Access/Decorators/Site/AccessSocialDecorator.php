@@ -9,7 +9,7 @@
 namespace App\Modules\Access\Decorators\Site;
 
 use App\Models\Decorator;
-use App\Modules\Access\DTO\Decorators\AccessSocial as AccessSocialDto;
+use App\Modules\Access\Data\Decorators\AccessSocial as AccessSocialData;
 use App\Modules\Access\Entities\AccessSocial;
 use Illuminate\Pipeline\Pipeline;
 
@@ -19,16 +19,16 @@ use Illuminate\Pipeline\Pipeline;
 class AccessSocialDecorator extends Decorator
 {
     /**
-     * DTO для регистрации или входа через социальную сеть.
+     * Данные для регистрации или входа через социальную сеть.
      *
-     * @var AccessSocialDto
+     * @var AccessSocialData
      */
-    private AccessSocialDto $data;
+    private AccessSocialData $data;
 
     /**
-     * @param AccessSocialDto $data DTO для регистрации или входа через социальную сеть.
+     * @param AccessSocialData $data Данные для регистрации или входа через социальную сеть.
      */
-    public function __construct(AccessSocialDto $data)
+    public function __construct(AccessSocialData $data)
     {
         $this->data = $data;
     }
@@ -41,7 +41,7 @@ class AccessSocialDecorator extends Decorator
     public function run(): AccessSocial
     {
         /**
-         * @var AccessSocialDto $data
+         * @var AccessSocialData $data
          */
         $data = app(Pipeline::class)
             ->send($this->data)

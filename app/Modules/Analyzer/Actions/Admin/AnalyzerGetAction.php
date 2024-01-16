@@ -25,9 +25,17 @@ class AnalyzerGetAction extends Action
     /**
      * ID анализатора.
      *
-     * @var int|string|null
+     * @var int|string
      */
-    public int|string|null $id = null;
+    private int|string $id;
+
+    /**
+     * @param int|string $id ID анализатора.
+     */
+    public function __construct(int|string $id)
+    {
+        $this->id = $id;
+    }
 
     /**
      * Метод запуска логики.
@@ -52,7 +60,7 @@ class AnalyzerGetAction extends Action
                     $analyzerable = $analyzer['analyzerable'];
                     $analyzer['analyzerable'] = null;
 
-                    $entity = new AnalyzerEntity($analyzer);
+                    $entity = AnalyzerEntity::from($analyzer);
                     $field = AnalyzerCategory::driver($entity->category)->field();
                     $entity->category_name = AnalyzerCategory::driver($entity->category)->name();
                     $entity->category_label = AnalyzerCategory::driver($entity->category)->label($analyzer['analyzerable_id']);

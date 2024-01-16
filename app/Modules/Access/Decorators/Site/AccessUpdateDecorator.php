@@ -9,7 +9,7 @@
 namespace App\Modules\Access\Decorators\Site;
 
 use App\Models\Decorator;
-use App\Modules\Access\DTO\Decorators\AccessUpdate;
+use App\Modules\Access\Data\Decorators\AccessUpdate;
 use App\Modules\User\Entities\User;
 use Illuminate\Pipeline\Pipeline;
 
@@ -19,12 +19,12 @@ use Illuminate\Pipeline\Pipeline;
 class AccessUpdateDecorator extends Decorator
 {
     /**
-     * @var AccessUpdate DTO для декоратора изменения информации о пользователе.
+     * @var AccessUpdate Data для декоратора изменения информации о пользователе.
      */
     private AccessUpdate $data;
 
     /**
-     * @param AccessUpdate $data DTO для декоратора изменения информации о пользователе.
+     * @param AccessUpdate $data Data для декоратора изменения информации о пользователе.
      */
     public function __construct(AccessUpdate $data)
     {

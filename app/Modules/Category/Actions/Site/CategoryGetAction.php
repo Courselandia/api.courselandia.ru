@@ -49,11 +49,7 @@ class CategoryGetAction extends Action
                 ])->find($this->id);
 
                 if ($result) {
-                    $item = $result->toArray();
-                    $entity = new CategoryEntity();
-                    $entity->set($item);
-
-                    return $entity;
+                    return CategoryEntity::from($result->toArray());
                 }
 
                 return null;

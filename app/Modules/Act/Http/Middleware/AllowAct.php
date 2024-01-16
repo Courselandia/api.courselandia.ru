@@ -26,9 +26,9 @@ class AllowAct
     /**
      * Проверка пользователя, что он делает действия допустимое количество раз.
      *
-     * @param  Request  $request  Запрос.
-     * @param  Closure  $next  Функция последующего действия.
-     * @param  array|null  $params  Параметры доступа.
+     * @param Request $request Запрос.
+     * @param Closure $next Функция последующего действия.
+     * @param array|null $params Параметры доступа.
      *
      * @return ResponseFactory|RedirectResponse|Application|Redirector|JsonResponse|Response|Request Вернет результат продолжение запроса.
      */
@@ -46,7 +46,7 @@ class AllowAct
     /**
      * Получить ошибку.
      *
-     * @param  bool  $ajax  Определяет являться ли данный запрос AJAX запросом.
+     * @param bool $ajax Определяет являться ли данный запрос AJAX запросом.
      *
      * @return mixed Вернет ошибку.
      */

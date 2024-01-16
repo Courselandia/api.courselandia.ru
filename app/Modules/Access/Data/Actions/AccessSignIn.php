@@ -6,14 +6,14 @@
  * @package App\Modules\User
  */
 
-namespace App\Modules\Access\DTO\Actions;
+namespace App\Modules\Access\Data\Actions;
 
-use App\Models\DTO;
+use App\Models\Data;
 
 /**
- * DTO для действия авторизации.
+ * Данные для действия авторизации.
  */
-class AccessSignIn extends DTO
+class AccessSignIn extends Data
 {
     /**
      * Логин.
@@ -34,7 +34,7 @@ class AccessSignIn extends DTO
      *
      * @var bool
      */
-    public bool $remember;
+    public bool $remember = false;
 
     /**
      * @param string $login Логин.
