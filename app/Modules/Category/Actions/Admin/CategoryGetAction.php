@@ -58,7 +58,6 @@ class CategoryGetAction extends Action
                 ])->find($this->id);
 
                 if ($result) {
-                    print_r($result->toArray());
                     return CategoryEntity::from($result->toArray());
                 }
 

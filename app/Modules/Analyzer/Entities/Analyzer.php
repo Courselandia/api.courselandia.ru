@@ -8,21 +8,9 @@
 
 namespace App\Modules\Analyzer\Entities;
 
-use App\Modules\Analyzer\Casts\Analyzerable;
-use Attribute;
 use Carbon\Carbon;
 use App\Models\EntityNew;
 use App\Modules\Analyzer\Enums\Status;
-use App\Modules\Course\Entities\Course;
-use App\Modules\Article\Entities\Article;
-use App\Modules\Skill\Entities\Skill;
-use App\Modules\Tool\Entities\Tool;
-use App\Modules\Direction\Entities\Direction;
-use App\Modules\Profession\Entities\Profession;
-use App\Modules\Category\Entities\Category;
-use App\Modules\School\Entities\School;
-use App\Modules\Teacher\Entities\Teacher;
-use Spatie\LaravelData\Attributes\WithCast;
 
 /**
  * Сущность хранения результатов анализа текста.
@@ -156,13 +144,25 @@ class Analyzer extends EntityNew
     public ?Carbon $deleted_at = null;
 
     /**
-     * Сущность.
-     *
-     * @var array|null
+     * @param int|string|null $id ID записи.
+     * @param int|string|null $task_id ID задачи на проверку текста.
+     * @param string|null $category Категория.
+     * @param string|null $category_name Название категории.
+     * @param string|null $category_label Метка сущности.
+     * @param float|null $unique Уникальность текста.
+     * @param int|null $water Процент воды.
+     * @param int|null $spam Процент спама.
+     * @param string|null $text Текущий текст сущности.
+     * @param array|null $params Параметры.
+     * @param int|null $tries Количество попыток получить проверенный текст.
+     * @param Status|null $status Статус.
+     * @param int|string|null $analyzerable_id ID сущности.
+     * @param string|null $analyzerable_type Название сущности для которой проверяется текст.
+     * @param string|bool|null $analyzerable_status Статус сущности.
+     * @param Carbon|null $created_at Дата создания.
+     * @param Carbon|null $updated_at Дата обновления.
+     * @param Carbon|null $deleted_at Дата удаления.
      */
-    #[WithCast(Analyzerable::class)]
-    public array|null $analyzerable = null;
-
     public function __construct(
         int|string|null  $id = null,
         int|string|null  $task_id = null,
@@ -182,7 +182,6 @@ class Analyzer extends EntityNew
         ?Carbon          $created_at = null,
         ?Carbon          $updated_at = null,
         ?Carbon          $deleted_at = null,
-        array|null       $analyzerable = null,
     )
     {
         $this->id = $id;
@@ -203,6 +202,5 @@ class Analyzer extends EntityNew
         $this->created_at = $created_at;
         $this->updated_at = $updated_at;
         $this->deleted_at = $deleted_at;
-        $this->analyzerable = $analyzerable;
     }
 }
