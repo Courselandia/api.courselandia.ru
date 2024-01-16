@@ -44,13 +44,13 @@ class Crawl extends Eloquent
     use Filterable;
 
     /**
-     * Атрибуты, которые должны быть преобразованы к дате.
+     * Типизирование атрибутов.
      *
      * @var array
      */
-    protected $dates = [
-        'pushed_at',
-        'crawled_at',
+    protected $casts = [
+        'pushed_at' => 'datetime',
+        'crawled_at' => 'datetime',
     ];
 
     /**

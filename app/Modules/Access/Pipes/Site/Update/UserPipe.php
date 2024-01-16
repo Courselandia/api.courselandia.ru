@@ -8,6 +8,7 @@
 
 namespace App\Modules\Access\Pipes\Site\Update;
 
+use App\Models\DTO;
 use App\Models\Enums\CacheTime;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
@@ -15,12 +16,11 @@ use App\Modules\User\Entities\User as UserEntity;
 use Cache;
 use Closure;
 use App\Models\Contracts\Pipe;
-use App\Models\Entity;
 use App\Models\Exceptions\UserNotExistException;
-use App\Modules\Access\Entities\AccessUpdate;
 use App\Modules\User\Models\User;
 use ReflectionException;
 use Util;
+use App\Modules\Access\DTO\Decorators\AccessUpdate;
 
 /**
  * Изменение информации о пользователе: обновляем данные о пользователе.
@@ -30,8 +30,8 @@ class UserPipe implements Pipe
     /**
      * Метод, который будет вызван у pipeline.
      *
-     * @param  Entity|AccessUpdate  $entity  Содержит массив свойств, которые можно передавать от pipe к pipe.
-     * @param  Closure  $next  Ссылка на следующий pipe.
+     * @param DTO|AccessUpdate $data DTO для декоратора изменения информации о пользователе.
+     * @param Closure $next Ссылка на следующий pipe.
      *
      * @return mixed Вернет значение полученное после выполнения следующего pipe.
      * @throws ParameterInvalidException
@@ -39,10 +39,12 @@ class UserPipe implements Pipe
      * @throws UserNotExistException
      * @throws ReflectionException
      */
-    public function handle(Entity|AccessUpdate $entity, Closure $next): mixed
+    public function handle(DTO|AccessUpdate $data, Closure $next): mixed
     {
-        $id = $entity->id;
+        $id = $data->id;
         $cacheKey = Util::getKey('access', 'user', 'model', $id, 'role', 'verification');
+
+        Cache::flush();
 
         $user = Cache::tags(['access', 'user'])->remember(
             $cacheKey,
@@ -51,7 +53,7 @@ class UserPipe implements Pipe
                 return User::where('id', $id)
                     ->with([
                         'role',
-                        'verification'
+                        'verification',
                     ])
                     ->active()
                     ->first();
@@ -59,15 +61,15 @@ class UserPipe implements Pipe
         );
 
         if ($user) {
-            $user->first_name = $entity->first_name;
-            $user->second_name = $entity->second_name;
-            $user->phone = $entity->phone;
+            $user->first_name = $data->first_name;
+            $user->second_name = $data->second_name;
+            $user->phone = $data->phone;
             $user->update($user->toArray());
             Cache::tags(['access', 'user'])->flush();
 
-            $entity->user = new UserEntity($user->toArray());
+            $data->user = UserEntity::from($user->toArray());
 
-            return $next($entity);
+            return $next($data);
         }
 
         throw new UserNotExistException(trans('access::pipes.site.update.userPipe.notExistUser'));

@@ -9,7 +9,7 @@
 namespace App\Modules\Access\Decorators\Site;
 
 use App\Models\Decorator;
-use App\Modules\Access\Entities\AccessSignedUp;
+use App\Modules\Access\DTO\Decorators\AccessSocial as AccessSocialDto;
 use App\Modules\Access\Entities\AccessSocial;
 use Illuminate\Pipeline\Pipeline;
 
@@ -19,73 +19,35 @@ use Illuminate\Pipeline\Pipeline;
 class AccessSocialDecorator extends Decorator
 {
     /**
-     * ID пользователя.
+     * DTO для регистрации или входа через социальную сеть.
      *
-     * @var string|int|null
+     * @var AccessSocialDto
      */
-    public string|int|null $id = null;
+    private AccessSocialDto $data;
 
     /**
-     * Логин.
-     *
-     * @var string|null
+     * @param AccessSocialDto $data DTO для регистрации или входа через социальную сеть.
      */
-    public ?string $login = null;
-
-    /**
-     * Имя.
-     *
-     * @var string|null
-     */
-    public ?string $first_name = null;
-
-    /**
-     * Фамилия.
-     *
-     * @var string|null
-     */
-    public ?string $second_name = null;
-
-    /**
-     * Статус верификации.
-     *
-     * @var bool
-     */
-    public bool $verified = false;
-
-    /**
-     * Уникальный индикационный номер для авторизации через соц сети.
-     *
-     * @var string|null
-     */
-    public ?string $uid = null;
-
-    /**
-     * Название социальной сети.
-     *
-     * @var string|null
-     */
-    public ?string $social = null;
+    public function __construct(AccessSocialDto $data)
+    {
+        $this->data = $data;
+    }
 
     /**
      * Метод обработчик события после выполнения всех действий декоратора.
      *
-     * @return AccessSignedUp|null Сущность для зарегистрированного пользователя.
+     * @return AccessSocial Сущность для авторизованного или зарегистрированного пользователя через соц. сети.
      */
-    public function run(): ?AccessSignedUp
+    public function run(): AccessSocial
     {
-        $accessSocial = new AccessSocial();
-        $accessSocial->id = $this->id;
-        $accessSocial->login = $this->login;
-        $accessSocial->first_name = $this->first_name;
-        $accessSocial->second_name = $this->second_name;
-        $accessSocial->verified = $this->verified;
-        $accessSocial->uid = $this->uid;
-        $accessSocial->social = $this->social;
-
-        return app(Pipeline::class)
-            ->send($accessSocial)
+        /**
+         * @var AccessSocialDto $data
+         */
+        $data = app(Pipeline::class)
+            ->send($this->data)
             ->through($this->getActions())
             ->thenReturn();
+
+        return new AccessSocial($data->user, $data->token->accessToken, $data->token->refreshToken);
     }
 }

@@ -10,7 +10,8 @@ namespace App\Modules\Access\Actions\Site;
 
 use App\Models\Action;
 use App\Modules\Access\Decorators\Site\AccessUpdateDecorator;
-use App\Modules\Access\Pipes\Site\Update\DataPipe;
+use App\Modules\Access\DTO\Actions\AccessUpdate;
+use App\Modules\Access\DTO\Decorators\AccessUpdate as AccessUpdateDtoDecorator;
 use App\Modules\Access\Pipes\Site\Update\UserPipe;
 use App\Modules\User\Entities\User;
 
@@ -20,32 +21,14 @@ use App\Modules\User\Entities\User;
 class AccessUpdateAction extends Action
 {
     /**
-     * ID пользователя.
-     *
-     * @var string|int|null
+     * @var AccessUpdate DTO для действия изменения информации о пользователе.
      */
-    public string|int|null $id = null;
+    private AccessUpdate $data;
 
-    /**
-     * Имя.
-     *
-     * @var string|null
-     */
-    public ?string $first_name;
-
-    /**
-     * Фамилия.
-     *
-     * @var string|null
-     */
-    public ?string $second_name = null;
-
-    /**
-     * Телефон.
-     *
-     * @var string|null
-     */
-    public ?string $phone = null;
+    public function __construct(AccessUpdate $data)
+    {
+        $this->data = $data;
+    }
 
     /**
      * Метод запуска логики.
@@ -54,15 +37,10 @@ class AccessUpdateAction extends Action
      */
     public function run(): User
     {
-        $decorator = app(AccessUpdateDecorator::class);
-        $decorator->id = $this->id;
-        $decorator->first_name = $this->first_name;
-        $decorator->second_name = $this->second_name;
-        $decorator->phone = $this->phone;
+        $decorator = new AccessUpdateDecorator(AccessUpdateDtoDecorator::from($this->data->toArray()));
 
         return $decorator->setActions([
             UserPipe::class,
-            DataPipe::class,
         ])->run();
     }
 }

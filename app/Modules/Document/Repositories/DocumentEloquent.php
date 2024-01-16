@@ -119,7 +119,7 @@ class DocumentEloquent extends Document
         $document = $query->first();
 
         if ($document) {
-            $entity = $entity ? $entity->set($document->toArray()) : $this->getEntity()->set($document->toArray());
+            $entity = $entity ? $entity->set($document->toArray()) : $this->getEntity($document->toArray());
 
             $entity->path = $document->path;
             $entity->pathCache = $document->pathCache;
@@ -182,7 +182,7 @@ class DocumentEloquent extends Document
                 ->first();
 
             if ($document) {
-                $entity = $entity ? $entity->set($document->toArray()) : $this->getEntity()->set($document->toArray());
+                $entity = $entity ? $entity->set($document->toArray()) : $this->getEntity($document->toArray());
 
                 $entity->path = $document->path;
                 $entity->pathCache = $document->pathCache;

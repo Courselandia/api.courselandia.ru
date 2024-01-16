@@ -52,13 +52,13 @@ class OAuthServiceProvider extends ServiceProvider
     public function register(): void
     {
         App::singleton(RepositoryOAuthTokenEloquent::class, function () {
-            return new RepositoryOAuthTokenEloquent(new ModelOAuthTokenEloquent(), new OAuthToken());
+            return new RepositoryOAuthTokenEloquent(new ModelOAuthTokenEloquent(), OAuthToken::class);
         });
 
         //
 
         App::singleton(RepositoryOAuthRefreshTokenEloquent::class, function () {
-            return new RepositoryOAuthRefreshTokenEloquent(new ModelOAuthRefreshTokenEloquent(), new OAuthRefresh());
+            return new RepositoryOAuthRefreshTokenEloquent(new ModelOAuthRefreshTokenEloquent(), OAuthRefresh::class);
         });
 
         //

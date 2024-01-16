@@ -41,13 +41,14 @@ class Page extends Eloquent
     use Filterable;
 
     /**
-     * Атрибуты, которые должны быть преобразованы к дате.
+     * Типизирование атрибутов.
      *
      * @var array
      */
-    protected $dates = [
-        'lastmod'
+    protected $casts = [
+        'lastmod' => 'datetime',
     ];
+
 
     /**
      * Атрибуты, для которых разрешено массовое назначение.

@@ -8,14 +8,16 @@
 
 namespace App\Modules\User\Entities;
 
-use App\Models\Entity;
+use App\Models\EntityNew;
 use Hash;
 use Carbon\Carbon;
+use Spatie\LaravelData\Attributes\WithCast;
+use Spatie\LaravelData\Casts\DateTimeInterfaceCast;
 
 /**
  * Сущность для верификации пользователя.
  */
-class UserVerification extends Entity
+class UserVerification extends EntityNew
 {
     /**
      * ID записи.
@@ -50,6 +52,7 @@ class UserVerification extends Entity
      *
      * @var ?Carbon
      */
+    #[WithCast(DateTimeInterfaceCast::class)]
     public ?Carbon $created_at = null;
 
     /**
@@ -57,6 +60,7 @@ class UserVerification extends Entity
      *
      * @var ?Carbon
      */
+    #[WithCast(DateTimeInterfaceCast::class)]
     public ?Carbon $updated_at = null;
 
     /**
@@ -64,17 +68,46 @@ class UserVerification extends Entity
      *
      * @var ?Carbon
      */
+    #[WithCast(DateTimeInterfaceCast::class)]
     public ?Carbon $deleted_at = null;
+
+    /**
+     * @param int|string|null $id ID записи.
+     * @param int|string|null $user_id ID пользователя.
+     * @param string|null $code Код верификации.
+     * @param bool|null $status Статус.
+     * @param Carbon|null $created_at Дата создания.
+     * @param Carbon|null $updated_at Дата обновления.
+     * @param Carbon|null $deleted_at Дата удаления.
+     */
+    public function __construct(
+        int|string|null $id = null,
+        int|string|null $user_id = null,
+        ?string         $code = null,
+        ?bool           $status = null,
+        ?Carbon         $created_at = null,
+        ?Carbon         $updated_at = null,
+        ?Carbon         $deleted_at = null
+    )
+    {
+        $this->id = $id;
+        $this->user_id = $user_id;
+        $this->code = $code;
+        $this->status = $status;
+        $this->created_at = $created_at;
+        $this->updated_at = $updated_at;
+        $this->deleted_at = $deleted_at;
+    }
 
     /**
      * Генерация кода верификации.
      *
-     * @param  int  $userId  ID пользователя.
+     * @param int $userId ID пользователя.
      *
      * @return string Вернет код.
      */
     public static function generateCode(int $userId): string
     {
-        return $userId.Hash::make(intval(Carbon::now()->format('U')) + rand(1, 100000000));
+        return $userId . Hash::make(intval(Carbon::now()->format('U')) + rand(1, 100000000));
     }
 }

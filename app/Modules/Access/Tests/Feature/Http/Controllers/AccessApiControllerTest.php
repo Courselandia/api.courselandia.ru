@@ -8,6 +8,7 @@
 
 namespace App\Modules\Access\Tests\Feature\Http\Controllers;
 
+use App\Modules\User\Entities\User;
 use Tests\TestCase;
 use App\Models\Test\AccessTest;
 

@@ -8,16 +8,16 @@
 
 namespace App\Modules\Access\Actions;
 
+use App\Models\Action;
 use App\Models\Enums\CacheTime;
+use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Access\Entities\AccessApiToken;
-use App\Modules\OAuth\Entities\Token;
+use App\Modules\OAuth\VO\Token;
 use App\Modules\User\Entities\User as UserEntity;
+use App\Modules\User\Models\User;
 use Cache;
 use Config;
 use OAuth;
-use App\Models\Action;
-use App\Models\Exceptions\ParameterInvalidException;
-use App\Modules\User\Models\User;
 use ReflectionException;
 use Util;
 
@@ -31,14 +31,24 @@ class AccessApiRefreshAction extends Action
      *
      * @var bool
      */
-    public bool $remember = false;
+    private bool $remember = false;
 
     /**
      * Токен обновления.
      *
-     * @var string|null
+     * @var string
      */
-    public ?string $refreshToken = null;
+    private string $refreshToken;
+
+    /**
+     * @param string $refreshToken Токен обновления.
+     * @param bool $remember Запомнить пользователя.
+     */
+    public function __construct(string $refreshToken, bool $remember = false)
+    {
+        $this->refreshToken = $refreshToken;
+        $this->remember = $remember;
+    }
 
     /**
      * Метод запуска логики.
@@ -59,14 +69,10 @@ class AccessApiRefreshAction extends Action
         $token = OAuth::refresh($this->refreshToken);
         $data = OAuth::decode($this->refreshToken, 'refreshToken');
 
-        $accessApiToken = new AccessApiToken();
-        $accessApiToken->accessToken = $token->accessToken;
-        $accessApiToken->refreshToken = $token->refreshToken;
-
         $id = $data->user;
         $cacheKey = Util::getKey('access', 'user', $id, 'role');
 
-        $accessApiToken->user = Cache::tags(['access', 'user'])->remember(
+        $user = Cache::tags(['access', 'user'])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
             function () use ($id) {
@@ -76,15 +82,15 @@ class AccessApiRefreshAction extends Action
                     ->first();
 
                 if ($user) {
-                    return new UserEntity($user->toArray());
+                    return UserEntity::from($user->toArray());
                 }
 
                 return null;
             }
         );
 
-        $accessApiToken->user->password = null;
+        $user->password = null;
 
-        return $accessApiToken;
+        return new AccessApiToken($token->getAccessToken(), $token->getRefreshToken(), $user);
     }
 }

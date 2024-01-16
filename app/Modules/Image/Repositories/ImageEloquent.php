@@ -122,9 +122,7 @@ class ImageEloquent extends Image
         $image = $this->newInstance()->newQuery()->find($id);
 
         if ($image) {
-            $entity = $entity ? clone $entity->set($image->toArray()) : clone $this->getEntity()->set(
-                $image->toArray()
-            );
+            $entity = $entity ? clone $entity->set($image->toArray()) : clone $this->getEntity($image->toArray());
 
             $entity->path = $image->path;
             $entity->pathCache = $image->pathCache;
@@ -187,7 +185,7 @@ class ImageEloquent extends Image
                 ->first();
 
             if ($image) {
-                $entity = $entity ? $entity->set($image->toArray()) : $this->getEntity()->set($image->toArray());
+                $entity = $entity ? $entity->set($image->toArray()) : $this->getEntity($image->toArray());
 
                 $entity->path = $image->path;
                 $entity->pathCache = $image->pathCache;

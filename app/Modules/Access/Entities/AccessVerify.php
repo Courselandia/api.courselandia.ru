@@ -8,13 +8,13 @@
 
 namespace App\Modules\Access\Entities;
 
-use App\Models\Entity;
+use App\Models\EntityNew;
 use App\Modules\User\Entities\User as UserEntity;
 
 /**
  * Сущность для валидации пользователя.
  */
-class AccessVerify extends Entity
+class AccessVerify extends EntityNew
 {
     /**
      * ID пользователя.
@@ -33,14 +33,33 @@ class AccessVerify extends Entity
     /**
      * Пользователь со всеми его правами.
      *
-     * @var UserEntity|null
+     * @var UserEntity
      */
-    public ?UserEntity $user;
+    public UserEntity $user;
 
     /**
      * Сущность для хранения API токена.
      *
-     * @var AccessApiToken|null
+     * @var AccessApiToken
      */
-    public ?AccessApiToken $token;
+    public AccessApiToken $token;
+
+    /**
+     * @param int|string $id ID пользователя.
+     * @param string $code Код верификации.
+     * @param UserEntity $user Пользователь со всеми его правами.
+     * @param AccessApiToken $token Сущность для хранения API токена.
+     */
+    public function __construct(
+        int|string     $id,
+        string         $code,
+        UserEntity     $user,
+        AccessApiToken $token
+    )
+    {
+        $this->id = $id;
+        $this->code = $code;
+        $this->user = $user;
+        $this->token = $token;
+    }
 }

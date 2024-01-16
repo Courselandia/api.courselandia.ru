@@ -8,16 +8,17 @@
 
 namespace App\Modules\Access\Pipes\Site\Social;
 
+use Closure;
+use App\Models\DTO;
 use App\Models\Contracts\Pipe;
-use App\Models\Entity;
+use ReflectionException;
 use App\Models\Exceptions\InvalidPasswordException;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\UserNotExistException;
 use App\Modules\Access\Actions\AccessApiTokenAction;
 use App\Modules\Access\Actions\AccessGateAction;
-use App\Modules\Access\Entities\AccessSocial;
-use Closure;
-use ReflectionException;
+use App\Modules\Access\DTO\Actions\AccessApiToken;
+use App\Modules\Access\DTO\Decorators\AccessSocial;
 
 /**
  * Регистрация нового пользователя через социальные сети: получение клиента.
@@ -27,33 +28,35 @@ class TokenPipe implements Pipe
     /**
      * Метод, который будет вызван у pipeline.
      *
-     * @param  Entity|AccessSocial  $entity  Содержит массив свойств, которые можно передавать от pipe к pipe.
-     * @param  Closure  $next  Ссылка на следующий pipe.
+     * @param DTO|AccessSocial $data DTO.
+     * @param Closure $next Ссылка на следующий pipe.
      *
      * @return mixed Вернет значение полученное после выполнения следующего pipe.
-     * @throws InvalidPasswordException|ParameterInvalidException|ReflectionException
+     * @throws InvalidPasswordException
+     * @throws ParameterInvalidException
+     * @throws ReflectionException
      */
-    public function handle(Entity|AccessSocial $entity, Closure $next): mixed
+    public function handle(DTO|AccessSocial $data, Closure $next): mixed
     {
         try {
-            $action = app(AccessApiTokenAction::class);
-            $action->login = $entity->login;
-            $action->force = true;
+            $action = new AccessApiTokenAction(AccessApiToken::from([
+                ...$data->toArray(),
+                'force' => false,
+            ]));
             $token = $action->run();
 
-            $action = app(AccessGateAction::class);
-            $action->id = $token->user->id;
-
+            $action = new AccessGateAction($token->user->id);
             $user = $action->run();
 
-            $entity->create = false;
-            $entity->user = $user;
-            $entity->token = $token;
+            $data->create = true;
+            $data->user = $user;
+            $data->token = $token;
 
-        } catch (UserNotExistException $error) {
-            $entity->create = true;
+            return $next($data);
+        } catch (UserNotExistException) {
+            $data->create = true;
+
+            return $next($data);
         }
-
-        return $next($entity);
     }
 }

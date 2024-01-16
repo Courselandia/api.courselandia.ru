@@ -64,15 +64,6 @@ class Publication extends Eloquent
     use Filterable;
 
     /**
-     * Атрибуты, которые должны быть преобразованы к дате.
-     *
-     * @var array
-     */
-    protected $dates = [
-        'published_at'
-    ];
-
-    /**
      * Атрибуты, для которых разрешено массовое назначение.
      *
      * @var array
@@ -100,6 +91,7 @@ class Publication extends Eloquent
         'image_small_id' => ImageSmall::class,
         'image_middle_id' => ImageMiddle::class,
         'image_big_id' => ImageBig::class,
+        'published_at' => 'datetime',
     ];
 
     /**

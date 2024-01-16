@@ -15,6 +15,7 @@ use App\Models\Delete;
 use App\Models\Sortable;
 use EloquentFilter\Filterable;
 use App\Models\Validate;
+use Illuminate\Database\Eloquent\Concerns\HasTimestamps;
 use Illuminate\Http\UploadedFile;
 use App\Models\BelongsToOneTrait;
 use App\Modules\User\Database\Factories\UserFactory;
@@ -68,6 +69,7 @@ class User extends Authenticatable
     use Status;
     use Validate;
     use Filterable;
+    use HasTimestamps;
 
     /**
      * Атрибуты, для которых разрешено массовое назначение.

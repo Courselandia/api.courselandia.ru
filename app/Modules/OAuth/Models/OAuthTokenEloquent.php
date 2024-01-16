@@ -53,12 +53,12 @@ class OAuthTokenEloquent extends Eloquent
     ];
 
     /**
-     * Атрибуты, которые должны быть преобразованы к дате.
+     * Типизирование атрибутов.
      *
      * @var array
      */
-    protected $dates = [
-        'expires_at'
+    protected $casts = [
+        'expires_at' => 'datetime',
     ];
 
     /**

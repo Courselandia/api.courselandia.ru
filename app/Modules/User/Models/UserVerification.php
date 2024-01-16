@@ -18,6 +18,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Models\Status;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Concerns\HasTimestamps;
 
 /**
  * Класс модель для таблицы верификации пользователей на основе Eloquent.
@@ -36,6 +37,9 @@ class UserVerification extends Eloquent
     use Status;
     use Validate;
     use Filterable;
+    use HasTimestamps;
+
+    // public $timestamps = false;
 
     /**
      * Атрибуты, для которых разрешено массовое назначение.

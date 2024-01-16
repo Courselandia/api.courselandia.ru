@@ -46,8 +46,8 @@ class Recovery extends Mailable
     /**
      * Конструктор.
      *
-     * @param  User  $user  Сущность пользователя.
-     * @param  string  $code  Код восстановления пользователя.
+     * @param User $user Сущность пользователя.
+     * @param string $code Код восстановления пользователя.
      */
     public function __construct(User $user, string $code)
     {
@@ -65,9 +65,9 @@ class Recovery extends Mailable
     {
         return $this->subject(trans('access::emails.site.recovery.title'))
             ->view('access::recovery', [
-            'user' => $this->user,
-            'code' => $this->code,
-            'site' => $this->site,
-        ]);
+                'user' => $this->user,
+                'code' => $this->code,
+                'site' => $this->site,
+            ]);
     }
 }

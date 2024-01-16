@@ -25,9 +25,17 @@ class AccessSendEmailVerificationAction extends Action
     /**
      * Логин пользователя.
      *
-     * @var string|null
+     * @var string
      */
-    public ?string $login = null;
+    private string $login;
+
+    /**
+     * @param string $login Логин пользователя.
+     */
+    public function __construct(string $login)
+    {
+        $this->login = $login;
+    }
 
     /**
      * Метод запуска логики.
@@ -51,8 +59,7 @@ class AccessSendEmailVerificationAction extends Action
         );
 
         if ($user) {
-            $action = app(AccessSendEmailVerificationCodeAction::class);
-            $action->id = $user->id;
+            $action = new AccessSendEmailVerificationCodeAction($user->id);
             $action->run();
 
             return true;

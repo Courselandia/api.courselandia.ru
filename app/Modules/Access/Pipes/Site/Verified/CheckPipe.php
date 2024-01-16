@@ -8,22 +8,22 @@
 
 namespace App\Modules\Access\Pipes\Site\Verified;
 
-use App\Models\Enums\CacheTime;
 use Cache;
 use Closure;
 use Config;
+use Util;
+use App\Models\DTO;
+use App\Models\Enums\CacheTime;
 use ReflectionException;
 use App\Models\Contracts\Pipe;
-use App\Models\Entity;
 use App\Models\Exceptions\ParameterInvalidException;
-use App\Modules\Access\Entities\AccessVerify;
+use App\Modules\Access\DTO\Decorators\AccessVerify;
 use App\Modules\User\Models\User;
 use App\Modules\User\Models\UserVerification;
 use App\Models\Exceptions\UserNotExistException;
 use App\Models\Exceptions\UserVerifiedException;
 use App\Models\Exceptions\InvalidCodeException;
 use App\Models\Exceptions\RecordNotExistException;
-use Util;
 
 /**
  * Верификация пользователя: проверяем пользователя.
@@ -33,8 +33,8 @@ class CheckPipe implements Pipe
     /**
      * Метод, который будет вызван у pipeline.
      *
-     * @param  AccessVerify|Entity  $entity  Сущность для хранения данных.
-     * @param  Closure  $next  Ссылка на следующий pipe.
+     * @param DTO|AccessVerify $data DTO.
+     * @param Closure $next Ссылка на следующий pipe.
      *
      * @return mixed Вернет значение полученное после выполнения следующего pipe.
      * @throws UserNotExistException
@@ -43,9 +43,9 @@ class CheckPipe implements Pipe
      * @throws ParameterInvalidException
      * @throws ReflectionException|UserVerifiedException
      */
-    public function handle(AccessVerify|Entity $entity, Closure $next): mixed
+    public function handle(DTO|AccessVerify $data, Closure $next): mixed
     {
-        $id = $entity->id;
+        $id = $data->id;
         $cacheKey = Util::getKey('access', 'user', 'model', $id);
 
         $user = Cache::tags(['access', 'user'])->remember(
@@ -70,13 +70,13 @@ class CheckPipe implements Pipe
             );
 
             if ($verification) {
-                if (Config::get('app.env') === 'testing' || Config::get('app.env') === 'local' || $verification->code === $entity->code) {
+                if (Config::get('app.env') === 'testing' || Config::get('app.env') === 'local' || $verification->code === $data->code) {
                     if ((bool)$verification->status === false) {
                         $verification->status = true;
 
                         $verification->update($verification->toArray());
 
-                        return $next($entity);
+                        return $next($data);
                     }
 
                     throw new UserVerifiedException(trans('access::pipes.site.verified.checkPipe.userIsVerified'));

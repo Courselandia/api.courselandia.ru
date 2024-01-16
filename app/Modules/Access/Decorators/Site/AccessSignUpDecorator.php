@@ -10,7 +10,7 @@ namespace App\Modules\Access\Decorators\Site;
 
 use App\Models\Decorator;
 use App\Modules\Access\Entities\AccessSignedUp;
-use App\Modules\Access\Entities\AccessSignUp;
+use App\Modules\Access\DTO\Decorators\AccessSignUp as AccessSignUp;
 use Illuminate\Pipeline\Pipeline;
 
 /**
@@ -19,73 +19,35 @@ use Illuminate\Pipeline\Pipeline;
 class AccessSignUpDecorator extends Decorator
 {
     /**
-     * Логин.
+     * DTO для декоратора регистрации.
      *
-     * @var string|null
+     * @var AccessSignUp
      */
-    public ?string $login = null;
+    private AccessSignUp $data;
 
     /**
-     * Пароль.
-     *
-     * @var string|null
+     * @param AccessSignUp $data DTO для декоратора регистрации.
      */
-    public ?string $password = null;
-
-    /**
-     * Имя.
-     *
-     * @var string|null
-     */
-    public ?string $first_name = null;
-
-    /**
-     * Фамилия.
-     *
-     * @var string|null
-     */
-    public ?string $second_name = null;
-
-    /**
-     * Телефон.
-     *
-     * @var string|null
-     */
-    public ?string $phone = null;
-
-    /**
-     * Статус верификации.
-     *
-     * @var bool
-     */
-    public bool $verify = false;
-
-    /**
-     * Уникальный индикационный номер для авторизации через соц сети.
-     *
-     * @var string|null
-     */
-    public ?string $uid = null;
+    public function __construct(AccessSignUp $data)
+    {
+        $this->data = $data;
+    }
 
     /**
      * Метод обработчик события после выполнения всех действий декоратора.
      *
-     * @return AccessSignedUp Вернет массив данных при выполнении действия.
+     * @return AccessSignedUp Сущность для зарегистрированного пользователя.
      */
     public function run(): AccessSignedUp
     {
-        $accessSignUp = new AccessSignUp();
-        $accessSignUp->login = $this->login;
-        $accessSignUp->password = $this->password;
-        $accessSignUp->first_name = $this->first_name;
-        $accessSignUp->second_name = $this->second_name;
-        $accessSignUp->phone = $this->phone;
-        $accessSignUp->verify = $this->verify;
-        $accessSignUp->uid = $this->uid;
-
-        return app(Pipeline::class)
-            ->send($accessSignUp)
+        /**
+         * @var AccessSignUp $data
+         */
+        $data =  app(Pipeline::class)
+            ->send($this->data)
             ->through($this->getActions())
             ->thenReturn();
+
+        return new AccessSignedUp($data->user, $data->token->accessToken, $data->token->refreshToken);
     }
 }

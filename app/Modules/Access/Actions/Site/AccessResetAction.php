@@ -31,23 +31,35 @@ class AccessResetAction extends Action
     /**
      * ID пользователя.
      *
-     * @var int|string|null
+     * @var int|string
      */
-    public int|string|null $id = null;
+    private int|string $id;
 
     /**
      * Код восстановления пользователя.
      *
-     * @var string|null
+     * @var string
      */
-    public ?string $code = null;
+    private string $code;
 
     /**
      * Новый пароль пользователя.
      *
-     * @var string|null
+     * @var string
      */
-    public ?string $password = null;
+    private string $password;
+
+    /**
+     * @param int|string $id ID пользователя.
+     * @param string $code Код восстановления пользователя.
+     * @param string $password Новый пароль пользователя.
+     */
+    public function __construct(int|string $id, string $code, string $password)
+    {
+        $this->id = $id;
+        $this->code = $code;
+        $this->password = $password;
+    }
 
     /**
      * Метод запуска логики.
@@ -60,10 +72,7 @@ class AccessResetAction extends Action
      */
     public function run(): bool
     {
-        $action = app(AccessCheckCodeResetPasswordAction::class);
-        $action->id = $this->id;
-        $action->code = $this->code;
-
+        $action = new AccessCheckCodeResetPasswordAction($this->id, $this->code);
         $action->run();
 
         $cacheKey = Util::getKey('access', 'user', 'model', $this->id);
@@ -89,7 +98,7 @@ class AccessResetAction extends Action
 
             Cache::tags(['access', 'user'])->flush();
 
-            Mail::to($user->login)->queue(new Reset(new UserEntity($user->toArray())));
+            Mail::to($user->login)->queue(new Reset(UserEntity::from($user->toArray())));
 
             return true;
         }

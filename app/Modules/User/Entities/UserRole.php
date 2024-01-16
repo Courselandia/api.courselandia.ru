@@ -8,14 +8,16 @@
 
 namespace App\Modules\User\Entities;
 
-use App\Models\Entity;
+use App\Models\EntityNew;
 use Carbon\Carbon;
 use App\Modules\User\Enums\Role;
+use Spatie\LaravelData\Attributes\WithCast;
+use Spatie\LaravelData\Casts\DateTimeInterfaceCast;
 
 /**
  * Сущность для ролей пользователя.
  */
-class UserRole extends Entity
+class UserRole extends EntityNew
 {
     /**
      * ID записи.
@@ -43,6 +45,7 @@ class UserRole extends Entity
      *
      * @var ?Carbon
      */
+    #[WithCast(DateTimeInterfaceCast::class)]
     public ?Carbon $created_at = null;
 
     /**
@@ -50,6 +53,7 @@ class UserRole extends Entity
      *
      * @var ?Carbon
      */
+    #[WithCast(DateTimeInterfaceCast::class)]
     public ?Carbon $updated_at = null;
 
     /**
@@ -57,5 +61,23 @@ class UserRole extends Entity
      *
      * @var ?Carbon
      */
+    #[WithCast(DateTimeInterfaceCast::class)]
     public ?Carbon $deleted_at = null;
+
+    public function __construct(
+        int|string|null $id = null,
+        int|string|null $user_id = null,
+        ?Role $name = null,
+        ?Carbon $created_at = null,
+        ?Carbon $updated_at = null,
+        ?Carbon $deleted_at = null
+    )
+    {
+        $this->id = $id;
+        $this->user_id = $user_id;
+        $this->name = $name;
+        $this->created_at = $created_at;
+        $this->updated_at = $updated_at;
+        $this->deleted_at = $deleted_at;
+    }
 }

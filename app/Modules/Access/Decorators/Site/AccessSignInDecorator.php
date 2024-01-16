@@ -10,8 +10,8 @@ namespace App\Modules\Access\Decorators\Site;
 
 use App\Models\Decorator;
 use App\Modules\Access\Entities\AccessSignedIn;
-use App\Modules\Access\Entities\AccessSignIn;
 use Illuminate\Pipeline\Pipeline;
+use App\Modules\Access\DTO\Decorators\AccessSignIn as AccessSignInDto;
 
 /**
  * Класс декоратор для авторизации пользователя.
@@ -19,41 +19,37 @@ use Illuminate\Pipeline\Pipeline;
 class AccessSignInDecorator extends Decorator
 {
     /**
-     * Логин пользователя.
+     * DTO для авторизации пользователя.
      *
-     * @var string|null
+     * @var AccessSignInDto
      */
-    public ?string $login = null;
+    private AccessSignInDto $data;
 
     /**
-     * Пароль пользователя.
+     * DTO для авторизации пользователя.
      *
-     * @var string|null
+     * @param AccessSignInDto $data
      */
-    public ?string $password = null;
-
-    /**
-     * Запомнить пользователя.
-     *
-     * @var bool
-     */
-    public bool $remember = false;
+    public function __construct(AccessSignInDto $data)
+    {
+        $this->data = $data;
+    }
 
     /**
      * Метод обработчик события после выполнения всех действий декоратора.
      *
-     * @return AccessSignedIn Вернет данные авторизации.
+     * @return AccessSignedIn Сущность для авторизованного пользователя.
      */
     public function run(): AccessSignedIn
     {
-        $accessSignIn = new AccessSignIn();
-        $accessSignIn->login = $this->login;
-        $accessSignIn->password = $this->password;
-        $accessSignIn->remember = $this->remember;
-
-        return app(Pipeline::class)
-            ->send($accessSignIn)
+        /**
+         * @var AccessSignInDto $data
+         */
+        $data = app(Pipeline::class)
+            ->send($this->data)
             ->through($this->getActions())
             ->thenReturn();
+
+        return new AccessSignedIn($data->user, $data->token->getAccessToken(), $data->token->getRefreshToken());
     }
 }

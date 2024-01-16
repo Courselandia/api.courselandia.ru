@@ -26,11 +26,11 @@ class Repository
     private Eloquent|Authenticatable|MongoDb $model;
 
     /**
-     * Сущность данного репозитория.
+     * Название класса сущности данного репозитория.
      *
-     * @var Entity
+     * @var string
      */
-    private Entity $entity;
+    private string $entity;
 
     /**
      * Конструктор.
@@ -38,7 +38,7 @@ class Repository
      * @param Eloquent|Authenticatable|MongoDb $model Модель данного репозитория.
      * @param Entity $entity Сущность данного репозитория.
      */
-    public function __construct(Eloquent|Authenticatable|MongoDb $model, Entity $entity)
+    public function __construct(Eloquent|Authenticatable|MongoDb $model, string $entity)
     {
         $this->setModel($model);
         $this->setEntity($entity);
@@ -71,21 +71,25 @@ class Repository
     /**
      * Получение сущности этого репозитория.
      *
-     * @return Entity Сущность данного репозитория.
+     * @params array $params Значения для сущности.
+     *
+     * @return EntityNew Сущность данного репозитория.
      */
-    public function getEntity(): Entity
+    public function getEntity(array $params): EntityNew
     {
-        return $this->entity;
+        $nameClass = $this->entity;
+
+        return $nameClass($params);
     }
 
     /**
      * Установка сущности этого репозитория.
      *
-     * @param Entity $entity Сущность данного репозитория.
+     * @param string $entity Название класса сущности данного репозитория.
      *
      * @return Repository
      */
-    protected function setEntity(Entity $entity): Repository
+    protected function setEntity(string $entity): Repository
     {
         $this->entity = $entity;
 

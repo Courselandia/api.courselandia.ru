@@ -27,8 +27,7 @@ class GateUser
      */
     public function check(User $user): bool
     {
-        $action = app(AccessGateAction::class);
-        $action->id = $user->id;
+        $action = new AccessGateAction($user->id);
         $user = $action->run();
 
         return (bool)$user;

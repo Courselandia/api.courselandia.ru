@@ -42,7 +42,7 @@ class OAuthRefreshTokenEloquent extends Repository
 
         $item = $query->first();
 
-        return $item ? new OAuthRefresh($item->toArray()) : null;
+        return $item ? OAuthRefresh::from($item->toArray()) : null;
     }
 
     /**

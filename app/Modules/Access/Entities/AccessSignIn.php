@@ -8,14 +8,14 @@
 
 namespace App\Modules\Access\Entities;
 
-use App\Models\Entity;
-use App\Modules\OAuth\Entities\Token;
+use App\Models\EntityNew;
+use App\Modules\OAuth\VO\Token;
 use App\Modules\User\Entities\User;
 
 /**
  * Сущность для авторизации пользователя.
  */
-class AccessSignIn extends Entity
+class AccessSignIn extends EntityNew
 {
     /**
      * ID пользователя.
@@ -39,25 +39,11 @@ class AccessSignIn extends Entity
     public string $password;
 
     /**
-     * Запомнить пользователя.
-     *
-     * @var bool
-     */
-    public bool $remember = false;
-
-    /**
-     * Двухфакторная аутентификация.
-     *
-     * @var bool
-     */
-    public bool $two_factor = false;
-
-    /**
      * Токена.
      *
-     * @var Token|null
+     * @var Token
      */
-    public ?Token $token;
+    public Token $token;
 
     /**
      * Сущность пользователя.
@@ -65,4 +51,46 @@ class AccessSignIn extends Entity
      * @var User
      */
     public User $user;
+
+    /**
+     * Запомнить пользователя.
+     *
+     * @var bool
+     */
+    public bool $remember;
+
+    /**
+     * Двухфакторная аутентификация.
+     *
+     * @var bool
+     */
+    public bool $two_factor;
+
+    /**
+     * @param int|string $id ID пользователя.
+     * @param string $login Логин пользователя.
+     * @param string $password Пароль пользователя.
+     * @param Token $token Токена.
+     * @param User $user Сущность пользователя.
+     * @param bool $remember Запомнить пользователя.
+     * @param bool $two_factor Двухфакторная аутентификация.
+     */
+    public function __construct(
+        int|string $id,
+        string     $login,
+        string     $password,
+        Token      $token,
+        User       $user,
+        bool       $remember = false,
+        bool       $two_factor = false,
+    )
+    {
+        $this->id = $id;
+        $this->login = $login;
+        $this->password = $password;
+        $this->token = $token;
+        $this->user = $user;
+        $this->remember = $remember;
+        $this->two_factor = $two_factor;
+    }
 }

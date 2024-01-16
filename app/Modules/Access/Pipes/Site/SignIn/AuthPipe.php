@@ -15,13 +15,14 @@ use Closure;
 use Device;
 use Request;
 use Exception;
-use App\Models\Exceptions\ParameterInvalidException;
-use App\Modules\Access\Entities\AccessSignUp;
+use App\Models\DTO;
 use App\Models\Entity;
 use App\Models\Contracts\Pipe;
-use App\Modules\Access\Entities\AccessSignIn;
-use App\Modules\User\Entities\UserAuth as UserAuthEntity;
 use App\Modules\User\Models\UserAuth;
+use App\Modules\Access\DTO\Decorators\AccessSocial;
+use App\Modules\Access\DTO\Decorators\AccessSignUp;
+use App\Models\Exceptions\ParameterInvalidException;
+use App\Modules\Access\DTO\Decorators\AccessSignIn;
 
 /**
  * Авторизация пользователя: Запись об авторизации пользователя.
@@ -31,36 +32,37 @@ class AuthPipe implements Pipe
     /**
      * Метод, который будет вызван у pipeline.
      *
-     * @param  Entity|AccessSignIn|AccessSignUp  $entity  Сущность.
-     * @param  Closure  $next  Ссылка на следующий pipe.
+     * @param Entity|AccessSocial|AccessSignUp|AccessSignIn $data DTO.
+     * @param Closure $next Ссылка на следующий pipe.
      *
      * @return mixed Вернет значение полученное после выполнения следующего pipe.
      * @throws ParameterInvalidException
      */
-    public function handle(Entity|AccessSignIn|AccessSignUp $entity, Closure $next): mixed
+    public function handle(DTO|AccessSocial|AccessSignUp|AccessSignIn $data, Closure $next): mixed
     {
-        if (!$entity->two_factor) {
-            $userAuth = new UserAuthEntity();
-            $userAuth->user_id = $entity->id;
-            $userAuth->os = Device::operationSystem();
-            $userAuth->device = Device::system();
-            $userAuth->browser = Device::browser();
-            $userAuth->agent = Device::getAgent();
-            $userAuth->ip = Request::ip();
+        if (!$data->user->two_factor) {
+            $userAuthData = [
+                'user_id' => $data->id,
+                'os' => Device::operationSystem(),
+                'device' => Device::system(),
+                'browser' => Device::browser(),
+                'agent' => Device::getAgent(),
+                'ip' => Request::ip(),
+            ];
 
             try {
                 $location = Geo::get();
 
-                $userAuth->latitude = $location->latitude;
-                $userAuth->longitude = $location->longitude;
+                $userAuthData['latitude'] = $location->latitude;
+                $userAuthData['longitude'] = $location->longitude;
             } catch (Exception $error) {
-                Log::alert('The GEO for the IP '.Request::ip().' is undetectable ('.$error->getMessage().').');
+                Log::alert('The GEO for the IP ' . Request::ip() . ' is undetectable (' . $error->getMessage() . ').');
             }
 
-            UserAuth::create($userAuth->toArray());
+            UserAuth::create($userAuthData);
             Cache::tags(['access', 'user'])->flush();
         }
 
-        return $next($entity);
+        return $next($data);
     }
 }

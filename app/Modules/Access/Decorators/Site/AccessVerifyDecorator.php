@@ -10,7 +10,7 @@ namespace App\Modules\Access\Decorators\Site;
 
 use App\Models\Decorator;
 use App\Modules\Access\Entities\AccessVerified;
-use App\Modules\Access\Entities\AccessVerify;
+use App\Modules\Access\DTO\Decorators\AccessVerify;
 use Illuminate\Pipeline\Pipeline;
 
 /**
@@ -21,16 +21,26 @@ class AccessVerifyDecorator extends Decorator
     /**
      * ID пользователя.
      *
-     * @var int|string|null
+     * @var int|string
      */
-    public int|string|null $id = null;
+    private int|string $id;
 
     /**
      * Код верификации.
      *
-     * @var string|null
+     * @var string
      */
-    public ?string $code = null;
+    private string $code;
+
+    /**
+     * @param int|string $id ID пользователя.
+     * @param string $code Код верификации.
+     */
+    public function __construct(int|string $id, string $code)
+    {
+        $this->id = $id;
+        $this->code = $code;
+    }
 
     /**
      * Метод обработчик события после выполнения всех действий декоратора.
@@ -39,13 +49,16 @@ class AccessVerifyDecorator extends Decorator
      */
     public function run(): AccessVerified
     {
-        $accessVerify = new AccessVerify();
-        $accessVerify->id = $this->id;
-        $accessVerify->code = $this->code;
+        $accessVerify = new AccessVerify($this->id, $this->code);
 
-        return app(Pipeline::class)
+        /**
+         * @var AccessVerify $data
+         */
+        $data = app(Pipeline::class)
             ->send($accessVerify)
             ->through($this->getActions())
             ->thenReturn();
+
+        return new AccessVerified($data->user, $data->token->accessToken, $data->token->refreshToken);
     }
 }

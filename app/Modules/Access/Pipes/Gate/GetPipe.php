@@ -9,15 +9,17 @@
 namespace App\Modules\Access\Pipes\Gate;
 
 use App\Models\Contracts\Pipe;
+use App\Models\DTO;
 use App\Models\Entity;
 use App\Models\Exceptions\InvalidPasswordException;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\UserNotExistException;
 use App\Modules\Access\Actions\AccessApiTokenAction;
 use App\Modules\Access\Actions\AccessGateAction;
-use App\Modules\Access\Entities\AccessSignUp;
-use App\Modules\Access\Entities\AccessSocial;
-use App\Modules\Access\Entities\AccessVerify;
+use App\Modules\Access\DTO\Actions\AccessApiToken as AccessApiTokenDto;
+use App\Modules\Access\DTO\Decorators\AccessSocial;
+use App\Modules\Access\DTO\Decorators\AccessSignUp;
+use App\Modules\Access\DTO\Decorators\AccessVerify;
 use Closure;
 use ReflectionException;
 
@@ -29,27 +31,27 @@ class GetPipe implements Pipe
     /**
      * Метод, который будет вызван у pipeline.
      *
-     * @param  Entity|AccessSignUp|AccessSocial|AccessVerify  $entity  Сущность.
-     * @param  Closure  $next  Ссылка на следующий pipe.
+     * @param Entity|AccessSocial|AccessSignUp|AccessVerify $data DTO.
+     * @param Closure $next Ссылка на следующий pipe.
      *
      * @return mixed Вернет значение полученное после выполнения следующего pipe.
-     * @throws ReflectionException
-     * @throws ParameterInvalidException
+     * @throws InvalidPasswordException|ParameterInvalidException|UserNotExistException|ReflectionException
      */
-    public function handle(Entity|AccessSignUp|AccessSocial|AccessVerify $entity, Closure $next): mixed
+    public function handle(DTO|AccessSocial|AccessSignUp|AccessVerify $data, Closure $next): mixed
     {
-        $action = app(AccessGateAction::class);
-        $action->id = $entity->id;
+        $action = new AccessGateAction($data->id);
         $user = $action->run();
 
-        $action = app(AccessApiTokenAction::class);
-        $action->login = $user->login;
-        $action->force = true;
+        $action = new AccessApiTokenAction(AccessApiTokenDto::from([
+            'login' => $user->login,
+            'force' => true,
+        ]));
+
         $token = $action->run();
 
-        $entity->user = $user;
-        $entity->token = $token;
+        $data->user = $user;
+        $data->token = $token;
 
-        return $next($entity);
+        return $next($data);
     }
 }

@@ -8,25 +8,25 @@
 
 namespace App\Modules\OAuth\Models;
 
-use Util;
-use Cache;
-use Config;
-use stdClass;
-use Carbon\Carbon;
 use App\Models\Enums\CacheTime;
+use App\Models\Exceptions\InvalidFormatException;
 use App\Models\Exceptions\ParameterInvalidException;
-use App\Modules\OAuth\Entities\OAuthRefresh;
-use App\Modules\OAuth\Entities\OAuthToken;
-use App\Modules\User\Models\User;
-use App\Modules\OAuth\Contracts\OAuthDriver;
-use App\Modules\OAuth\Repositories\OAuthTokenEloquent;
-use App\Modules\OAuth\Repositories\OAuthRefreshTokenEloquent;
-use App\Modules\OAuth\Models\OAuthRefreshTokenEloquent as OAuthRefreshTokenEloquentModel;
+use App\Models\Exceptions\RecordExistException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Models\Exceptions\UserNotExistException;
-use App\Models\Exceptions\InvalidFormatException;
-use App\Modules\OAuth\Entities\Token;
-use App\Models\Exceptions\RecordExistException;
+use App\Modules\OAuth\Contracts\OAuthDriver;
+use App\Modules\OAuth\Entities\OAuthRefresh;
+use App\Modules\OAuth\Entities\OAuthToken;
+use App\Modules\OAuth\Models\OAuthRefreshTokenEloquent as OAuthRefreshTokenEloquentModel;
+use App\Modules\OAuth\Repositories\OAuthRefreshTokenEloquent;
+use App\Modules\OAuth\Repositories\OAuthTokenEloquent;
+use App\Modules\OAuth\VO\Token;
+use App\Modules\User\Models\User;
+use Cache;
+use Carbon\Carbon;
+use Config;
+use stdClass;
+use Util;
 
 /**
  * Класс драйвер работы с токенами в базе данных.
@@ -153,11 +153,7 @@ class OAuthDriverDatabase extends OAuthDriver
                 $refreshTokenEntity = $this->oAuthRefreshTokenEloquent->get($tokenEntity->id);
 
                 if ($refreshTokenEntity) {
-                    $token = new Token();
-                    $token->accessToken = $tokenEntity->token;
-                    $token->refreshToken = $refreshTokenEntity->refresh_token;
-
-                    return $token;
+                    return new Token($tokenEntity->token, $refreshTokenEntity->refresh_token);
                 }
             }
 
@@ -168,35 +164,28 @@ class OAuthDriverDatabase extends OAuthDriver
             $valueAccessToken->user = $userId;
 
             $issuedToken = $this->issue($valueAccessToken, $expiresAtToken, $expiresAtRefreshToken);
-            $tokenEntity = $this->oAuthTokenEloquent->get($userId, $issuedToken->accessToken);
+            $tokenEntity = $this->oAuthTokenEloquent->get($userId, $issuedToken->getAccessToken());
 
             try {
                 if ($tokenEntity) {
                     $tokenEntity->expires_at = $expiresAtToken;
                     $this->oAuthTokenEloquent->update($tokenEntity->id, $tokenEntity);
                 } else {
-                    $tokenEntity = new OAuthToken();
-                    $tokenEntity->user_id = $userId;
-                    $tokenEntity->token = $issuedToken->accessToken;
-                    $tokenEntity->expires_at = $expiresAtToken;
-
+                    $tokenEntity = new OAuthToken(null, $userId, $issuedToken->getAccessToken(), $expiresAtToken);
                     $tokenEntity->id = $this->oAuthTokenEloquent->create($tokenEntity);
                 }
             } catch (RecordExistException $error) {
 
             }
 
-            $refreshToken = $this->oAuthRefreshTokenEloquent->get($tokenEntity->id, $issuedToken->refreshToken);
+            $refreshToken = $this->oAuthRefreshTokenEloquent->get($tokenEntity->id, $issuedToken->getRefreshToken());
 
             try {
                 if ($refreshToken) {
                     $refreshToken->expires_at = $expiresAtRefreshToken;
                     $this->oAuthRefreshTokenEloquent->update($refreshToken->id, $refreshToken);
                 } else {
-                    $refreshToken = new OAuthRefresh();
-                    $refreshToken->oauth_token_id = $tokenEntity->id;
-                    $refreshToken->refresh_token = $issuedToken->refreshToken;
-                    $refreshToken->expires_at = $expiresAtRefreshToken;
+                    $refreshToken = new OAuthRefresh(null, $tokenEntity->id, $issuedToken->getRefreshToken(), $expiresAtRefreshToken);
 
                     $this->oAuthRefreshTokenEloquent->create($refreshToken);
                 }
@@ -206,11 +195,7 @@ class OAuthDriverDatabase extends OAuthDriver
 
             Cache::tags(['uAuth', 'user'])->flush();
 
-            $token = new Token();
-            $token->accessToken = $issuedToken->accessToken;
-            $token->refreshToken = $issuedToken->refreshToken;
-
-            return $token;
+            return new Token($issuedToken->getAccessToken(), $issuedToken->getRefreshToken());
         }
 
         throw new UserNotExistException(trans('oauth::models.oAuthDriverDatabase.noUser'));
@@ -249,11 +234,7 @@ class OAuthDriverDatabase extends OAuthDriver
                 $now = Carbon::now();
 
                 if ($tokenEntity && $now->diffInSeconds($tokenEntity->expires_at) > Config::get('token.token_life', 3600)) {
-                    $token = new Token();
-                    $token->accessToken = $tokenEntity->token;
-                    $token->refreshToken = $refreshToken;
-
-                    return $token;
+                    return new Token($tokenEntity->token, $refreshToken);
                 }
 
                 $expiresAtToken = Carbon::now()->addSeconds($this->getSecondsTokenLife());
@@ -263,49 +244,37 @@ class OAuthDriverDatabase extends OAuthDriver
                 $valueAccessToken->user = $value->user;
 
                 $issuedToken = $this->issue($valueAccessToken, $expiresAtToken, $expiresAtRefreshToken);
-                $tokenEntity = $this->oAuthTokenEloquent->get($userId, $issuedToken->accessToken);
+                $tokenEntity = $this->oAuthTokenEloquent->get($userId, $issuedToken->getAccessToken());
 
                 try {
                     if ($tokenEntity) {
                         $tokenEntity->expires_at = $expiresAtToken;
                         $tokenEntity->id = $this->oAuthTokenEloquent->update($tokenEntity->id, $tokenEntity);
                     } else {
-                        $tokenEntity = new OAuthToken();
-                        $tokenEntity->user_id = $userId;
-                        $tokenEntity->token = $issuedToken->accessToken;
-                        $tokenEntity->expires_at = $expiresAtToken;
-
+                        $tokenEntity = new OAuthToken(null, $userId, $issuedToken->getAccessToken(), $expiresAtToken);
                         $tokenEntity->id = $this->oAuthTokenEloquent->create($tokenEntity);
                     }
-                } catch (RecordExistException $error) {
+                } catch (RecordExistException) {
 
                 }
 
-                $refreshTokenEntity = $this->oAuthRefreshTokenEloquent->get($tokenEntity->id, $issuedToken->refreshToken);
+                $refreshTokenEntity = $this->oAuthRefreshTokenEloquent->get($tokenEntity->id, $issuedToken->getRefreshToken());
 
                 try {
                     if ($refreshTokenEntity) {
                         $refreshTokenEntity->expires_at = $expiresAtRefreshToken;
                         $this->oAuthRefreshTokenEloquent->update($refreshTokenEntity->id, $refreshTokenEntity);
                     } else {
-                        $refreshTokenEntity = new OAuthRefresh();
-                        $refreshTokenEntity->oauth_token_id = $tokenEntity->id;
-                        $refreshTokenEntity->refresh_token = $issuedToken->refreshToken;
-                        $refreshTokenEntity->expires_at = $expiresAtRefreshToken;
-
+                        $refreshTokenEntity = new OAuthRefresh(null, $tokenEntity->id, $issuedToken->getRefreshToken(), $expiresAtRefreshToken);
                         $refreshTokenEntity->id = $this->oAuthRefreshTokenEloquent->create($refreshTokenEntity);
                     }
-                } catch (RecordExistException $error) {
+                } catch (RecordExistException) {
 
                 }
 
                 Cache::tags(['oAuth', 'user'])->flush();
 
-                $token = new Token();
-                $token->accessToken = $issuedToken->accessToken;
-                $token->refreshToken = $issuedToken->refreshToken;
-
-                return $token;
+                return new Token($issuedToken->getAccessToken(), $issuedToken->getRefreshToken());
             }
 
             throw new RecordNotExistException(trans('oauth::models.oAuthDriverDatabase.noRefreshCode'));

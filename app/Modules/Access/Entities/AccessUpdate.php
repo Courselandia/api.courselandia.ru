@@ -8,13 +8,13 @@
 
 namespace App\Modules\Access\Entities;
 
-use App\Models\Entity;
+use App\Models\EntityNew;
 use App\Modules\User\Entities\User;
 
 /**
  * Сущность обновления данных пользователя.
  */
-class AccessUpdate extends Entity
+class AccessUpdate extends EntityNew
 {
     /**
      * ID пользователя.
@@ -28,26 +28,48 @@ class AccessUpdate extends Entity
      *
      * @var string|null
      */
-    public ?string $first_name;
+    public string|null $first_name;
 
     /**
      * Фамилия.
      *
      * @var string|null
      */
-    public ?string $second_name;
+    public string|null $second_name;
 
     /**
      * Телефон.
      *
      * @var string|null
      */
-    public ?string $phone;
+    public string|null $phone;
 
     /**
      * Сущность пользователя.
      *
      * @var User|null
      */
-    public ?User $user = null;
+    public User|null $user;
+
+    /**
+     * @param string|int $id ID пользователя.
+     * @param string|null $first_name Имя.
+     * @param string|null $second_name Фамилия.
+     * @param string|null $phone Телефон.
+     * @param User|null $user Сущность пользователя.
+     */
+    public function __construct(
+        string|int $id,
+        ?string $first_name,
+        ?string $second_name,
+        ?string $phone,
+        ?User $user = null
+    )
+    {
+        $this->id = $id;
+        $this->first_name = $first_name;
+        $this->second_name = $second_name;
+        $this->phone = $phone;
+        $this->user = $user;
+    }
 }

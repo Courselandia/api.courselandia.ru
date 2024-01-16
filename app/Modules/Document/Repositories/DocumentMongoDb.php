@@ -119,7 +119,7 @@ class DocumentMongoDb extends Document
         $document = $query->first();
 
         if ($document) {
-            $entity = $entity ? $entity->set($document->toArray()) : $this->getEntity()->set($document->toArray());
+            $entity = $entity ? $entity->set($document->toArray()) : $this->getEntity($document->toArray());
 
             $entity->id = $document->_id;
             $entity->path = $document->path;
@@ -183,7 +183,7 @@ class DocumentMongoDb extends Document
                 ->first();
 
             if ($document) {
-                $entity = $entity ? $entity->set($document->toArray()) : $this->getEntity()->set($document->toArray());
+                $entity = $entity ? $entity->set($document->toArray()) : $this->getEntity($document->toArray());
 
                 $entity->id = $document->_id;
                 $entity->path = $document->path;

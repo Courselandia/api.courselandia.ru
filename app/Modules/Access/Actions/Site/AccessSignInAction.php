@@ -10,55 +10,38 @@ namespace App\Modules\Access\Actions\Site;
 
 use App\Models\Action;
 use App\Modules\Access\Decorators\Site\AccessSignInDecorator;
-use App\Modules\Access\Entities\AccessSignedIn;
+use App\Modules\Access\DTO\Actions\AccessSignIn;
+use App\Modules\Access\DTO\Decorators\AccessSignIn as AccessSignInDtoDecorator;
+use App\Modules\Access\Entities\AccessSignedIn as AccessSignedInEntity;
 use App\Modules\Access\Pipes\Site\SignIn\LoginPipe;
 use App\Modules\Access\Pipes\Site\SignIn\GatePipe;
 use App\Modules\Access\Pipes\Site\SignIn\AuthPipe;
-use App\Modules\Access\Pipes\Site\SignIn\DataPipe;
 
 /**
  * Регистрация нового пользователя.
  */
 class AccessSignInAction extends Action
 {
-    /**
-     * Логин пользователя.
-     *
-     * @var string|null
-     */
-    public ?string $login = null;
+    private AccessSignIn $data;
 
-    /**
-     * Пароль пользователя.
-     *
-     * @var string|null
-     */
-    public ?string $password = null;
-
-    /**
-     * Запомнить пользователя.
-     *
-     * @var bool
-     */
-    public bool $remember = false;
+    public function __construct(AccessSignIn $data)
+    {
+        $this->data = $data;
+    }
 
     /**
      * Метод запуска логики.
      *
-     * @return AccessSignedIn Вернет результаты исполнения.
+     * @return AccessSignedInEntity Сущность для авторизованного пользователя.
      */
-    public function run(): AccessSignedIn
+    public function run(): AccessSignedInEntity
     {
-        $decorator = app(AccessSignInDecorator::class);
-        $decorator->login = $this->login;
-        $decorator->password = $this->password;
-        $decorator->remember = $this->remember;
+        $decorator = new AccessSignInDecorator(AccessSignInDtoDecorator::from($this->data->toArray()));
 
         return $decorator->setActions([
             LoginPipe::class,
             GatePipe::class,
             AuthPipe::class,
-            DataPipe::class
         ])->run();
     }
 }

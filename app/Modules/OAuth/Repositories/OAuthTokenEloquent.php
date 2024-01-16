@@ -58,7 +58,7 @@ class OAuthTokenEloquent extends Repository
 
         $item = $query->first();
 
-        return $item ? new OAuthToken($item->toArray()) : null;
+        return $item ? OAuthToken::from($item->toArray()) : null;
     }
 
     /**

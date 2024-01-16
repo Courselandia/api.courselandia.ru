@@ -123,9 +123,7 @@ class ImageMongoDb extends Image
         $image = $this->newInstance()->newQuery()->find($id);
 
         if ($image) {
-            $entity = $entity ? clone $entity->set($image->toArray()) : clone $this->getEntity()->set(
-                $image->toArray()
-            );
+            $entity = $entity ? clone $entity->set($image->toArray()) : clone $this->getEntity($image->toArray());
 
             $entity->id = $image->_id;
             $entity->path = $image->path;
@@ -189,7 +187,7 @@ class ImageMongoDb extends Image
                 ->first();
 
             if ($image) {
-                $entity = $entity ? $entity->set($image->toArray()) : $this->getEntity()->set($image->toArray());
+                $entity = $entity ? $entity->set($image->toArray()) : $this->getEntity($image->toArray());
 
                 $entity->id = $image->_id;
                 $entity->path = $image->path;

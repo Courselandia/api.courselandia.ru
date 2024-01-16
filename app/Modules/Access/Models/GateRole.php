@@ -8,7 +8,6 @@
 
 namespace App\Modules\Access\Models;
 
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Access\Actions\AccessGateAction;
 use App\Modules\User\Models\User;
 
@@ -24,14 +23,12 @@ class GateRole
      * @param string $nameRoles Название роли.
      *
      * @return bool Вернет результат проверки.
-     * @throws ParameterInvalidException
      */
     public function check(User $user, string $nameRoles): bool
     {
         $nameRoles = explode(':', $nameRoles);
 
-        $action = app(AccessGateAction::class);
-        $action->id = $user->id;
+        $action = new AccessGateAction($user->id);
         $userEntity = $action->run();
 
         if ($userEntity) {

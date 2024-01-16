@@ -8,11 +8,11 @@
 
 namespace App\Modules\Access\Pipes\Site\Social;
 
+use App\Models\Contracts\Pipe;
+use App\Models\DTO;
+use App\Modules\Access\DTO\Decorators\AccessSocial;
 use Closure;
 use Config;
-use App\Models\Entity;
-use App\Modules\Access\Entities\AccessSocial;
-use App\Models\Contracts\Pipe;
 use Kreait\Firebase\Contract\Auth;
 
 /**
@@ -30,7 +30,7 @@ class CheckPipe implements Pipe
     /**
      * Конструктор.
      *
-     * @param  Auth  $auth  Класс для работы с Firebase.
+     * @param Auth $auth Класс для работы с Firebase.
      */
     public function __construct(Auth $auth)
     {
@@ -40,15 +40,15 @@ class CheckPipe implements Pipe
     /**
      * Метод, который будет вызван у pipeline.
      *
-     * @param  Entity|AccessSocial  $entity  Содержит массив свойств, которые можно передавать от pipe к pipe.
-     * @param  Closure  $next  Ссылка на следующий pipe.
+     * @param DTO|AccessSocial $data DTO.
+     * @param Closure $next Ссылка на следующий pipe.
      *
      * @return mixed Вернет значение полученное после выполнения следующего pipe.
      */
-    public function handle(Entity|AccessSocial $entity, Closure $next): mixed
+    public function handle(DTO|AccessSocial $data, Closure $next): mixed
     {
-        if ($this->check($entity->uid)) {
-            return $next($entity);
+        if ($this->check($data->uid)) {
+            return $next($data);
         }
 
         return false;
@@ -57,7 +57,7 @@ class CheckPipe implements Pipe
     /**
      * Проверка возможности подобной авторизации.
      *
-     * @param  string  $id  Кодификационный номер авторизации.
+     * @param string $id Кодификационный номер авторизации.
      *
      * @return mixed Вернет успешность проверки.
      */

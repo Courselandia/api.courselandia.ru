@@ -8,26 +8,27 @@
 
 namespace App\Modules\Access\Entities;
 
+use App\Models\EntityNew;
 use App\Modules\User\Entities\User;
 
 /**
  * Сущность для хранения API токена.
  */
-class AccessApiToken
+class AccessApiToken extends EntityNew
 {
     /**
      * Токен доступа.
      *
-     * @var string|null
+     * @var string
      */
-    public ?string $accessToken = null;
+    public string $accessToken;
 
     /**
      * Токен обновления.
      *
-     * @var string|null
+     * @var string
      */
-    public ?string $refreshToken = null;
+    public string $refreshToken;
 
     /**
      * Сущность пользователя.
@@ -35,4 +36,16 @@ class AccessApiToken
      * @var User
      */
     public User $user;
+
+    /**
+     * @param string $accessToken Токен доступа.
+     * @param string $refreshToken Токен обновления.
+     * @param User $user Сущность пользователя.
+     */
+    public function __construct(string $accessToken, string $refreshToken, User $user)
+    {
+        $this->accessToken = $accessToken;
+        $this->refreshToken = $refreshToken;
+        $this->user = $user;
+    }
 }

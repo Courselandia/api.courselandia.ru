@@ -49,13 +49,13 @@ class Task extends Eloquent
     use Filterable;
 
     /**
-     * Атрибуты, которые должны быть преобразованы к дате.
+     * Типизирование атрибутов.
      *
      * @var array
      */
-    protected $dates = [
-        'launched_at',
-        'finished_at',
+    protected $casts = [
+        'launched_at' => 'datetime',
+        'finished_at' => 'datetime',
     ];
 
     /**

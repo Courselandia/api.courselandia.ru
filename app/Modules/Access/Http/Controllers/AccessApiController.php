@@ -8,6 +8,7 @@
 
 namespace App\Modules\Access\Http\Controllers;
 
+use ReflectionException;
 use App\Models\Exceptions\ValidateException;
 use Illuminate\Routing\Controller;
 use Illuminate\Http\JsonResponse;
@@ -20,7 +21,7 @@ use App\Modules\Access\Http\Requests\AccessApiTokenRequest;
 use App\Modules\Access\Http\Requests\AccessApiRefreshRequest;
 use App\Modules\Access\Actions\AccessApiTokenAction;
 use App\Modules\Access\Actions\AccessApiRefreshAction;
-use ReflectionException;
+use App\Modules\Access\DTO\Actions\AccessApiToken;
 
 /**
  * Класс контроллер для генерации ключей доступа к API.
@@ -30,7 +31,7 @@ class AccessApiController extends Controller
     /**
      * Генерация токена.
      *
-     * @param  AccessApiTokenRequest  $request  Запрос на генерацию токена.
+     * @param AccessApiTokenRequest $request Запрос на генерацию токена.
      *
      * @return JsonResponse Вернет JSON ответ.
      * @throws ParameterInvalidException|ReflectionException
@@ -38,10 +39,14 @@ class AccessApiController extends Controller
     public function token(AccessApiTokenRequest $request): JsonResponse
     {
         try {
-            $action = app(AccessApiTokenAction::class);
-            $action->login = $request->post('login');
-            $action->password = $request->post('password');
-            $action->remember = $request->post('remember', false);
+            $action = new AccessApiTokenAction(
+                new AccessApiToken(
+                    $request->post('login'),
+                    $request->post('password'),
+                    false,
+                    $request->post('remember', false)
+                )
+            );
 
             $accessApiTokenEntity = $action->run();
 
@@ -65,7 +70,7 @@ class AccessApiController extends Controller
     /**
      * Генерация токена обновления.
      *
-     * @param  AccessApiRefreshRequest  $request  Запрос на обновление токена.
+     * @param AccessApiRefreshRequest $request Запрос на обновление токена.
      *
      * @return JsonResponse Вернет JSON ответ.
      * @throws ParameterInvalidException|ReflectionException
@@ -73,10 +78,7 @@ class AccessApiController extends Controller
     public function refresh(AccessApiRefreshRequest $request): JsonResponse
     {
         try {
-            $action = app(AccessApiRefreshAction::class);
-            $action->refreshToken = $request->post('refreshToken');
-            $action->remember = $request->post('remember', false);
-
+            $action = new AccessApiRefreshAction($request->post('refreshToken'), $request->post('remember', false));
             $data = $action->run();
 
             return response()->json([
