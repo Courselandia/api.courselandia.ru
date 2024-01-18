@@ -24,7 +24,7 @@ class FeedbackFilter extends ModelFilter
      *
      * @return FeedbackFilter Правила поиска.
      */
-    public function id(int|string $id): FeedbackFilter
+    public function id(int|string $id): self
     {
         return $this->where('feedbacks.id', $id);
     }
@@ -36,7 +36,7 @@ class FeedbackFilter extends ModelFilter
      *
      * @return FeedbackFilter Правила поиска.
      */
-    public function createdAt(array $dates): FeedbackFilter
+    public function createdAt(array $dates): self
     {
         $dates = [
             Carbon::createFromFormat('Y-m-d O', $dates[0])->startOfDay()->setTimezone(Config::get('app.timezone')),
@@ -53,7 +53,7 @@ class FeedbackFilter extends ModelFilter
      *
      * @return FeedbackFilter Правила поиска.
      */
-    public function name(string $query): FeedbackFilter
+    public function name(string $query): self
     {
         return $this->whereLike('feedbacks.name', $query);
     }
@@ -65,7 +65,7 @@ class FeedbackFilter extends ModelFilter
      *
      * @return FeedbackFilter Правила поиска.
      */
-    public function email(string $query): FeedbackFilter
+    public function email(string $query): self
     {
         return $this->whereLike('feedbacks.email', $query);
     }
@@ -77,7 +77,7 @@ class FeedbackFilter extends ModelFilter
      *
      * @return FeedbackFilter Правила поиска.
      */
-    public function phone(string $query): FeedbackFilter
+    public function phone(string $query): self
     {
         return $this->whereLike('feedbacks.phone', $query);
     }
@@ -89,7 +89,7 @@ class FeedbackFilter extends ModelFilter
      *
      * @return FeedbackFilter Правила поиска.
      */
-    public function message(string $query): FeedbackFilter
+    public function message(string $query): self
     {
         return $this->whereLike('feedbacks.message', $query);
     }

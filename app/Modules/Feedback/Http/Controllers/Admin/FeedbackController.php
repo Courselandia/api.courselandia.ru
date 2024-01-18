@@ -28,16 +28,13 @@ class FeedbackController extends Controller
     /**
      * Получение обратной связи.
      *
-     * @param  int|string  $id  ID записи.
+     * @param int|string $id ID записи.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException
      */
     public function get(int|string $id): JsonResponse
     {
-        $action = app(FeedbackGetAction::class);
-        $action->id = $id;
-
+        $action = new FeedbackGetAction($id);
         $data = $action->run();
 
         if ($data) {
@@ -60,18 +57,19 @@ class FeedbackController extends Controller
     /**
      * Чтение данных.
      *
-     * @param  FeedbackReadRequest  $request  Запрос.
+     * @param FeedbackReadRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
      * @throws ParameterInvalidException|ReflectionException
      */
     public function read(FeedbackReadRequest $request): JsonResponse
     {
-        $action = app(FeedbackReadAction::class);
-        $action->filters = $request->get('filters');
-        $action->sorts = $request->get('sorts');
-        $action->offset = $request->get('offset');
-        $action->limit = $request->get('limit');
+        $action = new FeedbackReadAction(
+            $request->get('sorts'),
+            $request->get('filters'),
+            $request->get('offset'),
+            $request->get('limit')
+        );
 
         $data = $action->run();
 
@@ -83,14 +81,13 @@ class FeedbackController extends Controller
     /**
      * Удаление данных.
      *
-     * @param  FeedbackDestroyRequest  $request  Запрос.
+     * @param FeedbackDestroyRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
      */
     public function destroy(FeedbackDestroyRequest $request): JsonResponse
     {
-        $action = app(FeedbackDestroyAction::class);
-        $action->ids = $request->get('ids');
+        $action = new FeedbackDestroyAction($request->get('ids'));
         $action->run();
 
         Log::info(trans('feedback::http.controllers.admin.feedbackController.destroy.log'), [

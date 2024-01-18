@@ -26,7 +26,7 @@ class FeedbackSendRequest extends FormRequest
             'name' => 'required|between:1,191',
             'email' => 'required|email',
             'phone' => 'nullable|phone:7',
-            'message' => 'nullable|max:5000',
+            'message' => 'required|max:5000',
         ];
     }
 
