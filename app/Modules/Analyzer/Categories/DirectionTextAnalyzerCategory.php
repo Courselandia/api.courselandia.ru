@@ -44,12 +44,11 @@ class DirectionTextAnalyzerCategory extends AnalyzerCategory
      * @param int $id ID сущности для которой производится анализ.
      *
      * @return string Метка.
-     * @throws RecordNotExistException|ParameterInvalidException
+     * @throws RecordNotExistException
      */
     public function label(int $id): string
     {
-        $action = app(DirectionGetAction::class);
-        $action->id = $id;
+        $action = new DirectionGetAction($id);
         $directionEntity = $action->run();
 
         if ($directionEntity) {
@@ -67,12 +66,11 @@ class DirectionTextAnalyzerCategory extends AnalyzerCategory
      * @param int $id ID сущности для которой проводится анализ.
      *
      * @return string|null Текст для проверки.
-     * @throws RecordNotExistException|ParameterInvalidException
+     * @throws RecordNotExistException
      */
     public function text(int $id): ?string
     {
-        $action = app(DirectionGetAction::class);
-        $action->id = $id;
+        $action = new DirectionGetAction($id);
         $directionEntity = $action->run();
 
         if ($directionEntity) {

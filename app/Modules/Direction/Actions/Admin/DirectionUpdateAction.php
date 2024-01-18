@@ -9,6 +9,7 @@
 namespace App\Modules\Direction\Actions\Admin;
 
 use App\Modules\Analyzer\Actions\Admin\AnalyzerUpdateAction;
+use App\Modules\Direction\Data\DirectionUpdate;
 use Cache;
 use Typography;
 use App\Models\Action;
@@ -28,74 +29,19 @@ use App\Modules\Metatag\Template\TemplateException;
 class DirectionUpdateAction extends Action
 {
     /**
-     * ID направления.
+     * Сущность для обновления направления.
      *
-     * @var int|string|null
+     * @var DirectionUpdate
      */
-    public int|string|null $id = null;
+    private DirectionUpdate $data;
 
     /**
-     * Название.
-     *
-     * @var string|null
+     * @param DirectionUpdate $data Сущность для обновления направления.
      */
-    public ?string $name = null;
-
-    /**
-     * Шаблон заголовка.
-     *
-     * @var string|null
-     */
-    public ?string $header_template = null;
-
-    /**
-     * Вес.
-     *
-     * @var int|null
-     */
-    public ?int $weight = null;
-
-    /**
-     * Ссылка.
-     *
-     * @var string|null
-     */
-    public ?string $link = null;
-
-    /**
-     * Статья.
-     *
-     * @var string|null
-     */
-    public ?string $text = null;
-
-    /**
-     * Статус.
-     *
-     * @var bool|null
-     */
-    public ?bool $status = null;
-
-    /**
-     * Шаблон описания.
-     *
-     * @var string|null
-     */
-    public ?string $description_template = null;
-
-    /**
-     * Ключевые слова.
-     *
-     * @var string|null
-     */
-    public ?string $keywords = null;
-
-    /**
-     * Шаблон заголовка.
-     *
-     * @var string|null
-     */
-    public ?string $title_template = null;
+    public function __construct(DirectionUpdate $data)
+    {
+        $this->data = $data;
+    }
 
     /**
      * Метод запуска логики.
@@ -107,8 +53,7 @@ class DirectionUpdateAction extends Action
      */
     public function run(): DirectionEntity
     {
-        $action = app(DirectionGetAction::class);
-        $action->id = $this->id;
+        $action = new DirectionGetAction($this->data->id);
         $directionEntity = $action->run();
 
         if ($directionEntity) {
@@ -117,47 +62,43 @@ class DirectionUpdateAction extends Action
                     $query->where('schools.status', true);
                 })
                 ->whereHas('directions', function ($query) {
-                    $query->where('directions.id', $this->id);
+                    $query->where('directions.id', $this->data->id);
                 })
                 ->count();
 
             $templateValues = [
-                'direction' => $this->name,
+                'direction' => $this->data->name,
                 'countDirectionCourses' => $countDirectionCourses,
             ];
 
             $template = new Template();
 
             $action = app(MetatagSetAction::class);
-            $action->description = $template->convert($this->description_template, $templateValues);
-            $action->title = $template->convert($this->title_template, $templateValues);
-            $action->description_template = $this->description_template;
-            $action->title_template = $this->title_template;
-            $action->keywords = $this->keywords;
+            $action->description = $template->convert($this->data->description_template, $templateValues);
+            $action->title = $template->convert($this->data->title_template, $templateValues);
+            $action->description_template = $this->data->description_template;
+            $action->title_template = $this->data->title_template;
+            $action->keywords = $this->data->keywords;
             $action->id = $directionEntity->metatag_id ?: null;
 
             $directionEntity->metatag_id = $action->run()->id;
-            $directionEntity->id = $this->id;
-            $directionEntity->name = Typography::process($this->name, true);
-            $directionEntity->header = Typography::process($template->convert($this->header_template, $templateValues), true);
-            $directionEntity->header_template = $this->header_template;
-            $directionEntity->weight = $this->weight;
-            $directionEntity->link = $this->link;
-            $directionEntity->text = Typography::process($this->text);
-            $directionEntity->status = $this->status;
+            $directionEntity->id = $this->data->id;
+            $directionEntity->name = Typography::process($this->data->name, true);
+            $directionEntity->header = Typography::process($template->convert($this->data->header_template, $templateValues), true);
+            $directionEntity->header_template = $this->data->header_template;
+            $directionEntity->weight = $this->data->weight;
+            $directionEntity->link = $this->data->link;
+            $directionEntity->text = Typography::process($this->data->text);
+            $directionEntity->status = $this->data->status;
 
-            Direction::find($this->id)->update($directionEntity->toArray());
+            Direction::find($this->data->id)->update($directionEntity->toArray());
 
             Cache::tags(['catalog', 'category', 'direction', 'profession', 'teacher'])->flush();
 
-            $action = app(AnalyzerUpdateAction::class);
-            $action->id = $directionEntity->id;
-            $action->model = Direction::class;
-            $action->category = 'direction.text';
+            $action = new AnalyzerUpdateAction($directionEntity->id, Direction::class, 'direction.text');
             $action->run();
 
-            $action = app(DirectionGetAction::class);
-            $action->id = $this->id;
+            $action = new DirectionGetAction($this->data->id);
 
             return $action->run();
         }

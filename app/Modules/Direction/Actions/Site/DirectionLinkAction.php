@@ -23,11 +23,19 @@ use App\Modules\Course\Enums\Status;
 class DirectionLinkAction extends Action
 {
     /**
-     * ID категории.
+     * Ссылка на категорию.
      *
-     * @var string|null
+     * @var string
      */
-    public string|null $link = null;
+    private string $link;
+
+    /**
+     * @param string $link Ссылка на категорию.
+     */
+    public function __construct(string $link)
+    {
+        $this->link = $link;
+    }
 
     /**
      * Метод запуска логики.
@@ -61,11 +69,7 @@ class DirectionLinkAction extends Action
                     ->first();
 
                 if ($result) {
-                    $item = $result->toArray();
-                    $entity = new DirectionEntity();
-                    $entity->set($item);
-
-                    return $entity;
+                    return DirectionEntity::from($result->toArray());
                 }
 
                 return null;

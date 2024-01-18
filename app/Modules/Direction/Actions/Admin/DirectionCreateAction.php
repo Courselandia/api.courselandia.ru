@@ -8,16 +8,18 @@
 
 namespace App\Modules\Direction\Actions\Admin;
 
-use Cache;
-use Typography;
 use App\Models\Action;
 use App\Models\Exceptions\ParameterInvalidException;
+use App\Modules\Analyzer\Actions\Admin\AnalyzerUpdateAction;
+use App\Modules\Direction\Data\DirectionCreate;
 use App\Modules\Direction\Entities\Direction as DirectionEntity;
 use App\Modules\Direction\Models\Direction;
 use App\Modules\Metatag\Actions\MetatagSetAction;
+use App\Modules\Metatag\Data\MetatagSet;
 use App\Modules\Metatag\Template\Template;
 use App\Modules\Metatag\Template\TemplateException;
-use App\Modules\Analyzer\Actions\Admin\AnalyzerUpdateAction;
+use Cache;
+use Typography;
 
 /**
  * Класс действия для создания направления.
@@ -25,67 +27,19 @@ use App\Modules\Analyzer\Actions\Admin\AnalyzerUpdateAction;
 class DirectionCreateAction extends Action
 {
     /**
-     * Название.
+     * Сущность для создания направления.
      *
-     * @var string|null
+     * @var DirectionCreate
      */
-    public ?string $name = null;
+    private DirectionCreate $data;
 
     /**
-     * Шаблон заголовка.
-     *
-     * @var string|null
+     * @param DirectionCreate $data Сущность для создания направления.
      */
-    public ?string $header_template = null;
-
-    /**
-     * Вес.
-     *
-     * @var int|null
-     */
-    public ?int $weight = null;
-
-    /**
-     * Ссылка.
-     *
-     * @var string|null
-     */
-    public ?string $link = null;
-
-    /**
-     * Статья.
-     *
-     * @var string|null
-     */
-    public ?string $text = null;
-
-    /**
-     * Статус.
-     *
-     * @var bool|null
-     */
-    public ?bool $status = null;
-
-    /**
-     * Шаблон описания.
-     *
-     * @var string|null
-     */
-    public ?string $description_template = null;
-
-    /**
-     * Ключевые слова.
-     *
-     * @var string|null
-     */
-    public ?string $keywords = null;
-
-    /**
-     * Шаблон заголовка.
-     *
-     * @var string|null
-     */
-    public ?string $title_template = null;
+    public function __construct(DirectionCreate $data)
+    {
+        $this->data = $data;
+    }
 
     /**
      * Метод запуска логики.
@@ -95,44 +49,43 @@ class DirectionCreateAction extends Action
      */
     public function run(): DirectionEntity
     {
-        $action = app(MetatagSetAction::class);
         $template = new Template();
 
         $templateValues = [
-            'direction' => $this->name,
+            'direction' => $this->data->name,
             'countDirectionCourses' => 0,
         ];
 
-        $action->description = $template->convert($this->description_template, $templateValues);
-        $action->title = $template->convert($this->title_template, $templateValues);
-        $action->description_template = $this->description_template;
-        $action->title_template = $this->title_template;
-        $action->keywords = $this->keywords;
+        $metatagSet = MetatagSet::from([
+            'description' => $template->convert($this->data->description_template, $templateValues),
+            'title' => $template->convert($this->data->title_template, $templateValues),
+            'description_template' => $this->data->description_template,
+            'title_template' => $this->data->title_template,
+            'keywords' => $this->data->keywords,
+        ]);
 
+        $action = new MetatagSetAction($metatagSet);
         $metatag = $action->run();
 
-        $directionEntity = new DirectionEntity();
-        $directionEntity->name = Typography::process($this->name, true);
-        $directionEntity->header = Typography::process($template->convert($this->header_template, $templateValues), true);
-        $directionEntity->header_template = $this->header_template;
-        $directionEntity->weight = $this->weight;
-        $directionEntity->link = $this->link;
-        $directionEntity->text = Typography::process($this->text);
-        $directionEntity->status = $this->status;
-        $directionEntity->metatag_id = $metatag->id;
+        $directionEntity = DirectionEntity::from([
+            'name' => Typography::process($this->data->name, true),
+            'header' => Typography::process($template->convert($this->data->header_template, $templateValues), true),
+            'header_template' => $this->data->header_template,
+            'weight' => $this->data->weight,
+            'link' => $this->data->link,
+            'text' => Typography::process($this->data->text),
+            'status' => $this->data->status,
+            'metatag_id' => $metatag->id,
+        ]);
 
         $direction = Direction::create($directionEntity->toArray());
 
         Cache::tags(['catalog', 'category', 'direction', 'profession', 'teacher'])->flush();
 
-        $action = app(AnalyzerUpdateAction::class);
-        $action->id = $direction->id;
-        $action->model = Direction::class;
-        $action->category = 'direction.text';
+        $action = new AnalyzerUpdateAction($direction->id, Direction::class, 'direction.text');
         $action->run();
 
-        $action = app(DirectionGetAction::class);
-        $action->id = $direction->id;
+        $action = new DirectionGetAction($direction->id);
 
         return $action->run();
     }

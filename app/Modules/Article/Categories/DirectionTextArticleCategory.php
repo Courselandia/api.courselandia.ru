@@ -49,12 +49,11 @@ class DirectionTextArticleCategory extends ArticleCategory
      * @param int $id ID сущности для которой пишется статья.
      *
      * @return string Метка.
-     * @throws RecordNotExistException|ParameterInvalidException
+     * @throws RecordNotExistException
      */
     public function label(int $id): string
     {
-        $action = app(DirectionGetAction::class);
-        $action->id = $id;
+        $action = new DirectionGetAction($id);
         $directionEntity = $action->run();
 
         if ($directionEntity) {
@@ -106,12 +105,11 @@ class DirectionTextArticleCategory extends ArticleCategory
      * @param int $id ID сущности для которой пишется статья.
      *
      * @return string Запрос.
-     * @throws RecordNotExistException|ParameterInvalidException
+     * @throws RecordNotExistException
      */
     public function requestTemplate(int $id): string
     {
-        $action = app(DirectionGetAction::class);
-        $action->id = $id;
+        $action = new DirectionGetAction($id);
         $directionEntity = $action->run();
 
         if ($directionEntity) {

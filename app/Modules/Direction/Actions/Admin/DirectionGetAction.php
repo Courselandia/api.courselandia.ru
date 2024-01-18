@@ -10,7 +10,6 @@ namespace App\Modules\Direction\Actions\Admin;
 
 use App\Models\Action;
 use App\Models\Enums\CacheTime;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Direction\Entities\Direction as DirectionEntity;
 use App\Modules\Direction\Models\Direction;
 use Cache;
@@ -24,15 +23,22 @@ class DirectionGetAction extends Action
     /**
      * ID направления.
      *
-     * @var int|string|null
+     * @var int|string
      */
-    public int|string|null $id = null;
+    private int|string $id;
+
+    /**
+     * @param int|string $id ID направления.
+     */
+    public function __construct(int|string $id)
+    {
+        $this->id = $id;
+    }
 
     /**
      * Метод запуска логики.
      *
      * @return DirectionEntity|null Вернет результаты исполнения.
-     * @throws ParameterInvalidException
      */
     public function run(): ?DirectionEntity
     {
@@ -49,7 +55,7 @@ class DirectionGetAction extends Action
                     ])
                     ->first();
 
-                return $direction ? new DirectionEntity($direction->toArray()) : null;
+                return $direction ? DirectionEntity::from($direction->toArray()) : null;
             }
         );
     }
