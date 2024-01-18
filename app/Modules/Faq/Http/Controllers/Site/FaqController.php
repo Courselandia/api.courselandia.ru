@@ -28,9 +28,7 @@ class FaqController extends Controller
      */
     public function read(string $school): JsonResponse
     {
-        $action = app(FaqReadAction::class);
-        $action->school = $school;
-
+        $action = new FaqReadAction($school);
         $data = $action->run();
 
         $data['success'] = true;

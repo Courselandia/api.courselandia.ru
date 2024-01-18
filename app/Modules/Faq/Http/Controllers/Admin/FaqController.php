@@ -9,6 +9,8 @@
 namespace App\Modules\Faq\Http\Controllers\Admin;
 
 use App\Modules\Faq\Actions\Admin\FaqUpdateStatusAction;
+use App\Modules\Faq\Data\FaqCreate;
+use App\Modules\Faq\Data\FaqUpdate;
 use App\Modules\Faq\Http\Requests\Admin\FaqUpdateStatusRequest;
 use Auth;
 use Log;
@@ -39,12 +41,10 @@ class FaqController extends Controller
      * @param int|string $id ID FAQ.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException
      */
     public function get(int|string $id): JsonResponse
     {
-        $action = app(FaqGetAction::class);
-        $action->id = $id;
+        $action = new FaqGetAction($id);
         $data = $action->run();
 
         if ($data) {
@@ -74,11 +74,12 @@ class FaqController extends Controller
      */
     public function read(FaqReadRequest $request): JsonResponse
     {
-        $action = app(FaqReadAction::class);
-        $action->sorts = $request->get('sorts');
-        $action->filters = $request->get('filters');
-        $action->offset = $request->get('offset');
-        $action->limit = $request->get('limit');
+        $action = new FaqReadAction(
+            $request->get('sorts'),
+            $request->get('filters'),
+            $request->get('offset'),
+            $request->get('limit')
+        );
 
         $data = $action->run();
 
@@ -93,17 +94,12 @@ class FaqController extends Controller
      * @param FaqCreateRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException
      */
     public function create(FaqCreateRequest $request): JsonResponse
     {
         try {
-            $action = app(FaqCreateAction::class);
-            $action->school_id = $request->get('school_id');
-            $action->question = $request->get('question');
-            $action->answer = $request->get('answer');
-            $action->status = $request->get('status');
-
+            $data = FaqCreate::from($request->all());
+            $action = new FaqCreateAction($data);
             $data = $action->run();
 
             Log::info(
@@ -136,18 +132,15 @@ class FaqController extends Controller
      * @param FaqUpdateRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException
      */
     public function update(int|string $id, FaqUpdateRequest $request): JsonResponse
     {
         try {
-            $action = app(FaqUpdateAction::class);
-            $action->id = $id;
-            $action->school_id = $request->get('school_id');
-            $action->question = $request->get('question');
-            $action->answer = $request->get('answer');
-            $action->status = $request->get('status');
-
+            $data = FaqUpdate::from([
+                ...$request->all(),
+                'id' => $id,
+            ]);
+            $action = new FaqUpdateAction($data);
             $data = $action->run();
 
             Log::info(
@@ -185,15 +178,11 @@ class FaqController extends Controller
      * @param FaqUpdateStatusRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException
      */
     public function updateStatus(int|string $id, FaqUpdateStatusRequest $request): JsonResponse
     {
         try {
-            $action = app(FaqUpdateStatusAction::class);
-            $action->id = $id;
-            $action->status = $request->get('status');
-
+            $action = new FaqUpdateStatusAction($id, $request->get('status'));
             $data = $action->run();
 
             Log::info(trans('faq::http.controllers.admin.faqController.update.log'), [
@@ -230,8 +219,7 @@ class FaqController extends Controller
      */
     public function destroy(FaqDestroyRequest $request): JsonResponse
     {
-        $action = app(FaqDestroyAction::class);
-        $action->ids = $request->get('ids');
+        $action = new FaqDestroyAction($request->get('ids'));
         $action->run();
 
         Log::info(

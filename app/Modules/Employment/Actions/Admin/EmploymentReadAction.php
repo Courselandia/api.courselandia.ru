@@ -22,7 +22,6 @@ use Util;
  */
 class EmploymentReadAction extends Action
 {
-
     /**
      * Сортировка данных.
      *

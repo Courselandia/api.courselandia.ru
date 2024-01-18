@@ -78,13 +78,6 @@ class Direction extends EntityNew
     public ?string $text = null;
 
     /**
-     * Метатеги.
-     *
-     * @var Metatag|null
-     */
-    public ?Metatag $metatag = null;
-
-    /**
      * Статус.
      *
      * @var bool|null
@@ -113,6 +106,13 @@ class Direction extends EntityNew
     public ?Carbon $deleted_at = null;
 
     /**
+     * Метатеги.
+     *
+     * @var Metatag|null
+     */
+    public ?Metatag $metatag = null;
+
+    /**
      * Категории.
      *
      * @var ?DataCollection
@@ -137,11 +137,11 @@ class Direction extends EntityNew
      * @param int|null $weight Вес.
      * @param string|null $link Ссылка.
      * @param string|null $text Статья.
-     * @param Metatag|null $metatag Метатеги.
      * @param bool|null $status Статус.
      * @param Carbon|null $created_at Дата создания.
      * @param Carbon|null $updated_at Дата обновления.
      * @param Carbon|null $deleted_at Дата удаления.
+     * @param Metatag|null $metatag Метатеги.
      * @param DataCollection|null $categories Категории.
      * @param DataCollection|null $analyzers Анализ хранения текстов.
      */
@@ -154,11 +154,11 @@ class Direction extends EntityNew
         ?int            $weight = null,
         ?string         $link = null,
         ?string         $text = null,
-        ?Metatag        $metatag = null,
         ?bool           $status = null,
         ?Carbon         $created_at = null,
         ?Carbon         $updated_at = null,
         ?Carbon         $deleted_at = null,
+        ?Metatag        $metatag = null,
         ?DataCollection $categories = null,
         ?DataCollection $analyzers = null
     )

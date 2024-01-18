@@ -8,14 +8,14 @@
 
 namespace App\Modules\Faq\Entities;
 
-use App\Models\Entity;
+use App\Models\EntityNew;
 use App\Modules\School\Entities\School;
 use Carbon\Carbon;
 
 /**
  * Сущность для FAQ.
  */
-class Faq extends Entity
+class Faq extends EntityNew
 {
     /**
      * ID записи.
@@ -53,13 +53,6 @@ class Faq extends Entity
     public ?bool $status = null;
 
     /**
-     * Школа.
-     *
-     * @var School|null
-     */
-    public ?School $school = null;
-
-    /**
      * Дата создания.
      *
      * @var ?Carbon
@@ -79,4 +72,37 @@ class Faq extends Entity
      * @var ?Carbon
      */
     public ?Carbon $deleted_at = null;
+
+    /**
+     * Школа.
+     *
+     * @var School|null
+     */
+    public ?School $school = null;
+
+    /**
+     * @param int|string|null $id ID записи.
+     * @param int|string|null $school_id ID профессии.
+     * @param string|null $question Вопрос.
+     * @param string|null $answer Ответ.
+     * @param bool|null $status Статус.
+     * @param Carbon|null $created_at Дата создания.
+     * @param Carbon|null $updated_at Дата обновления.
+     * @param Carbon|null $deleted_at Дата удаления.
+     * @param School|null $school Школа.
+     */
+    public function __construct(
+        int|string|null $id = null,
+        int|string|null $school_id = null,
+        ?string         $question = null,
+        ?string         $answer = null,
+        ?bool           $status = null,
+        ?Carbon         $created_at = null,
+        ?Carbon         $updated_at = null,
+        ?Carbon         $deleted_at = null,
+        ?School         $school = null,
+    )
+    {
+
+    }
 }
