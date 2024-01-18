@@ -8,12 +8,12 @@
 
 namespace App\Modules\Direction\Data;
 
-use App\Models\EntityNew;
+use App\Models\Data;
 
 /**
  * Данные для создания направления.
  */
-class DirectionCreate extends EntityNew
+class DirectionCreate extends Data
 {
     /**
      * Название.

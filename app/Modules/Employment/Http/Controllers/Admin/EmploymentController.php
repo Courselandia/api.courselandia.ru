@@ -18,6 +18,8 @@ use App\Modules\Employment\Actions\Admin\EmploymentGetAction;
 use App\Modules\Employment\Actions\Admin\EmploymentReadAction;
 use App\Modules\Employment\Actions\Admin\EmploymentUpdateAction;
 use App\Modules\Employment\Actions\Admin\EmploymentUpdateStatusAction;
+use App\Modules\Employment\Data\EmploymentCreate;
+use App\Modules\Employment\Data\EmploymentUpdate;
 use App\Modules\Employment\Http\Requests\Admin\EmploymentCreateRequest;
 use App\Modules\Employment\Http\Requests\Admin\EmploymentDestroyRequest;
 use App\Modules\Employment\Http\Requests\Admin\EmploymentReadRequest;
@@ -40,12 +42,10 @@ class EmploymentController extends Controller
      * @param int|string $id ID трудоустройства.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException
      */
     public function get(int|string $id): JsonResponse
     {
-        $action = app(EmploymentGetAction::class);
-        $action->id = $id;
+        $action = new EmploymentGetAction($id);
         $data = $action->run();
 
         if ($data) {
@@ -75,11 +75,12 @@ class EmploymentController extends Controller
      */
     public function read(EmploymentReadRequest $request): JsonResponse
     {
-        $action = app(EmploymentReadAction::class);
-        $action->sorts = $request->get('sorts');
-        $action->filters = $request->get('filters');
-        $action->offset = $request->get('offset');
-        $action->limit = $request->get('limit');
+        $action = new EmploymentReadAction(
+            $request->get('sorts'),
+            $request->get('filters'),
+            $request->get('offset'),
+            $request->get('limit')
+        );
 
         $data = $action->run();
 
@@ -94,16 +95,12 @@ class EmploymentController extends Controller
      * @param EmploymentCreateRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException
      */
     public function create(EmploymentCreateRequest $request): JsonResponse
     {
         try {
-            $action = app(EmploymentCreateAction::class);
-            $action->name = $request->get('name');
-            $action->text = $request->get('text');
-            $action->status = $request->get('status');
-
+            $data = EmploymentCreate::from($request->all());
+            $action = new EmploymentCreateAction($data);
             $data = $action->run();
 
             Log::info(
@@ -141,16 +138,15 @@ class EmploymentController extends Controller
      * @param EmploymentUpdateRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException
      */
     public function update(int|string $id, EmploymentUpdateRequest $request): JsonResponse
     {
         try {
-            $action = app(EmploymentUpdateAction::class);
-            $action->id = $id;
-            $action->name = $request->get('name');
-            $action->text = $request->get('text');
-            $action->status = $request->get('status');
+            $data = EmploymentUpdate::from([
+                ...$request->all(),
+                'id' => $id,
+            ]);
+            $action = new EmploymentUpdateAction($data);
             $data = $action->run();
 
             Log::info(
@@ -193,10 +189,7 @@ class EmploymentController extends Controller
     public function updateStatus(int|string $id, EmploymentUpdateStatusRequest $request): JsonResponse
     {
         try {
-            $action = app(EmploymentUpdateStatusAction::class);
-            $action->id = $id;
-            $action->status = $request->get('status');
-
+            $action = new EmploymentUpdateStatusAction($id, $request->get('status'));
             $data = $action->run();
 
             Log::info(trans('employment::http.controllers.admin.employmentController.update.log'), [
@@ -233,8 +226,7 @@ class EmploymentController extends Controller
      */
     public function destroy(EmploymentDestroyRequest $request): JsonResponse
     {
-        $action = app(EmploymentDestroyAction::class);
-        $action->ids = $request->get('ids');
+        $action = new EmploymentDestroyAction($request->get('ids'));
         $action->run();
 
         Log::info(

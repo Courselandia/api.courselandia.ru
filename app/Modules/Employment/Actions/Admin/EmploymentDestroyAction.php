@@ -18,11 +18,19 @@ use Cache;
 class EmploymentDestroyAction extends Action
 {
     /**
-     * Массив ID пользователей.
+     * Массив ID трудоустройства.
      *
      * @var int[]|string[]
      */
-    public ?array $ids = null;
+    private array $ids;
+
+    /**
+     * @param int[]|string[] $ids Массив ID трудоустройства.
+     */
+    public function __construct(array $ids)
+    {
+        $this->ids = $ids;
+    }
 
     /**
      * Метод запуска логики.

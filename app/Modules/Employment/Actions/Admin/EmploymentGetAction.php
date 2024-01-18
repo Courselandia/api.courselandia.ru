@@ -10,7 +10,6 @@ namespace App\Modules\Employment\Actions\Admin;
 
 use App\Models\Action;
 use App\Models\Enums\CacheTime;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Employment\Entities\Employment as EmploymentEntity;
 use App\Modules\Employment\Models\Employment;
 use Cache;
@@ -24,15 +23,22 @@ class EmploymentGetAction extends Action
     /**
      * ID трудоустройства.
      *
-     * @var int|string|null
+     * @var int|string
      */
-    public int|string|null $id = null;
+    private int|string $id;
+
+    /**
+     * @param int|string $id ID трудоустройства.
+     */
+    public function __construct(int|string $id)
+    {
+        $this->id = $id;
+    }
 
     /**
      * Метод запуска логики.
      *
      * @return EmploymentEntity|null Вернет результаты исполнения.
-     * @throws ParameterInvalidException
      */
     public function run(): ?EmploymentEntity
     {
@@ -45,7 +51,7 @@ class EmploymentGetAction extends Action
                 $employment = Employment::where('id', $this->id)
                     ->first();
 
-                return $employment ? new EmploymentEntity($employment->toArray()) : null;
+                return $employment ? EmploymentEntity::from($employment->toArray()) : null;
             }
         );
     }
