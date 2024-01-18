@@ -63,11 +63,11 @@ class DocumentServiceProvider extends ServiceProvider
         });
 
         DocumentStore::extend('database', function () {
-            return new DocumentEloquent(new DocumentEloquentModel(), new Document());
+            return new DocumentEloquent(new DocumentEloquentModel(), Document::class);
         });
 
         DocumentStore::extend('mongodb', function () {
-            return new DocumentMongoDb(new DocumentMongoDbModel(), new Document());
+            return new DocumentMongoDb(new DocumentMongoDbModel(), Document::class);
         });
 
         App::singleton('document.store.driver', function ($app) {

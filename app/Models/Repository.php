@@ -36,7 +36,7 @@ class Repository
      * Конструктор.
      *
      * @param Eloquent|Authenticatable|MongoDb $model Модель данного репозитория.
-     * @param Entity $entity Сущность данного репозитория.
+     * @param string $entity Сущность данного репозитория.
      */
     public function __construct(Eloquent|Authenticatable|MongoDb $model, string $entity)
     {
