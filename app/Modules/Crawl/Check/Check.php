@@ -10,7 +10,6 @@ namespace App\Modules\Crawl\Check;
 
 use Carbon\Carbon;
 use App\Models\Event;
-use App\Models\Entity;
 use App\Modules\Crawl\Jobs\CheckJob;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Crawl\Contracts\Checker;
@@ -19,6 +18,9 @@ use App\Modules\Crawl\Check\Checkers\YandexChecker;
 use App\Modules\Crawl\Models\Crawl;
 use App\Modules\Crawl\Entities\Crawl as CrawlEntity;
 use Illuminate\Database\Eloquent\Builder;
+use Spatie\LaravelData\CursorPaginatedDataCollection;
+use Spatie\LaravelData\DataCollection;
+use Spatie\LaravelData\PaginatedDataCollection;
 
 /**
  * Проверка статуса индексации URL сайта.
@@ -95,7 +97,6 @@ class Check
      * Запуск действия.
      *
      * @return void
-     * @throws ParameterInvalidException
      */
     private function start(): void
     {
@@ -126,24 +127,23 @@ class Check
      * Получение записей на индексацию.
      *
      * @param Checker $checker Получатель на индексацию.
-     * @return CrawlEntity[] Вернет массив сущностей индексации.
-     * @throws ParameterInvalidException
+     * @return DataCollection|CursorPaginatedDataCollection|PaginatedDataCollection Вернет коллекцию сущностей индексации.
      */
-    private function getCrawls(Checker $checker): array
+    private function getCrawls(Checker $checker):  DataCollection|CursorPaginatedDataCollection|PaginatedDataCollection
     {
         $crawls = $this->getQuery($checker)->get();
 
-        return Entity::toEntities($crawls->toArray(), new CrawlEntity());
+        return CrawlEntity::collection($crawls->toArray());
     }
 
     /**
      * Отправка на проверку страниц.
      *
      * @param Checker $checker Проверятель на индексацию.
-     * @param CrawlEntity[] $crawls Массив сущностей индексации.
+     * @param DataCollection|CursorPaginatedDataCollection|PaginatedDataCollection $crawls Коллекция сущностей индексации.
      * @return void
      */
-    private function check(Checker $checker, array $crawls): void
+    private function check(Checker $checker, DataCollection|CursorPaginatedDataCollection|PaginatedDataCollection $crawls): void
     {
         $delay = Carbon::now();
 

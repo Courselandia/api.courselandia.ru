@@ -38,14 +38,14 @@ class PushJob implements ShouldQueue
      *
      * @var Pusher
      */
-    public Pusher $pusher;
+    private Pusher $pusher;
 
     /**
      * Сущность страницы, которую нужно отправить на индексацию.
      *
      * @var Page
      */
-    public Page $page;
+    private Page $page;
 
     /**
      * Конструктор.
