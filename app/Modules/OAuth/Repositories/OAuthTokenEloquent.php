@@ -33,9 +33,9 @@ class OAuthTokenEloquent extends Repository
      */
     public function get(
         string|int|null $userId = null,
-        ?string $token = null,
+        ?string         $token = null,
         string|int|null $oauthTokenId = null,
-        ?Carbon $expiresAt = null
+        ?Carbon         $expiresAt = null
     ): ?OAuthToken
     {
         $query = $this->newInstance()->newQuery();

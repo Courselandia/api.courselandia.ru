@@ -52,9 +52,9 @@ class OAuthRefresh extends EntityNew
      */
     public function __construct(
         string|int|null $id,
-        string|int $oauth_token_id,
-        string $refresh_token,
-        Carbon $expires_at
+        string|int      $oauth_token_id,
+        string          $refresh_token,
+        Carbon          $expires_at
     )
     {
         $this->id = $id;

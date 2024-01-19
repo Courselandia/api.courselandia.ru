@@ -54,12 +54,12 @@ class TaskDirection extends Task
     {
         return Direction::whereHas('courses', function ($query) {
             $query->where('status', Status::ACTIVE->value)
-            ->whereHas('school', function ($query) {
-                $query->where('status', true);
-            });
+                ->whereHas('school', function ($query) {
+                    $query->where('status', true);
+                });
         })
-        ->where('status', true)
-        ->count();
+            ->where('status', true)
+            ->count();
     }
 
     /**
@@ -77,13 +77,13 @@ class TaskDirection extends Task
         $query = Direction::with([
             'metatag',
         ])
-        ->whereHas('courses', function ($query) {
-            $query->where('status', Status::ACTIVE->value)
-                ->whereHas('school', function ($query) {
-                    $query->where('status', true);
-                });
-        })
-        ->where('status', true);
+            ->whereHas('courses', function ($query) {
+                $query->where('status', Status::ACTIVE->value)
+                    ->whereHas('school', function ($query) {
+                        $query->where('status', true);
+                    });
+            })
+            ->where('status', true);
 
         for ($i = 0; $i < $count; $i++) {
             $direction = $query->clone()

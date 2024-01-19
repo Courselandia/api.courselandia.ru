@@ -11,7 +11,6 @@ namespace App\Modules\OAuth\Providers;
 use Config;
 use App;
 use Illuminate\Support\ServiceProvider;
-
 use App\Modules\OAuth\Models\OAuthTokenEloquent as ModelOAuthTokenEloquent;
 use App\Modules\OAuth\Repositories\OAuthTokenEloquent as RepositoryOAuthTokenEloquent;
 use App\Modules\OAuth\Events\Listeners\OAuthTokenEloquentListener;

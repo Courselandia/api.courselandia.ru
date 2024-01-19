@@ -19,7 +19,7 @@ class OAuthTokenEloquentListener
     /**
      * Обработчик события при добавлении записи.
      *
-     * @param  OAuthTokenEloquent  $oAuthTokenEloquent  Модель для токенов.
+     * @param OAuthTokenEloquent $oAuthTokenEloquent Модель для токенов.
      *
      * @return bool Вернет успешность выполнения операции.
      * @throws RecordExistException
@@ -41,7 +41,7 @@ class OAuthTokenEloquentListener
     /**
      * Обработчик события при обновлении записи.
      *
-     * @param  OAuthTokenEloquent  $oAuthTokenEloquent  Модель для токенов.
+     * @param OAuthTokenEloquent $oAuthTokenEloquent Модель для токенов.
      *
      * @return bool Вернет успешность выполнения операции.
      * @throws RecordExistException
@@ -64,7 +64,7 @@ class OAuthTokenEloquentListener
     /**
      * Обработчик события при удалении записи.
      *
-     * @param  OAuthTokenEloquent  $oAuthTokenEloquent  Модель для токенов.
+     * @param OAuthTokenEloquent $oAuthTokenEloquent Модель для токенов.
      *
      * @return bool Вернет успешность выполнения операции.
      */

@@ -9,7 +9,6 @@
 namespace App\Modules\Metatag\Actions;
 
 use App\Models\Action;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Metatag\Data\MetatagSet;
 use App\Modules\Metatag\Models\Metatag;
 use App\Modules\Metatag\Entities\Metatag as MetatagEntity;
@@ -38,7 +37,6 @@ class MetatagSetAction extends Action
      * Метод запуска логики.
      *
      * @return MetatagEntity Вернет результаты исполнения.
-     * @throws ParameterInvalidException
      */
     public function run(): MetatagEntity
     {

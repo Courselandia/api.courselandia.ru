@@ -58,8 +58,8 @@ class TaskTool extends Task
                     $query->where('status', true);
                 });
         })
-        ->where('status', true)
-        ->count();
+            ->where('status', true)
+            ->count();
     }
 
     /**
@@ -77,13 +77,13 @@ class TaskTool extends Task
         $query = Tool::with([
             'metatag',
         ])
-        ->whereHas('courses', function ($query) {
-            $query->where('status', Status::ACTIVE->value)
-                ->whereHas('school', function ($query) {
-                    $query->where('status', true);
-                });
-        })
-        ->where('status', true);
+            ->whereHas('courses', function ($query) {
+                $query->where('status', Status::ACTIVE->value)
+                    ->whereHas('school', function ($query) {
+                        $query->where('status', true);
+                    });
+            })
+            ->where('status', true);
 
         for ($i = 0; $i < $count; $i++) {
             $tool = $query->clone()

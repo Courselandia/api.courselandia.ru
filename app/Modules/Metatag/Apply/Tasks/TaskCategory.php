@@ -54,12 +54,12 @@ class TaskCategory extends Task
     {
         return Category::whereHas('courses', function ($query) {
             $query->where('status', Status::ACTIVE->value)
-            ->whereHas('school', function ($query) {
-                $query->where('status', true);
-            });
+                ->whereHas('school', function ($query) {
+                    $query->where('status', true);
+                });
         })
-        ->where('status', true)
-        ->count();
+            ->where('status', true)
+            ->count();
     }
 
     /**
@@ -77,13 +77,13 @@ class TaskCategory extends Task
         $query = Category::with([
             'metatag',
         ])
-        ->whereHas('courses', function ($query) {
-            $query->where('status', Status::ACTIVE->value)
-                ->whereHas('school', function ($query) {
-                    $query->where('status', true);
-                });
-        })
-        ->where('status', true);
+            ->whereHas('courses', function ($query) {
+                $query->where('status', Status::ACTIVE->value)
+                    ->whereHas('school', function ($query) {
+                        $query->where('status', true);
+                    });
+            })
+            ->where('status', true);
 
         for ($i = 0; $i < $count; $i++) {
             $category = $query->clone()

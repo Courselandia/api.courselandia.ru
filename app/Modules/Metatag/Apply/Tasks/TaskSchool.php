@@ -55,8 +55,8 @@ class TaskSchool extends Task
         return School::whereHas('courses', function ($query) {
             $query->where('status', Status::ACTIVE->value);
         })
-        ->where('status', true)
-        ->count();
+            ->where('status', true)
+            ->count();
     }
 
     /**
@@ -74,10 +74,10 @@ class TaskSchool extends Task
         $query = School::with([
             'metatag',
         ])
-        ->whereHas('courses', function ($query) {
-            $query->where('status', Status::ACTIVE->value);
-        })
-        ->where('status', true);
+            ->whereHas('courses', function ($query) {
+                $query->where('status', Status::ACTIVE->value);
+            })
+            ->where('status', true);
 
         for ($i = 0; $i < $count; $i++) {
             $school = $query->clone()

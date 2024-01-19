@@ -52,9 +52,9 @@ class OAuthToken extends EntityNew
      */
     public function __construct(
         string|int|null $id,
-        string|int $user_id,
-        string $token,
-        Carbon $expires_at,
+        string|int      $user_id,
+        string          $token,
+        Carbon          $expires_at,
     )
     {
         $this->id = $id;

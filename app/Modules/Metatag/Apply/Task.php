@@ -38,7 +38,7 @@ abstract class Task
      *
      * @return void
      */
-    abstract public function apply(?Callable $read = null): void;
+    abstract public function apply(?callable $read = null): void;
 
     /**
      * Установит или получит признак того, нужно ли только обновлять мэтатэги.

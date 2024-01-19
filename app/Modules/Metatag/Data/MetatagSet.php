@@ -67,11 +67,11 @@ class MetatagSet extends Data
      */
     public function __construct(
         int|string|null $id = null,
-        ?string $description = null,
-        ?string $keywords = null,
-        ?string $title = null,
-        ?string $title_template = null,
-        ?string $description_template = null
+        ?string         $description = null,
+        ?string         $keywords = null,
+        ?string         $title = null,
+        ?string         $title_template = null,
+        ?string         $description_template = null
     )
     {
         $this->id = $id;
