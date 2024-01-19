@@ -68,11 +68,11 @@ class Page extends EntityNew
      */
     public function __construct(
         int|string|null $id = null,
-        ?string $path = null,
-        ?Carbon $lastmod = null,
-        ?Carbon $created_at = null,
-        ?Carbon $updated_at = null,
-        ?Carbon $deleted_at = null
+        ?string         $path = null,
+        ?Carbon         $lastmod = null,
+        ?Carbon         $created_at = null,
+        ?Carbon         $updated_at = null,
+        ?Carbon         $deleted_at = null
     )
     {
         $this->id = $id;

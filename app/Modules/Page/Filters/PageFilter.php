@@ -24,7 +24,7 @@ class PageFilter extends ModelFilter
      *
      * @return PageFilter Правила поиска.
      */
-    public function id(int|string $id): PageFilter
+    public function id(int|string $id): self
     {
         return $this->where('pages.id', $id);
     }
@@ -36,7 +36,7 @@ class PageFilter extends ModelFilter
      *
      * @return PageFilter Правила поиска.
      */
-    public function path(string $query): PageFilter
+    public function path(string $query): self
     {
         return $this->whereLike('page.path', $query);
     }
@@ -48,7 +48,7 @@ class PageFilter extends ModelFilter
      *
      * @return PageFilter Правила поиска.
      */
-    public function lastmod(array $dates): PageFilter
+    public function lastmod(array $dates): self
     {
         $dates = [
             Carbon::createFromFormat('Y-m-d O', $dates[0])->startOfDay()->setTimezone(Config::get('app.timezone')),
