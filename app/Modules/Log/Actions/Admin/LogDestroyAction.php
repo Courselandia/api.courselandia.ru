@@ -29,16 +29,18 @@ class LogDestroyAction extends Action
      *
      * @var int[]|string[]
      */
-    public ?array $ids = null;
+    private array $ids;
 
     /**
      * Конструктор.
      *
-     * @param  Log  $log  Репозиторий логирования.
+     * @param Log $log Репозиторий логирования.
+     * @param int[]|string[] $ids Массив ID логов.
      */
-    public function __construct(Log $log)
+    public function __construct(Log $log, array $ids)
     {
         $this->log = $log;
+        $this->ids = $ids;
     }
 
     /**

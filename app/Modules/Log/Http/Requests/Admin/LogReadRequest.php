@@ -46,8 +46,8 @@ class LogReadRequest extends FormRequest
         $columnFilters = implode(',', $columnFilters);
 
         return [
-            'sorts' => 'array|sorts:'.$columnsSorts,
-            'filters' => 'array|filters:'.$columnFilters.'|filter_date:datetime',
+            'sorts' => 'array|sorts:' . $columnsSorts,
+            'filters' => 'array|filters:' . $columnFilters . '|filter_date:datetime',
             'offset' => 'integer|digits_between:0,20',
             'limit' => 'integer|digits_between:0,20'
         ];

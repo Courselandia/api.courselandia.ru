@@ -24,6 +24,9 @@ class MetatagGetAction extends Action
      */
     private int|string $id;
 
+    /**
+     * @param int|string $id ID метатэга.
+     */
     public function __construct(int|string $id)
     {
         $this->id = $id;

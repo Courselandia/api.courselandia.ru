@@ -26,7 +26,7 @@ class LocationCountriesReadAction extends Action
     /**
      * Конструктор.
      *
-     * @param  Location  $location  Модель локализации.
+     * @param Location $location Модель локализации.
      */
     public function __construct(Location $location)
     {

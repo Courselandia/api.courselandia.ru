@@ -29,37 +29,51 @@ class LogReadAction extends Action
      *
      * @var array|null
      */
-    public ?array $sorts = null;
+    private ?array $sorts;
 
     /**
      * Фильтрация данных.
      *
      * @var array|null
      */
-    public ?array $filters = null;
+    private ?array $filters;
 
     /**
      * Начать выборку.
      *
      * @var int|null
      */
-    public ?int $offset = null;
+    private ?int $offset;
 
     /**
      * Лимит выборки выборку.
      *
      * @var int|null
      */
-    public ?int $limit = null;
+    private ?int $limit;
 
     /**
      * Конструктор.
      *
-     * @param  Log  $log  Репозиторий обратной связи.
+     * @param Log $log Репозиторий обратной связи.
+     * @param array|null $sorts Сортировка данных.
+     * @param array|null $filters Фильтрация данных.
+     * @param int|null $offset Начать выборку.
+     * @param int|null $limit Лимит выборки выборку.
      */
-    public function __construct(Log $log)
+    public function __construct(
+        Log    $log,
+        array  $sorts = null,
+        ?array $filters = null,
+        ?int   $offset = null,
+        ?int   $limit = null
+    )
     {
         $this->log = $log;
+        $this->sorts = $sorts;
+        $this->filters = $filters;
+        $this->offset = $offset;
+        $this->limit = $limit;
     }
 
     /**

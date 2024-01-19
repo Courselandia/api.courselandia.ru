@@ -26,6 +26,9 @@ class MetatagSetAction extends Action
      */
     private MetatagSet $data;
 
+    /**
+     * @param MetatagSet $data Данные для становки метатэгов.
+     */
     public function __construct(MetatagSet $data)
     {
         $this->data = $data;

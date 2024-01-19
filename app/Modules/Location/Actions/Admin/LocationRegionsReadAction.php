@@ -9,8 +9,8 @@
 namespace App\Modules\Location\Actions\Admin;
 
 use App\Models\Action;
-use App\Modules\Location\Entities\Country;
 use App\Modules\Location\Models\Location;
+use App\Modules\Location\Values\Country;
 
 /**
  * Класс действия для чтения регионов.
@@ -29,16 +29,18 @@ class LocationRegionsReadAction extends Action
      *
      * @var string
      */
-    public string $country;
+    private string $country;
 
     /**
      * Конструктор.
      *
-     * @param  Location  $location  Модель локализации.
+     * @param Location $location Модель локализации.
+     * @param string $country Страна.
      */
-    public function __construct(Location $location)
+    public function __construct(Location $location, string $country)
     {
         $this->location = $location;
+        $this->country = $country;
     }
 
     /**

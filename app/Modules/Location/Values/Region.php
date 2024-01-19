@@ -6,12 +6,12 @@
  * @package App\Modules\Location
  */
 
-namespace App\Modules\Location\Entities;
+namespace App\Modules\Location\Values;
 
 /**
- * Сущность для хранения города.
+ * Объект-значение для хранения регионов.
  */
-class City extends Country
+class Region extends Country
 {
 
 }

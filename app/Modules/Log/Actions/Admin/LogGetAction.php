@@ -28,18 +28,20 @@ class LogGetAction extends Action
     /**
      * ID лога.
      *
-     * @var int|string|null
+     * @var int|string
      */
-    public int|string|null $id = null;
+    private int|string $id;
 
     /**
      * Конструктор.
      *
-     * @param  Log  $log  Репозиторий логирования.
+     * @param Log $log Репозиторий логирования.
+     * @param int|string $id ID лога.
      */
-    public function __construct(Log $log)
+    public function __construct(Log $log, int|string $id)
     {
         $this->log = $log;
+        $this->id = $id;
     }
 
     /**

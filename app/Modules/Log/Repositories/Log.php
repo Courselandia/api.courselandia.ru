@@ -8,10 +8,12 @@
 
 namespace App\Modules\Log\Repositories;
 
-use App\Models\Entity;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Repository;
 use App\Modules\Log\Entities\Log as LogEntity;
+use Spatie\LaravelData\CursorPaginatedDataCollection;
+use Spatie\LaravelData\DataCollection;
+use Spatie\LaravelData\PaginatedDataCollection;
 
 /**
  * Класс репозитория для логирования.
@@ -25,11 +27,11 @@ class Log extends Repository
      * @param array|null $sorts Сортировки.
      * @param int|null $offset Начать выборку.
      * @param int|null $limit Лимит выборки.
-     * @return LogEntity[] Вернет массив логов.
+     * @return DataCollection|CursorPaginatedDataCollection|PaginatedDataCollection Вернет коллекцию логов.
      *
      * @throws ParameterInvalidException
      */
-    public function read(?array $filters = null, ?array $sorts = null, ?int $offset = null, ?int $limit = null): array
+    public function read(?array $filters = null, ?array $sorts = null, ?int $offset = null, ?int $limit = null): DataCollection|CursorPaginatedDataCollection|PaginatedDataCollection
     {
         $query = $this->newInstance()->newQuery();
         $query->filter($filters ?: []);
@@ -52,7 +54,7 @@ class Log extends Repository
             ];
         })->toArray();
 
-        return Entity::toEntities($items, new LogEntity());
+        return LogEntity::collection($items);
     }
 
     /**
@@ -83,7 +85,7 @@ class Log extends Repository
     {
         $log = $this->newInstance()->newQuery()->find($id);
 
-        return $log ? new LogEntity($log->toArray()) : null;
+        return $log ? LogEntity::from($log->toArray()) : null;
     }
 
     /**

@@ -39,15 +39,14 @@ class LocationController extends Controller
     /**
      * Получить регионы по стране.
      *
-     * @param  string  $country  Код страны.
+     * @param string $country Код страны.
      *
      * @return JsonResponse Вернет JSON ответ.
      */
     public function regions(string $country): JsonResponse
     {
         try {
-            $action = app(LocationRegionsReadAction::class);
-            $action->country = $country;
+            $action = app(LocationRegionsReadAction::class, ['country' => $country]);
             $regions = $action->run();
 
             $data = [

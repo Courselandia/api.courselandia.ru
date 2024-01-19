@@ -29,23 +29,23 @@ class User extends EntityNew
     /**
      * Маленькое изображение.
      *
-     * @var int|UploadedFile|Image|null
+     * @var ?Image
      */
-    public int|UploadedFile|Image|null $image_small_id = null;
+    public ?Image $image_small_id = null;
 
     /**
      * Среднее изображение.
      *
-     * @var int|UploadedFile|Image|null
+     * @var ?Image
      */
-    public int|UploadedFile|Image|null $image_middle_id = null;
+    public ?Image $image_middle_id = null;
 
     /**
      * Большое изображение.
      *
-     * @var int|UploadedFile|Image|null
+     * @var ?Image
      */
-    public int|UploadedFile|Image|null $image_big_id = null;
+    public ?Image $image_big_id = null;
 
     /**
      * Логин.
@@ -115,48 +115,48 @@ class User extends EntityNew
      *
      * @var UserRecovery|null
      */
-    public UserRecovery|null $recovery = null;
+    public ?UserRecovery $recovery = null;
 
     /**
      * Верификация пользователя.
      *
      * @var UserVerification|null
      */
-    public UserVerification|null $verification = null;
+    public ?UserVerification $verification = null;
 
     /**
      * Роль пользователя.
      *
      * @var UserRole|null
      */
-    public UserRole|null $role = null;
+    public ?UserRole $role = null;
 
     /**
      * Дата создания.
      *
      * @var Carbon|null
      */
-    public Carbon|null $created_at = null;
+    public ?Carbon $created_at = null;
 
     /**
      * Дата обновления.
      *
      * @var Carbon|null
      */
-    public Carbon|null $updated_at = null;
+    public ?Carbon $updated_at = null;
 
     /**
      * Дата удаления.
      *
      * @var Carbon|null
      */
-    public Carbon|null $deleted_at = null;
+    public ?Carbon $deleted_at = null;
 
     /**
      * @param int|string|null $id ID записи.
-     * @param int|UploadedFile|Image|null $image_small_id Маленькое изображение.
-     * @param int|UploadedFile|Image|null $image_middle_id Среднее изображение.
-     * @param int|UploadedFile|Image|null $image_big_id Большое изображение.
+     * @param Image|null $image_small_id Маленькое изображение.
+     * @param Image|null $image_middle_id Среднее изображение.
+     * @param Image|null $image_big_id Большое изображение.
      * @param string|null $login Логин.
      * @param string|null $password Пароль.
      * @param string|null $remember_token Токен.
@@ -174,25 +174,25 @@ class User extends EntityNew
      * @param UserRole|null $role Роль пользователя.
      */
     public function __construct(
-        int|string|null             $id = null,
-        int|UploadedFile|Image|null $image_small_id = null,
-        int|UploadedFile|Image|null $image_middle_id = null,
-        int|UploadedFile|Image|null $image_big_id = null,
-        ?string                     $login = null,
-        ?string                     $password = null,
-        ?string                     $remember_token = null,
-        ?string                     $first_name = null,
-        ?string                     $second_name = null,
-        ?string                     $phone = null,
-        ?bool                       $two_factor = false,
-        ?bool                       $status = null,
-        ?array                      $flags = null,
-        ?Carbon                     $created_at = null,
-        ?Carbon                     $updated_at = null,
-        ?Carbon                     $deleted_at = null,
-        ?UserRecovery               $recovery = null,
-        ?UserVerification           $verification = null,
-        ?UserRole                   $role = null
+        int|string|null   $id = null,
+        ?Image            $image_small_id = null,
+        ?Image            $image_middle_id = null,
+        ?Image            $image_big_id = null,
+        ?string           $login = null,
+        ?string           $password = null,
+        ?string           $remember_token = null,
+        ?string           $first_name = null,
+        ?string           $second_name = null,
+        ?string           $phone = null,
+        ?bool             $two_factor = false,
+        ?bool             $status = null,
+        ?array            $flags = null,
+        ?Carbon           $created_at = null,
+        ?Carbon           $updated_at = null,
+        ?Carbon           $deleted_at = null,
+        ?UserRecovery     $recovery = null,
+        ?UserVerification $verification = null,
+        ?UserRole         $role = null
     )
     {
         $this->id = $id;

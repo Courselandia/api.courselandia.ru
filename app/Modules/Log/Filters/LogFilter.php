@@ -24,7 +24,7 @@ class LogFilter extends ModelFilter
      *
      * @return LogFilter Правила поиска.
      */
-    public function id(int|string $id): LogFilter
+    public function id(int|string $id): self
     {
         return $this->where($this->getKeyName(), $id);
     }
@@ -36,7 +36,7 @@ class LogFilter extends ModelFilter
      *
      * @return LogFilter Правила поиска.
      */
-    public function createdAt(array $dates): LogFilter
+    public function createdAt(array $dates): self
     {
         $dates = [
             Carbon::createFromFormat('Y-m-d O', $dates[0])->startOfDay()->setTimezone(Config::get('app.timezone'))->unix(),
@@ -53,7 +53,7 @@ class LogFilter extends ModelFilter
      *
      * @return LogFilter Правила поиска.
      */
-    public function message(string $query): LogFilter
+    public function message(string $query): self
     {
         return $this->whereLike('message', $query);
     }
@@ -65,7 +65,7 @@ class LogFilter extends ModelFilter
      *
      * @return LogFilter Правила поиска.
      */
-    public function levelName(string $query): LogFilter
+    public function levelName(string $query): self
     {
         return $this->whereLike('level_name', $query);
     }
