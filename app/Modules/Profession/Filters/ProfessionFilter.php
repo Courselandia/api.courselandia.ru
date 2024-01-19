@@ -22,7 +22,7 @@ class ProfessionFilter extends ModelFilter
      *
      * @return ProfessionFilter Правила поиска.
      */
-    public function id(int|string $id): ProfessionFilter
+    public function id(int|string $id): self
     {
         return $this->where('professions.id', $id);
     }
@@ -34,7 +34,7 @@ class ProfessionFilter extends ModelFilter
      *
      * @return ProfessionFilter Правила поиска.
      */
-    public function name(string $query): ProfessionFilter
+    public function name(string $query): self
     {
         return $this->whereLike('professions.name', $query);
     }
@@ -46,7 +46,7 @@ class ProfessionFilter extends ModelFilter
      *
      * @return ProfessionFilter Правила поиска.
      */
-    public function status(bool $status): ProfessionFilter
+    public function status(bool $status): self
     {
         return $this->where('professions.status', $status);
     }

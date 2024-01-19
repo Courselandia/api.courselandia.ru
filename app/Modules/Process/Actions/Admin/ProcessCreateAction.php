@@ -9,7 +9,7 @@
 namespace App\Modules\Process\Actions\Admin;
 
 use App\Models\Action;
-use App\Models\Exceptions\ParameterInvalidException;
+use App\Modules\Process\Data\ProcessCreate;
 use App\Modules\Process\Entities\Process as ProcessEntity;
 use App\Modules\Process\Models\Process;
 use Cache;
@@ -20,44 +20,33 @@ use Cache;
 class ProcessCreateAction extends Action
 {
     /**
-     * Название.
+     * Данные для создания объяснения как проходит обучение.
      *
-     * @var string|null
+     * @var ProcessCreate
      */
-    public ?string $name = null;
+    private ProcessCreate $data;
 
     /**
-     * Статья.
-     *
-     * @var string|null
+     * @param ProcessCreate $data Данные для создания объяснения как проходит обучение.
      */
-    public ?string $text = null;
-
-    /**
-     * Статус.
-     *
-     * @var bool|null
-     */
-    public ?bool $status = null;
+    public function __construct(ProcessCreate $data)
+    {
+        $this->data = $data;
+    }
 
     /**
      * Метод запуска логики.
      *
      * @return ProcessEntity Вернет результаты исполнения.
-     * @throws ParameterInvalidException
      */
     public function run(): ProcessEntity
     {
-        $processEntity = new ProcessEntity();
-        $processEntity->name = $this->name;
-        $processEntity->text = $this->text;
-        $processEntity->status = $this->status;
+        $processEntity = ProcessEntity::from($this->data->toArray());
 
         $process = Process::create($processEntity->toArray());
         Cache::tags(['catalog', 'process'])->flush();
 
-        $action = app(ProcessGetAction::class);
-        $action->id = $process->id;
+        $action = new ProcessGetAction($process->id);
 
         return $action->run();
     }

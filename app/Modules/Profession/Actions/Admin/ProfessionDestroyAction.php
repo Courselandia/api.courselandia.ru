@@ -18,11 +18,19 @@ use Cache;
 class ProfessionDestroyAction extends Action
 {
     /**
-     * Массив ID пользователей.
+     * Массив ID профессий.
      *
      * @var int[]|string[]
      */
-    public ?array $ids = null;
+    private array $ids;
+
+    /**
+     * @param array $ids Массив ID профессий.
+     */
+    public function __construct(array $ids)
+    {
+        $this->ids = $ids;
+    }
 
     /**
      * Метод запуска логики.

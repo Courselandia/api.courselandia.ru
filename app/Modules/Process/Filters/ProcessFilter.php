@@ -22,7 +22,7 @@ class ProcessFilter extends ModelFilter
      *
      * @return ProcessFilter Правила поиска.
      */
-    public function id(int|string $id): ProcessFilter
+    public function id(int|string $id): self
     {
         return $this->where('processes.id', $id);
     }
@@ -34,7 +34,7 @@ class ProcessFilter extends ModelFilter
      *
      * @return ProcessFilter Правила поиска.
      */
-    public function name(string $query): ProcessFilter
+    public function name(string $query): self
     {
         return $this->whereLike('processes.name', $query);
     }
@@ -46,7 +46,7 @@ class ProcessFilter extends ModelFilter
      *
      * @return ProcessFilter Правила поиска.
      */
-    public function status(bool $status): ProcessFilter
+    public function status(bool $status): self
     {
         return $this->where('processes.status', $status);
     }

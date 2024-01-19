@@ -18,11 +18,19 @@ use Cache;
 class ProcessDestroyAction extends Action
 {
     /**
-     * Массив ID пользователей.
+     * Массив ID записей.
      *
      * @var int[]|string[]
      */
-    public ?array $ids = null;
+    private array $ids;
+
+    /**
+     * @param int[]|string[] $ids Массив ID записей.
+     */
+    public function __construct(array $ids)
+    {
+        $this->ids = $ids;
+    }
 
     /**
      * Метод запуска логики.

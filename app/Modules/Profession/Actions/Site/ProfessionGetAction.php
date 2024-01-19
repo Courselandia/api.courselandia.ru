@@ -12,7 +12,6 @@ use Cache;
 use Util;
 use App\Models\Action;
 use App\Models\Enums\CacheTime;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Profession\Entities\Profession as ProfessionEntity;
 use App\Modules\Profession\Models\Profession;
 
@@ -22,17 +21,24 @@ use App\Modules\Profession\Models\Profession;
 class ProfessionGetAction extends Action
 {
     /**
-     * ID категории.
+     * ID профессии.
      *
-     * @var int|string|null
+     * @var int|string
      */
-    public int|string|null $id = null;
+    private int|string $id;
+
+    /**
+     * @param int|string $id ID профессии.
+     */
+    public function __construct(int|string $id)
+    {
+        $this->id = $id;
+    }
 
     /**
      * Метод запуска логики.
      *
      * @return ProfessionEntity|null Вернет результаты исполнения.
-     * @throws ParameterInvalidException
      */
     public function run(): ?ProfessionEntity
     {
@@ -47,11 +53,7 @@ class ProfessionGetAction extends Action
                 ])->find($this->id);
 
                 if ($result) {
-                    $item = $result->toArray();
-                    $entity = new ProfessionEntity();
-                    $entity->set($item);
-
-                    return $entity;
+                    return ProfessionEntity::from($result->toArray());
                 }
 
                 return null;

@@ -29,7 +29,7 @@ class ProcessServiceProvider extends ServiceProvider
         $this->registerTranslations();
         $this->registerConfig();
 
-        $this->loadMigrationsFrom(__DIR__.'/../Database/Migrations');
+        $this->loadMigrationsFrom(__DIR__ . '/../Database/Migrations');
 
         ProcessModel::observe(ProcessListener::class);
     }
@@ -51,10 +51,10 @@ class ProcessServiceProvider extends ServiceProvider
     protected function registerConfig(): void
     {
         $this->publishes([
-            __DIR__.'/../Config/config.php' => config_path('process.php'),
+            __DIR__ . '/../Config/config.php' => config_path('process.php'),
         ]);
         $this->mergeConfigFrom(
-            __DIR__.'/../Config/config.php',
+            __DIR__ . '/../Config/config.php',
             'process'
         );
     }
@@ -68,7 +68,7 @@ class ProcessServiceProvider extends ServiceProvider
     {
         $viewPath = base_path('resources/views/modules/process');
 
-        $sourcePath = __DIR__.'/../Resources/views';
+        $sourcePath = __DIR__ . '/../Resources/views';
 
         $this->publishes([
             $sourcePath => $viewPath
@@ -77,7 +77,7 @@ class ProcessServiceProvider extends ServiceProvider
         $this->loadViewsFrom(
             array_merge(
                 array_map(function ($path) {
-                    return $path.'/modules/process';
+                    return $path . '/modules/process';
                 }, Config::get('view.paths')),
                 [$sourcePath]
             ),
@@ -97,7 +97,7 @@ class ProcessServiceProvider extends ServiceProvider
         if (is_dir($langPath)) {
             $this->loadTranslationsFrom($langPath, 'process');
         } else {
-            $this->loadTranslationsFrom(__DIR__.'/../Resources/lang', 'process');
+            $this->loadTranslationsFrom(__DIR__ . '/../Resources/lang', 'process');
         }
     }
 

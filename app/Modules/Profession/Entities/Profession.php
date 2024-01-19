@@ -129,11 +129,11 @@ class Profession extends EntityNew
      * @param string|null $header_template Шаблон заголовка.
      * @param string|null $link Ссылка.
      * @param string|null $text Статья.
-     * @param Metatag|null $metatag Метатеги.
      * @param bool|null $status Статус.
      * @param Carbon|null $created_at Дата создания.
      * @param Carbon|null $updated_at Дата обновления.
      * @param Carbon|null $deleted_at Дата удаления.
+     * @param Metatag|null $metatag Метатеги.
      * @param DataCollection|null $salaries Зарплаты.
      * @param DataCollection|null $analyzers Анализ хранения текстов.
      */
@@ -145,11 +145,11 @@ class Profession extends EntityNew
         ?string         $header_template = null,
         ?string         $link = null,
         ?string         $text = null,
-        ?Metatag        $metatag = null,
         ?bool           $status = null,
         ?Carbon         $created_at = null,
         ?Carbon         $updated_at = null,
         ?Carbon         $deleted_at = null,
+        ?Metatag        $metatag = null,
         ?DataCollection $salaries = null,
         ?DataCollection $analyzers = null
     )

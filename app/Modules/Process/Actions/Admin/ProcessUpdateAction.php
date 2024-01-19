@@ -9,8 +9,8 @@
 namespace App\Modules\Process\Actions\Admin;
 
 use App\Models\Action;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
+use App\Modules\Process\Data\ProcessUpdate;
 use App\Modules\Process\Entities\Process as ProcessEntity;
 use App\Modules\Process\Models\Process;
 use Cache;
@@ -21,57 +21,41 @@ use Cache;
 class ProcessUpdateAction extends Action
 {
     /**
-     * ID объяснения как проходит обучение.
+     * Данные для обновления объяснения как проходит обучение.
      *
-     * @var int|string|null
+     * @var ProcessUpdate
      */
-    public int|string|null $id = null;
+    private ProcessUpdate $data;
 
     /**
-     * Название.
-     *
-     * @var string|null
+     * @param ProcessUpdate $data Данные для обновления объяснения как проходит обучение.
      */
-    public ?string $name = null;
-
-    /**
-     * Статья.
-     *
-     * @var string|null
-     */
-    public ?string $text = null;
-
-    /**
-     * Статус.
-     *
-     * @var bool|null
-     */
-    public ?bool $status = null;
+    public function __construct(ProcessUpdate $data)
+    {
+        $this->data = $data;
+    }
 
     /**
      * Метод запуска логики.
      *
      * @return ProcessEntity Вернет результаты исполнения.
      * @throws RecordNotExistException
-     * @throws ParameterInvalidException
      */
     public function run(): ProcessEntity
     {
-        $action = app(ProcessGetAction::class);
-        $action->id = $this->id;
+        $action = new ProcessGetAction($this->data->id);
         $processEntity = $action->run();
 
         if ($processEntity) {
-            $processEntity->id = $this->id;
-            $processEntity->name = $this->name;
-            $processEntity->text = $this->text;
-            $processEntity->status = $this->status;
+            $processEntity->id = $this->data->id;
+            $processEntity->name = $this->data->name;
+            $processEntity->text = $this->data->text;
+            $processEntity->status = $this->data->status;
 
-            Process::find($this->id)->update($processEntity->toArray());
+            Process::find($this->data->id)->update($processEntity->toArray());
             Cache::tags(['catalog', 'process'])->flush();
 
-            $action = app(ProcessGetAction::class);
-            $action->id = $this->id;
+            $action = new ProcessGetAction($this->data->id);
 
             return $action->run();
         }

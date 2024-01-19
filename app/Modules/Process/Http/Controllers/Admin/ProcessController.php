@@ -18,6 +18,8 @@ use App\Modules\Process\Actions\Admin\ProcessGetAction;
 use App\Modules\Process\Actions\Admin\ProcessReadAction;
 use App\Modules\Process\Actions\Admin\ProcessUpdateAction;
 use App\Modules\Process\Actions\Admin\ProcessUpdateStatusAction;
+use App\Modules\Process\Data\ProcessCreate;
+use App\Modules\Process\Data\ProcessUpdate;
 use App\Modules\Process\Http\Requests\Admin\ProcessCreateRequest;
 use App\Modules\Process\Http\Requests\Admin\ProcessDestroyRequest;
 use App\Modules\Process\Http\Requests\Admin\ProcessReadRequest;
@@ -40,12 +42,10 @@ class ProcessController extends Controller
      * @param int|string $id ID объяснения как проходит обучение.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException
      */
     public function get(int|string $id): JsonResponse
     {
-        $action = app(ProcessGetAction::class);
-        $action->id = $id;
+        $action = new ProcessGetAction($id);
         $data = $action->run();
 
         if ($data) {
@@ -75,11 +75,12 @@ class ProcessController extends Controller
      */
     public function read(ProcessReadRequest $request): JsonResponse
     {
-        $action = app(ProcessReadAction::class);
-        $action->sorts = $request->get('sorts');
-        $action->filters = $request->get('filters');
-        $action->offset = $request->get('offset');
-        $action->limit = $request->get('limit');
+        $action = new ProcessReadAction(
+            $request->get('sorts'),
+            $request->get('filters'),
+            $request->get('offset'),
+            $request->get('limit')
+        );
 
         $data = $action->run();
 
@@ -94,16 +95,12 @@ class ProcessController extends Controller
      * @param ProcessCreateRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException
      */
     public function create(ProcessCreateRequest $request): JsonResponse
     {
         try {
-            $action = app(ProcessCreateAction::class);
-            $action->name = $request->get('name');
-            $action->text = $request->get('text');
-            $action->status = $request->get('status');
-
+            $data = ProcessCreate::from($request->all());
+            $action = new ProcessCreateAction($data);
             $data = $action->run();
 
             Log::info(
@@ -141,16 +138,15 @@ class ProcessController extends Controller
      * @param ProcessUpdateRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException
      */
     public function update(int|string $id, ProcessUpdateRequest $request): JsonResponse
     {
         try {
-            $action = app(ProcessUpdateAction::class);
-            $action->id = $id;
-            $action->name = $request->get('name');
-            $action->text = $request->get('text');
-            $action->status = $request->get('status');
+            $data = ProcessUpdate::from([
+                'id' => $id,
+                ...$request->all()
+            ]);
+            $action = new ProcessUpdateAction($data);
             $data = $action->run();
 
             Log::info(
@@ -188,15 +184,11 @@ class ProcessController extends Controller
      * @param ProcessUpdateStatusRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException
      */
     public function updateStatus(int|string $id, ProcessUpdateStatusRequest $request): JsonResponse
     {
         try {
-            $action = app(ProcessUpdateStatusAction::class);
-            $action->id = $id;
-            $action->status = $request->get('status');
-
+            $action = new ProcessUpdateStatusAction($id, $request->get('status'));
             $data = $action->run();
 
             Log::info(trans('process::http.controllers.admin.processController.update.log'), [
@@ -233,8 +225,7 @@ class ProcessController extends Controller
      */
     public function destroy(ProcessDestroyRequest $request): JsonResponse
     {
-        $action = app(ProcessDestroyAction::class);
-        $action->ids = $request->get('ids');
+        $action = new ProcessDestroyAction($request->get('ids'));
         $action->run();
 
         Log::info(

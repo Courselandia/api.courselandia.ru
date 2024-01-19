@@ -27,7 +27,6 @@ use App\Modules\Course\Models\Course;
  * Класс модель для таблицы объяснения как проходит обучение на основе Eloquent.
  *
  * @property int|string $id ID объяснения как проходит обучение.
-
  * @property string $name Название.
  * @property string $text Текст.
  * @property string $status Статус.

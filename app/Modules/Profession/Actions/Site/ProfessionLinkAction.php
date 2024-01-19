@@ -23,11 +23,19 @@ use App\Modules\Profession\Models\Profession;
 class ProfessionLinkAction extends Action
 {
     /**
-     * Ссылка категории.
+     * Ссылка профессию.
      *
-     * @var string|null
+     * @var string
      */
-    public string|null $link = null;
+    private string $link;
+
+    /**
+     * @param string $link Ссылка профессию.
+     */
+    public function __construct(string $link)
+    {
+        $this->link = $link;
+    }
 
     /**
      * Метод запуска логики.
@@ -54,11 +62,7 @@ class ProfessionLinkAction extends Action
                     ])->first();
 
                 if ($result) {
-                    $item = $result->toArray();
-                    $entity = new ProfessionEntity();
-                    $entity->set($item);
-
-                    return $entity;
+                    return ProfessionEntity::from($result->toArray());
                 }
 
                 return null;
