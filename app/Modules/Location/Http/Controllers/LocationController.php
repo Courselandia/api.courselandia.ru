@@ -29,7 +29,12 @@ class LocationController extends Controller
         $countries = app(LocationCountriesReadAction::class)->run();
 
         $data = [
-            'data' => $countries,
+            'data' => collect($countries)->map(function ($country) {
+                return [
+                    'code' => $country->getCode(),
+                    'name' => $country->getName(),
+                ];
+            }),
             'success' => true,
         ];
 
@@ -50,7 +55,12 @@ class LocationController extends Controller
             $regions = $action->run();
 
             $data = [
-                'data' => $regions,
+                'data' => collect($regions)->map(function ($region) {
+                    return [
+                        'code' => $region->getCode(),
+                        'name' => $region->getName(),
+                    ];
+                }),
                 'success' => true,
             ];
 

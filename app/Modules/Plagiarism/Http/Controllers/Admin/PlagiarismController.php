@@ -9,6 +9,7 @@
 namespace App\Modules\Plagiarism\Http\Controllers\Admin;
 
 use App\Modules\Plagiarism\Exceptions\TextShortException;
+use App\Modules\Plagiarism\Values\Quality;
 use Log;
 use Auth;
 use Plagiarism;
@@ -83,10 +84,17 @@ class PlagiarismController extends Controller
     public function result(string $id): JsonResponse
     {
         try {
+            /**
+             * @var Quality $result
+             */
             $result = Plagiarism::result($id);
 
             $data = [
-                'data' => $result,
+                'data' => [
+                    'unique' => $result->getUnique(),
+                    'water' => $result->getWater(),
+                    'spam' => $result->getSpam(),
+                ],
                 'success' => true,
             ];
 

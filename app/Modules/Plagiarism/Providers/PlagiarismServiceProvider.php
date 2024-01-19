@@ -31,7 +31,7 @@ class PlagiarismServiceProvider extends ServiceProvider
         $this->registerTranslations();
         $this->registerConfig();
 
-        $this->loadMigrationsFrom(__DIR__.'/../Database/Migrations');
+        $this->loadMigrationsFrom(__DIR__ . '/../Database/Migrations');
     }
 
     /**
@@ -62,10 +62,10 @@ class PlagiarismServiceProvider extends ServiceProvider
     protected function registerConfig(): void
     {
         $this->publishes([
-            __DIR__.'/../Config/config.php' => config_path('plagiarism.php'),
+            __DIR__ . '/../Config/config.php' => config_path('plagiarism.php'),
         ]);
         $this->mergeConfigFrom(
-            __DIR__.'/../Config/config.php',
+            __DIR__ . '/../Config/config.php',
             'plagiarism'
         );
     }
@@ -79,7 +79,7 @@ class PlagiarismServiceProvider extends ServiceProvider
     {
         $viewPath = base_path('resources/views/modules/plagiarism');
 
-        $sourcePath = __DIR__.'/../Resources/views';
+        $sourcePath = __DIR__ . '/../Resources/views';
 
         $this->publishes([
             $sourcePath => $viewPath
@@ -88,7 +88,7 @@ class PlagiarismServiceProvider extends ServiceProvider
         $this->loadViewsFrom(
             array_merge(
                 array_map(function ($path) {
-                    return $path.'/modules/plagiarism';
+                    return $path . '/modules/plagiarism';
                 }, Config::get('view.paths')),
                 [$sourcePath]
             ),
@@ -108,7 +108,7 @@ class PlagiarismServiceProvider extends ServiceProvider
         if (is_dir($langPath)) {
             $this->loadTranslationsFrom($langPath, 'plagiarism');
         } else {
-            $this->loadTranslationsFrom(__DIR__.'/../Resources/lang', 'plagiarism');
+            $this->loadTranslationsFrom(__DIR__ . '/../Resources/lang', 'plagiarism');
         }
     }
 

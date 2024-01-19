@@ -8,8 +8,8 @@
 
 namespace App\Modules\Plagiarism\Models;
 
-use App\Modules\Plagiarism\Entities\Result;
 use App\Modules\Plagiarism\Contracts\Plagiarism;
+use App\Modules\Plagiarism\Values\Quality;
 
 /**
  * Классы драйвер для анализа текстов - фейковый драйвер, созданный для тестирования.
@@ -34,15 +34,10 @@ class PlagiarismFake extends Plagiarism
      *
      * @param string $id ID задачи.
      *
-     * @return Result Результат анализа.
+     * @return Quality Результат анализа.
      */
-    public function result(string $id): Result
+    public function result(string $id): Quality
     {
-        $result = new Result();
-        $result->unique = 60.50;
-        $result->water = 30;
-        $result->spam = 20;
-
-        return $result;
+        return new Quality(60.50, 30, 20);
     }
 }

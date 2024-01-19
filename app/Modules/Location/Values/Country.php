@@ -20,14 +20,14 @@ class Country extends Value
      *
      * @var string
      */
-    public string $code;
+    private string $code;
 
     /**
      * Название.
      *
      * @var string
      */
-    public string $name;
+    private string $name;
 
     /**
      * @param string $code Код.
