@@ -87,16 +87,16 @@ class School extends EntityNew
     /**
      * Изображение логотипа.
      *
-     * @var int|UploadedFile|Image|null
+     * @var ?Image
      */
-    public int|UploadedFile|Image|null $image_logo_id = null;
+    public ?Image $image_logo_id = null;
 
     /**
      * Изображение сайта.
      *
-     * @var int|UploadedFile|Image|null
+     * @var ?Image
      */
-    public int|UploadedFile|Image|null $image_site_id = null;
+    public ?Image $image_site_id = null;
 
     /**
      * Статус.
@@ -200,8 +200,8 @@ class School extends EntityNew
      * @param string|null $text Статья.
      * @param string|null $site Сайт.
      * @param float|null $rating Рейтинг.
-     * @param int|UploadedFile|Image|null $image_logo_id Изображение логотипа.
-     * @param int|UploadedFile|Image|null $image_site_id Изображение сайта.
+     * @param Image|null $image_logo_id Изображение логотипа.
+     * @param Image|null $image_site_id Изображение сайта.
      * @param bool|null $status Статус.
      * @param Carbon|null $created_at Дата создания.
      * @param Carbon|null $updated_at Дата обновления.
@@ -226,8 +226,8 @@ class School extends EntityNew
         ?string $text = null,
         ?string $site = null,
         ?float $rating = null,
-        int|UploadedFile|Image|null $image_logo_id = null,
-        int|UploadedFile|Image|null $image_site_id = null,
+        ?Image $image_logo_id = null,
+        ?Image $image_site_id = null,
         ?bool $status = null,
         ?Carbon $created_at = null,
         ?Carbon $updated_at = null,

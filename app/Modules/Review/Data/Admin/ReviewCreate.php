@@ -6,22 +6,30 @@
  * @package App\Modules\Review
  */
 
-namespace App\Modules\Review\Entities;
+namespace App\Modules\Review\Data\Admin;
 
-use App\Models\EntityNew;
+use App\Models\Data;
+use App\Modules\Review\Enums\Status;
 use Carbon\Carbon;
 
 /**
- * Сущность для спарсенного отзыва.
+ * Данные для создания отзыва.
  */
-class ParserReview extends EntityNew
+class ReviewCreate extends Data
 {
     /**
-     * ID тзыва.
+     * ID школы.
      *
      * @var int|null
      */
-    public ?int $id = null;
+    public ?int $school_id = null;
+
+    /**
+     * ID курса.
+     *
+     * @var int|null
+     */
+    public ?int $course_id = null;
 
     /**
      * Имя автора.
@@ -66,40 +74,63 @@ class ParserReview extends EntityNew
     public ?int $rating = null;
 
     /**
-     * Дата создания.
+     * Статус.
+     *
+     * @var Status|null
+     */
+    public ?Status $status = null;
+
+    /**
+     * Дата добавления.
      *
      * @var ?Carbon
      */
-    public ?Carbon $date = null;
+    public ?Carbon $created_at = null;
 
     /**
-     * @param int|null $id ID тзыва.
+     * Источник.
+     *
+     * @var ?string
+     */
+    public ?string $source = null;
+
+    /**
+     * @param int|null $school_id ID школы.
+     * @param int|null $course_id ID курса.
      * @param string|null $name Имя автора.
      * @param string|null $title Заголовок.
      * @param string|null $review Отзыв.
      * @param string|null $advantages Достоинства.
      * @param string|null $disadvantages Недостатки.
      * @param int|null $rating Рейтинг.
-     * @param Carbon|null $date Дата создания.
+     * @param Status|null $status Статус.
+     * @param Carbon|null $created_at Дата добавления.
+     * @param string|null $source Источник.
      */
     public function __construct(
-        ?int    $id = null,
+        ?int    $school_id = null,
+        ?int    $course_id = null,
         ?string $name = null,
         ?string $title = null,
         ?string $review = null,
         ?string $advantages = null,
         ?string $disadvantages = null,
         ?int    $rating = null,
-        Carbon  $date = null
+        ?Status $status = null,
+        ?Carbon $created_at = null,
+        ?string $source = null
     )
     {
-        $this->id = $id;
+        $this->school_id = $school_id;
+        $this->course_id = $course_id;
         $this->name = $name;
         $this->title = $title;
         $this->review = $review;
         $this->advantages = $advantages;
         $this->disadvantages = $disadvantages;
         $this->rating = $rating;
-        $this->date = $date;
+        $this->status = $status;
+        $this->created_at = $created_at;
+        $this->source = $source;
     }
 }

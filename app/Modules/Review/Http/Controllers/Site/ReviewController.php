@@ -9,6 +9,8 @@
 namespace App\Modules\Review\Http\Controllers\Site;
 
 use App\Modules\Review\Actions\Site\ReviewBreakDownAction;
+use App\Modules\Review\Data\Site\ReviewRead;
+use App\Modules\Review\Values\ReviewBreakDown;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
 use App\Models\Exceptions\ParameterInvalidException;
@@ -30,14 +32,8 @@ class ReviewController extends Controller
      */
     public function read(ReviewReadRequest $request): JsonResponse
     {
-        $action = app(ReviewReadAction::class);
-        $action->school_id = $request->get('school_id');
-        $action->sorts = $request->get('sorts');
-        $action->offset = $request->get('offset');
-        $action->limit = $request->get('limit');
-        $action->link = $request->get('link');
-        $action->rating = $request->get('rating');
-
+        $data = ReviewRead::from($request->all());
+        $action = new ReviewReadAction($data);
         $data = $action->run();
 
         $data['success'] = true;
@@ -55,13 +51,19 @@ class ReviewController extends Controller
      */
     public function breakDown(int $schoolId): JsonResponse
     {
-        $action = app(ReviewBreakDownAction::class);
-        $action->school_id = $schoolId;
-
+        $action = new ReviewBreakDownAction($schoolId);
         $data = $action->run();
 
         return response()->json([
-            'data' => $data,
+            'data' => collect($data)->map(function ($item) {
+                /**
+                 * @var ReviewBreakDown $item
+                 */
+                return [
+                    'rating' => $item->getRating(),
+                    'amount' => $item->getAmount(),
+                ];
+            }),
             'success' => true,
         ]);
     }

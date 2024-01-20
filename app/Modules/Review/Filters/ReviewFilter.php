@@ -25,10 +25,10 @@ class ReviewFilter extends ModelFilter
      */
     public $relations = [
         'school' => [
-            'school-id'  => 'schoolId',
+            'school-id' => 'schoolId',
         ],
         'course' => [
-            'course-Id'  => 'courseId',
+            'course-Id' => 'courseId',
         ]
     ];
 
@@ -39,7 +39,7 @@ class ReviewFilter extends ModelFilter
      *
      * @return ReviewFilter Правила поиска.
      */
-    public function id(int|string $id): ReviewFilter
+    public function id(int|string $id): self
     {
         return $this->where('reviews.id', $id);
     }
@@ -51,7 +51,7 @@ class ReviewFilter extends ModelFilter
      *
      * @return ReviewFilter Правила поиска.
      */
-    public function schoolId(array|int|string $schoolIds): ReviewFilter
+    public function schoolId(array|int|string $schoolIds): self
     {
         return $this->whereIn('school_id', is_array($schoolIds) ? $schoolIds : [$schoolIds]);
     }
@@ -63,7 +63,7 @@ class ReviewFilter extends ModelFilter
      *
      * @return ReviewFilter Правила поиска.
      */
-    public function courseId(array|int|string $courseIds): ReviewFilter
+    public function courseId(array|int|string $courseIds): self
     {
         return $this->whereIn('course_id', is_array($courseIds) ? $courseIds : [$courseIds]);
     }
@@ -75,7 +75,7 @@ class ReviewFilter extends ModelFilter
      *
      * @return ReviewFilter Правила поиска.
      */
-    public function name(string $query): ReviewFilter
+    public function name(string $query): self
     {
         return $this->whereLike('reviews.name', $query);
     }
@@ -87,7 +87,7 @@ class ReviewFilter extends ModelFilter
      *
      * @return ReviewFilter Правила поиска.
      */
-    public function title(string $query): ReviewFilter
+    public function title(string $query): self
     {
         return $this->whereLike('reviews.title', $query);
     }
@@ -99,7 +99,7 @@ class ReviewFilter extends ModelFilter
      *
      * @return ReviewFilter Правила поиска.
      */
-    public function review(string $query): ReviewFilter
+    public function review(string $query): self
     {
         return $this->whereLike('reviews.review', $query);
     }
@@ -111,7 +111,7 @@ class ReviewFilter extends ModelFilter
      *
      * @return ReviewFilter Правила поиска.
      */
-    public function advantages(string $query): ReviewFilter
+    public function advantages(string $query): self
     {
         return $this->whereLike('reviews.advantages', $query);
     }
@@ -123,7 +123,7 @@ class ReviewFilter extends ModelFilter
      *
      * @return ReviewFilter Правила поиска.
      */
-    public function disadvantages(string $query): ReviewFilter
+    public function disadvantages(string $query): self
     {
         return $this->whereLike('reviews.disadvantages', $query);
     }
@@ -135,7 +135,7 @@ class ReviewFilter extends ModelFilter
      *
      * @return ReviewFilter Правила поиска.
      */
-    public function rating(int $rating): ReviewFilter
+    public function rating(int $rating): self
     {
         return $this->where('reviews.rating', $rating);
     }
@@ -147,7 +147,7 @@ class ReviewFilter extends ModelFilter
      *
      * @return ReviewFilter Правила поиска.
      */
-    public function createdAt(array $dates): ReviewFilter
+    public function createdAt(array $dates): self
     {
         $dates = [
             Carbon::createFromFormat('Y-m-d O', $dates[0])->startOfDay()->setTimezone(Config::get('app.timezone')),
@@ -160,11 +160,11 @@ class ReviewFilter extends ModelFilter
     /**
      * Поиск по статусу.
      *
-     * @param Status[]|Status|string[]|string  $statuses Статусы.
+     * @param Status[]|Status|string[]|string $statuses Статусы.
      *
      * @return ReviewFilter Правила поиска.
      */
-    public function status(array|Status|string $statuses): ReviewFilter
+    public function status(array|Status|string $statuses): self
     {
         return $this->whereIn('reviews.status', is_array($statuses) ? $statuses : [$statuses]);
     }

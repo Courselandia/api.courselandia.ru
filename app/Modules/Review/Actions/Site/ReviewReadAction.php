@@ -8,10 +8,10 @@
 
 namespace App\Modules\Review\Actions\Site;
 
+use App\Modules\Review\Data\Site\ReviewRead;
 use Cache;
 use Util;
 use App\Models\Action;
-use App\Models\Entity;
 use App\Models\Enums\CacheTime;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Review\Entities\Review as ReviewEntity;
@@ -24,46 +24,19 @@ use App\Modules\Review\Models\Review;
 class ReviewReadAction extends Action
 {
     /**
-     * Начать выборку.
+     * Данные для чтения отзывов.
      *
-     * @var int|null
+     * @var ReviewRead
      */
-    public ?int $offset = null;
+    private ReviewRead $data;
 
     /**
-     * Лимит выборки выборку.
-     *
-     * @var int|null
+     * @param ReviewRead $data Данные для чтения отзывов.
      */
-    public ?int $limit = null;
-
-    /**
-     * Сортировка данных.
-     *
-     * @var array|null
-     */
-    public ?array $sorts = null;
-
-    /**
-     * ID школа.
-     *
-     * @var int|null
-     */
-    public ?int $school_id = null;
-
-    /**
-     * Ссылка на школу.
-     *
-     * @var string|null
-     */
-    public ?string $link = null;
-
-    /**
-     * Рейтинг для фильтрации.
-     *
-     * @var int|null
-     */
-    public ?int $rating = null;
+    public function __construct(ReviewRead $data)
+    {
+        $this->data = $data;
+    }
 
     /**
      * Метод запуска логики.
@@ -78,12 +51,12 @@ class ReviewReadAction extends Action
             'site',
             'read',
             'count',
-            $this->sorts,
-            $this->offset,
-            $this->limit,
-            $this->school_id,
-            $this->link,
-            $this->rating,
+            $this->data->sorts,
+            $this->data->offset,
+            $this->data->limit,
+            $this->data->school_id,
+            $this->data->link,
+            $this->data->rating,
             'school',
         );
 
@@ -95,36 +68,36 @@ class ReviewReadAction extends Action
                     ->whereHas('school', function ($query) {
                         $query->where('schools.status', true);
 
-                        if ($this->link) {
-                            $query->where('schools.link', $this->link);
+                        if ($this->data->link) {
+                            $query->where('schools.link', $this->data->link);
                         }
                     })
                     ->with('school');
 
-                if ($this->school_id) {
-                    $query->where('school_id', $this->school_id);
+                if ($this->data->school_id) {
+                    $query->where('school_id', $this->data->school_id);
                 }
 
-                if ($this->rating) {
-                    $query->where('rating', $this->rating);
+                if ($this->data->rating) {
+                    $query->where('rating', $this->data->rating);
                 }
 
                 $queryCount = $query->clone();
 
-                $query->sorted($this->sorts ?: []);
+                $query->sorted($this->data->sorts ?: []);
 
-                if ($this->offset) {
-                    $query->offset($this->offset);
+                if ($this->data->offset) {
+                    $query->offset($this->data->offset);
                 }
 
-                if ($this->limit) {
-                    $query->limit($this->limit);
+                if ($this->data->limit) {
+                    $query->limit($this->data->limit);
                 }
 
                 $items = $query->get()->toArray();
 
                 return [
-                    'data' => Entity::toEntities($items, new ReviewEntity()),
+                    'data' => ReviewEntity::collection($items),
                     'total' => $queryCount->count(),
                 ];
             }

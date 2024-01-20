@@ -29,7 +29,7 @@ class ReviewServiceProvider extends ServiceProvider
         $this->registerTranslations();
         $this->registerConfig();
 
-        $this->loadMigrationsFrom(__DIR__.'/../Database/Migrations');
+        $this->loadMigrationsFrom(__DIR__ . '/../Database/Migrations');
 
         ReviewModel::observe(ReviewListener::class);
     }
@@ -54,10 +54,10 @@ class ReviewServiceProvider extends ServiceProvider
     protected function registerConfig(): void
     {
         $this->publishes([
-            __DIR__.'/../Config/config.php' => config_path('review.php'),
+            __DIR__ . '/../Config/config.php' => config_path('review.php'),
         ]);
         $this->mergeConfigFrom(
-            __DIR__.'/../Config/config.php',
+            __DIR__ . '/../Config/config.php',
             'review'
         );
     }
@@ -71,7 +71,7 @@ class ReviewServiceProvider extends ServiceProvider
     {
         $viewPath = base_path('resources/views/modules/review');
 
-        $sourcePath = __DIR__.'/../Resources/views';
+        $sourcePath = __DIR__ . '/../Resources/views';
 
         $this->publishes([
             $sourcePath => $viewPath
@@ -80,7 +80,7 @@ class ReviewServiceProvider extends ServiceProvider
         $this->loadViewsFrom(
             array_merge(
                 array_map(function ($path) {
-                    return $path.'/modules/review';
+                    return $path . '/modules/review';
                 }, Config::get('view.paths')),
                 [$sourcePath]
             ),
@@ -100,7 +100,7 @@ class ReviewServiceProvider extends ServiceProvider
         if (is_dir($langPath)) {
             $this->loadTranslationsFrom($langPath, 'review');
         } else {
-            $this->loadTranslationsFrom(__DIR__.'/../Resources/lang', 'review');
+            $this->loadTranslationsFrom(__DIR__ . '/../Resources/lang', 'review');
         }
     }
 

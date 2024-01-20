@@ -71,7 +71,7 @@ class Browser
     {
         try {
             return $driver->findElement($by);
-        } catch (Throwable $error) {
+        } catch (Throwable) {
             return null;
         }
     }

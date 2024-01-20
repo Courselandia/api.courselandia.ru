@@ -8,8 +8,7 @@
 
 namespace App\Modules\Course\Entities;
 
-use App\Models\Entities;
-use App\Models\Entity;
+use App\Models\EntityNew;
 use App\Modules\Analyzer\Entities\Analyzer;
 use App\Modules\Course\Enums\Currency;
 use App\Modules\Course\Enums\Duration;
@@ -19,7 +18,6 @@ use App\Modules\Employment\Entities\Employment;
 use App\Modules\Metatag\Entities\Metatag;
 use App\Modules\School\Entities\School;
 use Carbon\Carbon;
-use Illuminate\Http\UploadedFile;
 use App\Modules\Category\Entities\Category;
 use App\Modules\Direction\Entities\Direction;
 use App\Modules\Image\Entities\Image;
@@ -28,11 +26,13 @@ use App\Modules\Skill\Entities\Skill;
 use App\Modules\Teacher\Entities\Teacher;
 use App\Modules\Tool\Entities\Tool;
 use App\Modules\Process\Entities\Process;
+use Spatie\LaravelData\Attributes\DataCollectionOf;
+use Spatie\LaravelData\DataCollection;
 
 /**
  * Сущность для курсов.
  */
-class Course extends Entity
+class Course extends EntityNew
 {
     /**
      * ID записи.
@@ -44,9 +44,9 @@ class Course extends Entity
     /**
      * ID источника курса.
      *
-     * @var string|null
+     * @var ?string
      */
-    public string|null $uuid = null;
+    public ?string $uuid = null;
 
     /**
      * ID метатэгов.
@@ -65,233 +65,233 @@ class Course extends Entity
     /**
      * Маленькое изображение.
      *
-     * @var int|UploadedFile|Image|null
+     * @var ?Image
      */
-    public int|UploadedFile|Image|null $image_small_id = null;
+    public ?Image $image_small_id = null;
 
     /**
      * Среднее изображение.
      *
-     * @var int|UploadedFile|Image|null
+     * @var ?Image
      */
-    public int|UploadedFile|Image|null $image_middle_id = null;
+    public ?Image $image_middle_id = null;
 
     /**
      * Большое изображение.
      *
-     * @var int|UploadedFile|Image|null
+     * @var ?Image
      */
-    public int|UploadedFile|Image|null $image_big_id = null;
+    public ?Image $image_big_id = null;
 
     /**
      * Название.
      *
-     * @var string|null
+     * @var ?string
      */
-    public string|null $name = null;
+    public ?string $name = null;
 
     /**
      * Заголовок.
      *
-     * @var string|null
+     * @var ?string
      */
-    public string|null $header = null;
+    public ?string $header = null;
 
     /**
      * Шаблон заголовка.
      *
-     * @var string|null
+     * @var ?string
      */
-    public string|null $header_template = null;
+    public ?string $header_template = null;
 
     /**
      * Описание.
      *
-     * @var string|null
+     * @var ?string
      */
-    public string|null $text = null;
+    public ?string $text = null;
 
     /**
      * Заголовок морфологизированное.
      *
-     * @var string|null
+     * @var ?string
      */
-    public string|null $name_morphy = null;
+    public ?string $name_morphy = null;
 
     /**
      * Описание морфологизированное.
      *
-     * @var string|null
+     * @var ?string
      */
-    public string|null $text_morphy = null;
+    public ?string $text_morphy = null;
 
     /**
      * Ссылка.
      *
-     * @var string|null
+     * @var ?string
      */
-    public string|null $link = null;
+    public ?string $link = null;
 
     /**
      * URL на курс.
      *
-     * @var string|null
+     * @var ?string
      */
-    public string|null $url = null;
+    public ?string $url = null;
 
     /**
      * Язык курса.
      *
-     * @var Language|null
+     * @var ?Language
      */
-    public Language|null $language = null;
+    public ?Language $language = null;
 
     /**
      * Рейтинг.
      *
-     * @var float|null
+     * @var ?float
      */
-    public float|null $rating = null;
+    public ?float $rating = null;
 
     /**
      * Цена.
      *
-     * @var float|null
+     * @var ?float
      */
-    public float|null $price = null;
+    public ?float $price = null;
 
     /**
      * Старая цена.
      *
-     * @var float|null
+     * @var ?float
      */
-    public float|null $price_old = null;
+    public ?float $price_old = null;
 
     /**
      * Цена по кредиту.
      *
-     * @var float|null
+     * @var ?float
      */
-    public float|null $price_recurrent = null;
+    public ?float $price_recurrent = null;
 
     /**
      * Валюта.
      *
-     * @var Currency|null
+     * @var ?Currency
      */
-    public Currency|null $currency = null;
+    public ?Currency $currency = null;
 
     /**
      * Онлайн статус.
      *
-     * @var bool|null
+     * @var ?bool
      */
-    public bool|null $online = null;
+    public ?bool $online = null;
 
     /**
      * С трудоустройством.
      *
-     * @var bool|null
+     * @var ?bool
      */
-    public bool|null $employment = null;
+    public ?bool $employment = null;
 
     /**
      * Продолжительность.
      *
-     * @var int|null
+     * @var ?int
      */
-    public int|null $duration = null;
+    public ?int $duration = null;
 
     /**
      * Рейт продолжительность.
      *
-     * @var float|null
+     * @var ?float
      */
-    public float|null $duration_rate = null;
+    public ?float $duration_rate = null;
 
     /**
      * Единица измерения продолжительности.
      *
-     * @var Duration|null
+     * @var ?Duration
      */
-    public Duration|null $duration_unit = null;
+    public ?Duration $duration_unit = null;
 
     /**
      * Количество уроков.
      *
-     * @var int|null
+     * @var ?int
      */
-    public int|null $lessons_amount = null;
+    public ?int $lessons_amount = null;
 
     /**
      * Количество модулей.
      *
-     * @var int|null
+     * @var ?int
      */
-    public int|null $modules_amount = null;
+    public ?int $modules_amount = null;
 
     /**
      * Программа курса.
      *
-     * @var array|null
+     * @var ?array
      */
-    public array|null $program = null;
+    public ?array $program = null;
 
     /**
      * Активные направления.
      *
-     * @var array|null
+     * @var ?array
      */
-    public array|null $direction_ids = null;
+    public ?array $direction_ids = null;
 
     /**
      * Активные профессии.
      *
-     * @var array|null
+     * @var ?array
      */
-    public array|null $profession_ids = null;
+    public ?array $profession_ids = null;
 
     /**
      * Активные категории.
      *
-     * @var array|null
+     * @var ?array
      */
-    public array|null $category_ids = null;
+    public ?array $category_ids = null;
 
     /**
      * Активные навыки.
      *
-     * @var array|null
+     * @var ?array
      */
-    public array|null $skill_ids = null;
+    public ?array $skill_ids = null;
 
     /**
      * Активные учителя.
      *
-     * @var array|null
+     * @var ?array
      */
-    public array|null $teacher_ids = null;
+    public ?array $teacher_ids = null;
 
     /**
      * Активные инструменты.
      *
-     * @var array|null
+     * @var ?array
      */
-    public array|null $tool_ids = null;
+    public ?array $tool_ids = null;
 
     /**
      * Активные уровни.
      *
-     * @var array|null
+     * @var ?array
      */
-    public array|null $level_values = null;
+    public ?array $level_values = null;
 
     /**
      * Признак если активная школа.
      *
-     * @var bool|null
+     * @var ?bool
      */
-    public bool|null $has_active_school = null;
+    public ?bool $has_active_school = null;
 
     /**
      * Дата создания.
@@ -317,117 +317,117 @@ class Course extends Entity
     /**
      * Статус.
      *
-     * @var Status|null
+     * @var ?Status
      */
-    public Status|null $status = null;
+    public ?Status $status = null;
 
     /**
      * Метатеги.
      *
-     * @var Metatag|null
+     * @var ?Metatag
      */
     public ?Metatag $metatag = null;
 
     /**
      * Школа.
      *
-     * @var School|null
+     * @var ?School
      */
     public ?School $school = null;
 
     /**
      * Направления.
      *
-     * @var Direction[]
+     * @var ?DataCollection
      */
-    #[Entities(Direction::class)]
-    public ?array $directions = null;
+    #[DataCollectionOf(Direction::class)]
+    public ?DataCollection $directions = null;
 
     /**
      * Профессии.
      *
-     * @var Profession[]
+     * @var ?DataCollection
      */
-    #[Entities(Profession::class)]
-    public ?array $professions = null;
+    #[DataCollectionOf(Profession::class)]
+    public ?DataCollection $professions = null;
 
     /**
      * Категории.
      *
-     * @var Category[]
+     * @var ?DataCollection
      */
-    #[Entities(Category::class)]
-    public ?array $categories = null;
+    #[DataCollectionOf(Category::class)]
+    public ?DataCollection $categories = null;
 
     /**
      * Навыки.
      *
-     * @var Skill[]
+     * @var ?DataCollection
      */
-    #[Entities(Skill::class)]
-    public ?array $skills = null;
+    #[DataCollectionOf(Skill::class)]
+    public ?DataCollection $skills = null;
 
     /**
      * Учителя.
      *
-     * @var Teacher[]
+     * @var ?DataCollection
      */
-    #[Entities(Teacher::class)]
-    public ?array $teachers = null;
+    #[DataCollectionOf(Teacher::class)]
+    public ?DataCollection $teachers = null;
 
     /**
      * Инструменты.
      *
-     * @var Tool[]
+     * @var ?DataCollection
      */
-    #[Entities(Tool::class)]
-    public ?array $tools = null;
+    #[DataCollectionOf(Tool::class)]
+    public ?DataCollection $tools = null;
 
     /**
      * Как проходит обучение.
      *
-     * @var Process[]
+     * @var ?DataCollection
      */
-    #[Entities(Process::class)]
-    public ?array $processes = null;
+    #[DataCollectionOf(Process::class)]
+    public ?DataCollection $processes = null;
 
     /**
      * Уровни.
      *
-     * @var CourseLevel[]
+     * @var ?DataCollection
      */
-    #[Entities(CourseLevel::class)]
-    public ?array $levels = null;
+    #[DataCollectionOf(CourseLevel::class)]
+    public ?DataCollection $levels = null;
 
     /**
      * Чему научитесь на курсе.
      *
-     * @var CourseLearn[]
+     * @var ?DataCollection
      */
-    #[Entities(CourseLearn::class)]
-    public ?array $learns = null;
+    #[DataCollectionOf(CourseLearn::class)]
+    public ?DataCollection $learns = null;
 
     /**
      * Трудоустройство.
      *
-     * @var Employment[]
+     * @var ?DataCollection
      */
-    #[Entities(Employment::class)]
-    public ?array $employments = null;
+    #[DataCollectionOf(Employment::class)]
+    public ?DataCollection $employments = null;
 
     /**
      * Особенностей курсов.
      *
-     * @var CourseFeature[]
+     * @var ?DataCollection
      */
-    #[Entities(CourseFeature::class)]
-    public ?array $features = null;
+    #[DataCollectionOf(CourseFeature::class)]
+    public ?DataCollection $features = null;
 
     /**
      * Анализ хранения текстов.
      *
-     * @var Analyzer[]
+     * @var ?DataCollection
      */
-    #[Entities(Analyzer::class)]
-    public ?array $analyzers = null;
+    #[DataCollectionOf(Analyzer::class)]
+    public ?DataCollection $analyzers = null;
 }

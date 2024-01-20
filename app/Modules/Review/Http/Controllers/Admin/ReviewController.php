@@ -8,6 +8,8 @@
 
 namespace App\Modules\Review\Http\Controllers\Admin;
 
+use App\Modules\Review\Data\Admin\ReviewCreate;
+use App\Modules\Review\Data\Admin\ReviewUpdate;
 use Config;
 use App\Modules\Review\Enums\Status;
 use App\Modules\Review\Http\Requests\Admin\ReviewCreateRequest;
@@ -40,12 +42,10 @@ class ReviewController extends Controller
      * @param int|string $id ID отзывов.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException
      */
     public function get(int|string $id): JsonResponse
     {
-        $action = app(ReviewGetAction::class);
-        $action->id = $id;
+        $action = new ReviewGetAction($id);
         $data = $action->run();
 
         if ($data) {
@@ -75,11 +75,12 @@ class ReviewController extends Controller
      */
     public function read(ReviewReadRequest $request): JsonResponse
     {
-        $action = app(ReviewReadAction::class);
-        $action->sorts = $request->get('sorts');
-        $action->filters = $request->get('filters');
-        $action->offset = $request->get('offset');
-        $action->limit = $request->get('limit');
+        $action = new ReviewReadAction(
+            $request->get('sorts'),
+            $request->get('filters'),
+            $request->get('offset'),
+            $request->get('limit')
+        );
 
         $data = $action->run();
 
@@ -94,26 +95,20 @@ class ReviewController extends Controller
      * @param ReviewCreateRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException
      */
     public function create(ReviewCreateRequest $request): JsonResponse
     {
         try {
-            $action = app(ReviewCreateAction::class);
-            $action->school_id = $request->get('school_id');
-            $action->course_id = $request->get('course_id');
-            $action->source = $request->get('source');
-            $action->name = $request->get('name');
-            $action->review = $request->get('review');
-            $action->advantages = $request->get('advantages');
-            $action->disadvantages = $request->get('disadvantages');
-            $action->rating = $request->get('rating');
-            $action->status = Status::from($request->get('status'));
-            $action->created_at = Carbon::createFromFormat(
-                'Y-m-d H:i:s O',
-                $request->get('created_at')
-            )->setTimezone(Config::get('app.timezone'));
+            $data = ReviewCreate::from([
+                ...$request->all(),
+                'status' => Status::from($request->get('status')),
+                'created_at' => Carbon::createFromFormat(
+                    'Y-m-d H:i:s O',
+                    $request->get('created_at')
+                )->setTimezone(Config::get('app.timezone'))
+            ]);
 
+            $action = new ReviewCreateAction($data);
             $data = $action->run();
 
             Log::info(
@@ -146,28 +141,21 @@ class ReviewController extends Controller
      * @param ReviewUpdateRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException
      */
     public function update(int|string $id, ReviewUpdateRequest $request): JsonResponse
     {
         try {
-            $action = app(ReviewUpdateAction::class);
-            $action->id = $id;
-            $action->school_id = $request->get('school_id');
-            $action->course_id = $request->get('course_id');
-            $action->source = $request->get('source');
-            $action->name = $request->get('name');
-            $action->title = $request->get('title');
-            $action->review = $request->get('review');
-            $action->advantages = $request->get('advantages');
-            $action->disadvantages = $request->get('disadvantages');
-            $action->rating = $request->get('rating');
-            $action->status = Status::from($request->get('status'));
-            $action->created_at = Carbon::createFromFormat(
-                'Y-m-d H:i:s O',
-                $request->get('created_at')
-            )->setTimezone(Config::get('app.timezone'));
+            $data = ReviewUpdate::from([
+                'id' => $id,
+                ...$request->all(),
+                'status' => Status::from($request->get('status')),
+                'created_at' => Carbon::createFromFormat(
+                    'Y-m-d H:i:s O',
+                    $request->get('created_at')
+                )->setTimezone(Config::get('app.timezone'))
+            ]);
 
+            $action = new ReviewUpdateAction($data);
             $data = $action->run();
 
             Log::info(
@@ -207,8 +195,7 @@ class ReviewController extends Controller
      */
     public function destroy(ReviewDestroyRequest $request): JsonResponse
     {
-        $action = app(ReviewDestroyAction::class);
-        $action->ids = $request->get('ids');
+        $action = new ReviewDestroyAction($request->get('ids'));
         $action->run();
 
         Log::info(

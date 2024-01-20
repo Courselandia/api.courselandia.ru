@@ -8,16 +8,15 @@
 
 namespace App\Modules\Review\Actions\Site;
 
-use App\Models\Entity;
-use App\Modules\Review\Enums\Status;
+use Cache;
 use DB;
 use Util;
-use Cache;
-use App\Models\Enums\CacheTime;
-use App\Modules\Review\Entities\ReviewBreakDown;
 use App\Models\Action;
+use App\Models\Enums\CacheTime;
 use App\Models\Exceptions\ParameterInvalidException;
+use App\Modules\Review\Enums\Status;
 use App\Modules\Review\Models\Review;
+use App\Modules\Review\Values\ReviewBreakDown;
 
 /**
  * Класс действия для получения разбивки по рейтингу.
@@ -25,11 +24,16 @@ use App\Modules\Review\Models\Review;
 class ReviewBreakDownAction extends Action
 {
     /**
-     * ID школа.
+     * ID школы.
      *
-     * @var int|null
+     * @var int
      */
-    public ?int $school_id = null;
+    private int $school_id;
+
+    public function __construct(int $school_id)
+    {
+        $this->school_id = $school_id;
+    }
 
     /**
      * Метод запуска логики.
@@ -57,7 +61,9 @@ class ReviewBreakDownAction extends Action
                     ->groupBy('rating')
                     ->get();
 
-                return Entity::toEntities($reviews->toArray(), new ReviewBreakDown());
+                return $reviews->map(function ($item) {
+                    return new ReviewBreakDown($item->rating, $item->amount);
+                })->toArray();
             }
         );
     }

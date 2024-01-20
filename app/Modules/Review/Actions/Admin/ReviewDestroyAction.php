@@ -18,11 +18,19 @@ use Cache;
 class ReviewDestroyAction extends Action
 {
     /**
-     * Массив ID пользователей.
+     * Массив ID отзывов.
      *
      * @var int[]|string[]
      */
-    public ?array $ids = null;
+    private array $ids;
+
+    /**
+     * @param int[]|string[] $ids Массив ID отзывов.
+     */
+    public function __construct(array $ids)
+    {
+        $this->ids = $ids;
+    }
 
     /**
      * Метод запуска логики.

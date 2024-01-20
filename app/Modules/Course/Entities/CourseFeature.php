@@ -8,12 +8,12 @@
 
 namespace App\Modules\Course\Entities;
 
-use App\Models\Entity;
+use App\Models\EntityNew;
 
 /**
  * Сущность для особенностей курсов.
  */
-class CourseFeature extends Entity
+class CourseFeature extends EntityNew
 {
     /**
      * ID записи.
@@ -42,4 +42,23 @@ class CourseFeature extends Entity
      * @var string|null
      */
     public ?string $icon = null;
+
+    /**
+     * @param int|string|null $id ID записи.
+     * @param int|string|null $course_id ID курса.
+     * @param string|null $text Текст.
+     * @param string|null $icon Иконка.
+     */
+    public function __construct(
+        int|string|null $id = null,
+        int|string|null $course_id = null,
+        ?string         $text = null,
+        ?string         $icon = null
+    )
+    {
+        $this->id = $id;
+        $this->course_id = $course_id;
+        $this->text = $text;
+        $this->icon = $icon;
+    }
 }

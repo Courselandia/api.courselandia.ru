@@ -10,7 +10,6 @@ namespace App\Modules\Review\Actions\Admin;
 
 use App\Models\Action;
 use App\Models\Enums\CacheTime;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Review\Entities\Review as ReviewEntity;
 use App\Modules\Review\Models\Review;
 use Cache;
@@ -22,17 +21,24 @@ use Util;
 class ReviewGetAction extends Action
 {
     /**
-     * ID отзывов.
+     * ID отзыва.
      *
-     * @var int|string|null
+     * @var int|string
      */
-    public int|string|null $id = null;
+    private int|string $id;
+
+    /**
+     * @param int|string $id ID отзыва.
+     */
+    public function __construct(int|string $id)
+    {
+        $this->id = $id;
+    }
 
     /**
      * Метод запуска логики.
      *
      * @return ReviewEntity|null Вернет результаты исполнения.
-     * @throws ParameterInvalidException
      */
     public function run(): ?ReviewEntity
     {
@@ -48,7 +54,7 @@ class ReviewGetAction extends Action
                         'course',
                     ])->first();
 
-                return $review ? new ReviewEntity($review->toArray()) : null;
+                return $review ? ReviewEntity::from($review->toArray()) : null;
             }
         );
     }
