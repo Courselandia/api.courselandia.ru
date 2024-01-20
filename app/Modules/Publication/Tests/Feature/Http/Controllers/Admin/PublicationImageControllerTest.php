@@ -31,12 +31,12 @@ class PublicationImageControllerTest extends TestCase
 
         $this->json(
             'PUT',
-            'api/private/admin/publication/update/image/'.$publication['id'],
+            'api/private/admin/publication/update/image/' . $publication['id'],
             [
                 'image' => UploadedFile::fake()->image('me.jpg', 1000, 1000),
             ],
             [
-                'Authorization' => 'Bearer '.$this->getAdminToken()
+                'Authorization' => 'Bearer ' . $this->getAdminToken()
             ]
         )->assertStatus(200)->assertJsonStructure([
             'success',
@@ -55,12 +55,12 @@ class PublicationImageControllerTest extends TestCase
 
         $this->json(
             'PUT',
-            'api/private/admin/publication/update/image/'.$publication['id'],
+            'api/private/admin/publication/update/image/' . $publication['id'],
             [
                 'image' => UploadedFile::fake()->image('me.mp4'),
             ],
             [
-                'Authorization' => 'Bearer '.$this->getAdminToken()
+                'Authorization' => 'Bearer ' . $this->getAdminToken()
             ]
         )->assertStatus(400)->assertJsonStructure([
             'success',
@@ -82,7 +82,7 @@ class PublicationImageControllerTest extends TestCase
                 'image' => UploadedFile::fake()->image('me.jpg', 1000, 1000),
             ],
             [
-                'Authorization' => 'Bearer '.$this->getAdminToken()
+                'Authorization' => 'Bearer ' . $this->getAdminToken()
             ]
         )->assertStatus(404)->assertJsonStructure([
             'success',
@@ -101,11 +101,11 @@ class PublicationImageControllerTest extends TestCase
 
         $this->json(
             'DELETE',
-            'api/private/admin/publication/destroy/image/'.$publication->id,
+            'api/private/admin/publication/destroy/image/' . $publication->id,
             [
             ],
             [
-                'Authorization' => 'Bearer '.$this->getAdminToken()
+                'Authorization' => 'Bearer ' . $this->getAdminToken()
             ]
         )->assertStatus(200)->assertJsonStructure([
             'success',
@@ -125,7 +125,7 @@ class PublicationImageControllerTest extends TestCase
             [
             ],
             [
-                'Authorization' => 'Bearer '.$this->getAdminToken()
+                'Authorization' => 'Bearer ' . $this->getAdminToken()
             ]
         )->assertStatus(404)->assertJsonStructure([
             'success',
@@ -136,7 +136,7 @@ class PublicationImageControllerTest extends TestCase
     /**
      * Получить структуру данных публикации.
      *
-     * @param  bool  $image  Добавить структуру данных изображения.
+     * @param bool $image Добавить структуру данных изображения.
      *
      * @return array Массив структуры данных публикации.
      */

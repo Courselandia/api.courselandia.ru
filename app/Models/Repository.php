@@ -77,9 +77,12 @@ class Repository
      */
     public function getEntity(array $params): EntityNew
     {
+        /**
+         * @var EntityNew $nameClass
+         */
         $nameClass = $this->entity;
 
-        return $nameClass($params);
+        return $nameClass::from($params);
     }
 
     /**

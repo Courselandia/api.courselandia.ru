@@ -10,7 +10,6 @@ namespace App\Modules\Publication\Images;
 
 use Size;
 use ImageStore;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Image\Entities\Image as ImageEntity;
 use App\Modules\Image\Helpers\Image;
 use CodeBuds\WebPConverter\WebPConverter;
@@ -51,7 +50,6 @@ class ImageMiddle implements CastsAttributes
      * @param array $attributes Атрибуты.
      *
      * @return null|int|string ID запись изображения.
-     * @throws ParameterInvalidException
      */
     public function set($model, string $key, mixed $value, array $attributes): null|int|string
     {

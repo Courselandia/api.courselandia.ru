@@ -9,9 +9,10 @@
 namespace App\Modules\Publication\Decorators\Site;
 
 use App\Models\Decorator;
+use App\Modules\Publication\Data\Decorators\PublicationRead as PublicationReadData;
 use App\Modules\Publication\Entities\Publication;
 use App\Modules\Publication\Entities\PublicationList;
-use App\Modules\Publication\Entities\PublicationRead;
+use App\Modules\Publication\Data\Decorators\PublicationRead;
 use Illuminate\Pipeline\Pipeline;
 
 /**
@@ -20,57 +21,44 @@ use Illuminate\Pipeline\Pipeline;
 class PublicationReadDecorator extends Decorator
 {
     /**
-     * Год.
+     * Данные для декоратора для чтения публикаций.
      *
-     * @var int|null
+     * @var PublicationRead
      */
-    public ?int $year = null;
+    private PublicationRead $data;
 
     /**
-     * Лимит.
-     *
-     * @var int|null
+     * @param PublicationRead $data Данные для декоратора для чтения публикаций.
      */
-    public ?int $limit = null;
-
-    /**
-     * Отступ.
-     *
-     * @var int|null
-     */
-    public ?int $offset = null;
-
-    /**
-     * ID публикации.
-     *
-     * @var int|string|null
-     */
-    public int|string|null $id = null;
-
-    /**
-     * Ссылка.
-     *
-     * @var string|null
-     */
-    public ?string $link = null;
+    public function __construct(PublicationRead $data)
+    {
+        $this->data = $data;
+    }
 
     /**
      * Метод обработчик события после выполнения всех действий декоратора.
      *
-     * @return PublicationList|Publication|null Вернет массив данных при выполнении действия.
+     * @return PublicationList|Publication|null Вернет сущность результата исполнения.
      */
     public function run(): PublicationList|Publication|null
     {
-        $publicationRead = new PublicationRead();
-        $publicationRead->year = $this->year;
-        $publicationRead->limit = $this->limit;
-        $publicationRead->offset = $this->offset;
-        $publicationRead->id = $this->id;
-        $publicationRead->link = $this->link;
-
-        return app(Pipeline::class)
-            ->send($publicationRead)
+        $data = app(Pipeline::class)
+            ->send($this->data)
             ->through($this->getActions())
             ->thenReturn();
+
+        if ($this->data->id || $this->data->link) {
+            /**
+             * @var PublicationReadData $data
+             */
+            return $data->publication ? Publication::from($data->publication->toArray()) : null;
+        } else {
+            return PublicationList::from([
+                'publications' => $data->publications,
+                'year' => $data->year,
+                'years' => $data->years,
+                'total' => $data->total,
+            ]);
+        }
     }
 }

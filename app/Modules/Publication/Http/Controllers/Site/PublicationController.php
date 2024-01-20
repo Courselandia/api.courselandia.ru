@@ -8,11 +8,13 @@
 
 namespace App\Modules\Publication\Http\Controllers\Site;
 
+use App\Modules\Publication\Values\PublicationYear;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Routing\Controller;
 use App\Modules\Publication\Actions\Site\PublicationReadAction;
 use App\Modules\Publication\Http\Requests\Site\PublicationGetRequest;
 use App\Modules\Publication\Http\Requests\Site\PublicationReadRequest;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Routing\Controller;
+use App\Modules\Publication\Data\Actions\Site\PublicationRead;
 
 /**
  * Класс контроллер для работы с публикациями.
@@ -22,22 +24,33 @@ class PublicationController extends Controller
     /**
      * Чтение публикаций.
      *
-     * @param  PublicationReadRequest  $request  Запрос.
+     * @param PublicationReadRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
      */
     public function read(PublicationReadRequest $request): JsonResponse
     {
-        $action = app(PublicationReadAction::class);
-        $action->year = $request->get('year');
-        $action->limit = $request->get('limit');
-        $action->offset = $request->get('offset');
-        $action->offset = $request->get('offset');
+        $action = new PublicationReadAction(PublicationRead::from([
+            'year' => $request->get('year'),
+            'limit' => $request->get('limit'),
+            'offset' => $request->get('offset'),
+        ]));
 
         $data = $action->run();
 
         $data = [
-            'data' => $data,
+            'data' => [
+                ...$data->toArray(),
+                'years' => collect($data->years)->map(function ($year) {
+                    /**
+                     * @var PublicationYear $year
+                     */
+                    return [
+                        'year' => $year->getYear(),
+                        'current' => $year->getCurrent(),
+                    ];
+                })
+            ],
             'success' => true
         ];
 
@@ -47,16 +60,16 @@ class PublicationController extends Controller
     /**
      * Получение публикаций.
      *
-     * @param  PublicationGetRequest  $request  Запрос.
+     * @param PublicationGetRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
      */
     public function get(PublicationGetRequest $request): JsonResponse
     {
-        $action = app(PublicationReadAction::class);
-        $action->id = $request->get('id');
-        $action->link = $request->get('link');
-
+        $action = new PublicationReadAction(PublicationRead::from([
+            'id' => $request->get('id'),
+            'link' => $request->get('link'),
+        ]));
         $data = $action->run();
 
         if ($data) {

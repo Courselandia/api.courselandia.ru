@@ -8,17 +8,15 @@
 
 namespace App\Modules\Publication\Actions\Admin\Publication;
 
-use Typography;
 use App\Models\Action;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
-use App\Modules\Image\Entities\Image;
 use App\Modules\Metatag\Actions\MetatagSetAction;
+use App\Modules\Metatag\Data\MetatagSet;
+use App\Modules\Publication\Data\Actions\Admin\PublicationUpdate;
 use App\Modules\Publication\Entities\Publication as PublicationEntity;
 use App\Modules\Publication\Models\Publication;
 use Cache;
-use Carbon\Carbon;
-use Illuminate\Http\UploadedFile;
+use Typography;
 
 /**
  * Класс действия для обновления публикаций.
@@ -26,121 +24,62 @@ use Illuminate\Http\UploadedFile;
 class PublicationUpdateAction extends Action
 {
     /**
-     * ID публикации.
+     * Данные для обновления публикации.
      *
-     * @var int|string|null
+     * @var PublicationUpdate
      */
-    public int|string|null $id = null;
+    private PublicationUpdate $data;
 
     /**
-     * Дата добавления.
-     *
-     * @var ?Carbon
+     * @param PublicationUpdate $data Данные для обновления публикации.
      */
-    public ?Carbon $published_at = null;
-
-    /**
-     * Заголовок.
-     *
-     * @var string|null
-     */
-    public ?string $header = null;
-
-    /**
-     * Ссылка.
-     *
-     * @var string|null
-     */
-    public ?string $link = null;
-
-    /**
-     * Анонс.
-     *
-     * @var string|null
-     */
-    public ?string $anons = null;
-
-    /**
-     * Статья.
-     *
-     * @var string|null
-     */
-    public ?string $article = null;
-
-    /**
-     * Изображение.
-     *
-     * @var int|UploadedFile|Image|null
-     */
-    public int|UploadedFile|Image|null $image = null;
-
-    /**
-     * Статус.
-     *
-     * @var bool|null
-     */
-    public ?bool $status = null;
-
-    /**
-     * Описание.
-     *
-     * @var string|null
-     */
-    public ?string $description = null;
-
-    /**
-     * Ключевые слова.
-     *
-     * @var string|null
-     */
-    public ?string $keywords = null;
-
-    /**
-     * Заголовок.
-     *
-     * @var string|null
-     */
-    public ?string $title = null;
+    public function __construct(PublicationUpdate $data)
+    {
+        $this->data = $data;
+    }
 
     /**
      * Метод запуска логики.
      *
      * @return PublicationEntity Вернет результаты исполнения.
      * @throws RecordNotExistException
-     * @throws ParameterInvalidException
      */
     public function run(): PublicationEntity
     {
-        $action = app(PublicationGetAction::class);
-        $action->id = $this->id;
+        $action = new PublicationGetAction($this->data->id);
         $publicationEntity = $action->run();
 
         if ($publicationEntity) {
-            $action = app(MetatagSetAction::class);
-            $action->description = $this->description;
-            $action->keywords = $this->keywords;
-            $action->title = $this->title;
-            $action->id = $publicationEntity->metatag_id ?: null;
+            $action = new MetatagSetAction(MetatagSet::from([
+                'description' => $this->data->description,
+                'keywords' => $this->data->keywords,
+                'title' => $this->data->title,
+                'id' => $publicationEntity->metatag_id ?: null,
+            ]));
 
             $publicationEntity->metatag_id = $action->run()->id;
-            $publicationEntity->published_at = $this->published_at;
-            $publicationEntity->header = Typography::process($this->header, true);
-            $publicationEntity->link = $this->link;
-            $publicationEntity->anons = Typography::process($this->anons, true);
-            $publicationEntity->article = Typography::process($this->article);
-            $publicationEntity->status = $this->status;
+            $publicationEntity->published_at = $this->data->published_at;
+            $publicationEntity->header = Typography::process($this->data->header, true);
+            $publicationEntity->link = $this->data->link;
+            $publicationEntity->anons = Typography::process($this->data->anons, true);
+            $publicationEntity->article = Typography::process($this->data->article);
+            $publicationEntity->status = $this->data->status;
 
-            if ($this->image) {
-                $publicationEntity->image_small_id = $this->image;
-                $publicationEntity->image_middle_id = $this->image;
-                $publicationEntity->image_big_id = $this->image;
+            if ($this->data->image) {
+                Publication::find($this->data->id)->update([
+                    ...$publicationEntity->toArray(),
+                    'image_small_id' => $this->data->image,
+                    'image_middle_id' => $this->data->image,
+                    'image_big_id' => $this->data->image,
+                ]);
+            } else {
+                Publication::find($this->data->id)->update($publicationEntity->toArray());
             }
 
-            Publication::find($this->id)->update($publicationEntity->toArray());
             Cache::tags(['publication'])->flush();
 
-            $action = app(PublicationGetAction::class);
-            $action->id = $this->id;
+            $action = new PublicationGetAction($this->data->id);
+
             return $action->run();
         }
 

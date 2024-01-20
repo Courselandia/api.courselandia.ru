@@ -18,11 +18,19 @@ use Cache;
 class PublicationDestroyAction extends Action
 {
     /**
-     * Массив ID пользователей.
+     * Массив ID публикаций.
      *
      * @var int[]|string[]
      */
-    public ?array $ids = null;
+    private array $ids;
+
+    /**
+     * @param int[]|string[] $ids Массив ID публикаций.
+     */
+    public function __construct(array $ids)
+    {
+        $this->ids = $ids;
+    }
 
     /**
      * Метод запуска логики.

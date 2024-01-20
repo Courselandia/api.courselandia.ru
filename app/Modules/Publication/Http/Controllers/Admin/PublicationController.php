@@ -18,6 +18,8 @@ use App\Modules\Publication\Actions\Admin\Publication\PublicationGetAction;
 use App\Modules\Publication\Actions\Admin\Publication\PublicationReadAction;
 use App\Modules\Publication\Actions\Admin\Publication\PublicationUpdateAction;
 use App\Modules\Publication\Actions\Admin\Publication\PublicationUpdateStatusAction;
+use App\Modules\Publication\Data\Actions\Admin\PublicationCreate;
+use App\Modules\Publication\Data\Actions\Admin\PublicationUpdate;
 use App\Modules\Publication\Http\Requests\Admin\Publication\PublicationCreateRequest;
 use App\Modules\Publication\Http\Requests\Admin\Publication\PublicationDestroyRequest;
 use App\Modules\Publication\Http\Requests\Admin\Publication\PublicationReadRequest;
@@ -42,12 +44,10 @@ class PublicationController extends Controller
      * @param int|string $id ID публикации.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException
      */
     public function get(int|string $id): JsonResponse
     {
-        $action = app(PublicationGetAction::class);
-        $action->id = $id;
+        $action = new PublicationGetAction($id);
         $data = $action->run();
 
         if ($data) {
@@ -77,11 +77,12 @@ class PublicationController extends Controller
      */
     public function read(PublicationReadRequest $request): JsonResponse
     {
-        $action = app(PublicationReadAction::class);
-        $action->sorts = $request->get('sorts');
-        $action->filters = $request->get('filters');
-        $action->offset = $request->get('offset');
-        $action->limit = $request->get('limit');
+        $action = new PublicationReadAction(
+            $request->get('sorts'),
+            $request->get('filters'),
+            $request->get('offset'),
+            $request->get('limit')
+        );
 
         $data = $action->run();
 
@@ -96,29 +97,23 @@ class PublicationController extends Controller
      * @param PublicationCreateRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException
      */
     public function create(PublicationCreateRequest $request): JsonResponse
     {
         try {
-            $action = app(PublicationCreateAction::class);
-            $action->published_at = Carbon::createFromFormat(
-                'Y-m-d H:i:s O',
-                $request->get('published_at')
-            )->setTimezone(Config::get('app.timezone'));
-            $action->header = $request->get('header');
-            $action->link = $request->get('link');
-            $action->anons = $request->get('anons');
-            $action->article = $request->get('article');
-            $action->status = $request->get('status');
-            $action->title = $request->get('title');
-            $action->description = $request->get('description');
-            $action->keywords = $request->get('keywords');
+            $data = PublicationCreate::from([
+                ...$request->all(),
+                'published_at' => Carbon::createFromFormat(
+                    'Y-m-d H:i:s O',
+                    $request->get('published_at')
+                )->setTimezone(Config::get('app.timezone'))
+            ]);
 
             if ($request->hasFile('image') && $request->file('image')->isValid()) {
-                $action->image = $request->file('image');
+                $data->image = $request->file('image');
             }
 
+            $action = new PublicationCreateAction($data);
             $data = $action->run();
 
             Log::info(
@@ -156,30 +151,24 @@ class PublicationController extends Controller
      * @param PublicationUpdateRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException
      */
     public function update(int|string $id, PublicationUpdateRequest $request): JsonResponse
     {
         try {
-            $action = app(PublicationUpdateAction::class);
-            $action->id = $id;
-            $action->published_at = Carbon::createFromFormat(
-                'Y-m-d H:i:s O',
-                $request->get('published_at')
-            )->setTimezone(Config::get('app.timezone'));
-            $action->header = $request->get('header');
-            $action->link = $request->get('link');
-            $action->anons = $request->get('anons');
-            $action->article = $request->get('article');
-            $action->status = $request->get('status');
-            $action->title = $request->get('title');
-            $action->description = $request->get('description');
-            $action->keywords = $request->get('keywords');
+            $data = PublicationUpdate::from([
+                'id' => $id,
+                ...$request->all(),
+                'published_at' => Carbon::createFromFormat(
+                    'Y-m-d H:i:s O',
+                    $request->get('published_at')
+                )->setTimezone(Config::get('app.timezone')),
+            ]);
 
             if ($request->hasFile('image') && $request->file('image')->isValid()) {
-                $action->image = $request->file('image');
+                $data->image = $request->file('image');
             }
 
+            $action = new PublicationUpdateAction($data);
             $data = $action->run();
 
             Log::info(
@@ -217,14 +206,11 @@ class PublicationController extends Controller
      * @param PublicationUpdateStatusRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException
      */
     public function updateStatus(int|string $id, PublicationUpdateStatusRequest $request): JsonResponse
     {
         try {
-            $action = app(PublicationUpdateStatusAction::class);
-            $action->id = $id;
-            $action->status = $request->get('status');
+            $action = new PublicationUpdateStatusAction($id, $request->get('status'));
 
             $data = $action->run();
 
@@ -262,8 +248,7 @@ class PublicationController extends Controller
      */
     public function destroy(PublicationDestroyRequest $request): JsonResponse
     {
-        $action = app(PublicationDestroyAction::class);
-        $action->ids = $request->get('ids');
+        $action = new PublicationDestroyAction($request->get('ids'));
         $action->run();
 
         Log::info(

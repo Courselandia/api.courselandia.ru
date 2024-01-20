@@ -103,12 +103,11 @@ class ImageMongoDb extends Image
      * Получить по первичному ключу.
      *
      * @param int|string $id Id записи.
-     * @param ImageEntity|null $entity Сущность.
      *
      * @return ImageEntity|null Данные.
      * @throws ParameterInvalidException
      */
-    public function get(int|string $id, ImageEntity $entity = null): ImageEntity|null {
+    public function get(int|string $id): ImageEntity|null {
         $image = $this->getById($id);
 
         if ($image) {
@@ -123,14 +122,18 @@ class ImageMongoDb extends Image
         $image = $this->newInstance()->newQuery()->find($id);
 
         if ($image) {
-            $entity = $entity ? clone $entity->set($image->toArray()) : clone $this->getEntity($image->toArray());
+            /**
+             * @var ImageEntity $entity
+             */
+            $entity = $this->getEntity([
+                ...$image->toArray(),
+                'id' => $image->_id,
+                'path' => $image->path,
+                'pathCache' => $image->pathCache,
+                'pathSource' => $image->pathSource,
+                'byte' => null,
+            ]);
 
-            $entity->id = $image->_id;
-            $entity->path = $image->path;
-            $entity->pathCache = $image->pathCache;
-            $entity->pathSource = $image->pathSource;
-
-            $entity->byte = null;
             $this->setById($id, $entity);
 
             return $entity;

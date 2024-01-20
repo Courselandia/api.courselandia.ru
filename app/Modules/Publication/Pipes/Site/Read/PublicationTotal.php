@@ -8,12 +8,12 @@
 
 namespace App\Modules\Publication\Pipes\Site\Read;
 
+use App\Models\Data;
 use App\Models\Enums\CacheTime;
+use App\Modules\Publication\Data\Decorators\PublicationRead as PublicationReadData;
 use Cache;
 use Closure;
 use App\Models\Contracts\Pipe;
-use App\Models\Entity;
-use App\Modules\Publication\Entities\PublicationRead as PublicationReadEntity;
 use App\Modules\Publication\Models\Publication;
 use Util;
 
@@ -25,18 +25,18 @@ class PublicationTotal implements Pipe
     /**
      * Метод, который будет вызван у pipeline.
      *
-     * @param  Entity|PublicationReadEntity  $entity  Сущность для чтения публикаций.
-     * @param  Closure  $next  Ссылка на следующий pipe.
+     * @param Data|PublicationReadData $data $entity Данные для чтения публикаций.
+     * @param Closure $next Ссылка на следующий pipe.
      *
      * @return mixed Вернет значение полученное после выполнения следующего pipe.
      */
-    public function handle(Entity|PublicationReadEntity $entity, Closure $next): mixed
+    public function handle(Data|PublicationReadData $data, Closure $next): mixed
     {
-        if ($entity->limit) {
-            $year = $entity->year;
+        if ($data->limit) {
+            $year = $data->year;
             $cacheKey = Util::getKey('publication', 'count', $year, 'active');
 
-            $entity->total = Cache::tags(['publication'])->remember(
+            $data->total = Cache::tags(['publication'])->remember(
                 $cacheKey,
                 CacheTime::GENERAL->value,
                 function () use ($year) {
@@ -45,6 +45,6 @@ class PublicationTotal implements Pipe
             );
         }
 
-        return $next($entity);
+        return $next($data);
     }
 }

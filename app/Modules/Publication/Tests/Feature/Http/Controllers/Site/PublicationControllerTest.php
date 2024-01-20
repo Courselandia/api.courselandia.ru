@@ -43,7 +43,7 @@ class PublicationControllerTest extends TestCase
                 'offset' => 0,
             ],
             [
-                'Authorization' => 'Bearer '.$this->getAdminToken()
+                'Authorization' => 'Bearer ' . $this->getAdminToken()
             ]
         )->assertStatus(200)->assertJsonStructure([
             'data' => [
@@ -79,7 +79,7 @@ class PublicationControllerTest extends TestCase
                 'link' => $publication->link,
             ],
             [
-                'Authorization' => 'Bearer '.$this->getAdminToken()
+                'Authorization' => 'Bearer ' . $this->getAdminToken()
             ]
         )->assertStatus(200)->assertJsonStructure([
             'data' => $this->getPublicationStructure(),
@@ -101,7 +101,7 @@ class PublicationControllerTest extends TestCase
                 'link' => 'test',
             ],
             [
-                'Authorization' => 'Bearer '.$this->getAdminToken()
+                'Authorization' => 'Bearer ' . $this->getAdminToken()
             ]
         )->assertStatus(404)->assertJsonStructure([
             'data',

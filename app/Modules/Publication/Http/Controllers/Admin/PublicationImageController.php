@@ -34,15 +34,11 @@ class PublicationImageController extends Controller
      * @param  PublicationImageUpdateRequest  $request  Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException
      */
     public function update(int|string $id, PublicationImageUpdateRequest $request): JsonResponse
     {
         try {
-            $action = app(PublicationImageUpdateAction::class);
-            $action->id = $id;
-            $action->image = $request->file('image');
-
+            $action = new PublicationImageUpdateAction($id, $request->file('image'));
             $publication = $action->run();
 
             Log::info(trans('access::http.controllers.admin.publicationController.update.log'), [
@@ -81,8 +77,7 @@ class PublicationImageController extends Controller
     public function destroy(int|string $id): JsonResponse
     {
         try {
-            $action = app(PublicationImageDestroyAction::class);
-            $action->id = $id;
+            $action = new PublicationImageDestroyAction($id);
             $action->run();
 
             Log::info(trans('publication::http.controllers.admin.publicationController.destroyImage.log'), [

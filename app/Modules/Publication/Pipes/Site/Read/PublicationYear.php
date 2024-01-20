@@ -8,16 +8,16 @@
 
 namespace App\Modules\Publication\Pipes\Site\Read;
 
-use Util;
-use Cache;
-use Closure;
-use Carbon\Carbon;
-use App\Models\Entity;
 use App\Models\Contracts\Pipe;
+use App\Models\Data;
 use App\Models\Enums\CacheTime;
+use App\Modules\Publication\Data\Decorators\PublicationRead as PublicationReadData;
 use App\Modules\Publication\Models\Publication;
-use App\Modules\Publication\Entities\PublicationRead as PublicationReadEntity;
-use App\Modules\Publication\Entities\PublicationYear as PublicationYearEntity;
+use App\Modules\Publication\Values\PublicationYear as PublicationYearValue;
+use Cache;
+use Carbon\Carbon;
+use Closure;
+use Util;
 
 /**
  * Класс пайплайн для разбивки публикаций по годам.
@@ -27,14 +27,14 @@ class PublicationYear implements Pipe
     /**
      * Метод, который будет вызван у pipeline.
      *
-     * @param  Entity|PublicationReadEntity  $entity  Сущность для чтения публикаций.
-     * @param  Closure  $next  Ссылка на следующий pipe.
+     * @param Data|PublicationReadData $data $entity Данные для чтения публикаций
+     * @param Closure $next Ссылка на следующий pipe.
      *
      * @return mixed Вернет значение полученное после выполнения следующего pipe.
      */
-    public function handle(Entity|PublicationReadEntity $entity, Closure $next): mixed
+    public function handle(Data|PublicationReadData $data, Closure $next): mixed
     {
-        if ($entity->limit) {
+        if ($data->limit) {
             $cacheKey = Util::getKey('publication', 'model');
 
             $publications = Cache::tags(['publication'])->remember(
@@ -57,19 +57,15 @@ class PublicationYear implements Pipe
 
             $years = array_unique($years);
             $items = [];
-            $year = $entity->year ?? Carbon::now()->year;
+            $year = $data->year ?? Carbon::now()->year;
 
             foreach ($years as $yr) {
-                $publicationYear = new PublicationYearEntity();
-                $publicationYear->year = $yr;
-                $publicationYear->current = $yr === $year;
-
-                $items[] = $publicationYear;
+                $items[] = new PublicationYearValue($yr, $yr === $year);
             }
 
-            $entity->years = $items;
+            $data->years = $items;
         }
 
-        return $next($entity);
+        return $next($data);
     }
 }
