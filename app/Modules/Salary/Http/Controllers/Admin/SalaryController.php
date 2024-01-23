@@ -8,6 +8,8 @@
 
 namespace App\Modules\Salary\Http\Controllers\Admin;
 
+use App\Modules\Salary\Data\SalaryCreate;
+use App\Modules\Salary\Data\SalaryUpdate;
 use App\Modules\Salary\Http\Requests\Admin\SalaryUpdateRequest;
 use Auth;
 use Log;
@@ -41,12 +43,10 @@ class SalaryController extends Controller
      * @param int|string $id ID зарплаты.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException
      */
     public function get(int|string $id): JsonResponse
     {
-        $action = app(SalaryGetAction::class);
-        $action->id = $id;
+        $action = new SalaryGetAction($id);
         $data = $action->run();
 
         if ($data) {
@@ -76,11 +76,12 @@ class SalaryController extends Controller
      */
     public function read(SalaryReadRequest $request): JsonResponse
     {
-        $action = app(SalaryReadAction::class);
-        $action->sorts = $request->get('sorts');
-        $action->filters = $request->get('filters');
-        $action->offset = $request->get('offset');
-        $action->limit = $request->get('limit');
+        $action = new SalaryReadAction(
+            $request->get('sorts'),
+            $request->get('filters'),
+            $request->get('offset'),
+            $request->get('limit')
+        );
 
         $data = $action->run();
 
@@ -95,17 +96,15 @@ class SalaryController extends Controller
      * @param SalaryCreateRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException
      */
     public function create(SalaryCreateRequest $request): JsonResponse
     {
         try {
-            $action = app(SalaryCreateAction::class);
-            $action->profession_id = $request->get('profession_id');
-            $action->level = Level::from($request->get('level'));
-            $action->salary = $request->get('salary');
-            $action->status = $request->get('status');
-
+            $data = SalaryCreate::from([
+                ...$request->all(),
+                'level' => Level::from($request->get('level')),
+            ]);
+            $action = new SalaryCreateAction($data);
             $data = $action->run();
 
             Log::info(
@@ -138,17 +137,15 @@ class SalaryController extends Controller
      * @param SalaryUpdateRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException
      */
     public function update(int|string $id, SalaryUpdateRequest $request): JsonResponse
     {
         try {
-            $action = app(SalaryUpdateAction::class);
-            $action->id = $id;
-            $action->profession_id = $request->get('profession_id');
-            $action->level = Level::from($request->get('level'));
-            $action->salary = $request->get('salary');
-            $action->status = $request->get('status');
+            $action = new SalaryUpdateAction(SalaryUpdate::from([
+                'id' => $id,
+                'level' => Level::from($request->get('level')),
+                ...$request->all(),
+            ]));
             $data = $action->run();
 
             Log::info(
@@ -186,15 +183,11 @@ class SalaryController extends Controller
      * @param SalaryUpdateStatusRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException
      */
     public function updateStatus(int|string $id, SalaryUpdateStatusRequest $request): JsonResponse
     {
         try {
-            $action = app(SalaryUpdateStatusAction::class);
-            $action->id = $id;
-            $action->status = $request->get('status');
-
+            $action = new SalaryUpdateStatusAction($id, $request->get('status'));
             $data = $action->run();
 
             Log::info(trans('salary::http.controllers.admin.salaryController.update.log'), [
@@ -231,8 +224,7 @@ class SalaryController extends Controller
      */
     public function destroy(SalaryDestroyRequest $request): JsonResponse
     {
-        $action = app(SalaryDestroyAction::class);
-        $action->ids = $request->get('ids');
+        $action = new SalaryDestroyAction($request->get('ids'));
         $action->run();
 
         Log::info(

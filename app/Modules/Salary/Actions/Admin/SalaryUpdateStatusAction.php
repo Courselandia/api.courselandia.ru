@@ -9,7 +9,6 @@
 namespace App\Modules\Salary\Actions\Admin;
 
 use App\Models\Action;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Modules\Salary\Entities\Salary as SalaryEntity;
 use App\Modules\Salary\Models\Salary;
@@ -23,27 +22,36 @@ class SalaryUpdateStatusAction extends Action
     /**
      * ID зарплаты.
      *
-     * @var int|string|null
+     * @var int|string
      */
-    public int|string|null $id = null;
+    private int|string $id;
 
     /**
      * Статус.
      *
-     * @var bool|null
+     * @var bool
      */
-    public ?bool $status = null;
+    private bool $status;
+
+    /**
+     * @param int|string $id ID зарплаты.
+     * @param bool $status Статус.
+     */
+    public function __construct(int|string $id, bool $status)
+    {
+        $this->id = $id;
+        $this->status = $status;
+    }
 
     /**
      * Метод запуска логики.
      *
      * @return SalaryEntity Вернет результаты исполнения.
-     * @throws RecordNotExistException|ParameterInvalidException
+     * @throws RecordNotExistException
      */
     public function run(): SalaryEntity
     {
-        $action = app(SalaryGetAction::class);
-        $action->id = $this->id;
+        $action = new SalaryGetAction($this->id);
         $salaryEntity = $action->run();
 
         if ($salaryEntity) {

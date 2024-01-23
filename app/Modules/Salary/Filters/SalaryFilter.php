@@ -23,7 +23,7 @@ class SalaryFilter extends ModelFilter
      */
     public $relations = [
         'profession' => [
-            'profession-id'  => 'professionId',
+            'profession-id' => 'professionId',
         ]
     ];
 
@@ -34,7 +34,7 @@ class SalaryFilter extends ModelFilter
      *
      * @return SalaryFilter Правила поиска.
      */
-    public function id(int|string $id): SalaryFilter
+    public function id(int|string $id): self
     {
         return $this->where('salaries.id', $id);
     }
@@ -46,7 +46,7 @@ class SalaryFilter extends ModelFilter
      *
      * @return SalaryFilter Правила поиска.
      */
-    public function professionId(array|int|string $professionIds): SalaryFilter
+    public function professionId(array|int|string $professionIds): self
     {
         return $this->whereIn('profession_id', is_array($professionIds) ? $professionIds : [$professionIds]);
     }
@@ -58,7 +58,7 @@ class SalaryFilter extends ModelFilter
      *
      * @return SalaryFilter Правила поиска.
      */
-    public function level(array|Level|string $levels): SalaryFilter
+    public function level(array|Level|string $levels): self
     {
         return $this->whereIn('salaries.level', is_array($levels) ? $levels : [$levels]);
     }
@@ -70,7 +70,7 @@ class SalaryFilter extends ModelFilter
      *
      * @return SalaryFilter Правила поиска.
      */
-    public function salary(int $salary): SalaryFilter
+    public function salary(int $salary): self
     {
         return $this->where('salaries.salary', $salary);
     }
@@ -82,7 +82,7 @@ class SalaryFilter extends ModelFilter
      *
      * @return SalaryFilter Правила поиска.
      */
-    public function status(bool $status): SalaryFilter
+    public function status(bool $status): self
     {
         return $this->where('salaries.status', $status);
     }

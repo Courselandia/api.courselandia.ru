@@ -29,7 +29,7 @@ class SalaryServiceProvider extends ServiceProvider
         $this->registerTranslations();
         $this->registerConfig();
 
-        $this->loadMigrationsFrom(__DIR__.'/../Database/Migrations');
+        $this->loadMigrationsFrom(__DIR__ . '/../Database/Migrations');
 
         SalaryModel::observe(SalaryListener::class);
     }
@@ -51,10 +51,10 @@ class SalaryServiceProvider extends ServiceProvider
     protected function registerConfig(): void
     {
         $this->publishes([
-            __DIR__.'/../Config/config.php' => config_path('salary.php'),
+            __DIR__ . '/../Config/config.php' => config_path('salary.php'),
         ]);
         $this->mergeConfigFrom(
-            __DIR__.'/../Config/config.php',
+            __DIR__ . '/../Config/config.php',
             'salary'
         );
     }
@@ -68,7 +68,7 @@ class SalaryServiceProvider extends ServiceProvider
     {
         $viewPath = base_path('resources/views/modules/salary');
 
-        $sourcePath = __DIR__.'/../Resources/views';
+        $sourcePath = __DIR__ . '/../Resources/views';
 
         $this->publishes([
             $sourcePath => $viewPath
@@ -77,7 +77,7 @@ class SalaryServiceProvider extends ServiceProvider
         $this->loadViewsFrom(
             array_merge(
                 array_map(function ($path) {
-                    return $path.'/modules/salary';
+                    return $path . '/modules/salary';
                 }, Config::get('view.paths')),
                 [$sourcePath]
             ),
@@ -97,7 +97,7 @@ class SalaryServiceProvider extends ServiceProvider
         if (is_dir($langPath)) {
             $this->loadTranslationsFrom($langPath, 'salary');
         } else {
-            $this->loadTranslationsFrom(__DIR__.'/../Resources/lang', 'salary');
+            $this->loadTranslationsFrom(__DIR__ . '/../Resources/lang', 'salary');
         }
     }
 

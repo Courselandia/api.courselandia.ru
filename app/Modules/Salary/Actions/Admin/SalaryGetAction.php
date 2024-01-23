@@ -10,7 +10,6 @@ namespace App\Modules\Salary\Actions\Admin;
 
 use App\Models\Action;
 use App\Models\Enums\CacheTime;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Salary\Entities\Salary as SalaryEntity;
 use App\Modules\Salary\Models\Salary;
 use Cache;
@@ -24,15 +23,22 @@ class SalaryGetAction extends Action
     /**
      * ID зарплаты.
      *
-     * @var int|string|null
+     * @var int|string
      */
-    public int|string|null $id = null;
+    private int|string $id;
+
+    /**
+     * @param int|string $id ID зарплаты.
+     */
+    public function __construct(int|string $id)
+    {
+        $this->id = $id;
+    }
 
     /**
      * Метод запуска логики.
      *
      * @return SalaryEntity|null Вернет результаты исполнения.
-     * @throws ParameterInvalidException
      */
     public function run(): ?SalaryEntity
     {
@@ -46,7 +52,7 @@ class SalaryGetAction extends Action
                     ->with('profession')
                     ->first();
 
-                return $salary ? new SalaryEntity($salary->toArray()) : null;
+                return $salary ? SalaryEntity::from($salary->toArray()) : null;
             }
         );
     }
