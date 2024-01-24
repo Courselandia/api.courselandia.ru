@@ -83,14 +83,14 @@ class CategoryUpdateAction extends Action
                 'id' => $categoryEntity->metatag_id ?: null,
             ]));
 
-            $categoryEntity->metatag_id = $action->run()->id;
-            $categoryEntity->id = $this->data->id;
-            $categoryEntity->name = Typography::process($this->data->name, true);
-            $categoryEntity->header = Typography::process($template->convert($this->data->header_template, $templateValues), true);
-            $categoryEntity->header_template = $this->data->header_template;
-            $categoryEntity->link = $this->data->link;
-            $categoryEntity->text = Typography::process($this->data->text);
-            $categoryEntity->status = $this->data->status;
+            $categoryEntity = CategoryEntity::from([
+                ...$categoryEntity->toArray(),
+                ...$this->data->except('directions', 'professions')->toArray(),
+                'metatag_id' => $action->run()->id,
+                'name' => Typography::process($this->data->name, true),
+                'header' => Typography::process($template->convert($this->data->header_template, $templateValues), true),
+                'text' => Typography::process($this->data->text),
+            ]);
 
             $category = Category::find($this->data->id);
             $category->update($categoryEntity->toArray());
