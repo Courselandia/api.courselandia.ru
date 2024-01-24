@@ -32,8 +32,7 @@ class SchoolController extends Controller
      */
     public function get(int|string $id): JsonResponse
     {
-        $action = app(SchoolGetAction::class);
-        $action->id = $id;
+        $action = new SchoolGetAction($id);
         $data = $action->run();
 
         if ($data) {
@@ -59,12 +58,10 @@ class SchoolController extends Controller
      * @param string $link Ссылка.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException
      */
     public function link(string $link): JsonResponse
     {
-        $action = app(SchoolLinkAction::class);
-        $action->link = $link;
+        $action = new SchoolLinkAction($link);
         $data = $action->run();
 
         if ($data) {
@@ -94,13 +91,13 @@ class SchoolController extends Controller
      */
     public function read(SchoolReadRequest $request): JsonResponse
     {
-        $action = app(SchoolReadAction::class);
-        $action->sorts = $request->get('sorts', ['name' => 'ASC']);
-        $action->offset = $request->get('offset');
-        $action->limit = $request->get('limit');
+        $action = new SchoolReadAction(
+            $request->get('sorts', ['name' => 'ASC']),
+            $request->get('offset'),
+            $request->get('limit')
+        );
 
         $data = $action->run();
-
         $data['success'] = true;
 
         return response()->json($data);

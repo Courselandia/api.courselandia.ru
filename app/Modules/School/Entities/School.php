@@ -8,13 +8,12 @@
 
 namespace App\Modules\School\Entities;
 
-use App\Models\Entities;
 use App\Models\EntityNew;
 use App\Modules\Analyzer\Entities\Analyzer;
 use Carbon\Carbon;
 use App\Modules\Image\Entities\Image;
 use App\Modules\Metatag\Entities\Metatag;
-use Illuminate\Http\UploadedFile;
+use Spatie\LaravelData\Attributes\WithCast;
 
 /**
  * Сущность для школ.
@@ -87,16 +86,16 @@ class School extends EntityNew
     /**
      * Изображение логотипа.
      *
-     * @var ?Image
+     * @var Image|null
      */
-    public ?Image $image_logo_id = null;
+    public Image|null $image_logo_id = null;
 
     /**
      * Изображение сайта.
      *
-     * @var ?Image
+     * @var Image|null
      */
-    public ?Image $image_site_id = null;
+    public Image|null $image_site_id = null;
 
     /**
      * Статус.
@@ -187,7 +186,6 @@ class School extends EntityNew
      *
      * @var Analyzer[]
      */
-    #[Entities(Analyzer::class)]
     public ?array $analyzers = null;
 
     /**
@@ -219,30 +217,53 @@ class School extends EntityNew
     public function __construct(
         int|string|null $id = null,
         int|string|null $metatag_id = null,
-        ?string $name = null,
-        ?string $header = null,
-        ?string $header_template = null,
-        ?string $link = null,
-        ?string $text = null,
-        ?string $site = null,
-        ?float $rating = null,
-        ?Image $image_logo_id = null,
-        ?Image $image_site_id = null,
-        ?bool $status = null,
-        ?Carbon $created_at = null,
-        ?Carbon $updated_at = null,
-        ?Carbon $deleted_at = null,
-        ?int $reviews_count = null,
-        ?int $reviews_1_star_count = null,
-        ?int $reviews_2_stars_count = null,
-        ?int $reviews_3_stars_count = null,
-        ?int $reviews_4_stars_count = null,
-        ?int $reviews_5_stars_count = null,
-        array|null $amount_courses = null,
-        ?Metatag $metatag = null,
-        ?array $analyzers = null
+        ?string         $name = null,
+        ?string         $header = null,
+        ?string         $header_template = null,
+        ?string         $link = null,
+        ?string         $text = null,
+        ?string         $site = null,
+        ?float          $rating = null,
+        ?Image          $image_logo_id = null,
+        ?Image          $image_site_id = null,
+        ?bool           $status = null,
+        ?Carbon         $created_at = null,
+        ?Carbon         $updated_at = null,
+        ?Carbon         $deleted_at = null,
+        ?int            $reviews_count = null,
+        ?int            $reviews_1_star_count = null,
+        ?int            $reviews_2_stars_count = null,
+        ?int            $reviews_3_stars_count = null,
+        ?int            $reviews_4_stars_count = null,
+        ?int            $reviews_5_stars_count = null,
+        array|null      $amount_courses = null,
+        ?Metatag        $metatag = null,
+        ?array          $analyzers = null
     )
     {
-
+        $this->id = $id;
+        $this->metatag_id = $metatag_id;
+        $this->name = $name;
+        $this->header = $header;
+        $this->header_template = $header_template;
+        $this->link = $link;
+        $this->text = $text;
+        $this->site = $site;
+        $this->rating = $rating;
+        $this->image_logo_id = $image_logo_id;
+        $this->image_site_id = $image_site_id;
+        $this->status = $status;
+        $this->created_at = $created_at;
+        $this->updated_at = $updated_at;
+        $this->deleted_at = $deleted_at;
+        $this->reviews_count = $reviews_count;
+        $this->reviews_1_star_count = $reviews_1_star_count;
+        $this->reviews_2_stars_count = $reviews_2_stars_count;
+        $this->reviews_3_stars_count = $reviews_3_stars_count;
+        $this->reviews_4_stars_count = $reviews_4_stars_count;
+        $this->reviews_5_stars_count = $reviews_5_stars_count;
+        $this->amount_courses = $amount_courses;
+        $this->metatag = $metatag;
+        $this->analyzers = $analyzers;
     }
 }

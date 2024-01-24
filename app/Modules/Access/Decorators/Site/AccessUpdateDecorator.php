@@ -46,11 +46,6 @@ class AccessUpdateDecorator extends Decorator
             ->through($this->getActions())
             ->thenReturn();
 
-        /*print_r([
-            ...$data->user->toArray(),
-            'password' => null,
-        ]);*/
-
         return User::from([
             ...$data->user->toArray(),
             'password' => null,

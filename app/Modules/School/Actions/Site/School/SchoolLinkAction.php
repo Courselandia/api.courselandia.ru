@@ -12,7 +12,6 @@ use Cache;
 use Util;
 use App\Models\Action;
 use App\Models\Enums\CacheTime;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Course\Enums\Status;
 use App\Modules\School\Entities\School as SchoolEntity;
 use App\Modules\School\Models\School;
@@ -26,15 +25,22 @@ class SchoolLinkAction extends Action
     /**
      * Ссылка школы.
      *
-     * @var string|null
+     * @var string
      */
-    public string|null $link = null;
+    private string $link;
+
+    /**
+     * @param string $link Ссылка школы.
+     */
+    public function __construct(string $link)
+    {
+        $this->link = $link;
+    }
 
     /**
      * Метод запуска логики.
      *
      * @return SchoolEntity|null Вернет результаты исполнения.
-     * @throws ParameterInvalidException
      */
     public function run(): ?SchoolEntity
     {
@@ -80,7 +86,7 @@ class SchoolLinkAction extends Action
                     ->withCount('reviews')
                     ->first();
 
-                return $school ? new SchoolEntity($school->toArray()) : null;
+                return $school ? SchoolEntity::from($school->toArray()) : null;
             }
         );
     }

@@ -48,8 +48,7 @@ class SchoolTextAnalyzerCategory extends AnalyzerCategory
      */
     public function label(int $id): string
     {
-        $action = app(SchoolGetAction::class);
-        $action->id = $id;
+        $action = new SchoolGetAction($id);
         $schoolEntity = $action->run();
 
         if ($schoolEntity) {
@@ -71,8 +70,7 @@ class SchoolTextAnalyzerCategory extends AnalyzerCategory
      */
     public function text(int $id): ?string
     {
-        $action = app(SchoolGetAction::class);
-        $action->id = $id;
+        $action = new SchoolGetAction($id);
         $schoolEntity = $action->run();
 
         if ($schoolEntity) {

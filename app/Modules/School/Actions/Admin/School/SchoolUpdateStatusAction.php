@@ -9,7 +9,6 @@
 namespace App\Modules\School\Actions\Admin\School;
 
 use App\Models\Action;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Modules\School\Entities\School as SchoolEntity;
 use App\Modules\School\Models\School;
@@ -23,27 +22,36 @@ class SchoolUpdateStatusAction extends Action
     /**
      * ID школы.
      *
-     * @var int|string|null
+     * @var int|string
      */
-    public int|string|null $id = null;
+    private int|string $id;
 
     /**
      * Статус.
      *
-     * @var bool|null
+     * @var bool
      */
-    public ?bool $status = null;
+    private bool $status;
+
+    /**
+     * @param int|string $id ID школы.
+     * @param bool $status Статус.
+     */
+    public function __construct(int|string $id, bool $status)
+    {
+        $this->id = $id;
+        $this->status = $status;
+    }
 
     /**
      * Метод запуска логики.
      *
      * @return SchoolEntity Вернет результаты исполнения.
-     * @throws RecordNotExistException|ParameterInvalidException
+     * @throws RecordNotExistException
      */
     public function run(): SchoolEntity
     {
-        $action = app(SchoolGetAction::class);
-        $action->id = $this->id;
+        $action = new SchoolGetAction($this->id);
         $schoolEntity = $action->run();
 
         if ($schoolEntity) {
