@@ -48,10 +48,12 @@ class EmploymentUpdateAction extends Action
         $employmentEntity = $action->run();
 
         if ($employmentEntity) {
-            $employmentEntity->id = $this->data->id;
-            $employmentEntity->name = Typography::process($this->data->name, true);
-            $employmentEntity->text = Typography::process($this->data->text);
-            $employmentEntity->status = $this->data->status;
+            $employmentEntity = EmploymentEntity::from([
+                ...$employmentEntity->toArray(),
+                ...$this->data->toArray(),
+                'name' => Typography::process($this->data->name, true),
+                'text' => Typography::process($this->data->text),
+            ]);
 
             Employment::find($this->data->id)->update($employmentEntity->toArray());
             Cache::tags(['catalog', 'employment'])->flush();

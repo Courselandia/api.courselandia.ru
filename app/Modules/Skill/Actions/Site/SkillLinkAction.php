@@ -23,11 +23,19 @@ use App\Modules\Skill\Models\Skill;
 class SkillLinkAction extends Action
 {
     /**
-     * Ссылка категории.
+     * Ссылка навыка.
      *
-     * @var int|string|null
+     * @var string
      */
-    public string|null $link = null;
+    private string $link;
+
+    /**
+     * @param string $link Ссылка навыка.
+     */
+    public function __construct(string $link)
+    {
+        $this->link = $link;
+    }
 
     /**
      * Метод запуска логики.
@@ -55,11 +63,7 @@ class SkillLinkAction extends Action
                     ->first();
 
                 if ($result) {
-                    $item = $result->toArray();
-                    $entity = new SkillEntity();
-                    $entity->set($item);
-
-                    return $entity;
+                    return SkillEntity::from($result->toArray());
                 }
 
                 return null;

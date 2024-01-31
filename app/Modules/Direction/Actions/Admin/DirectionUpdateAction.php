@@ -10,6 +10,7 @@ namespace App\Modules\Direction\Actions\Admin;
 
 use App\Modules\Analyzer\Actions\Admin\AnalyzerUpdateAction;
 use App\Modules\Direction\Data\DirectionUpdate;
+use App\Modules\Metatag\Data\MetatagSet;
 use Cache;
 use Typography;
 use App\Models\Action;
@@ -73,23 +74,25 @@ class DirectionUpdateAction extends Action
 
             $template = new Template();
 
-            $action = app(MetatagSetAction::class);
-            $action->description = $template->convert($this->data->description_template, $templateValues);
-            $action->title = $template->convert($this->data->title_template, $templateValues);
-            $action->description_template = $this->data->description_template;
-            $action->title_template = $this->data->title_template;
-            $action->keywords = $this->data->keywords;
-            $action->id = $directionEntity->metatag_id ?: null;
+            $metatagSet = MetatagSet::from([
+                'description' => $template->convert($this->data->description_template, $templateValues),
+                'title' => $template->convert($this->data->title_template, $templateValues),
+                'description_template' => $this->data->description_template,
+                'title_template' => $this->data->title_template,
+                'keywords' => $this->data->keywords,
+                'id' => $directionEntity->metatag_id ?: null,
+            ]);
 
-            $directionEntity->metatag_id = $action->run()->id;
-            $directionEntity->id = $this->data->id;
-            $directionEntity->name = Typography::process($this->data->name, true);
-            $directionEntity->header = Typography::process($template->convert($this->data->header_template, $templateValues), true);
-            $directionEntity->header_template = $this->data->header_template;
-            $directionEntity->weight = $this->data->weight;
-            $directionEntity->link = $this->data->link;
-            $directionEntity->text = Typography::process($this->data->text);
-            $directionEntity->status = $this->data->status;
+            $action = new MetatagSetAction($metatagSet);
+
+            $directionEntity = DirectionEntity::from([
+                ...$directionEntity->toArray(),
+                ...$this->data->toArray(),
+                'name' => Typography::process($this->data->name, true),
+                'header' => Typography::process($template->convert($this->data->header_template, $templateValues), true),
+                'text' => Typography::process($this->data->text),
+                'metatag_id' => $action->run()->id
+            ]);
 
             Direction::find($this->data->id)->update($directionEntity->toArray());
 

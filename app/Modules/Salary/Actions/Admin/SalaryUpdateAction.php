@@ -47,11 +47,10 @@ class SalaryUpdateAction extends Action
         $salaryEntity = $action->run();
 
         if ($salaryEntity) {
-            $salaryEntity->id = $this->data->id;
-            $salaryEntity->level = $this->data->level;
-            $salaryEntity->salary = $this->data->salary;
-            $salaryEntity->profession_id = $this->data->profession_id;
-            $salaryEntity->status = $this->data->status;
+            $salaryEntity = SalaryEntity::from([
+                ...$salaryEntity->toArray(),
+                ...$this->data->toArray(),
+            ]);
 
             Salary::find($this->data->id)->update($salaryEntity->toArray());
             Cache::tags(['catalog', 'profession', 'salary'])->flush();

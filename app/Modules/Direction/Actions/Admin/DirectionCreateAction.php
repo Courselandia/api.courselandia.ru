@@ -68,13 +68,10 @@ class DirectionCreateAction extends Action
         $metatag = $action->run();
 
         $directionEntity = DirectionEntity::from([
+            ...$this->data->toArray(),
             'name' => Typography::process($this->data->name, true),
             'header' => Typography::process($template->convert($this->data->header_template, $templateValues), true),
-            'header_template' => $this->data->header_template,
-            'weight' => $this->data->weight,
-            'link' => $this->data->link,
             'text' => Typography::process($this->data->text),
-            'status' => $this->data->status,
             'metatag_id' => $metatag->id,
         ]);
 

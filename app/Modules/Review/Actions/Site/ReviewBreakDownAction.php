@@ -30,6 +30,9 @@ class ReviewBreakDownAction extends Action
      */
     private int $school_id;
 
+    /**
+     * @param int $school_id ID школы.
+     */
     public function __construct(int $school_id)
     {
         $this->school_id = $school_id;

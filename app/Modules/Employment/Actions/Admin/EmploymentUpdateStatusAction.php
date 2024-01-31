@@ -9,7 +9,6 @@
 namespace App\Modules\Employment\Actions\Admin;
 
 use App\Models\Action;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Modules\Employment\Entities\Employment as EmploymentEntity;
 use App\Modules\Employment\Models\Employment;
@@ -48,7 +47,7 @@ class EmploymentUpdateStatusAction extends Action
      * Метод запуска логики.
      *
      * @return EmploymentEntity Вернет результаты исполнения.
-     * @throws RecordNotExistException|ParameterInvalidException
+     * @throws RecordNotExistException
      */
     public function run(): EmploymentEntity
     {

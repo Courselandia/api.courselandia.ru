@@ -18,11 +18,19 @@ use Cache;
 class SkillDestroyAction extends Action
 {
     /**
-     * Массив ID пользователей.
+     * Массив ID навыков.
      *
      * @var int[]|string[]
      */
-    public ?array $ids = null;
+    private array $ids;
+
+    /**
+     * @param int[]|string[] $ids Массив ID навыков.
+     */
+    public function __construct(array $ids)
+    {
+        $this->ids = $ids;
+    }
 
     /**
      * Метод запуска логики.

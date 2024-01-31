@@ -43,9 +43,9 @@ class EmploymentCreateAction extends Action
     public function run(): EmploymentEntity
     {
         $employmentEntity = EmploymentEntity::from([
+            ...$this->data->toArray(),
             'name' => Typography::process($this->data->name, true),
             'text' => Typography::process($this->data->text),
-            'status' => $this->data->status
         ]);
 
         $employment = Employment::create($employmentEntity->toArray());

@@ -29,7 +29,7 @@ class SkillServiceProvider extends ServiceProvider
         $this->registerTranslations();
         $this->registerConfig();
 
-        $this->loadMigrationsFrom(__DIR__.'/../Database/Migrations');
+        $this->loadMigrationsFrom(__DIR__ . '/../Database/Migrations');
 
         SkillModel::observe(SkillListener::class);
     }
@@ -51,10 +51,10 @@ class SkillServiceProvider extends ServiceProvider
     protected function registerConfig(): void
     {
         $this->publishes([
-            __DIR__.'/../Config/config.php' => config_path('skill.php'),
+            __DIR__ . '/../Config/config.php' => config_path('skill.php'),
         ]);
         $this->mergeConfigFrom(
-            __DIR__.'/../Config/config.php',
+            __DIR__ . '/../Config/config.php',
             'skill'
         );
     }
@@ -68,7 +68,7 @@ class SkillServiceProvider extends ServiceProvider
     {
         $viewPath = base_path('resources/views/modules/skill');
 
-        $sourcePath = __DIR__.'/../Resources/views';
+        $sourcePath = __DIR__ . '/../Resources/views';
 
         $this->publishes([
             $sourcePath => $viewPath
@@ -77,7 +77,7 @@ class SkillServiceProvider extends ServiceProvider
         $this->loadViewsFrom(
             array_merge(
                 array_map(function ($path) {
-                    return $path.'/modules/skill';
+                    return $path . '/modules/skill';
                 }, Config::get('view.paths')),
                 [$sourcePath]
             ),
@@ -97,7 +97,7 @@ class SkillServiceProvider extends ServiceProvider
         if (is_dir($langPath)) {
             $this->loadTranslationsFrom($langPath, 'skill');
         } else {
-            $this->loadTranslationsFrom(__DIR__.'/../Resources/lang', 'skill');
+            $this->loadTranslationsFrom(__DIR__ . '/../Resources/lang', 'skill');
         }
     }
 

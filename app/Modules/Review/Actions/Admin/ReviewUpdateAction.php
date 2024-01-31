@@ -46,18 +46,14 @@ class ReviewUpdateAction extends Action
         $reviewEntity = $action->run();
 
         if ($reviewEntity) {
-            $reviewEntity->id = $this->data->id;
-            $reviewEntity->school_id = $this->data->school_id;
-            $reviewEntity->course_id = $this->data->course_id;
-            $reviewEntity->name = $this->data->name;
-            $reviewEntity->title = Typography::process($this->data->title, true);
-            $reviewEntity->review = Typography::process($this->data->review, true);
-            $reviewEntity->advantages = Typography::process($this->data->advantages, true);
-            $reviewEntity->disadvantages = Typography::process($this->data->disadvantages, true);
-            $reviewEntity->rating = $this->data->rating;
-            $reviewEntity->status = $this->data->status;
-            $reviewEntity->created_at = $this->data->created_at;
-            $reviewEntity->source = $this->data->source;
+            $reviewEntity = ReviewEntity::from([
+                ...$reviewEntity->toArray(),
+                ...$this->data->toArray(),
+                'title' => Typography::process($this->data->title, true),
+                'review' => Typography::process($this->data->review, true),
+                'advantages' => Typography::process($this->data->advantages, true),
+                'disadvantages' => Typography::process($this->data->disadvantages, true),
+            ]);
 
             Review::find($this->data->id)->update($reviewEntity->toArray());
             Cache::tags(['catalog', 'school', 'review', 'course'])->flush();

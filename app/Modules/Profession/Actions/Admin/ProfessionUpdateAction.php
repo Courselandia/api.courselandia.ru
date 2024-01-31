@@ -9,6 +9,7 @@
 namespace App\Modules\Profession\Actions\Admin;
 
 use App\Modules\Analyzer\Actions\Admin\AnalyzerUpdateAction;
+use App\Modules\Metatag\Data\MetatagSet;
 use App\Modules\Profession\Data\ProfessionUpdate;
 use Typography;
 use App\Models\Action;
@@ -71,22 +72,23 @@ class ProfessionUpdateAction extends Action
 
             $template = new Template();
 
-            $action = app(MetatagSetAction::class);
-            $action->description = $template->convert($this->data->description_template, $templateValues);
-            $action->title = $template->convert($this->data->title_template, $templateValues);
-            $action->description_template = $this->data->description_template;
-            $action->title_template = $this->data->title_template;
-            $action->keywords = $this->data->keywords;
-            $action->id = $professionEntity->metatag_id ?: null;
+            $action = new MetatagSetAction(MetatagSet::from([
+                'description' => $template->convert($this->data->description_template, $templateValues),
+                'title' => $template->convert($this->data->title_template, $templateValues),
+                'description_template' => $this->data->description_template,
+                'title_template' => $this->data->title_template,
+                'keywords' => $this->data->keywords,
+                'id' => $professionEntity->metatag_id ?: null,
+            ]));
 
-            $professionEntity->metatag_id = $action->run()->id;
-            $professionEntity->id = $this->data->id;
-            $professionEntity->name = Typography::process($this->data->name, true);
-            $professionEntity->header = Typography::process($template->convert($this->data->header_template, $templateValues), true);
-            $professionEntity->header_template = $this->data->header_template;
-            $professionEntity->link = $this->data->link;
-            $professionEntity->text = Typography::process($this->data->text);
-            $professionEntity->status = $this->data->status;
+            $professionEntity = ProfessionEntity::from([
+                ...$professionEntity->toArray(),
+                ...$this->data->toArray(),
+                'metatag_id' => $action->run()->id,
+                'name' => Typography::process($this->data->name, true),
+                'header' => Typography::process($template->convert($this->data->header_template, $templateValues), true),
+                'text' => Typography::process($this->data->text),
+            ]);
 
             Profession::find($this->data->id)->update($professionEntity->toArray());
             Cache::tags(['catalog', 'category', 'direction', 'salary', 'profession'])->flush();

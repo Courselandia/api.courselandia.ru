@@ -68,13 +68,15 @@ class CategoryCreateAction extends Action
         $action = new MetatagSetAction($metatagSet);
         $metatag = $action->run();
 
-        $category = Category::create([
-            ...$this->data->toArray(),
+        $categoryEntity = CategoryEntity::from([
+            ...$this->data->except('directions', 'professions')->toArray(),
             'name' => Typography::process($this->data->name, true),
             'header' => Typography::process($template->convert($this->data->header_template, $templateValues), true),
             'text' => Typography::process($this->data->text),
             'metatag_id' => $metatag->id,
         ]);
+
+        $category = Category::create($categoryEntity->toArray());
 
         $category->directions()->sync($this->data->directions ?: []);
         $category->professions()->sync($this->data->professions ?: []);

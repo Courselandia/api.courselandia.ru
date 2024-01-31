@@ -47,10 +47,10 @@ class ProcessUpdateAction extends Action
         $processEntity = $action->run();
 
         if ($processEntity) {
-            $processEntity->id = $this->data->id;
-            $processEntity->name = $this->data->name;
-            $processEntity->text = $this->data->text;
-            $processEntity->status = $this->data->status;
+            $processEntity = ProcessEntity::from([
+                ...$processEntity->toArray(),
+                ...$this->data->toArray(),
+            ]);
 
             Process::find($this->data->id)->update($processEntity->toArray());
             Cache::tags(['catalog', 'process'])->flush();

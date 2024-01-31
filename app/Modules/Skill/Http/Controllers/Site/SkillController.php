@@ -25,12 +25,10 @@ class SkillController extends Controller
      * @param int|string $id ID категории.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException
      */
     public function get(int|string $id): JsonResponse
     {
-        $action = app(SkillGetAction::class);
-        $action->id = $id;
+        $action = new SkillGetAction($id);
         $data = $action->run();
 
         if ($data) {
@@ -60,8 +58,7 @@ class SkillController extends Controller
      */
     public function link(string $link): JsonResponse
     {
-        $action = app(SkillLinkAction::class);
-        $action->link = $link;
+        $action = new SkillLinkAction($link);
         $data = $action->run();
 
         if ($data) {

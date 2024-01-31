@@ -21,14 +21,14 @@ use App\Modules\Feedback\Entities\Feedback as FeedbackEntity;
 class FeedbackGetAction extends Action
 {
     /**
-     * ID пользователей.
+     * ID обратной связи.
      *
      * @var int|string
      */
     private int|string $id;
 
     /**
-     * @param int|string $id
+     * @param int|string $id ID обратной связи.
      */
     public function __construct(int|string $id)
     {

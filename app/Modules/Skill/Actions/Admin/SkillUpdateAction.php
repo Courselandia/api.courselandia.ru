@@ -8,6 +8,8 @@
 
 namespace App\Modules\Skill\Actions\Admin;
 
+use App\Modules\Metatag\Data\MetatagSet;
+use App\Modules\Skill\Data\SkillUpdate;
 use Cache;
 use Typography;
 use App\Models\Action;
@@ -28,67 +30,17 @@ use App\Modules\Analyzer\Actions\Admin\AnalyzerUpdateAction;
 class SkillUpdateAction extends Action
 {
     /**
-     * ID навыка.
-     *
-     * @var int|string|null
+     * @var SkillUpdate Данные для создания навыка.
      */
-    public int|string|null $id = null;
+    private SkillUpdate $data;
 
     /**
-     * Название.
-     *
-     * @var string|null
+     * @param SkillUpdate $data Данные для создания навыка.
      */
-    public ?string $name = null;
-
-    /**
-     * Шаблон заголовка.
-     *
-     * @var string|null
-     */
-    public ?string $header_template = null;
-
-    /**
-     * Ссылка.
-     *
-     * @var string|null
-     */
-    public ?string $link = null;
-
-    /**
-     * Статья.
-     *
-     * @var string|null
-     */
-    public ?string $text = null;
-
-    /**
-     * Статус.
-     *
-     * @var bool|null
-     */
-    public ?bool $status = null;
-
-    /**
-     * Шаблон описания.
-     *
-     * @var string|null
-     */
-    public ?string $description_template = null;
-
-    /**
-     * Ключевые слова.
-     *
-     * @var string|null
-     */
-    public ?string $keywords = null;
-
-    /**
-     * Шаблон заголовка.
-     *
-     * @var string|null
-     */
-    public ?string $title_template = null;
+    public function __construct(SkillUpdate $data)
+    {
+        $this->data = $data;
+    }
 
     /**
      * Метод запуска логики.
@@ -100,8 +52,7 @@ class SkillUpdateAction extends Action
      */
     public function run(): SkillEntity
     {
-        $action = app(SkillGetAction::class);
-        $action->id = $this->id;
+        $action = new SkillGetAction($this->data->id);
         $skillEntity = $action->run();
 
         if ($skillEntity) {
@@ -110,45 +61,42 @@ class SkillUpdateAction extends Action
                     $query->where('schools.status', true);
                 })
                 ->whereHas('skills', function ($query) {
-                    $query->where('skills.id', $this->id);
+                    $query->where('skills.id', $this->data->id);
                 })
                 ->count();
 
             $templateValues = [
-                'skill' => $this->name,
+                'skill' => $this->data->name,
                 'countSkillCourses' => $countSkillCourses,
             ];
 
             $template = new Template();
 
-            $action = app(MetatagSetAction::class);
-            $action->description = $template->convert($this->description_template, $templateValues);
-            $action->title = $template->convert($this->title_template, $templateValues);
-            $action->description_template = $this->description_template;
-            $action->title_template = $this->title_template;
-            $action->keywords = $this->keywords;
-            $action->id = $skillEntity->metatag_id ?: null;
+            $action = new MetatagSetAction(MetatagSet::from([
+                'description' => $template->convert($this->data->description_template, $templateValues),
+                'title' => $template->convert($this->data->title_template, $templateValues),
+                'description_template' => $this->data->description_template,
+                'title_template' => $this->data->title_template,
+                'keywords' => $this->data->keywords,
+                'id' => $skillEntity->metatag_id ?: null,
+            ]));
 
-            $skillEntity->metatag_id = $action->run()->id;
-            $skillEntity->id = $this->id;
-            $skillEntity->name = Typography::process($this->name, true);
-            $skillEntity->header = Typography::process($template->convert($this->header_template, $templateValues), true);
-            $skillEntity->header_template = $this->header_template;
-            $skillEntity->link = $this->link;
-            $skillEntity->text = Typography::process($this->text);
-            $skillEntity->status = $this->status;
+            $skillEntity = SkillEntity::from([
+                ...$skillEntity->toArray(),
+                ...$this->data->toArray(),
+                'metatag_id' => $action->run()->id,
+                'name' => Typography::process($this->data->name, true),
+                'header' => Typography::process($template->convert($this->data->header_template, $templateValues), true),
+                'text' => Typography::process($this->data->text),
+            ]);
 
-            Skill::find($this->id)->update($skillEntity->toArray());
+            Skill::find($this->data->id)->update($skillEntity->toArray());
             Cache::tags(['catalog', 'skill'])->flush();
 
-            $action = app(AnalyzerUpdateAction::class);
-            $action->id = $skillEntity->id;
-            $action->model = Skill::class;
-            $action->category = 'skill.text';
+            $action = new AnalyzerUpdateAction($skillEntity->id, Skill::class, 'skill.text');
             $action->run();
 
-            $action = app(SkillGetAction::class);
-            $action->id = $this->id;
+            $action = new SkillGetAction($this->data->id);
 
             return $action->run();
         }

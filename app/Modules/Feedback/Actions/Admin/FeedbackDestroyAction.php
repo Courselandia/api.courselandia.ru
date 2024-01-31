@@ -18,14 +18,14 @@ use Cache;
 class FeedbackDestroyAction extends Action
 {
     /**
-     * Массив ID пользователей.
+     * Массив ID обратной связи.
      *
      * @var int[]|string[]
      */
     private array $ids;
 
     /**
-     * @param array $ids Массив ID пользователей.
+     * @param array $ids Массив ID обратной связи.
      */
     public function __construct(array $ids)
     {

@@ -41,10 +41,9 @@ class FaqCreateAction extends Action
     public function run(): FaqEntity
     {
         $faqEntity = FaqEntity::from([
-            'school_id' => $this->data->school_id,
+            ...$this->data->toArray(),
             'question' => Typography::process($this->data->question, true),
             'answer' => Typography::process($this->data->answer, true),
-            'status' => $this->data->status,
         ]);
 
 

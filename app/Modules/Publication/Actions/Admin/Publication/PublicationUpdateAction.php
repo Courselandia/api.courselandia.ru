@@ -57,13 +57,14 @@ class PublicationUpdateAction extends Action
                 'id' => $publicationEntity->metatag_id ?: null,
             ]));
 
-            $publicationEntity->metatag_id = $action->run()->id;
-            $publicationEntity->published_at = $this->data->published_at;
-            $publicationEntity->header = Typography::process($this->data->header, true);
-            $publicationEntity->link = $this->data->link;
-            $publicationEntity->anons = Typography::process($this->data->anons, true);
-            $publicationEntity->article = Typography::process($this->data->article);
-            $publicationEntity->status = $this->data->status;
+            $publicationEntity = PublicationEntity::from([
+                ...$publicationEntity->toArray(),
+                ...$this->data->toArray(),
+                'metatag_id' => $action->run()->id,
+                'header' => Typography::process($this->data->header, true),
+                'anons' => Typography::process($this->data->anons, true),
+                'article' => Typography::process($this->data->article),
+            ]);
 
             if ($this->data->image) {
                 Publication::find($this->data->id)->update([

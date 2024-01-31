@@ -52,14 +52,13 @@ class PublicationCreateAction extends Action
 
         $metatag = $action->run();
 
-        $publicationEntity = new PublicationEntity();
-        $publicationEntity->published_at = $this->data->published_at;
-        $publicationEntity->header = Typography::process($this->data->header, true);
-        $publicationEntity->link = $this->data->link;
-        $publicationEntity->anons = Typography::process($this->data->anons, true);
-        $publicationEntity->article = Typography::process($this->data->article);
-        $publicationEntity->status = $this->data->status;
-        $publicationEntity->metatag_id = $metatag->id;
+        $publicationEntity = PublicationEntity::from([
+            ...$this->data->toArray(),
+            'header' => Typography::process($this->data->header, true),
+            'anons' => Typography::process($this->data->anons, true),
+            'article' => Typography::process($this->data->article),
+            'metatag_id' => $metatag->id,
+        ]);
 
         $publication = Publication::create([
             ...$publicationEntity->toArray(),

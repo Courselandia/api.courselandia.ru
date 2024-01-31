@@ -48,11 +48,12 @@ class FaqUpdateAction extends Action
         $faqEntity = $action->run();
 
         if ($faqEntity) {
-            $faqEntity->id = $this->data->id;
-            $faqEntity->school_id = $this->data->school_id;
-            $faqEntity->question = Typography::process($this->data->question, true);
-            $faqEntity->answer = Typography::process($this->data->answer, true);
-            $faqEntity->status = $this->data->status;
+            $faqEntity = FaqEntity::from([
+                ...$faqEntity->toArray(),
+                ...$this->data->toArray(),
+                'question' => Typography::process($this->data->question, true),
+                'answer' => Typography::process($this->data->answer, true),
+            ]);
 
             Faq::find($this->data->id)->update($faqEntity->toArray());
             Cache::tags(['catalog', 'school', 'faq'])->flush();

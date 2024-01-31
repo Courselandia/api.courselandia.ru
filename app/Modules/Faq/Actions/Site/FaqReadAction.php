@@ -26,7 +26,7 @@ class FaqReadAction extends Action
      *
      * @var string
      */
-    public string $link;
+    private string $link;
 
     /**
      * @param string $link Ссылка на школу.

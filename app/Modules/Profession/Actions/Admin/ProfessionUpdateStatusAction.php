@@ -24,14 +24,14 @@ class ProfessionUpdateStatusAction extends Action
      *
      * @var int|string
      */
-    public int|string $id;
+    private int|string $id;
 
     /**
      * Статус.
      *
      * @var bool
      */
-    public bool $status;
+    private bool $status;
 
     /**
      * @param int|string $id ID профессии.
