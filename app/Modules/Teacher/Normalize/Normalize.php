@@ -65,7 +65,7 @@ class Normalize
             'courses.directions',
             'courses.school',
         ])
-        ->get();
+            ->get();
 
         foreach ($teachers as $teacher) {
             $directions = [];

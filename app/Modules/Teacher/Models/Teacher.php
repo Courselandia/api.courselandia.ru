@@ -112,7 +112,7 @@ class Teacher extends Eloquent
         return [
             'metatag_id' => 'digits_between:0,20',
             'name' => 'required|between:1,191',
-            'link' => 'required|between:1,191|alpha_dash|unique_soft:teachers,link,'.$this->id.',id',
+            'link' => 'required|between:1,191|alpha_dash|unique_soft:teachers,link,' . $this->id . ',id',
             'text' => 'max:65000',
             'city' => 'max:191',
             'comment' => 'max:191',

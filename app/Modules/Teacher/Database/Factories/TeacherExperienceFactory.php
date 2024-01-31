@@ -38,7 +38,7 @@ class TeacherExperienceFactory extends Factory
             'position' => $this->faker->text(160),
             'started' => Carbon::now()->subMonths(5),
             'finished' => Carbon::now()->subMonths(2),
-            'weight' =>  $this->faker->numberBetween(1, 20),
+            'weight' => $this->faker->numberBetween(1, 20),
         ];
     }
 }

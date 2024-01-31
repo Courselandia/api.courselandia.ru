@@ -8,7 +8,6 @@
 
 namespace App\Modules\Teacher\Actions\Site;
 
-use App\Modules\Course\Enums\Status;
 use Cache;
 use Util;
 use App\Models\Action;
@@ -16,6 +15,7 @@ use App\Models\Enums\CacheTime;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Teacher\Entities\Teacher as TeacherEntity;
 use App\Modules\Teacher\Models\Teacher;
+use App\Modules\Course\Enums\Status;
 
 /**
  * Класс действия для получения категории.
@@ -23,11 +23,19 @@ use App\Modules\Teacher\Models\Teacher;
 class TeacherLinkAction extends Action
 {
     /**
-     * Ссылка категории.
+     * Ссылка учителя.
      *
-     * @var string|null
+     * @var string
      */
-    public string|null $link = null;
+    private string $link;
+
+    /**
+     * @param string $link Ссылка учителя.
+     */
+    public function __construct(string $link)
+    {
+        $this->link = $link;
+    }
 
     /**
      * Метод запуска логики.
@@ -70,11 +78,7 @@ class TeacherLinkAction extends Action
                     ])->first();
 
                 if ($result) {
-                    $item = $result->toArray();
-                    $entity = new TeacherEntity();
-                    $entity->set($item);
-
-                    return $entity;
+                    return TeacherEntity::from($result->toArray());
                 }
 
                 return null;

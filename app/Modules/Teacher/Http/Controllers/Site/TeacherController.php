@@ -25,12 +25,10 @@ class TeacherController extends Controller
      * @param int|string $id ID категории.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException
      */
     public function get(int|string $id): JsonResponse
     {
-        $action = app(TeacherGetAction::class);
-        $action->id = $id;
+        $action = new TeacherGetAction($id);
         $data = $action->run();
 
         if ($data) {
@@ -60,8 +58,7 @@ class TeacherController extends Controller
      */
     public function link(string $link): JsonResponse
     {
-        $action = app(TeacherLinkAction::class);
-        $action->link = $link;
+        $action = new TeacherLinkAction($link);
         $data = $action->run();
 
         if ($data) {

@@ -509,7 +509,8 @@ class TeacherControllerTest extends TestCase
         bool $image = false,
         bool $direction = false,
         bool $school = false
-    ): array {
+    ): array
+    {
         $structure = [
             'id',
             'metatag_id',

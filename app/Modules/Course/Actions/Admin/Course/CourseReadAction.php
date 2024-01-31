@@ -28,35 +28,57 @@ class CourseReadAction extends Action
      *
      * @var array|null
      */
-    public ?array $sorts = null;
+    private ?array $sorts;
 
     /**
      * Фильтрация данных.
      *
      * @var array|null
      */
-    public ?array $filters = null;
+    private ?array $filters;
 
     /**
      * Начать выборку.
      *
      * @var int|null
      */
-    public ?int $offset = null;
+    private ?int $offset;
 
     /**
      * Лимит выборки выборку.
      *
      * @var int|null
      */
-    public ?int $limit = null;
+    private ?int $limit;
 
     /**
      * ID учителя.
      *
      * @var int|string|null
      */
-    public int|string|null $teacherId = null;
+    private int|string|null $teacherId;
+
+    /**
+     * @param array|null $sorts Сортировка данных.
+     * @param array|null $filters Фильтрация данных.
+     * @param int|null $offset Начать выборку.
+     * @param int|null $limit Лимит выборки выборку.
+     * @param int|string|null $teacherId ID учителя.
+     */
+    public function __construct(
+        array           $sorts = null,
+        ?array          $filters = null,
+        ?int            $offset = null,
+        ?int            $limit = null,
+        int|string|null $teacherId = null,
+    )
+    {
+        $this->sorts = $sorts;
+        $this->filters = $filters;
+        $this->offset = $offset;
+        $this->limit = $limit;
+        $this->teacherId = $teacherId;
+    }
 
     /**
      * Метод запуска логики.
@@ -125,7 +147,7 @@ class CourseReadAction extends Action
                 $items = $query->get()->toArray();
 
                 return [
-                    'data' => Entity::toEntities($items, new CourseEntity()),
+                    'data' => CourseEntity::collection($items),
                     'total' => $queryCount->count(),
                 ];
             }

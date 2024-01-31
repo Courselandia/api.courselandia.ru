@@ -29,19 +29,15 @@ class TeacherImageController extends Controller
     /**
      * Обновление данных.
      *
-     * @param  int|string  $id  ID пользователя.
-     * @param  TeacherImageUpdateRequest  $request  Запрос.
+     * @param int|string $id ID пользователя.
+     * @param TeacherImageUpdateRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException
      */
     public function update(int|string $id, TeacherImageUpdateRequest $request): JsonResponse
     {
         try {
-            $action = app(TeacherImageUpdateAction::class);
-            $action->id = $id;
-            $action->image = $request->file('image');
-
+            $action = new TeacherImageUpdateAction($id, $request->file('image'));
             $teacher = $action->run();
 
             Log::info(trans('access::http.controllers.admin.teacherController.update.log'), [
@@ -72,7 +68,7 @@ class TeacherImageController extends Controller
     /**
      * Удаление изображения.
      *
-     * @param  int|string  $id  ID шаблона страницы.
+     * @param int|string $id ID шаблона страницы.
      *
      * @return JsonResponse Вернет JSON ответ.
      * @throws ParameterInvalidException|ReflectionException
@@ -80,8 +76,7 @@ class TeacherImageController extends Controller
     public function destroy(int|string $id): JsonResponse
     {
         try {
-            $action = app(TeacherImageDestroyAction::class);
-            $action->id = $id;
+            $action = new TeacherImageDestroyAction($id);
             $action->run();
 
             Log::info(trans('teacher::http.controllers.admin.teacherController.destroyImage.log'), [

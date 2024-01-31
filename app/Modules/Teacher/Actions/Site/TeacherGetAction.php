@@ -12,7 +12,6 @@ use Cache;
 use Util;
 use App\Models\Action;
 use App\Models\Enums\CacheTime;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Teacher\Entities\Teacher as TeacherEntity;
 use App\Modules\Teacher\Models\Teacher;
 
@@ -22,17 +21,24 @@ use App\Modules\Teacher\Models\Teacher;
 class TeacherGetAction extends Action
 {
     /**
-     * ID категории.
+     * ID учителя.
      *
-     * @var int|string|null
+     * @var int|string
      */
-    public int|string|null $id = null;
+    private int|string $id;
+
+    /**
+     * @param int|string $id ID учителя.
+     */
+    public function __construct(int|string $id)
+    {
+        $this->id = $id;
+    }
 
     /**
      * Метод запуска логики.
      *
      * @return TeacherEntity|null Вернет результаты исполнения.
-     * @throws ParameterInvalidException
      */
     public function run(): ?TeacherEntity
     {
@@ -51,11 +57,7 @@ class TeacherGetAction extends Action
                 ])->find($this->id);
 
                 if ($result) {
-                    $item = $result->toArray();
-                    $entity = new TeacherEntity();
-                    $entity->set($item);
-
-                    return $entity;
+                    return TeacherEntity::from($result->toArray());
                 }
 
                 return null;

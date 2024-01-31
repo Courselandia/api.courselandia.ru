@@ -22,7 +22,7 @@ class TeacherSocialMediaFilter extends ModelFilter
      *
      * @return TeacherSocialMediaFilter Правила поиска.
      */
-    public function id(int|string $id): TeacherSocialMediaFilter
+    public function id(int|string $id): self
     {
         return $this->where('teacher_social_medias.id', $id);
     }
@@ -34,7 +34,7 @@ class TeacherSocialMediaFilter extends ModelFilter
      *
      * @return TeacherSocialMediaFilter Правила поиска.
      */
-    public function place(string $query): TeacherSocialMediaFilter
+    public function place(string $query): self
     {
         return $this->whereLike('teacher_social_medias.name', $query);
     }
@@ -46,7 +46,7 @@ class TeacherSocialMediaFilter extends ModelFilter
      *
      * @return TeacherSocialMediaFilter Правила поиска.
      */
-    public function position(string $query): TeacherSocialMediaFilter
+    public function position(string $query): self
     {
         return $this->whereLike('teacher_social_medias.value', $query);
     }
