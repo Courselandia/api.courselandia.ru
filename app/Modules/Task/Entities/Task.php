@@ -8,7 +8,7 @@
 
 namespace App\Modules\Task\Entities;
 
-use App\Models\Entity;
+use App\Models\EntityNew;
 use Carbon\Carbon;
 use App\Modules\Task\Enums\Status;
 use App\Modules\User\Entities\User;
@@ -16,7 +16,7 @@ use App\Modules\User\Entities\User;
 /**
  * Сущность для задания.
  */
-class Task extends Entity
+class Task extends EntityNew
 {
     /**
      * ID записи.
@@ -89,9 +89,49 @@ class Task extends Entity
     public ?Carbon $deleted_at = null;
 
     /**
-     * Школа.
+     * Пользователь.
      *
      * @var User|null
      */
     public ?User $user = null;
+
+    /**
+     * @param int|string|null $id ID записи.
+     * @param int|string|null $user_id ID пользователя.
+     * @param string|null $name Название.
+     * @param string|null $reason Причина провала.
+     * @param Status|null $status Статус.
+     * @param Carbon|null $launched_at Дата запуска.
+     * @param Carbon|null $finished_at Дата завершения.
+     * @param Carbon|null $created_at Дата создания.
+     * @param Carbon|null $updated_at Дата обновления.
+     * @param Carbon|null $deleted_at Дата удаления.
+     * @param User|null $user Пользователь.
+     */
+    public function __construct(
+        int|string|null $id = null,
+        int|string|null $user_id = null,
+        ?string         $name = null,
+        ?string         $reason = null,
+        ?Status         $status = null,
+        ?Carbon         $launched_at = null,
+        ?Carbon         $finished_at = null,
+        ?Carbon         $created_at = null,
+        ?Carbon         $updated_at = null,
+        ?Carbon         $deleted_at = null,
+        ?User           $user = null
+    )
+    {
+        $this->id = $id;
+        $this->user_id = $user_id;
+        $this->name = $name;
+        $this->reason = $reason;
+        $this->status = $status;
+        $this->launched_at = $launched_at;
+        $this->finished_at = $finished_at;
+        $this->created_at = $created_at;
+        $this->updated_at = $updated_at;
+        $this->deleted_at = $deleted_at;
+        $this->user = $user;
+    }
 }
