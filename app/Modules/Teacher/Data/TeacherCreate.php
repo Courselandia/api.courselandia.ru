@@ -10,6 +10,8 @@ namespace App\Modules\Teacher\Data;
 
 use App\Models\Data;
 use Illuminate\Http\UploadedFile;
+use Spatie\LaravelData\Attributes\DataCollectionOf;
+use Spatie\LaravelData\DataCollection;
 
 /**
  * Данные для создания учителя.
@@ -124,16 +126,18 @@ class TeacherCreate extends Data
     /**
      * Опыт работы учителя.
      *
-     * @var array|null
+     * @var ?DataCollection
      */
-    public ?array $experiences = null;
+    #[DataCollectionOf(TeacherExperience::class)]
+    public ?DataCollection $experiences = null;
 
     /**
      * Социальные сети учителя.
      *
-     * @var array|null
+     * @var ?DataCollection
      */
-    public ?array $socialMedias = null;
+    #[DataCollectionOf(TeacherSocialMedia::class)]
+    public ?DataCollection $socialMedias = null;
 
     /**
      * ID школ.
@@ -158,29 +162,29 @@ class TeacherCreate extends Data
      * @param string|null $keywords Ключевые слова.
      * @param string|null $title_template Шаблон заголовка.
      * @param array|null $directions ID направлений.
-     * @param array|null $experiences Опыт работы учителя.
-     * @param array|null $socialMedias Социальные сети учителя.
+     * @param ?DataCollection $experiences Опыт работы учителя.
+     * @param ?DataCollection $socialMedias Социальные сети учителя.
      * @param array|null $schools ID школ.
      */
     public function __construct(
-        ?string       $name = null,
-        ?string       $link = null,
-        ?string       $text = null,
-        ?string       $city = null,
-        ?string       $comment = null,
-        ?bool         $copied = false,
-        ?float        $rating = null,
-        ?UploadedFile $image = null,
-        string|null   $imageCropped = null,
-        array|null    $imageCroppedOptions = null,
-        ?bool         $status = null,
-        string        $description_template = null,
-        ?string       $keywords = null,
-        ?string       $title_template = null,
-        ?array        $directions = null,
-        ?array        $experiences = null,
-        ?array        $socialMedias = null,
-        ?array        $schools = null
+        ?string         $name = null,
+        ?string         $link = null,
+        ?string         $text = null,
+        ?string         $city = null,
+        ?string         $comment = null,
+        ?bool           $copied = false,
+        ?float          $rating = null,
+        ?UploadedFile   $image = null,
+        string|null     $imageCropped = null,
+        array|null      $imageCroppedOptions = null,
+        ?bool           $status = null,
+        string          $description_template = null,
+        ?string         $keywords = null,
+        ?string         $title_template = null,
+        ?array          $directions = null,
+        ?DataCollection $experiences = null,
+        ?DataCollection $socialMedias = null,
+        ?array          $schools = null
     )
     {
         $this->name = $name;

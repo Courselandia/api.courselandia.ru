@@ -26,7 +26,7 @@ return [
     ],
     'teacherSocialMedia' => [
         'teacher_id' => 'ID учителя',
-        'name' => 'Name',
-        'value' => 'Value',
+        'name' => 'Название',
+        'value' => 'Значение',
     ],
 ];

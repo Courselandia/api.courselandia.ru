@@ -130,21 +130,13 @@ class TeacherUpdateAction extends Action
 
                 if ($this->data->experiences) {
                     foreach ($this->data->experiences as $experience) {
-                        $entity = new TeacherExperienceEntity();
-                        $entity->teacher_id = $teacher->id;
-                        $entity->place = $experience['place'];
-                        $entity->position = $experience['position'];
-                        $entity->weight = $experience['weight'];
-
-                        $entity->started = $experience['started'] ? Carbon::createFromFormat(
-                            'Y-m-d',
-                            $experience['started']
-                        ) : null;
-
-                        $entity->finished = $experience['finished'] ? Carbon::createFromFormat(
-                            'Y-m-d',
-                            $experience['finished']
-                        ) : null;
+                        /**
+                         * @var TeacherExperience $experience
+                         */
+                        $entity = TeacherExperienceEntity::from([
+                            ...$experience->toArray(),
+                            'teacher_id' => $teacher->id,
+                        ]);
 
                         TeacherExperience::create($entity->toArray());
                     }
@@ -155,10 +147,13 @@ class TeacherUpdateAction extends Action
 
                 if ($this->data->socialMedias) {
                     foreach ($this->data->socialMedias as $socialMedia) {
+                        /**
+                         * @var TeacherSocialMedia $socialMedia
+                         */
                         $entity = new TeacherSocialMediaEntity();
                         $entity->teacher_id = $teacher->id;
-                        $entity->name = SocialMedia::from($socialMedia['name']);
-                        $entity->value = $socialMedia['value'];
+                        $entity->name = SocialMedia::from($socialMedia->name);
+                        $entity->value = $socialMedia->value;
 
                         TeacherSocialMedia::create($entity->toArray());
                     }

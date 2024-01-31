@@ -8,8 +8,8 @@
 
 namespace App\Modules\Teacher\Data;
 
-use App\Models\Data;
 use Illuminate\Http\UploadedFile;
+use Spatie\LaravelData\DataCollection;
 
 /**
  * Данные для обновления учителя.
@@ -40,30 +40,30 @@ class TeacherUpdate extends TeacherCreate
      * @param string|null $keywords Ключевые слова.
      * @param string|null $title_template Шаблон заголовка.
      * @param array|null $directions ID направлений.
-     * @param array|null $experiences Опыт работы учителя.
-     * @param array|null $socialMedias Социальные сети учителя.
+     * @param ?DataCollection $experiences Опыт работы учителя.
+     * @param ?DataCollection $socialMedias Социальные сети учителя.
      * @param array|null $schools ID школ.
      */
     public function __construct(
-        int|string    $id,
-        ?string       $name = null,
-        ?string       $link = null,
-        ?string       $text = null,
-        ?string       $city = null,
-        ?string       $comment = null,
-        ?bool         $copied = null,
-        ?float        $rating = null,
-        ?UploadedFile $image = null,
-        string|null   $imageCropped = null,
-        array|null    $imageCroppedOptions = null,
-        ?bool         $status = null,
-        string        $description_template = null,
-        ?string       $keywords = null,
-        ?string       $title_template = null,
-        ?array        $directions = null,
-        ?array        $experiences = null,
-        ?array        $socialMedias = null,
-        ?array        $schools = null
+        int|string      $id,
+        ?string         $name = null,
+        ?string         $link = null,
+        ?string         $text = null,
+        ?string         $city = null,
+        ?string         $comment = null,
+        ?bool           $copied = null,
+        ?float          $rating = null,
+        ?UploadedFile   $image = null,
+        string|null     $imageCropped = null,
+        array|null      $imageCroppedOptions = null,
+        ?bool           $status = null,
+        string          $description_template = null,
+        ?string         $keywords = null,
+        ?string         $title_template = null,
+        ?array          $directions = null,
+        ?DataCollection $experiences = null,
+        ?DataCollection $socialMedias = null,
+        ?array          $schools = null
     )
     {
         $this->id = $id;

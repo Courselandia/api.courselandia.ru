@@ -9,8 +9,11 @@
 namespace App\Modules\Teacher\Http\Controllers\Admin;
 
 use App\Modules\Teacher\Data\TeacherCreate;
+use App\Modules\Teacher\Data\TeacherExperience;
+use App\Modules\Teacher\Data\TeacherSocialMedia;
 use App\Modules\Teacher\Data\TeacherUpdate;
 use Auth;
+use Carbon\Carbon;
 use Log;
 use Throwable;
 use ReflectionException;
@@ -150,7 +153,31 @@ class TeacherController extends Controller
     public function create(TeacherCreateRequest $request): JsonResponse
     {
         try {
-            $data = TeacherCreate::from($request->all());
+            $data = TeacherCreate::from([
+                ...$request->all(),
+                'socialMedias' => TeacherSocialMedia::collection(collect($request->get('socialMedias'))
+                    ->map(static function ($socialMedia) {
+                        return TeacherSocialMedia::from($socialMedia);
+                    })
+                    ->toArray()),
+                'experiences' => TeacherExperience::collection(collect($request->get('experiences'))
+                    ->map(static function ($experience) {
+                        return TeacherExperience::from([
+                            ...$experience,
+                            'weight' => $experience['weight'] ?? 0,
+                            'started' => (isset($experience['started']) && $experience['started']) ? Carbon::createFromFormat(
+                                'Y-m-d',
+                                $experience['started']
+                            ) : null,
+                            'finished' => (isset($experience['finished']) && $experience['finished']) ? Carbon::createFromFormat(
+                                'Y-m-d',
+                                $experience['finished']
+                            ) : null,
+                        ]);
+                    })
+                    ->toArray()
+                ),
+            ]);
 
             if ($request->hasFile('image') && $request->file('image')->isValid()) {
                 $data->image = $request->file('image');
@@ -207,6 +234,28 @@ class TeacherController extends Controller
             $data = TeacherUpdate::from([
                 ...$request->all(),
                 'id' => $id,
+                'socialMedias' => TeacherSocialMedia::collection(collect($request->get('socialMedias'))
+                    ->map(static function ($socialMedia) {
+                        return TeacherSocialMedia::from($socialMedia);
+                    })
+                    ->toArray()),
+                'experiences' => TeacherExperience::collection(collect($request->get('experiences'))
+                    ->map(static function ($experience) {
+                        return TeacherExperience::from([
+                            ...$experience,
+                            'weight' => $experience['weight'] ?? 0,
+                            'started' => (isset($experience['started']) && $experience['started']) ? Carbon::createFromFormat(
+                                'Y-m-d',
+                                $experience['started']
+                            ) : null,
+                            'finished' => (isset($experience['finished']) && $experience['finished']) ? Carbon::createFromFormat(
+                                'Y-m-d',
+                                $experience['finished']
+                            ) : null,
+                        ]);
+                    })
+                    ->toArray()
+                ),
             ]);
 
             if ($request->hasFile('image') && $request->file('image')->isValid()) {
