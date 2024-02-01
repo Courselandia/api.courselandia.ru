@@ -10,7 +10,6 @@ namespace App\Modules\Tool\Actions\Admin;
 
 use App\Models\Action;
 use App\Models\Enums\CacheTime;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Tool\Entities\Tool as ToolEntity;
 use App\Modules\Tool\Models\Tool;
 use Cache;
@@ -24,15 +23,22 @@ class ToolGetAction extends Action
     /**
      * ID инструмента.
      *
-     * @var int|string|null
+     * @var int|string
      */
-    public int|string|null $id = null;
+    private int|string $id;
+
+    /**
+     * @param int|string $id ID инструмента.
+     */
+    public function __construct(int|string $id)
+    {
+        $this->id = $id;
+    }
 
     /**
      * Метод запуска логики.
      *
      * @return ToolEntity|null Вернет результаты исполнения.
-     * @throws ParameterInvalidException
      */
     public function run(): ?ToolEntity
     {
@@ -49,7 +55,7 @@ class ToolGetAction extends Action
                     ])
                     ->first();
 
-                return $tool ? new ToolEntity($tool->toArray()) : null;
+                return $tool ? ToolEntity::from($tool->toArray()) : null;
             }
         );
     }

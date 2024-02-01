@@ -48,8 +48,7 @@ class ToolTextAnalyzerCategory extends AnalyzerCategory
      */
     public function label(int $id): string
     {
-        $action = app(ToolGetAction::class);
-        $action->id = $id;
+        $action = new ToolGetAction($id);
         $toolEntity = $action->run();
 
         if ($toolEntity) {
@@ -71,8 +70,7 @@ class ToolTextAnalyzerCategory extends AnalyzerCategory
      */
     public function text(int $id): ?string
     {
-        $action = app(ToolGetAction::class);
-        $action->id = $id;
+        $action = new ToolGetAction($id);
         $toolEntity = $action->run();
 
         if ($toolEntity) {
