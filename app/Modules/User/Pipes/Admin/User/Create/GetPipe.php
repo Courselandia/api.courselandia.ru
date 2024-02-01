@@ -9,11 +9,10 @@
 namespace App\Modules\User\Pipes\Admin\User\Create;
 
 use App\Models\Contracts\Pipe;
-use App\Models\Entity;
+use App\Models\Data;
 use App\Models\Enums\CacheTime;
-use App\Models\Exceptions\ParameterInvalidException;
+use App\Modules\User\Data\Decorators\UserProfileUpdate;
 use App\Modules\User\Entities\User as UserEntity;
-use App\Modules\User\Entities\UserCreate;
 use App\Modules\User\Models\User;
 use Cache;
 use Closure;
@@ -27,15 +26,14 @@ class GetPipe implements Pipe
     /**
      * Метод, который будет вызван у pipeline.
      *
-     * @param  Entity|UserCreate  $entity  Сущность для создания пользователя.
-     * @param  Closure  $next  Ссылка на следующий pipe.
+     * @param Data|UserProfileUpdate $data Данные для декоратора обновления профиля пользователя.
+     * @param Closure $next Ссылка на следующий pipe.
      *
      * @return mixed Вернет значение полученное после выполнения следующего pipe.
-     * @throws ParameterInvalidException
      */
-    public function handle(Entity|UserCreate $entity, Closure $next): mixed
+    public function handle(Data|UserProfileUpdate $data, Closure $next): mixed
     {
-        $id = $entity->id;
+        $id = $data->id;
         $cacheKey = Util::getKey('user', $id, 'verification', 'auths', 'role');
 
         $user = Cache::tags(['user'])->remember(
@@ -49,13 +47,14 @@ class GetPipe implements Pipe
                         'role',
                     ])->first();
 
-                return $user ? new UserEntity($user->toArray()) : null;
+                return $user ? UserEntity::from($user->toArray()) : null;
             }
         );
 
         $user->password = null;
         unset($user->image);
+        $data->user = $user;
 
-        return $next($user);
+        return $next($data);
     }
 }

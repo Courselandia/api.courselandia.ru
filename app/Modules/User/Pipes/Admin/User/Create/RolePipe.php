@@ -8,15 +8,15 @@
 
 namespace App\Modules\User\Pipes\Admin\User\Create;
 
-use Cache;
-use Closure;
-use Exception;
 use App\Models\Contracts\Pipe;
 use App\Models\Entity;
 use App\Models\Exceptions\ParameterInvalidException;
-use App\Modules\User\Entities\UserCreate;
-use App\Modules\User\Models\UserRole;
+use App\Modules\User\Data\Decorators\UserCreate;
 use App\Modules\User\Entities\UserRole as UserRoleEntity;
+use App\Modules\User\Models\UserRole;
+use Cache;
+use Closure;
+use Exception;
 
 /**
  * Создание пользователя: добавление ролей к пользователю.

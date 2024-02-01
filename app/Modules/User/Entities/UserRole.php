@@ -59,13 +59,21 @@ class UserRole extends EntityNew
      */
     public ?Carbon $deleted_at = null;
 
+    /**
+     * @param int|string|null $id ID записи.
+     * @param int|string|null $user_id ID пользователя.
+     * @param Role|null $name Название роли.
+     * @param Carbon|null $created_at Дата создания.
+     * @param Carbon|null $updated_at Дата обновления.
+     * @param Carbon|null $deleted_at Дата удаления.
+     */
     public function __construct(
         int|string|null $id = null,
         int|string|null $user_id = null,
-        ?Role $name = null,
-        ?Carbon $created_at = null,
-        ?Carbon $updated_at = null,
-        ?Carbon $deleted_at = null
+        ?Role           $name = null,
+        ?Carbon         $created_at = null,
+        ?Carbon         $updated_at = null,
+        ?Carbon         $deleted_at = null
     )
     {
         $this->id = $id;

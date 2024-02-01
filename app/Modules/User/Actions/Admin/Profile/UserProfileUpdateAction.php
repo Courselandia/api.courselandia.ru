@@ -9,12 +9,13 @@
 namespace App\Modules\User\Actions\Admin\Profile;
 
 use App\Models\Action;
+use App\Modules\User\Data\Actions\UserProfileUpdate;
 use App\Modules\User\Decorators\Admin\User\UserUpdateDecorator;
 use App\Modules\User\Entities\User;
 use App\Modules\User\Pipes\Admin\User\Create\GetPipe;
 use App\Modules\User\Pipes\Admin\Profile\Update\UpdatePipe;
 use App\Modules\User\Pipes\Admin\User\Update\ImagePipe;
-use Illuminate\Http\UploadedFile;
+use App\Modules\User\Data\Decorators\UserProfileUpdate as UserProfileUpdateDataDecorator;
 
 /**
  * Обновления профиля пользователя.
@@ -22,39 +23,17 @@ use Illuminate\Http\UploadedFile;
 class UserProfileUpdateAction extends Action
 {
     /**
-     * ID пользователя.
-     *
-     * @var string|int|null
+     * @var UserProfileUpdate Данные для действия обновления профиля пользователя.
      */
-    public string|int|null $id = null;
+    private UserProfileUpdate $data;
 
     /**
-     * Имя.
-     *
-     * @var string|null
+     * @param UserProfileUpdate $data Данные для действия обновления профиля пользователя.
      */
-    public ?string $first_name = null;
-
-    /**
-     * Фамилия.
-     *
-     * @var string|null
-     */
-    public ?string $second_name = null;
-
-    /**
-     * Телефон.
-     *
-     * @var string|null
-     */
-    public ?string $phone = null;
-
-    /**
-     * Изображение.
-     *
-     * @var UploadedFile|null
-     */
-    public ?UploadedFile $image = null;
+    public function __construct(UserProfileUpdate $data)
+    {
+        $this->data = $data;
+    }
 
     /**
      * Метод запуска логики.
@@ -63,12 +42,7 @@ class UserProfileUpdateAction extends Action
      */
     public function run(): User
     {
-        $decorator = app(UserUpdateDecorator::class);
-        $decorator->id = $this->id;
-        $decorator->image = $this->image;
-        $decorator->first_name = $this->first_name;
-        $decorator->second_name = $this->second_name;
-        $decorator->phone = $this->phone;
+        $decorator = new UserUpdateDecorator(UserProfileUpdateDataDecorator::from($this->data->toArray()));
 
         $decorator->setActions([
             UpdatePipe::class,

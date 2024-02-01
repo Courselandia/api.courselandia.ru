@@ -10,7 +10,6 @@ namespace App\Modules\User\Actions\Admin\User;
 
 use App\Models\Action;
 use App\Models\Enums\CacheTime;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\User\Entities\User as UserEntity;
 use App\Modules\User\Models\User;
 use Cache;
@@ -22,17 +21,24 @@ use Util;
 class UserGetAction extends Action
 {
     /**
-     * ID пользователей.
+     * ID пользователя.
      *
-     * @var int|string|null
+     * @var int|string
      */
-    public int|string|null $id = null;
+    private int|string $id;
+
+    /**
+     * @param int|string $id ID пользователя.
+     */
+    public function __construct(int|string $id)
+    {
+        $this->id = $id;
+    }
 
     /**
      * Метод запуска логики.
      *
      * @return UserEntity|null Вернет результаты исполнения.
-     * @throws ParameterInvalidException
      */
     public function run(): ?UserEntity
     {
@@ -49,7 +55,7 @@ class UserGetAction extends Action
                             'role',
                         ])->first();
 
-                    return $user ? new UserEntity($user->toArray()) : null;
+                    return $user ? UserEntity::from($user->toArray()) : null;
                 }
             );
         }

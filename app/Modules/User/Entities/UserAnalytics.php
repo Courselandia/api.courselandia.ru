@@ -8,12 +8,12 @@
 
 namespace App\Modules\User\Entities;
 
-use App\Models\Entity;
+use App\Models\EntityNew;
 
 /**
  * Сущность для статистики новых пользователей.
  */
-class UserAnalytics extends Entity
+class UserAnalytics extends EntityNew
 {
     /**
      * Дата.
@@ -28,4 +28,17 @@ class UserAnalytics extends Entity
      * @var int|null
      */
     public ?int $amount = null;
+
+    /**
+     * @param string|null $date_group Дата.
+     * @param int|null $amount Количество.
+     */
+    public function __construct(
+        ?string $date_group = null,
+        ?int    $amount = null
+    )
+    {
+        $this->date_group = $date_group;
+        $this->amount = $amount;
+    }
 }

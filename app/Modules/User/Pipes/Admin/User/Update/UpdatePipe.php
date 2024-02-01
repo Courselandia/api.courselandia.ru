@@ -8,15 +8,15 @@
 
 namespace App\Modules\User\Pipes\Admin\User\Update;
 
+use App\Models\Contracts\Pipe;
 use App\Models\Entity;
 use App\Models\Exceptions\ParameterInvalidException;
+use App\Models\Exceptions\UserNotExistException;
 use App\Modules\User\Actions\Admin\User\UserGetAction;
-use App\Modules\User\Entities\UserUpdate;
+use App\Modules\User\Data\Decorators\UserUpdate;
+use App\Modules\User\Models\User;
 use Cache;
 use Closure;
-use App\Models\Contracts\Pipe;
-use App\Modules\User\Models\User;
-use App\Models\Exceptions\UserNotExistException;
 
 /**
  * Обновление пользователя: обновление пользователя.

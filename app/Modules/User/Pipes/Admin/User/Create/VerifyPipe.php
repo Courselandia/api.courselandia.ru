@@ -12,12 +12,12 @@ use App\Models\Contracts\Pipe;
 use App\Models\Entity;
 use App\Models\Enums\CacheTime;
 use App\Models\Exceptions\ParameterInvalidException;
-use App\Modules\User\Entities\UserCreate;
-use App\Modules\User\Models\UserVerification;
+use App\Models\Exceptions\RecordNotExistException;
+use App\Modules\User\Data\Decorators\UserCreate;
 use App\Modules\User\Entities\UserVerification as UserVerificationEntity;
+use App\Modules\User\Models\UserVerification;
 use Cache;
 use Closure;
-use App\Models\Exceptions\RecordNotExistException;
 use ReflectionException;
 use Util;
 

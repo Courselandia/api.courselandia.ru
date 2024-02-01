@@ -10,8 +10,8 @@ namespace App\Modules\User\Pipes\Admin\User\Create;
 
 use App\Models\Contracts\Pipe;
 use App\Models\Entity;
+use App\Modules\User\Data\Decorators\UserCreate;
 use App\Modules\User\Emails\Invitation;
-use App\Modules\User\Entities\UserCreate;
 use Closure;
 use Mail;
 

@@ -11,7 +11,7 @@ namespace App\Modules\User\Pipes\Admin\User\Create;
 use App\Models\Contracts\Pipe;
 use App\Models\Entity;
 use App\Models\Exceptions\ParameterInvalidException;
-use App\Modules\User\Entities\UserCreate;
+use App\Modules\User\Data\Decorators\UserCreate;
 use App\Modules\User\Models\User;
 use Cache;
 use Closure;

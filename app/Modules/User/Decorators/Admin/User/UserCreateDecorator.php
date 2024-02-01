@@ -9,7 +9,7 @@
 namespace App\Modules\User\Decorators\Admin\User;
 
 use App\Models\Decorator;
-use App\Modules\User\Entities\UserCreate;
+use App\Modules\User\Data\Decorators\UserCreate;
 use App\Modules\User\Entities\User;
 use App\Modules\User\Enums\Role;
 use Illuminate\Http\UploadedFile;

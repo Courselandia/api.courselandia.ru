@@ -48,6 +48,13 @@ class User extends EntityNew
     public ?Image $image_big_id = null;
 
     /**
+     * Изображение.
+     *
+     * @var UploadedFile|null
+     */
+    public ?UploadedFile $image = null;
+
+    /**
      * Логин.
      *
      * @var string|null
@@ -157,6 +164,7 @@ class User extends EntityNew
      * @param Image|null $image_small_id Маленькое изображение.
      * @param Image|null $image_middle_id Среднее изображение.
      * @param Image|null $image_big_id Большое изображение.
+     * @param UploadedFile|null $image Изображение.
      * @param string|null $login Логин.
      * @param string|null $password Пароль.
      * @param string|null $remember_token Токен.
@@ -178,6 +186,7 @@ class User extends EntityNew
         ?Image            $image_small_id = null,
         ?Image            $image_middle_id = null,
         ?Image            $image_big_id = null,
+        ?UploadedFile     $image = null,
         ?string           $login = null,
         ?string           $password = null,
         ?string           $remember_token = null,
@@ -214,6 +223,7 @@ class User extends EntityNew
         $this->created_at = $created_at;
         $this->updated_at = $updated_at;
         $this->deleted_at = $deleted_at;
+        $this->image = $image;
     }
 
     /**

@@ -9,7 +9,6 @@
 namespace App\Modules\User\Actions\Admin\User;
 
 use App\Models\Action;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\UserNotExistException;
 use App\Modules\User\Entities\User as UserEntity;
 use App\Modules\User\Models\User;
@@ -21,34 +20,42 @@ use Cache;
 class UserPasswordAction extends Action
 {
     /**
-     * ID пользователей.
+     * ID пользователя.
      *
-     * @var int|string|null
+     * @var int|string
      */
-    public int|string|null $id = null;
+    private int|string $id;
 
     /**
      * Пароль.
      *
-     * @var string|null
+     * @var string
      */
-    public ?string $password = null;
+    private string $password;
+
+    /**
+     * @param int|string $id ID пользователя.
+     * @param string $password Пароль.
+     */
+    public function __construct(int|string $id, string $password)
+    {
+        $this->id = $id;
+        $this->password = $password;
+    }
 
     /**
      * Метод запуска логики.
      *
      * @return UserEntity Вернет результаты исполнения.
      * @throws UserNotExistException
-     * @throws ParameterInvalidException
      */
     public function run(): UserEntity
     {
         if ($this->id) {
-            $action = app(UserGetAction::class);
-            $action->id = $this->id;
+            $action = new UserGetAction($this->id);
             $user = $action->run();
 
-            if($user) {
+            if ($user) {
                 $user->password = bcrypt($this->password);
 
                 User::find($this->id)->update($user->toArray());
