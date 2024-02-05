@@ -8,7 +8,6 @@
 
 namespace App\Modules\Analyzer\Categories;
 
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Modules\Direction\Actions\Admin\DirectionGetAction;
 use App\Modules\Analyzer\Contracts\AnalyzerCategory;

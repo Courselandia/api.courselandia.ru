@@ -23,11 +23,19 @@ use App\Modules\Article\Models\Article;
 class ArticleGetAction extends Action
 {
     /**
-     * ID направления.
+     * ID статьи.
      *
-     * @var int|string|null
+     * @var int|string
      */
-    public int|string|null $id = null;
+    private int|string $id;
+
+    /**
+     * @param int|string $id ID статьи.
+     */
+    public function __construct(int|string $id)
+    {
+        $this->id = $id;
+    }
 
     /**
      * Метод запуска логики.

@@ -9,7 +9,6 @@
 namespace App\Modules\Analyzer\Analyze\Tasks;
 
 use Carbon\Carbon;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Analyzer\Jobs\AnalyzerAnalyzeTextJob;
 use App\Modules\Skill\Models\Skill;
 use Illuminate\Database\Eloquent\Builder;
@@ -38,7 +37,6 @@ class SkillTextTask extends Task
      * @param Carbon|null $delay Дата, на сколько нужно отложить задачу.
      *
      * @return void
-     * @throws ParameterInvalidException
      */
     public function run(Carbon $delay = null): void
     {

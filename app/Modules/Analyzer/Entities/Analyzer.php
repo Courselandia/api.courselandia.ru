@@ -111,7 +111,7 @@ class Analyzer extends EntityNew
     /**
      * Название сущности для которой проверяется текст.
      *
-     * @var int|string|null
+     * @var string|null
      */
     public ?string $analyzerable_type = null;
 

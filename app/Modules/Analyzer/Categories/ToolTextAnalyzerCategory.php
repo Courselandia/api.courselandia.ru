@@ -8,7 +8,6 @@
 
 namespace App\Modules\Analyzer\Categories;
 
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Modules\Tool\Actions\Admin\ToolGetAction;
 use App\Modules\Analyzer\Contracts\AnalyzerCategory;
@@ -44,7 +43,7 @@ class ToolTextAnalyzerCategory extends AnalyzerCategory
      * @param int $id ID сущности для которой производится анализ.
      *
      * @return string Метка.
-     * @throws RecordNotExistException|ParameterInvalidException
+     * @throws RecordNotExistException
      */
     public function label(int $id): string
     {
@@ -66,7 +65,7 @@ class ToolTextAnalyzerCategory extends AnalyzerCategory
      * @param int $id ID сущности для которой проводится анализ.
      *
      * @return string|null Текст для проверки.
-     * @throws RecordNotExistException|ParameterInvalidException
+     * @throws RecordNotExistException
      */
     public function text(int $id): ?string
     {

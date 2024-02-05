@@ -8,8 +8,6 @@
 
 namespace App\Modules\Analyzer\Jobs;
 
-use App\Modules\Plagiarism\Exceptions\TextShortException;
-use Config;
 use Log;
 use Plagiarism;
 use Cache;
@@ -25,6 +23,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use App\Models\Exceptions\LimitException;
+use App\Modules\Plagiarism\Exceptions\TextShortException;
 
 /**
  * Задание на проведения анализа текста.
@@ -71,8 +70,7 @@ class AnalyzerAnalyzeTextJob implements ShouldQueue
     public function handle(): void
     {
         try {
-            $action = app(AnalyzerGetAction::class);
-            $action->id = $this->id;
+            $action = new AnalyzerGetAction($this->id);
             $analyzerEntity = $action->run();
 
             if ($analyzerEntity && $analyzerEntity->status === Status::PENDING) {
@@ -91,7 +89,7 @@ class AnalyzerAnalyzeTextJob implements ShouldQueue
 
                         AnalyzerSaveResultJob::dispatch($this->id)
                             ->delay(now()->addMinutes(2));
-                    } catch (TextShortException $error) {
+                    } catch (TextShortException) {
                         Analyzer::find($this->id)->update([
                             'status' => Status::SKIPPED->value,
                             'unique' => null,

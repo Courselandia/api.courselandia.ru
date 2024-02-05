@@ -9,7 +9,6 @@
 namespace App\Modules\Analyzer\Analyze\Tasks;
 
 use Carbon\Carbon;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Analyzer\Jobs\AnalyzerAnalyzeTextJob;
 use App\Modules\Teacher\Models\Teacher;
 use Illuminate\Database\Eloquent\Builder;
@@ -38,7 +37,6 @@ class TeacherTextTask extends Task
      * @param Carbon|null $delay Дата, на сколько нужно отложить задачу.
      *
      * @return void
-     * @throws ParameterInvalidException
      */
     public function run(Carbon $delay = null): void
     {

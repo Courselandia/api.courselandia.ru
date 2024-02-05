@@ -78,7 +78,7 @@ class AnalyzerSaveResultJob implements ShouldQueue
                     'status' => Status::READY->value,
                     'tries' => $analyzerEntity->tries + 1,
                 ]);
-            } catch (ProcessingException $error) {
+            } catch (ProcessingException) {
                 if ($analyzerEntity->tries < self::MAX_TRIES) {
                     AnalyzerSaveResultJob::dispatch($this->id)
                         ->delay(now()->addMinutes(2));
