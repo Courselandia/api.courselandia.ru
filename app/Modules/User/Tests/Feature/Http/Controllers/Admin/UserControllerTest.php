@@ -55,7 +55,7 @@ class UserControllerTest extends TestCase
                 ],
             ],
             [
-                'Authorization' => 'Bearer '.$this->getAdminToken()
+                'Authorization' => 'Bearer ' . $this->getAdminToken()
             ]
         )->assertStatus(200)->assertJsonStructure([
             'data' => [
@@ -83,10 +83,10 @@ class UserControllerTest extends TestCase
 
         $this->json(
             'GET',
-            'api/private/admin/user/get/'.$user->id,
+            'api/private/admin/user/get/' . $user->id,
             [],
             [
-                'Authorization' => 'Bearer '.$this->getAdminToken()
+                'Authorization' => 'Bearer ' . $this->getAdminToken()
             ]
         )->assertStatus(200)->assertJsonStructure([
             'data' => $this->getUserStructure(),
@@ -106,7 +106,7 @@ class UserControllerTest extends TestCase
             'api/private/admin/user/get/1000',
             [],
             [
-                'Authorization' => 'Bearer '.$this->getAdminToken()
+                'Authorization' => 'Bearer ' . $this->getAdminToken()
             ]
         )->assertStatus(404)->assertJsonStructure([
             'data',
@@ -135,7 +135,7 @@ class UserControllerTest extends TestCase
                 'invitation' => true
             ],
             [
-                'Authorization' => 'Bearer '.$this->getAdminToken()
+                'Authorization' => 'Bearer ' . $this->getAdminToken()
             ]
         )->assertStatus(200)->assertJsonStructure([
             'success',
@@ -167,7 +167,7 @@ class UserControllerTest extends TestCase
                 'invitation' => true
             ],
             [
-                'Authorization' => 'Bearer '.$this->getAdminToken()
+                'Authorization' => 'Bearer ' . $this->getAdminToken()
             ]
         )->assertStatus(200)->assertJsonStructure([
             'success',
@@ -198,7 +198,7 @@ class UserControllerTest extends TestCase
                 'image' => UploadedFile::fake()->image('me.mp4', 1000, 1000),
             ],
             [
-                'Authorization' => 'Bearer '.$this->getAdminToken()
+                'Authorization' => 'Bearer ' . $this->getAdminToken()
             ]
         )->assertStatus(400)->assertJsonStructure([
             'success',
@@ -218,7 +218,7 @@ class UserControllerTest extends TestCase
 
         $this->json(
             'PUT',
-            'api/private/admin/user/update/'.$user['id'],
+            'api/private/admin/user/update/' . $user['id'],
             [
                 'login' => $faker->email,
                 'password' => $faker->password,
@@ -230,7 +230,7 @@ class UserControllerTest extends TestCase
                 'image' => UploadedFile::fake()->image('me.jpg', 1000, 1000),
             ],
             [
-                'Authorization' => 'Bearer '.$this->getAdminToken()
+                'Authorization' => 'Bearer ' . $this->getAdminToken()
             ]
         )->assertStatus(200)->assertJsonStructure([
             'success',
@@ -250,7 +250,7 @@ class UserControllerTest extends TestCase
 
         $this->json(
             'PUT',
-            'api/private/admin/user/update/'.$user['id'],
+            'api/private/admin/user/update/' . $user['id'],
             [
                 'login' => $faker->email,
                 'password' => $faker->password,
@@ -262,7 +262,7 @@ class UserControllerTest extends TestCase
                 'image' => UploadedFile::fake()->image('me.mp4', 1000, 1000),
             ],
             [
-                'Authorization' => 'Bearer '.$this->getAdminToken()
+                'Authorization' => 'Bearer ' . $this->getAdminToken()
             ]
         )->assertStatus(400)->assertJsonStructure([
             'success',
@@ -293,7 +293,7 @@ class UserControllerTest extends TestCase
                 'image' => UploadedFile::fake()->image('me.jpg', 1000, 1000),
             ],
             [
-                'Authorization' => 'Bearer '.$this->getAdminToken()
+                'Authorization' => 'Bearer ' . $this->getAdminToken()
             ]
         )->assertStatus(404)->assertJsonStructure([
             'success',
@@ -318,12 +318,12 @@ class UserControllerTest extends TestCase
 
         $this->json(
             'PUT',
-            'api/private/admin/user/update/status/'.$user['id'],
+            'api/private/admin/user/update/status/' . $user['id'],
             [
                 'status' => true,
             ],
             [
-                'Authorization' => 'Bearer '.$this->getAdminToken()
+                'Authorization' => 'Bearer ' . $this->getAdminToken()
             ]
         )->assertStatus(200)->assertJsonStructure([
             'success',
@@ -342,12 +342,12 @@ class UserControllerTest extends TestCase
 
         $this->json(
             'PUT',
-            'api/private/admin/user/update/status/'.$user['id'],
+            'api/private/admin/user/update/status/' . $user['id'],
             [
                 'status' => 'test',
             ],
             [
-                'Authorization' => 'Bearer '.$this->getAdminToken()
+                'Authorization' => 'Bearer ' . $this->getAdminToken()
             ]
         )->assertStatus(400)->assertJsonStructure([
             'success',
@@ -369,7 +369,7 @@ class UserControllerTest extends TestCase
                 'status' => true,
             ],
             [
-                'Authorization' => 'Bearer '.$this->getAdminToken()
+                'Authorization' => 'Bearer ' . $this->getAdminToken()
             ]
         )->assertStatus(404)->assertJsonStructure([
             'success',
@@ -395,12 +395,12 @@ class UserControllerTest extends TestCase
 
         $this->json(
             'PUT',
-            'api/private/admin/user/password/'.$user['id'],
+            'api/private/admin/user/password/' . $user['id'],
             [
                 'password' => $faker->password,
             ],
             [
-                'Authorization' => 'Bearer '.$this->getAdminToken()
+                'Authorization' => 'Bearer ' . $this->getAdminToken()
             ]
         )->assertStatus(200)->assertJsonStructure([
             'success',
@@ -424,7 +424,7 @@ class UserControllerTest extends TestCase
                 'password' => $faker->password,
             ],
             [
-                'Authorization' => 'Bearer '.$this->getAdminToken()
+                'Authorization' => 'Bearer ' . $this->getAdminToken()
             ]
         )->assertStatus(404)->assertJsonStructure([
             'success',
@@ -448,7 +448,7 @@ class UserControllerTest extends TestCase
                 'ids' => [$user['id']],
             ],
             [
-                'Authorization' => 'Bearer '.$this->getAdminToken()
+                'Authorization' => 'Bearer ' . $this->getAdminToken()
             ]
         )->assertStatus(200)->assertJsonStructure([
             'success',

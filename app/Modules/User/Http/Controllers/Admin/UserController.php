@@ -9,6 +9,8 @@
 namespace App\Modules\User\Http\Controllers\Admin;
 
 use App\Models\Exceptions\ParameterInvalidException;
+use App\Modules\User\Data\Actions\UserCreate;
+use App\Modules\User\Data\Decorators\UserUpdate;
 use Auth;
 use Log;
 use App\Modules\User\Actions\Admin\User\UserUpdateStatusAction;
@@ -42,16 +44,13 @@ class UserController extends Controller
     /**
      * Получение пользователя.
      *
-     * @param  int|string  $id  ID пользователя.
+     * @param int|string $id ID пользователя.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException
      */
     public function get(int|string $id): JsonResponse
     {
-        $action = app(UserGetAction::class);
-        $action->id = $id;
-
+        $action = new UserGetAction($id);
         $user = $action->run();
 
         if ($user) {
@@ -76,21 +75,21 @@ class UserController extends Controller
     /**
      * Чтение данных.
      *
-     * @param  UserReadRequest  $request  Запрос.
+     * @param UserReadRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
      * @throws ParameterInvalidException|ReflectionException
      */
     public function read(UserReadRequest $request): JsonResponse
     {
-        $action = app(UserReadAction::class);
-        $action->sorts = $request->get('sorts');
-        $action->filters = $request->get('filters');
-        $action->offset = $request->get('offset');
-        $action->limit = $request->get('limit');
+        $action = new UserReadAction(
+            $request->get('sorts'),
+            $request->get('filters'),
+            $request->get('offset'),
+            $request->get('limit'),
+        );
 
         $data = $action->run();
-
         $data['success'] = true;
 
         return response()->json($data);
@@ -99,28 +98,25 @@ class UserController extends Controller
     /**
      * Добавление данных.
      *
-     * @param  UserCreateRequest  $request  Запрос.
+     * @param UserCreateRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
      */
     public function create(UserCreateRequest $request): JsonResponse
     {
         try {
-            $action = app(UserCreateAction::class);
-            $action->login = $request->get('login');
-            $action->password = $request->get('password');
-            $action->first_name = $request->get('first_name');
-            $action->second_name = $request->get('second_name');
-            $action->phone = $request->get('phone');
-            $action->verified = $request->get('verified', false);
-            $action->two_factor = $request->get('two_factor', false);
-            $action->status = $request->get('status', true);
-            $action->image = ($request->hasFile('image') && $request->file('image')->isValid())
-                ? $request->file('image')
-                : null;
-            $action->role = Role::from($request->get('role'));
-            $action->invitation = $request->get('invitation', false);
-
+            $data = UserCreate::from([
+                ...$request->toArray(),
+                'verified' => $request->get('verified', false),
+                'two_factor' => $request->get('two_factor', false),
+                'status' => $request->get('status', true),
+                'invitation' => $request->get('invitation', true),
+                'image' => ($request->hasFile('image') && $request->file('image')->isValid())
+                    ? $request->file('image')
+                    : null,
+                'role' => Role::from($request->get('role')),
+            ]);
+            $action = new UserCreateAction($data);
             $user = $action->run();
 
             Log::info(trans('user::http.controllers.admin.userController.create.log'), [
@@ -146,29 +142,26 @@ class UserController extends Controller
     /**
      * Обновление данных.
      *
-     * @param  int|string  $id  ID пользователя.
-     * @param  UserUpdateRequest  $request  Запрос.
+     * @param int|string $id ID пользователя.
+     * @param UserUpdateRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
      */
     public function update(int|string $id, UserUpdateRequest $request): JsonResponse
     {
         try {
-            $action = app(UserUpdateAction::class);
-            $action->id = $id;
-            $action->login = $request->get('login');
-            $action->password = $request->get('password');
-            $action->first_name = $request->get('first_name');
-            $action->second_name = $request->get('second_name');
-            $action->phone = $request->get('phone');
-            $action->verified = $request->get('verified', false);
-            $action->two_factor = $request->get('two_factor', false);
-            $action->status = $request->get('status', true);
-            $action->image = ($request->hasFile('image') && $request->file('image')->isValid())
-                ? $request->file('image')
-                : null;
-            $action->role = Role::from($request->get('role'));
-
+            $data = UserUpdate::from([
+                ...$request->all(),
+                'id' => $id,
+                'image' => ($request->hasFile('image') && $request->file('image')->isValid())
+                    ? $request->file('image')
+                    : null,
+                'role' => Role::from($request->get('role')),
+                'verified' => $request->get('verified', false),
+                'two_factor' => $request->get('two_factor', false),
+                'status' => $request->get('status', true),
+            ]);
+            $action = new UserUpdateAction($data);
             $user = $action->run();
 
             Log::info(trans('user::http.controllers.admin.userController.update.log'), [
@@ -199,19 +192,15 @@ class UserController extends Controller
     /**
      * Обновление статуса.
      *
-     * @param  int|string  $id  ID пользователя.
-     * @param  UserUpdateStatusRequest  $request  Запрос.
+     * @param int|string $id ID пользователя.
+     * @param UserUpdateStatusRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException
      */
     public function updateStatus(int|string $id, UserUpdateStatusRequest $request): JsonResponse
     {
         try {
-            $action = app(UserUpdateStatusAction::class);
-            $action->id = $id;
-            $action->status = $request->get('status');
-
+            $action = new UserUpdateStatusAction($id, $request->get('status'));
             $user = $action->run();
 
             Log::info(trans('user::http.controllers.admin.userController.update.log'), [
@@ -242,19 +231,15 @@ class UserController extends Controller
     /**
      * Обновление пароля пользователя.
      *
-     * @param  int|string  $id  ID пользователя.
-     * @param  Request  $request  Запрос.
+     * @param int|string $id ID пользователя.
+     * @param Request $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException
      */
     public function password(int|string $id, Request $request): JsonResponse
     {
         try {
-            $action = app(UserPasswordAction::class);
-            $action->id = $id;
-            $action->password = $request->get('password');
-
+            $action = new UserPasswordAction($id, $request->get('password'));
             $user = $action->run();
 
             Log::info(trans('user::http.controllers.admin.userController.password.log'), [
@@ -280,14 +265,13 @@ class UserController extends Controller
     /**
      * Удаление данных.
      *
-     * @param  UserDestroyRequest  $request  Запрос.
+     * @param UserDestroyRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
      */
     public function destroy(UserDestroyRequest $request): JsonResponse
     {
-        $action = app(UserDestroyAction::class);
-        $action->ids = $request->get('ids');
+        $action = new UserDestroyAction($request->get('ids'));
         $action->run();
 
         Log::info(trans('user::http.controllers.admin.userController.destroy.log'), [

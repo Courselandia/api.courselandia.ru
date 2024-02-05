@@ -33,9 +33,9 @@ class UserFilter extends ModelFilter
      *
      * @param int|string $id ID.
      *
-     * @return UserFilter Правила поиска.
+     * @return self Правила поиска.
      */
-    public function id(int|string $id): UserFilter
+    public function id(int|string $id): self
     {
         return $this->where('users.id', $id);
     }
@@ -45,9 +45,9 @@ class UserFilter extends ModelFilter
      *
      * @param string $query Строка поиска.
      *
-     * @return UserFilter Правила поиска.
+     * @return self Правила поиска.
      */
-    public function login(string $query): UserFilter
+    public function login(string $query): self
     {
         return $this->whereLike('users.login', $query);
     }
@@ -57,9 +57,9 @@ class UserFilter extends ModelFilter
      *
      * @param string $query Строка поиска.
      *
-     * @return UserFilter Правила поиска.
+     * @return self Правила поиска.
      */
-    public function firstName(string $query): UserFilter
+    public function firstName(string $query): self
     {
         return $this->whereLike('users.first_name', $query);
     }
@@ -69,9 +69,9 @@ class UserFilter extends ModelFilter
      *
      * @param string $query Строка поиска.
      *
-     * @return UserFilter Правила поиска.
+     * @return self Правила поиска.
      */
-    public function secondName(string $query): UserFilter
+    public function secondName(string $query): self
     {
         return $this->whereLike('users.second_name', $query);
     }
@@ -81,9 +81,9 @@ class UserFilter extends ModelFilter
      *
      * @param string $query Строка поиска.
      *
-     * @return UserFilter Правила поиска.
+     * @return self Правила поиска.
      */
-    public function phone(string $query): UserFilter
+    public function phone(string $query): self
     {
         return $this->whereLike('users.phone', $query);
     }
@@ -93,9 +93,9 @@ class UserFilter extends ModelFilter
      *
      * @param bool $status Статус.
      *
-     * @return UserFilter Правила поиска.
+     * @return self Правила поиска.
      */
-    public function status(bool $status): UserFilter
+    public function status(bool $status): self
     {
         return $this->where('users.status', $status);
     }

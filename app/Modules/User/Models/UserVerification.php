@@ -39,8 +39,6 @@ class UserVerification extends Eloquent
     use Filterable;
     use HasTimestamps;
 
-    // public $timestamps = false;
-
     /**
      * Атрибуты, для которых разрешено массовое назначение.
      *

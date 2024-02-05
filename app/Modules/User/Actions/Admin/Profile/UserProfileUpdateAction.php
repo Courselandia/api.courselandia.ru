@@ -15,7 +15,7 @@ use App\Modules\User\Entities\User;
 use App\Modules\User\Pipes\Admin\User\Create\GetPipe;
 use App\Modules\User\Pipes\Admin\Profile\Update\UpdatePipe;
 use App\Modules\User\Pipes\Admin\User\Update\ImagePipe;
-use App\Modules\User\Data\Decorators\UserProfileUpdate as UserProfileUpdateDataDecorator;
+use App\Modules\User\Data\Decorators\UserProfileUpdate as UserProfileUpdateDecoratorData;
 
 /**
  * Обновления профиля пользователя.
@@ -42,7 +42,7 @@ class UserProfileUpdateAction extends Action
      */
     public function run(): User
     {
-        $decorator = new UserUpdateDecorator(UserProfileUpdateDataDecorator::from($this->data->toArray()));
+        $decorator = new UserUpdateDecorator(UserProfileUpdateDecoratorData::from($this->data->toArray()));
 
         $decorator->setActions([
             UpdatePipe::class,

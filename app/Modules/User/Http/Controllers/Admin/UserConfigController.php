@@ -15,7 +15,6 @@ use App\Modules\User\Actions\Admin\UserConfig\UserConfigGetAction;
 use App\Modules\User\Actions\Admin\UserConfig\UserConfigUpdateAction;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Models\Exceptions\UserNotExistException;
-use App\Models\Exceptions\ParameterInvalidException;
 use Illuminate\Routing\Controller;
 use Illuminate\Http\JsonResponse;
 
@@ -32,8 +31,7 @@ class UserConfigController extends Controller
     public function get(): JsonResponse
     {
         try {
-            $action = app(UserConfigGetAction::class);
-            $action->id = Auth::getUser()->id;
+            $action = new UserConfigGetAction(Auth::getUser()->id);
             $user = $action->run();
 
             $data = [
@@ -53,18 +51,14 @@ class UserConfigController extends Controller
     /**
      * Обновление данных.
      *
-     * @param  UserConfigUpdateRequest  $request  Запрос.
+     * @param UserConfigUpdateRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException
      */
     public function update(UserConfigUpdateRequest $request): JsonResponse
     {
         try {
-            $action = app(UserConfigUpdateAction::class);
-            $action->id = Auth::getUser()->id;
-            $action->data = json_decode($request->get('configs'), true);
-
+            $action = new UserConfigUpdateAction(Auth::getUser()->id, json_decode($request->get('configs'), true));
             $data = $action->run();
 
             Log::info(trans('access::http.controllers.admin.userConfigController.update.log'), [

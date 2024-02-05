@@ -11,7 +11,9 @@ namespace App\Modules\User\Pipes\Admin\User\Create;
 use App\Models\Contracts\Pipe;
 use App\Models\Data;
 use App\Models\Enums\CacheTime;
+use App\Modules\User\Data\Decorators\UserCreate;
 use App\Modules\User\Data\Decorators\UserProfileUpdate;
+use App\Modules\User\Data\Decorators\UserUpdate;
 use App\Modules\User\Entities\User as UserEntity;
 use App\Modules\User\Models\User;
 use Cache;
@@ -26,12 +28,12 @@ class GetPipe implements Pipe
     /**
      * Метод, который будет вызван у pipeline.
      *
-     * @param Data|UserProfileUpdate $data Данные для декоратора обновления профиля пользователя.
+     * @param Data|UserUpdate|UserCreate|UserProfileUpdate $data Данные для декоратора.
      * @param Closure $next Ссылка на следующий pipe.
      *
      * @return mixed Вернет значение полученное после выполнения следующего pipe.
      */
-    public function handle(Data|UserProfileUpdate $data, Closure $next): mixed
+    public function handle(Data|UserUpdate|UserCreate|UserProfileUpdate $data, Closure $next): mixed
     {
         $id = $data->id;
         $cacheKey = Util::getKey('user', $id, 'verification', 'auths', 'role');

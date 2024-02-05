@@ -9,6 +9,7 @@
 namespace App\Modules\User\Data\Decorators;
 
 use App\Models\Data;
+use App\Modules\User\Entities\User;
 use App\Modules\User\Enums\Role;
 use Illuminate\Http\UploadedFile;
 
@@ -88,6 +89,11 @@ class UserUpdate extends Data
     public bool $two_factor = false;
 
     /**
+     * @var User|null Сущность пользователя.
+     */
+    public ?User $user = null;
+
+    /**
      * @param string|int|null $id ID пользователя.
      * @param string|null $login Логин.
      * @param string|null $first_name Имя.
@@ -98,6 +104,7 @@ class UserUpdate extends Data
      * @param bool $two_factor Двухфакторная аутентификация.
      * @param UploadedFile|null $image Изображение.
      * @param Role|null $role Роль.
+     * @param User|null $user Сущность пользователя.
      */
     public function __construct(
         string|int|null $id = null,
@@ -110,6 +117,7 @@ class UserUpdate extends Data
         bool            $two_factor = false,
         ?UploadedFile   $image = null,
         ?Role           $role = null,
+        ?User           $user = null,
     )
     {
         $this->id = $id;
@@ -122,5 +130,6 @@ class UserUpdate extends Data
         $this->two_factor = $two_factor;
         $this->image = $image;
         $this->role = $role;
+        $this->user = $user;
     }
 }

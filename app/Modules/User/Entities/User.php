@@ -52,7 +52,7 @@ class User extends EntityNew
      *
      * @var UploadedFile|null
      */
-    public ?UploadedFile $image = null;
+    //public ?UploadedFile $image = null;
 
     /**
      * Логин.
@@ -186,7 +186,7 @@ class User extends EntityNew
         ?Image            $image_small_id = null,
         ?Image            $image_middle_id = null,
         ?Image            $image_big_id = null,
-        ?UploadedFile     $image = null,
+        //?UploadedFile     $image = null,
         ?string           $login = null,
         ?string           $password = null,
         ?string           $remember_token = null,
@@ -223,7 +223,7 @@ class User extends EntityNew
         $this->created_at = $created_at;
         $this->updated_at = $updated_at;
         $this->deleted_at = $deleted_at;
-        $this->image = $image;
+        //$this->image = $image;
     }
 
     /**

@@ -9,8 +9,9 @@
 namespace App\Modules\User\Data\Decorators;
 
 use App\Models\Data;
-use Illuminate\Http\UploadedFile;
 use App\Modules\User\Entities\User;
+use App\Modules\User\Enums\Role;
+use Illuminate\Http\UploadedFile;
 
 /**
  * Данные для декоратора обновления профиля пользователя.

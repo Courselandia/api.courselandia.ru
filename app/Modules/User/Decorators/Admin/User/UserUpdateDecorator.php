@@ -9,6 +9,7 @@
 namespace App\Modules\User\Decorators\Admin\User;
 
 use App\Models\Decorator;
+use App\Modules\User\Data\Decorators\UserUpdate;
 use App\Modules\User\Data\Decorators\UserProfileUpdate;
 use App\Modules\User\Entities\User;
 use Illuminate\Pipeline\Pipeline;
@@ -19,14 +20,14 @@ use Illuminate\Pipeline\Pipeline;
 class UserUpdateDecorator extends Decorator
 {
     /**
-     * @var UserProfileUpdate Данные для декоратора обновления профиля пользователя.
+     * @var UserUpdate|UserProfileUpdate Данные для декоратора обновления.
      */
-    private UserProfileUpdate $data;
+    private UserUpdate|UserProfileUpdate $data;
 
     /**
-     * @param UserProfileUpdate $data Данные для декоратора обновления профиля пользователя.
+     * @param UserUpdate|UserProfileUpdate $data Данные для декоратора обновления.
      */
-    public function __construct(UserProfileUpdate $data)
+    public function __construct(UserUpdate|UserProfileUpdate $data)
     {
         $this->data = $data;
     }
@@ -39,7 +40,7 @@ class UserUpdateDecorator extends Decorator
     public function run(): User
     {
         /**
-         * @var UserProfileUpdate $data
+         * @var UserUpdate|UserProfileUpdate $data
          */
         $data = app(Pipeline::class)
             ->send($this->data)

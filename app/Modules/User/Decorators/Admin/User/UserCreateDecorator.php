@@ -11,8 +11,6 @@ namespace App\Modules\User\Decorators\Admin\User;
 use App\Models\Decorator;
 use App\Modules\User\Data\Decorators\UserCreate;
 use App\Modules\User\Entities\User;
-use App\Modules\User\Enums\Role;
-use Illuminate\Http\UploadedFile;
 use Illuminate\Pipeline\Pipeline;
 
 /**
@@ -21,88 +19,19 @@ use Illuminate\Pipeline\Pipeline;
 class UserCreateDecorator extends Decorator
 {
     /**
-     * ID пользователя.
+     * Данные для декоратора создания пользователя.
      *
-     * @var string|int|null
+     * @var UserCreate
      */
-    public string|int|null $id = null;
+    private UserCreate $data;
 
     /**
-     * Логин.
-     *
-     * @var string|null
+     * @param UserCreate $data Данные для декоратора создания пользователя.
      */
-    public string|null $login = null;
-
-    /**
-     * Пароль.
-     *
-     * @var string|null
-     */
-    public string|null $password = null;
-
-    /**
-     * Имя.
-     *
-     * @var string|null
-     */
-    public ?string $first_name;
-
-    /**
-     * Фамилия.
-     *
-     * @var string|null
-     */
-    public ?string $second_name = null;
-
-    /**
-     * Телефон.
-     *
-     * @var string|null
-     */
-    public ?string $phone = null;
-
-    /**
-     * Статус верификации.
-     *
-     * @var bool
-     */
-    public bool $verified = false;
-
-    /**
-     * Двухфакторная аутентификация.
-     *
-     * @var bool
-     */
-    public bool $two_factor = false;
-
-    /**
-     * Статус пользователя.
-     *
-     * @var bool
-     */
-    public bool $status = false;
-
-    /**
-     * Изображение.
-     *
-     * @var UploadedFile|null
-     */
-    public ?UploadedFile $image = null;
-
-    /**
-     * Роль.
-     *
-     * @var Role|null
-     */
-    public ?Role $role = null;
-
-    /**
-     * Выслать приглашение.
-     *
-     * @var bool
-     */
-    public bool $invitation = false;
+    public function __construct(UserCreate $data)
+    {
+        $this->data = $data;
+    }
 
     /**
      * Метод обработчик события после выполнения всех действий декоратора.
@@ -111,23 +40,14 @@ class UserCreateDecorator extends Decorator
      */
     public function run(): User
     {
-        $userCreate = new UserCreate();
-
-        $userCreate->login = $this->login;
-        $userCreate->password = $this->password;
-        $userCreate->first_name = $this->first_name;
-        $userCreate->second_name = $this->second_name;
-        $userCreate->phone = $this->phone;
-        $userCreate->verified = $this->verified;
-        $userCreate->two_factor = $this->two_factor;
-        $userCreate->status = $this->status;
-        $userCreate->image = $this->image;
-        $userCreate->role = $this->role;
-        $userCreate->invitation = $this->invitation;
-
-        return app(Pipeline::class)
-            ->send($userCreate)
+        /**
+         * @var UserCreate $data
+         */
+        $data = app(Pipeline::class)
+            ->send($this->data)
             ->through($this->getActions())
             ->thenReturn();
+
+        return $data->user;
     }
 }

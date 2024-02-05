@@ -27,9 +27,17 @@ class UserImageDestroyAction extends Action
     /**
      * ID пользователей.
      *
-     * @var int|string|null
+     * @var int|string
      */
-    public int|string|null $id = null;
+    private int|string $id;
+
+    /**
+     * @param int|string $id ID пользователей.
+     */
+    public function __construct(int|string $id)
+    {
+        $this->id = $id;
+    }
 
     /**
      * Метод запуска логики.
@@ -43,8 +51,7 @@ class UserImageDestroyAction extends Action
     public function run(): UserEntity
     {
         if ($this->id) {
-            $action = app(UserGetAction::class);
-            $action->id = $this->id;
+            $action = new UserGetAction($this->id);
             $user = $action->run();
 
             if ($user) {

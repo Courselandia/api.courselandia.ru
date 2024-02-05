@@ -26,8 +26,8 @@ class UserAnalyticsNewUsersRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'group' => 'nullable|in:' . implode(',' , EnumList::getValues(DateGroup::class)),
-            'datePeriod' => 'nullable|in:' . implode(',' , EnumList::getValues(DatePeriod::class)),
+            'group' => 'nullable|in:' . implode(',', EnumList::getValues(DateGroup::class)),
+            'datePeriod' => 'nullable|in:' . implode(',', EnumList::getValues(DatePeriod::class)),
             'dateFrom' => 'nullable|date_format:Y-m-d',
             'dateTo' => 'nullable|date_format:Y-m-d'
         ];

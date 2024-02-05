@@ -62,7 +62,7 @@ class UserRole extends Eloquent
     {
         return [
             'user_id' => 'required|integer|digits_between:1,20',
-            'name' => 'required|in:' . implode(',' , EnumList::getValues(Role::class)),
+            'name' => 'required|in:' . implode(',', EnumList::getValues(Role::class)),
         ];
     }
 

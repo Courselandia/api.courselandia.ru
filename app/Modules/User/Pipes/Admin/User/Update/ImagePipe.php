@@ -10,8 +10,6 @@ namespace App\Modules\User\Pipes\Admin\User\Update;
 
 use App\Models\Contracts\Pipe;
 use App\Models\Data;
-use App\Models\Entity;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\UserNotExistException;
 use App\Modules\User\Actions\Admin\User\UserGetAction;
 use App\Modules\User\Data\Decorators\UserProfileUpdate;
@@ -29,13 +27,13 @@ class ImagePipe implements Pipe
     /**
      * Метод, который будет вызван у pipeline.
      *
-     * @param Data|UserProfileUpdate $data Данные для декоратора обновления профиля пользователя.
+     * @param Data|UserUpdate|UserProfileUpdate $data Данные для декоратора обновления.
      * @param Closure $next Ссылка на следующий pipe.
      *
      * @return mixed Вернет значение полученное после выполнения следующего pipe.
      * @throws Exception
      */
-    public function handle(Data|UserProfileUpdate $data, Closure $next): mixed
+    public function handle(Data|UserUpdate|UserProfileUpdate $data, Closure $next): mixed
     {
         if ($data->image) {
             $action = new UserGetAction($data->id);

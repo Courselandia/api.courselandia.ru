@@ -29,6 +29,21 @@ class UserProfileControllerTest extends TestCase
     {
         $faker = Faker::create();
 
+        $response = $this->json(
+            'PUT',
+            'api/private/admin/user/profile/update',
+            [
+                'first_name' => $faker->name,
+                'second_name' => $faker->lastName,
+                'image' => UploadedFile::fake()->image('me.jpg', 1000, 1000),
+            ],
+            [
+                'Authorization' => 'Bearer ' . $this->getAdminToken()
+            ]
+        );
+
+        print_r(json_decode($response->getContent(), true));
+
         $this->json(
             'PUT',
             'api/private/admin/user/profile/update',
@@ -38,7 +53,7 @@ class UserProfileControllerTest extends TestCase
                 'image' => UploadedFile::fake()->image('me.jpg', 1000, 1000),
             ],
             [
-                'Authorization' => 'Bearer '.$this->getAdminToken()
+                'Authorization' => 'Bearer ' . $this->getAdminToken()
             ]
         )->assertStatus(200)->assertJsonStructure([
             'success',
@@ -64,7 +79,7 @@ class UserProfileControllerTest extends TestCase
                 'image' => UploadedFile::fake()->image('me.mp4', 1000, 1000),
             ],
             [
-                'Authorization' => 'Bearer '.$this->getAdminToken()
+                'Authorization' => 'Bearer ' . $this->getAdminToken()
             ]
         )->assertStatus(400)->assertJsonStructure([
             'success',
@@ -86,7 +101,7 @@ class UserProfileControllerTest extends TestCase
                 'image' => UploadedFile::fake()->image('me.jpg', 1000, 1000),
             ],
             [
-                'Authorization' => 'Bearer '.$this->getAdminToken()
+                'Authorization' => 'Bearer ' . $this->getAdminToken()
             ]
         )->assertStatus(200)->assertJsonStructure([
             'success',
@@ -108,7 +123,7 @@ class UserProfileControllerTest extends TestCase
                 'image' => UploadedFile::fake()->image('me.mp4', 1000, 1000),
             ],
             [
-                'Authorization' => 'Bearer '.$this->getAdminToken()
+                'Authorization' => 'Bearer ' . $this->getAdminToken()
             ]
         )->assertStatus(400)->assertJsonStructure([
             'success',
@@ -128,7 +143,7 @@ class UserProfileControllerTest extends TestCase
             'api/private/admin/user/profile/image/destroy',
             [],
             [
-                'Authorization' => 'Bearer '.$this->getAdminToken()
+                'Authorization' => 'Bearer ' . $this->getAdminToken()
             ]
         )->assertStatus(200)->assertJsonStructure([
             'success',
@@ -150,7 +165,7 @@ class UserProfileControllerTest extends TestCase
                 'password' => $this->getAdmin('password'),
             ],
             [
-                'Authorization' => 'Bearer '.$this->getAdminToken()
+                'Authorization' => 'Bearer ' . $this->getAdminToken()
             ]
         )->assertStatus(200)->assertJsonStructure([
             'success',

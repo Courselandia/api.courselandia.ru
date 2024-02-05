@@ -9,11 +9,13 @@
 namespace App\Modules\User\Pipes\Admin\User\Create;
 
 use App\Models\Contracts\Pipe;
+use App\Models\Data;
 use App\Models\Entity;
 use App\Models\Enums\CacheTime;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Modules\User\Data\Decorators\UserCreate;
+use App\Modules\User\Data\Decorators\UserUpdate;
 use App\Modules\User\Entities\UserVerification as UserVerificationEntity;
 use App\Modules\User\Models\UserVerification;
 use Cache;
@@ -29,16 +31,16 @@ class VerifyPipe implements Pipe
     /**
      * Метод, который будет вызван у pipeline.
      *
-     * @param  Entity|UserCreate  $entity  Сущность для создания пользователя.
-     * @param  Closure  $next  Ссылка на следующий pipe.
+     * @param Entity|UserCreate|UserUpdate $data Данные для декоратора.
+     * @param Closure $next Ссылка на следующий pipe.
      *
      * @return mixed Вернет значение полученное после выполнения следующего pipe.
      * @throws ParameterInvalidException
      * @throws RecordNotExistException|ReflectionException
      */
-    public function handle(Entity|UserCreate $entity, Closure $next): mixed
+    public function handle(Data|UserCreate|UserUpdate $data, Closure $next): mixed
     {
-        $id = $entity->id;
+        $id = $data->id;
         $cacheKey = Util::getKey('user', 'verification', 'model', $id);
 
         $userVerification = Cache::tags(['user'])->remember(
@@ -51,20 +53,20 @@ class VerifyPipe implements Pipe
         );
 
         if ($userVerification) {
-            $userVerification->status = $entity->verified;
+            $userVerification->status = $data->verified;
             $userVerification->update($userVerification->toArray());
 
-            Cache::tags(['user'])->flush();
         } else {
             $userVerification = new UserVerificationEntity();
-            $userVerification->user_id = $entity->id;
-            $userVerification->code = UserVerificationEntity::generateCode($entity->id);
-            $userVerification->status = $entity->verified;
+            $userVerification->user_id = $data->id;
+            $userVerification->code = UserVerificationEntity::generateCode($data->id);
+            $userVerification->status = $data->verified;
 
             UserVerification::create($userVerification->toArray());
-            Cache::tags(['user'])->flush();
         }
 
-        return $next($entity);
+        Cache::tags(['user'])->flush();
+
+        return $next($data);
     }
 }

@@ -8,16 +8,15 @@
 
 namespace App\Modules\User\Pipes\Admin\Profile\Update;
 
+use App\Modules\User\Data\Decorators\UserProfileUpdate;
+use App\Modules\User\Entities\User as UserEntity;
+use Cache;
+use Closure;
 use App\Models\Contracts\Pipe;
-use App\Models\Entity;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\UserNotExistException;
 use App\Modules\User\Actions\Admin\User\UserGetAction;
 use App\Modules\User\Data\Decorators\UserUpdate;
 use App\Modules\User\Models\User;
-use Cache;
-use Closure;
-use App\Modules\User\Data\Decorators\UserProfileUpdate;
 use App\Models\Data;
 
 /**
@@ -28,22 +27,25 @@ class UpdatePipe implements Pipe
     /**
      * Метод, который будет вызван у pipeline.
      *
-     * @param Data|UserProfileUpdate $data Данные для декоратора обновления профиля пользователя.
+     * @param Data|UserUpdate|UserProfileUpdate $data Данные для декоратора обновления.
      * @param Closure $next Ссылка на следующий pipe.
      *
      * @return mixed Вернет значение полученное после выполнения следующего pipe.
      * @throws UserNotExistException
      */
-    public function handle(Data|UserProfileUpdate $data, Closure $next): mixed
+    public function handle(Data|UserUpdate|UserProfileUpdate $data, Closure $next): mixed
     {
         $action = new UserGetAction($data->id);
         $user = $action->run();
 
         if ($user) {
-            $user->first_name = $data->first_name;
-            $user->second_name = $data->second_name;
-            $user->phone = $data->phone;
-            $user->image = $data->image;
+            print_r($user->toArray());
+            print_r($data->toArray());
+
+            $user = UserEntity::from([
+                ...$user->toArray(),
+                ...$data->toArray(),
+            ]);
 
             User::find($data->id)->update($user->toArray());
             Cache::tags(['user'])->flush();

@@ -13,6 +13,7 @@ use App\Models\Entity;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\User\Data\Decorators\UserCreate;
 use App\Modules\User\Models\User;
+use App\Models\Data;
 use Cache;
 use Closure;
 
@@ -24,19 +25,19 @@ class CreatePipe implements Pipe
     /**
      * Метод, который будет вызван у pipeline.
      *
-     * @param  Entity|UserCreate  $entity  Сущность для создания пользователя.
-     * @param  Closure  $next  Ссылка на следующий pipe.
+     * @param Entity|UserCreate $data Данные для декоратора создания пользователя.
+     * @param Closure $next Ссылка на следующий pipe.
      *
      * @return mixed Вернет значение полученное после выполнения следующего pipe.
      * @throws ParameterInvalidException
      */
-    public function handle(Entity|UserCreate $entity, Closure $next): mixed
+    public function handle(Data|UserCreate $data, Closure $next): mixed
     {
-        $entity->password = bcrypt($entity->password);
-        $user = User::create($entity->toArray());
+        $data->password = bcrypt($data->password);
+        $user = User::create($data->toArray());
         Cache::tags(['user'])->flush();
-        $entity->id = $user->id;
+        $data->id = $user->id;
 
-        return $next($entity);
+        return $next($data);
     }
 }

@@ -9,7 +9,7 @@
 namespace App\Modules\User\Pipes\Admin\User\Create;
 
 use App\Models\Contracts\Pipe;
-use App\Models\Entity;
+use App\Models\Data;
 use App\Modules\User\Data\Decorators\UserCreate;
 use App\Modules\User\Emails\Invitation;
 use Closure;
@@ -23,17 +23,17 @@ class InvitationPipe implements Pipe
     /**
      * Метод, который будет вызван у pipeline.
      *
-     * @param  Entity|UserCreate  $entity  Сущность для создания пользователя.
-     * @param  Closure  $next  Ссылка на следующий pipe.
+     * @param Data|UserCreate $data Данные для декоратора создания пользователя.
+     * @param Closure $next Ссылка на следующий pipe.
      *
      * @return mixed Вернет значение полученное после выполнения следующего pipe.
      */
-    public function handle(Entity|UserCreate $entity, Closure $next): mixed
+    public function handle(Data|UserCreate $data, Closure $next): mixed
     {
-        if ($entity->invitation) {
-            Mail::to($entity->login)->queue(new Invitation());
+        if ($data->invitation) {
+            Mail::to($data->login)->queue(new Invitation());
         }
 
-        return $next($entity);
+        return $next($data);
     }
 }
