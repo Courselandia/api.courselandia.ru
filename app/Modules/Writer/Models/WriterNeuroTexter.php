@@ -111,7 +111,7 @@ class WriterNeuroTexter extends Writer
 
             if ($error->getCode() === 404) {
                 throw new RecordNotExistException(trans('writer::models.writerNeuroTexter.notExist'));
-            } if ($error->getCode() === 403) {
+            } else if ($error->getCode() === 403) {
                 throw new PaymentException($data['error']);
             } else {
                 throw new ResponseException($data['error']);
