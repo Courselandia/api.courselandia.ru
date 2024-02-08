@@ -6,18 +6,14 @@
  * @package App\Modules\Course
  */
 
-namespace App\Modules\Course\Pipes\Site\Rated;
+namespace App\Modules\Course\Helpers;
 
-use App\Models\Data;
-use App\Modules\Course\Data\Decorators\CourseRead;
-use Closure;
-use App\Models\Contracts\Pipe;
 use App\Models\Clean;
 
 /**
- * Чтение курсов: фильтры: очистка и подготовка данных.
+ * Очистка для получения небольшого списка курсов.
  */
-class DataPipe implements Pipe
+class CleanCourseList
 {
     /**
      * Массив ключей подлежащих удалению.
@@ -56,7 +52,7 @@ class DataPipe implements Pipe
         'sectionLink',
         'description',
         'disabled',
-        'program,'
+        'program',
     ];
 
     /**
@@ -78,32 +74,24 @@ class DataPipe implements Pipe
         'count',
     ];
 
-    /**
-     * Метод, который будет вызван у pipeline.
-     *
-     * @param Data|CourseRead $data Данные для декоратора для чтения курсов.
-     * @param Closure $next Ссылка на следующий pipe.
-     *
-     * @return mixed Вернет значение полученное после выполнения следующего pipe.
-     */
-    public function handle(Data|CourseRead $data, Closure $next): mixed
+    public static function do(array $data): array
     {
-        $data->sorts = null;
-        $data->filters = null;
-        $data->offset = null;
-        $data->limit = null;
-        $data->openedSchools = false;
-        $data->openedCategories = false;
-        $data->openedProfessions = false;
-        $data->openedTeachers = false;
-        $data->openedSkills = false;
-        $data->openedTools = false;
+        unset($data['sorts']);
+        unset($data['filters']);
+        unset($data['offset']);
+        unset($data['limit']);
+        unset($data['openedSchools']);
+        unset($data['openedCategories']);
+        unset($data['openedProfessions']);
+        unset($data['openedTeachers']);
+        unset($data['openedSkills']);
+        unset($data['openedTools']);
 
         $data = Clean::do($data, self::REMOVES);
         $data = Clean::do($data, self::REMOVES_IF_NULL, true);
 
-        $data->filter = null;
+        unset($data['filter']);
 
-        return $next($data);
+        return $data;
     }
 }

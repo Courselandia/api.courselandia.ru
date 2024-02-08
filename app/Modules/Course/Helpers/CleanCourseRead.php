@@ -90,7 +90,7 @@ class CleanCourseRead
         unset($data['offset']);
         unset($data['limit']);
 
-        $description = $data['description'] ? clone $data['description'] : null;
+        $description = $data['description'];
         $data = Clean::do($data, self::REMOVES);
 
         $data['description'] = $description;

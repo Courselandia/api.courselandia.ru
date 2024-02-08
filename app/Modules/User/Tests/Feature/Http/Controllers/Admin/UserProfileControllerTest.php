@@ -29,21 +29,6 @@ class UserProfileControllerTest extends TestCase
     {
         $faker = Faker::create();
 
-        $response = $this->json(
-            'PUT',
-            'api/private/admin/user/profile/update',
-            [
-                'first_name' => $faker->name,
-                'second_name' => $faker->lastName,
-                'image' => UploadedFile::fake()->image('me.jpg', 1000, 1000),
-            ],
-            [
-                'Authorization' => 'Bearer ' . $this->getAdminToken()
-            ]
-        );
-
-        print_r(json_decode($response->getContent(), true));
-
         $this->json(
             'PUT',
             'api/private/admin/user/profile/update',

@@ -39,9 +39,6 @@ class UpdatePipe implements Pipe
         $user = $action->run();
 
         if ($user) {
-            print_r($user->toArray());
-            print_r($data->toArray());
-
             $user = UserEntity::from([
                 ...$user->toArray(),
                 ...$data->toArray(),

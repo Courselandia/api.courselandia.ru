@@ -21,6 +21,7 @@ use App\Modules\Course\Actions\Site\Course\CourseSkillReadAction;
 use App\Modules\Course\Actions\Site\Course\CourseTeacherReadAction;
 use App\Modules\Course\Actions\Site\Course\CourseGetAction;
 use App\Modules\Course\Entities\CourseRead;
+use App\Modules\Course\Helpers\CleanCourseList;
 use App\Modules\Course\Helpers\CleanCourseRead;
 use App\Modules\Course\Http\Requests\Site\Course\CourseFilterItemReadRequest;
 use App\Modules\Course\Http\Requests\Site\Course\CourseReadFavoritesRequest;
@@ -297,6 +298,7 @@ class CourseController extends Controller
     {
         $action = new CourseReadRatedAction($request->get('limit', 16));
         $data = $action->run();
+        $data = CleanCourseList::do($data->toArray());
 
         return response()->json([
             'data' => $data,
@@ -315,6 +317,7 @@ class CourseController extends Controller
     {
         $action = new CourseReadSearchAction($request->get('limit', 12), $request->get('search'));
         $data = $action->run();
+        $data['data'] = CleanCourseList::do($data['data']->toArray());
         $data['success'] = true;
 
         return response()->json($data);
@@ -332,6 +335,7 @@ class CourseController extends Controller
         if ($request->get('ids')) {
             $action = new CourseReadFavoritesAction($request->get('ids'));
             $data = $action->run();
+            $data['data'] = CleanCourseList::do($data['data']->toArray());
             $data['success'] = true;
         } else {
             $data = [

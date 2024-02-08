@@ -12,7 +12,6 @@ use App\Models\Action;
 use App\Modules\Course\Data\Decorators\CourseRead;
 use App\Modules\Course\Pipes\Site\Read\ReadPipe;
 use App\Modules\Course\Pipes\Site\Read\DescriptionPipe;
-use App\Modules\Course\Pipes\Site\Rated\DataPipe;
 use App\Modules\Course\Decorators\Site\CourseReadDecorator;
 use Spatie\LaravelData\DataCollection;
 
@@ -58,7 +57,6 @@ class CourseReadRatedAction extends Action
         $result = $decorator->setActions([
             ReadPipe::class,
             DescriptionPipe::class,
-            DataPipe::class,
         ])->run();
 
         return $result->courses;

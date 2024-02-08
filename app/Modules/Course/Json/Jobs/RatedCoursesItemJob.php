@@ -9,6 +9,7 @@
 namespace App\Modules\Course\Json\Jobs;
 
 use App\Modules\Course\Actions\Site\Course\CourseReadRatedAction;
+use App\Modules\Course\Helpers\CleanCourseList;
 
 /**
  * Задача для формирования всех категорий.
@@ -29,6 +30,7 @@ class RatedCoursesItemJob extends JsonItemJob
     {
         $action = new CourseReadRatedAction(self::LIMIT);
         $data = $action->run();
+        $data = CleanCourseList::do($data->toArray());
 
         $data = [
             'data' => $data,
