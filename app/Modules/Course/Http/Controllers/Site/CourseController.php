@@ -21,6 +21,7 @@ use App\Modules\Course\Actions\Site\Course\CourseSkillReadAction;
 use App\Modules\Course\Actions\Site\Course\CourseTeacherReadAction;
 use App\Modules\Course\Actions\Site\Course\CourseGetAction;
 use App\Modules\Course\Entities\CourseRead;
+use App\Modules\Course\Helpers\CleanCourseRead;
 use App\Modules\Course\Http\Requests\Site\Course\CourseFilterItemReadRequest;
 use App\Modules\Course\Http\Requests\Site\Course\CourseReadFavoritesRequest;
 use App\Modules\Course\Http\Requests\Site\Course\CourseReadRatedRequest;
@@ -277,9 +278,10 @@ class CourseController extends Controller
         ]);
         $action = new CourseReadAction($data);
         $entityCourseRead = $action->run();
+        $data = CleanCourseRead::do($entityCourseRead->toArray());
 
         return response()->json([
-            'data' => $entityCourseRead,
+            'data' => $data,
             'success' => true,
         ]);
     }

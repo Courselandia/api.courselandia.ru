@@ -6,19 +6,14 @@
  * @package App\Modules\Course
  */
 
-namespace App\Modules\Course\Pipes\Site\Read;
+namespace App\Modules\Course\Helpers;
 
-use App\Models\Data;
-use App\Modules\Course\Data\Decorators\CourseRead;
-use Closure;
-use App\Models\Contracts\Pipe;
-use App\Models\Entity;
 use App\Models\Clean;
 
 /**
- * Чтение курсов: фильтры: очистка и подготовка данных.
+ * Очистка для чтения курсов.
  */
-class DataPipe implements Pipe
+class CleanCourseRead
 {
     /**
      * Массив ключей подлежащих удалению.
@@ -88,29 +83,18 @@ class DataPipe implements Pipe
         'count',
     ];
 
-    /**
-     * Метод, который будет вызван у pipeline.
-     *
-     * @param Data|CourseRead $data Данные для декоратора для чтения курсов.
-     * @param Closure $next Ссылка на следующий pipe.
-     *
-     * @return mixed Вернет значение полученное после выполнения следующего pipe.
-     */
-    public function handle(Data|CourseRead $data, Closure $next): mixed
+    public static function do(array $data): array
     {
-        $data->sorts = null;
-        $data->filters = null;
-        $data->offset = null;
-        $data->limit = null;
+        unset($data['sorts']);
+        unset($data['filters']);
+        unset($data['offset']);
+        unset($data['limit']);
 
-        $description = $data->description ? clone $data->description : null;
+        $description = $data['description'] ? clone $data['description'] : null;
         $data = Clean::do($data, self::REMOVES);
 
-        /**
-         * @var CourseRead $entity
-         */
-        $data->description = $description;
+        $data['description'] = $description;
 
-        return $next($data);
+        return $data;
     }
 }

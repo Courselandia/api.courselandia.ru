@@ -26,7 +26,6 @@ use App\Modules\Course\Pipes\Site\Read\FilterTeacherPipe;
 use App\Modules\Course\Pipes\Site\Read\FilterToolPipe;
 use App\Modules\Course\Pipes\Site\Read\ReadPipe;
 use App\Modules\Course\Pipes\Site\Read\DescriptionPipe;
-use App\Modules\Course\Pipes\Site\Read\DataPipe;
 use App\Modules\Course\Decorators\Site\CourseReadDecorator;
 use App\Modules\Course\Data\Decorators\CourseRead as CourseReadDecoratorData;
 
@@ -76,7 +75,6 @@ class CourseReadAction extends Action
             FilterDurationPipe::class,
             FilterOnlinePipe::class,
             FilterLevelPipe::class,
-            DataPipe::class,
         ])->run();
     }
 }

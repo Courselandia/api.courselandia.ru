@@ -8,9 +8,6 @@
 
 namespace App\Models;
 
-use App\Modules\Course\Data\Decorators\CourseRead;
-use Spatie\LaravelData\DataCollection;
-
 /**
  * Очистка сущностей от лишних данных.
  */
@@ -19,37 +16,32 @@ class Clean
     /**
      * Чистка данных.
      *
-     * @param CourseRead|Data|DataCollection|array $items Данные для очистки.
+     * @param array $items Данные для очистки.
      * @param array $removes Массив ключей, которые подлежат очистки.
      * @param bool $ifNull Только удалять если равен null.
      *
-     * @return CourseRead|DataCollection Вернет очищенные данные.
+     * @return array Вернет очищенные данные.
      */
-    public static function do(CourseRead|Data|DataCollection|array $items, array $removes, bool $ifNull = false): CourseRead | array
+    public static function do(array $items, array $removes, bool $ifNull = false): array
     {
-        $isArray = is_array($items);
-        $items = $isArray ? $items : [$items];
-
-        foreach ($items as $item) {
-            foreach ($item as $key => $value) {
-                if (is_array($item->$key) && array_is_list($item->$key)) {
-                    for ($i = 0; $i < count($item->$key); $i++) {
-                        if ($item->$key[$i] instanceof Data) {
-                            $item->$key[$i] = self::do($item->$key[$i], $removes, $ifNull);
-                        }
+        foreach ($items as $key => $item) {
+            if (is_array($items[$key]) && array_is_list($items[$key])) {
+                for ($i = 0; $i < count($items[$key]); $i++) {
+                    if (is_array($items[$key][$i])) {
+                        $items[$key][$i] = self::do($items[$key][$i], $removes, $ifNull);
                     }
-                } elseif ($item->$key instanceof Data) {
-                    $item->$key = self::do($item->$key, $removes, $ifNull);
-                } elseif (in_array($key, $removes)) {
-                    if ($ifNull === false) {
-                        $item->$key = null;
-                    } else if ($ifNull === true && $item->$key === null) {
-                        $item->$key = null;
-                    }
+                }
+            } elseif (is_array($items[$key])) {
+                $items[$key] = self::do($items[$key], $removes, $ifNull);
+            } else if (!is_array($items[$key]) && in_array($key, $removes)) {
+                if ($ifNull === false) {
+                    unset($items[$key]);
+                } else if ($ifNull === true && $items[$key] === null) {
+                    unset($items[$key]);
                 }
             }
         }
 
-        return $isArray ? $items : $items[0];
+        return $items;
     }
 }

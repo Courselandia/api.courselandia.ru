@@ -10,6 +10,7 @@ namespace App\Modules\Course\Json\Jobs;
 
 use App\Modules\Course\Actions\Site\Course\CourseReadAction;
 use App\Modules\Course\Entities\CourseRead;
+use App\Modules\Course\Helpers\CleanCourseRead;
 
 /**
  * Задача для формирования курсов.
@@ -31,10 +32,11 @@ class CourseAllItemJob extends JsonItemJob
         ]));
 
         $entityCourseRead = $action->run();
+        $data = CleanCourseRead::do($entityCourseRead->toArray());
 
-        if ($entityCourseRead) {
+        if ($data) {
             $data = [
-                'data' => $entityCourseRead->toArray(),
+                'data' => $data,
                 'success' => true,
             ];
 
