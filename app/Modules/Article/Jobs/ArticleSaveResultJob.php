@@ -40,9 +40,9 @@ class ArticleSaveResultJob implements ShouldQueue
     /**
      * ID написанных текстов (модель Article).
      *
-     * @var int|null
+     * @var int
      */
-    public ?int $id = null;
+    private int $id;
 
     /**
      * Конструктор.
@@ -62,8 +62,7 @@ class ArticleSaveResultJob implements ShouldQueue
      */
     public function handle(): void
     {
-        $action = app(ArticleGetAction::class);
-        $action->id = $this->id;
+        $action = new ArticleGetAction($this->id);
         $articleEntity = $action->run();
 
         if ($articleEntity && $articleEntity->status === Status::PROCESSING) {
@@ -78,12 +77,9 @@ class ArticleSaveResultJob implements ShouldQueue
 
                 Cache::tags(['article'])->flush();
 
-                $action = app(AnalyzerUpdateAction::class);
-                $action->id = $this->id;
-                $action->model = Article::class;
-                $action->category = 'article.text';
+                $action = new AnalyzerUpdateAction($this->id, Article::class, 'article.text');
                 $action->run();
-            } catch (ProcessingException $error) {
+            } catch (ProcessingException) {
                 if ($articleEntity->tries < self::MAX_TRIES) {
                     ArticleSaveResultJob::dispatch($this->id)
                         ->delay(now()->addMinutes(2));

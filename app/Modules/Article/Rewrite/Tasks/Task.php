@@ -59,6 +59,6 @@ abstract class Task extends TaskWrite
         $this->unique = $unique;
         $this->water = $water;
         $this->spam = $spam;
-        $this->creative = $creative;
+        $this->creative = $creative ?? 7;
     }
 }

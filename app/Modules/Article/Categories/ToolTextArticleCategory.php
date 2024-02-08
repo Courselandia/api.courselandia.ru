@@ -49,12 +49,11 @@ class ToolTextArticleCategory extends ArticleCategory
      * @param int $id ID сущности для которой пишется статья.
      *
      * @return string Метка.
-     * @throws RecordNotExistException|ParameterInvalidException
+     * @throws RecordNotExistException
      */
     public function label(int $id): string
     {
-        $action = app(ToolGetAction::class);
-        $action->id = $id;
+        $action = new ToolGetAction($id);
         $toolEntity = $action->run();
 
         if ($toolEntity) {
@@ -77,18 +76,17 @@ class ToolTextArticleCategory extends ArticleCategory
      */
     public function apply(int $id): void
     {
-        $action = app(ArticleGetAction::class);
-        $action->id = $id;
+        $action = new ArticleGetAction($id);
         $articleEntity = $action->run();
 
         if ($articleEntity) {
             $tool = $articleEntity->articleable;
-            $tool->text = Typography::process($articleEntity->text);
+            $tool['text'] = Typography::process($articleEntity->text);
 
-            Tool::find($articleEntity->articleable->id)->update($tool->toArray());
+            Tool::find($articleEntity->articleable->id)->update($tool);
 
             if ($articleEntity->analyzers) {
-                $action = new ArticleMoveAnalyzer($tool->id, $articleEntity->analyzers, 'tool.text', Tool::class);
+                $action = new ArticleMoveAnalyzer($tool['id'], $articleEntity->analyzers, 'tool.text', Tool::class);
                 $action->run();
             }
 
@@ -106,12 +104,11 @@ class ToolTextArticleCategory extends ArticleCategory
      * @param int $id ID сущности для которой пишется статья.
      *
      * @return string Запрос.
-     * @throws RecordNotExistException|ParameterInvalidException
+     * @throws RecordNotExistException
      */
     public function requestTemplate(int $id): string
     {
-        $action = app(ToolGetAction::class);
-        $action->id = $id;
+        $action = new ToolGetAction($id);
         $toolEntity = $action->run();
 
         if ($toolEntity) {

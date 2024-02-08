@@ -9,7 +9,6 @@
 namespace App\Modules\Article\Write\Tasks;
 
 use Carbon\Carbon;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Article\Jobs\ArticleWriteTextJob;
 use App\Modules\Profession\Models\Profession;
 use Illuminate\Database\Eloquent\Builder;
@@ -38,7 +37,6 @@ class ProfessionTextTask extends Task
      * @param Carbon|null $delay Дата, на сколько нужно отложить задачу.
      *
      * @return void
-     * @throws ParameterInvalidException
      */
     public function run(Carbon $delay = null): void
     {

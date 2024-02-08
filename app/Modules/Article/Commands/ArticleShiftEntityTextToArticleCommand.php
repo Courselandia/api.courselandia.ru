@@ -13,7 +13,6 @@ use App\Modules\Article\Models\Article;
 use App\Modules\Category\Models\Category;
 use App\Modules\Profession\Models\Profession;
 use App\Modules\School\Models\School;
-use App\Modules\Teacher\Models\Teacher;
 use Illuminate\Console\Command;
 use App\Modules\Article\Enums\Status as StatusArticle;
 use App\Modules\Analyzer\Enums\Status as StatusAnalyzer;

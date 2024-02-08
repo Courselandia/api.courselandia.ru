@@ -77,9 +77,9 @@ class CourseRead extends EntityNew
     /**
      * Сущность описания.
      *
-     * @var mixed
+     * @var array|null
      */
-    public mixed $description = null;
+    public array|null $description = null;
 
     /**
      * Количество.
@@ -153,7 +153,7 @@ class CourseRead extends EntityNew
      * @param CourseFilter|null $filter Сущность фильтров.
      * @param string|null $section Название описания.
      * @param string|null $sectionLink Ссылка на раздел описания.
-     * @param mixed $description Сущность описания.
+     * @param array|null $description Сущность описания.
      * @param int|null $total Количество.
      * @param bool|null $disabled Отключать не активные.
      * @param bool|null $openedSchools Признак школы открыты.
@@ -173,7 +173,7 @@ class CourseRead extends EntityNew
         ?CourseFilter   $filter = null,
         ?string         $section = null,
         ?string         $sectionLink = null,
-        mixed           $description = null,
+        ?array          $description = null,
         ?int            $total = null,
         ?bool           $disabled = null,
         ?bool           $openedSchools = null,

@@ -49,12 +49,11 @@ class SkillTextArticleCategory extends ArticleCategory
      * @param int $id ID сущности для которой пишется статья.
      *
      * @return string Метка.
-     * @throws RecordNotExistException|ParameterInvalidException
+     * @throws RecordNotExistException
      */
     public function label(int $id): string
     {
-        $action = app(SkillGetAction::class);
-        $action->id = $id;
+        $action = new SkillGetAction($id);
         $skillEntity = $action->run();
 
         if ($skillEntity) {
@@ -77,18 +76,17 @@ class SkillTextArticleCategory extends ArticleCategory
      */
     public function apply(int $id): void
     {
-        $action = app(ArticleGetAction::class);
-        $action->id = $id;
+        $action = new ArticleGetAction($id);
         $articleEntity = $action->run();
 
         if ($articleEntity) {
             $skill = $articleEntity->articleable;
-            $skill->text = Typography::process($articleEntity->text);
+            $skill['text'] = Typography::process($articleEntity->text);
 
-            Skill::find($articleEntity->articleable->id)->update($skill->toArray());
+            Skill::find($articleEntity->articleable['id'])->update($skill);
 
             if ($articleEntity->analyzers) {
-                $action = new ArticleMoveAnalyzer($skill->id, $articleEntity->analyzers, 'skill.text', Skill::class);
+                $action = new ArticleMoveAnalyzer($skill['id'], $articleEntity->analyzers, 'skill.text', Skill::class);
                 $action->run();
             }
 
@@ -106,12 +104,11 @@ class SkillTextArticleCategory extends ArticleCategory
      * @param int $id ID сущности для которой пишется статья.
      *
      * @return string Запрос.
-     * @throws RecordNotExistException|ParameterInvalidException
+     * @throws RecordNotExistException
      */
     public function requestTemplate(int $id): string
     {
-        $action = app(SkillGetAction::class);
-        $action->id = $id;
+        $action = new SkillGetAction($id);
         $skillEntity = $action->run();
 
         if ($skillEntity) {

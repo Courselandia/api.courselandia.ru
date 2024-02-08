@@ -26,23 +26,35 @@ class ArticleUpdateAction extends Action
     /**
      * ID статьи.
      *
-     * @var int|string|null
+     * @var int|string
      */
-    public int|string|null $id = null;
+    private int|string $id;
 
     /**
      * Статья.
      *
-     * @var string|null
+     * @var string
      */
-    public ?string $text = null;
+    private string $text;
 
     /**
      * Принять.
      *
-     * @var bool|null
+     * @var bool
      */
-    public ?bool $apply = false;
+    private bool $apply;
+
+    /**
+     * @param int|string $id
+     * @param string $text
+     * @param bool $apply
+     */
+    public function __construct(int|string $id, string $text, bool $apply)
+    {
+        $this->id = $id;
+        $this->text = $text;
+        $this->apply = $apply;
+    }
 
     /**
      * Метод запуска логики.
@@ -53,8 +65,7 @@ class ArticleUpdateAction extends Action
      */
     public function run(): ArticleEntity
     {
-        $action = app(ArticleGetAction::class);
-        $action->id = $this->id;
+        $action = new ArticleGetAction($this->id);
         $articleEntity = $action->run();
 
         if ($articleEntity) {
@@ -64,21 +75,16 @@ class ArticleUpdateAction extends Action
             Article::find($this->id)->update($articleEntity->toArray());
 
             if ($this->apply) {
-                $action = app(ArticleApplyAction::class);
-                $action->id = $this->id;
+                $action = new ArticleApplyAction($this->id);
                 $action->run();
             }
 
-            $action = app(AnalyzerUpdateAction::class);
-            $action->id = $this->id;
-            $action->model = Article::class;
-            $action->category = 'article.text';
+            $action = new AnalyzerUpdateAction($this->id, Article::class, 'article.text');
             $action->run();
 
             Cache::tags(['article'])->flush();
 
-            $action = app(ArticleGetAction::class);
-            $action->id = $this->id;
+            $action = new ArticleGetAction($this->id);
 
             return $action->run();
         }

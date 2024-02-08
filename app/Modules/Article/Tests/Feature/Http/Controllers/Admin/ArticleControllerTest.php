@@ -129,7 +129,6 @@ class ArticleControllerTest extends TestCase
     public function testUpdateNotValid(): void
     {
         $article = Article::factory()->create();
-        $faker = Faker::create();
 
         $this->json(
             'PUT',

@@ -76,18 +76,17 @@ class DirectionTextArticleCategory extends ArticleCategory
      */
     public function apply(int $id): void
     {
-        $action = app(ArticleGetAction::class);
-        $action->id = $id;
+        $action = new ArticleGetAction($id);
         $articleEntity = $action->run();
 
         if ($articleEntity) {
             $direction = $articleEntity->articleable;
-            $direction->text = Typography::process($articleEntity->text);
+            $direction['text'] = Typography::process($articleEntity->text);
 
-            Direction::find($articleEntity->articleable->id)->update($direction->toArray());
+            Direction::find($articleEntity->articleable['id'])->update($direction);
 
             if ($articleEntity->analyzers) {
-                $action = new ArticleMoveAnalyzer($direction->id, $articleEntity->analyzers, 'direction.text', Direction::class);
+                $action = new ArticleMoveAnalyzer($direction['id'], $articleEntity->analyzers, 'direction.text', Direction::class);
                 $action->run();
             }
 

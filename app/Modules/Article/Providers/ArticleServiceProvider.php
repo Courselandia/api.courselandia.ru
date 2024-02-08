@@ -41,7 +41,7 @@ class ArticleServiceProvider extends ServiceProvider
         $this->registerTranslations();
         $this->registerConfig();
 
-        $this->loadMigrationsFrom(__DIR__.'/../Database/Migrations');
+        $this->loadMigrationsFrom(__DIR__ . '/../Database/Migrations');
     }
 
     /**
@@ -103,10 +103,10 @@ class ArticleServiceProvider extends ServiceProvider
     protected function registerConfig(): void
     {
         $this->publishes([
-            __DIR__.'/../Config/config.php' => config_path('article.php'),
+            __DIR__ . '/../Config/config.php' => config_path('article.php'),
         ]);
         $this->mergeConfigFrom(
-            __DIR__.'/../Config/config.php',
+            __DIR__ . '/../Config/config.php',
             'article'
         );
     }
@@ -120,7 +120,7 @@ class ArticleServiceProvider extends ServiceProvider
     {
         $viewPath = base_path('resources/views/modules/article');
 
-        $sourcePath = __DIR__.'/../Resources/views';
+        $sourcePath = __DIR__ . '/../Resources/views';
 
         $this->publishes([
             $sourcePath => $viewPath
@@ -129,7 +129,7 @@ class ArticleServiceProvider extends ServiceProvider
         $this->loadViewsFrom(
             array_merge(
                 array_map(function ($path) {
-                    return $path.'/modules/article';
+                    return $path . '/modules/article';
                 }, Config::get('view.paths')),
                 [$sourcePath]
             ),
@@ -149,7 +149,7 @@ class ArticleServiceProvider extends ServiceProvider
         if (is_dir($langPath)) {
             $this->loadTranslationsFrom($langPath, 'article');
         } else {
-            $this->loadTranslationsFrom(__DIR__.'/../Resources/lang', 'article');
+            $this->loadTranslationsFrom(__DIR__ . '/../Resources/lang', 'article');
         }
     }
 
