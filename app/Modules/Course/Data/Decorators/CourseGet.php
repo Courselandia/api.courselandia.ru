@@ -6,7 +6,7 @@
  * @package App\Modules\Course
  */
 
-namespace App\Modules\Course\Entities;
+namespace App\Modules\Course\Data\Decorators;
 
 use App\Models\EntityNew;
 use App\Modules\Course\Entities\Course as CourseEntity;
@@ -14,7 +14,7 @@ use Spatie\LaravelData\Attributes\DataCollectionOf;
 use Spatie\LaravelData\DataCollection;
 
 /**
- * Сущность получения курса.
+ * Данные для декоратора получения курса.
  */
 class CourseGet extends EntityNew
 {

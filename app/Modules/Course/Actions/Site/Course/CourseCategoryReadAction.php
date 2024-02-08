@@ -9,11 +9,11 @@
 namespace App\Modules\Course\Actions\Site\Course;
 
 use DB;
-use App\Models\Entity;
+use Cache;
+use Spatie\LaravelData\DataCollection;
+use Util;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Category\Models\Category;
-use Cache;
-use Util;
 use App\Models\Action;
 use App\Models\Enums\CacheTime;
 use App\Modules\Course\Entities\CourseItemFilter;
@@ -29,36 +29,55 @@ class CourseCategoryReadAction extends Action
      *
      * @var array|null
      */
-    public ?array $filters = null;
+    private ?array $filters;
 
     /**
      * Начать выборку.
      *
      * @var int|null
      */
-    public ?int $offset = null;
+    private ?int $offset;
 
     /**
      * Лимит выборки.
      *
      * @var int|null
      */
-    public ?int $limit = null;
+    private ?int $limit;
 
     /**
      * Отключать не активные.
      *
      * @var bool
      */
-    public ?bool $disabled = false;
+    private ?bool $disabled;
+
+    /**
+     * @param array|null $filters Фильтрация данных.
+     * @param int|null $offset Начать выборку.
+     * @param int|null $limit Лимит выборки выборку.
+     * @param bool|null $disabled Отключать не активные.
+     */
+    public function __construct(
+        ?array $filters = null,
+        ?int   $offset = null,
+        ?int   $limit = null,
+        ?bool  $disabled = null,
+    )
+    {
+        $this->filters = $filters;
+        $this->offset = $offset;
+        $this->limit = $limit;
+        $this->disabled = $disabled;
+    }
 
     /**
      * Метод запуска логики.
      *
-     * @return CourseItemFilter[] Вернет результаты исполнения.
+     * @return DataCollection Вернет результаты исполнения.
      * @throws ParameterInvalidException
      */
-    public function run(): array
+    public function run(): DataCollection
     {
         $filters = $this->filters;
 
@@ -99,15 +118,15 @@ class CourseCategoryReadAction extends Action
                         'categories.link',
                         'categories.name',
                     ])
-                    ->whereHas('courses', function ($query) {
-                        $query->select([
-                            'courses.id',
-                        ])
-                            ->where('status', Status::ACTIVE->value)
-                            ->where('has_active_school', true);
-                    })
-                    ->where('status', true)
-                    ->orderBy('name');
+                        ->whereHas('courses', function ($query) {
+                            $query->select([
+                                'courses.id',
+                            ])
+                                ->where('status', Status::ACTIVE->value)
+                                ->where('has_active_school', true);
+                        })
+                        ->where('status', true)
+                        ->orderBy('name');
 
                     if ($this->offset) {
                         $query->offset($this->offset);
@@ -117,7 +136,7 @@ class CourseCategoryReadAction extends Action
                         $query->limit($this->limit);
                     }
 
-                    return Entity::toEntities($query->get()->toArray(), new CourseItemFilter());
+                    return CourseItemFilter::collection($query->get()->toArray());
                 }
             );
         }
@@ -150,17 +169,17 @@ class CourseCategoryReadAction extends Action
                         'categories.link',
                         'categories.name',
                     ])
-                    ->whereHas('courses', function ($query) {
-                        $query->select([
-                            'courses.id',
-                        ])
-                            ->where('status', Status::ACTIVE->value)
-                            ->where('has_active_school', true);
-                    })
-                    ->where('status', true)
-                    ->orderBy('name')
-                    ->get()
-                    ->toArray();
+                        ->whereHas('courses', function ($query) {
+                            $query->select([
+                                'courses.id',
+                            ])
+                                ->where('status', Status::ACTIVE->value)
+                                ->where('has_active_school', true);
+                        })
+                        ->where('status', true)
+                        ->orderBy('name')
+                        ->get()
+                        ->toArray();
                 }
             );
         } else {
@@ -193,7 +212,7 @@ class CourseCategoryReadAction extends Action
             $cacheKey,
             CacheTime::GENERAL->value,
             function () use ($categoryFilters, $filters, $allCategories) {
-                if (!empty($filters) || (count($categoryFilters) && !$this->disabled) || !$this->disabled) {
+                if (!empty($filters) || !$this->disabled) {
                     $query = Category::select([
                         'categories.id',
                         'categories.link',
@@ -203,9 +222,9 @@ class CourseCategoryReadAction extends Action
                             $query->select([
                                 'courses.id',
                             ])
-                            ->filter($filters ?: [])
-                            ->where('status', Status::ACTIVE->value)
-                            ->where('has_active_school', true);
+                                ->filter($filters ?: [])
+                                ->where('status', Status::ACTIVE->value)
+                                ->where('has_active_school', true);
                         })
                         ->where('status', true)
                         ->orderBy('name');
@@ -258,16 +277,16 @@ class CourseCategoryReadAction extends Action
                                 $weight = 3;
                             }
 
-                            return $weight . ' - '. $item['name'];
+                            return $weight . ' - ' . $item['name'];
                         })
                         ->slice($this->offset, $this->limit)
                         ->values()
                         ->toArray();
 
-                    return Entity::toEntities($result, new CourseItemFilter());
+                    return CourseItemFilter::collection($result);
                 }
 
-                return Entity::toEntities($activeCategories, new CourseItemFilter());
+                return CourseItemFilter::collection($activeCategories);
             }
         );
     }

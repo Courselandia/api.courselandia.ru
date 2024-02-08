@@ -9,11 +9,11 @@
 namespace App\Modules\Course\Actions\Site\Course;
 
 use App\Models\Action;
+use App\Modules\Course\Entities\CourseGet as CourseGetEntity;
 use App\Modules\Course\Decorators\Site\CourseGetDecorator;
-use App\Modules\Course\Entities\CourseGet;
-use App\Modules\Course\Pipes\Site\Get\GetPipe;
 use App\Modules\Course\Entities\Course as CourseEntity;
 use App\Modules\Course\Pipes\Site\Get\DataPipe;
+use App\Modules\Course\Pipes\Site\Get\GetPipe;
 use App\Modules\Course\Pipes\Site\Get\SimilaritiesPipe;
 
 /**
@@ -26,33 +26,46 @@ class CourseGetAction extends Action
      *
      * @var string|null
      */
-    public string|null $school = null;
+    private string|null $school;
 
     /**
      * Ссылка курса.
      *
      * @var string|null
      */
-    public string|null $link = null;
+    private string|null $link;
 
     /**
      * ID курса.
      *
      * @var string|int|null
      */
-    public string|int|null $id = null;
+    private string|int|null $id;
+
+    /**
+     * @param string|null $school Ссылка школы.
+     * @param string|null $link Ссылка курса.
+     * @param string|int|null $id ID курса.
+     */
+    public function __construct(
+        string|null     $school = null,
+        string|null     $link = null,
+        string|int|null $id = null,
+    )
+    {
+        $this->school = $school;
+        $this->link = $link;
+        $this->id = $id;
+    }
 
     /**
      * Метод запуска логики.
      *
      * @return CourseEntity|null Вернет результаты исполнения.
      */
-    public function run(): ?CourseGet
+    public function run(): ?CourseGetEntity
     {
-        $decorator = app(CourseGetDecorator::class);
-        $decorator->school = $this->school;
-        $decorator->link = $this->link;
-        $decorator->id = $this->id;
+        $decorator = new CourseGetDecorator($this->school, $this->link, $this->id);
 
         return $decorator->setActions([
             GetPipe::class,

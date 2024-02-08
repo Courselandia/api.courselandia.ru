@@ -54,9 +54,9 @@ class CourseFilter extends ModelFilter
      *
      * @param int[]|string[] $ids IDs.
      *
-     * @return CourseFilter Правила поиска.
+     * @return self Правила поиска.
      */
-    public function ids(array $ids): CourseFilter
+    public function ids(array $ids): self
     {
         return $this->whereIn('courses.id', $ids);
     }
@@ -66,9 +66,9 @@ class CourseFilter extends ModelFilter
      *
      * @param int|string $id ID.
      *
-     * @return CourseFilter Правила поиска.
+     * @return self Правила поиска.
      */
-    public function id(int|string $id): CourseFilter
+    public function id(int|string $id): self
     {
         return $this->where('courses.id', $id);
     }
@@ -78,9 +78,9 @@ class CourseFilter extends ModelFilter
      *
      * @param array|int|string $schoolIds ID's школ.
      *
-     * @return CourseFilter Правила поиска.
+     * @return self Правила поиска.
      */
-    public function schoolId(array|int|string $schoolIds): CourseFilter
+    public function schoolId(array|int|string $schoolIds): self
     {
         return $this->whereIn('courses.school_id', is_array($schoolIds) ? $schoolIds : [$schoolIds]);
     }
@@ -90,9 +90,9 @@ class CourseFilter extends ModelFilter
      *
      * @param array|string $links Ссылка школы.
      *
-     * @return CourseFilter Правила поиска.
+     * @return self Правила поиска.
      */
-    public function schoolLink(array|string $links): CourseFilter
+    public function schoolLink(array|string $links): self
     {
         return $this->related('school', function ($query) use ($links) {
             return $query->whereIn('schools.link', is_array($links) ? $links : [$links]);
@@ -104,9 +104,9 @@ class CourseFilter extends ModelFilter
      *
      * @param string $query Строка поиска.
      *
-     * @return CourseFilter Правила поиска.
+     * @return self Правила поиска.
      */
-    public function header(string $query): CourseFilter
+    public function header(string $query): self
     {
         $queryMorph = Morph::get($query) ?? $query;
 
@@ -123,9 +123,9 @@ class CourseFilter extends ModelFilter
      *
      * @param string $query Строка поиска.
      *
-     * @return CourseFilter Правила поиска.
+     * @return self Правила поиска.
      */
-    public function name(string $query): CourseFilter
+    public function name(string $query): self
     {
         return $this->whereLike('courses.name', $query);
     }
@@ -135,9 +135,9 @@ class CourseFilter extends ModelFilter
      *
      * @param string $query Строка поиска.
      *
-     * @return CourseFilter Правила поиска.
+     * @return self Правила поиска.
      */
-    public function text(string $query): CourseFilter
+    public function text(string $query): self
     {
         $queryMorph = Morph::get($query) ?? $query;
 
@@ -154,9 +154,9 @@ class CourseFilter extends ModelFilter
      *
      * @param string $query Строка поиска.
      *
-     * @return CourseFilter Правила поиска.
+     * @return self Правила поиска.
      */
-    public function search(string $query): CourseFilter
+    public function search(string $query): self
     {
         $queryMorph = Morph::get($query);
 
@@ -175,9 +175,9 @@ class CourseFilter extends ModelFilter
      *
      * @param float $rating ID.
      *
-     * @return CourseFilter Правила поиска.
+     * @return self Правила поиска.
      */
-    public function rating(float $rating): CourseFilter
+    public function rating(float $rating): self
     {
         return $this->where('courses.rating', '>=', $rating);
     }
@@ -187,9 +187,9 @@ class CourseFilter extends ModelFilter
      *
      * @param float[] $price Цена от и до.
      *
-     * @return CourseFilter Правила поиска.
+     * @return self Правила поиска.
      */
-    public function price(array $price): CourseFilter
+    public function price(array $price): self
     {
         return $this->whereBetween('courses.price', $price);
     }
@@ -199,9 +199,9 @@ class CourseFilter extends ModelFilter
      *
      * @param bool $status Признак наличия или отсутствия рассрочки.
      *
-     * @return CourseFilter Правила поиска.
+     * @return self Правила поиска.
      */
-    public function credit(bool $status): CourseFilter
+    public function credit(bool $status): self
     {
         if ($status) {
             return $this->whereNotNull('courses.price_recurrent');
@@ -219,9 +219,9 @@ class CourseFilter extends ModelFilter
      *
      * @param bool $status Признак наличия или отсутствия бесплатных курсов.
      *
-     * @return CourseFilter Правила поиска.
+     * @return self Правила поиска.
      */
-    public function free(bool $status): CourseFilter
+    public function free(bool $status): self
     {
         if ($status) {
             return $this->where(function ($query) {
@@ -239,9 +239,9 @@ class CourseFilter extends ModelFilter
      *
      * @param bool $online Статус.
      *
-     * @return CourseFilter Правила поиска.
+     * @return self Правила поиска.
      */
-    public function online(bool $online): CourseFilter
+    public function online(bool $online): self
     {
         $online = $online ? 1 : 0;
         return $this->where('courses.online', $online);
@@ -252,9 +252,9 @@ class CourseFilter extends ModelFilter
      *
      * @param bool $employment Статус.
      *
-     * @return CourseFilter Правила поиска.
+     * @return self Правила поиска.
      */
-    public function employment(bool $employment): CourseFilter
+    public function employment(bool $employment): self
     {
         return $this->where('courses.employment', $employment);
     }
@@ -264,9 +264,9 @@ class CourseFilter extends ModelFilter
      *
      * @param float[] $duration Продолжительность от и до.
      *
-     * @return CourseFilter Правила поиска.
+     * @return self Правила поиска.
      */
-    public function duration(array $duration): CourseFilter
+    public function duration(array $duration): self
     {
         if ($duration[0] == 0 && $duration[1] == 0) {
             return $this
@@ -282,9 +282,9 @@ class CourseFilter extends ModelFilter
      *
      * @param Status[]|Status|string[]|string $statuses Статусы.
      *
-     * @return CourseFilter Правила поиска.
+     * @return self Правила поиска.
      */
-    public function status(array|Status|string $statuses): CourseFilter
+    public function status(array|Status|string $statuses): self
     {
         return $this->whereIn('courses.status', is_array($statuses) ? $statuses : [$statuses]);
     }
@@ -295,9 +295,9 @@ class CourseFilter extends ModelFilter
      * @param string $colum Название колонки.
      * @param array|int|string $ids ID's.
      *
-     * @return CourseFilter Правила поиска.
+     * @return self Правила поиска.
      */
-    private function whereIdsInJson(string $colum, array|int|string $ids): CourseFilter
+    private function whereIdsInJson(string $colum, array|int|string $ids): self
     {
         $ids = is_array($ids) ? $ids : [$ids];
 
@@ -319,9 +319,9 @@ class CourseFilter extends ModelFilter
      *
      * @param array|int|string $ids ID's направлений.
      *
-     * @return CourseFilter Правила поиска.
+     * @return self Правила поиска.
      */
-    public function directionsId(array|int|string $ids): CourseFilter
+    public function directionsId(array|int|string $ids): self
     {
         return $this->whereIdsInJson('direction_ids', $ids);
     }
@@ -331,9 +331,9 @@ class CourseFilter extends ModelFilter
      *
      * @param array|string $links Ссылки направлений.
      *
-     * @return CourseFilter Правила поиска.
+     * @return self Правила поиска.
      */
-    public function directionsLink(array|string $links): CourseFilter
+    public function directionsLink(array|string $links): self
     {
         return $this->related('directions', function ($query) use ($links) {
             return $query->whereIn('directions.link', is_array($links) ? $links : [$links]);
@@ -345,9 +345,9 @@ class CourseFilter extends ModelFilter
      *
      * @param array|int|string $ids ID's профессий.
      *
-     * @return CourseFilter Правила поиска.
+     * @return self Правила поиска.
      */
-    public function professionsId(array|int|string $ids): CourseFilter
+    public function professionsId(array|int|string $ids): self
     {
         return $this->whereIdsInJson('profession_ids', $ids);
     }
@@ -357,9 +357,9 @@ class CourseFilter extends ModelFilter
      *
      * @param array|string $links Ссылки профессий.
      *
-     * @return CourseFilter Правила поиска.
+     * @return self Правила поиска.
      */
-    public function professionsLink(array|string $links): CourseFilter
+    public function professionsLink(array|string $links): self
     {
         return $this->related('professions', function ($query) use ($links) {
             return $query->whereIn('professions.link', is_array($links) ? $links : [$links]);
@@ -371,9 +371,9 @@ class CourseFilter extends ModelFilter
      *
      * @param array|int|string $ids ID's категории.
      *
-     * @return CourseFilter Правила поиска.
+     * @return self Правила поиска.
      */
-    public function categoriesId(array|int|string $ids): CourseFilter
+    public function categoriesId(array|int|string $ids): self
     {
         return $this->whereIdsInJson('category_ids', $ids);
     }
@@ -383,9 +383,9 @@ class CourseFilter extends ModelFilter
      *
      * @param array|string $links Ссылки категории.
      *
-     * @return CourseFilter Правила поиска.
+     * @return self Правила поиска.
      */
-    public function categoriesLink(array|string $links): CourseFilter
+    public function categoriesLink(array|string $links): self
     {
         return $this->related('categories', function ($query) use ($links) {
             return $query->whereIn('categories.link', is_array($links) ? $links : [$links]);
@@ -397,9 +397,9 @@ class CourseFilter extends ModelFilter
      *
      * @param array|int|string $ids ID's навыков.
      *
-     * @return CourseFilter Правила поиска.
+     * @return self Правила поиска.
      */
-    public function skillsId(array|int|string $ids): CourseFilter
+    public function skillsId(array|int|string $ids): self
     {
         return $this->whereIdsInJson('skill_ids', $ids);
     }
@@ -409,9 +409,9 @@ class CourseFilter extends ModelFilter
      *
      * @param array|string $links Ссылки навыков.
      *
-     * @return CourseFilter Правила поиска.
+     * @return self Правила поиска.
      */
-    public function skillsLink(array|string $links): CourseFilter
+    public function skillsLink(array|string $links): self
     {
         return $this->related('skills', function ($query) use ($links) {
             return $query->whereIn('skills.link', is_array($links) ? $links : [$links]);
@@ -423,9 +423,9 @@ class CourseFilter extends ModelFilter
      *
      * @param array|int|string $ids ID's учителей.
      *
-     * @return CourseFilter Правила поиска.
+     * @return self Правила поиска.
      */
-    public function teachersId(array|int|string $ids): CourseFilter
+    public function teachersId(array|int|string $ids): self
     {
         return $this->whereIdsInJson('teacher_ids', $ids);
     }
@@ -435,9 +435,9 @@ class CourseFilter extends ModelFilter
      *
      * @param array|string $links Ссылки учителей.
      *
-     * @return CourseFilter Правила поиска.
+     * @return self Правила поиска.
      */
-    public function teachersLink(array|string $links): CourseFilter
+    public function teachersLink(array|string $links): self
     {
         return $this->related('teachers', function ($query) use ($links) {
             return $query->whereIn('teachers.link', is_array($links) ? $links : [$links]);
@@ -449,9 +449,9 @@ class CourseFilter extends ModelFilter
      *
      * @param array|int|string $ids ID's инструментов.
      *
-     * @return CourseFilter Правила поиска.
+     * @return self Правила поиска.
      */
-    public function toolsId(array|int|string $ids): CourseFilter
+    public function toolsId(array|int|string $ids): self
     {
         return $this->whereIdsInJson('tool_ids', $ids);
     }
@@ -461,9 +461,9 @@ class CourseFilter extends ModelFilter
      *
      * @param array|string $links Ссылки инструментов.
      *
-     * @return CourseFilter Правила поиска.
+     * @return self Правила поиска.
      */
-    public function toolsLink(array|string $links): CourseFilter
+    public function toolsLink(array|string $links): self
     {
         return $this->related('tools', function ($query) use ($links) {
             return $query->whereIn('tools.link', is_array($links) ? $links : [$links]);
@@ -475,9 +475,9 @@ class CourseFilter extends ModelFilter
      *
      * @param array|Level|string $levels Уровни.
      *
-     * @return CourseFilter Правила поиска.
+     * @return self Правила поиска.
      */
-    public function levelsLevel(array|Level|string $levels): CourseFilter
+    public function levelsLevel(array|Level|string $levels): self
     {
         return $this->whereIdsInJson('level_values', Data::getLevels($levels));
     }

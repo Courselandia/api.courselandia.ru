@@ -8,10 +8,10 @@
 
 namespace App\Modules\Course\Pipes\Site\Rated;
 
+use App\Models\Data;
+use App\Modules\Course\Data\Decorators\CourseRead;
 use Closure;
 use App\Models\Contracts\Pipe;
-use App\Models\Entity;
-use App\Modules\Course\Entities\CourseRead;
 use App\Models\Clean;
 
 /**
@@ -81,23 +81,29 @@ class DataPipe implements Pipe
     /**
      * Метод, который будет вызван у pipeline.
      *
-     * @param Entity|CourseRead $entity Сущность.
+     * @param Data|CourseRead $data Данные для декоратора для чтения курсов.
      * @param Closure $next Ссылка на следующий pipe.
      *
      * @return mixed Вернет значение полученное после выполнения следующего pipe.
      */
-    public function handle(Entity|CourseRead $entity, Closure $next): mixed
+    public function handle(Data|CourseRead $data, Closure $next): mixed
     {
-        unset($entity->sorts);
-        unset($entity->filters);
-        unset($entity->offset);
-        unset($entity->limit);
+        $data->sorts = null;
+        $data->filters = null;
+        $data->offset = null;
+        $data->limit = null;
+        $data->openedSchools = false;
+        $data->openedCategories = false;
+        $data->openedProfessions = false;
+        $data->openedTeachers = false;
+        $data->openedSkills = false;
+        $data->openedTools = false;
 
-        $entity = Clean::do($entity, self::REMOVES);
-        $entity = Clean::do($entity, self::REMOVES_IF_NULL, true);
+        $data = Clean::do($data, self::REMOVES);
+        $data = Clean::do($data, self::REMOVES_IF_NULL, true);
 
-        unset($entity->filter);
+        $data->filter = null;
 
-        return $next($entity);
+        return $next($data);
     }
 }

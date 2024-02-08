@@ -8,19 +8,19 @@
 
 namespace App\Modules\Course\Pipes\Site\Get;
 
-use Morph;
-use DB;
-use Util;
 use Cache;
 use Closure;
-use App\Models\Entity;
-use App\Modules\Course\Entities\CourseGet;
-use App\Modules\Course\Enums\Status;
+use DB;
+use Morph;
+use Util;
 use App\Models\Contracts\Pipe;
+use App\Models\Data;
 use App\Models\Enums\CacheTime;
-use App\Modules\Course\Entities\Course as CourseEntity;
-use App\Modules\Course\Models\Course;
 use App\Models\Exceptions\ParameterInvalidException;
+use App\Modules\Course\Data\Decorators\CourseGet;
+use App\Modules\Course\Entities\Course as CourseEntity;
+use App\Modules\Course\Enums\Status;
+use App\Modules\Course\Models\Course;
 
 /**
  * Получение курса: получение похожих курсов.
@@ -37,15 +37,15 @@ class SimilaritiesPipe implements Pipe
     /**
      * Метод, который будет вызван у pipeline.
      *
-     * @param Entity|CourseGet $entity Сущность.
+     * @param Data|CourseGet $data Сущность получения курса.
      * @param Closure $next Ссылка на следующий pipe.
      *
      * @return mixed Вернет значение полученное после выполнения следующего pipe.
      * @throws ParameterInvalidException
      */
-    public function handle(Entity|CourseGet $entity, Closure $next): mixed
+    public function handle(Data|CourseGet $data, Closure $next): mixed
     {
-        $course = $entity->course;
+        $course = $data->course;
 
         if ($course) {
             $cacheKey = Util::getKey('course', 'site', 'similarities', $course->id);
@@ -128,16 +128,16 @@ class SimilaritiesPipe implements Pipe
 
                         $items = $query->get()->toArray();
 
-                        return Entity::toEntities($items, new CourseEntity());
+                        return CourseEntity::collection($items);
                     }
 
                     return [];
                 }
             );
 
-            $entity->similarities = $courses;
+            $data->similarities = $courses;
         }
 
-        return $next($entity);
+        return $next($data);
     }
 }

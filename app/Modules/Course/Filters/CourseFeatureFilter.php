@@ -20,9 +20,9 @@ class CourseFeatureFilter extends ModelFilter
      *
      * @param int|string $id ID.
      *
-     * @return CourseFeatureFilter Правила поиска.
+     * @return self Правила поиска.
      */
-    public function id(int|string $id): CourseFeatureFilter
+    public function id(int|string $id): self
     {
         return $this->where('course_features.id', $id);
     }
@@ -32,9 +32,9 @@ class CourseFeatureFilter extends ModelFilter
      *
      * @param string $query Строка поиска.
      *
-     * @return CourseFeatureFilter Правила поиска.
+     * @return self Правила поиска.
      */
-    public function text(string $query): CourseFeatureFilter
+    public function text(string $query): self
     {
         return $this->whereLike('course_features.text', $query);
     }

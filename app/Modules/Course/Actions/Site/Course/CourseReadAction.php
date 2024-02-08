@@ -28,6 +28,7 @@ use App\Modules\Course\Pipes\Site\Read\ReadPipe;
 use App\Modules\Course\Pipes\Site\Read\DescriptionPipe;
 use App\Modules\Course\Pipes\Site\Read\DataPipe;
 use App\Modules\Course\Decorators\Site\CourseReadDecorator;
+use App\Modules\Course\Data\Decorators\CourseRead as CourseReadDecoratorData;
 
 /**
  * Класс действия для получения курсов.
@@ -35,95 +36,19 @@ use App\Modules\Course\Decorators\Site\CourseReadDecorator;
 class CourseReadAction extends Action
 {
     /**
-     * Сортировка данных.
+     * Сущность чтения курсов.
      *
-     * @var array|null
+     * @var CourseRead
      */
-    public ?array $sorts = null;
+    private CourseRead $data;
 
     /**
-     * Фильтрация данных.
-     *
-     * @var array|null
+     * @param CourseRead $data Сущность чтения курсов.
      */
-    public ?array $filters = null;
-
-    /**
-     * Начать выборку.
-     *
-     * @var int|null
-     */
-    public ?int $offset = null;
-
-    /**
-     * Лимит выборки.
-     *
-     * @var int|null
-     */
-    public ?int $limit = null;
-
-    /**
-     * Раздел описания.
-     *
-     * @var string|null
-     */
-    public ?string $section = null;
-
-    /**
-     * Ссылка на раздел описания.
-     *
-     * @var string|null
-     */
-    public ?string $sectionLink = null;
-
-    /**
-     * Отключать не активные.
-     *
-     * @var bool
-     */
-    public bool $disabled = false;
-
-    /**
-     * Признак школы открыты.
-     *
-     * @var bool
-     */
-    public bool $openedSchools = false;
-
-    /**
-     * Признак категории открыты.
-     *
-     * @var bool
-     */
-    public bool $openedCategories = false;
-
-    /**
-     * Признак профессии открыты.
-     *
-     * @var bool
-     */
-    public bool $openedProfessions = false;
-
-    /**
-     * Признак учителя открыты.
-     *
-     * @var bool
-     */
-    public bool $openedTeachers = false;
-
-    /**
-     * Признак навыки открыты.
-     *
-     * @var bool
-     */
-    public bool $openedSkills = false;
-
-    /**
-     * Признак инструменты открыты.
-     *
-     * @var bool
-     */
-    public bool $openedTools = false;
+    public function __construct(CourseRead $data)
+    {
+        $this->data = $data;
+    }
 
     /**
      * Метод запуска логики.
@@ -132,20 +57,7 @@ class CourseReadAction extends Action
      */
     public function run(): ?CourseRead
     {
-        $decorator = app(CourseReadDecorator::class);
-        $decorator->sorts = $this->sorts;
-        $decorator->filters = $this->filters;
-        $decorator->offset = $this->offset;
-        $decorator->limit = $this->limit;
-        $decorator->section = $this->section;
-        $decorator->sectionLink = $this->sectionLink;
-        $decorator->disabled = $this->disabled;
-        $decorator->openedSchools = $this->openedSchools;
-        $decorator->openedCategories = $this->openedCategories;
-        $decorator->openedProfessions = $this->openedProfessions;
-        $decorator->openedTeachers = $this->openedTeachers;
-        $decorator->openedSkills = $this->openedSkills;
-        $decorator->openedTools = $this->openedTools;
+        $decorator = new CourseReadDecorator(CourseReadDecoratorData::from($this->data->toArray()));
 
         return $decorator->setActions([
             ReadPipe::class,

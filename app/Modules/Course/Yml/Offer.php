@@ -37,7 +37,7 @@ class Offer
     /**
      * ID категории.
      *
-     * @var int
+     * @var int|null
      */
     public int|null $categoryId = null;
 

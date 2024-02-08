@@ -17,7 +17,6 @@ use Cache;
 use ImageStore;
 use Throwable;
 use Typography;
-use Carbon\Carbon;
 use App\Models\Action;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Metatag\Actions\MetatagSetAction;

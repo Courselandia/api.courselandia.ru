@@ -9,10 +9,10 @@
 namespace App\Modules\Course\Actions\Site\Course;
 
 use DB;
-use App\Models\Entity;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Profession\Models\Profession;
 use Cache;
+use Spatie\LaravelData\DataCollection;
 use Util;
 use App\Models\Action;
 use App\Models\Enums\CacheTime;
@@ -29,36 +29,55 @@ class CourseProfessionReadAction extends Action
      *
      * @var array|null
      */
-    public ?array $filters = null;
+    private ?array $filters;
 
     /**
      * Начать выборку.
      *
      * @var int|null
      */
-    public ?int $offset = null;
+    private ?int $offset;
 
     /**
      * Лимит выборки.
      *
      * @var int|null
      */
-    public ?int $limit = null;
+    private ?int $limit;
 
     /**
      * Отключать не активные.
      *
      * @var bool
      */
-    public ?bool $disabled = false;
+    private ?bool $disabled;
+
+    /**
+     * @param array|null $filters Фильтрация данных.
+     * @param int|null $offset Начать выборку.
+     * @param int|null $limit Лимит выборки выборку.
+     * @param bool|null $disabled Отключать не активные.
+     */
+    public function __construct(
+        ?array $filters = null,
+        ?int   $offset = null,
+        ?int   $limit = null,
+        ?bool  $disabled = null,
+    )
+    {
+        $this->filters = $filters;
+        $this->offset = $offset;
+        $this->limit = $limit;
+        $this->disabled = $disabled;
+    }
 
     /**
      * Метод запуска логики.
      *
-     * @return CourseItemFilter[] Вернет результаты исполнения.
+     * @return DataCollection Вернет результаты исполнения.
      * @throws ParameterInvalidException
      */
-    public function run(): array
+    public function run(): DataCollection
     {
         $filters = $this->filters;
 
@@ -117,7 +136,7 @@ class CourseProfessionReadAction extends Action
                         $query->limit($this->limit);
                     }
 
-                    return Entity::toEntities($query->get()->toArray(), new CourseItemFilter());
+                    return CourseItemFilter::collection($query->get()->toArray());
                 }
             );
         }
@@ -193,7 +212,7 @@ class CourseProfessionReadAction extends Action
             $cacheKey,
             CacheTime::GENERAL->value,
             function () use ($professionFilters, $filters, $allProfessions) {
-                if (!empty($filters) || (count($professionFilters) && !$this->disabled) || !$this->disabled) {
+                if (!empty($filters) || !$this->disabled) {
                     $query = Profession::select([
                         'professions.id',
                         'professions.link',
@@ -264,10 +283,10 @@ class CourseProfessionReadAction extends Action
                         ->values()
                         ->toArray();
 
-                    return Entity::toEntities($result, new CourseItemFilter());
+                    return CourseItemFilter::collection($result);
                 }
 
-                return Entity::toEntities($activeProfessions, new CourseItemFilter());
+                return CourseItemFilter::collection($activeProfessions);
             }
         );
     }

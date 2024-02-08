@@ -24,9 +24,7 @@ class DirectionItemJob extends JsonItemJob
      */
     public function handle(): void
     {
-        $action = app(DirectionLinkAction::class);
-        $action->link = $this->link;
-
+        $action = new DirectionLinkAction($this->link);
         $data = $action->run();
 
         if ($data) {

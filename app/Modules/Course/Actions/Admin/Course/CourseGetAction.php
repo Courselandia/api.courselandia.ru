@@ -28,6 +28,9 @@ class CourseGetAction extends Action
      */
     private int|string $id;
 
+    /**
+     * @param int|string $id ID курса.
+     */
     public function __construct(int|string $id)
     {
         $this->id = $id;
@@ -76,7 +79,7 @@ class CourseGetAction extends Action
                     ])
                     ->first();
 
-                return $course ? new CourseEntity($course->toArray()) : null;
+                return $course ? CourseEntity::from($course->toArray()) : null;
             }
         );
     }

@@ -9,11 +9,11 @@
 namespace App\Modules\Course\Actions\Site\Course;
 
 use App\Models\Action;
-use App\Models\Clean;
 use App\Modules\Course\Entities\CourseRead;
 use App\Modules\Course\Pipes\Site\Read\ReadPipe;
 use App\Modules\Course\Pipes\Site\Rated\DataPipe;
 use App\Modules\Course\Decorators\Site\CourseReadDecorator;
+use App\Modules\Course\Data\Decorators\CourseRead as CourseReadDecoratorData;
 
 /**
  * Класс действия для полнотекстового поиска.
@@ -25,14 +25,27 @@ class CourseReadSearchAction extends Action
      *
      * @var int|null
      */
-    public ?int $limit = null;
+    private ?int $limit;
 
     /**
      * Строка поиска.
      *
      * @var string|null
      */
-    public ?string $search = null;
+    private ?string $search;
+
+    /**
+     * @param int|null $limit Лимит выборки.
+     * @param string|null $search Строка поиска.
+     */
+    public function __construct(
+        ?int    $limit = null,
+        ?string $search = null,
+    )
+    {
+        $this->limit = $limit;
+        $this->search = $search;
+    }
 
     /**
      * Метод запуска логики.
@@ -41,33 +54,21 @@ class CourseReadSearchAction extends Action
      */
     public function run(): array
     {
-        $decorator = app(CourseReadDecorator::class);
-
-        $decorator->sorts = [
-            'relevance' => 'DESC',
-        ];
-
-        $decorator->filters = [
-            'search' => $this->search,
-        ];
-
-        $decorator->offset = 0;
-        $decorator->limit = $this->limit;
+        $decorator = new CourseReadDecorator(CourseReadDecoratorData::from([
+            'sorts' => [
+                'relevance' => 'DESC',
+            ],
+            'filters' => [
+                'search' => $this->search,
+            ],
+            'offset' => 0,
+            'limit' => $this->limit,
+        ]));
 
         $result = $decorator->setActions([
             ReadPipe::class,
             DataPipe::class,
         ])->run();
-
-        $result = Clean::do($result, [
-            'openedSchools',
-            'openedCategories',
-            'openedProfessions',
-            'openedProfessions',
-            'openedTeachers',
-            'openedSkills',
-            'openedTools',
-        ]);
 
         /**
          * @var CourseRead $result

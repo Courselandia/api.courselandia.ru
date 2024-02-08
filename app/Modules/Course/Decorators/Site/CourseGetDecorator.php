@@ -9,7 +9,8 @@
 namespace App\Modules\Course\Decorators\Site;
 
 use App\Models\Decorator;
-use App\Modules\Course\Entities\CourseGet;
+use App\Modules\Course\Data\Decorators\CourseGet;
+use App\Modules\Course\Entities\CourseGet as CourseGetEntity;
 use Illuminate\Pipeline\Pipeline;
 
 /**
@@ -22,37 +23,58 @@ class CourseGetDecorator extends Decorator
      *
      * @var string|null
      */
-    public string|null $school = null;
+    private string|null $school;
 
     /**
      * Ссылка курса.
      *
      * @var string|null
      */
-    public string|null $link = null;
+    private string|null $link;
 
     /**
      * ID курса.
      *
      * @var string|int|null
      */
-    public string|int|null $id = null;
+    private string|int|null $id;
+
+    /**
+     * @param string|null $school Ссылка школы.
+     * @param string|null $link Ссылка курса.
+     * @param string|int|null $id ID курса.
+     */
+    public function __construct(
+        string|null     $school = null,
+        string|null     $link = null,
+        string|int|null $id = null,
+    )
+    {
+        $this->school = $school;
+        $this->link = $link;
+        $this->id = $id;
+    }
 
     /**
      * Метод обработчик события после выполнения всех действий декоратора.
      *
-     * @return CourseGet Вернет данные школы.
+     * @return CourseGetEntity Вернет данные школы.
      */
-    public function run(): CourseGet
+    public function run(): CourseGetEntity
     {
         $courseRead = new CourseGet();
         $courseRead->school = $this->school;
         $courseRead->link = $this->link;
         $courseRead->id = $this->id;
 
-        return app(Pipeline::class)
+        $data = app(Pipeline::class)
             ->send($courseRead)
             ->through($this->getActions())
             ->thenReturn();
+
+        /**
+         * @var CourseGet $data
+         */
+        return CourseGetEntity::from($data->toArray());
     }
 }

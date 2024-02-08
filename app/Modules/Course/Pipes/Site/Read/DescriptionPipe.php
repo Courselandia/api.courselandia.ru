@@ -11,7 +11,7 @@ namespace App\Modules\Course\Pipes\Site\Read;
 use Util;
 use Cache;
 use Closure;
-use App\Models\Entity;
+use App\Models\Data;
 use App\Models\Contracts\Pipe;
 use App\Models\Enums\CacheTime;
 use App\Models\Exceptions\ParameterInvalidException;
@@ -22,7 +22,7 @@ use App\Modules\School\Actions\Site\School\SchoolLinkAction;
 use App\Modules\Skill\Actions\Site\SkillLinkAction;
 use App\Modules\Teacher\Actions\Site\TeacherLinkAction;
 use App\Modules\Tool\Actions\Site\ToolLinkAction;
-use App\Modules\Course\Entities\CourseRead;
+use App\Modules\Course\Data\Decorators\CourseRead;
 
 /**
  * Чтение курсов: описание.
@@ -32,26 +32,26 @@ class DescriptionPipe implements Pipe
     /**
      * Метод, который будет вызван у pipeline.
      *
-     * @param Entity|CourseRead $entity Сущность.
+     * @param Data|CourseRead $data Данные для декоратора для чтения курсов.
      * @param Closure $next Ссылка на следующий pipe.
      *
      * @return mixed Вернет значение полученное после выполнения следующего pipe.
      * @throws ParameterInvalidException
      */
-    public function handle(Entity|CourseRead $entity, Closure $next): mixed
+    public function handle(Data|CourseRead $data, Closure $next): mixed
     {
         $cacheKey = Util::getKey(
             'course',
             'site',
             'description',
-            $entity->section,
-            $entity->sectionLink,
+            $data->section,
+            $data->sectionLink,
         );
 
-        $section = $entity->section;
-        $link = $entity->sectionLink;
+        $section = $data->section;
+        $link = $data->sectionLink;
 
-        $entity->description = Cache::tags([
+        $data->description = Cache::tags([
             'course',
             'direction',
             'profession',
@@ -67,50 +67,43 @@ class DescriptionPipe implements Pipe
             CacheTime::GENERAL->value,
             function () use ($section, $link) {
                 if ($section === 'direction') {
-                    $action = app(DirectionLinkAction::class);
-                    $action->link = $link;
+                    $action = new DirectionLinkAction($link);
 
                     return $action->run();
                 }
 
                 if ($section === 'category') {
-                    $action = app(CategoryLinkAction::class);
-                    $action->link = $link;
+                    $action = new CategoryLinkAction($link);
 
                     return $action->run();
                 }
 
                 if ($section === 'profession') {
-                    $action = app(ProfessionLinkAction::class);
-                    $action->link = $link;
+                    $action = new ProfessionLinkAction($link);
 
                     return $action->run();
                 }
 
                 if ($section === 'school') {
-                    $action = app(SchoolLinkAction::class);
-                    $action->link = $link;
+                    $action = new SchoolLinkAction($link);
 
                     return $action->run();
                 }
 
                 if ($section === 'teacher') {
-                    $action = app(TeacherLinkAction::class);
-                    $action->link = $link;
+                    $action = new TeacherLinkAction($link);
 
                     return $action->run();
                 }
 
                 if ($section === 'tool') {
-                    $action = app(ToolLinkAction::class);
-                    $action->link = $link;
+                    $action = new ToolLinkAction($link);
 
                     return $action->run();
                 }
 
                 if ($section === 'skill') {
-                    $action = app(SkillLinkAction::class);
-                    $action->link = $link;
+                    $action = new SkillLinkAction($link);
 
                     return $action->run();
                 }
@@ -119,6 +112,6 @@ class DescriptionPipe implements Pipe
             }
         );
 
-        return $next($entity);
+        return $next($data);
     }
 }

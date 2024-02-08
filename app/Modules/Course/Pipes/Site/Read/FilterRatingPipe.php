@@ -8,6 +8,7 @@
 
 namespace App\Modules\Course\Pipes\Site\Read;
 
+use App\Models\Data;
 use App\Modules\Course\Enums\Status;
 use Util;
 use Cache;
@@ -15,8 +16,7 @@ use Closure;
 use App\Models\Enums\CacheTime;
 use App\Modules\Course\Models\Course;
 use App\Models\Contracts\Pipe;
-use App\Models\Entity;
-use App\Modules\Course\Entities\CourseRead;
+use App\Modules\Course\Data\Decorators\CourseRead;
 
 /**
  * Чтение курсов: фильтры: рейтинги.
@@ -26,14 +26,14 @@ class FilterRatingPipe implements Pipe
     /**
      * Метод, который будет вызван у pipeline.
      *
-     * @param Entity|CourseRead $entity Сущность.
+     * @param Data|CourseRead $data Данные для декоратора для чтения курсов.
      * @param Closure $next Ссылка на следующий pipe.
      *
      * @return mixed Вернет значение полученное после выполнения следующего pipe.
      */
-    public function handle(Entity|CourseRead $entity, Closure $next): mixed
+    public function handle(Data|CourseRead $data, Closure $next): mixed
     {
-        $currentFilters = $entity->filters;
+        $currentFilters = $data->filters;
 
         if (isset($currentFilters['rating'])) {
             unset($currentFilters['rating']);
@@ -58,9 +58,9 @@ class FilterRatingPipe implements Pipe
             ]
         ];
 
-        $entity->filter->ratings = $ratings;
+        $data->filter->ratings = $ratings;
 
-        return $next($entity);
+        return $next($data);
     }
 
     /**

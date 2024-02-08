@@ -8,10 +8,11 @@
 
 namespace App\Modules\Course\Pipes\Site\Read;
 
+use App\Models\Data;
+use App\Modules\Course\Data\Decorators\CourseRead;
 use Closure;
 use App\Models\Contracts\Pipe;
 use App\Models\Entity;
-use App\Modules\Course\Entities\CourseRead;
 use App\Models\Clean;
 
 /**
@@ -90,26 +91,26 @@ class DataPipe implements Pipe
     /**
      * Метод, который будет вызван у pipeline.
      *
-     * @param Entity|CourseRead $entity Сущность.
+     * @param Data|CourseRead $data Данные для декоратора для чтения курсов.
      * @param Closure $next Ссылка на следующий pipe.
      *
      * @return mixed Вернет значение полученное после выполнения следующего pipe.
      */
-    public function handle(Entity|CourseRead $entity, Closure $next): mixed
+    public function handle(Data|CourseRead $data, Closure $next): mixed
     {
-        unset($entity->sorts);
-        unset($entity->filters);
-        unset($entity->offset);
-        unset($entity->limit);
+        $data->sorts = null;
+        $data->filters = null;
+        $data->offset = null;
+        $data->limit = null;
 
-        $description = $entity->description ? clone $entity->description : null;
-        $entity = Clean::do($entity, self::REMOVES);
+        $description = $data->description ? clone $data->description : null;
+        $data = Clean::do($data, self::REMOVES);
 
         /**
          * @var CourseRead $entity
          */
-        $entity->description = $description;
+        $data->description = $description;
 
-        return $next($entity);
+        return $next($data);
     }
 }

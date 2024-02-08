@@ -24,9 +24,7 @@ class SkillItemJob extends JsonItemJob
      */
     public function handle(): void
     {
-        $action = app(SkillLinkAction::class);
-        $action->link = $this->link;
-
+        $action = new SkillLinkAction($this->link);
         $data = $action->run();
 
         if ($data) {

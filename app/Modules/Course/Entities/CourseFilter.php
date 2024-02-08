@@ -8,78 +8,80 @@
 
 namespace App\Modules\Course\Entities;
 
-use App\Models\Entity;
-use App\Modules\Category\Entities\Category;
+use App\Models\EntityNew;
 use App\Modules\Course\Enums\Format;
-use App\Modules\Direction\Entities\Direction;
-use App\Modules\Profession\Entities\Profession;
 use App\Modules\Salary\Enums\Level;
-use App\Modules\School\Entities\School;
-use App\Modules\Skill\Entities\Skill;
-use App\Modules\Teacher\Entities\Teacher;
-use App\Modules\Tool\Entities\Tool;
-use App\Modules\Process\Entities\Process;
+use Spatie\LaravelData\Attributes\DataCollectionOf;
+use Spatie\LaravelData\DataCollection;
 
 /**
  * Сущность фильтров курсов для чтения.
  */
-class CourseFilter extends Entity
+class CourseFilter extends EntityNew
 {
     /**
      * Направления.
      *
-     * @var Direction[]
+     * @var ?DataCollection
      */
-    public ?array $directions = null;
+    #[DataCollectionOf(CourseItemFilter::class)]
+    public ?DataCollection $directions = null;
 
     /**
      * Категории.
      *
-     * @var Category[]
+     * @var ?DataCollection
      */
-    public ?array $categories = null;
+    #[DataCollectionOf(CourseItemFilter::class)]
+    public ?DataCollection $categories = null;
 
     /**
      * Профессии.
      *
-     * @var Profession[]
+     * @var ?DataCollection
      */
-    public ?array $professions = null;
+    #[DataCollectionOf(CourseItemFilter::class)]
+    public ?DataCollection $professions = null;
 
     /**
      * Школы.
      *
-     * @var School[]
+     * @var ?DataCollection
      */
-    public ?array $schools = null;
+    #[DataCollectionOf(CourseItemFilter::class)]
+    public ?DataCollection $schools = null;
 
     /**
      * Инструменты.
      *
-     * @var Tool[]
+     * @var ?DataCollection
      */
-    public ?array $tools = null;
+    #[DataCollectionOf(CourseItemFilter::class)]
+    public ?DataCollection $tools = null;
 
     /**
      * КАк проходит обучение.
      *
-     * @var Process[]
+     * @var ?DataCollection
      */
-    public ?array $processes = null;
+    #[DataCollectionOf(CourseItemFilter::class)]
+    public ?DataCollection $processes = null;
 
     /**
      * Навыки.
      *
-     * @var Skill[]
+     * @var ?DataCollection
      */
-    public ?array $skills = null;
+    #[DataCollectionOf(CourseItemFilter::class)]
+    public ?DataCollection $skills = null;
 
     /**
      * Учителя.
      *
-     * @var Teacher[]
+     * @var ?DataCollection
      */
-    public ?array $teachers = null;
+    #[DataCollectionOf(CourseItemFilter::class)]
+    public ?DataCollection $teachers = null;
 
     /**
      * Массив доступных рейтингов.
@@ -117,7 +119,7 @@ class CourseFilter extends Entity
     public ?bool $free = null;
 
     /**
-     * Признак наличия фильтра для курсов онлайн.
+     * Доступные форматы обучения.
      *
      * @var Format[]
      */
@@ -129,4 +131,56 @@ class CourseFilter extends Entity
      * @var Level[]
      */
     public ?array $levels = null;
+
+    /**
+     * @param DataCollection|null $directions Направления.
+     * @param DataCollection|null $categories Категории.
+     * @param DataCollection|null $professions Профессии.
+     * @param DataCollection|null $schools Школы.
+     * @param DataCollection|null $tools Инструменты.
+     * @param DataCollection|null $processes Как проходит обучение.
+     * @param DataCollection|null $skills Навыки.
+     * @param DataCollection|null $teachers Учителя.
+     * @param array|null $ratings Массив доступных рейтингов.
+     * @param CourseFilterPrice|null $price Цена от и до
+     * @param CourseFilterDuration|null $duration Продолжительность от и до
+     * @param bool|null $credit Признак наличия фильтра возможности взять кредит.
+     * @param bool|null $free Признак наличия фильтра возможности взять бесплатный курс.
+     * @param array|null $formats Доступные форматы обучения.
+     * @param array|null $levels Доступные уровни.
+     */
+    public function __construct(
+        ?DataCollection       $directions = null,
+        ?DataCollection       $categories = null,
+        ?DataCollection       $professions = null,
+        ?DataCollection       $schools = null,
+        ?DataCollection       $tools = null,
+        ?DataCollection       $processes = null,
+        ?DataCollection       $skills = null,
+        ?DataCollection       $teachers = null,
+        ?array                $ratings = null,
+        ?CourseFilterPrice    $price = null,
+        ?CourseFilterDuration $duration = null,
+        ?bool                 $credit = null,
+        ?bool                 $free = null,
+        ?array                $formats = null,
+        ?array                $levels = null,
+    )
+    {
+        $this->directions = $directions;
+        $this->categories = $categories;
+        $this->professions = $professions;
+        $this->schools = $schools;
+        $this->tools = $tools;
+        $this->processes = $processes;
+        $this->skills = $skills;
+        $this->teachers = $teachers;
+        $this->ratings = $ratings;
+        $this->price = $price;
+        $this->duration = $duration;
+        $this->credit = $credit;
+        $this->free = $free;
+        $this->formats = $formats;
+        $this->levels = $levels;
+    }
 }

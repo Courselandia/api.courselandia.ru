@@ -8,10 +8,10 @@
 
 namespace App\Modules\Course\Pipes\Site\Get;
 
-use Closure;
-use App\Modules\Course\Entities\CourseGet;
 use App\Models\Contracts\Pipe;
-use App\Models\Entity;
+use App\Models\Data;
+use App\Modules\Course\Data\Decorators\CourseGet;
+use Closure;
 
 /**
  * Получение курса: фильтры, очистка и подготовка данных.
@@ -21,17 +21,17 @@ class DataPipe implements Pipe
     /**
      * Метод, который будет вызван у pipeline.
      *
-     * @param Entity|CourseGet $entity Сущность.
+     * @param Data|CourseGet $data Сущность получения курса.
      * @param Closure $next Ссылка на следующий pipe.
      *
      * @return mixed Вернет значение полученное после выполнения следующего pipe.
      */
-    public function handle(Entity|CourseGet $entity, Closure $next): mixed
+    public function handle(Data|CourseGet $data, Closure $next): mixed
     {
-        unset($entity->link);
-        unset($entity->school);
-        unset($entity->id);
+        $data->link = null;
+        $data->school = null;
+        $data->id = null;
 
-        return $next($entity);
+        return $next($data);
     }
 }

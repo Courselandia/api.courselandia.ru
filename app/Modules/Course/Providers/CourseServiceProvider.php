@@ -33,7 +33,7 @@ class CourseServiceProvider extends ServiceProvider
         $this->registerTranslations();
         $this->registerConfig();
 
-        $this->loadMigrationsFrom(__DIR__.'/../Database/Migrations');
+        $this->loadMigrationsFrom(__DIR__ . '/../Database/Migrations');
 
         CourseModel::observe(CourseListener::class);
     }
@@ -62,10 +62,10 @@ class CourseServiceProvider extends ServiceProvider
     protected function registerConfig(): void
     {
         $this->publishes([
-            __DIR__.'/../Config/config.php' => config_path('course.php'),
+            __DIR__ . '/../Config/config.php' => config_path('course.php'),
         ]);
         $this->mergeConfigFrom(
-            __DIR__.'/../Config/config.php',
+            __DIR__ . '/../Config/config.php',
             'course'
         );
     }
@@ -79,7 +79,7 @@ class CourseServiceProvider extends ServiceProvider
     {
         $viewPath = base_path('resources/views/modules/course');
 
-        $sourcePath = __DIR__.'/../Resources/views';
+        $sourcePath = __DIR__ . '/../Resources/views';
 
         $this->publishes([
             $sourcePath => $viewPath
@@ -88,7 +88,7 @@ class CourseServiceProvider extends ServiceProvider
         $this->loadViewsFrom(
             array_merge(
                 array_map(function ($path) {
-                    return $path.'/modules/course';
+                    return $path . '/modules/course';
                 }, Config::get('view.paths')),
                 [$sourcePath]
             ),
@@ -108,7 +108,7 @@ class CourseServiceProvider extends ServiceProvider
         if (is_dir($langPath)) {
             $this->loadTranslationsFrom($langPath, 'course');
         } else {
-            $this->loadTranslationsFrom(__DIR__.'/../Resources/lang', 'course');
+            $this->loadTranslationsFrom(__DIR__ . '/../Resources/lang', 'course');
         }
     }
 

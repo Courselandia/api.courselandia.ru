@@ -8,7 +8,6 @@
 
 namespace App\Modules\Course\Json\Jobs;
 
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Course\Actions\Site\Course\CourseGetAction;
 
 /**
@@ -20,12 +19,10 @@ class CourseItemJob extends JsonItemJob
      * Выполнение задачи.
      *
      * @return void
-     * @throws ParameterInvalidException
      */
     public function handle(): void
     {
-        $action = app(CourseGetAction::class);
-        $action->id = $this->id;
+        $action = new CourseGetAction(null, null, $this->id);
         $data = $action->run();
 
         if ($data) {

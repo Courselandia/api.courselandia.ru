@@ -8,12 +8,12 @@
 
 namespace App\Modules\Course\Entities;
 
-use App\Models\Entity;
+use App\Models\EntityNew;
 
 /**
  * Сущность фильтров курсов для цены.
  */
-class CourseFilterPrice extends Entity
+class CourseFilterPrice extends EntityNew
 {
     /**
      * Минимальная цена.
@@ -28,4 +28,17 @@ class CourseFilterPrice extends Entity
      * @var int|null
      */
     public ?int $max = null;
+
+    /**
+     * @param int|null $min Минимальная цена.
+     * @param int|null $max Максимальная цена.
+     */
+    public function __construct(
+        ?int $min = null,
+        ?int $max = null,
+    )
+    {
+        $this->min = $min;
+        $this->max = $max;
+    }
 }

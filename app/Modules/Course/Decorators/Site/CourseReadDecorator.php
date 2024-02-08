@@ -9,7 +9,8 @@
 namespace App\Modules\Course\Decorators\Site;
 
 use App\Models\Decorator;
-use App\Modules\Course\Entities\CourseRead;
+use App\Modules\Course\Data\Decorators\CourseRead;
+use App\Modules\Course\Entities\CourseRead as CourseReadEntity;
 use Illuminate\Pipeline\Pipeline;
 
 /**
@@ -18,128 +19,33 @@ use Illuminate\Pipeline\Pipeline;
 class CourseReadDecorator extends Decorator
 {
     /**
-     * Сортировка данных.
-     *
-     * @var array|null
+     * @var CourseRead Данные для декоратора для чтения курсов.
      */
-    public ?array $sorts = null;
+    private CourseRead $data;
 
     /**
-     * Фильтрация данных.
-     *
-     * @var array|null
+     * @param CourseRead $data Данные для декоратора для чтения курсов.
      */
-    public ?array $filters = null;
-
-    /**
-     * Начать выборку.
-     *
-     * @var int|null
-     */
-    public ?int $offset = null;
-
-    /**
-     * Лимит выборки.
-     *
-     * @var int|null
-     */
-    public ?int $limit = null;
-
-    /**
-     * Раздел описания.
-     *
-     * @var string|null
-     */
-    public ?string $section = null;
-
-    /**
-     * Ссылка на раздел описания.
-     *
-     * @var string|null
-     */
-    public ?string $sectionLink = null;
-
-    /**
-     * Отключать не активные.
-     *
-     * @var bool
-     */
-    public bool $disabled = false;
-
-    /**
-     * Признак школы открыты.
-     *
-     * @var bool
-     */
-    public bool $openedSchools = false;
-
-    /**
-     * Признак категории открыты.
-     *
-     * @var bool
-     */
-    public bool $openedCategories = false;
-
-    /**
-     * Признак профессии открыты.
-     *
-     * @var bool
-     */
-    public bool $openedProfessions = false;
-
-    /**
-     * Признак учителя открыты.
-     *
-     * @var bool
-     */
-    public bool $openedTeachers = false;
-
-    /**
-     * Признак навыки открыты.
-     *
-     * @var bool
-     */
-    public bool $openedSkills = false;
-
-    /**
-     * Признак инструменты открыты.
-     *
-     * @var bool
-     */
-    public bool $openedTools = false;
-
-    /**
-     * Вывести курсы только с картинками.
-     *
-     * @var bool
-     */
-    public bool $onlyWithImage = false;
+    public function __construct(CourseRead $data)
+    {
+        $this->data = $data;
+    }
 
     /**
      * Метод обработчик события после выполнения всех действий декоратора.
      *
-     * @return CourseRead Вернет данные курсов.
+     * @return CourseReadEntity Вернет сущность считанных курсов.
      */
-    public function run(): CourseRead
+    public function run(): CourseReadEntity
     {
-        $courseRead = new CourseRead();
-        $courseRead->sorts = $this->sorts;
-        $courseRead->filters = $this->filters;
-        $courseRead->offset = $this->offset;
-        $courseRead->limit = $this->limit;
-        $courseRead->section = $this->section;
-        $courseRead->sectionLink = $this->sectionLink;
-        $courseRead->openedSchools = $this->openedSchools;
-        $courseRead->openedCategories = $this->openedCategories;
-        $courseRead->openedProfessions = $this->openedProfessions;
-        $courseRead->openedTeachers = $this->openedTeachers;
-        $courseRead->openedSkills = $this->openedSkills;
-        $courseRead->openedTools = $this->openedTools;
-        $courseRead->onlyWithImage = $this->onlyWithImage;
-
-        return app(Pipeline::class)
-            ->send($courseRead)
+        $data = app(Pipeline::class)
+            ->send($this->data)
             ->through($this->getActions())
             ->thenReturn();
+
+        /**
+         * @var CourseRead $data
+         */
+        return CourseReadEntity::from($data->toArray());
     }
 }

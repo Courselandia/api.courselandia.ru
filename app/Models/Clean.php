@@ -8,6 +8,9 @@
 
 namespace App\Models;
 
+use App\Modules\Course\Data\Decorators\CourseRead;
+use Spatie\LaravelData\DataCollection;
+
 /**
  * Очистка сущностей от лишних данных.
  */
@@ -16,37 +19,37 @@ class Clean
     /**
      * Чистка данных.
      *
-     * @param Entity|Entity[] $entities Сущность для очистки.
+     * @param CourseRead|Data|DataCollection|array $items Данные для очистки.
      * @param array $removes Массив ключей, которые подлежат очистки.
      * @param bool $ifNull Только удалять если равен null.
      *
-     * @return Entity|Entity[] Вернет очищенную сущность.
+     * @return CourseRead|DataCollection Вернет очищенные данные.
      */
-    public static function do(Entity|array $entities, array $removes, bool $ifNull = false): Entity | array
+    public static function do(CourseRead|Data|DataCollection|array $items, array $removes, bool $ifNull = false): CourseRead | array
     {
-        $isArray = is_array($entities);
-        $entities = $isArray ? $entities : [$entities];
+        $isArray = is_array($items);
+        $items = $isArray ? $items : [$items];
 
-        foreach ($entities as $entity) {
-            foreach ($entity as $key => $value) {
-                if (is_array($entity->$key) && array_is_list($entity->$key)) {
-                    for ($i = 0; $i < count($entity->$key); $i++) {
-                        if ($entity->$key[$i] instanceof Entity) {
-                            $entity->$key[$i] = self::do($entity->$key[$i], $removes, $ifNull);
+        foreach ($items as $item) {
+            foreach ($item as $key => $value) {
+                if (is_array($item->$key) && array_is_list($item->$key)) {
+                    for ($i = 0; $i < count($item->$key); $i++) {
+                        if ($item->$key[$i] instanceof Data) {
+                            $item->$key[$i] = self::do($item->$key[$i], $removes, $ifNull);
                         }
                     }
-                } elseif ($entity->$key instanceof Entity) {
-                    $entity->$key = self::do($entity->$key, $removes, $ifNull);
+                } elseif ($item->$key instanceof Data) {
+                    $item->$key = self::do($item->$key, $removes, $ifNull);
                 } elseif (in_array($key, $removes)) {
                     if ($ifNull === false) {
-                        unset($entity->$key);
-                    } else if ($ifNull === true && $entity->$key === null) {
-                        unset($entity->$key);
+                        $item->$key = null;
+                    } else if ($ifNull === true && $item->$key === null) {
+                        $item->$key = null;
                     }
                 }
             }
         }
 
-        return $isArray ? $entities : $entities[0];
+        return $isArray ? $items : $items[0];
     }
 }

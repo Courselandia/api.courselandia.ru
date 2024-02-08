@@ -194,7 +194,7 @@ class Import
                 ->first();
 
             $name = html_entity_decode($courseEntity->name);
-            $name = rtrim($name,'.');
+            $name = rtrim($name, '.');
             $text = html_entity_decode($courseEntity->text);
 
             if ($course) {
@@ -232,7 +232,7 @@ class Import
                     $data['image_big_id'] = $image;
                 }
 
-                $hasToBeChange = $this->hasToBeChanged(new CourseEntity($course->toArray()), new CourseEntity($data));
+                $hasToBeChange = $this->hasToBeChanged(CourseEntity::from($course->toArray()), CourseEntity::from($data));
 
                 if ($hasToBeChange) {
                     $course->update($data);

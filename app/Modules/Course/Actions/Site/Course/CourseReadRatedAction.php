@@ -9,11 +9,12 @@
 namespace App\Modules\Course\Actions\Site\Course;
 
 use App\Models\Action;
-use App\Modules\Course\Entities\Course;
+use App\Modules\Course\Data\Decorators\CourseRead;
 use App\Modules\Course\Pipes\Site\Read\ReadPipe;
 use App\Modules\Course\Pipes\Site\Read\DescriptionPipe;
 use App\Modules\Course\Pipes\Site\Rated\DataPipe;
 use App\Modules\Course\Decorators\Site\CourseReadDecorator;
+use Spatie\LaravelData\DataCollection;
 
 /**
  * Класс действия для получения лучших курсов.
@@ -25,28 +26,34 @@ class CourseReadRatedAction extends Action
      *
      * @var int|null
      */
-    public ?int $limit = null;
+    private ?int $limit;
+
+    /**
+     * @param int|null $limit Лимит выборки.
+     */
+    public function __construct(?int $limit = null)
+    {
+        $this->limit = $limit;
+    }
 
     /**
      * Метод запуска логики.
      *
-     * @return Course[] Вернет результаты исполнения.
+     * @return DataCollection Вернет результаты исполнения.
      */
-    public function run(): array
+    public function run(): DataCollection
     {
-        $decorator = app(CourseReadDecorator::class);
-
-        $decorator->sorts = [
-            'rating' => 'DESC',
-        ];
-
-        $decorator->filters = [
-            'price' => [70000, 300000],
-        ];
-
-        $decorator->offset = 0;
-        $decorator->limit = $this->limit;
-        $decorator->onlyWithImage = true;
+        $decorator = new CourseReadDecorator(CourseRead::from([
+            'sorts' => [
+                'rating' => 'DESC',
+            ],
+            'filters' => [
+                'price' => [70000, 300000],
+            ],
+            'offset' => 0,
+            'limit' => $this->limit,
+            'onlyWithImage' => true,
+        ]));
 
         $result = $decorator->setActions([
             ReadPipe::class,

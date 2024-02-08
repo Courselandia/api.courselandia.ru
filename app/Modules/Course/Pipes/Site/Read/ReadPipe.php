@@ -18,10 +18,10 @@ use App\Modules\Course\Entities\CourseFilterDuration;
 use App\Modules\Course\Entities\CourseFilterPrice;
 use App\Modules\Course\Enums\Status;
 use App\Models\Contracts\Pipe;
-use App\Models\Entity;
+use App\Models\Data;
 use App\Models\Enums\CacheTime;
 use App\Modules\Course\Entities\Course as CourseEntity;
-use App\Modules\Course\Entities\CourseRead;
+use App\Modules\Course\Data\Decorators\CourseRead;
 use App\Modules\Course\Models\Course;
 use App\Models\Exceptions\ParameterInvalidException;
 
@@ -33,23 +33,23 @@ class ReadPipe implements Pipe
     /**
      * Метод, который будет вызван у pipeline.
      *
-     * @param Entity|CourseRead $entity Сущность.
+     * @param Data|CourseRead $data Данные для декоратора для чтения курсов.
      * @param Closure $next Ссылка на следующий pipe.
      *
      * @return mixed Вернет значение полученное после выполнения следующего pipe.
      * @throws ParameterInvalidException
      */
-    public function handle(Entity|CourseRead $entity, Closure $next): mixed
+    public function handle(Data|CourseRead $data, Closure $next): mixed
     {
         $cacheKey = Util::getKey(
             'course',
             'site',
             'read',
-            $entity->sorts,
-            $entity->filters,
-            $entity->offset,
-            $entity->limit,
-            $entity->onlyWithImage,
+            $data->sorts,
+            $data->filters,
+            $data->offset,
+            $data->limit,
+            $data->onlyWithImage,
         );
 
         $result = Cache::tags([
@@ -66,7 +66,7 @@ class ReadPipe implements Pipe
         ])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
-            function () use ($entity) {
+            function () use ($data) {
                 $query = Course::select([
                     'id',
                     'school_id',
@@ -93,7 +93,7 @@ class ReadPipe implements Pipe
                     'status',
                     'updated_at',
                 ])
-                ->filter($entity->filters ?: [])
+                ->filter($data->filters ?: [])
                 ->with([
                     'school' => function ($query) {
                         $query->select([
@@ -107,30 +107,30 @@ class ReadPipe implements Pipe
                 ->where('status', Status::ACTIVE->value)
                 ->where('has_active_school', true);
 
-                if ($entity->onlyWithImage) {
+                if ($data->onlyWithImage) {
                     $query->where(function ($query) {
                         $query->where('image_small_id', '!=', '')
                             ->orWhereNotNull('image_small_id');
                     });
                 }
 
-                if ($entity->sorts) {
+                if ($data->sorts) {
                     if (
-                        !array_key_exists('relevance', $entity->sorts)
+                        !array_key_exists('relevance', $data->sorts)
                         || (
-                            isset($entity->filters['search'])
-                            && $entity->filters['search']
-                            && $entity->filters['search']
+                            isset($data->filters['search'])
+                            && $data->filters['search']
+                            && $data->filters['search']
                         )
                     ) {
-                        $query->sorted($entity->sorts ?: []);
+                        $query->sorted($data->sorts);
                     } else {
                         $query->orderBy('name', 'ASC');
                     }
                 }
 
-                if (isset($entity->filters['search']) && $entity->filters['search']) {
-                    $search = Morph::get($entity->filters['search']);
+                if (isset($data->filters['search']) && $data->filters['search']) {
+                    $search = Morph::get($data->filters['search']);
                     $search = DB::getPdo()->quote($search);
 
                     $query->addSelect(
@@ -140,29 +140,29 @@ class ReadPipe implements Pipe
 
                 $queryCount = $query->clone();
 
-                if ($entity->offset) {
-                    $query->offset($entity->offset);
+                if ($data->offset) {
+                    $query->offset($data->offset);
                 }
 
-                if ($entity->limit) {
-                    $query->limit($entity->limit);
+                if ($data->limit) {
+                    $query->limit($data->limit);
                 }
 
                 $items = $query->get()->toArray();
 
                 return [
-                    'courses' => Entity::toEntities($items, new CourseEntity()),
+                    'courses' => CourseEntity::collection($items),
                     'total' => $queryCount->count(),
                 ];
             }
         );
 
-        $entity->courses = $result['courses'];
-        $entity->total = $result['total'];
-        $entity->filter = new CourseFilter();
-        $entity->filter->price = new CourseFilterPrice();
-        $entity->filter->duration = new CourseFilterDuration();
+        $data->courses = $result['courses'];
+        $data->total = $result['total'];
+        $data->filter = new CourseFilter();
+        $data->filter->price = new CourseFilterPrice();
+        $data->filter->duration = new CourseFilterDuration();
 
-        return $next($entity);
+        return $next($data);
     }
 }
