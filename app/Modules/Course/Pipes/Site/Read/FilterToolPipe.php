@@ -14,7 +14,6 @@ use App\Modules\Course\Actions\Site\Course\CourseToolReadAction;
 use App\Modules\Course\Data\Decorators\CourseRead;
 use Closure;
 use App\Models\Contracts\Pipe;
-use App\Models\Entity;
 
 /**
  * Чтение курсов: фильтры: инструменты.

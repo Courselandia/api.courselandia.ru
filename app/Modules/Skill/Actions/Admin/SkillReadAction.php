@@ -9,7 +9,6 @@
 namespace App\Modules\Skill\Actions\Admin;
 
 use App\Models\Action;
-use App\Models\Entity;
 use App\Models\Enums\CacheTime;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Skill\Entities\Skill as SkillEntity;

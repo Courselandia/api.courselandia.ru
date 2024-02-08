@@ -10,7 +10,6 @@ namespace App\Modules\Access\Pipes\Gate;
 
 use App\Models\Contracts\Pipe;
 use App\Models\Data;
-use App\Models\Entity;
 use App\Models\Exceptions\InvalidPasswordException;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\UserNotExistException;
@@ -31,7 +30,7 @@ class GetPipe implements Pipe
     /**
      * Метод, который будет вызван у pipeline.
      *
-     * @param Entity|AccessSocial|AccessSignUp|AccessVerify $data Данные.
+     * @param Data|AccessSocial|AccessSignUp|AccessVerify $data Данные.
      * @param Closure $next Ссылка на следующий pipe.
      *
      * @return mixed Вернет значение полученное после выполнения следующего pipe.

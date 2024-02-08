@@ -8,6 +8,7 @@
 
 namespace App\Modules\Metatag\Apply\Tasks;
 
+use App\Modules\Metatag\Data\MetatagSet;
 use Throwable;
 use App\Modules\Skill\Models\Skill;
 use App\Modules\Metatag\Apply\Apply;
@@ -111,14 +112,14 @@ class TaskSkill extends Task
                     'countSkillCourses' => $countSkillCourses,
                 ];
 
-                $action = app(MetatagSetAction::class);
+                $dataMetatagSet = new MetatagSet();
 
                 if ($this->onlyUpdate()) {
-                    $action->description = $skill->metatag?->description_template
+                    $dataMetatagSet->description = $skill->metatag?->description_template
                         ? $template->convert($skill->metatag?->description_template, $templateValues)
                         : null;
 
-                    $action->title = $skill->metatag?->title_template
+                    $dataMetatagSet->title = $skill->metatag?->title_template
                         ? $template->convert($skill->metatag?->title_template, $templateValues)
                         : null;
 
@@ -126,19 +127,22 @@ class TaskSkill extends Task
                         ? $template->convert($skill->header_template, $templateValues)
                         : null;
 
-                    $action->description_template = $skill->metatag?->description_template;
-                    $action->title_template = $skill->metatag?->title_template;
+                    $dataMetatagSet->description_template = $skill->metatag?->description_template;
+                    $dataMetatagSet->title_template = $skill->metatag?->title_template;
                 } else {
-                    $action->description = $template->convert($this->description_template, $templateValues);
-                    $action->title = $template->convert($this->title_template, $templateValues);
+                    $dataMetatagSet->description = $template->convert($this->description_template, $templateValues);
+                    $dataMetatagSet->title = $template->convert($this->title_template, $templateValues);
                     $skill->header = $template->convert($this->header_template, $templateValues);
-                    $action->description_template = $this->description_template;
-                    $action->title_template = $this->title_template;
+                    $dataMetatagSet->description_template = $this->description_template;
+                    $dataMetatagSet->title_template = $this->title_template;
                     $skill->header_template = $this->header_template;
                 }
 
-                $action->keywords = $skill->metatag?->keywords;
-                $action->id = $skill->metatag_id ?: null;
+                $dataMetatagSet->keywords = $skill->metatag?->keywords;
+                $dataMetatagSet->id = $skill->metatag_id ?: null;
+
+                $action = new MetatagSetAction($dataMetatagSet);
+
                 $metatagId = $action->run()->id;
                 $skill->metatag_id = $metatagId;
 

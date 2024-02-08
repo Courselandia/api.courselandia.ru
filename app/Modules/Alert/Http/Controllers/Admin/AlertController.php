@@ -33,13 +33,13 @@ class AlertController extends Controller
      */
     public function read(AlertReadRequest $request): JsonResponse
     {
-        $action = app(AlertReadAction::class);
-        $action->offset = $request->get('offset');
-        $action->limit = $request->get('limit');
-        $action->status = $request->get('status');
+        $action = new AlertReadAction(
+            $request->get('offset'),
+            $request->get('limit'),
+            $request->get('status'),
+        );
 
         $data = $action->run();
-
         $data['success'] = true;
 
         return response()->json($data);

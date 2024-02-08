@@ -102,13 +102,12 @@ class Repository
     /**
      * Получение нового экземпляра модели.
      *
-     * @param Entity|null $entity Данные для обновления.
+     * @param EntityNew|null $entity Данные для обновления.
      * @param bool $exists Определяет есть ли эта запись или нет.
      *
      * @return Eloquent Объект модели данного репозитория.
-     * @throws ParameterInvalidException
      */
-    public function newInstance(?Entity $entity = null, bool $exists = false): Eloquent
+    public function newInstance(?EntityNew $entity = null, bool $exists = false): Eloquent
     {
         $model = clone $this->getModel();
 

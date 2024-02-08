@@ -9,7 +9,6 @@
 namespace App\Modules\Category\Actions\Admin;
 
 use App\Models\Action;
-use App\Models\Entity;
 use App\Models\Enums\CacheTime;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Category\Models\Category;

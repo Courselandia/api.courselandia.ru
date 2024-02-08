@@ -12,7 +12,6 @@ use App\Models\Data;
 use Cache;
 use Exception;
 use Closure;
-use App\Models\Entity;
 use App\Modules\Access\Data\Decorators\AccessSocial;
 use App\Modules\Access\Data\Decorators\AccessSignUp;
 use App\Models\Contracts\Pipe;
@@ -29,7 +28,7 @@ class VerificationPipe implements Pipe
     /**
      * Метод, который будет вызван у pipeline.
      *
-     * @param Entity|AccessSocial|AccessSignUp $data Данные.
+     * @param Data|AccessSocial|AccessSignUp $data Данные.
      * @param Closure $next Ссылка на следующий pipe.
      *
      * @return mixed Вернет значение полученное после выполнения следующего pipe.

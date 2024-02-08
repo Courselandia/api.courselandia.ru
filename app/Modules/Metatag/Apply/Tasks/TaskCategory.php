@@ -8,6 +8,7 @@
 
 namespace App\Modules\Metatag\Apply\Tasks;
 
+use App\Modules\Metatag\Data\MetatagSet;
 use Throwable;
 use App\Modules\Category\Models\Category;
 use App\Modules\Metatag\Apply\Apply;
@@ -111,14 +112,14 @@ class TaskCategory extends Task
                     'countCategoryCourses' => $countCategoryCourses,
                 ];
 
-                $action = app(MetatagSetAction::class);
+                $dataMetatagSet = new MetatagSet();
 
                 if ($this->onlyUpdate()) {
-                    $action->description = $category->metatag?->description_template
+                    $dataMetatagSet->description = $category->metatag?->description_template
                         ? $template->convert($category->metatag?->description_template, $templateValues)
                         : null;
 
-                    $action->title = $category->metatag?->title_template
+                    $dataMetatagSet->title = $category->metatag?->title_template
                         ? $template->convert($category->metatag?->title_template, $templateValues)
                         : null;
 
@@ -126,19 +127,22 @@ class TaskCategory extends Task
                         ? $template->convert($category->header_template, $templateValues)
                         : null;
 
-                    $action->description_template = $category->metatag?->description_template;
-                    $action->title_template = $category->metatag?->title_template;
+                    $dataMetatagSet->description_template = $category->metatag?->description_template;
+                    $dataMetatagSet->title_template = $category->metatag?->title_template;
                 } else {
-                    $action->description = $template->convert($this->description_template, $templateValues);
-                    $action->title = $template->convert($this->title_template, $templateValues);
+                    $dataMetatagSet->description = $template->convert($this->description_template, $templateValues);
+                    $dataMetatagSet->title = $template->convert($this->title_template, $templateValues);
                     $category->header = $template->convert($this->header_template, $templateValues);
-                    $action->description_template = $this->description_template;
-                    $action->title_template = $this->title_template;
+                    $dataMetatagSet->description_template = $this->description_template;
+                    $dataMetatagSet->title_template = $this->title_template;
                     $category->header_template = $this->header_template;
                 }
 
-                $action->keywords = $category->metatag?->keywords;
-                $action->id = $category->metatag_id ?: null;
+                $dataMetatagSet->keywords = $category->metatag?->keywords;
+                $dataMetatagSet->id = $category->metatag_id ?: null;
+
+                $action = new MetatagSetAction($dataMetatagSet);
+
                 $metatagId = $action->run()->id;
                 $category->metatag_id = $metatagId;
 

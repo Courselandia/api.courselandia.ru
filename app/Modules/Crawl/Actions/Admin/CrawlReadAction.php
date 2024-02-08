@@ -11,7 +11,6 @@ namespace App\Modules\Crawl\Actions\Admin;
 use Cache;
 use Util;
 use App\Models\Action;
-use App\Models\Entity;
 use App\Models\Enums\CacheTime;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Crawl\Models\Crawl;

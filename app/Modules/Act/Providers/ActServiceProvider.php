@@ -39,7 +39,7 @@ class ActServiceProvider extends ServiceProvider
     public function register(): void
     {
         App::bind('act', function () {
-            return app(Implement::class);
+            return new Implement();
         });
     }
 

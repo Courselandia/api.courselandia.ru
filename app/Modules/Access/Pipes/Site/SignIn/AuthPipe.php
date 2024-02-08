@@ -16,7 +16,6 @@ use Device;
 use Request;
 use Exception;
 use App\Models\Data;
-use App\Models\Entity;
 use App\Models\Contracts\Pipe;
 use App\Modules\User\Models\UserAuth;
 use App\Modules\Access\Data\Decorators\AccessSocial;
@@ -32,7 +31,7 @@ class AuthPipe implements Pipe
     /**
      * Метод, который будет вызван у pipeline.
      *
-     * @param Entity|AccessSocial|AccessSignUp|AccessSignIn $data Данные.
+     * @param Data|AccessSocial|AccessSignUp|AccessSignIn $data Данные.
      * @param Closure $next Ссылка на следующий pipe.
      *
      * @return mixed Вернет значение полученное после выполнения следующего pipe.

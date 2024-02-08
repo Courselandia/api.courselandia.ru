@@ -9,7 +9,6 @@
 namespace App\Modules\Teacher\Actions\Admin\Teacher;
 
 use App\Models\Action;
-use App\Models\Entity;
 use App\Models\Enums\CacheTime;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Teacher\Entities\Teacher as TeacherEntity;

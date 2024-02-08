@@ -8,6 +8,7 @@
 
 namespace App\Modules\Metatag\Apply\Tasks;
 
+use App\Modules\Metatag\Data\MetatagSet;
 use Throwable;
 use App\Modules\Metatag\Apply\Apply;
 use App\Modules\Direction\Models\Direction;
@@ -111,14 +112,14 @@ class TaskDirection extends Task
                     'countDirectionCourses' => $countDirectionCourses,
                 ];
 
-                $action = app(MetatagSetAction::class);
+                $dataMetatagSet = new MetatagSet();
 
                 if ($this->onlyUpdate()) {
-                    $action->description = $direction->metatag?->description_template
+                    $dataMetatagSet->description = $direction->metatag?->description_template
                         ? $template->convert($direction->metatag?->description_template, $templateValues)
                         : null;
 
-                    $action->title = $direction->metatag?->title_template
+                    $dataMetatagSet->title = $direction->metatag?->title_template
                         ? $template->convert($direction->metatag?->title_template, $templateValues)
                         : null;
 
@@ -126,19 +127,22 @@ class TaskDirection extends Task
                         ? $template->convert($direction->header_template, $templateValues)
                         : null;
 
-                    $action->description_template = $direction->metatag?->description_template;
-                    $action->title_template = $direction->metatag?->title_template;
+                    $dataMetatagSet->description_template = $direction->metatag?->description_template;
+                    $dataMetatagSet->title_template = $direction->metatag?->title_template;
                 } else {
-                    $action->description = $template->convert($this->description_template, $templateValues);
-                    $action->title = $template->convert($this->title_template, $templateValues);
+                    $dataMetatagSet->description = $template->convert($this->description_template, $templateValues);
+                    $dataMetatagSet->title = $template->convert($this->title_template, $templateValues);
                     $direction->header = $template->convert($this->header_template, $templateValues);
-                    $action->description_template = $this->description_template;
-                    $action->title_template = $this->title_template;
+                    $dataMetatagSet->description_template = $this->description_template;
+                    $dataMetatagSet->title_template = $this->title_template;
                     $direction->header_template = $this->header_template;
                 }
 
-                $action->keywords = $direction->metatag?->keywords;
-                $action->id = $direction->metatag_id ?: null;
+                $dataMetatagSet->keywords = $direction->metatag?->keywords;
+                $dataMetatagSet->id = $direction->metatag_id ?: null;
+
+                $action = new MetatagSetAction($dataMetatagSet);
+
                 $metatagId = $action->run()->id;
                 $direction->metatag_id = $metatagId;
 

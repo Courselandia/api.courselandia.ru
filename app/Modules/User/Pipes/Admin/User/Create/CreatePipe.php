@@ -9,8 +9,6 @@
 namespace App\Modules\User\Pipes\Admin\User\Create;
 
 use App\Models\Contracts\Pipe;
-use App\Models\Entity;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\User\Data\Decorators\UserCreate;
 use App\Modules\User\Models\User;
 use App\Models\Data;
@@ -25,11 +23,10 @@ class CreatePipe implements Pipe
     /**
      * Метод, который будет вызван у pipeline.
      *
-     * @param Entity|UserCreate $data Данные для декоратора создания пользователя.
+     * @param Data|UserCreate $data Данные для декоратора создания пользователя.
      * @param Closure $next Ссылка на следующий pipe.
      *
      * @return mixed Вернет значение полученное после выполнения следующего pipe.
-     * @throws ParameterInvalidException
      */
     public function handle(Data|UserCreate $data, Closure $next): mixed
     {

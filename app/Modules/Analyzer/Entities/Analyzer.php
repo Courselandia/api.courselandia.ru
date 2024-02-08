@@ -123,6 +123,11 @@ class Analyzer extends EntityNew
     public string|bool|null $analyzerable_status = null;
 
     /**
+     * @var mixed|null Сущность, которая была проанализирована.
+     */
+    public mixed $analyzerable = null;
+
+    /**
      * Дата создания.
      *
      * @var ?Carbon
@@ -159,6 +164,7 @@ class Analyzer extends EntityNew
      * @param int|string|null $analyzerable_id ID сущности.
      * @param string|null $analyzerable_type Название сущности для которой проверяется текст.
      * @param string|bool|null $analyzerable_status Статус сущности.
+     * @param mixed $analyzerable Сущность, которая была проанализирована.
      * @param Carbon|null $created_at Дата создания.
      * @param Carbon|null $updated_at Дата обновления.
      * @param Carbon|null $deleted_at Дата удаления.
@@ -179,6 +185,7 @@ class Analyzer extends EntityNew
         int|string|null  $analyzerable_id = null,
         ?string          $analyzerable_type = null,
         string|bool|null $analyzerable_status = null,
+        mixed            $analyzerable = null,
         ?Carbon          $created_at = null,
         ?Carbon          $updated_at = null,
         ?Carbon          $deleted_at = null,
@@ -199,6 +206,7 @@ class Analyzer extends EntityNew
         $this->analyzerable_id = $analyzerable_id;
         $this->analyzerable_type = $analyzerable_type;
         $this->analyzerable_status = $analyzerable_status;
+        $this->analyzerable = $analyzerable;
         $this->created_at = $created_at;
         $this->updated_at = $updated_at;
         $this->deleted_at = $deleted_at;

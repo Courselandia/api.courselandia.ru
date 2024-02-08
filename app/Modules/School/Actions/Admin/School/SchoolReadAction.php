@@ -9,7 +9,6 @@
 namespace App\Modules\School\Actions\Admin\School;
 
 use App\Models\Action;
-use App\Models\Entity;
 use App\Models\Enums\CacheTime;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\School\Entities\School as SchoolEntity;

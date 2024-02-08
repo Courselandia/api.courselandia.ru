@@ -13,7 +13,6 @@ use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Course\Actions\Site\Course\CourseSkillReadAction;
 use Closure;
 use App\Models\Contracts\Pipe;
-use App\Models\Entity;
 use App\Modules\Course\Data\Decorators\CourseRead;
 
 /**

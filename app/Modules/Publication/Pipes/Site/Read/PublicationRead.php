@@ -16,7 +16,6 @@ use Closure;
 use Util;
 use View;
 use Storage;
-use App\Models\Entity;
 use ReflectionException;
 use App\Models\Contracts\Pipe;
 use App\Models\Exceptions\ParameterInvalidException;

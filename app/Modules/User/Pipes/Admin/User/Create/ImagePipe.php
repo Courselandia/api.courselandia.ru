@@ -10,7 +10,6 @@ namespace App\Modules\User\Pipes\Admin\User\Create;
 
 use App\Models\Contracts\Pipe;
 use App\Models\Data;
-use App\Models\Entity;
 use App\Models\Exceptions\UserNotExistException;
 use App\Modules\User\Actions\Admin\User\UserGetAction;
 use App\Modules\User\Data\Decorators\UserCreate;
@@ -27,7 +26,7 @@ class ImagePipe implements Pipe
     /**
      * Метод, который будет вызван у pipeline.
      *
-     * @param Entity|UserCreate $data Данные для декоратора создания пользователя.
+     * @param Data|UserCreate $data Данные для декоратора создания пользователя.
      * @param Closure $next Ссылка на следующий pipe.
      *
      * @return mixed Вернет значение полученное после выполнения следующего pipe.

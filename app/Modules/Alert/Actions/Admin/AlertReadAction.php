@@ -21,21 +21,37 @@ class AlertReadAction extends Action
      *
      * @var int|null
      */
-    public ?int $offset = null;
+    private ?int $offset;
 
     /**
      * Лимит выборки выборку.
      *
      * @var int|null
      */
-    public ?int $limit = null;
+    private ?int $limit;
 
     /**
      * Если установить true, то получит только прочитанные.
      *
      * @var bool|null
      */
-    public ?bool $status = null;
+    private ?bool $status;
+
+    /**
+     * @param int|null $offset Начать выборку.
+     * @param int|null $limit Лимит выборки выборку.
+     * @param bool|null $status Если установить true, то получит только прочитанные.
+     */
+    public function __construct(
+        ?int  $offset = null,
+        ?int  $limit = null,
+        ?bool $status = null,
+    )
+    {
+        $this->offset = $offset;
+        $this->limit = $limit;
+        $this->status = $status;
+    }
 
     /**
      * Метод запуска логики.
