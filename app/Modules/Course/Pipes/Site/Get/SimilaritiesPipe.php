@@ -131,7 +131,7 @@ class SimilaritiesPipe implements Pipe
                         return CourseEntity::collection($items);
                     }
 
-                    return [];
+                    return CourseEntity::collection([]);
                 }
             );
 
