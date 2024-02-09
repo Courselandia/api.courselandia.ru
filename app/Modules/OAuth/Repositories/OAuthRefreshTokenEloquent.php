@@ -12,7 +12,6 @@ use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Models\Repository;
 use App\Modules\OAuth\Entities\OAuthRefresh;
-use Carbon\Carbon;
 
 /**
  * Класс репозитория токенов обновления обновления на основе Eloquent.
@@ -25,8 +24,6 @@ class OAuthRefreshTokenEloquent extends Repository
      * @param string|int|null $oauthTokenId ID токена обновления.
      * @param string|int|null $refreshToken Дата действия.
      * @return OAuthRefresh|null Сущность токена.
-     *
-     * @throws ParameterInvalidException
      */
     public function get(string|int|null $oauthTokenId = null, string|int|null $refreshToken = null): ?OAuthRefresh
     {
@@ -51,8 +48,6 @@ class OAuthRefreshTokenEloquent extends Repository
      * @param OAuthRefresh $entity Сущность токена.
      *
      * @return int|string ID токена.
-     *
-     * @throws ParameterInvalidException
      */
     public function create(OAuthRefresh $entity): int|string
     {

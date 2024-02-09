@@ -11,7 +11,6 @@ namespace App\Modules\Crawl\Commands;
 use Log;
 use App\Modules\Crawl\Push\Push;
 use Illuminate\Console\Command;
-use App\Models\Exceptions\ParameterInvalidException;
 
 /**
  * Отправка страниц на индексацию в поисковые системы.
@@ -36,7 +35,6 @@ class PushCommand extends Command
      * Выполнение команды.
      *
      * @return void
-     * @throws ParameterInvalidException
      */
     public function handle(): void
     {

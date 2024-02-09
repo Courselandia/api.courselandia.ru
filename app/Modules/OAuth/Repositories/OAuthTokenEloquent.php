@@ -13,7 +13,6 @@ use App\Models\Exceptions\RecordNotExistException;
 use App\Models\Repository;
 use App\Modules\OAuth\Entities\OAuthToken;
 use Carbon\Carbon;
-use App\Modules\OAuth\Models\OAuthTokenEloquent as OAuthTokenEloquentModel;
 
 /**
  * Класс репозитория токенов на основе Eloquent.

@@ -11,7 +11,6 @@ namespace App\Modules\Crawl\Commands;
 use Log;
 use App\Modules\Crawl\Check\Check;
 use Illuminate\Console\Command;
-use App\Models\Exceptions\ParameterInvalidException;
 
 /**
  * Проверка страниц на индексацию в поисковых системах.
@@ -36,7 +35,6 @@ class CheckCommand extends Command
      * Выполнение команды.
      *
      * @return void
-     * @throws ParameterInvalidException
      */
     public function handle(): void
     {

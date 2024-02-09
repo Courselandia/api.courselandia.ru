@@ -28,7 +28,6 @@ class LogController extends Controller
      * @param string|int $id ID лога.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException
      */
     public function get(string|int $id): JsonResponse
     {
@@ -85,7 +84,6 @@ class LogController extends Controller
      * @param LogDestroyRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException
      */
     public function destroy(LogDestroyRequest $request): JsonResponse
     {

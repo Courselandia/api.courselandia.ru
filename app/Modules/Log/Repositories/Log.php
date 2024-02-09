@@ -79,7 +79,6 @@ class Log extends Repository
      * @param string|int $id ID записи.
      *
      * @return ?LogEntity Сущность лога.
-     * @throws ParameterInvalidException
      */
     public function get(string|int $id): ?LogEntity
     {
@@ -94,7 +93,6 @@ class Log extends Repository
      * @param string|int $id ID записи.
      *
      * @return bool Вернет признак успешного удаления лога.
-     * @throws ParameterInvalidException
      */
     public function destroy(string|int $id): bool
     {

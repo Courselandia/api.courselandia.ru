@@ -8,7 +8,6 @@
 
 namespace App\Modules\Crawl\Tests\Feature\Push;
 
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Crawl\Models\Crawl;
 use App\Modules\Crawl\Push\Push;
 use App\Modules\Crawl\Push\Pushers\FakePusher;
@@ -25,7 +24,6 @@ class PushTest extends TestCase
      * Тестирование запуска.
      *
      * @return void
-     * @throws ParameterInvalidException
      */
     public function testRun(): void
     {

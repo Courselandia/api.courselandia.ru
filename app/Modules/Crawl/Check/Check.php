@@ -11,7 +11,6 @@ namespace App\Modules\Crawl\Check;
 use Carbon\Carbon;
 use App\Models\Event;
 use App\Modules\Crawl\Jobs\CheckJob;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Crawl\Contracts\Checker;
 use App\Modules\Crawl\Check\Checkers\GoogleChecker;
 use App\Modules\Crawl\Check\Checkers\YandexChecker;
@@ -73,7 +72,6 @@ class Check
      * Запуск процесса отправки на индексацию.
      *
      * @return void
-     * @throws ParameterInvalidException
      */
     public function run(): void
     {

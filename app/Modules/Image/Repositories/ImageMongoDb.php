@@ -26,7 +26,6 @@ class ImageMongoDb extends Image
      * @param ImageEntity $entity Данные для добавления.
      *
      * @return int|string Вернет ID последней вставленной строки.
-     * @throws ParameterInvalidException
      */
     public function create(ImageEntity $entity): int|string
     {
@@ -55,7 +54,7 @@ class ImageMongoDb extends Image
      * @param ImageEntity $entity Данные для добавления.
      *
      * @return int|string Вернет ID вставленной строки.
-     * @throws RecordNotExistException|ParameterInvalidException
+     * @throws RecordNotExistException
      */
     public function update(int|string $id, ImageEntity $entity): int|string
     {
@@ -89,7 +88,6 @@ class ImageMongoDb extends Image
      * @param string $byte Байт код картинки.
      *
      * @return bool Вернет булево значение успешности операции.
-     * @throws ParameterInvalidException
      */
     public function updateByte(int|string $id, string $byte): bool
     {
@@ -105,7 +103,6 @@ class ImageMongoDb extends Image
      * @param int|string $id Id записи.
      *
      * @return ImageEntity|null Данные.
-     * @throws ParameterInvalidException
      */
     public function get(int|string $id): ImageEntity|null {
         $image = $this->getById($id);

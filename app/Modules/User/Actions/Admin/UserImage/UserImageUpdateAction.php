@@ -9,7 +9,6 @@
 namespace App\Modules\User\Actions\Admin\UserImage;
 
 use App\Models\Action;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\UserNotExistException;
 use App\Modules\User\Actions\Admin\User\UserGetAction;
 use App\Modules\User\Entities\User as UserEntity;

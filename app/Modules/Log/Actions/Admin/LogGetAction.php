@@ -9,7 +9,6 @@
 namespace App\Modules\Log\Actions\Admin;
 
 use App\Models\Action;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Log\Entities\Log as LogEntity;
 use App\Modules\Log\Repositories\Log;
 
@@ -48,7 +47,6 @@ class LogGetAction extends Action
      * Метод запуска логики.
      *
      * @return LogEntity|null Вернет результаты исполнения.
-     * @throws ParameterInvalidException
      */
     public function run(): ?LogEntity
     {

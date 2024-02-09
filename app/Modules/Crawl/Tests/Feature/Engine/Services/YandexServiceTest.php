@@ -40,7 +40,7 @@ class YandexServiceTest extends TestCase
      * Тестирование отправки URL на переобход.
      *
      * @return void
-     * @throws LimitException|ParameterInvalidException|ResponseException|GuzzleException|InvalidCodeException
+     * @throws ParameterInvalidException|ResponseException|GuzzleException|InvalidCodeException
      */
     public function testPush(): void
     {
@@ -59,7 +59,7 @@ class YandexServiceTest extends TestCase
      * Тестирование работы метода проверки, что переобход призошел.
      *
      * @return void
-     * @throws LimitException|ParameterInvalidException|ResponseException|GuzzleException|InvalidCodeException
+     * @throws ParameterInvalidException|ResponseException|GuzzleException|InvalidCodeException
      * @throws ProcessingException
      */
     public function testIsPushed(): void

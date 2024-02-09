@@ -11,7 +11,6 @@ namespace App\Models;
 use Eloquent;
 use MongoDb;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use App\Models\Exceptions\ParameterInvalidException;
 
 /**
  * Абстрактный класс репозитория, для построения собственных репозиториев.

@@ -13,6 +13,7 @@ use Config;
 use Google\Client;
 use Google\Exception;
 use GuzzleHttp\Exception\GuzzleException;
+use Throwable;
 
 /**
  * Провайдер для работы с Google Search Console.
@@ -64,6 +65,7 @@ class GoogleProvider
      * @return bool Вернет true если переобход произошел.
      * @throws Exception|GuzzleException
      * @throws ParameterInvalidException
+     * @throws Throwable
      */
     public function isPushed(string $taskId): bool
     {
@@ -83,7 +85,7 @@ class GoogleProvider
 
         try {
             return $content['latestUpdate']['type'] === 'URL_UPDATED';
-        } catch (\Throwable $error) {
+        } catch (Throwable $error) {
             \Log::error(print_r($content, true));
             throw $error;
         }

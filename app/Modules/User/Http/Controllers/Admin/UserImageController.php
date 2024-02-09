@@ -72,7 +72,7 @@ class UserImageController extends Controller
      * @param int|string $id ID пользователя.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException|ParameterInvalidException|ReflectionException
+     * @throws ParameterInvalidException|ReflectionException
      */
     public function destroy(int|string $id): JsonResponse
     {
