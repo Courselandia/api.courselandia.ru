@@ -57,11 +57,7 @@ class CategoryGetAction extends Action
                     'analyzers',
                 ])->find($this->id);
 
-                if ($result) {
-                    return CategoryEntity::from($result->toArray());
-                }
-
-                return null;
+                return $result ? CategoryEntity::from($result->toArray()) : null;
             }
         );
     }

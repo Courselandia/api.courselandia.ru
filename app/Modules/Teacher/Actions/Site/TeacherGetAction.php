@@ -56,11 +56,7 @@ class TeacherGetAction extends Action
                     'socialMedias',
                 ])->find($this->id);
 
-                if ($result) {
-                    return TeacherEntity::from($result->toArray());
-                }
-
-                return null;
+                return $result ? TeacherEntity::from($result->toArray()) : null;
             }
         );
     }

@@ -56,11 +56,7 @@ class DirectionGetAction extends Action
                     ->active()
                     ->find($this->id);
 
-                if ($result) {
-                    return DirectionEntity::from($result->toArray());
-                }
-
-                return null;
+                return $result ? DirectionEntity::from($result->toArray()) : null;
             }
         );
     }

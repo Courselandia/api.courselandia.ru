@@ -31,7 +31,7 @@ class AccessApiRefreshAction extends Action
      *
      * @var bool
      */
-    private bool $remember = false;
+    private bool $remember;
 
     /**
      * Токен обновления.
@@ -81,11 +81,7 @@ class AccessApiRefreshAction extends Action
                     ->active()
                     ->first();
 
-                if ($user) {
-                    return UserEntity::from($user->toArray());
-                }
-
-                return null;
+                return $user ? UserEntity::from($user->toArray()) : null;
             }
         );
 

@@ -62,11 +62,7 @@ class SkillLinkAction extends Action
                     ])
                     ->first();
 
-                if ($result) {
-                    return SkillEntity::from($result->toArray());
-                }
-
-                return null;
+                return $result ? SkillEntity::from($result->toArray()) : null;
             }
         );
     }

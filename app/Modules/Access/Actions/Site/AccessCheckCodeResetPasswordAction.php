@@ -68,11 +68,7 @@ class AccessCheckCodeResetPasswordAction extends Action
                         'recovery'
                     ])->first();
 
-                if ($user) {
-                    return UserEntity::from($user->toArray());
-                }
-
-                return null;
+                return $user ? UserEntity::from($user->toArray()) : null;
             }
         );
 
