@@ -8,13 +8,13 @@
 
 namespace App\Modules\Course\Entities;
 
-use App\Models\EntityNew;
+use App\Models\Entity;
 use Carbon\Carbon;
 
 /**
  * Сущность чему научитесь на курсе.
  */
-class CourseLearn extends EntityNew
+class CourseLearn extends Entity
 {
     /**
      * ID записи.

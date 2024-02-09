@@ -8,13 +8,13 @@
 
 namespace App\Modules\Alert\Entities;
 
-use App\Models\EntityNew;
+use App\Models\Entity;
 use Carbon\Carbon;
 
 /**
  * Сущность для предупреждения.
  */
-class Alert extends EntityNew
+class Alert extends Entity
 {
     /**
      * ID записи.

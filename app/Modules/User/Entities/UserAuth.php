@@ -8,13 +8,13 @@
 
 namespace App\Modules\User\Entities;
 
-use App\Models\EntityNew;
+use App\Models\Entity;
 use Carbon\Carbon;
 
 /**
  * Сущность для аутентификации пользователя.
  */
-class UserAuth extends EntityNew
+class UserAuth extends Entity
 {
     /**
      * ID записи.

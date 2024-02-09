@@ -8,7 +8,7 @@
 
 namespace App\Modules\Crawl\Entities;
 
-use App\Models\EntityNew;
+use App\Models\Entity;
 use Carbon\Carbon;
 use App\Modules\Page\Entities\Page;
 use App\Modules\Crawl\Enums\Engine;
@@ -16,7 +16,7 @@ use App\Modules\Crawl\Enums\Engine;
 /**
  * Сущность для направлений.
  */
-class Crawl extends EntityNew
+class Crawl extends Entity
 {
     /**
      * ID записи.

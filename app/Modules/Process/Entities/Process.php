@@ -8,13 +8,13 @@
 
 namespace App\Modules\Process\Entities;
 
-use App\Models\EntityNew;
+use App\Models\Entity;
 use Carbon\Carbon;
 
 /**
  * Сущность для объяснения как проходит обучение.
  */
-class Process extends EntityNew
+class Process extends Entity
 {
     /**
      * ID записи.

@@ -8,7 +8,7 @@
 
 namespace App\Modules\Course\Data\Decorators;
 
-use App\Models\EntityNew;
+use App\Models\Entity;
 use App\Modules\Course\Entities\Course;
 use App\Modules\Course\Entities\CourseFilter;
 use Spatie\LaravelData\Attributes\DataCollectionOf;
@@ -18,7 +18,7 @@ use stdClass;
 /**
  * Данные для декоратора для чтения курсов.
  */
-class CourseRead extends EntityNew
+class CourseRead extends Entity
 {
     /**
      * Сортировка данных.

@@ -8,12 +8,12 @@
 
 namespace App\Modules\Course\Entities;
 
-use App\Models\EntityNew;
+use App\Models\Entity;
 
 /**
  * Сущность для пункта фильтра.
  */
-class CourseItemFilter extends EntityNew
+class CourseItemFilter extends Entity
 {
     /**
      * ID записи.

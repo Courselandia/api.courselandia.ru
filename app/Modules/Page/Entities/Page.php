@@ -8,13 +8,13 @@
 
 namespace App\Modules\Page\Entities;
 
-use App\Models\EntityNew;
+use App\Models\Entity;
 use Carbon\Carbon;
 
 /**
  * Сущность для страницы.
  */
-class Page extends EntityNew
+class Page extends Entity
 {
     /**
      * ID записи.

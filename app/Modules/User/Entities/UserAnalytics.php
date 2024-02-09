@@ -8,12 +8,12 @@
 
 namespace App\Modules\User\Entities;
 
-use App\Models\EntityNew;
+use App\Models\Entity;
 
 /**
  * Сущность для статистики новых пользователей.
  */
-class UserAnalytics extends EntityNew
+class UserAnalytics extends Entity
 {
     /**
      * Дата.

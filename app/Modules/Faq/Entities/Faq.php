@@ -8,14 +8,14 @@
 
 namespace App\Modules\Faq\Entities;
 
-use App\Models\EntityNew;
+use App\Models\Entity;
 use App\Modules\School\Entities\School;
 use Carbon\Carbon;
 
 /**
  * Сущность для FAQ.
  */
-class Faq extends EntityNew
+class Faq extends Entity
 {
     /**
      * ID записи.

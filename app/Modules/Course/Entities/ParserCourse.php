@@ -8,7 +8,7 @@
 
 namespace App\Modules\Course\Entities;
 
-use App\Models\EntityNew;
+use App\Models\Entity;
 use App\Modules\Course\Enums\Currency;
 use App\Modules\Course\Enums\Duration;
 use App\Modules\Direction\Enums\Direction;
@@ -17,7 +17,7 @@ use App\Modules\School\Enums\School;
 /**
  * Сущность для разобранного курса во время импорта.
  */
-class ParserCourse extends EntityNew
+class ParserCourse extends Entity
 {
     /**
      * ID источника курса.

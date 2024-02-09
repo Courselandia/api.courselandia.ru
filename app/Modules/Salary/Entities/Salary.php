@@ -8,7 +8,7 @@
 
 namespace App\Modules\Salary\Entities;
 
-use App\Models\EntityNew;
+use App\Models\Entity;
 use App\Modules\Profession\Entities\Profession;
 use App\Modules\Salary\Enums\Level;
 use Carbon\Carbon;
@@ -16,7 +16,7 @@ use Carbon\Carbon;
 /**
  * Сущность для зарплат.
  */
-class Salary extends EntityNew
+class Salary extends Entity
 {
     /**
      * ID записи.

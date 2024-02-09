@@ -8,12 +8,12 @@
 
 namespace App\Modules\Access\Entities;
 
-use App\Models\EntityNew;
+use App\Models\Entity;
 
 /**
  * Сущность для регистрации пользователя.
  */
-class AccessSignUp extends EntityNew
+class AccessSignUp extends Entity
 {
     /**
      * ID пользователя.

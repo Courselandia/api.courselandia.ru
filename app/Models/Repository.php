@@ -72,12 +72,12 @@ class Repository
      *
      * @params array $params Значения для сущности.
      *
-     * @return EntityNew Сущность данного репозитория.
+     * @return Entity Сущность данного репозитория.
      */
-    public function getEntity(array $params): EntityNew
+    public function getEntity(array $params): Entity
     {
         /**
-         * @var EntityNew $nameClass
+         * @var Entity $nameClass
          */
         $nameClass = $this->entity;
 
@@ -101,12 +101,12 @@ class Repository
     /**
      * Получение нового экземпляра модели.
      *
-     * @param EntityNew|null $entity Данные для обновления.
+     * @param Entity|null $entity Данные для обновления.
      * @param bool $exists Определяет есть ли эта запись или нет.
      *
      * @return Eloquent Объект модели данного репозитория.
      */
-    public function newInstance(?EntityNew $entity = null, bool $exists = false): Eloquent
+    public function newInstance(?Entity $entity = null, bool $exists = false): Eloquent
     {
         $model = clone $this->getModel();
 

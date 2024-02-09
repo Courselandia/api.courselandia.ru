@@ -8,13 +8,13 @@
 
 namespace App\Modules\Access\Entities;
 
-use App\Models\EntityNew;
+use App\Models\Entity;
 use App\Modules\User\Entities\User;
 
 /**
  * Сущность обновления данных пользователя.
  */
-class AccessUpdate extends EntityNew
+class AccessUpdate extends Entity
 {
     /**
      * ID пользователя.

@@ -8,12 +8,12 @@
 
 namespace App\Modules\Course\Entities;
 
-use App\Models\EntityNew;
+use App\Models\Entity;
 
 /**
  * Сущность фильтров курсов для цены.
  */
-class CourseFilterPrice extends EntityNew
+class CourseFilterPrice extends Entity
 {
     /**
      * Минимальная цена.

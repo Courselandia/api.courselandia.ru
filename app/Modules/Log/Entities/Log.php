@@ -8,13 +8,13 @@
 
 namespace App\Modules\Log\Entities;
 
-use App\Models\EntityNew;
+use App\Models\Entity;
 use Carbon\Carbon;
 
 /**
  * Сущность для логов.
  */
-class Log extends EntityNew
+class Log extends Entity
 {
     /**
      * ID записи.

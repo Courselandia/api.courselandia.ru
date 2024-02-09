@@ -8,14 +8,14 @@
 
 namespace App\Modules\Teacher\Entities;
 
-use App\Models\EntityNew;
+use App\Models\Entity;
 use App\Modules\Teacher\Enums\SocialMedia;
 use Carbon\Carbon;
 
 /**
  * Сущность для социальных сетей учителя.
  */
-class TeacherSocialMedia extends EntityNew
+class TeacherSocialMedia extends Entity
 {
     /**
      * ID записи.

@@ -8,12 +8,12 @@
 
 namespace App\Modules\Document\Entities;
 
-use App\Models\EntityNew;
+use App\Models\Entity;
 
 /**
  * Сущность для документа.
  */
-class Document extends EntityNew
+class Document extends Entity
 {
     /**
      * ID записи.

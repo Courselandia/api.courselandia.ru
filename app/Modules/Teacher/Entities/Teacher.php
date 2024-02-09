@@ -10,7 +10,7 @@ namespace App\Modules\Teacher\Entities;
 
 use App\Modules\Analyzer\Entities\Analyzer;
 use Carbon\Carbon;
-use App\Models\EntityNew;
+use App\Models\Entity;
 use App\Modules\Direction\Entities\Direction;
 use App\Modules\School\Entities\School;
 use App\Modules\Image\Entities\Image;
@@ -21,7 +21,7 @@ use Spatie\LaravelData\DataCollection;
 /**
  * Сущность для учителя.
  */
-class Teacher extends EntityNew
+class Teacher extends Entity
 {
     /**
      * ID записи.

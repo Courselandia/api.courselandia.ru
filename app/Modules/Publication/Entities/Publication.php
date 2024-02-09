@@ -8,7 +8,7 @@
 
 namespace App\Modules\Publication\Entities;
 
-use App\Models\EntityNew;
+use App\Models\Entity;
 use Carbon\Carbon;
 use App\Modules\Image\Entities\Image;
 use App\Modules\Metatag\Entities\Metatag;
@@ -16,7 +16,7 @@ use App\Modules\Metatag\Entities\Metatag;
 /**
  * Сущность для публикаций.
  */
-class Publication extends EntityNew
+class Publication extends Entity
 {
     /**
      * ID записи.

@@ -8,7 +8,7 @@
 
 namespace App\Modules\Course\Entities;
 
-use App\Models\EntityNew;
+use App\Models\Entity;
 use App\Modules\Analyzer\Entities\Analyzer;
 use App\Modules\Course\Enums\Currency;
 use App\Modules\Course\Enums\Duration;
@@ -32,7 +32,7 @@ use Spatie\LaravelData\DataCollection;
 /**
  * Сущность для курсов.
  */
-class Course extends EntityNew
+class Course extends Entity
 {
     /**
      * ID записи.

@@ -8,7 +8,7 @@
 
 namespace App\Modules\School\Entities;
 
-use App\Models\EntityNew;
+use App\Models\Entity;
 use App\Modules\Analyzer\Entities\Analyzer;
 use Carbon\Carbon;
 use App\Modules\Image\Entities\Image;
@@ -18,7 +18,7 @@ use Spatie\LaravelData\Attributes\WithCast;
 /**
  * Сущность для школ.
  */
-class School extends EntityNew
+class School extends Entity
 {
     /**
      * ID записи.

@@ -8,13 +8,13 @@
 
 namespace App\Modules\Employment\Entities;
 
-use App\Models\EntityNew;
+use App\Models\Entity;
 use Carbon\Carbon;
 
 /**
  * Сущность для трудоустройства.
  */
-class Employment extends EntityNew
+class Employment extends Entity
 {
     /**
      * ID записи.

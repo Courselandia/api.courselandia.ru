@@ -8,14 +8,14 @@
 
 namespace App\Modules\Access\Entities;
 
-use App\Models\EntityNew;
+use App\Models\Entity;
 use App\Modules\OAuth\Values\Token;
 use App\Modules\User\Entities\User;
 
 /**
  * Сущность для авторизации пользователя.
  */
-class AccessSignIn extends EntityNew
+class AccessSignIn extends Entity
 {
     /**
      * ID пользователя.

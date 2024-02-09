@@ -8,13 +8,13 @@
 
 namespace App\Modules\Access\Entities;
 
-use App\Models\EntityNew;
+use App\Models\Entity;
 use App\Modules\User\Entities\User;
 
 /**
  * Сущность для хранения API токена.
  */
-class AccessApiToken extends EntityNew
+class AccessApiToken extends Entity
 {
     /**
      * Токен доступа.

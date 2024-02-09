@@ -9,7 +9,7 @@
 namespace App\Modules\User\Entities;
 
 use Hash;
-use App\Models\EntityNew;
+use App\Models\Entity;
 use Carbon\Carbon;
 
 /**
@@ -22,7 +22,7 @@ use Carbon\Carbon;
  * @property Carbon|null $updated_at Дата обновления.
  * @property Carbon|null $deleted_at Дата удаления.
  */
-class UserRecovery extends EntityNew
+class UserRecovery extends Entity
 {
     /**
      * ID записи.

@@ -8,13 +8,13 @@
 
 namespace App\Modules\Act\Entities;
 
-use App\Models\EntityNew;
+use App\Models\Entity;
 use Carbon\Carbon;
 
 /**
  * Сущность для действий.
  */
-class Act extends EntityNew
+class Act extends Entity
 {
     /**
      * ID.

@@ -8,7 +8,7 @@
 
 namespace App\Modules\Task\Entities;
 
-use App\Models\EntityNew;
+use App\Models\Entity;
 use Carbon\Carbon;
 use App\Modules\Task\Enums\Status;
 use App\Modules\User\Entities\User;
@@ -16,7 +16,7 @@ use App\Modules\User\Entities\User;
 /**
  * Сущность для задания.
  */
-class Task extends EntityNew
+class Task extends Entity
 {
     /**
      * ID записи.

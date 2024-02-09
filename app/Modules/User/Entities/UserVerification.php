@@ -8,14 +8,14 @@
 
 namespace App\Modules\User\Entities;
 
-use App\Models\EntityNew;
+use App\Models\Entity;
 use Hash;
 use Carbon\Carbon;
 
 /**
  * Сущность для верификации пользователя.
  */
-class UserVerification extends EntityNew
+class UserVerification extends Entity
 {
     /**
      * ID записи.

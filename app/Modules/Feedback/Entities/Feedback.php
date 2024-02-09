@@ -8,13 +8,13 @@
 
 namespace App\Modules\Feedback\Entities;
 
-use App\Models\EntityNew;
+use App\Models\Entity;
 use Carbon\Carbon;
 
 /**
  * Сущность для обратной связи.
  */
-class Feedback extends EntityNew
+class Feedback extends Entity
 {
     /**
      * ID записи.

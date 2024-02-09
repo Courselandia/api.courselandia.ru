@@ -8,13 +8,13 @@
 
 namespace App\Modules\Access\Entities;
 
-use App\Models\EntityNew;
+use App\Models\Entity;
 use App\Modules\User\Entities\User as UserEntity;
 
 /**
  * Сущность для зарегистрированного пользователя.
  */
-class AccessSignedUp extends EntityNew
+class AccessSignedUp extends Entity
 {
     /**
      * Сущность пользователя.

@@ -8,12 +8,12 @@
 
 namespace App\Modules\Course\Entities;
 
-use App\Models\EntityNew;
+use App\Models\Entity;
 
 /**
  * Сущность для особенностей курсов.
  */
-class CourseFeature extends EntityNew
+class CourseFeature extends Entity
 {
     /**
      * ID записи.

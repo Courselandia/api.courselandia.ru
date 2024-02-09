@@ -9,13 +9,13 @@
 namespace App\Modules\Analyzer\Entities;
 
 use Carbon\Carbon;
-use App\Models\EntityNew;
+use App\Models\Entity;
 use App\Modules\Analyzer\Enums\Status;
 
 /**
  * Сущность хранения результатов анализа текста.
  */
-class Analyzer extends EntityNew
+class Analyzer extends Entity
 {
     /**
      * ID записи.

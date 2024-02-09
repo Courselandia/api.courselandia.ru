@@ -8,12 +8,12 @@
 
 namespace App\Modules\Image\Entities;
 
-use App\Models\EntityNew;
+use App\Models\Entity;
 
 /**
  * Сущность для изображения.
  */
-class Image extends EntityNew
+class Image extends Entity
 {
     /**
      * ID записи.

@@ -8,7 +8,7 @@
 
 namespace App\Modules\Publication\Entities;
 
-use App\Models\EntityNew;
+use App\Models\Entity;
 use App\Modules\Publication\Values\PublicationYear;
 use Spatie\LaravelData\Attributes\DataCollectionOf;
 use Spatie\LaravelData\DataCollection;
@@ -16,7 +16,7 @@ use Spatie\LaravelData\DataCollection;
 /**
  * Сущность для списка публикаций.
  */
-class PublicationList extends EntityNew
+class PublicationList extends Entity
 {
     /**
      * Года.

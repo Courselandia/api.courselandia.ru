@@ -1,8 +1,5 @@
 <?php
 
-use App\Models\EntityNew;
-use App\Modules\User\Entities\UserVerification;
-
 return [
     /**
      * The package will use this format when working with dates. If this option

@@ -8,14 +8,14 @@
 
 namespace App\Modules\User\Entities;
 
-use App\Models\EntityNew;
+use App\Models\Entity;
 use Carbon\Carbon;
 use App\Modules\User\Enums\Role;
 
 /**
  * Сущность для ролей пользователя.
  */
-class UserRole extends EntityNew
+class UserRole extends Entity
 {
     /**
      * ID записи.

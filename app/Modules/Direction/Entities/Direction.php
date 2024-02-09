@@ -8,7 +8,7 @@
 
 namespace App\Modules\Direction\Entities;
 
-use App\Models\EntityNew;
+use App\Models\Entity;
 use App\Modules\Analyzer\Entities\Analyzer;
 use Carbon\Carbon;
 use App\Modules\Metatag\Entities\Metatag;
@@ -19,7 +19,7 @@ use Spatie\LaravelData\DataCollection;
 /**
  * Сущность для направлений.
  */
-class Direction extends EntityNew
+class Direction extends Entity
 {
     /**
      * ID записи.

@@ -8,13 +8,13 @@
 
 namespace App\Modules\Review\Entities;
 
-use App\Models\EntityNew;
+use App\Models\Entity;
 use Carbon\Carbon;
 
 /**
  * Сущность для спарсенного отзыва.
  */
-class ParserReview extends EntityNew
+class ParserReview extends Entity
 {
     /**
      * ID тзыва.

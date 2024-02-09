@@ -8,13 +8,13 @@
 
 namespace App\Modules\Metatag\Entities;
 
-use App\Models\EntityNew;
+use App\Models\Entity;
 use Carbon\Carbon;
 
 /**
  * Сущность для метатэгов.
  */
-class Metatag extends EntityNew
+class Metatag extends Entity
 {
     /**
      * ID записи.

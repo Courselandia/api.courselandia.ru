@@ -8,14 +8,14 @@
 
 namespace App\Modules\Course\Entities;
 
-use App\Models\EntityNew;
+use App\Models\Entity;
 use Spatie\LaravelData\Attributes\DataCollectionOf;
 use Spatie\LaravelData\DataCollection;
 
 /**
  * Сущность чтения курсов.
  */
-class CourseRead extends EntityNew
+class CourseRead extends Entity
 {
     /**
      * Сортировка данных.

@@ -8,7 +8,7 @@
 
 namespace App\Modules\Course\Entities;
 
-use App\Models\EntityNew;
+use App\Models\Entity;
 use App\Modules\Course\Enums\Format;
 use App\Modules\Salary\Enums\Level;
 use Spatie\LaravelData\Attributes\DataCollectionOf;
@@ -17,7 +17,7 @@ use Spatie\LaravelData\DataCollection;
 /**
  * Сущность фильтров курсов для чтения.
  */
-class CourseFilter extends EntityNew
+class CourseFilter extends Entity
 {
     /**
      * Направления.

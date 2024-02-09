@@ -8,7 +8,7 @@
 
 namespace App\Modules\User\Entities;
 
-use App\Models\EntityNew;
+use App\Models\Entity;
 use Carbon\Carbon;
 use Str;
 use Illuminate\Http\UploadedFile;
@@ -17,7 +17,7 @@ use App\Modules\Image\Entities\Image;
 /**
  * Сущность для пользователя.
  */
-class User extends EntityNew
+class User extends Entity
 {
     /**
      * ID записи.

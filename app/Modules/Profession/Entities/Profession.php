@@ -8,7 +8,7 @@
 
 namespace App\Modules\Profession\Entities;
 
-use App\Models\EntityNew;
+use App\Models\Entity;
 use App\Modules\Analyzer\Entities\Analyzer;
 use App\Modules\Salary\Entities\Salary;
 use Carbon\Carbon;
@@ -19,7 +19,7 @@ use Spatie\LaravelData\DataCollection;
 /**
  * Сущность для профессий.
  */
-class Profession extends EntityNew
+class Profession extends Entity
 {
     /**
      * ID записи.

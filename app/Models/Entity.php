@@ -13,7 +13,7 @@ use Spatie\LaravelData\Data;
 /**
  * Сущность.
  */
-abstract class EntityNew extends Data
+abstract class Entity extends Data
 {
     /**
      * Переводит массив значений в массив сущностей.

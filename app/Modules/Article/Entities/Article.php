@@ -9,7 +9,7 @@
 namespace App\Modules\Article\Entities;
 
 use Carbon\Carbon;
-use App\Models\EntityNew;
+use App\Models\Entity;
 use App\Modules\Analyzer\Entities\Analyzer;
 use App\Modules\Article\Enums\Status;
 use Spatie\LaravelData\Attributes\DataCollectionOf;
@@ -18,7 +18,7 @@ use Spatie\LaravelData\DataCollection;
 /**
  * Сущность для статьи.
  */
-class Article extends EntityNew
+class Article extends Entity
 {
     /**
      * ID записи.

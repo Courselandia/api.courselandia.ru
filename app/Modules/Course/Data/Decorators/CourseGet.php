@@ -8,7 +8,7 @@
 
 namespace App\Modules\Course\Data\Decorators;
 
-use App\Models\EntityNew;
+use App\Models\Entity;
 use App\Modules\Course\Entities\Course as CourseEntity;
 use Spatie\LaravelData\Attributes\DataCollectionOf;
 use Spatie\LaravelData\DataCollection;
@@ -16,7 +16,7 @@ use Spatie\LaravelData\DataCollection;
 /**
  * Данные для декоратора получения курса.
  */
-class CourseGet extends EntityNew
+class CourseGet extends Entity
 {
     /**
      * Курс.

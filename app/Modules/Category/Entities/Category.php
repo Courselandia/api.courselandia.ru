@@ -8,7 +8,7 @@
 
 namespace App\Modules\Category\Entities;
 
-use App\Models\EntityNew;
+use App\Models\Entity;
 use App\Modules\Analyzer\Entities\Analyzer;
 use App\Modules\Direction\Entities\Direction;
 use App\Modules\Profession\Entities\Profession;
@@ -20,7 +20,7 @@ use Spatie\LaravelData\DataCollection;
 /**
  * Сущность для категорий.
  */
-class Category extends EntityNew
+class Category extends Entity
 {
     /**
      * ID записи.

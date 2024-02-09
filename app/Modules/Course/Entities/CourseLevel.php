@@ -8,14 +8,14 @@
 
 namespace App\Modules\Course\Entities;
 
-use App\Models\EntityNew;
+use App\Models\Entity;
 use App\Modules\Salary\Enums\Level;
 use Carbon\Carbon;
 
 /**
  * Сущность уровней курсов.
  */
-class CourseLevel extends EntityNew
+class CourseLevel extends Entity
 {
     /**
      * ID записи.

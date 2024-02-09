@@ -8,13 +8,13 @@
 
 namespace App\Modules\OAuth\Entities;
 
-use App\Models\EntityNew;
+use App\Models\Entity;
 use Carbon\Carbon;
 
 /**
  * Сущность для токена обновления.
  */
-class OAuthRefresh extends EntityNew
+class OAuthRefresh extends Entity
 {
     /**
      * ID токена на обновления.

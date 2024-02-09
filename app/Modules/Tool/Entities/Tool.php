@@ -8,7 +8,7 @@
 
 namespace App\Modules\Tool\Entities;
 
-use App\Models\EntityNew;
+use App\Models\Entity;
 use App\Modules\Analyzer\Entities\Analyzer;
 use Carbon\Carbon;
 use App\Modules\Metatag\Entities\Metatag;
@@ -18,7 +18,7 @@ use Spatie\LaravelData\DataCollection;
 /**
  * Сущность для инструментов.
  */
-class Tool extends EntityNew
+class Tool extends Entity
 {
     /**
      * ID записи.

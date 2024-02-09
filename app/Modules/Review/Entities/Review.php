@@ -8,7 +8,7 @@
 
 namespace App\Modules\Review\Entities;
 
-use App\Models\EntityNew;
+use App\Models\Entity;
 use App\Modules\Course\Entities\Course;
 use App\Modules\Review\Enums\Status;
 use App\Modules\School\Entities\School;
@@ -17,7 +17,7 @@ use Carbon\Carbon;
 /**
  * Сущность для отзывов.
  */
-class Review extends EntityNew
+class Review extends Entity
 {
     /**
      * ID записи.

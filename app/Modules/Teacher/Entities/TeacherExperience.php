@@ -8,13 +8,13 @@
 
 namespace App\Modules\Teacher\Entities;
 
-use App\Models\EntityNew;
+use App\Models\Entity;
 use Carbon\Carbon;
 
 /**
  * Сущность для опыта работы учителя.
  */
-class TeacherExperience extends EntityNew
+class TeacherExperience extends Entity
 {
     /**
      * ID записи.
