@@ -77,6 +77,13 @@ class TeacherReadAction extends Action
             CacheTime::GENERAL->value,
             function () {
                 $query = Teacher::filter($this->filters ?: [])
+                    ->select([
+                        'id',
+                        'name',
+                        'image_small_id',
+                        'image_middle_id',
+                        'status',
+                    ])
                     ->with([
                         'metatag',
                     ]);
