@@ -52,7 +52,7 @@ class FaqUpdateAction extends Action
                 ...$faqEntity->toArray(),
                 ...$this->data->toArray(),
                 'question' => Typography::process($this->data->question, true),
-                'answer' => Typography::process($this->data->answer, true),
+                'answer' => Typography::process($this->data->answer, true, false),
             ]);
 
             Faq::find($this->data->id)->update($faqEntity->toArray());

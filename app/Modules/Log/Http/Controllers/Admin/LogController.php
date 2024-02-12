@@ -87,7 +87,7 @@ class LogController extends Controller
      */
     public function destroy(LogDestroyRequest $request): JsonResponse
     {
-        $action = app(LogDestroyAction::class, ['ids' => $request->post('ids')]);
+        $action = app(LogDestroyAction::class, ['ids' => $request->get('ids')]);
         $action->run();
 
         $data = [

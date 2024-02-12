@@ -79,9 +79,9 @@ class Offer
     /**
      * Путь к изображению.
      *
-     * @var string
+     * @var string|null
      */
-    public string $picture;
+    public ?string $picture = null;
 
     /**
      * Валюта.

@@ -258,7 +258,7 @@ class Export
                         $offer->duration_unit = $this->getNegotiatedDuration(Duration::from($result['duration_unit']));
                     }
 
-                    $offer->picture = $result['image_middle_id']->path;
+                    $offer->picture = $result['image_middle_id']['path'] ?? null;
                     $offer->description = $result['text'];
 
                     if ($result['program']) {

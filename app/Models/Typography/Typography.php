@@ -20,19 +20,22 @@ class Typography
      *
      * @param ?string $text Текст для тпиографирования.
      * @param bool $htmlEntityDecode Преобразует HTML-сущности в соответствующие им символы.
+     * @param bool $removeRn Удалить переводы строк.
      *
      * @return ?string Оттипографированный текст.
      */
-    public function process(?string $text, bool $htmlEntityDecode = false): string | null
+    public function process(?string $text, bool $htmlEntityDecode = false, bool $removeRn = true): string | null
     {
         if ($text) {
-            $value = str_replace("\t", '', $text);
-            $value = str_replace("\n\r", '', $value);
-            $value = str_replace("\r\n", '', $value);
-            $value = str_replace("\n", '', $value);
-            $value = str_replace("\r", '', $value);
+            if ($removeRn) {
+                $text = str_replace("\t", '', $text);
+                $text = str_replace("\n\r", '', $text);
+                $text = str_replace("\r\n", '', $text);
+                $text = str_replace("\n", '', $text);
+                $text = str_replace("\r", '', $text);
+            }
 
-            if ($value !== '') {
+            if ($text !== '') {
                 $typograph = new EMTypograph();
 
                 $typograph->do_setup('OptAlign.all', false);
@@ -45,7 +48,7 @@ class Typography
                 $typograph->do_setup('Abbr.nobr_before_unit_volt', false);
                 $typograph->do_setup('Space.autospace_after', false);
 
-                $result = $typograph->process($value);
+                $result = $typograph->process($text);
 
                 if ($result) {
                     return $htmlEntityDecode ? html_entity_decode(strip_tags($result)) : $result;
