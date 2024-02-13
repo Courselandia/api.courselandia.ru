@@ -51,6 +51,7 @@ class ParserEdusonAcademy extends ParserYml
             'IT' => Direction::OTHER,
             'Финансы' => Direction::BUSINESS,
             'Аналитика' => Direction::ANALYTICS,
+            'МПП' => Direction::BUSINESS,
         ];
     }
 
