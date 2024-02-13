@@ -8,14 +8,14 @@
 
 namespace App\Modules\OAuth\Contracts;
 
-use Config;
+use App\Models\Exceptions\InvalidFormatException;
+use App\Modules\OAuth\Values\Token;
 use Carbon\Carbon;
+use Config;
+use Firebase\JWT\JWT;
+use Firebase\JWT\Key;
 use stdClass;
 use Throwable;
-use Firebase\JWT\JWT;
-use App\Modules\OAuth\Entities\Token;
-use App\Models\Exceptions\InvalidFormatException;
-use Firebase\JWT\Key;
 
 /**
  * Абстрактный класс позволяющий проектировать собственные классы для хранения токенов.
@@ -96,11 +96,7 @@ abstract class OAuthDriver
 
         $refreshToken = JWT::encode($refreshToken, $key, 'HS256');
 
-        $token = new Token();
-        $token->accessToken = $accessToken;
-        $token->refreshToken = $refreshToken;
-
-        return $token;
+        return new Token($accessToken, $refreshToken);
     }
 
     /**
@@ -129,7 +125,7 @@ abstract class OAuthDriver
             }
 
             throw new InvalidFormatException('The token is invalid.');
-        } catch (Throwable $error) {
+        } catch (Throwable) {
             throw new InvalidFormatException('The token is invalid.');
         }
     }

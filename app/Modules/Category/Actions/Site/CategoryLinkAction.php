@@ -25,9 +25,17 @@ class CategoryLinkAction extends Action
     /**
      * ID категории.
      *
-     * @var string|null
+     * @var string
      */
-    public string|null $link = null;
+    private string $link;
+
+    /**
+     * @param string $link ID категории.
+     */
+    public function __construct(string $link)
+    {
+        $this->link = $link;
+    }
 
     /**
      * Метод запуска логики.
@@ -69,11 +77,7 @@ class CategoryLinkAction extends Action
                     ->first();
 
                 if ($result) {
-                    $item = $result->toArray();
-                    $entity = new CategoryEntity();
-                    $entity->set($item);
-
-                    return $entity;
+                    return CategoryEntity::from($result->toArray());
                 }
 
                 return null;

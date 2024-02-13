@@ -25,12 +25,10 @@ class ToolController extends Controller
      * @param int|string $id ID категории.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException
      */
     public function get(int|string $id): JsonResponse
     {
-        $action = app(ToolGetAction::class);
-        $action->id = $id;
+        $action = new ToolGetAction($id);
         $data = $action->run();
 
         if ($data) {
@@ -60,8 +58,7 @@ class ToolController extends Controller
      */
     public function link(string $link): JsonResponse
     {
-        $action = app(ToolLinkAction::class);
-        $action->link = $link;
+        $action = new ToolLinkAction($link);
         $data = $action->run();
 
         if ($data) {

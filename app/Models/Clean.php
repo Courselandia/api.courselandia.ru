@@ -16,37 +16,32 @@ class Clean
     /**
      * Чистка данных.
      *
-     * @param Entity|Entity[] $entities Сущность для очистки.
+     * @param array $items Данные для очистки.
      * @param array $removes Массив ключей, которые подлежат очистки.
      * @param bool $ifNull Только удалять если равен null.
      *
-     * @return Entity|Entity[] Вернет очищенную сущность.
+     * @return array Вернет очищенные данные.
      */
-    public static function do(Entity|array $entities, array $removes, bool $ifNull = false): Entity | array
+    public static function do(array $items, array $removes, bool $ifNull = false): array
     {
-        $isArray = is_array($entities);
-        $entities = $isArray ? $entities : [$entities];
-
-        foreach ($entities as $entity) {
-            foreach ($entity as $key => $value) {
-                if (is_array($entity->$key) && array_is_list($entity->$key)) {
-                    for ($i = 0; $i < count($entity->$key); $i++) {
-                        if ($entity->$key[$i] instanceof Entity) {
-                            $entity->$key[$i] = self::do($entity->$key[$i], $removes, $ifNull);
-                        }
+        foreach ($items as $key => $item) {
+            if (is_array($items[$key]) && array_is_list($items[$key])) {
+                for ($i = 0; $i < count($items[$key]); $i++) {
+                    if (is_array($items[$key][$i])) {
+                        $items[$key][$i] = self::do($items[$key][$i], $removes, $ifNull);
                     }
-                } elseif ($entity->$key instanceof Entity) {
-                    $entity->$key = self::do($entity->$key, $removes, $ifNull);
-                } elseif (in_array($key, $removes)) {
-                    if ($ifNull === false) {
-                        unset($entity->$key);
-                    } else if ($ifNull === true && $entity->$key === null) {
-                        unset($entity->$key);
-                    }
+                }
+            } elseif (is_array($items[$key])) {
+                $items[$key] = self::do($items[$key], $removes, $ifNull);
+            } else if (!is_array($items[$key]) && in_array($key, $removes)) {
+                if ($ifNull === false) {
+                    unset($items[$key]);
+                } else if ($ifNull === true && $items[$key] === null) {
+                    unset($items[$key]);
                 }
             }
         }
 
-        return $isArray ? $entities : $entities[0];
+        return $items;
     }
 }

@@ -10,13 +10,9 @@ namespace App\Modules\Document\Repositories;
 
 use DB;
 use Generator;
-use App\Models\Entity;
-use App\Models\Rep\RepositoryEloquent;
-use App\Models\Rep\RepositoryQueryBuilder;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Modules\Document\Entities\Document as DocumentEntity;
 use App\Modules\Document\Models\DocumentEloquent as DocumentEloquentModel;
-use App\Modules\Document\Models\DocumentMongoDb as DocumentMongoDbModel;
 use App\Models\Exceptions\ParameterInvalidException;
 
 /**
@@ -24,17 +20,15 @@ use App\Models\Exceptions\ParameterInvalidException;
  */
 class DocumentEloquent extends Document
 {
-    use RepositoryEloquent;
-
     /**
      * Создание.
      *
-     * @param Entity|DocumentEntity $entity Данные для добавления.
+     * @param DocumentEntity $entity Данные для добавления.
      *
      * @return int|string Вернет ID последней вставленной строки.
      * @throws ParameterInvalidException
      */
-    public function create(Entity|DocumentEntity $entity): int|string
+    public function create(DocumentEntity $entity): int|string
     {
         /**
          * @var DocumentEloquentModel $model
@@ -54,18 +48,18 @@ class DocumentEloquent extends Document
     /**
      * Обновление.
      *
-     * @param  int|string  $id  Id записи для обновления.
-     * @param  Entity|DocumentEntity  $entity  Данные для добавления.
+     * @param int|string $id Id записи для обновления.
+     * @param DocumentEntity $entity Данные для добавления.
      *
      * @return int|string Вернет ID вставленной строки.
      * @throws RecordNotExistException|ParameterInvalidException
      */
-    public function update(int|string $id, Entity|DocumentEntity $entity): int|string
+    public function update(int|string $id, DocumentEntity $entity): int|string
     {
         /**
          * @var DocumentEloquentModel $model
          */
-        $model = $this->newInstance()->find($id);
+        $model = $this->newInstance()->newQuery()->find($id);
 
         if ($model) {
 
@@ -79,7 +73,7 @@ class DocumentEloquent extends Document
             return $id;
         }
 
-        throw new RecordNotExistException('The document #'.$id.' does not exist.');
+        throw new RecordNotExistException('The document #' . $id . ' does not exist.');
     }
 
     /**
@@ -101,17 +95,15 @@ class DocumentEloquent extends Document
     /**
      * Получить по первичному ключу.
      *
-     * @param RepositoryQueryBuilder|null $repositoryQueryBuilder Запрос к репозиторию.
-     * @param  Entity|DocumentEntity|null  $entity  Сущность.
+     * @param int|string $id Id записи.
+     * @param DocumentEntity|null $entity Сущность.
      *
-     * @return Entity|DocumentEntity|null Данные.
+     * @return DocumentEntity|null Данные.
      * @throws ParameterInvalidException
      */
-    public function get(
-        RepositoryQueryBuilder $repositoryQueryBuilder = null,
-        Entity|DocumentEntity $entity = null
-    ): Entity|DocumentEntity|null {
-        $document = $this->getById($repositoryQueryBuilder->getId());
+    public function get(int|string $id, DocumentEntity $entity = null): DocumentEntity|null
+    {
+        $document = $this->getById($id);
 
         if ($document) {
             $document->byte = null;
@@ -119,22 +111,22 @@ class DocumentEloquent extends Document
             return $document;
         }
 
-        $query = $this->query($repositoryQueryBuilder);
+        $query = $this->newInstance()->newQuery()->find($id);
 
         /**
-         * @var DocumentEloquentModel|DocumentMongoDbModel $document
+         * @var DocumentEloquentModel $document
          */
         $document = $query->first();
 
         if ($document) {
-            $entity = $entity ? $entity->set($document->toArray()) : $this->getEntity()->set($document->toArray());
+            $entity = $entity ? $entity->set($document->toArray()) : $this->getEntity($document->toArray());
 
             $entity->path = $document->path;
             $entity->pathCache = $document->pathCache;
             $entity->pathSource = $document->pathSource;
 
             $entity->byte = null;
-            $this->setById($repositoryQueryBuilder->getId(), $entity);
+            $this->setById($id, $entity);
 
             return $entity;
         }
@@ -168,12 +160,12 @@ class DocumentEloquent extends Document
     /**
      * Получение всех записей.
      *
-     * @param  Entity|DocumentEntity|null  $entity  Сущность.
+     * @param DocumentEntity|null $entity Сущность.
      *
      * @return Generator|DocumentEntity|null Генератор.
      * @throws ParameterInvalidException
      */
-    public function all(Entity|DocumentEntity $entity = null): Generator|DocumentEntity|null
+    public function all(DocumentEntity $entity = null): Generator|DocumentEntity|null
     {
         $offset = -1;
 
@@ -181,7 +173,7 @@ class DocumentEloquent extends Document
             $offset += 1;
 
             /**
-             * @var DocumentEloquentModel|DocumentMongoDbModel $document
+             * @var DocumentEloquentModel $document
              */
             $document = $this->newInstance()
                 ->newQuery()
@@ -190,7 +182,7 @@ class DocumentEloquent extends Document
                 ->first();
 
             if ($document) {
-                $entity = $entity ? $entity->set($document->toArray()) : $this->getEntity()->set($document->toArray());
+                $entity = $entity ? $entity->set($document->toArray()) : $this->getEntity($document->toArray());
 
                 $entity->path = $document->path;
                 $entity->pathCache = $document->pathCache;

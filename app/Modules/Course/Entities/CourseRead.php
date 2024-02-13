@@ -9,13 +9,8 @@
 namespace App\Modules\Course\Entities;
 
 use App\Models\Entity;
-use App\Modules\Category\Entities\Category;
-use App\Modules\Direction\Entities\Direction;
-use App\Modules\Profession\Entities\Profession;
-use App\Modules\School\Entities\School;
-use App\Modules\Skill\Entities\Skill;
-use App\Modules\Teacher\Entities\Teacher;
-use App\Modules\Tool\Entities\Tool;
+use Spatie\LaravelData\Attributes\DataCollectionOf;
+use Spatie\LaravelData\DataCollection;
 
 /**
  * Сущность чтения курсов.
@@ -53,9 +48,10 @@ class CourseRead extends Entity
     /**
      * Курсы.
      *
-     * @var Course[]
+     * @var ?DataCollection
      */
-    public ?array $courses = null;
+    #[DataCollectionOf(Course::class)]
+    public ?DataCollection $courses = null;
 
     /**
      * Сущность фильтров.
@@ -81,9 +77,9 @@ class CourseRead extends Entity
     /**
      * Сущность описания.
      *
-     * @var Direction|Profession|School|Skill|Teacher|Tool|Category|null
+     * @var array|null
      */
-    public Direction|Profession|School|Skill|Teacher|Tool|Category|null $description = null;
+    public array|null $description = null;
 
     /**
      * Количество.
@@ -95,56 +91,117 @@ class CourseRead extends Entity
     /**
      * Отключать не активные.
      *
-     * @var bool
+     * @var bool|null
      */
-    public bool $disabled = false;
+    public bool|null $disabled = null;
 
     /**
      * Признак школы открыты.
      *
-     * @var bool
+     * @var bool|null
      */
-    public bool $openedSchools = false;
+    public bool|null $openedSchools = null;
 
     /**
      * Признак категории открыты.
      *
-     * @var bool
+     * @var bool|null
      */
-    public bool $openedCategories = false;
+    public bool|null $openedCategories = null;
 
     /**
      * Признак профессии открыты.
      *
-     * @var bool
+     * @var bool|null
      */
-    public bool $openedProfessions = false;
+    public bool|null $openedProfessions = null;
 
     /**
      * Признак учителя открыты.
      *
-     * @var bool
+     * @var bool|null
      */
-    public bool $openedTeachers = false;
+    public bool|null $openedTeachers = null;
 
     /**
      * Признак навыки открыты.
      *
-     * @var bool
+     * @var bool|null
      */
-    public bool $openedSkills = false;
+    public bool|null $openedSkills = null;
 
     /**
      * Признак инструменты открыты.
      *
-     * @var bool
+     * @var bool|null
      */
-    public bool $openedTools = false;
+    public bool|null $openedTools = null;
 
     /**
      * Вывести курсы только с картинками.
      *
      * @var bool
      */
-    public bool $onlyWithImage = false;
+    public bool|null $onlyWithImage = null;
+
+    /**
+     * @param array|null $sorts Сортировка данных.
+     * @param array|null $filters Фильтрация данных.
+     * @param int|null $offset Начать выборку.
+     * @param int|null $limit Лимит выборки.
+     * @param DataCollection|null $courses Курсы.
+     * @param CourseFilter|null $filter Сущность фильтров.
+     * @param string|null $section Название описания.
+     * @param string|null $sectionLink Ссылка на раздел описания.
+     * @param array|null $description Сущность описания.
+     * @param int|null $total Количество.
+     * @param bool|null $disabled Отключать не активные.
+     * @param bool|null $openedSchools Признак школы открыты.
+     * @param bool|null $openedCategories Признак категории открыты.
+     * @param bool|null $openedProfessions Признак профессии открыты.
+     * @param bool|null $openedTeachers Признак учителя открыты.
+     * @param bool|null $openedSkills Признак навыки открыты.
+     * @param bool|null $openedTools Признак инструменты открыты.
+     * @param bool|null $onlyWithImage Вывести курсы только с картинками.
+     */
+    public function __construct(
+        ?array          $sorts = null,
+        ?array          $filters = null,
+        ?int            $offset = null,
+        ?int            $limit = null,
+        ?DataCollection $courses = null,
+        ?CourseFilter   $filter = null,
+        ?string         $section = null,
+        ?string         $sectionLink = null,
+        ?array          $description = null,
+        ?int            $total = null,
+        ?bool           $disabled = null,
+        ?bool           $openedSchools = null,
+        ?bool           $openedCategories = null,
+        ?bool           $openedProfessions = null,
+        ?bool           $openedTeachers = null,
+        ?bool           $openedSkills = null,
+        ?bool           $openedTools = null,
+        ?bool           $onlyWithImage = null,
+    )
+    {
+        $this->sorts = $sorts;
+        $this->filters = $filters;
+        $this->offset = $offset;
+        $this->limit = $limit;
+        $this->courses = $courses;
+        $this->filter = $filter;
+        $this->section = $section;
+        $this->sectionLink = $sectionLink;
+        $this->description = $description;
+        $this->total = $total;
+        $this->disabled = $disabled;
+        $this->openedSchools = $openedSchools;
+        $this->openedCategories = $openedCategories;
+        $this->openedProfessions = $openedProfessions;
+        $this->openedTeachers = $openedTeachers;
+        $this->openedSkills = $openedSkills;
+        $this->openedTools = $openedTools;
+        $this->onlyWithImage = $onlyWithImage;
+    }
 }

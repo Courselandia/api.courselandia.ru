@@ -10,7 +10,6 @@ namespace App\Modules\Review\Http\Requests\Site;
 
 use Schema;
 use App\Models\FormRequest;
-use JetBrains\PhpStorm\ArrayShape;
 
 /**
  * Класс запрос для чтения отзывов.
@@ -22,14 +21,7 @@ class ReviewReadRequest extends FormRequest
      *
      * @return array Массив правил проверки.
      */
-    #[ArrayShape([
-        'sorts' => 'string',
-        'offset' => 'string',
-        'limit' => 'string',
-        'school_id' => 'string',
-        'link' => 'string',
-        'rating' => 'string',
-    ])] public function rules(): array
+    public function rules(): array
     {
         $columns = Schema::getColumnListing('reviews');
         $columns = implode(',', $columns);
@@ -49,14 +41,7 @@ class ReviewReadRequest extends FormRequest
      *
      * @return array Массив атрибутов.
      */
-    #[ArrayShape([
-        'sorts' => 'string',
-        'offset' => 'string',
-        'limit' => 'string',
-        'school_id' => 'string',
-        'link' => 'string',
-        'rating' => 'string',
-    ])] public function attributes(): array
+    public function attributes(): array
     {
         return [
             'sorts' => trans('review::http.requests.site.reviewReadRequest.sorts'),

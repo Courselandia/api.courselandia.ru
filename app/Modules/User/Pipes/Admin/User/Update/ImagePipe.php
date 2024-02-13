@@ -9,11 +9,11 @@
 namespace App\Modules\User\Pipes\Admin\User\Update;
 
 use App\Models\Contracts\Pipe;
-use App\Models\Entity;
-use App\Models\Exceptions\ParameterInvalidException;
+use App\Models\Data;
 use App\Models\Exceptions\UserNotExistException;
 use App\Modules\User\Actions\Admin\User\UserGetAction;
-use App\Modules\User\Entities\UserUpdate;
+use App\Modules\User\Data\Decorators\UserProfileUpdate;
+use App\Modules\User\Data\Decorators\UserUpdate;
 use App\Modules\User\Models\User;
 use Cache;
 use Closure;
@@ -27,39 +27,39 @@ class ImagePipe implements Pipe
     /**
      * Метод, который будет вызван у pipeline.
      *
-     * @param Entity|UserUpdate $entity Сущность для создания пользователя.
+     * @param Data|UserUpdate|UserProfileUpdate $data Данные для декоратора обновления.
      * @param Closure $next Ссылка на следующий pipe.
      *
      * @return mixed Вернет значение полученное после выполнения следующего pipe.
-     * @throws ParameterInvalidException
      * @throws Exception
      */
-    public function handle(Entity|UserUpdate $entity, Closure $next): mixed
+    public function handle(Data|UserUpdate|UserProfileUpdate $data, Closure $next): mixed
     {
-        if ($entity->image) {
-            $action = app(UserGetAction::class);
-            $action->id = $entity->id;
+        if ($data->image) {
+            $action = new UserGetAction($data->id);
             $user = $action->run();
 
             try {
                 if ($user) {
-                    $user->image_small_id = $entity->image;
-                    $user->image_middle_id = $entity->image;
-                    $user->image_big_id = $entity->image;
+                    $dataUpdate = [
+                        ...$user->toArray(),
+                        'image_small_id' => $data->image,
+                        'image_middle_id' => $data->image,
+                        'image_big_id' => $data->image,
+                    ];
 
-                    User::find($entity->id)->update($user->toArray());
+                    User::find($data->id)->update($dataUpdate);
                     Cache::tags(['user'])->flush();
                 } else {
                     new UserNotExistException(trans('access::http.actions.site.userConfigUpdateAction.notExistUser'));
                 }
             } catch (Exception $error) {
-                User::destroy($entity->id);
                 Cache::tags(['user'])->flush();
 
                 throw $error;
             }
         }
 
-        return $next($entity);
+        return $next($data);
     }
 }

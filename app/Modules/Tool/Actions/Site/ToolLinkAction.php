@@ -23,11 +23,19 @@ use App\Modules\Tool\Models\Tool;
 class ToolLinkAction extends Action
 {
     /**
-     * ID категории.
+     * Ссылка на инструмент.
      *
-     * @var string|null
+     * @var string
      */
-    public string|null $link = null;
+    private string $link;
+
+    /**
+     * @param string $link Ссылка на инструмент.
+     */
+    public function __construct(string $link)
+    {
+        $this->link = $link;
+    }
 
     /**
      * Метод запуска логики.
@@ -53,15 +61,7 @@ class ToolLinkAction extends Action
                         'metatag',
                     ])->first();
 
-                if ($result) {
-                    $item = $result->toArray();
-                    $entity = new ToolEntity();
-                    $entity->set($item);
-
-                    return $entity;
-                }
-
-                return null;
+                return $result ? ToolEntity::from($result->toArray()) : null;
             }
         );
     }

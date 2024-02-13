@@ -9,7 +9,6 @@
 namespace App\Modules\Publication\Http\Requests\Admin\Publication;
 
 use App\Models\FormRequest;
-use JetBrains\PhpStorm\ArrayShape;
 
 /**
  * Класс запрос для создания публикаций.
@@ -21,7 +20,7 @@ class PublicationCreateRequest extends FormRequest
      *
      * @return array Массив правил проверки.
      */
-    #[ArrayShape(['image' => 'string', 'published_at' => 'string', 'status' => 'string'])] public function rules(): array
+    public function rules(): array
     {
         return [
             'image' => 'nullable|media:jpg,png,gif,webp,svg',
@@ -35,11 +34,7 @@ class PublicationCreateRequest extends FormRequest
      *
      * @return array Массив атрибутов.
      */
-    #[ArrayShape([
-        'image' => 'string',
-        'published_at' => 'string',
-        'status' => 'string',
-    ])] public function attributes(): array
+    public function attributes(): array
     {
         return [
             'image' => trans('publication::http.requests.admin.publicationCreateRequest.image'),

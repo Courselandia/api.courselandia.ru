@@ -19,7 +19,7 @@ class SalaryListener
     /**
      * Обработчик события при добавлении записи.
      *
-     * @param  Salary  $salary  Модель для таблицы зарплаты.
+     * @param Salary $salary Модель для таблицы зарплаты.
      *
      * @return bool Вернет успешность выполнения операции.
      * @throws RecordExistException
@@ -41,7 +41,7 @@ class SalaryListener
     /**
      * Обработчик события при обновлении записи.
      *
-     * @param  Salary  $salary  Модель для таблицы зарплаты.
+     * @param Salary $salary Модель для таблицы зарплаты.
      *
      * @return bool Вернет успешность выполнения операции.
      * @throws RecordExistException

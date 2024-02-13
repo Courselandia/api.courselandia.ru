@@ -25,16 +25,13 @@ class LogController extends Controller
     /**
      * Получение лога.
      *
-     * @param  string|int  $id  ID лога.
+     * @param string|int $id ID лога.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException
      */
     public function get(string|int $id): JsonResponse
     {
-        $action = app(LogGetAction::class);
-        $action->id = $id;
-
+        $action = app(LogGetAction::class, ['id' => $id]);
         $data = $action->run();
 
         if ($data) {
@@ -66,15 +63,14 @@ class LogController extends Controller
      */
     public function read(LogReadRequest $request): JsonResponse
     {
-        $action = app(LogReadAction::class);
-
-        $action->filters = $request->get('filters');
-        $action->sorts = $request->get('sorts');
-        $action->offset = $request->get('offset');
-        $action->limit = $request->get('limit');
+        $action = app(LogReadAction::class, [
+            'sorts' => $request->get('sorts'),
+            'filters' => $request->get('filters'),
+            'offset' => $request->get('offset'),
+            'limit' => $request->get('limit'),
+        ]);
 
         $data = $action->run();
-
         $data['success'] = true;
 
         return response()
@@ -88,12 +84,10 @@ class LogController extends Controller
      * @param LogDestroyRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException
      */
     public function destroy(LogDestroyRequest $request): JsonResponse
     {
-        $action = app(LogDestroyAction::class);
-        $action->ids = $request->get('ids');
+        $action = app(LogDestroyAction::class, ['ids' => $request->get('ids')]);
         $action->run();
 
         $data = [

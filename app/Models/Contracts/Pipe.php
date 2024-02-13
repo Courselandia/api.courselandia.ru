@@ -8,7 +8,7 @@
 
 namespace App\Models\Contracts;
 
-use App\Models\Entity;
+use App\Models\Data;
 use Closure;
 
 /**
@@ -19,10 +19,10 @@ interface Pipe
     /**
      * Метод, который будет вызван у pipeline.
      *
-     * @param  Entity $entity  Сущность для хранения данных.
-     * @param  Closure  $next  Ссылка на следующий pipe.
+     * @param Data $data Data Transfer Object..
+     * @param Closure $next Ссылка на следующий pipe.
      *
      * @return mixed Вернет значение полученное после выполнения следующего pipe.
      */
-    public function handle(Entity $entity, Closure $next): mixed;
+    public function handle(Data $data, Closure $next): mixed;
 }

@@ -9,7 +9,6 @@
 namespace App\Models;
 
 use Exception;
-use JetBrains\PhpStorm\Pure;
 
 /**
  * Трейт ошибок.
@@ -81,7 +80,7 @@ trait Error
      *
      * @return Exception|null Вернет исключение.
      */
-    #[Pure] public function getError(int $index = 0): ?Exception
+    public function getError(int $index = 0): ?Exception
     {
         if ($this->hasError() && isset($this->errors[$index])) {
             return $this->errors[$index];
@@ -95,7 +94,7 @@ trait Error
      *
      * @return Exception[] Вернет массив всех ошибок с исключениями.
      */
-    #[Pure] public function getErrors(): array
+    public function getErrors(): array
     {
         if ($this->hasError()) {
             return $this->errors;

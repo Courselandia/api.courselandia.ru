@@ -8,7 +8,12 @@
 
 namespace App\Modules\Teacher\Http\Controllers\Admin;
 
+use App\Modules\Teacher\Data\TeacherCreate;
+use App\Modules\Teacher\Data\TeacherExperience;
+use App\Modules\Teacher\Data\TeacherSocialMedia;
+use App\Modules\Teacher\Data\TeacherUpdate;
 use Auth;
+use Carbon\Carbon;
 use Log;
 use Throwable;
 use ReflectionException;
@@ -45,12 +50,10 @@ class TeacherController extends Controller
      * @param int|string $id ID учителя.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException
      */
     public function get(int|string $id): JsonResponse
     {
-        $action = app(TeacherGetAction::class);
-        $action->id = $id;
+        $action = new TeacherGetAction($id);
         $data = $action->run();
 
         if ($data) {
@@ -80,14 +83,14 @@ class TeacherController extends Controller
      */
     public function read(TeacherReadRequest $request): JsonResponse
     {
-        $action = app(TeacherReadAction::class);
-        $action->sorts = $request->get('sorts');
-        $action->filters = $request->get('filters');
-        $action->offset = $request->get('offset');
-        $action->limit = $request->get('limit');
+        $action = new TeacherReadAction(
+            $request->get('sorts'),
+            $request->get('filters'),
+            $request->get('offset'),
+            $request->get('limit'),
+        );
 
         $data = $action->run();
-
         $data['success'] = true;
 
         return response()->json($data);
@@ -103,11 +106,8 @@ class TeacherController extends Controller
      */
     public function courses(int|string $id): JsonResponse
     {
-        $action = app(CourseReadAction::class);
-        $action->teacherId = $id;
-
+        $action = new CourseReadAction(null, null, null, null, $id);
         $data = $action->run();
-
         $data['success'] = true;
 
         return response()->json($data);
@@ -123,9 +123,7 @@ class TeacherController extends Controller
      */
     public function detachCourses(int|string $id, TeacherDetachCoursesRequest $request): JsonResponse
     {
-        $action = app(TeacherDetachCoursesAction::class);
-        $action->id = $id;
-        $action->ids = $request->get('ids');
+        $action = new TeacherDetachCoursesAction($id, $request->get('ids'));
         $action->run();
 
         Log::info(
@@ -155,33 +153,42 @@ class TeacherController extends Controller
     public function create(TeacherCreateRequest $request): JsonResponse
     {
         try {
-            $action = app(TeacherCreateAction::class);
-            $action->name = $request->get('name');
-            $action->link = $request->get('link');
-            $action->city = $request->get('city');
-            $action->comment = $request->get('comment');
-            $action->copied = $request->get('copied');
-            $action->text = $request->get('text');
-            $action->rating = $request->get('rating');
-            $action->status = $request->get('status');
-            $action->title = $request->get('title');
-            $action->description = $request->get('description');
-            $action->description_template = $request->get('description_template');
-            $action->title_template = $request->get('title_template');
-            $action->schools = $request->get('schools');
-            $action->directions = $request->get('directions');
-            $action->experiences = $request->get('experiences');
-            $action->socialMedias = $request->get('socialMedias');
+            $data = TeacherCreate::from([
+                ...$request->all(),
+                'socialMedias' => TeacherSocialMedia::collection(collect($request->get('socialMedias'))
+                    ->map(static function ($socialMedia) {
+                        return TeacherSocialMedia::from($socialMedia);
+                    })
+                    ->toArray()),
+                'experiences' => TeacherExperience::collection(collect($request->get('experiences'))
+                    ->map(static function ($experience) {
+                        return TeacherExperience::from([
+                            ...$experience,
+                            'weight' => $experience['weight'] ?? 0,
+                            'started' => (isset($experience['started']) && $experience['started']) ? Carbon::createFromFormat(
+                                'Y-m-d',
+                                $experience['started']
+                            ) : null,
+                            'finished' => (isset($experience['finished']) && $experience['finished']) ? Carbon::createFromFormat(
+                                'Y-m-d',
+                                $experience['finished']
+                            ) : null,
+                        ]);
+                    })
+                    ->toArray()
+                ),
+            ]);
 
             if ($request->hasFile('image') && $request->file('image')->isValid()) {
-                $action->image = $request->file('image');
+                $data->image = $request->file('image');
             }
 
             if ($request->get('imageCropped')) {
-                $action->imageCropped = $request->get('imageCropped');
-                $action->imageCroppedOptions = $request->get('imageCroppedOptions');
+                $data->imageCropped = $request->get('imageCropped');
+                $data->imageCroppedOptions = $request->get('imageCroppedOptions');
             }
 
+            $action = new TeacherCreateAction($data);
             $data = $action->run();
 
             Log::info(
@@ -224,34 +231,43 @@ class TeacherController extends Controller
     public function update(int|string $id, TeacherUpdateRequest $request): JsonResponse
     {
         try {
-            $action = app(TeacherUpdateAction::class);
-            $action->id = $id;
-            $action->name = $request->get('name');
-            $action->link = $request->get('link');
-            $action->city = $request->get('city');
-            $action->comment = $request->get('comment');
-            $action->copied = $request->get('copied');
-            $action->text = $request->get('text');
-            $action->rating = $request->get('rating');
-            $action->status = $request->get('status');
-            $action->title = $request->get('title');
-            $action->description = $request->get('description');
-            $action->description_template = $request->get('description_template');
-            $action->title_template = $request->get('title_template');
-            $action->schools = $request->get('schools');
-            $action->directions = $request->get('directions');
-            $action->experiences = $request->get('experiences');
-            $action->socialMedias = $request->get('socialMedias');
+            $data = TeacherUpdate::from([
+                ...$request->all(),
+                'id' => $id,
+                'socialMedias' => TeacherSocialMedia::collection(collect($request->get('socialMedias'))
+                    ->map(static function ($socialMedia) {
+                        return TeacherSocialMedia::from($socialMedia);
+                    })
+                    ->toArray()),
+                'experiences' => TeacherExperience::collection(collect($request->get('experiences'))
+                    ->map(static function ($experience) {
+                        return TeacherExperience::from([
+                            ...$experience,
+                            'weight' => $experience['weight'] ?? 0,
+                            'started' => (isset($experience['started']) && $experience['started']) ? Carbon::createFromFormat(
+                                'Y-m-d',
+                                $experience['started']
+                            ) : null,
+                            'finished' => (isset($experience['finished']) && $experience['finished']) ? Carbon::createFromFormat(
+                                'Y-m-d',
+                                $experience['finished']
+                            ) : null,
+                        ]);
+                    })
+                    ->toArray()
+                ),
+            ]);
 
             if ($request->hasFile('image') && $request->file('image')->isValid()) {
-                $action->image = $request->file('image');
+                $data->image = $request->file('image');
             }
 
             if ($request->get('imageCropped')) {
-                $action->imageCropped = $request->get('imageCropped');
-                $action->imageCroppedOptions = $request->get('imageCroppedOptions');
+                $data->imageCropped = $request->get('imageCropped');
+                $data->imageCroppedOptions = $request->get('imageCroppedOptions');
             }
 
+            $action = new TeacherUpdateAction($data);
             $data = $action->run();
 
             Log::info(
@@ -289,15 +305,11 @@ class TeacherController extends Controller
      * @param TeacherUpdateStatusRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException
      */
     public function updateStatus(int|string $id, TeacherUpdateStatusRequest $request): JsonResponse
     {
         try {
-            $action = app(TeacherUpdateStatusAction::class);
-            $action->id = $id;
-            $action->status = $request->get('status');
-
+            $action = new TeacherUpdateStatusAction($id, $request->get('status'));
             $data = $action->run();
 
             Log::info(trans('teacher::http.controllers.admin.teacherController.update.log'), [
@@ -334,8 +346,7 @@ class TeacherController extends Controller
      */
     public function destroy(TeacherDestroyRequest $request): JsonResponse
     {
-        $action = app(TeacherDestroyAction::class);
-        $action->ids = $request->get('ids');
+        $action = new TeacherDestroyAction($request->get('ids'));
         $action->run();
 
         Log::info(

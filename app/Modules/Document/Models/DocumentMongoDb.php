@@ -8,7 +8,6 @@
 
 namespace App\Modules\Document\Models;
 
-use JetBrains\PhpStorm\ArrayShape;
 use MongoDb;
 use App\Models\Validate;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -97,11 +96,7 @@ class DocumentMongoDb extends MongoDb
      *
      * @return array Вернет массив правил.
      */
-    #[ArrayShape([
-        'folder' => 'string',
-        'format' => 'string',
-        'cache' => 'string',
-    ])] protected function getRules(): array
+    protected function getRules(): array
     {
         return [
             'folder' => 'required|between:1,191',
@@ -115,12 +110,7 @@ class DocumentMongoDb extends MongoDb
      *
      * @return array Массив возможных ошибок валидации.
      */
-    #[ArrayShape([
-        'byte' => 'string',
-        'folder' => 'string',
-        'format' => 'string',
-        'cache' => 'string',
-    ])] protected function getNames(): array
+    protected function getNames(): array
     {
         return [
             'byte' => trans('document::models.document.byte'),

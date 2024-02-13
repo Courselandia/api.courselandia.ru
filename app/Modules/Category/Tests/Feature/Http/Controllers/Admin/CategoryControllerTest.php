@@ -14,7 +14,6 @@ use Util;
 use App\Models\Test\TokenTest;
 use App\Modules\Category\Models\Category;
 use Faker\Factory as Faker;
-use JetBrains\PhpStorm\Pure;
 use Tests\TestCase;
 
 /**
@@ -392,7 +391,7 @@ class CategoryControllerTest extends TestCase
      *
      * @return array Массив структуры данных категории.
      */
-    #[Pure] private function getCategoryStructure(bool $direction = false, bool $profession = false): array
+    private function getCategoryStructure(bool $direction = false, bool $profession = false): array
     {
         $structure = [
             'id',

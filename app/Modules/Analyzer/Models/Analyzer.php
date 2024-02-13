@@ -13,7 +13,7 @@ use App\Models\Delete;
 use App\Models\Validate;
 use App\Models\Sortable;
 use EloquentFilter\Filterable;
-use JetBrains\PhpStorm\ArrayShape;
+use Illuminate\Database\Eloquent\Concerns\HasTimestamps;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -46,6 +46,7 @@ class Analyzer extends Eloquent
     use SoftDeletes;
     use Validate;
     use Filterable;
+    use HasTimestamps;
 
     /**
      * Типизирование атрибутов.
@@ -80,19 +81,7 @@ class Analyzer extends Eloquent
      *
      * @return array Вернет массив правил.
      */
-    #[ArrayShape([
-        'id' => 'string',
-        'task_id' => 'string',
-        'category' => 'string',
-        'unique' => 'string',
-        'water' => 'string',
-        'spam' => 'string',
-        'params' => 'string',
-        'tries' => 'string',
-        'status' => 'string',
-        'analyzerable_id' => 'string',
-        'analyzerable_type' => 'string',
-    ])] protected function getRules(): array
+    protected function getRules(): array
     {
         return [
             'task_id' => 'nullable|max:30',

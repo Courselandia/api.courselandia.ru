@@ -35,14 +35,14 @@ class CheckJob implements ShouldQueue
      *
      * @var Checker
      */
-    public Checker $checker;
+    private Checker $checker;
 
     /**
      * Сущность индексации.
      *
      * @var CrawlEntity
      */
-    public CrawlEntity $crawl;
+    private CrawlEntity $crawl;
 
     /**
      * Конструктор.
@@ -60,7 +60,6 @@ class CheckJob implements ShouldQueue
      * Выполнение задачи.
      *
      * @return void
-     * @throws ParameterInvalidException
      */
     public function handle(): void
     {

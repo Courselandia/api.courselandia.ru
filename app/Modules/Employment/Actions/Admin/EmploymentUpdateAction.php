@@ -8,10 +8,10 @@
 
 namespace App\Modules\Employment\Actions\Admin;
 
+use App\Modules\Employment\Data\EmploymentUpdate;
 use Cache;
 use Typography;
 use App\Models\Action;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Modules\Employment\Entities\Employment as EmploymentEntity;
 use App\Modules\Employment\Models\Employment;
@@ -22,57 +22,43 @@ use App\Modules\Employment\Models\Employment;
 class EmploymentUpdateAction extends Action
 {
     /**
-     * ID трудоустройства.
+     * Данные для обновления трудоустройства.
      *
-     * @var int|string|null
+     * @var EmploymentUpdate
      */
-    public int|string|null $id = null;
+    private EmploymentUpdate $data;
 
     /**
-     * Название.
-     *
-     * @var string|null
+     * @param EmploymentUpdate $data Данные для обновления трудоустройства.
      */
-    public ?string $name = null;
-
-    /**
-     * Статья.
-     *
-     * @var string|null
-     */
-    public ?string $text = null;
-
-    /**
-     * Статус.
-     *
-     * @var bool|null
-     */
-    public ?bool $status = null;
+    public function __construct(EmploymentUpdate $data)
+    {
+        $this->data = $data;
+    }
 
     /**
      * Метод запуска логики.
      *
      * @return EmploymentEntity Вернет результаты исполнения.
      * @throws RecordNotExistException
-     * @throws ParameterInvalidException
      */
     public function run(): EmploymentEntity
     {
-        $action = app(EmploymentGetAction::class);
-        $action->id = $this->id;
+        $action = new EmploymentGetAction($this->data->id);
         $employmentEntity = $action->run();
 
         if ($employmentEntity) {
-            $employmentEntity->id = $this->id;
-            $employmentEntity->name = Typography::process($this->name, true);
-            $employmentEntity->text = Typography::process($this->text);
-            $employmentEntity->status = $this->status;
+            $employmentEntity = EmploymentEntity::from([
+                ...$employmentEntity->toArray(),
+                ...$this->data->toArray(),
+                'name' => Typography::process($this->data->name, true),
+                'text' => Typography::process($this->data->text),
+            ]);
 
-            Employment::find($this->id)->update($employmentEntity->toArray());
+            Employment::find($this->data->id)->update($employmentEntity->toArray());
             Cache::tags(['catalog', 'employment'])->flush();
 
-            $action = app(EmploymentGetAction::class);
-            $action->id = $this->id;
+            $action = new EmploymentGetAction($this->data->id);
 
             return $action->run();
         }

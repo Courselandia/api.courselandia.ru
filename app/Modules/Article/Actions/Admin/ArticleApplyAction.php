@@ -25,9 +25,17 @@ class ArticleApplyAction extends Action
     /**
      * ID статьи.
      *
-     * @var int|string|null
+     * @var int|string
      */
-    public int|string|null $id = null;
+    private int|string $id;
+
+    /**
+     * @param int|string $id ID статьи.
+     */
+    public function __construct(int|string $id)
+    {
+        $this->id = $id;
+    }
 
     /**
      * Метод запуска логики.
@@ -38,8 +46,7 @@ class ArticleApplyAction extends Action
      */
     public function run(): ArticleEntity
     {
-        $action = app(ArticleGetAction::class);
-        $action->id = $this->id;
+        $action = new ArticleGetAction($this->id);
         $articleEntity = $action->run();
 
         if ($articleEntity) {
@@ -54,8 +61,7 @@ class ArticleApplyAction extends Action
 
             Cache::tags(['article'])->flush();
 
-            $action = app(ArticleGetAction::class);
-            $action->id = $this->id;
+            $action = new ArticleGetAction($this->id);
 
             return $action->run();
         }

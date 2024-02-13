@@ -30,14 +30,14 @@ class TaskController extends Controller
      */
     public function read(TaskReadRequest $request): JsonResponse
     {
-        $action = app(TaskReadAction::class);
-        $action->sorts = $request->get('sorts');
-        $action->filters = $request->get('filters');
-        $action->offset = $request->get('offset');
-        $action->limit = $request->get('limit');
+        $action = new TaskReadAction(
+            $request->get('sorts'),
+            $request->get('filters'),
+            $request->get('offset'),
+            $request->get('limit'),
+        );
 
         $data = $action->run();
-
         $data['success'] = true;
 
         return response()->json($data);

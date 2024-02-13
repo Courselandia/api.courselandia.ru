@@ -19,6 +19,8 @@ use App\Modules\Profession\Actions\Admin\ProfessionGetAction;
 use App\Modules\Profession\Actions\Admin\ProfessionReadAction;
 use App\Modules\Profession\Actions\Admin\ProfessionUpdateAction;
 use App\Modules\Profession\Actions\Admin\ProfessionUpdateStatusAction;
+use App\Modules\Profession\Data\ProfessionCreate;
+use App\Modules\Profession\Data\ProfessionUpdate;
 use App\Modules\Profession\Http\Requests\Admin\ProfessionCreateRequest;
 use App\Modules\Profession\Http\Requests\Admin\ProfessionDestroyRequest;
 use App\Modules\Profession\Http\Requests\Admin\ProfessionReadRequest;
@@ -41,12 +43,10 @@ class ProfessionController extends Controller
      * @param int|string $id ID профессии.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException
      */
     public function get(int|string $id): JsonResponse
     {
-        $action = app(ProfessionGetAction::class);
-        $action->id = $id;
+        $action = new ProfessionGetAction($id);
         $data = $action->run();
 
         if ($data) {
@@ -76,11 +76,12 @@ class ProfessionController extends Controller
      */
     public function read(ProfessionReadRequest $request): JsonResponse
     {
-        $action = app(ProfessionReadAction::class);
-        $action->sorts = $request->get('sorts');
-        $action->filters = $request->get('filters');
-        $action->offset = $request->get('offset');
-        $action->limit = $request->get('limit');
+        $action = new ProfessionReadAction(
+            $request->get('sorts'),
+            $request->get('filters'),
+            $request->get('offset'),
+            $request->get('limit'),
+        );
 
         $data = $action->run();
 
@@ -100,16 +101,8 @@ class ProfessionController extends Controller
     public function create(ProfessionCreateRequest $request): JsonResponse
     {
         try {
-            $action = app(ProfessionCreateAction::class);
-            $action->name = $request->get('name');
-            $action->header_template = $request->get('header_template');
-            $action->link = $request->get('link');
-            $action->text = $request->get('text');
-            $action->status = $request->get('status');
-            $action->description_template = $request->get('description_template');
-            $action->title_template = $request->get('title_template');
-            $action->keywords = $request->get('keywords');
-
+            $data = ProfessionCreate::from($request->all());
+            $action = new ProfessionCreateAction($data);
             $data = $action->run();
 
             Log::info(
@@ -152,16 +145,11 @@ class ProfessionController extends Controller
     public function update(int|string $id, ProfessionUpdateRequest $request): JsonResponse
     {
         try {
-            $action = app(ProfessionUpdateAction::class);
-            $action->id = $id;
-            $action->name = $request->get('name');
-            $action->header_template = $request->get('header_template');
-            $action->link = $request->get('link');
-            $action->text = $request->get('text');
-            $action->status = $request->get('status');
-            $action->description_template = $request->get('description_template');
-            $action->title_template = $request->get('title_template');
-            $action->keywords = $request->get('keywords');
+            $data = ProfessionUpdate::from([
+                'id' => $id,
+                ...$request->all(),
+            ]);
+            $action = new ProfessionUpdateAction($data);
             $data = $action->run();
 
             Log::info(
@@ -199,15 +187,11 @@ class ProfessionController extends Controller
      * @param ProfessionUpdateStatusRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException
      */
     public function updateStatus(int|string $id, ProfessionUpdateStatusRequest $request): JsonResponse
     {
         try {
-            $action = app(ProfessionUpdateStatusAction::class);
-            $action->id = $id;
-            $action->status = $request->get('status');
-
+            $action = new ProfessionUpdateStatusAction($id, $request->get('status'));
             $data = $action->run();
 
             Log::info(trans('profession::http.controllers.admin.professionController.update.log'), [
@@ -244,8 +228,7 @@ class ProfessionController extends Controller
      */
     public function destroy(ProfessionDestroyRequest $request): JsonResponse
     {
-        $action = app(ProfessionDestroyAction::class);
-        $action->ids = $request->get('ids');
+        $action = new ProfessionDestroyAction($request->get('ids'));
         $action->run();
 
         Log::info(

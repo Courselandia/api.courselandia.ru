@@ -39,8 +39,7 @@ class AnalyzerController extends Controller
      */
     public function get(int|string $id): JsonResponse
     {
-        $action = app(AnalyzerGetAction::class);
-        $action->id = $id;
+        $action = new AnalyzerGetAction($id);
         $data = $action->run();
 
         if ($data) {
@@ -70,11 +69,12 @@ class AnalyzerController extends Controller
      */
     public function read(AnalyzerReadRequest $request): JsonResponse
     {
-        $action = app(AnalyzerReadAction::class);
-        $action->sorts = $request->get('sorts');
-        $action->filters = $request->get('filters');
-        $action->offset = $request->get('offset');
-        $action->limit = $request->get('limit');
+        $action = new AnalyzerReadAction(
+            $request->get('sorts'),
+            $request->get('filters'),
+            $request->get('offset'),
+            $request->get('limit')
+        );
 
         $data = $action->run();
 
@@ -94,9 +94,7 @@ class AnalyzerController extends Controller
     public function analyze(int|string $id): JsonResponse
     {
         try {
-            $action = app(AnalyzerAnalyzeAction::class);
-            $action->id = $id;
-
+            $action = new AnalyzerAnalyzeAction($id);
             $data = $action->run();
 
             Log::info(trans('analyzer::http.controllers.admin.analyzerController.analyze.log'), [

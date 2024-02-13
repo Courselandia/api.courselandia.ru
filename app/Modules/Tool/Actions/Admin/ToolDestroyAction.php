@@ -18,11 +18,19 @@ use Cache;
 class ToolDestroyAction extends Action
 {
     /**
-     * Массив ID пользователей.
+     * Массив ID инструментов.
      *
      * @var int[]|string[]
      */
-    public ?array $ids = null;
+    private array $ids;
+
+    /**
+     * @param array $ids Массив ID инструментов.
+     */
+    public function __construct(array $ids)
+    {
+        $this->ids = $ids;
+    }
 
     /**
      * Метод запуска логики.

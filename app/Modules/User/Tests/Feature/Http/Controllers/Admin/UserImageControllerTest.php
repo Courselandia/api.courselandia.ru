@@ -13,7 +13,6 @@ use App\Modules\User\Models\User;
 use App\Modules\User\Models\UserRole;
 use App\Modules\User\Models\UserVerification;
 use Illuminate\Http\UploadedFile;
-use JetBrains\PhpStorm\Pure;
 use Tests\TestCase;
 
 /**
@@ -40,12 +39,12 @@ class UserImageControllerTest extends TestCase
 
         $this->json(
             'PUT',
-            'api/private/admin/user/image/update/'.$user['id'],
+            'api/private/admin/user/image/update/' . $user['id'],
             [
                 'image' => UploadedFile::fake()->image('me.jpg', 1000, 1000),
             ],
             [
-                'Authorization' => 'Bearer '.$this->getAdminToken()
+                'Authorization' => 'Bearer ' . $this->getAdminToken()
             ]
         )->assertStatus(200)->assertJsonStructure([
             'success',
@@ -64,12 +63,12 @@ class UserImageControllerTest extends TestCase
 
         $this->json(
             'PUT',
-            'api/private/admin/user/image/update/'.$user['id'],
+            'api/private/admin/user/image/update/' . $user['id'],
             [
                 'image' => UploadedFile::fake()->image('me.mp4'),
             ],
             [
-                'Authorization' => 'Bearer '.$this->getAdminToken()
+                'Authorization' => 'Bearer ' . $this->getAdminToken()
             ]
         )->assertStatus(400)->assertJsonStructure([
             'success',
@@ -91,7 +90,7 @@ class UserImageControllerTest extends TestCase
                 'image' => UploadedFile::fake()->image('me.jpg', 1000, 1000),
             ],
             [
-                'Authorization' => 'Bearer '.$this->getAdminToken()
+                'Authorization' => 'Bearer ' . $this->getAdminToken()
             ]
         )->assertStatus(404)->assertJsonStructure([
             'success',
@@ -116,10 +115,10 @@ class UserImageControllerTest extends TestCase
 
         $this->json(
             'DELETE',
-            'api/private/admin/user/image/destroy/'.$user['id'],
+            'api/private/admin/user/image/destroy/' . $user['id'],
             [],
             [
-                'Authorization' => 'Bearer '.$this->getAdminToken()
+                'Authorization' => 'Bearer ' . $this->getAdminToken()
             ]
         )->assertStatus(200)->assertJsonStructure([
             'success',
@@ -132,7 +131,7 @@ class UserImageControllerTest extends TestCase
      *
      * @return array Массив структуры данных псевдонима.
      */
-    #[Pure] private function getUserStructure(): array
+    private function getUserStructure(): array
     {
         return [
             'id',

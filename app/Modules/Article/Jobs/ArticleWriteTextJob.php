@@ -8,7 +8,6 @@
 
 namespace App\Modules\Article\Jobs;
 
-use App\Models\Exceptions\LimitException;
 use Log;
 use Writer;
 use Cache;
@@ -23,6 +22,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use App\Models\Exceptions\LimitException;
 
 /**
  * Задание на написания текста для описания курса.
@@ -39,14 +39,14 @@ class ArticleWriteTextJob implements ShouldQueue
      *
      * @var int
      */
-    public int $id;
+    private int $id;
 
     /**
      * Категория.
      *
      * @var string
      */
-    public string $category;
+    private string $category;
 
     /**
      * Конструктор.
@@ -69,8 +69,7 @@ class ArticleWriteTextJob implements ShouldQueue
     public function handle(): void
     {
         try {
-            $action = app(ArticleGetAction::class);
-            $action->id = $this->id;
+            $action = new ArticleGetAction($this->id);
             $articleEntity = $action->run();
 
             if ($articleEntity && $articleEntity->status === Status::PENDING) {

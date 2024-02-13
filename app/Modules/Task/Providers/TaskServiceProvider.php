@@ -26,7 +26,7 @@ class TaskServiceProvider extends ServiceProvider
         $this->registerTranslations();
         $this->registerConfig();
 
-        $this->loadMigrationsFrom(__DIR__.'/../Database/Migrations');
+        $this->loadMigrationsFrom(__DIR__ . '/../Database/Migrations');
     }
 
     /**
@@ -46,10 +46,10 @@ class TaskServiceProvider extends ServiceProvider
     protected function registerConfig(): void
     {
         $this->publishes([
-            __DIR__.'/../Config/config.php' => config_path('task.php'),
+            __DIR__ . '/../Config/config.php' => config_path('task.php'),
         ]);
         $this->mergeConfigFrom(
-            __DIR__.'/../Config/config.php',
+            __DIR__ . '/../Config/config.php',
             'task'
         );
     }
@@ -63,7 +63,7 @@ class TaskServiceProvider extends ServiceProvider
     {
         $viewPath = base_path('resources/views/modules/task');
 
-        $sourcePath = __DIR__.'/../Resources/views';
+        $sourcePath = __DIR__ . '/../Resources/views';
 
         $this->publishes([
             $sourcePath => $viewPath
@@ -72,7 +72,7 @@ class TaskServiceProvider extends ServiceProvider
         $this->loadViewsFrom(
             array_merge(
                 array_map(function ($path) {
-                    return $path.'/modules/task';
+                    return $path . '/modules/task';
                 }, Config::get('view.paths')),
                 [$sourcePath]
             ),
@@ -92,7 +92,7 @@ class TaskServiceProvider extends ServiceProvider
         if (is_dir($langPath)) {
             $this->loadTranslationsFrom($langPath, 'task');
         } else {
-            $this->loadTranslationsFrom(__DIR__.'/../Resources/lang', 'task');
+            $this->loadTranslationsFrom(__DIR__ . '/../Resources/lang', 'task');
         }
     }
 

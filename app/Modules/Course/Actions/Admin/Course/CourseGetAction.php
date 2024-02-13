@@ -24,15 +24,22 @@ class CourseGetAction extends Action
     /**
      * ID курса.
      *
-     * @var int|string|null
+     * @var int|string
      */
-    public int|string|null $id = null;
+    private int|string $id;
+
+    /**
+     * @param int|string $id ID курса.
+     */
+    public function __construct(int|string $id)
+    {
+        $this->id = $id;
+    }
 
     /**
      * Метод запуска логики.
      *
      * @return CourseEntity|null Вернет результаты исполнения.
-     * @throws ParameterInvalidException
      */
     public function run(): ?CourseEntity
     {
@@ -72,7 +79,7 @@ class CourseGetAction extends Action
                     ])
                     ->first();
 
-                return $course ? new CourseEntity($course->toArray()) : null;
+                return $course ? CourseEntity::from($course->toArray()) : null;
             }
         );
     }

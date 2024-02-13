@@ -9,7 +9,6 @@
 namespace App\Modules\Profession\Actions\Admin;
 
 use App\Models\Action;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Modules\Profession\Entities\Profession as ProfessionEntity;
 use App\Modules\Profession\Models\Profession;
@@ -23,27 +22,36 @@ class ProfessionUpdateStatusAction extends Action
     /**
      * ID профессии.
      *
-     * @var int|string|null
+     * @var int|string
      */
-    public int|string|null $id = null;
+    private int|string $id;
 
     /**
      * Статус.
      *
-     * @var bool|null
+     * @var bool
      */
-    public ?bool $status = null;
+    private bool $status;
+
+    /**
+     * @param int|string $id ID профессии.
+     * @param bool $status Статус.
+     */
+    public function __construct(int|string $id, bool $status)
+    {
+        $this->id = $id;
+        $this->status = $status;
+    }
 
     /**
      * Метод запуска логики.
      *
      * @return ProfessionEntity Вернет результаты исполнения.
-     * @throws RecordNotExistException|ParameterInvalidException
+     * @throws RecordNotExistException
      */
     public function run(): ProfessionEntity
     {
-        $action = app(ProfessionGetAction::class);
-        $action->id = $this->id;
+        $action = new ProfessionGetAction($this->id);
         $professionEntity = $action->run();
 
         if ($professionEntity) {

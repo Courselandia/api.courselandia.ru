@@ -9,6 +9,8 @@
 namespace App\Modules\Category\Actions\Admin;
 
 use App\Modules\Analyzer\Actions\Admin\AnalyzerUpdateAction;
+use App\Modules\Category\Data\CategoryCreate;
+use App\Modules\Metatag\Data\MetatagSet;
 use Cache;
 use Typography;
 use App\Models\Action;
@@ -25,74 +27,19 @@ use App\Modules\Metatag\Template\TemplateException;
 class CategoryCreateAction extends Action
 {
     /**
-     * Название.
+     * Данные для действия создание категории.
      *
-     * @var string|null
+     * @var CategoryCreate
      */
-    public ?string $name = null;
+    private CategoryCreate $data;
 
     /**
-     * Шаблон заголовка.
-     *
-     * @var string|null
+     * @param CategoryCreate $data Данные для действия создание категории.
      */
-    public ?string $header_template = null;
-
-    /**
-     * Ссылка.
-     *
-     * @var string|null
-     */
-    public ?string $link = null;
-
-    /**
-     * Статья.
-     *
-     * @var string|null
-     */
-    public ?string $text = null;
-
-    /**
-     * Статус.
-     *
-     * @var bool|null
-     */
-    public ?bool $status = null;
-
-    /**
-     * Шаблон описания.
-     *
-     * @var string|null
-     */
-    public ?string $description_template = null;
-
-    /**
-     * Ключевые слова.
-     *
-     * @var string|null
-     */
-    public ?string $keywords = null;
-
-    /**
-     * Шаблон заголовка.
-     *
-     * @var string|null
-     */
-    public ?string $title_template = null;
-
-    /**
-     * ID направлений.
-     *
-     * @var int[]
-     */
-    public ?array $directions = null;
-
-    /**
-     * ID профессий.
-     *
-     * @var int[]
-     */
-    public ?array $professions = null;
+    public function __construct(CategoryCreate $data)
+    {
+        $this->data = $data;
+    }
 
     /**
      * Метод запуска логики.
@@ -103,46 +50,43 @@ class CategoryCreateAction extends Action
      */
     public function run(): CategoryEntity
     {
-        $action = app(MetatagSetAction::class);
         $template = new Template();
 
         $templateValues = [
-            'category' => $this->name,
+            'category' => $this->data->name,
             'countCategoryCourses' => 0,
         ];
 
-        $action->description = $template->convert($this->description_template, $templateValues);
-        $action->title = $template->convert($this->title_template, $templateValues);
-        $action->description_template = $this->description_template;
-        $action->title_template = $this->title_template;
-        $action->keywords = $this->keywords;
+        $metatagSet = MetatagSet::from([
+            'description' => $template->convert($this->data->description_template, $templateValues),
+            'title' => $template->convert($this->data->title_template, $templateValues),
+            'description_template' => $this->data->description_template,
+            'title_template' => $this->data->title_template,
+            'keywords' => $this->data->keywords,
+        ]);
 
+        $action = new MetatagSetAction($metatagSet);
         $metatag = $action->run();
 
-        $categoryEntity = new CategoryEntity();
-        $categoryEntity->name = Typography::process($this->name, true);
-        $categoryEntity->header = Typography::process($template->convert($this->header_template, $templateValues), true);
-        $categoryEntity->header_template = $this->header_template;
-        $categoryEntity->link = $this->link;
-        $categoryEntity->text = Typography::process($this->text);
-        $categoryEntity->status = $this->status;
-        $categoryEntity->metatag_id = $metatag->id;
+        $categoryEntity = CategoryEntity::from([
+            ...$this->data->except('directions', 'professions')->toArray(),
+            'name' => Typography::process($this->data->name, true),
+            'header' => Typography::process($template->convert($this->data->header_template, $templateValues), true),
+            'text' => Typography::process($this->data->text),
+            'metatag_id' => $metatag->id,
+        ]);
 
         $category = Category::create($categoryEntity->toArray());
 
-        $category->directions()->sync($this->directions ?: []);
-        $category->professions()->sync($this->professions ?: []);
+        $category->directions()->sync($this->data->directions ?: []);
+        $category->professions()->sync($this->data->professions ?: []);
 
         Cache::tags(['catalog', 'category', 'direction', 'profession'])->flush();
 
-        $action = app(AnalyzerUpdateAction::class);
-        $action->id = $category->id;
-        $action->model = Category::class;
-        $action->category = 'category.text';
+        $action = new AnalyzerUpdateAction($category->id, Category::class, 'category.text');
         $action->run();
 
-        $action = app(CategoryGetAction::class);
-        $action->id = $category->id;
+        $action = new CategoryGetAction($category->id);
 
         return $action->run();
     }

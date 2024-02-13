@@ -18,6 +18,8 @@ use App\Modules\Direction\Actions\Admin\DirectionGetAction;
 use App\Modules\Direction\Actions\Admin\DirectionReadAction;
 use App\Modules\Direction\Actions\Admin\DirectionUpdateAction;
 use App\Modules\Direction\Actions\Admin\DirectionUpdateStatusAction;
+use App\Modules\Direction\Data\DirectionCreate;
+use App\Modules\Direction\Data\DirectionUpdate;
 use App\Modules\Direction\Http\Requests\Admin\DirectionCreateRequest;
 use App\Modules\Direction\Http\Requests\Admin\DirectionDestroyRequest;
 use App\Modules\Direction\Http\Requests\Admin\DirectionReadRequest;
@@ -41,12 +43,10 @@ class DirectionController extends Controller
      * @param int|string $id ID направления.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException
      */
     public function get(int|string $id): JsonResponse
     {
-        $action = app(DirectionGetAction::class);
-        $action->id = $id;
+        $action = new DirectionGetAction($id);
         $data = $action->run();
 
         if ($data) {
@@ -76,11 +76,12 @@ class DirectionController extends Controller
      */
     public function read(DirectionReadRequest $request): JsonResponse
     {
-        $action = app(DirectionReadAction::class);
-        $action->sorts = $request->get('sorts');
-        $action->filters = $request->get('filters');
-        $action->offset = $request->get('offset');
-        $action->limit = $request->get('limit');
+        $action = new DirectionReadAction(
+            $request->get('sorts'),
+            $request->get('filters'),
+            $request->get('offset'),
+            $request->get('limit')
+        );
 
         $data = $action->run();
 
@@ -100,17 +101,8 @@ class DirectionController extends Controller
     public function create(DirectionCreateRequest $request): JsonResponse
     {
         try {
-            $action = app(DirectionCreateAction::class);
-            $action->name = $request->get('name');
-            $action->header_template = $request->get('header_template');
-            $action->weight = $request->get('weight');
-            $action->link = $request->get('link');
-            $action->text = $request->get('text');
-            $action->status = $request->get('status');
-            $action->description_template = $request->get('description_template');
-            $action->title_template = $request->get('title_template');
-            $action->keywords = $request->get('keywords');
-
+            $data = DirectionCreate::from($request->all());
+            $action = new DirectionCreateAction($data);
             $data = $action->run();
 
             Log::info(
@@ -153,17 +145,11 @@ class DirectionController extends Controller
     public function update(int|string $id, DirectionUpdateRequest $request): JsonResponse
     {
         try {
-            $action = app(DirectionUpdateAction::class);
-            $action->id = $id;
-            $action->name = $request->get('name');
-            $action->header_template = $request->get('header_template');
-            $action->weight = $request->get('weight');
-            $action->link = $request->get('link');
-            $action->text = $request->get('text');
-            $action->status = $request->get('status');
-            $action->description_template = $request->get('description_template');
-            $action->title_template = $request->get('title_template');
-            $action->keywords = $request->get('keywords');
+            $data = DirectionUpdate::from([
+                ...$request->all(),
+                'id' => $id,
+            ]);
+            $action = new DirectionUpdateAction($data);
             $data = $action->run();
 
             Log::info(
@@ -201,15 +187,11 @@ class DirectionController extends Controller
      * @param DirectionUpdateStatusRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException
      */
     public function updateStatus(int|string $id, DirectionUpdateStatusRequest $request): JsonResponse
     {
         try {
-            $action = app(DirectionUpdateStatusAction::class);
-            $action->id = $id;
-            $action->status = $request->get('status');
-
+            $action = new DirectionUpdateStatusAction($id, $request->get('status'));
             $data = $action->run();
 
             Log::info(trans('direction::http.controllers.admin.directionController.update.log'), [
@@ -246,8 +228,7 @@ class DirectionController extends Controller
      */
     public function destroy(DirectionDestroyRequest $request): JsonResponse
     {
-        $action = app(DirectionDestroyAction::class);
-        $action->ids = $request->get('ids');
+        $action = new DirectionDestroyAction($request->get('ids'));
         $action->run();
 
         Log::info(

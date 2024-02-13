@@ -8,6 +8,8 @@
 
 namespace App\Modules\Course\Pipes\Site\Read;
 
+use App\Models\Data;
+use App\Modules\Course\Data\Decorators\CourseRead;
 use App\Modules\Course\Enums\Status;
 use Util;
 use Cache;
@@ -15,8 +17,6 @@ use Closure;
 use App\Models\Enums\CacheTime;
 use App\Modules\Course\Models\Course;
 use App\Models\Contracts\Pipe;
-use App\Models\Entity;
-use App\Modules\Course\Entities\CourseRead;
 
 /**
  * Чтение курсов: фильтры: наличие бесплатных курсов.
@@ -26,14 +26,14 @@ class FilterFreePipe implements Pipe
     /**
      * Метод, который будет вызван у pipeline.
      *
-     * @param Entity|CourseRead $entity Сущность.
+     * @param Data|CourseRead $data Данные для декоратора для чтения курсов.
      * @param Closure $next Ссылка на следующий pipe.
      *
      * @return mixed Вернет значение полученное после выполнения следующего pipe.
      */
-    public function handle(Entity|CourseRead $entity, Closure $next): mixed
+    public function handle(Data|CourseRead $data, Closure $next): mixed
     {
-        $filters = $entity->filters;
+        $filters = $data->filters;
 
         $cacheKey = Util::getKey(
             'course',
@@ -63,7 +63,8 @@ class FilterFreePipe implements Pipe
                 ->filter($filters ?: [])
                 ->where(function ($query) {
                     $query->whereNull('price')
-                        ->orWhere('price', '=', '');
+                        ->orWhere('price', '=', '')
+                        ->orWhere('price', '=', 0);
                 })
                 ->where('status', Status::ACTIVE->value)
                 ->where('has_active_school', true)
@@ -71,8 +72,8 @@ class FilterFreePipe implements Pipe
             }
         );
 
-        $entity->filter->free = $has;
+        $data->filter->free = $has;
 
-        return $next($entity);
+        return $next($data);
     }
 }

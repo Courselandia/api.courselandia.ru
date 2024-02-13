@@ -9,10 +9,9 @@
 namespace App\Modules\Salary\Actions\Admin;
 
 use App\Models\Action;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
+use App\Modules\Salary\Data\SalaryUpdate;
 use App\Modules\Salary\Entities\Salary as SalaryEntity;
-use App\Modules\Salary\Enums\Level;
 use App\Modules\Salary\Models\Salary;
 use Cache;
 
@@ -22,65 +21,41 @@ use Cache;
 class SalaryUpdateAction extends Action
 {
     /**
-     * ID зарплаты.
+     * Данные для обновления зарплаты.
      *
-     * @var int|string|null
+     * @var SalaryUpdate
      */
-    public int|string|null $id = null;
+    private SalaryUpdate $data;
 
     /**
-     * ID профессии.
-     *
-     * @var int|null
+     * @param SalaryUpdate $data Данные для обновления зарплаты.
      */
-    public ?int $profession_id = null;
-
-    /**
-     * Уровень.
-     *
-     * @var Level|null
-     */
-    public ?Level $level = null;
-
-    /**
-     * Зарплата.
-     *
-     * @var int|null
-     */
-    public ?int $salary = null;
-
-    /**
-     * Статус.
-     *
-     * @var bool|null
-     */
-    public ?bool $status = null;
+    public function __construct(SalaryUpdate $data)
+    {
+        $this->data = $data;
+    }
 
     /**
      * Метод запуска логики.
      *
      * @return SalaryEntity Вернет результаты исполнения.
      * @throws RecordNotExistException
-     * @throws ParameterInvalidException
      */
     public function run(): SalaryEntity
     {
-        $action = app(SalaryGetAction::class);
-        $action->id = $this->id;
+        $action = new SalaryGetAction($this->data->id);
         $salaryEntity = $action->run();
 
         if ($salaryEntity) {
-            $salaryEntity->id = $this->id;
-            $salaryEntity->level = $this->level;
-            $salaryEntity->salary = $this->salary;
-            $salaryEntity->profession_id = $this->profession_id;
-            $salaryEntity->status = $this->status;
+            $salaryEntity = SalaryEntity::from([
+                ...$salaryEntity->toArray(),
+                ...$this->data->toArray(),
+            ]);
 
-            Salary::find($this->id)->update($salaryEntity->toArray());
+            Salary::find($this->data->id)->update($salaryEntity->toArray());
             Cache::tags(['catalog', 'profession', 'salary'])->flush();
 
-            $action = app(SalaryGetAction::class);
-            $action->id = $this->id;
+            $action = new SalaryGetAction($this->data->id);
 
             return $action->run();
         }

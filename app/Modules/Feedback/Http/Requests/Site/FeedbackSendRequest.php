@@ -9,7 +9,6 @@
 namespace App\Modules\Feedback\Http\Requests\Site;
 
 use App\Models\FormRequest;
-use JetBrains\PhpStorm\ArrayShape;
 
 /**
  * Класс запрос для отправки сообщения через сайт.
@@ -21,18 +20,13 @@ class FeedbackSendRequest extends FormRequest
      *
      * @return array Массив правил проверки.
      */
-    #[ArrayShape([
-        'name' => 'string',
-        'email' => 'string',
-        'phone' => 'string',
-        'message' => 'string'
-    ])] public function rules(): array
+    public function rules(): array
     {
         return [
             'name' => 'required|between:1,191',
             'email' => 'required|email',
             'phone' => 'nullable|phone:7',
-            'message' => 'nullable|max:5000',
+            'message' => 'required|max:5000',
         ];
     }
 
@@ -41,12 +35,7 @@ class FeedbackSendRequest extends FormRequest
      *
      * @return array Массив атрибутов.
      */
-    #[ArrayShape([
-        'name' => 'string',
-        'email' => 'string',
-        'phone' => 'string',
-        'message' => 'string'
-    ])] public function attributes(): array
+    public function attributes(): array
     {
         return [
             'name' => trans('feedback::http.requests.site.feedbackSendRequest.name'),

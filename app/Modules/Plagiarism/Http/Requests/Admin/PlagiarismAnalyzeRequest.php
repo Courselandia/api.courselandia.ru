@@ -9,7 +9,6 @@
 namespace App\Modules\Plagiarism\Http\Requests\Admin;
 
 use App\Models\FormRequest;
-use JetBrains\PhpStorm\ArrayShape;
 
 /**
  * Класс запрос для создания учителя.
@@ -21,9 +20,7 @@ class PlagiarismAnalyzeRequest extends FormRequest
      *
      * @return array Массив правил проверки.
      */
-    #[ArrayShape([
-        'text' => 'string',
-    ])] public function rules(): array
+    public function rules(): array
     {
         return [
             'text' => 'required|max:150000',
@@ -35,9 +32,7 @@ class PlagiarismAnalyzeRequest extends FormRequest
      *
      * @return array Массив атрибутов.
      */
-    #[ArrayShape([
-        'text' => 'string',
-    ])] public function attributes(): array
+    public function attributes(): array
     {
         return [
             'text' => trans('plagiarism::http.requests.admin.plagiarismAnalyzeRequest.text'),

@@ -9,10 +9,10 @@
 namespace App\Modules\Course\Actions\Site\Course;
 
 use DB;
-use App\Models\Entity;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Skill\Models\Skill;
 use Cache;
+use Spatie\LaravelData\DataCollection;
 use Util;
 use App\Models\Action;
 use App\Models\Enums\CacheTime;
@@ -29,36 +29,55 @@ class CourseSkillReadAction extends Action
      *
      * @var array|null
      */
-    public ?array $filters = null;
+    private ?array $filters;
 
     /**
      * Начать выборку.
      *
      * @var int|null
      */
-    public ?int $offset = null;
+    private ?int $offset;
 
     /**
      * Лимит выборки.
      *
      * @var int|null
      */
-    public ?int $limit = null;
+    private ?int $limit;
 
     /**
      * Отключать не активные.
      *
      * @var bool
      */
-    public ?bool $disabled = false;
+    private ?bool $disabled;
+
+    /**
+     * @param array|null $filters Фильтрация данных.
+     * @param int|null $offset Начать выборку.
+     * @param int|null $limit Лимит выборки выборку.
+     * @param bool|null $disabled Отключать не активные.
+     */
+    public function __construct(
+        ?array $filters = null,
+        ?int   $offset = null,
+        ?int   $limit = null,
+        ?bool  $disabled = null,
+    )
+    {
+        $this->filters = $filters;
+        $this->offset = $offset;
+        $this->limit = $limit;
+        $this->disabled = $disabled;
+    }
 
     /**
      * Метод запуска логики.
      *
-     * @return CourseItemFilter[] Вернет результаты исполнения.
+     * @return DataCollection Вернет результаты исполнения.
      * @throws ParameterInvalidException
      */
-    public function run(): array
+    public function run(): DataCollection
     {
         $filters = $this->filters;
 
@@ -99,15 +118,15 @@ class CourseSkillReadAction extends Action
                         'skills.link',
                         'skills.name',
                     ])
-                    ->whereHas('courses', function ($query) {
-                        $query->select([
-                            'courses.id',
-                        ])
-                        ->where('status', Status::ACTIVE->value)
-                        ->where('has_active_school', true);
-                    })
-                    ->where('status', true)
-                    ->orderBy('name');
+                        ->whereHas('courses', function ($query) {
+                            $query->select([
+                                'courses.id',
+                            ])
+                                ->where('status', Status::ACTIVE->value)
+                                ->where('has_active_school', true);
+                        })
+                        ->where('status', true)
+                        ->orderBy('name');
 
                     if ($this->offset) {
                         $query->offset($this->offset);
@@ -117,7 +136,7 @@ class CourseSkillReadAction extends Action
                         $query->limit($this->limit);
                     }
 
-                    return Entity::toEntities($query->get()->toArray(), new CourseItemFilter());
+                    return CourseItemFilter::collection($query->get()->toArray());
                 }
             );
         }
@@ -150,17 +169,17 @@ class CourseSkillReadAction extends Action
                         'skills.link',
                         'skills.name',
                     ])
-                    ->whereHas('courses', function ($query) {
-                        $query->select([
-                            'courses.id',
-                        ])
-                        ->where('status', Status::ACTIVE->value)
-                        ->where('has_active_school', true);
-                    })
-                    ->where('status', true)
-                    ->orderBy('name')
-                    ->get()
-                    ->toArray();
+                        ->whereHas('courses', function ($query) {
+                            $query->select([
+                                'courses.id',
+                            ])
+                                ->where('status', Status::ACTIVE->value)
+                                ->where('has_active_school', true);
+                        })
+                        ->where('status', true)
+                        ->orderBy('name')
+                        ->get()
+                        ->toArray();
                 }
             );
         } else {
@@ -193,22 +212,22 @@ class CourseSkillReadAction extends Action
             $cacheKey,
             CacheTime::GENERAL->value,
             function () use ($skillFilters, $filters, $allSkills) {
-                if (!empty($filters) || (count($skillFilters) && !$this->disabled) || !$this->disabled) {
+                if (!empty($filters) || !$this->disabled) {
                     $query = Skill::select([
                         'skills.id',
                         'skills.link',
                         'skills.name',
                     ])
-                    ->whereHas('courses', function ($query) use ($filters) {
-                        $query->select([
-                            'courses.id',
-                        ])
-                        ->filter($filters ?: [])
-                        ->where('status', Status::ACTIVE->value)
-                        ->where('has_active_school', true);
-                    })
-                    ->where('status', true)
-                    ->orderBy('name');
+                        ->whereHas('courses', function ($query) use ($filters) {
+                            $query->select([
+                                'courses.id',
+                            ])
+                                ->filter($filters ?: [])
+                                ->where('status', Status::ACTIVE->value)
+                                ->where('has_active_school', true);
+                        })
+                        ->where('status', true)
+                        ->orderBy('name');
 
                     if (count($skillFilters) && !$this->disabled) {
                         $query->orderBy(DB::raw('FIELD(id, ' . implode(', ', array_reverse($skillFilters)) . ')'), 'DESC');
@@ -258,16 +277,16 @@ class CourseSkillReadAction extends Action
                                 $weight = 3;
                             }
 
-                            return $weight . ' - '. $item['name'];
+                            return $weight . ' - ' . $item['name'];
                         })
                         ->slice($this->offset, $this->limit)
                         ->values()
                         ->toArray();
 
-                    return Entity::toEntities($result, new CourseItemFilter());
+                    return CourseItemFilter::collection($result);
                 }
 
-                return Entity::toEntities($activeSkills, new CourseItemFilter());
+                return CourseItemFilter::collection($activeSkills);
             }
         );
     }

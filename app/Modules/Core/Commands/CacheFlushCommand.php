@@ -39,6 +39,7 @@ class CacheFlushCommand extends Command
      */
     public function handle(): void
     {
-        app(CacheFlushAction::class)->run();
+        $action = new CacheFlushAction();
+        $action->run();
     }
 }

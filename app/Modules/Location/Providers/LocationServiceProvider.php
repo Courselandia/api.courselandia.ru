@@ -30,7 +30,7 @@ class LocationServiceProvider extends ServiceProvider
         $this->registerTranslations();
         $this->registerConfig();
 
-        $this->loadMigrationsFrom(__DIR__.'/../Database/Migrations');
+        $this->loadMigrationsFrom(__DIR__ . '/../Database/Migrations');
     }
 
     /**
@@ -53,10 +53,10 @@ class LocationServiceProvider extends ServiceProvider
     protected function registerConfig(): void
     {
         $this->publishes([
-            __DIR__.'/../Config/config.php' => config_path('location.php'),
+            __DIR__ . '/../Config/config.php' => config_path('location.php'),
         ]);
         $this->mergeConfigFrom(
-            __DIR__.'/../Config/config.php',
+            __DIR__ . '/../Config/config.php',
             'location'
         );
     }
@@ -70,7 +70,7 @@ class LocationServiceProvider extends ServiceProvider
     {
         $viewPath = base_path('resources/views/modules/location');
 
-        $sourcePath = __DIR__.'/../Resources/views';
+        $sourcePath = __DIR__ . '/../Resources/views';
 
         $this->publishes([
             $sourcePath => $viewPath
@@ -79,7 +79,7 @@ class LocationServiceProvider extends ServiceProvider
         $this->loadViewsFrom(
             array_merge(
                 array_map(function ($path) {
-                    return $path.'/modules/location';
+                    return $path . '/modules/location';
                 }, Config::get('view.paths')),
                 [$sourcePath]
             ),
@@ -99,7 +99,7 @@ class LocationServiceProvider extends ServiceProvider
         if (is_dir($langPath)) {
             $this->loadTranslationsFrom($langPath, 'location');
         } else {
-            $this->loadTranslationsFrom(__DIR__.'/../Resources/lang', 'location');
+            $this->loadTranslationsFrom(__DIR__ . '/../Resources/lang', 'location');
         }
     }
 

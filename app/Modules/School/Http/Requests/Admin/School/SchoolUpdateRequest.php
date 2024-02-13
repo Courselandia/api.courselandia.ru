@@ -8,8 +8,6 @@
 
 namespace App\Modules\School\Http\Requests\Admin\School;
 
-use JetBrains\PhpStorm\ArrayShape;
-
 /**
  * Класс запрос для создания школ.
  */
@@ -20,12 +18,7 @@ class SchoolUpdateRequest extends SchoolCreateRequest
      *
      * @return array Массив правил проверки.
      */
-    #[ArrayShape([
-        'imageLogo' => 'string',
-        'imageSite' => 'string',
-        'rating' => 'string',
-        'status' => 'string',
-    ])] public function rules(): array
+    public function rules(): array
     {
         return [
             'imageLogo' => 'nullable|media:jpg,png,gif,webp,svg',
@@ -40,12 +33,7 @@ class SchoolUpdateRequest extends SchoolCreateRequest
      *
      * @return array Массив атрибутов.
      */
-    #[ArrayShape([
-        'imageLogo' => 'string',
-        'imageSite' => 'string',
-        'rating' => 'string',
-        'status' => 'string',
-    ])] public function attributes(): array
+    public function attributes(): array
     {
         return [
             'imageLogo' => trans('school::http.requests.admin.schoolCreateRequest.imageLogo'),

@@ -10,7 +10,6 @@ namespace App\Modules\Teacher\Database\Factories;
 
 use App\Modules\Metatag\Models\Metatag;
 use Util;
-use JetBrains\PhpStorm\ArrayShape;
 use App\Modules\Teacher\Models\Teacher;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -31,17 +30,7 @@ class TeacherFactory extends Factory
      *
      * @return array
      */
-    #[ArrayShape([
-        'metatag_id' => '\Illuminate\Database\Eloquent\Factories\Factory',
-        'name' => 'string',
-        'link' => 'string',
-        'city' => 'string',
-        'comment' => 'string',
-        'copied' => 'string',
-        'text' => 'string',
-        'rating' => 'float',
-        'status' => 'bool'
-    ])] public function definition(): array
+    public function definition(): array
     {
         return [
             'metatag_id' => Metatag::factory(),

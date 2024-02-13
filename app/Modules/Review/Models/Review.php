@@ -15,8 +15,8 @@ use App\Models\Delete;
 use App\Models\Validate;
 use App\Models\Sortable;
 use EloquentFilter\Filterable;
+use Illuminate\Database\Eloquent\Concerns\HasTimestamps;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use JetBrains\PhpStorm\ArrayShape;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -51,6 +51,7 @@ class Review extends Eloquent
     use SoftDeletes;
     use Validate;
     use Filterable;
+    use HasTimestamps;
 
     /**
      * Атрибуты, для которых разрешено массовое назначение.
@@ -78,19 +79,7 @@ class Review extends Eloquent
      *
      * @return array Вернет массив правил.
      */
-    #[ArrayShape([
-        'school_id' => 'string',
-        'course_id' => 'string',
-        'source' => 'string',
-        'uuid' => 'string',
-        'name' => 'string',
-        'title' => 'string',
-        'review' => 'string',
-        'advantages' => 'string',
-        'disadvantages' => 'string',
-        'rating' => 'string',
-        'status' => 'string',
-    ])] protected function getRules(): array
+    protected function getRules(): array
     {
         return [
             'school_id' => 'required|digits_between:0,20|exists_soft:schools,id',

@@ -22,7 +22,7 @@ class SchoolFilter extends ModelFilter
      *
      * @return SchoolFilter Правила поиска.
      */
-    public function id(int|string $id): SchoolFilter
+    public function id(int|string $id): self
     {
         return $this->where('schools.id', $id);
     }
@@ -34,7 +34,7 @@ class SchoolFilter extends ModelFilter
      *
      * @return SchoolFilter Правила поиска.
      */
-    public function name(string $query): SchoolFilter
+    public function name(string $query): self
     {
         return $this->whereLike('schools.name', $query);
     }
@@ -46,7 +46,7 @@ class SchoolFilter extends ModelFilter
      *
      * @return SchoolFilter Правила поиска.
      */
-    public function status(bool $status): SchoolFilter
+    public function status(bool $status): self
     {
         return $this->where('schools.status', $status);
     }

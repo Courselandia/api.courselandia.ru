@@ -25,8 +25,7 @@ class CoreController extends Controller
      */
     public function mail(CoreMailRequest $request): Response
     {
-        $action = app(TestMailSendAction::class);
-        $action->email = $request->get('email');
+        $action = new TestMailSendAction($request->get('email'));
 
         $action->run();
 

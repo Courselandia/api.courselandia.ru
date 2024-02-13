@@ -22,7 +22,7 @@ class TeacherExperienceFilter extends ModelFilter
      *
      * @return TeacherExperienceFilter Правила поиска.
      */
-    public function id(int|string $id): TeacherExperienceFilter
+    public function id(int|string $id): self
     {
         return $this->where('teacher_experiences.id', $id);
     }
@@ -34,7 +34,7 @@ class TeacherExperienceFilter extends ModelFilter
      *
      * @return TeacherExperienceFilter Правила поиска.
      */
-    public function place(string $query): TeacherExperienceFilter
+    public function place(string $query): self
     {
         return $this->whereLike('teacher_experiences.place', $query);
     }
@@ -46,7 +46,7 @@ class TeacherExperienceFilter extends ModelFilter
      *
      * @return TeacherExperienceFilter Правила поиска.
      */
-    public function position(string $query): TeacherExperienceFilter
+    public function position(string $query): self
     {
         return $this->whereLike('teacher_experiences.position', $query);
     }

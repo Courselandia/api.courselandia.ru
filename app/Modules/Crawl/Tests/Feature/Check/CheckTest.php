@@ -8,7 +8,6 @@
 
 namespace App\Modules\Crawl\Tests\Feature\Check;
 
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Crawl\Check\Check;
 use App\Modules\Crawl\Models\Crawl;
 use App\Modules\Crawl\Check\Checkers\FakeChecker;
@@ -25,7 +24,6 @@ class CheckTest extends TestCase
      * Тестирование запуска.
      *
      * @return void
-     * @throws ParameterInvalidException
      */
     public function testRun(): void
     {

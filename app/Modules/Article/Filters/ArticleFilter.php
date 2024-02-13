@@ -21,9 +21,9 @@ class ArticleFilter extends ModelFilter
      *
      * @param int|string $id ID.
      *
-     * @return ArticleFilter Правила поиска.
+     * @return self Правила поиска.
      */
-    public function id(int|string $id): ArticleFilter
+    public function id(int|string $id): self
     {
         return $this->where('articles.id', $id);
     }
@@ -33,9 +33,9 @@ class ArticleFilter extends ModelFilter
      *
      * @param string|array $category Категории.
      *
-     * @return ArticleFilter Правила поиска.
+     * @return self Правила поиска.
      */
-    public function category(string|array $category): ArticleFilter
+    public function category(string|array $category): self
     {
         return $this->whereIn('articles.category', is_array($category) ? $category : [$category]);
     }
@@ -45,9 +45,9 @@ class ArticleFilter extends ModelFilter
      *
      * @param string $query Строка поиска.
      *
-     * @return ArticleFilter Правила поиска.
+     * @return self Правила поиска.
      */
-    public function text(string $query): ArticleFilter
+    public function text(string $query): self
     {
         return $this->whereLike('articles.text', $query);
     }
@@ -57,9 +57,9 @@ class ArticleFilter extends ModelFilter
      *
      * @param int|string $articleableId ID сущности.
      *
-     * @return ArticleFilter Правила поиска.
+     * @return self Правила поиска.
      */
-    public function articleable(int|string $articleableId): ArticleFilter
+    public function articleable(int|string $articleableId): self
     {
         return $this->where('articles.articleable_id', $articleableId);
     }
@@ -69,9 +69,9 @@ class ArticleFilter extends ModelFilter
      *
      * @param string $articleableType Название сущности.
      *
-     * @return ArticleFilter Правила поиска.
+     * @return self Правила поиска.
      */
-    public function articleableType(string $articleableType): ArticleFilter
+    public function articleableType(string $articleableType): self
     {
         return $this->where('articles.articleable_type', $articleableType);
     }
@@ -81,9 +81,9 @@ class ArticleFilter extends ModelFilter
      *
      * @param array|Status|string $statuses Статусы.
      *
-     * @return ArticleFilter Правила поиска.
+     * @return self Правила поиска.
      */
-    public function status(array|Status|string $statuses): ArticleFilter
+    public function status(array|Status|string $statuses): self
     {
         return $this->whereIn('articles.status', is_array($statuses) ? $statuses : [$statuses]);
     }

@@ -10,15 +10,17 @@ namespace App\Modules\Access\Actions\Site;
 
 use App\Models\Action;
 use App\Modules\Access\Decorators\Site\AccessSocialDecorator;
+use App\Modules\Access\Data\Actions\AccessSocial as AccessSocialData;
+use App\Modules\Access\Data\Decorators\AccessSocial as AccessSocialDataDecorator;
+use App\Modules\Access\Entities\AccessSocial as AccessSocialEntity;
 use App\Modules\Access\Pipes\Gate\GetPipe;
 use App\Modules\Access\Pipes\Site\SignIn\AuthPipe;
+use App\Modules\Access\Pipes\Site\SignUp\CreatePipe;
 use App\Modules\Access\Pipes\Site\SignUp\RolePipe;
 use App\Modules\Access\Pipes\Site\SignUp\VerificationPipe;
 use App\Modules\Access\Pipes\Site\Social\CheckPipe;
-use App\Modules\Access\Pipes\Site\Social\TokenPipe;
 use App\Modules\Access\Pipes\Site\Social\DataPipe;
-use App\Modules\Access\Pipes\Site\SignUp\DataPipe as DataPipeSignUp;
-use App\Modules\Access\Pipes\Site\SignUp\CreatePipe;
+use App\Modules\Access\Pipes\Site\Social\TokenPipe;
 
 /**
  * Регистрация нового пользователя через социальные сети.
@@ -26,68 +28,25 @@ use App\Modules\Access\Pipes\Site\SignUp\CreatePipe;
 class AccessSocialAction extends Action
 {
     /**
-     * Логин.
+     * Данные для действия регистрации или входа через социальную сеть.
      *
-     * @var string|null
+     * @var AccessSocialData
      */
-    public ?string $login = null;
+    private AccessSocialData $data;
 
-    /**
-     * Имя.
-     *
-     * @var string|null
-     */
-    public ?string $first_name = null;
-
-    /**
-     * Фамилия.
-     *
-     * @var string|null
-     */
-    public ?string $second_name = null;
-
-    /**
-     * Статус верификации.
-     *
-     * @var bool
-     */
-    public bool $verified = false;
-
-    /**
-     * Уникальный индикационный номер для авторизации через соц сети.
-     *
-     * @var string|null
-     */
-    public ?string $uid = null;
-
-    /**
-     * ID пользователя.
-     *
-     * @var string|int|null
-     */
-    public string|int|null $id = null;
-
-    /**
-     * Название социальной сети.
-     *
-     * @var string|null
-     */
-    public ?string $social = null;
+    public function __construct(AccessSocialData $data)
+    {
+        $this->data = $data;
+    }
 
     /**
      * Метод запуска логики.
      *
-     * @return mixed Вернет результаты исполнения.
+     * @return AccessSocialEntity Сущность для зарегистрированного пользователя.
      */
-    public function run(): mixed
+    public function run(): AccessSocialEntity
     {
-        $decorator = app(AccessSocialDecorator::class);
-        $decorator->login = $this->login;
-        $decorator->first_name = $this->first_name;
-        $decorator->second_name = $this->second_name;
-        $decorator->verified = $this->verified;
-        $decorator->social = $this->social;
-        $decorator->uid = $this->uid;
+        $decorator = new AccessSocialDecorator(AccessSocialDataDecorator::from($this->data->toArray()));
 
         return $decorator->setActions([
             CheckPipe::class,
@@ -98,7 +57,6 @@ class AccessSocialAction extends Action
             VerificationPipe::class,
             GetPipe::class,
             AuthPipe::class,
-            DataPipeSignUp::class,
         ])->run();
     }
 }

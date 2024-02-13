@@ -8,8 +8,8 @@
 
 namespace App\Modules\Alert\Models;
 
-use App\Models\Entity;
 use Cache;
+use Spatie\LaravelData\DataCollection;
 use Util;
 use App\Models\Enums\CacheTime;
 use App\Models\Exceptions\ParameterInvalidException;
@@ -32,16 +32,16 @@ class AlertImplement
      * @param string|null $color Цвет тэга.
      *
      * @return int Вернет ID последней вставленной строки.
-     * @throws ParameterInvalidException
      */
     public function add(
         string $title,
-        bool $status = true,
+        bool   $status = true,
         string $description = null,
         string $url = null,
         string $tag = null,
         string $color = null
-    ): int {
+    ): int
+    {
         $alertEntity = new AlertEntity();
         $alertEntity->title = $title;
         $alertEntity->status = $status;
@@ -79,7 +79,6 @@ class AlertImplement
      *
      * @return bool Вернет успешность установки статуса.
      * @throws RecordNotExistException
-     * @throws ParameterInvalidException
      */
     public function setStatus(int|string $id, bool $status = true): bool
     {
@@ -103,7 +102,6 @@ class AlertImplement
      * @param int|string $id ID предупреждения.
      *
      * @return AlertEntity|null Вернет сущность предупреждения.
-     * @throws ParameterInvalidException
      */
     public function get(int|string $id): ?AlertEntity
     {
@@ -115,7 +113,7 @@ class AlertImplement
             function () use ($id) {
                 $item = Alert::find($id);
 
-                return $item ? new AlertEntity($item->toArray()) : null;
+                return $item ? AlertEntity::from($item->toArray()) : null;
             }
         );
     }
@@ -127,10 +125,10 @@ class AlertImplement
      * @param int|null $limit Лимит вывода.
      * @param bool $status Если установить true, то получит только прочитанные.
      *
-     * @return AlertEntity[] Вернет массив данных предупреждений.
+     * @return DataCollection Вернет коллекцию данных предупреждений.
      * @throws ParameterInvalidException
      */
-    public function list(int $offset = null, int $limit = null, bool $status = null): array
+    public function list(int $offset = null, int $limit = null, bool $status = null): DataCollection
     {
         $cacheKey = Util::getKey('alert', 'list', $offset, $limit, $status);
 
@@ -152,7 +150,7 @@ class AlertImplement
                     $query->active();
                 }
 
-                return Entity::toEntities($query->get()->toArray(), new AlertEntity());
+                return AlertEntity::collection($query->get()->toArray());
             }
         );
     }

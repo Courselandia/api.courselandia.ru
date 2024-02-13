@@ -18,11 +18,19 @@ use Cache;
 class FaqDestroyAction extends Action
 {
     /**
-     * Массив ID пользователей.
+     * Массив ID вопрос-ответов.
      *
      * @var int[]|string[]
      */
-    public ?array $ids = null;
+    private array $ids;
+
+    /**
+     * @param int[]|string[] $ids Массив ID вопрос-ответов.
+     */
+    public function __construct(array $ids)
+    {
+        $this->ids = $ids;
+    }
 
     /**
      * Метод запуска логики.

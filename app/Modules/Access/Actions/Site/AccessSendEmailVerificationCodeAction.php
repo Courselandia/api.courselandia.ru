@@ -30,9 +30,14 @@ class AccessSendEmailVerificationCodeAction extends Action
     /**
      * ID пользователя.
      *
-     * @var int|string|null
+     * @var int|string
      */
-    public int|string|null $id = null;
+    private int|string $id;
+
+    public function __construct(int|string $id)
+    {
+        $this->id = $id;
+    }
 
     /**
      * Метод запуска логики.
@@ -55,7 +60,7 @@ class AccessSendEmailVerificationCodeAction extends Action
                     ->with('verification')
                     ->first();
 
-                return $user ? new UserEntity($user->toArray()) : null;
+                return $user ? UserEntity::from($user->toArray()) : null;
             }
         );
 

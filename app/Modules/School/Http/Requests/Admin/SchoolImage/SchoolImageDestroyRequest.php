@@ -9,7 +9,6 @@
 namespace App\Modules\School\Http\Requests\Admin\SchoolImage;
 
 use App\Models\FormRequest;
-use JetBrains\PhpStorm\ArrayShape;
 
 /**
  * Класс запрос для удаления изображения.
@@ -21,7 +20,7 @@ class SchoolImageDestroyRequest extends FormRequest
      *
      * @return array Массив правил проверки.
      */
-    #[ArrayShape(['type' => 'string'])] public function rules(): array
+    public function rules(): array
     {
         return [
             'type' => 'required|in:site,logo'
@@ -33,7 +32,7 @@ class SchoolImageDestroyRequest extends FormRequest
      *
      * @return array Массив атрибутов.
      */
-    #[ArrayShape(['image' => 'string', 'type' => 'string'])] public function attributes(): array
+    public function attributes(): array
     {
         return [
             'type' => trans('user::http.requests.admin.schoolImageUpdateRequest.type')

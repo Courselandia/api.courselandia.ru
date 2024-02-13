@@ -14,7 +14,6 @@ use App\Models\Test\TokenTest;
 use App\Modules\Publication\Models\Publication;
 use Faker\Factory as Faker;
 use Illuminate\Http\UploadedFile;
-use JetBrains\PhpStorm\Pure;
 use Tests\TestCase;
 
 /**
@@ -354,7 +353,7 @@ class PublicationControllerTest extends TestCase
      *
      * @return array Массив структуры данных публикации.
      */
-    #[Pure] private function getPublicationStructure(bool $image = false): array
+    private function getPublicationStructure(bool $image = false): array
     {
         $structure = [
             'id',

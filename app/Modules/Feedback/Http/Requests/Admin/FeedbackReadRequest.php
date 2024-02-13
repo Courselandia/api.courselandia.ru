@@ -10,7 +10,6 @@ namespace App\Modules\Feedback\Http\Requests\Admin;
 
 use Schema;
 use App\Models\FormRequest;
-use JetBrains\PhpStorm\ArrayShape;
 
 /**
  * Класс запрос для чтения записи обратной связи.
@@ -22,12 +21,7 @@ class FeedbackReadRequest extends FormRequest
      *
      * @return array Массив правил проверки.
      */
-    #[ArrayShape([
-        'sorts' => 'string',
-        'offset' => 'string',
-        'limit' => 'string',
-        'filters' => 'string'
-    ])] public function rules(): array
+    public function rules(): array
     {
         $columnsSorts = Schema::getColumnListing('feedbacks');
         $columnsSorts = implode(',', $columnsSorts);
@@ -55,12 +49,7 @@ class FeedbackReadRequest extends FormRequest
      *
      * @return array Массив атрибутов.
      */
-    #[ArrayShape([
-        'sorts' => 'string',
-        'offset' => 'string',
-        'limit' => 'string',
-        'filters' => 'string'
-    ])] public function attributes(): array
+    public function attributes(): array
     {
         return [
             'sorts' => trans('feedback::http.requests.admin.feedbackReadRequest.sorts'),

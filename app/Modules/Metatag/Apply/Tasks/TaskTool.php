@@ -8,6 +8,7 @@
 
 namespace App\Modules\Metatag\Apply\Tasks;
 
+use App\Modules\Metatag\Data\MetatagSet;
 use Throwable;
 use App\Modules\Tool\Models\Tool;
 use App\Modules\Metatag\Apply\Apply;
@@ -58,8 +59,8 @@ class TaskTool extends Task
                     $query->where('status', true);
                 });
         })
-        ->where('status', true)
-        ->count();
+            ->where('status', true)
+            ->count();
     }
 
     /**
@@ -77,13 +78,13 @@ class TaskTool extends Task
         $query = Tool::with([
             'metatag',
         ])
-        ->whereHas('courses', function ($query) {
-            $query->where('status', Status::ACTIVE->value)
-                ->whereHas('school', function ($query) {
-                    $query->where('status', true);
-                });
-        })
-        ->where('status', true);
+            ->whereHas('courses', function ($query) {
+                $query->where('status', Status::ACTIVE->value)
+                    ->whereHas('school', function ($query) {
+                        $query->where('status', true);
+                    });
+            })
+            ->where('status', true);
 
         for ($i = 0; $i < $count; $i++) {
             $tool = $query->clone()
@@ -111,14 +112,14 @@ class TaskTool extends Task
                     'countToolCourses' => $countToolCourses,
                 ];
 
-                $action = app(MetatagSetAction::class);
+                $dataMetatagSet = new MetatagSet();
 
                 if ($this->onlyUpdate()) {
-                    $action->description = $tool->metatag?->description_template
+                    $dataMetatagSet->description = $tool->metatag?->description_template
                         ? $template->convert($tool->metatag?->description_template, $templateValues)
                         : null;
 
-                    $action->title = $tool->metatag?->title_template
+                    $dataMetatagSet->title = $tool->metatag?->title_template
                         ? $template->convert($tool->metatag?->title_template, $templateValues)
                         : null;
 
@@ -126,19 +127,22 @@ class TaskTool extends Task
                         ? $template->convert($tool->header_template, $templateValues)
                         : null;
 
-                    $action->description_template = $tool->metatag?->description_template;
-                    $action->title_template = $tool->metatag?->title_template;
+                    $dataMetatagSet->description_template = $tool->metatag?->description_template;
+                    $dataMetatagSet->title_template = $tool->metatag?->title_template;
                 } else {
-                    $action->description = $template->convert($this->description_template, $templateValues);
-                    $action->title = $template->convert($this->title_template, $templateValues);
+                    $dataMetatagSet->description = $template->convert($this->description_template, $templateValues);
+                    $dataMetatagSet->title = $template->convert($this->title_template, $templateValues);
                     $tool->header = $template->convert($this->header_template, $templateValues);
-                    $action->description_template = $this->description_template;
-                    $action->title_template = $this->title_template;
+                    $dataMetatagSet->description_template = $this->description_template;
+                    $dataMetatagSet->title_template = $this->title_template;
                     $tool->header_template = $this->header_template;
                 }
 
-                $action->keywords = $tool->metatag?->keywords;
-                $action->id = $tool->metatag_id ?: null;
+                $dataMetatagSet->keywords = $tool->metatag?->keywords;
+                $dataMetatagSet->id = $tool->metatag_id ?: null;
+
+                $action = new MetatagSetAction($dataMetatagSet);
+
                 $metatagId = $action->run()->id;
                 $tool->metatag_id = $metatagId;
 

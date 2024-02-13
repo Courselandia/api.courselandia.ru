@@ -15,8 +15,8 @@ use App\Models\Delete;
 use App\Models\Validate;
 use App\Models\Sortable;
 use EloquentFilter\Filterable;
+use Illuminate\Database\Eloquent\Concerns\HasTimestamps;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use JetBrains\PhpStorm\ArrayShape;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -38,6 +38,7 @@ class CourseLearn extends Eloquent
     use SoftDeletes;
     use Validate;
     use Filterable;
+    use HasTimestamps;
 
     /**
      * Атрибуты, для которых разрешено массовое назначение.
@@ -55,10 +56,7 @@ class CourseLearn extends Eloquent
      *
      * @return array Вернет массив правил.
      */
-    #[ArrayShape([
-        'course_id' => 'string',
-        'text' => 'string',
-    ])] protected function getRules(): array
+    protected function getRules(): array
     {
         return [
             'course_id' => 'required|digits_between:0,20|exists_soft:courses,id',

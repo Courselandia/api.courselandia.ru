@@ -12,12 +12,10 @@ use Cache;
 use Util;
 use AnalyzerCategory;
 use App\Models\Action;
-use App\Models\Entity;
 use ReflectionException;
 use App\Models\Enums\CacheTime;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Analyzer\Models\Analyzer;
-use JetBrains\PhpStorm\ArrayShape;
 use App\Modules\Analyzer\Entities\Analyzer as AnalyzerEntity;
 
 /**
@@ -30,28 +28,47 @@ class AnalyzerReadAction extends Action
      *
      * @var array|null
      */
-    public ?array $sorts = null;
+    private ?array $sorts;
 
     /**
      * Фильтрация данных.
      *
      * @var array|null
      */
-    public ?array $filters = null;
+    private ?array $filters;
 
     /**
      * Начать выборку.
      *
      * @var int|null
      */
-    public ?int $offset = null;
+    private ?int $offset;
 
     /**
      * Лимит выборки выборку.
      *
      * @var int|null
      */
-    public ?int $limit = null;
+    private ?int $limit;
+
+    /**
+     * @param array|null $sorts Сортировка данных.
+     * @param array|null $filters Фильтрация данных.
+     * @param int|null $offset Начать выборку.
+     * @param int|null $limit Лимит выборки выборку.
+     */
+    public function __construct(
+        array  $sorts = null,
+        ?array $filters = null,
+        ?int   $offset = null,
+        ?int   $limit = null
+    )
+    {
+        $this->sorts = $sorts;
+        $this->filters = $filters;
+        $this->offset = $offset;
+        $this->limit = $limit;
+    }
 
     /**
      * Метод запуска логики.
@@ -59,7 +76,7 @@ class AnalyzerReadAction extends Action
      * @return mixed Вернет результаты исполнения.
      * @throws ParameterInvalidException|ReflectionException
      */
-    #[ArrayShape(['data' => 'array', 'total' => 'int'])] public function run(): array
+    public function run(): array
     {
         $cacheKey = Util::getKey(
             'analyzer',
@@ -105,7 +122,7 @@ class AnalyzerReadAction extends Action
                 }
 
                 return [
-                    'data' => Entity::toEntities($items, new AnalyzerEntity()),
+                    'data' => AnalyzerEntity::collection($items),
                     'total' => $queryCount->count(),
                 ];
             }

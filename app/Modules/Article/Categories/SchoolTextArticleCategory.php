@@ -49,12 +49,11 @@ class SchoolTextArticleCategory extends ArticleCategory
      * @param int $id ID сущности для которой пишется статья.
      *
      * @return string Метка.
-     * @throws RecordNotExistException|ParameterInvalidException
+     * @throws RecordNotExistException
      */
     public function label(int $id): string
     {
-        $action = app(SchoolGetAction::class);
-        $action->id = $id;
+        $action = new SchoolGetAction($id);
         $schoolEntity = $action->run();
 
         if ($schoolEntity) {
@@ -77,18 +76,17 @@ class SchoolTextArticleCategory extends ArticleCategory
      */
     public function apply(int $id): void
     {
-        $action = app(ArticleGetAction::class);
-        $action->id = $id;
+        $action = new ArticleGetAction($id);
         $articleEntity = $action->run();
 
         if ($articleEntity) {
             $school = $articleEntity->articleable;
-            $school->text = Typography::process($articleEntity->text);
+            $school['text'] = Typography::process($articleEntity->text);
 
-            School::find($articleEntity->articleable->id)->update($school->toArray());
+            School::find($articleEntity->articleable['id'])->update($school);
 
             if ($articleEntity->analyzers) {
-                $action = new ArticleMoveAnalyzer($school->id, $articleEntity->analyzers, 'school.text', School::class);
+                $action = new ArticleMoveAnalyzer($school['id'], $articleEntity->analyzers, 'school.text', School::class);
                 $action->run();
             }
 
@@ -106,12 +104,11 @@ class SchoolTextArticleCategory extends ArticleCategory
      * @param int $id ID сущности для которой пишется статья.
      *
      * @return string Запрос.
-     * @throws RecordNotExistException|ParameterInvalidException
+     * @throws RecordNotExistException
      */
     public function requestTemplate(int $id): string
     {
-        $action = app(SchoolGetAction::class);
-        $action->id = $id;
+        $action = new SchoolGetAction($id);
         $schoolEntity = $action->run();
 
         if ($schoolEntity) {

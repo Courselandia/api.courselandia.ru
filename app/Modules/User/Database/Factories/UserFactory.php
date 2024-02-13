@@ -10,7 +10,6 @@ namespace App\Modules\User\Database\Factories;
 
 use App\Modules\User\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use JetBrains\PhpStorm\ArrayShape;
 
 /**
  * Фабрика модели пользователя.
@@ -29,14 +28,7 @@ class UserFactory extends Factory
      *
      * @return array
      */
-    #[ArrayShape([
-        'login' => 'string',
-        'password' => 'string',
-        'first_name' => 'string',
-        'second_name' => 'string',
-        'two_factor' => 'false',
-        'status' => 'bool'
-    ])] public function definition(): array
+    public function definition(): array
     {
         return [
             'login' => $this->faker->email,

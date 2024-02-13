@@ -24,9 +24,7 @@ class ProfessionItemJob extends JsonItemJob
      */
     public function handle(): void
     {
-        $action = app(ProfessionLinkAction::class);
-        $action->link = $this->link;
-
+        $action = new ProfessionLinkAction($this->link);
         $data = $action->run();
 
         if ($data) {

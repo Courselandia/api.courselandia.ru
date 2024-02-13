@@ -9,7 +9,6 @@
 namespace App\Modules\Skill\Actions\Admin;
 
 use App\Models\Action;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Modules\Skill\Entities\Skill as SkillEntity;
 use App\Modules\Skill\Models\Skill;
@@ -23,27 +22,36 @@ class SkillUpdateStatusAction extends Action
     /**
      * ID навыка.
      *
-     * @var int|string|null
+     * @var int|string
      */
-    public int|string|null $id = null;
+    private int|string $id;
 
     /**
      * Статус.
      *
-     * @var bool|null
+     * @var bool
      */
-    public ?bool $status = null;
+    private bool $status;
+
+    /**
+     * @param int|string $id ID навыка.
+     * @param bool $status Статус.
+     */
+    public function __construct(int|string $id, bool $status)
+    {
+        $this->id = $id;
+        $this->status = $status;
+    }
 
     /**
      * Метод запуска логики.
      *
      * @return SkillEntity Вернет результаты исполнения.
-     * @throws RecordNotExistException|ParameterInvalidException
+     * @throws RecordNotExistException
      */
     public function run(): SkillEntity
     {
-        $action = app(SkillGetAction::class);
-        $action->id = $this->id;
+        $action = new SkillGetAction($this->id);
         $skillEntity = $action->run();
 
         if ($skillEntity) {

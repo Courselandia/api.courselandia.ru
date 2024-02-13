@@ -10,10 +10,7 @@ namespace App\Modules\Log\Actions\Admin;
 
 use App\Models\Action;
 use App\Models\Exceptions\ParameterInvalidException;
-use App\Models\Rep\RepositoryFilter;
-use App\Models\Rep\RepositoryQueryBuilder;
 use App\Modules\Log\Repositories\Log;
-use JetBrains\PhpStorm\ArrayShape;
 
 /**
  * Класс действия для чтения логов.
@@ -32,37 +29,51 @@ class LogReadAction extends Action
      *
      * @var array|null
      */
-    public ?array $sorts = null;
+    private ?array $sorts;
 
     /**
      * Фильтрация данных.
      *
      * @var array|null
      */
-    public ?array $filters = null;
+    private ?array $filters;
 
     /**
      * Начать выборку.
      *
      * @var int|null
      */
-    public ?int $offset = null;
+    private ?int $offset;
 
     /**
      * Лимит выборки выборку.
      *
      * @var int|null
      */
-    public ?int $limit = null;
+    private ?int $limit;
 
     /**
      * Конструктор.
      *
-     * @param  Log  $log  Репозиторий обратной связи.
+     * @param Log $log Репозиторий обратной связи.
+     * @param array|null $sorts Сортировка данных.
+     * @param array|null $filters Фильтрация данных.
+     * @param int|null $offset Начать выборку.
+     * @param int|null $limit Лимит выборки выборку.
      */
-    public function __construct(Log $log)
+    public function __construct(
+        Log    $log,
+        array  $sorts = null,
+        ?array $filters = null,
+        ?int   $offset = null,
+        ?int   $limit = null
+    )
     {
         $this->log = $log;
+        $this->sorts = $sorts;
+        $this->filters = $filters;
+        $this->offset = $offset;
+        $this->limit = $limit;
     }
 
     /**
@@ -71,17 +82,11 @@ class LogReadAction extends Action
      * @return array Вернет результаты исполнения.
      * @throws ParameterInvalidException
      */
-    #[ArrayShape(['data' => 'array', 'total' => 'int'])] public function run(): array
+    public function run(): array
     {
-        $query = new RepositoryQueryBuilder();
-        $query->setFilters(RepositoryFilter::getFilters($this->filters))
-            ->setSorts($this->sorts)
-            ->setOffset($this->offset)
-            ->setLimit($this->limit);
-
         return [
-            'data' => $this->log->read($query),
-            'total' => $this->log->count($query),
+            'data' => $this->log->read($this->filters, $this->sorts, $this->offset, $this->limit),
+            'total' => $this->log->count($this->filters),
         ];
     }
 }

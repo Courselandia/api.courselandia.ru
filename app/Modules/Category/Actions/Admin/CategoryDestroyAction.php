@@ -18,11 +18,19 @@ use Cache;
 class CategoryDestroyAction extends Action
 {
     /**
-     * Массив ID пользователей.
+     * Массив ID категорий.
      *
      * @var int[]|string[]
      */
-    public ?array $ids = null;
+    private array $ids;
+
+    /**
+     * @param array $ids Массив ID категорий.
+     */
+    public function __construct(array $ids)
+    {
+        $this->ids = $ids;
+    }
 
     /**
      * Метод запуска логики.

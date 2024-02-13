@@ -15,7 +15,6 @@ use App\Modules\Course\Enums\Duration;
 use App\Modules\Course\Enums\Language;
 use App\Modules\Course\Enums\Status;
 use App\Modules\Salary\Enums\Level;
-use JetBrains\PhpStorm\ArrayShape;
 
 /**
  * Класс запрос для создания категории.
@@ -27,45 +26,7 @@ class CourseCreateRequest extends FormRequest
      *
      * @return array Массив правил проверки.
      */
-    #[ArrayShape([
-        'image' => 'string',
-        'school_id' => 'string',
-        'directions' => 'string',
-        'directions.*' => 'string',
-        'professions' => 'string',
-        'professions.*' => 'string',
-        'categories' => 'string',
-        'categories.*' => 'string',
-        'skills' => 'string',
-        'skills.*' => 'string',
-        'teachers' => 'string',
-        'teachers.*' => 'string',
-        'tools' => 'string',
-        'tools.*' => 'string',
-        'processes' => 'string',
-        'processes.*' => 'string',
-        'levels' => 'string',
-        'levels.*' => 'string',
-        'learns' => 'string',
-        'employments' => 'string',
-        'employments.*' => 'string',
-        'features' => 'string',
-        'features.*' => 'string',
-        'language' => 'string',
-        'rating' => 'string',
-        'price' => 'string',
-        'price_old' => 'string',
-        'price_recurrent' => 'string',
-        'currency' => 'string',
-        'online' => 'string',
-        'employment' => 'string',
-        'duration' => 'string',
-        'duration_unit' => 'duration_unit',
-        'lessons_amount' => 'string',
-        'modules_amount' => 'string',
-        'program' => 'string',
-        'status' => 'string',
-    ])] public function rules(): array
+    public function rules(): array
     {
         return [
             'image' => 'nullable|media:jpg,png,gif,webp,svg',
@@ -113,45 +74,7 @@ class CourseCreateRequest extends FormRequest
      *
      * @return array Массив атрибутов.
      */
-    #[ArrayShape([
-        'image' => 'string',
-        'school_id' => 'string',
-        'directions' => 'string',
-        'directions.*' => 'string',
-        'professions' => 'string',
-        'professions.*' => 'string',
-        'categories' => 'string',
-        'categories.*' => 'string',
-        'skills' => 'string',
-        'skills.*' => 'string',
-        'teachers' => 'string',
-        'teachers.*' => 'string',
-        'tools' => 'string',
-        'tools.*' => 'string',
-        'processes' => 'string',
-        'processes.*' => 'string',
-        'levels' => 'string',
-        'levels.*' => 'string',
-        'learns' => 'string',
-        'employments' => 'string',
-        'employments.*' => 'string',
-        'features' => 'string',
-        'features.*' => 'string',
-        'language' => 'string',
-        'rating' => 'string',
-        'price' => 'string',
-        'price_old' => 'string',
-        'price_recurrent' => 'string',
-        'currency' => 'string',
-        'online' => 'string',
-        'employment' => 'string',
-        'duration' => 'string',
-        'duration_unit' => 'string',
-        'lessons_amount' => 'string',
-        'modules_amount' => 'string',
-        'program' => 'string',
-        'status' => 'string',
-    ])] public function attributes(): array
+    public function attributes(): array
     {
         return [
             'image' => trans('course::http.requests.admin.courseCreateRequest.image'),

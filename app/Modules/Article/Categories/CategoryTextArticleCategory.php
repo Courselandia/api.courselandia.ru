@@ -49,12 +49,11 @@ class CategoryTextArticleCategory extends ArticleCategory
      * @param int $id ID сущности для которой пишется статья.
      *
      * @return string Метка.
-     * @throws RecordNotExistException|ParameterInvalidException
+     * @throws RecordNotExistException
      */
     public function label(int $id): string
     {
-        $action = app(CategoryGetAction::class);
-        $action->id = $id;
+        $action = new CategoryGetAction($id);
         $categoryEntity = $action->run();
 
         if ($categoryEntity) {
@@ -77,18 +76,17 @@ class CategoryTextArticleCategory extends ArticleCategory
      */
     public function apply(int $id): void
     {
-        $action = app(ArticleGetAction::class);
-        $action->id = $id;
+        $action = new ArticleGetAction($id);
         $articleEntity = $action->run();
 
         if ($articleEntity) {
             $category = $articleEntity->articleable;
-            $category->text = Typography::process($articleEntity->text);
+            $category['text'] = Typography::process($articleEntity->text);
 
-            Category::find($articleEntity->articleable->id)->update($category->toArray());
+            Category::find($articleEntity->articleable['id'])->update($category);
 
             if ($articleEntity->analyzers) {
-                $action = new ArticleMoveAnalyzer($category->id, $articleEntity->analyzers, 'category.text', Category::class);
+                $action = new ArticleMoveAnalyzer($category['id'], $articleEntity->analyzers, 'category.text', Category::class);
                 $action->run();
             }
 
@@ -106,12 +104,11 @@ class CategoryTextArticleCategory extends ArticleCategory
      * @param int $id ID сущности для которой пишется статья.
      *
      * @return string Запрос.
-     * @throws RecordNotExistException|ParameterInvalidException
+     * @throws RecordNotExistException
      */
     public function requestTemplate(int $id): string
     {
-        $action = app(CategoryGetAction::class);
-        $action->id = $id;
+        $action = new CategoryGetAction($id);
         $categoryEntity = $action->run();
 
         if ($categoryEntity) {

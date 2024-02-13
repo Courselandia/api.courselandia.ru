@@ -11,15 +11,16 @@ namespace App\Modules\Crawl\Push;
 use DB;
 use Carbon\Carbon;
 use App\Models\Event;
-use App\Models\Entity;
 use App\Modules\Crawl\Jobs\PushJob;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Crawl\Contracts\Pusher;
 use App\Modules\Crawl\Push\Pushers\GooglePusher;
 use App\Modules\Crawl\Push\Pushers\YandexPusher;
 use App\Modules\Page\Models\Page;
 use App\Modules\Page\Entities\Page as PageEntity;
 use Illuminate\Database\Eloquent\Builder;
+use Spatie\LaravelData\CursorPaginatedDataCollection;
+use Spatie\LaravelData\DataCollection;
+use Spatie\LaravelData\PaginatedDataCollection;
 
 /**
  * Отправка URL сайта на индексацию.
@@ -72,7 +73,6 @@ class Push
      * Запуск процесса отправки на индексацию.
      *
      * @return void
-     * @throws ParameterInvalidException
      */
     public function run(): void
     {
@@ -96,7 +96,6 @@ class Push
      * Запуск действия.
      *
      * @return void
-     * @throws ParameterInvalidException
      */
     private function start(): void
     {
@@ -135,24 +134,23 @@ class Push
      * Получение страниц сайта, которые нужно отправить на индексацию.
      *
      * @param Pusher $pusher Отправитель на индексацию.
-     * @return PageEntity[] Вернет массив сущностей страниц.
-     * @throws ParameterInvalidException
+     * @return DataCollection|CursorPaginatedDataCollection|PaginatedDataCollection Вернет коллекцию сущностей страниц.
      */
-    private function getPages(Pusher $pusher): array
+    private function getPages(Pusher $pusher): DataCollection|CursorPaginatedDataCollection|PaginatedDataCollection
     {
         $pages = $this->getQuery($pusher)->get();
 
-        return Entity::toEntities($pages->toArray(), new PageEntity());
+        return PageEntity::collection($pages->toArray());
     }
 
     /**
      * Отправка на индексацию страниц.
      *
      * @param Pusher $pusher Отправитель на индексацию.
-     * @param PageEntity[] $pages Массив сущностей страниц, которые должны быть отправлены на индексацию.
+     * @param DataCollection|CursorPaginatedDataCollection|PaginatedDataCollection $pages Коллекция сущностей страниц, которые должны быть отправлены на индексацию.
      * @return void
      */
-    private function push(Pusher $pusher, array $pages): void
+    private function push(Pusher $pusher, DataCollection|CursorPaginatedDataCollection|PaginatedDataCollection $pages): void
     {
         $delay = Carbon::now();
 

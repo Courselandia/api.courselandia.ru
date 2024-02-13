@@ -29,8 +29,7 @@ class DirectionController extends Controller
      */
     public function get(int|string $id): JsonResponse
     {
-        $action = app(DirectionGetAction::class);
-        $action->id = $id;
+        $action = new DirectionGetAction($id);
         $data = $action->run();
 
         if ($data) {
@@ -60,8 +59,7 @@ class DirectionController extends Controller
      */
     public function link(string $link): JsonResponse
     {
-        $action = app(DirectionLinkAction::class);
-        $action->link = $link;
+        $action = new DirectionLinkAction($link);
         $data = $action->run();
 
         if ($data) {

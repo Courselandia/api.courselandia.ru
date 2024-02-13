@@ -24,7 +24,7 @@ class PublicationFilter extends ModelFilter
      *
      * @return PublicationFilter Правила поиска.
      */
-    public function id(int|string $id): PublicationFilter
+    public function id(int|string $id): self
     {
         return $this->where('publications.id', $id);
     }
@@ -36,7 +36,7 @@ class PublicationFilter extends ModelFilter
      *
      * @return PublicationFilter Правила поиска.
      */
-    public function publishedAt(array $dates): PublicationFilter
+    public function publishedAt(array $dates): self
     {
         $dates = [
             Carbon::createFromFormat('Y-m-d O', $dates[0])->startOfDay()->setTimezone(Config::get('app.timezone')),
@@ -53,7 +53,7 @@ class PublicationFilter extends ModelFilter
      *
      * @return PublicationFilter Правила поиска.
      */
-    public function header(string $query): PublicationFilter
+    public function header(string $query): self
     {
         return $this->whereLike('publications.header', $query);
     }
@@ -65,7 +65,7 @@ class PublicationFilter extends ModelFilter
      *
      * @return PublicationFilter Правила поиска.
      */
-    public function link(string $query): PublicationFilter
+    public function link(string $query): self
     {
         return $this->whereLike('publications.link', $query);
     }
@@ -77,7 +77,7 @@ class PublicationFilter extends ModelFilter
      *
      * @return PublicationFilter Правила поиска.
      */
-    public function anons(string $query): PublicationFilter
+    public function anons(string $query): self
     {
         return $this->whereLike('publications.anons', $query);
     }
@@ -89,7 +89,7 @@ class PublicationFilter extends ModelFilter
      *
      * @return PublicationFilter Правила поиска.
      */
-    public function article(string $query): PublicationFilter
+    public function article(string $query): self
     {
         return $this->whereLike('publications.article', $query);
     }
@@ -101,7 +101,7 @@ class PublicationFilter extends ModelFilter
      *
      * @return PublicationFilter Правила поиска.
      */
-    public function status(bool $status): PublicationFilter
+    public function status(bool $status): self
     {
         return $this->where('publications.status', $status);
     }

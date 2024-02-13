@@ -71,4 +71,35 @@ class Feedback extends Entity
      * @var ?Carbon
      */
     public ?Carbon $deleted_at = null;
+
+    /**
+     * @param int|string|null $id ID записи.
+     * @param string|null $name Имя.
+     * @param string|null $email E-mail.
+     * @param string|null $phone Телефон.
+     * @param string|null $message Сообщение.
+     * @param Carbon|null $created_at Дата создания.
+     * @param Carbon|null $updated_at Дата обновления.
+     * @param Carbon|null $deleted_at Дата удаления.
+     */
+    public function __construct(
+        int|string|null $id = null,
+        ?string         $name = null,
+        ?string         $email = null,
+        ?string         $phone = null,
+        ?string         $message = null,
+        ?Carbon         $created_at = null,
+        ?Carbon         $updated_at = null,
+        ?Carbon         $deleted_at = null
+    )
+    {
+        $this->id = $id;
+        $this->name = $name;
+        $this->email = $email;
+        $this->phone = $phone;
+        $this->message = $message;
+        $this->created_at = $created_at;
+        $this->updated_at = $updated_at;
+        $this->deleted_at = $deleted_at;
+    }
 }

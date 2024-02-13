@@ -8,9 +8,9 @@
 
 namespace App\Modules\Employment\Actions\Admin;
 
+use App\Modules\Employment\Data\EmploymentCreate;
 use Typography;
 use App\Models\Action;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Employment\Entities\Employment as EmploymentEntity;
 use App\Modules\Employment\Models\Employment;
 use Cache;
@@ -21,44 +21,37 @@ use Cache;
 class EmploymentCreateAction extends Action
 {
     /**
-     * Название.
+     * Данные для создания трудоустройства.
      *
-     * @var string|null
+     * @var EmploymentCreate
      */
-    public ?string $name = null;
+    private EmploymentCreate $data;
 
     /**
-     * Статья.
-     *
-     * @var string|null
+     * @param EmploymentCreate $data Данные для создания трудоустройства.
      */
-    public ?string $text = null;
-
-    /**
-     * Статус.
-     *
-     * @var bool|null
-     */
-    public ?bool $status = null;
+    public function __construct(EmploymentCreate $data)
+    {
+        $this->data = $data;
+    }
 
     /**
      * Метод запуска логики.
      *
      * @return EmploymentEntity Вернет результаты исполнения.
-     * @throws ParameterInvalidException
      */
     public function run(): EmploymentEntity
     {
-        $employmentEntity = new EmploymentEntity();
-        $employmentEntity->name = Typography::process($this->name, true);
-        $employmentEntity->text = Typography::process($this->text);
-        $employmentEntity->status = $this->status;
+        $employmentEntity = EmploymentEntity::from([
+            ...$this->data->toArray(),
+            'name' => Typography::process($this->data->name, true),
+            'text' => Typography::process($this->data->text),
+        ]);
 
         $employment = Employment::create($employmentEntity->toArray());
         Cache::tags(['catalog', 'employment'])->flush();
 
-        $action = app(EmploymentGetAction::class);
-        $action->id = $employment->id;
+        $action = new EmploymentGetAction($employment->id);
 
         return $action->run();
     }

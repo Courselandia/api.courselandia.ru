@@ -12,7 +12,7 @@ use App\Models\Entity;
 use Carbon\Carbon;
 
 /**
- * Сущность для пользователя.
+ * Сущность для предупреждения.
  */
 class Alert extends Entity
 {
@@ -85,4 +85,41 @@ class Alert extends Entity
      * @var ?Carbon
      */
     public ?Carbon $deleted_at = null;
+
+    /**
+     * @param int|string|null $id ID записи.
+     * @param string|null $title Название.
+     * @param string|null $description Описание.
+     * @param string|null $url URL.
+     * @param string|null $tag Тэг.
+     * @param string|null $color Цвет.
+     * @param bool|null $status Статус.
+     * @param Carbon|null $created_at Дата создания.
+     * @param Carbon|null $updated_at Дата обновления.
+     * @param Carbon|null $deleted_at Дата удаления.
+     */
+    public function __construct(
+        int|string|null $id = null,
+        ?string         $title = null,
+        ?string         $description = null,
+        ?string         $url = null,
+        ?string         $tag = null,
+        ?string         $color = null,
+        ?bool           $status = null,
+        ?Carbon         $created_at = null,
+        ?Carbon         $updated_at = null,
+        ?Carbon         $deleted_at = null
+    )
+    {
+        $this->id = $id;
+        $this->title = $title;
+        $this->description = $description;
+        $this->url = $url;
+        $this->tag = $tag;
+        $this->color = $color;
+        $this->status = $status;
+        $this->created_at = $created_at;
+        $this->updated_at = $updated_at;
+        $this->deleted_at = $deleted_at;
+    }
 }

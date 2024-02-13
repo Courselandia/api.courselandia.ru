@@ -9,7 +9,6 @@
 namespace App\Modules\Profession\Http\Requests\Admin;
 
 use App\Models\FormRequest;
-use JetBrains\PhpStorm\ArrayShape;
 
 /**
  * Класс запрос для обновления статуса профессии.
@@ -21,7 +20,7 @@ class ProfessionUpdateStatusRequest extends FormRequest
      *
      * @return array Массив правил проверки.
      */
-    #[ArrayShape(['status' => 'string'])] public function rules(): array
+    public function rules(): array
     {
         return [
             'status' => 'required|boolean',
@@ -33,7 +32,7 @@ class ProfessionUpdateStatusRequest extends FormRequest
      *
      * @return array Массив атрибутов.
      */
-    #[ArrayShape(['status' => 'string'])] public function attributes(): array
+    public function attributes(): array
     {
         return [
             'status' => trans('profession::http.requests.admin.professionUpdateStatusRequest.status'),

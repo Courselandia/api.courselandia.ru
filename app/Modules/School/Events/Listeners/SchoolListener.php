@@ -19,7 +19,7 @@ class SchoolListener
     /**
      * Обработчик события при удалении записи.
      *
-     * @param  School  $school  Модель для таблицы школ.
+     * @param School $school Модель для таблицы школ.
      *
      * @return bool Вернет успешность выполнения операции.
      */

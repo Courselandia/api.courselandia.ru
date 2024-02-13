@@ -9,18 +9,8 @@
 namespace App\Modules\Analyzer\Entities;
 
 use Carbon\Carbon;
-use App\Models\Entities;
 use App\Models\Entity;
 use App\Modules\Analyzer\Enums\Status;
-use App\Modules\Course\Entities\Course;
-use App\Modules\Article\Entities\Article;
-use App\Modules\Skill\Entities\Skill;
-use App\Modules\Tool\Entities\Tool;
-use App\Modules\Direction\Entities\Direction;
-use App\Modules\Profession\Entities\Profession;
-use App\Modules\Category\Entities\Category;
-use App\Modules\School\Entities\School;
-use App\Modules\Teacher\Entities\Teacher;
 
 /**
  * Сущность хранения результатов анализа текста.
@@ -95,21 +85,21 @@ class Analyzer extends Entity
      *
      * @var array|null
      */
-    public array|null $params = null;
+    public ?array $params = null;
 
     /**
      * Количество попыток получить проверенный текст.
      *
      * @var int|null
      */
-    public int|null $tries = 0;
+    public ?int $tries = null;
 
     /**
      * Статус.
      *
      * @var Status|null
      */
-    public Status|null $status = null;
+    public ?Status $status = null;
 
     /**
      * ID сущности.
@@ -121,9 +111,9 @@ class Analyzer extends Entity
     /**
      * Название сущности для которой проверяется текст.
      *
-     * @var int|string|null
+     * @var string|null
      */
-    public string|null $analyzerable_type = null;
+    public ?string $analyzerable_type = null;
 
     /**
      * Статус сущности.
@@ -131,6 +121,11 @@ class Analyzer extends Entity
      * @var int|bool|string|null
      */
     public string|bool|null $analyzerable_status = null;
+
+    /**
+     * @var mixed|null Сущность, которая была проанализирована.
+     */
+    public mixed $analyzerable = null;
 
     /**
      * Дата создания.
@@ -154,20 +149,66 @@ class Analyzer extends Entity
     public ?Carbon $deleted_at = null;
 
     /**
-     * Сущность.
-     *
-     * @var Course|null
+     * @param int|string|null $id ID записи.
+     * @param int|string|null $task_id ID задачи на проверку текста.
+     * @param string|null $category Категория.
+     * @param string|null $category_name Название категории.
+     * @param string|null $category_label Метка сущности.
+     * @param float|null $unique Уникальность текста.
+     * @param int|null $water Процент воды.
+     * @param int|null $spam Процент спама.
+     * @param string|null $text Текущий текст сущности.
+     * @param array|null $params Параметры.
+     * @param int|null $tries Количество попыток получить проверенный текст.
+     * @param Status|null $status Статус.
+     * @param int|string|null $analyzerable_id ID сущности.
+     * @param string|null $analyzerable_type Название сущности для которой проверяется текст.
+     * @param string|bool|null $analyzerable_status Статус сущности.
+     * @param mixed $analyzerable Сущность, которая была проанализирована.
+     * @param Carbon|null $created_at Дата создания.
+     * @param Carbon|null $updated_at Дата обновления.
+     * @param Carbon|null $deleted_at Дата удаления.
      */
-    #[Entities([
-        'App\Modules\Course\Models\Course' => Course::class,
-        'App\Modules\Article\Models\Article' => Article::class,
-        'App\Modules\Skill\Models\Skill' => Skill::class,
-        'App\Modules\Tool\Models\Tool' => Tool::class,
-        'App\Modules\Direction\Models\Direction' => Direction::class,
-        'App\Modules\Profession\Models\Profession' => Profession::class,
-        'App\Modules\Category\Models\Category' => Category::class,
-        'App\Modules\School\Models\School' => School::class,
-        'App\Modules\Teacher\Models\Teacher' => Teacher::class,
-    ], 'analyzerable_type')]
-    public Course|Article|Skill|Tool|Direction|Profession|Category|School|Teacher|null $analyzerable = null;
+    public function __construct(
+        int|string|null  $id = null,
+        int|string|null  $task_id = null,
+        ?string          $category = null,
+        ?string          $category_name = null,
+        ?string          $category_label = null,
+        ?float           $unique = null,
+        ?int             $water = null,
+        ?int             $spam = null,
+        ?string          $text = null,
+        ?array           $params = null,
+        ?int             $tries = null,
+        Status|null      $status = null,
+        int|string|null  $analyzerable_id = null,
+        ?string          $analyzerable_type = null,
+        string|bool|null $analyzerable_status = null,
+        mixed            $analyzerable = null,
+        ?Carbon          $created_at = null,
+        ?Carbon          $updated_at = null,
+        ?Carbon          $deleted_at = null,
+    )
+    {
+        $this->id = $id;
+        $this->task_id = $task_id;
+        $this->category = $category;
+        $this->category_name = $category_name;
+        $this->category_label = $category_label;
+        $this->unique = $unique;
+        $this->water = $water;
+        $this->spam = $spam;
+        $this->text = $text;
+        $this->params = $params;
+        $this->tries = $tries;
+        $this->status = $status;
+        $this->analyzerable_id = $analyzerable_id;
+        $this->analyzerable_type = $analyzerable_type;
+        $this->analyzerable_status = $analyzerable_status;
+        $this->analyzerable = $analyzerable;
+        $this->created_at = $created_at;
+        $this->updated_at = $updated_at;
+        $this->deleted_at = $deleted_at;
+    }
 }

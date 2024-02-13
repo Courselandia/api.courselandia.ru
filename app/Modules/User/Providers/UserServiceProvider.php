@@ -30,7 +30,7 @@ class UserServiceProvider extends ServiceProvider
         $this->registerConfig();
         $this->registerViews();
 
-        $this->loadMigrationsFrom(__DIR__.'/../Database/Migrations');
+        $this->loadMigrationsFrom(__DIR__ . '/../Database/Migrations');
 
         UserModel::observe(UserListener::class);
     }
@@ -52,10 +52,10 @@ class UserServiceProvider extends ServiceProvider
     protected function registerConfig(): void
     {
         $this->publishes([
-            __DIR__.'/../Config/config.php' => config_path('user.php'),
+            __DIR__ . '/../Config/config.php' => config_path('user.php'),
         ]);
         $this->mergeConfigFrom(
-            __DIR__.'/../Config/config.php',
+            __DIR__ . '/../Config/config.php',
             'user'
         );
     }
@@ -69,7 +69,7 @@ class UserServiceProvider extends ServiceProvider
     {
         $viewPath = base_path('resources/views/modules/user');
 
-        $sourcePath = __DIR__.'/../Resources/views';
+        $sourcePath = __DIR__ . '/../Resources/views';
 
         $this->publishes([
             $sourcePath => $viewPath
@@ -78,7 +78,7 @@ class UserServiceProvider extends ServiceProvider
         $this->loadViewsFrom(
             array_merge(
                 array_map(function ($path) {
-                    return $path.'/modules/user';
+                    return $path . '/modules/user';
                 }, Config::get('view.paths')),
                 [$sourcePath]
             ),
@@ -98,7 +98,7 @@ class UserServiceProvider extends ServiceProvider
         if (is_dir($langPath)) {
             $this->loadTranslationsFrom($langPath, 'user');
         } else {
-            $this->loadTranslationsFrom(__DIR__.'/../Resources/lang', 'user');
+            $this->loadTranslationsFrom(__DIR__ . '/../Resources/lang', 'user');
         }
     }
 

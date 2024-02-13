@@ -13,10 +13,10 @@ use App\Modules\User\Filters\UserRecoveryFilter;
 use Eloquent;
 use App\Models\Validate;
 use EloquentFilter\Filterable;
+use Illuminate\Database\Eloquent\Concerns\HasTimestamps;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\Delete;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use JetBrains\PhpStorm\ArrayShape;
 
 /**
  * Класс модель для таблицы восстановления пароля пользователя на основе Eloquent.
@@ -34,6 +34,7 @@ class UserRecovery extends Eloquent
     use SoftDeletes;
     use Validate;
     use Filterable;
+    use HasTimestamps;
 
     /**
      * Атрибуты, для которых разрешено массовое назначение.
@@ -61,7 +62,7 @@ class UserRecovery extends Eloquent
      *
      * @return array Вернет массив правил.
      */
-    #[ArrayShape(['user_id' => 'string', 'code' => 'string'])] protected function getRules(): array
+    protected function getRules(): array
     {
         return [
             'user_id' => 'required|integer|digits_between:1,20',
@@ -74,7 +75,7 @@ class UserRecovery extends Eloquent
      *
      * @return array Массив возможных ошибок валидации.
      */
-    #[ArrayShape(['user_id' => 'string', 'code' => 'string'])] protected function getNames(): array
+    protected function getNames(): array
     {
         return [
             'user_id' => trans('user::models.userRecovery.userId'),

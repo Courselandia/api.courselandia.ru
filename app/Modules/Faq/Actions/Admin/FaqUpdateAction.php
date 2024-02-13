@@ -8,9 +8,9 @@
 
 namespace App\Modules\Faq\Actions\Admin;
 
+use App\Modules\Faq\Data\FaqUpdate;
 use Typography;
 use App\Models\Action;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Modules\Faq\Entities\Faq as FaqEntity;
 use App\Modules\Faq\Models\Faq;
@@ -22,65 +22,43 @@ use Cache;
 class FaqUpdateAction extends Action
 {
     /**
-     * ID FAQ.
+     * Данные для обновления FAQ.
      *
-     * @var int|string|null
+     * @var FaqUpdate
      */
-    public int|string|null $id = null;
+    private FaqUpdate $data;
 
     /**
-     * ID школы.
-     *
-     * @var int|null
+     * @param FaqUpdate $data Данные для обновления FAQ.
      */
-    public ?int $school_id = null;
-
-    /**
-     * Вопрос.
-     *
-     * @var string|null
-     */
-    public ?string $question = null;
-
-    /**
-     * Ответ.
-     *
-     * @var string|null
-     */
-    public ?string $answer = null;
-
-    /**
-     * Статус.
-     *
-     * @var boolean|null
-     */
-    public ?bool $status = null;
+    public function __construct(FaqUpdate $data)
+    {
+        $this->data = $data;
+    }
 
     /**
      * Метод запуска логики.
      *
      * @return FaqEntity Вернет результаты исполнения.
      * @throws RecordNotExistException
-     * @throws ParameterInvalidException
      */
     public function run(): FaqEntity
     {
-        $action = app(FaqGetAction::class);
-        $action->id = $this->id;
+        $action = new FaqGetAction($this->data->id);
         $faqEntity = $action->run();
 
         if ($faqEntity) {
-            $faqEntity->id = $this->id;
-            $faqEntity->school_id = $this->school_id;
-            $faqEntity->question = Typography::process($this->question, true);
-            $faqEntity->answer = Typography::process($this->answer, true);
-            $faqEntity->status = $this->status;
+            $faqEntity = FaqEntity::from([
+                ...$faqEntity->toArray(),
+                ...$this->data->toArray(),
+                'question' => Typography::process($this->data->question, true),
+                'answer' => Typography::process($this->data->answer, true, false),
+            ]);
 
-            Faq::find($this->id)->update($faqEntity->toArray());
+            Faq::find($this->data->id)->update($faqEntity->toArray());
             Cache::tags(['catalog', 'school', 'faq'])->flush();
 
-            $action = app(FaqGetAction::class);
-            $action->id = $this->id;
+            $action = new FaqGetAction($this->data->id);
 
             return $action->run();
         }

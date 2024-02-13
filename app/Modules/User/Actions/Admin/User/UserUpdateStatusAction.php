@@ -10,7 +10,6 @@ namespace App\Modules\User\Actions\Admin\User;
 
 use Cache;
 use App\Models\Action;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\UserNotExistException;
 use App\Modules\User\Entities\User as UserEntity;
 use App\Modules\User\Models\User;
@@ -23,28 +22,36 @@ class UserUpdateStatusAction extends Action
     /**
      * ID пользователя.
      *
-     * @var string|int|null
+     * @var string|int
      */
-    public string|int|null $id = null;
+    private string|int $id;
 
     /**
      * Статус пользователя.
      *
-     * @var bool|null
+     * @var bool
      */
-    public ?bool $status = null;
+    private bool $status;
+
+    /**
+     * @param string|int $id ID пользователя.
+     * @param bool $status Статус пользователя.
+     */
+    public function __construct(string|int $id, bool $status)
+    {
+        $this->id = $id;
+        $this->status = $status;
+    }
 
     /**
      * Метод запуска логики.
      *
      * @return UserEntity Вернет результаты исполнения.
      * @throws UserNotExistException
-     * @throws ParameterInvalidException
      */
     public function run(): UserEntity
     {
-        $action = app(UserGetAction::class);
-        $action->id = $this->id;
+        $action = new UserGetAction($this->id);
         $user = $action->run();
 
         if ($user) {

@@ -179,11 +179,11 @@ class Export
 
                     $param = $this->xml->createElement('param', $offerEntity->price);
                     $param->setAttribute('name', 'Цена по скидке');
-                    $offer->appendChild($param);
                 } else {
                     $param = $this->xml->createElement('price', $offerEntity->price);
-                    $offer->appendChild($param);
                 }
+
+                $offer->appendChild($param);
 
                 if ($offerEntity->duration && $offerEntity->duration_unit) {
                     $param = $this->xml->createElement('param', $offerEntity->duration);
@@ -258,7 +258,7 @@ class Export
                         $offer->duration_unit = $this->getNegotiatedDuration(Duration::from($result['duration_unit']));
                     }
 
-                    $offer->picture = $result['image_middle_id']->path;
+                    $offer->picture = $result['image_middle_id']['path'] ?? null;
                     $offer->description = $result['text'];
 
                     if ($result['program']) {

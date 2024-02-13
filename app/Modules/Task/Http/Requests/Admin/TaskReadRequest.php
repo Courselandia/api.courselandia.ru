@@ -12,7 +12,6 @@ use Schema;
 use App\Models\Enums\EnumList;
 use App\Models\FormRequest;
 use App\Modules\Task\Enums\Status;
-use JetBrains\PhpStorm\ArrayShape;
 
 /**
  * Класс запрос для чтения заданий.
@@ -24,13 +23,7 @@ class TaskReadRequest extends FormRequest
      *
      * @return array Массив правил проверки.
      */
-    #[ArrayShape([
-        'sorts' => 'string',
-        'offset' => 'string',
-        'limit' => 'string',
-        'filters' => 'string',
-        'filters.status.*' => 'string',
-    ])] public function rules(): array
+    public function rules(): array
     {
         $columns = Schema::getColumnListing('tasks');
 
@@ -60,13 +53,7 @@ class TaskReadRequest extends FormRequest
      *
      * @return array Массив атрибутов.
      */
-    #[ArrayShape([
-        'sorts' => 'string',
-        'offset' => 'string',
-        'limit' => 'string',
-        'filters' => 'string',
-        'filters.status.*' => 'string',
-    ])] public function attributes(): array
+    public function attributes(): array
     {
         return [
             'sorts' => trans('task::http.requests.admin.taskReadRequest.sorts'),

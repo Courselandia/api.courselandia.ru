@@ -11,7 +11,6 @@ namespace App\Modules\Article\Tests\Feature\Http\Controllers\Admin;
 use App\Models\Test\TokenTest;
 use App\Modules\Article\Models\Article;
 use Faker\Factory as Faker;
-use JetBrains\PhpStorm\Pure;
 use Tests\TestCase;
 
 /**
@@ -130,7 +129,6 @@ class ArticleControllerTest extends TestCase
     public function testUpdateNotValid(): void
     {
         $article = Article::factory()->create();
-        $faker = Faker::create();
 
         $this->json(
             'PUT',
@@ -356,7 +354,7 @@ class ArticleControllerTest extends TestCase
      *
      * @return array Массив структуры данных статьи.
      */
-    #[Pure] private function getArticleStructure(): array
+    private function getArticleStructure(): array
     {
         return [
             'id',

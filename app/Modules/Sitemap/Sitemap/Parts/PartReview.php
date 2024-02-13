@@ -11,6 +11,7 @@ namespace App\Modules\Sitemap\Sitemap\Parts;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Course\Enums\Status;
 use App\Modules\Review\Actions\Site\ReviewReadAction;
+use App\Modules\Review\Data\Site\ReviewRead;
 use App\Modules\Review\Entities\Review;
 use App\Modules\Review\Enums\Status as ReviewStatus;
 use App\Modules\School\Models\School;
@@ -99,17 +100,18 @@ class PartReview extends Part
      */
     protected function getLastmod(string $link): ?Carbon
     {
-        $action = app(ReviewReadAction::class);
-        $action->offset = 0;
-        $action->limit = 20;
-        $action->link = $link;
-        $action->sorts = [
-            'created_at' => 'DESC',
-        ];
-
-        $dates = [];
+        $data = ReviewRead::from([
+            'offset' => 0,
+            'limit' => 20,
+            'link' => $link,
+            'sorts' => [
+                'created_at' => 'DESC',
+            ],
+        ]);
+        $action = new ReviewReadAction($data);
         $result = $action->run();
         $reviews = $result['data'];
+        $dates = [];
 
         foreach ($reviews as $review) {
             /**

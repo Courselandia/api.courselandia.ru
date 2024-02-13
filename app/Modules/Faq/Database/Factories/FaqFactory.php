@@ -9,7 +9,6 @@
 namespace App\Modules\Faq\Database\Factories;
 
 use App\Modules\School\Models\School;
-use JetBrains\PhpStorm\ArrayShape;
 use App\Modules\Faq\Models\Faq;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -30,12 +29,7 @@ class FaqFactory extends Factory
      *
      * @return array
      */
-    #[ArrayShape([
-        'school_id' => '\Illuminate\Database\Eloquent\Factories\Factory',
-        'question' => 'string',
-        'answer' => 'string',
-        'status' => 'string'
-    ])] public function definition(): array
+    public function definition(): array
     {
         return [
             'school_id' => School::factory(),

@@ -42,34 +42,42 @@ class YandexProviderTest extends TestCase
      * Тестирование отправки URL на переобход.
      *
      * @return void
-     * @throws LimitException|ParameterInvalidException|ResponseException|GuzzleException|InvalidCodeException
+     * @throws ParameterInvalidException|ResponseException|GuzzleException|InvalidCodeException
      */
     public function testPush(): void
     {
         $credential = new YandexCredential();
         $provider = new YandexProvider($credential->get());
-        $idTask = $provider->push('https://courselandia.ru');
 
-        $this->assertIsString($idTask);
+        try {
+            $idTask = $provider->push('https://courselandia.ru');
+
+            $this->assertIsString($idTask);
+        } catch (LimitException) {
+            $this->assertIsBool(true);
+        }
     }
 
     /**
      * Тестирование работы метода проверки, что переобход призошел.
      *
      * @return void
-     * @throws LimitException|ParameterInvalidException|ResponseException|GuzzleException|InvalidCodeException
+     * @throws ParameterInvalidException|ResponseException|GuzzleException|InvalidCodeException
      * @throws ProcessingException
      */
     public function testIsPushed(): void
     {
         $credential = new YandexCredential();
         $provider = new YandexProvider($credential->get());
-        $idTask = $provider->push('https://courselandia.ru');
 
-        $this->assertIsString($idTask);
+        try {
+            $idTask = $provider->push('https://courselandia.ru');
+            $this->assertIsString($idTask);
 
-        $status = $provider->isPushed($idTask);
-
-        $this->assertIsBool($status);
+            $status = $provider->isPushed($idTask);
+            $this->assertIsBool($status);
+        } catch (LimitException) {
+            $this->assertIsBool(true);
+        }
     }
 }

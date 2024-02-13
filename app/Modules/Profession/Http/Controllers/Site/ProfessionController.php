@@ -25,12 +25,10 @@ class ProfessionController extends Controller
      * @param int|string $id ID категории.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException
      */
     public function get(int|string $id): JsonResponse
     {
-        $action = app(ProfessionGetAction::class);
-        $action->id = $id;
+        $action = new ProfessionGetAction($id);
         $data = $action->run();
 
         if ($data) {
@@ -60,8 +58,7 @@ class ProfessionController extends Controller
      */
     public function link(string $link): JsonResponse
     {
-        $action = app(ProfessionLinkAction::class);
-        $action->link = $link;
+        $action = new ProfessionLinkAction($link);
         $data = $action->run();
 
         if ($data) {

@@ -146,7 +146,7 @@ class Implement
         );
 
         if ($act) {
-            return new ActEntity($act->toArray());
+            return ActEntity::from($act->toArray());
         }
 
         if ($default) {

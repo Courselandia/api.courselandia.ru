@@ -9,6 +9,8 @@
 namespace App\Modules\User\Actions\Admin\User;
 
 use App\Models\Action;
+use App\Modules\User\Data\Decorators\UserUpdate;
+use App\Modules\User\Data\Decorators\UserUpdate as UserUpdateDecoratorData;
 use App\Modules\User\Decorators\Admin\User\UserUpdateDecorator;
 use App\Modules\User\Entities\User;
 use App\Modules\User\Pipes\Admin\User\Create\GetPipe;
@@ -16,8 +18,6 @@ use App\Modules\User\Pipes\Admin\User\Create\VerifyPipe;
 use App\Modules\User\Pipes\Admin\User\Update\UpdatePipe;
 use App\Modules\User\Pipes\Admin\User\Update\ImagePipe;
 use App\Modules\User\Pipes\Admin\User\Create\RolePipe;
-use Illuminate\Http\UploadedFile;
-use App\Modules\User\Enums\Role;
 
 /**
  * Создание пользователя.
@@ -25,74 +25,19 @@ use App\Modules\User\Enums\Role;
 class UserUpdateAction extends Action
 {
     /**
-     * ID пользователя.
+     * Данные для декоратора обновления пользователя.
      *
-     * @var string|int|null
+     * @var UserUpdate
      */
-    public string|int|null $id = null;
+    private UserUpdate $data;
 
     /**
-     * Логин.
-     *
-     * @var string|null
+     * @param UserUpdate $data Данные для декоратора обновления пользователя.
      */
-    public ?string $login = null;
-
-    /**
-     * Имя.
-     *
-     * @var string|null
-     */
-    public ?string $first_name = null;
-
-    /**
-     * Фамилия.
-     *
-     * @var string|null
-     */
-    public ?string $second_name = null;
-
-    /**
-     * Телефон.
-     *
-     * @var string|null
-     */
-    public ?string $phone = null;
-
-    /**
-     * Статус верификации.
-     *
-     * @var bool
-     */
-    public bool $verified = false;
-
-    /**
-     * Двухфакторная аутентификация.
-     *
-     * @var bool
-     */
-    public bool $two_factor = false;
-
-    /**
-     * Статус пользователя.
-     *
-     * @var bool
-     */
-    public bool $status = false;
-
-    /**
-     * Роль.
-     *
-     * @var Role|null
-     */
-    public ?Role $role = null;
-
-    /**
-     * Изображение.
-     *
-     * @var UploadedFile|null
-     */
-    public ?UploadedFile $image = null;
+    public function __construct(UserUpdate $data)
+    {
+        $this->data = $data;
+    }
 
     /**
      * Метод запуска логики.
@@ -101,18 +46,7 @@ class UserUpdateAction extends Action
      */
     public function run(): User
     {
-        $decorator = app(UserUpdateDecorator::class);
-
-        $decorator->id = $this->id;
-        $decorator->login = $this->login;
-        $decorator->first_name = $this->first_name;
-        $decorator->second_name = $this->second_name;
-        $decorator->status = $this->status;
-        $decorator->phone = $this->phone;
-        $decorator->verified = $this->verified;
-        $decorator->two_factor = $this->two_factor;
-        $decorator->image = $this->image;
-        $decorator->role = $this->role;
+        $decorator = new UserUpdateDecorator(UserUpdateDecoratorData::from($this->data->toArray()));
 
         return $decorator->setActions([
             UpdatePipe::class,

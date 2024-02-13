@@ -19,7 +19,7 @@ class TeacherListener
     /**
      * Обработчик события при удалении записи.
      *
-     * @param  Teacher  $teacher  Модель для таблицы учителя.
+     * @param Teacher $teacher Модель для таблицы учителя.
      *
      * @return bool Вернет успешность выполнения операции.
      */

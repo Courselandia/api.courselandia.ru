@@ -10,7 +10,6 @@ namespace App\Modules\Publication\Actions\Admin\Publication;
 
 use App\Models\Action;
 use App\Models\Enums\CacheTime;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Publication\Entities\Publication as PublicationEntity;
 use App\Modules\Publication\Models\Publication;
 use Cache;
@@ -24,15 +23,22 @@ class PublicationGetAction extends Action
     /**
      * ID публикации.
      *
-     * @var int|string|null
+     * @var int|string
      */
-    public int|string|null $id = null;
+    private int|string $id;
+
+    /**
+     * @param int|string $id
+     */
+    public function __construct(int|string $id)
+    {
+        $this->id = $id;
+    }
 
     /**
      * Метод запуска логики.
      *
      * @return PublicationEntity|null Вернет результаты исполнения.
-     * @throws ParameterInvalidException
      */
     public function run(): ?PublicationEntity
     {
@@ -46,7 +52,7 @@ class PublicationGetAction extends Action
                     ->with('metatag')
                     ->first();
 
-                return $publication ? new PublicationEntity($publication->toArray()) : null;
+                return $publication ? PublicationEntity::from($publication) : null;
             }
         );
     }

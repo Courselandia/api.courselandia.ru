@@ -10,6 +10,8 @@ namespace App\Modules\Course\Entities;
 
 use App\Models\Entity;
 use App\Modules\Course\Entities\Course as CourseEntity;
+use Spatie\LaravelData\Attributes\DataCollectionOf;
+use Spatie\LaravelData\DataCollection;
 
 /**
  * Сущность получения курса.
@@ -26,9 +28,10 @@ class CourseGet extends Entity
     /**
      * Похожие курсы.
      *
-     * @var Course[]
+     * @var ?DataCollection
      */
-    public ?array $similarities = null;
+    #[DataCollectionOf(CourseEntity::class)]
+    public ?DataCollection $similarities = null;
 
     /**
      * Ссылка школы.
@@ -49,5 +52,27 @@ class CourseGet extends Entity
      *
      * @var string|int|null
      */
-    public string|null $id = null;
+    public string|int|null $id = null;
+
+    /**
+     * @param CourseEntity|null $course Курс.
+     * @param DataCollection|null $similarities Похожие курсы.
+     * @param string|null $school Ссылка школы.
+     * @param string|null $link Ссылка курса.
+     * @param string|null $id ID курса.
+     */
+    public function __construct(
+        ?CourseEntity   $course = null,
+        ?DataCollection $similarities = null,
+        string|null     $school = null,
+        string|null     $link = null,
+        string|null     $id = null,
+    )
+    {
+        $this->course = $course;
+        $this->similarities = $similarities;
+        $this->school = $school;
+        $this->link = $link;
+        $this->id = $id;
+    }
 }

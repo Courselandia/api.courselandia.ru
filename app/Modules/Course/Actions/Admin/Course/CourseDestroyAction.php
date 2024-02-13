@@ -22,7 +22,17 @@ class CourseDestroyAction extends Action
      *
      * @var int[]|string[]
      */
-    public ?array $ids = null;
+    private array $ids;
+
+    /**
+     * Массив ID курсов.
+     *
+     * @param array $ids
+     */
+    public function __construct(array $ids)
+    {
+        $this->ids = $ids;
+    }
 
     /**
      * Метод запуска логики.

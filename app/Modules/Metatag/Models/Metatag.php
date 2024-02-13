@@ -14,8 +14,8 @@ use App\Models\Status;
 use App\Models\Delete;
 use App\Models\Validate;
 use EloquentFilter\Filterable;
+use Illuminate\Database\Eloquent\Concerns\HasTimestamps;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use JetBrains\PhpStorm\ArrayShape;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Modules\Metatag\Database\Factories\MetatagFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -38,6 +38,7 @@ class Metatag extends Eloquent
     use Validate;
     use HasFactory;
     use Filterable;
+    use HasTimestamps;
 
     /**
      * Атрибуты, для которых разрешено массовое назначение.
@@ -68,13 +69,7 @@ class Metatag extends Eloquent
      *
      * @return array Вернет массив правил.
      */
-    #[ArrayShape([
-        'description' => 'string',
-        'keywords' => 'string',
-        'title' => 'string',
-        'title_template' => 'string',
-        'description_template' => 'string',
-    ])] protected function getRules(): array
+    protected function getRules(): array
     {
         return [
             'description' => 'max:1000',
@@ -90,13 +85,7 @@ class Metatag extends Eloquent
      *
      * @return array Массив возможных ошибок валидации.
      */
-    #[ArrayShape([
-        'description' => 'mixed',
-        'keywords' => 'mixed',
-        'title' => 'mixed',
-        'description_template' => 'mixed',
-        'title_template' => 'mixed',
-    ])] protected function getNames(): array
+    protected function getNames(): array
     {
         return [
             'description' => trans('metatag::models.metatag.description'),

@@ -19,6 +19,8 @@ use App\Modules\Skill\Actions\Admin\SkillGetAction;
 use App\Modules\Skill\Actions\Admin\SkillReadAction;
 use App\Modules\Skill\Actions\Admin\SkillUpdateAction;
 use App\Modules\Skill\Actions\Admin\SkillUpdateStatusAction;
+use App\Modules\Skill\Data\SkillCreate;
+use App\Modules\Skill\Data\SkillUpdate;
 use App\Modules\Skill\Http\Requests\Admin\SkillCreateRequest;
 use App\Modules\Skill\Http\Requests\Admin\SkillDestroyRequest;
 use App\Modules\Skill\Http\Requests\Admin\SkillReadRequest;
@@ -41,12 +43,10 @@ class SkillController extends Controller
      * @param int|string $id ID навыка.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException
      */
     public function get(int|string $id): JsonResponse
     {
-        $action = app(SkillGetAction::class);
-        $action->id = $id;
+        $action = new SkillGetAction($id);
         $data = $action->run();
 
         if ($data) {
@@ -76,14 +76,14 @@ class SkillController extends Controller
      */
     public function read(SkillReadRequest $request): JsonResponse
     {
-        $action = app(SkillReadAction::class);
-        $action->sorts = $request->get('sorts');
-        $action->filters = $request->get('filters');
-        $action->offset = $request->get('offset');
-        $action->limit = $request->get('limit');
+        $action = new SkillReadAction(
+            $request->get('sorts'),
+            $request->get('filters'),
+            $request->get('offset'),
+            $request->get('limit'),
+        );
 
         $data = $action->run();
-
         $data['success'] = true;
 
         return response()->json($data);
@@ -100,16 +100,8 @@ class SkillController extends Controller
     public function create(SkillCreateRequest $request): JsonResponse
     {
         try {
-            $action = app(SkillCreateAction::class);
-            $action->name = $request->get('name');
-            $action->header_template = $request->get('header_template');
-            $action->link = $request->get('link');
-            $action->text = $request->get('text');
-            $action->status = $request->get('status');
-            $action->description_template = $request->get('description_template');
-            $action->title_template = $request->get('title_template');
-            $action->keywords = $request->get('keywords');
-
+            $data = SkillCreate::from($request->toArray());
+            $action = new SkillCreateAction($data);
             $data = $action->run();
 
             Log::info(
@@ -152,16 +144,11 @@ class SkillController extends Controller
     public function update(int|string $id, SkillUpdateRequest $request): JsonResponse
     {
         try {
-            $action = app(SkillUpdateAction::class);
-            $action->id = $id;
-            $action->name = $request->get('name');
-            $action->header_template = $request->get('header_template');
-            $action->link = $request->get('link');
-            $action->text = $request->get('text');
-            $action->status = $request->get('status');
-            $action->description_template = $request->get('description_template');
-            $action->title_template = $request->get('title_template');
-            $action->keywords = $request->get('keywords');
+            $data = SkillUpdate::from([
+                ...$request->toArray(),
+                'id' => $id,
+            ]);
+            $action = new SkillUpdateAction($data);
             $data = $action->run();
 
             Log::info(
@@ -199,15 +186,11 @@ class SkillController extends Controller
      * @param SkillUpdateStatusRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException
      */
     public function updateStatus(int|string $id, SkillUpdateStatusRequest $request): JsonResponse
     {
         try {
-            $action = app(SkillUpdateStatusAction::class);
-            $action->id = $id;
-            $action->status = $request->get('status');
-
+            $action = new SkillUpdateStatusAction($id, $request->get('status'));
             $data = $action->run();
 
             Log::info(trans('skill::http.controllers.admin.skillController.update.log'), [
@@ -244,8 +227,7 @@ class SkillController extends Controller
      */
     public function destroy(SkillDestroyRequest $request): JsonResponse
     {
-        $action = app(SkillDestroyAction::class);
-        $action->ids = $request->get('ids');
+        $action = new SkillDestroyAction($request->get('ids'));
         $action->run();
 
         Log::info(

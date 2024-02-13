@@ -9,10 +9,10 @@
 namespace App\Modules\Course\Actions\Site\Course;
 
 use App\Modules\Course\Entities\CourseItemDirectionFilter;
-use App\Models\Entity;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Direction\Models\Direction;
 use Cache;
+use Spatie\LaravelData\DataCollection;
 use Util;
 use App\Models\Action;
 use App\Models\Enums\CacheTime;
@@ -29,50 +29,75 @@ class CourseDirectionReadAction extends Action
      *
      * @var array|null
      */
-    public ?array $filters = null;
+    private ?array $filters;
 
     /**
      * Начать выборку.
      *
      * @var int|null
      */
-    public ?int $offset = null;
+    private ?int $offset;
 
     /**
      * Лимит выборки.
      *
      * @var int|null
      */
-    public ?int $limit = null;
+    private ?int $limit;
 
     /**
      * Добавить ли категории к направлениям.
      *
      * @var bool
      */
-    public ?bool $withCategories = false;
+    private ?bool $withCategories;
 
     /**
      * Добавить информацию о количестве курсов в направлении.
      *
      * @var bool
      */
-    public ?bool $withCount = false;
+    private ?bool $withCount;
 
     /**
-     * Отключать не активные
+     * Отключать не активные.
      *
      * @var bool
      */
-    public ?bool $disabled = false;
+    private ?bool $disabled;
+
+    /**
+     * @param array|null $filters Фильтрация данных.
+     * @param int|null $offset Начать выборку.
+     * @param int|null $limit Лимит выборки.
+     * @param bool|null $withCategories Добавить ли категории к направлениям.
+     * @param bool|null $withCount Отключать не активные.
+     * @param bool|null $disabled Отключать не активные.
+     */
+    public function __construct(
+        ?array $filters = null,
+        ?int   $offset = null,
+        ?int   $limit = null,
+        ?bool  $withCategories = null,
+        ?bool  $withCount = null,
+        ?bool  $disabled = null
+    )
+    {
+        $this->filters = $filters;
+        $this->offset = $offset;
+        $this->limit = $limit;
+        $this->withCategories = $withCategories;
+        $this->withCount = $withCount;
+        $this->disabled = $disabled;
+    }
 
     /**
      * Метод запуска логики.
      *
-     * @return CourseItemFilter[] Вернет результаты исполнения.
+     * @return DataCollection Вернет результаты исполнения.
      * @throws ParameterInvalidException
      */
-    public function run(): array
+    public function run(): DataCollection
     {
         $filters = $this->filters;
 
@@ -111,15 +136,15 @@ class CourseDirectionReadAction extends Action
                         'directions.link',
                         'directions.weight',
                     ])
-                    ->whereHas('courses', function ($query) {
-                        $query->select([
-                            'courses.id',
-                        ])
-                        ->where('status', Status::ACTIVE->value)
-                        ->where('has_active_school', true);
-                    })
-                    ->where('status', true)
-                    ->orderBy('weight');
+                        ->whereHas('courses', function ($query) {
+                            $query->select([
+                                'courses.id',
+                            ])
+                                ->where('status', Status::ACTIVE->value)
+                                ->where('has_active_school', true);
+                        })
+                        ->where('status', true)
+                        ->orderBy('weight');
 
                     if ($this->offset) {
                         $query->offset($this->offset);
@@ -129,7 +154,7 @@ class CourseDirectionReadAction extends Action
                         $query->limit($this->limit);
                     }
 
-                    return Entity::toEntities($query->get()->toArray(), new CourseItemFilter());
+                    return CourseItemFilter::collection($query->get()->toArray());
                 }
             );
         }
@@ -163,17 +188,17 @@ class CourseDirectionReadAction extends Action
                         'directions.link',
                         'directions.weight',
                     ])
-                    ->whereHas('courses', function ($query) {
-                        $query->select([
-                            'courses.id',
-                        ])
-                        ->where('status', Status::ACTIVE->value)
-                        ->where('has_active_school', true);
-                    })
-                    ->where('status', true)
-                    ->orderBy('weight')
-                    ->get()
-                    ->toArray();
+                        ->whereHas('courses', function ($query) {
+                            $query->select([
+                                'courses.id',
+                            ])
+                                ->where('status', Status::ACTIVE->value)
+                                ->where('has_active_school', true);
+                        })
+                        ->where('status', true)
+                        ->orderBy('weight')
+                        ->get()
+                        ->toArray();
                 }
             );
         } else {
@@ -214,16 +239,16 @@ class CourseDirectionReadAction extends Action
                         'directions.link',
                         'directions.weight',
                     ])
-                    ->whereHas('courses', function ($query) use ($filters) {
-                        $query->select([
-                            'courses.id',
-                        ])
-                        ->filter($filters ?: [])
-                        ->where('status', Status::ACTIVE->value)
-                        ->where('has_active_school', true);
-                    })
-                    ->where('status', true)
-                    ->orderBy('weight');
+                        ->whereHas('courses', function ($query) use ($filters) {
+                            $query->select([
+                                'courses.id',
+                            ])
+                                ->filter($filters ?: [])
+                                ->where('status', Status::ACTIVE->value)
+                                ->where('has_active_school', true);
+                        })
+                        ->where('status', true)
+                        ->orderBy('weight');
 
                     if (!$this->disabled) {
                         if ($this->offset) {
@@ -264,7 +289,7 @@ class CourseDirectionReadAction extends Action
                 }
 
                 if ($this->withCategories) {
-                    return Entity::toEntities($activeDirections, new CourseItemDirectionFilter());
+                    return CourseItemDirectionFilter::collection($activeDirections);
                 }
 
                 if ($this->disabled) {
@@ -286,10 +311,10 @@ class CourseDirectionReadAction extends Action
                         })->toArray();
                     }
 
-                    return Entity::toEntities($allDirections, new CourseItemFilter());
+                    return CourseItemFilter::collection($allDirections);
                 }
 
-                return Entity::toEntities($activeDirections, new CourseItemFilter());
+                return CourseItemFilter::collection($activeDirections);
             }
         );
     }

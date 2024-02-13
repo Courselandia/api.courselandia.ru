@@ -11,7 +11,6 @@ namespace App\Modules\Analyzer\Http\Requests\Admin;
 use App\Models\Enums\EnumList;
 use App\Models\FormRequest;
 use App\Modules\Analyzer\Enums\Status;
-use JetBrains\PhpStorm\ArrayShape;
 use Schema;
 
 /**
@@ -24,13 +23,7 @@ class AnalyzerReadRequest extends FormRequest
      *
      * @return array Массив правил проверки.
      */
-    #[ArrayShape([
-        'sorts' => 'string',
-        'offset' => 'string',
-        'limit' => 'string',
-        'filters' => 'string',
-        'filters.status.*' => 'string',
-    ])] public function rules(): array
+    public function rules(): array
     {
         $columns = Schema::getColumnListing('analyzers');
         $columns = [
@@ -53,13 +46,7 @@ class AnalyzerReadRequest extends FormRequest
      *
      * @return array Массив атрибутов.
      */
-    #[ArrayShape([
-        'sorts' => 'string',
-        'offset' => 'string',
-        'limit' => 'string',
-        'filters' => 'string',
-        'filters.status.*' => 'string',
-    ])] public function attributes(): array
+    public function attributes(): array
     {
         return [
             'sorts' => trans('analyzer::http.requests.admin.analyzerReadRequest.sorts'),

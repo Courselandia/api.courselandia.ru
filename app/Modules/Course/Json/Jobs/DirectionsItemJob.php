@@ -24,9 +24,7 @@ class DirectionsItemJob extends JsonItemJob
      */
     public function handle(): void
     {
-        $action = app(CourseDirectionReadAction::class);
-        $action->withCategories = true;
-        $action->withCount = true;
+        $action = new CourseDirectionReadAction(null, null, null, true, true);
         $data = $action->run();
 
         if ($data) {

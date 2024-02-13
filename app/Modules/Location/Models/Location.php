@@ -9,13 +9,13 @@
 namespace App\Modules\Location\Models;
 
 use App\Models\Enums\CacheTime;
+use App\Modules\Location\Contracts\Location as Contract;
+use App\Modules\Location\Values\City;
+use App\Modules\Location\Values\Country;
+use App\Modules\Location\Values\Region;
+use Cache;
 use Geographer;
 use Util;
-use Cache;
-use App\Modules\Location\Contracts\Location as Contract;
-use App\Modules\Location\Entities\Country;
-use App\Modules\Location\Entities\Region;
-use App\Modules\Location\Entities\City;
 
 /**
  * Класс для работы с географическими объектами.
@@ -36,9 +36,7 @@ class Location extends Contract
             $result = [];
 
             for ($i = 0; $i < count($countries); $i++) {
-                $country = new Country();
-                $country->code = $countries[$i]['code'];
-                $country->name = $countries[$i]['name'];
+                $country = new Country($countries[$i]['code'], $countries[$i]['name']);
                 $result[] = $country;
             }
 
@@ -49,7 +47,7 @@ class Location extends Contract
     /**
      * Вернуть название страны по коду.
      *
-     * @param  string  $code  Код страны.
+     * @param string $code Код страны.
      *
      * @return string|null Название страны.
      */
@@ -58,8 +56,8 @@ class Location extends Contract
         $countries = $this->getCountries();
 
         for ($i = 0; $i < count($countries); $i++) {
-            if ($countries[$i]->code === $code) {
-                return $countries[$i]->name;
+            if ($countries[$i]->getCode() === $code) {
+                return $countries[$i]->getName();
             }
         }
 
@@ -69,7 +67,7 @@ class Location extends Contract
     /**
      * Получить все регионы страны.
      *
-     * @param  string  $country  Код страны.
+     * @param string $country Код страны.
      *
      * @return Region[] Регионы страны.
      */
@@ -82,9 +80,7 @@ class Location extends Contract
             $regions = [];
 
             for ($i = 0; $i < count($stages); $i++) {
-                $region = new Region();
-                $region->code = $stages[$i]['isoCode'];
-                $region->name = $stages[$i]['name'];
+                $region = new Region($stages[$i]['isoCode'], $stages[$i]['name']);
                 $regions[] = $region;
             }
 
@@ -95,8 +91,8 @@ class Location extends Contract
     /**
      * Получить название региона по коду региона.
      *
-     * @param  string  $country  Код страны.
-     * @param  string  $code  Код региона.
+     * @param string $country Код страны.
+     * @param string $code Код региона.
      *
      * @return string|null Регион страны.
      */
@@ -105,8 +101,8 @@ class Location extends Contract
         $regions = Location::getRegions($country);
 
         for ($i = 0; $i < count($regions); $i++) {
-            if ($regions[$i]->code === $code) {
-                return $regions[$i]->name;
+            if ($regions[$i]->getCode() === $code) {
+                return $regions[$i]->getName();
             }
         }
 
@@ -116,8 +112,8 @@ class Location extends Contract
     /**
      * Получить все города по стране и региону.
      *
-     * @param  string  $country  Код страны.
-     * @param  string  $region  Код региона.
+     * @param string $country Код страны.
+     * @param string $region Код региона.
      *
      * @return City[] Города страны и его региона.
      */
@@ -136,9 +132,7 @@ class Location extends Contract
             $data = [];
 
             for ($i = 0; $i < count($cities); $i++) {
-                $city = new City();
-                $city->code = $cities[$i]['code'];
-                $city->name = $cities[$i]['name'];
+                $city = new City($cities[$i]['code'], $cities[$i]['name']);
                 $data[] = $city;
             }
 
@@ -149,9 +143,9 @@ class Location extends Contract
     /**
      * Получить название города по его коду.
      *
-     * @param  string  $country  Код страны.
-     * @param  string  $region  Код региона.
-     * @param  string  $code  Код города.
+     * @param string $country Код страны.
+     * @param string $region Код региона.
+     * @param string $code Код города.
      *
      * @return string|null Название города.
      */
@@ -160,8 +154,8 @@ class Location extends Contract
         $cities = Location::getCities($country, $region);
 
         for ($i = 0; $i < count($cities); $i++) {
-            if ($cities[$i]->code === $code) {
-                return $cities[$i]->name;
+            if ($cities[$i]->getCode() === $code) {
+                return $cities[$i]->getName();
             }
         }
 

@@ -15,7 +15,6 @@ use Config;
 use App\Modules\Crawl\Models\Crawl;
 use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
-use App\Models\Exceptions\RecordNotExistException;
 use App\Models\Exceptions\ParameterInvalidException;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -38,14 +37,14 @@ class PushJob implements ShouldQueue
      *
      * @var Pusher
      */
-    public Pusher $pusher;
+    private Pusher $pusher;
 
     /**
      * Сущность страницы, которую нужно отправить на индексацию.
      *
      * @var Page
      */
-    public Page $page;
+    private Page $page;
 
     /**
      * Конструктор.

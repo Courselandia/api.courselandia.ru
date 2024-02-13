@@ -94,7 +94,7 @@ class YandexProvider
             }
 
             if ($data['error_code'] === 'QUOTA_EXCEEDED') {
-                throw new LimitException(trans('crawl::crawl::engines.providers.yandexProvider.quotaExceeded'));
+                throw new LimitException(trans('crawl::engines.providers.yandexProvider.quotaExceeded'));
             }
 
             throw new ResponseException($error->getMessage());

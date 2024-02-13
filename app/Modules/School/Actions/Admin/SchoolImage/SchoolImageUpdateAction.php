@@ -10,7 +10,6 @@ namespace App\Modules\School\Actions\Admin\SchoolImage;
 
 use Cache;
 use App\Models\Action;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Modules\School\Actions\Admin\School\SchoolGetAction;
 use App\Modules\School\Entities\School as SchoolEntity;
@@ -25,48 +24,60 @@ class SchoolImageUpdateAction extends Action
     /**
      * ID школы.
      *
-     * @var int|string|null
+     * @var int|string
      */
-    public int|string|null $id = null;
+    private int|string $id;
 
     /**
      * Тип изображения.
      *
-     * @var string|null
+     * @var string
      */
-    public string|null $type = null;
+    private string $type;
 
     /**
      * Изображение.
      *
-     * @var UploadedFile|null
+     * @var UploadedFile
      */
-    public ?UploadedFile $image = null;
+    private UploadedFile $image;
+
+    /**
+     * @param int|string $id ID школы.
+     * @param string $type Тип изображения.
+     * @param UploadedFile $image Изображение.
+     */
+    public function __construct(int|string $id, string $type, UploadedFile $image)
+    {
+        $this->id = $id;
+        $this->type = $type;
+        $this->image = $image;
+    }
 
     /**
      * Метод запуска логики.
      *
      * @return SchoolEntity Вернет результаты исполнения.
      * @throws RecordNotExistException
-     * @throws ParameterInvalidException
      */
     public function run(): SchoolEntity
     {
         if ($this->id) {
-            $action = app(SchoolGetAction::class);
-            $action->id = $this->id;
+            $action = new SchoolGetAction($this->id);
             $school = $action->run();
 
             if ($school) {
+                $data = $school->toArray();
+
                 if ($this->type === 'logo') {
-                    $school->image_logo_id = $this->image;
+                    $data['image_logo_id'] = $this->image;
                 }
 
                 if ($this->type === 'site') {
-                    $school->image_site_id = $this->image;
+                    $data['image_site_id'] = $this->image;
                 }
 
-                School::find($this->id)->update($school->toArray());
+                School::find($this->id)->update($data);
                 Cache::tags(['catalog', 'school', 'teacher', 'faq'])->flush();
 
                 return $action->run();

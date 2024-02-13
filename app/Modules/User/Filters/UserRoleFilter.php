@@ -20,9 +20,9 @@ class UserRoleFilter extends ModelFilter
      *
      * @param string[] $roles Название ролей.
      *
-     * @return UserRoleFilter Правила поиска.
+     * @return self Правила поиска.
      */
-    public function name(array $roles): UserRoleFilter
+    public function name(array $roles): self
     {
         return $this->whereIn('user_roles.name', $roles);
     }

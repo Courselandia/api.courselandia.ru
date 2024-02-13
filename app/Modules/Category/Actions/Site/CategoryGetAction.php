@@ -24,15 +24,22 @@ class CategoryGetAction extends Action
     /**
      * ID категории.
      *
-     * @var int|string|null
+     * @var int|string
      */
-    public int|string|null $id = null;
+    private int|string $id;
+
+    /**
+     * @param int|string $id ID категории.
+     */
+    public function __construct(int|string $id)
+    {
+        $this->id = $id;
+    }
 
     /**
      * Метод запуска логики.
      *
      * @return CategoryEntity|null Вернет результаты исполнения.
-     * @throws ParameterInvalidException
      */
     public function run(): ?CategoryEntity
     {
@@ -49,11 +56,7 @@ class CategoryGetAction extends Action
                 ])->find($this->id);
 
                 if ($result) {
-                    $item = $result->toArray();
-                    $entity = new CategoryEntity();
-                    $entity->set($item);
-
-                    return $entity;
+                    return CategoryEntity::from($result->toArray());
                 }
 
                 return null;

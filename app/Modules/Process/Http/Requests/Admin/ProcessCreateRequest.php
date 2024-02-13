@@ -9,7 +9,6 @@
 namespace App\Modules\Process\Http\Requests\Admin;
 
 use App\Models\FormRequest;
-use JetBrains\PhpStorm\ArrayShape;
 
 /**
  * Класс запрос для создания объяснения как проходит обучение.
@@ -21,7 +20,7 @@ class ProcessCreateRequest extends FormRequest
      *
      * @return array Массив правил проверки.
      */
-    #[ArrayShape(['status' => 'string'])] public function rules(): array
+    public function rules(): array
     {
         return [
             'status' => 'boolean',
@@ -33,7 +32,7 @@ class ProcessCreateRequest extends FormRequest
      *
      * @return array Массив атрибутов.
      */
-    #[ArrayShape(['status' => 'string'])] public function attributes(): array
+    public function attributes(): array
     {
         return [
             'status' => trans('process::http.requests.admin.processCreateRequest.status')

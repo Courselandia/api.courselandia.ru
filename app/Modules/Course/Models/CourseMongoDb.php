@@ -9,7 +9,6 @@
 namespace App\Modules\Course\Models;
 
 use App\Models\Validate;
-use JetBrains\PhpStorm\ArrayShape;
 use Jenssegers\Mongodb\Eloquent\Model;
 
 /**
@@ -57,12 +56,7 @@ class CourseMongoDb extends Model
      *
      * @return array Вернет массив правил.
      */
-    #[ArrayShape([
-        'id' => 'string',
-        'category' => 'string',
-        'link' => 'string',
-        'uuid' => 'string',
-    ])] protected function getRules(): array
+    protected function getRules(): array
     {
         return [
             'uuid' => 'digits_between:0,20',

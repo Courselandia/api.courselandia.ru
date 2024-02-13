@@ -28,4 +28,17 @@ class CourseFilterPrice extends Entity
      * @var int|null
      */
     public ?int $max = null;
+
+    /**
+     * @param int|null $min Минимальная цена.
+     * @param int|null $max Максимальная цена.
+     */
+    public function __construct(
+        ?int $min = null,
+        ?int $max = null,
+    )
+    {
+        $this->min = $min;
+        $this->max = $max;
+    }
 }

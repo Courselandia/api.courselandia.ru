@@ -9,7 +9,6 @@
 namespace App\Modules\Access\Http\Requests;
 
 use App\Models\FormRequest;
-use JetBrains\PhpStorm\ArrayShape;
 
 /**
  * Класс для обновления API токена.
@@ -21,7 +20,7 @@ class AccessApiRefreshRequest extends FormRequest
      *
      * @return array Массив правил проверки.
      */
-    #[ArrayShape(['refreshToken' => 'string'])] public function rules(): array
+    public function rules(): array
     {
         return [
             'refreshToken' => 'required|string'
@@ -33,7 +32,7 @@ class AccessApiRefreshRequest extends FormRequest
      *
      * @return array Массив атрибутов.
      */
-    #[ArrayShape(['refreshToken' => 'string'])] public function attributes(): array
+    public function attributes(): array
     {
         return [
             'refreshToken' => trans('access::http.requests.accessApiRefreshRequest.refreshToken')

@@ -19,6 +19,8 @@ use App\Modules\Tool\Actions\Admin\ToolGetAction;
 use App\Modules\Tool\Actions\Admin\ToolReadAction;
 use App\Modules\Tool\Actions\Admin\ToolUpdateAction;
 use App\Modules\Tool\Actions\Admin\ToolUpdateStatusAction;
+use App\Modules\Tool\Data\ToolCreate;
+use App\Modules\Tool\Data\ToolUpdate;
 use App\Modules\Tool\Http\Requests\Admin\ToolCreateRequest;
 use App\Modules\Tool\Http\Requests\Admin\ToolDestroyRequest;
 use App\Modules\Tool\Http\Requests\Admin\ToolReadRequest;
@@ -41,12 +43,10 @@ class ToolController extends Controller
      * @param int|string $id ID инструмента.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException
      */
     public function get(int|string $id): JsonResponse
     {
-        $action = app(ToolGetAction::class);
-        $action->id = $id;
+        $action = new ToolGetAction($id);
         $data = $action->run();
 
         if ($data) {
@@ -76,14 +76,14 @@ class ToolController extends Controller
      */
     public function read(ToolReadRequest $request): JsonResponse
     {
-        $action = app(ToolReadAction::class);
-        $action->sorts = $request->get('sorts');
-        $action->filters = $request->get('filters');
-        $action->offset = $request->get('offset');
-        $action->limit = $request->get('limit');
+        $action = new ToolReadAction(
+            $request->get('sorts'),
+            $request->get('filters'),
+            $request->get('offset'),
+            $request->get('limit')
+        );
 
         $data = $action->run();
-
         $data['success'] = true;
 
         return response()->json($data);
@@ -100,16 +100,8 @@ class ToolController extends Controller
     public function create(ToolCreateRequest $request): JsonResponse
     {
         try {
-            $action = app(ToolCreateAction::class);
-            $action->name = $request->get('name');
-            $action->header_template = $request->get('header_template');
-            $action->link = $request->get('link');
-            $action->text = $request->get('text');
-            $action->status = $request->get('status');
-            $action->description_template = $request->get('description_template');
-            $action->title_template = $request->get('title_template');
-            $action->keywords = $request->get('keywords');
-
+            $data = ToolCreate::from($request->all());
+            $action = new ToolCreateAction($data);
             $data = $action->run();
 
             Log::info(
@@ -152,16 +144,12 @@ class ToolController extends Controller
     public function update(int|string $id, ToolUpdateRequest $request): JsonResponse
     {
         try {
-            $action = app(ToolUpdateAction::class);
-            $action->id = $id;
-            $action->name = $request->get('name');
-            $action->header_template = $request->get('header_template');
-            $action->link = $request->get('link');
-            $action->text = $request->get('text');
-            $action->status = $request->get('status');
-            $action->description_template = $request->get('description_template');
-            $action->title_template = $request->get('title_template');
-            $action->keywords = $request->get('keywords');
+            $data = ToolUpdate::from([
+                ...$request->all(),
+                'id' => $id,
+            ]);
+
+            $action = new ToolUpdateAction($data);
             $data = $action->run();
 
             Log::info(
@@ -199,15 +187,11 @@ class ToolController extends Controller
      * @param ToolUpdateStatusRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException
      */
     public function updateStatus(int|string $id, ToolUpdateStatusRequest $request): JsonResponse
     {
         try {
-            $action = app(ToolUpdateStatusAction::class);
-            $action->id = $id;
-            $action->status = $request->get('status');
-
+            $action = new ToolUpdateStatusAction($id, $request->get('status'));
             $data = $action->run();
 
             Log::info(trans('tool::http.controllers.admin.toolController.update.log'), [
@@ -244,8 +228,7 @@ class ToolController extends Controller
      */
     public function destroy(ToolDestroyRequest $request): JsonResponse
     {
-        $action = app(ToolDestroyAction::class);
-        $action->ids = $request->get('ids');
+        $action = new ToolDestroyAction($request->get('ids'));
         $action->run();
 
         Log::info(

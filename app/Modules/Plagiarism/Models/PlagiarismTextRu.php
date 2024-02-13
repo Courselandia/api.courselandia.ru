@@ -8,16 +8,16 @@
 
 namespace App\Modules\Plagiarism\Models;
 
+use App\Models\Exceptions\PaymentException;
+use App\Models\Exceptions\ProcessingException;
+use App\Models\Exceptions\ResponseException;
+use App\Modules\Plagiarism\Contracts\Plagiarism;
 use App\Modules\Plagiarism\Exceptions\TextShortException;
+use App\Modules\Plagiarism\Values\Quality;
 use Config;
 use GuzzleHttp\Client;
-use App\Models\Exceptions\PaymentException;
-use GuzzleHttp\Exception\GuzzleException;
-use App\Models\Exceptions\ProcessingException;
-use App\Modules\Plagiarism\Contracts\Plagiarism;
-use App\Models\Exceptions\ResponseException;
 use GuzzleHttp\Exception\ClientException;
-use App\Modules\Plagiarism\Entities\Result;
+use GuzzleHttp\Exception\GuzzleException;
 
 /**
  * Классы драйвер для анализа текстов с использованием text.ru.
@@ -78,12 +78,12 @@ class PlagiarismTextRu extends Plagiarism
      *
      * @param string $id ID задачи.
      *
-     * @return Result Готовый анализ.
+     * @return Quality Готовый анализ.
      * @throws ProcessingException
      * @throws ResponseException
      * @throws GuzzleException
      */
-    public function result(string $id): Result
+    public function result(string $id): Quality
     {
         $client = new Client();
 
@@ -119,11 +119,6 @@ class PlagiarismTextRu extends Plagiarism
 
         $seo = json_decode($response['seo_check'], true);
 
-        $result = new Result();
-        $result->unique = $response['unique'];
-        $result->water = $seo['water_percent'];
-        $result->spam = $seo['spam_percent'];
-
-        return $result;
+        return new Quality($response['unique'], $seo['water_percent'], $seo['spam_percent']);
     }
 }

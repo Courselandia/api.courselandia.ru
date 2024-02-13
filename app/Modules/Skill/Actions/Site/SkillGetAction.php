@@ -12,7 +12,6 @@ use Cache;
 use Util;
 use App\Models\Action;
 use App\Models\Enums\CacheTime;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Skill\Entities\Skill as SkillEntity;
 use App\Modules\Skill\Models\Skill;
 
@@ -22,17 +21,24 @@ use App\Modules\Skill\Models\Skill;
 class SkillGetAction extends Action
 {
     /**
-     * ID категории.
+     * ID навыка.
      *
-     * @var int|string|null
+     * @var int|string
      */
-    public int|string|null $id = null;
+    private int|string $id;
+
+    /**
+     * @param int|string $id ID навыка.
+     */
+    public function __construct(int|string $id)
+    {
+        $this->id = $id;
+    }
 
     /**
      * Метод запуска логики.
      *
      * @return SkillEntity|null Вернет результаты исполнения.
-     * @throws ParameterInvalidException
      */
     public function run(): ?SkillEntity
     {
@@ -46,15 +52,7 @@ class SkillGetAction extends Action
                     'metatag',
                 ])->find($this->id);
 
-                if ($result) {
-                    $item = $result->toArray();
-                    $entity = new SkillEntity();
-                    $entity->set($item);
-
-                    return $entity;
-                }
-
-                return null;
+                return $result ? SkillEntity::from($result->toArray()) : null;
             }
         );
     }

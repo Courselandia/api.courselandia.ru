@@ -20,16 +20,26 @@ class TeacherDetachCoursesAction extends Action
     /**
      *  ID учителя.
      *
-     * @var int|string|null
+     * @var int|string
      */
-    public string|int|null $id = null;
+    private string|int $id;
 
     /**
      * Массив ID курсов.
      *
      * @var int[]|string[]
      */
-    public ?array $ids = null;
+    private array $ids;
+
+    /**
+     * @param string|int $id ID учителя.
+     * @param array $ids Массив ID курсов.
+     */
+    public function __construct(string|int $id, array $ids)
+    {
+        $this->id = $id;
+        $this->ids = $ids;
+    }
 
     /**
      * Метод запуска логики.

@@ -11,7 +11,6 @@ namespace App\Modules\Course\Http\Requests\Site\Course;
 use App\Models\Enums\EnumList;
 use App\Models\FormRequest;
 use App\Modules\Course\Enums\Status;
-use JetBrains\PhpStorm\ArrayShape;
 use Schema;
 
 /**
@@ -24,19 +23,7 @@ class CourseFilterItemReadRequest extends FormRequest
      *
      * @return array Массив правил проверки.
      */
-    #[ArrayShape([
-        'offset' => 'string',
-        'limit' => 'string',
-        'withCategories' => 'string',
-        'withCount' => 'string',
-        'filters' => 'string',
-        'filters.status' => 'string',
-        'filters.rating' => 'string',
-        'filters.price.*' => 'string',
-        'filters.online' => 'string',
-        'filters.employment' => 'string',
-        'filters.duration.*' => 'string',
-    ])] public function rules(): array
+    public function rules(): array
     {
         $columns = Schema::getColumnListing('courses');
         $columnsFilter = array_merge(
@@ -84,19 +71,7 @@ class CourseFilterItemReadRequest extends FormRequest
      *
      * @return array Массив атрибутов.
      */
-    #[ArrayShape([
-        'offset' => 'string',
-        'limit' => 'string',
-        'withCategories' => 'string',
-        'withCount' => 'string',
-        'filters' => 'string',
-        'filters.status' => 'string',
-        'filters.rating' => 'string',
-        'filters.price.*' => 'string',
-        'filters.online' => 'string',
-        'filters.employment' => 'string',
-        'filters.duration.*' => 'string',
-    ])] public function attributes(): array
+    public function attributes(): array
     {
         return [
             'offset' => trans('course::http.requests.admin.courseReadRequest.offset'),

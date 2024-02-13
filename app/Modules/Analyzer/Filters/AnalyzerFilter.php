@@ -25,7 +25,7 @@ class AnalyzerFilter extends ModelFilter
      */
     public $relations = [
         'analyzerable' => [
-            'analyzerable-status'  => 'analyzerableStatus',
+            'analyzerable-status' => 'analyzerableStatus',
         ]
     ];
 
@@ -34,9 +34,9 @@ class AnalyzerFilter extends ModelFilter
      *
      * @param int|string $id ID.
      *
-     * @return AnalyzerFilter Правила поиска.
+     * @return self Правила поиска.
      */
-    public function id(int|string $id): AnalyzerFilter
+    public function id(int|string $id): self
     {
         return $this->where('analyzers.id', $id);
     }
@@ -46,9 +46,9 @@ class AnalyzerFilter extends ModelFilter
      *
      * @param string|array $category Категории.
      *
-     * @return AnalyzerFilter Правила поиска.
+     * @return self Правила поиска.
      */
-    public function category(string|array $category): AnalyzerFilter
+    public function category(string|array $category): self
     {
         return $this->whereIn('analyzers.category', is_array($category) ? $category : [$category]);
     }
@@ -58,9 +58,9 @@ class AnalyzerFilter extends ModelFilter
      *
      * @param float[] $unique Уникальность.
      *
-     * @return AnalyzerFilter Правила поиска.
+     * @return self Правила поиска.
      */
-    public function unique(array $unique): AnalyzerFilter
+    public function unique(array $unique): self
     {
         return $this->whereBetween('analyzers.unique', $unique);
     }
@@ -70,9 +70,9 @@ class AnalyzerFilter extends ModelFilter
      *
      * @param float[] $water Процент воды.
      *
-     * @return AnalyzerFilter Правила поиска.
+     * @return self Правила поиска.
      */
-    public function water(array $water): AnalyzerFilter
+    public function water(array $water): self
     {
         return $this->whereBetween('analyzers.water', $water);
     }
@@ -82,9 +82,9 @@ class AnalyzerFilter extends ModelFilter
      *
      * @param float[] $spam Процент спама.
      *
-     * @return AnalyzerFilter Правила поиска.
+     * @return self Правила поиска.
      */
-    public function spam(array $spam): AnalyzerFilter
+    public function spam(array $spam): self
     {
         return $this->whereBetween('analyzers.spam', $spam);
     }
@@ -94,9 +94,9 @@ class AnalyzerFilter extends ModelFilter
      *
      * @param int|string $analyzerableId ID сущности.
      *
-     * @return AnalyzerFilter Правила поиска.
+     * @return self Правила поиска.
      */
-    public function analyzerable(int|string $analyzerableId): AnalyzerFilter
+    public function analyzerable(int|string $analyzerableId): self
     {
         return $this->where('analyzers.analyzerable_id', $analyzerableId);
     }
@@ -106,9 +106,9 @@ class AnalyzerFilter extends ModelFilter
      *
      * @param string $analyzerableType Название сущности.
      *
-     * @return AnalyzerFilter Правила поиска.
+     * @return self Правила поиска.
      */
-    public function analyzerableType(string $analyzerableType): AnalyzerFilter
+    public function analyzerableType(string $analyzerableType): self
     {
         return $this->where('analyzers.analyzerable_type', $analyzerableType);
     }
@@ -118,9 +118,9 @@ class AnalyzerFilter extends ModelFilter
      *
      * @param array|Status|string $statuses Статусы.
      *
-     * @return AnalyzerFilter Правила поиска.
+     * @return self Правила поиска.
      */
-    public function status(array|Status|string $statuses): AnalyzerFilter
+    public function status(array|Status|string $statuses): self
     {
         return $this->whereIn('analyzers.status', is_array($statuses) ? $statuses : [$statuses]);
     }
@@ -130,9 +130,9 @@ class AnalyzerFilter extends ModelFilter
      *
      * @param bool $status Статус.
      *
-     * @return AnalyzerFilter Правила поиска.
+     * @return self Правила поиска.
      */
-    public function analyzerableStatus(bool $status): AnalyzerFilter
+    public function analyzerableStatus(bool $status): self
     {
         return $this->related('analyzerable', function ($query) use ($status) {
             $statusValue = [

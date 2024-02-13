@@ -8,8 +8,6 @@
 
 namespace App\Modules\Course\Http\Requests\Site\Course;
 
-use JetBrains\PhpStorm\ArrayShape;
-
 /**
  * Класс запрос для чтения избранного.
  */
@@ -20,9 +18,7 @@ class CourseReadFavoritesRequest extends CourseFilterItemReadRequest
      *
      * @return array Массив правил проверки.
      */
-    #[ArrayShape([
-        'ids.*' => 'string',
-    ])] public function rules(): array
+    public function rules(): array
     {
         return array_merge(parent::rules(),
             [
@@ -36,9 +32,7 @@ class CourseReadFavoritesRequest extends CourseFilterItemReadRequest
      *
      * @return array Массив атрибутов.
      */
-    #[ArrayShape([
-        'ids.*' => 'string',
-    ])] public function attributes(): array
+    public function attributes(): array
     {
         return array_merge(parent::rules(),
             [

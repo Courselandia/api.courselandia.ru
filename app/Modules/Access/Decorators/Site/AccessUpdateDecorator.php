@@ -9,7 +9,7 @@
 namespace App\Modules\Access\Decorators\Site;
 
 use App\Models\Decorator;
-use App\Modules\Access\Entities\AccessUpdate;
+use App\Modules\Access\Data\Decorators\AccessUpdate;
 use App\Modules\User\Entities\User;
 use Illuminate\Pipeline\Pipeline;
 
@@ -19,32 +19,17 @@ use Illuminate\Pipeline\Pipeline;
 class AccessUpdateDecorator extends Decorator
 {
     /**
-     * ID пользователя.
-     *
-     * @var string|int|null
+     * @var AccessUpdate Data для декоратора изменения информации о пользователе.
      */
-    public string|int|null $id = null;
+    private AccessUpdate $data;
 
     /**
-     * Имя.
-     *
-     * @var string|null
+     * @param AccessUpdate $data Data для декоратора изменения информации о пользователе.
      */
-    public ?string $first_name = null;
-
-    /**
-     * Фамилия.
-     *
-     * @var string|null
-     */
-    public ?string $second_name = null;
-
-    /**
-     * Телефон.
-     *
-     * @var string|null
-     */
-    public ?string $phone = null;
+    public function __construct(AccessUpdate $data)
+    {
+        $this->data = $data;
+    }
 
     /**
      * Метод обработчик события после выполнения всех действий декоратора.
@@ -53,15 +38,17 @@ class AccessUpdateDecorator extends Decorator
      */
     public function run(): User
     {
-        $accessUpdate = new AccessUpdate();
-        $accessUpdate->id = $this->id;
-        $accessUpdate->first_name = $this->first_name;
-        $accessUpdate->second_name = $this->second_name;
-        $accessUpdate->phone = $this->phone;
-
-        return app(Pipeline::class)
-            ->send($accessUpdate)
+        /**
+         * @var AccessUpdate $data
+         */
+        $data = app(Pipeline::class)
+            ->send($this->data)
             ->through($this->getActions())
             ->thenReturn();
+
+        return User::from([
+            ...$data->user->toArray(),
+            'password' => null,
+        ]);
     }
 }

@@ -10,7 +10,6 @@ namespace App\Modules\Faq\Actions\Admin;
 
 use App\Models\Action;
 use App\Models\Enums\CacheTime;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Faq\Entities\Faq as FaqEntity;
 use App\Modules\Faq\Models\Faq;
 use Cache;
@@ -24,15 +23,22 @@ class FaqGetAction extends Action
     /**
      * ID FAQ.
      *
-     * @var int|string|null
+     * @var int|string
      */
-    public int|string|null $id = null;
+    private int|string $id;
+
+    /**
+     * @param int|string $id ID FAQ.
+     */
+    public function __construct(int|string $id)
+    {
+        $this->id = $id;
+    }
 
     /**
      * Метод запуска логики.
      *
      * @return FaqEntity|null Вернет результаты исполнения.
-     * @throws ParameterInvalidException
      */
     public function run(): ?FaqEntity
     {
@@ -46,7 +52,7 @@ class FaqGetAction extends Action
                     ->with('school')
                     ->first();
 
-                return $faq ? new FaqEntity($faq->toArray()) : null;
+                return $faq ? FaqEntity::from($faq->toArray()) : null;
             }
         );
     }

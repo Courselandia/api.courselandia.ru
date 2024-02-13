@@ -9,7 +9,6 @@
 namespace App\Modules\Alert\Http\Requests\Admin;
 
 use App\Models\FormRequest;
-use JetBrains\PhpStorm\ArrayShape;
 
 /**
  * Класс запрос для чтения предупреждений.
@@ -21,7 +20,7 @@ class AlertReadRequest extends FormRequest
      *
      * @return array Массив правил проверки.
      */
-    #[ArrayShape(['offset' => 'string', 'limit' => 'string', 'status' => 'string'])] public function rules(): array
+    public function rules(): array
     {
         return [
             'offset' => 'nullable|integer|digits_between:0,20',
@@ -35,7 +34,7 @@ class AlertReadRequest extends FormRequest
      *
      * @return array Массив атрибутов.
      */
-    #[ArrayShape(['offset' => 'string', 'limit' => 'string', 'status' => 'string'])] public function attributes(): array
+    public function attributes(): array
     {
         return [
             'offset' => trans('alert::http.requests.site.alertRead.offset'),

@@ -10,7 +10,6 @@ namespace App\Modules\Profession\Actions\Admin;
 
 use App\Models\Action;
 use App\Models\Enums\CacheTime;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Profession\Entities\Profession as ProfessionEntity;
 use App\Modules\Profession\Models\Profession;
 use Cache;
@@ -24,15 +23,22 @@ class ProfessionGetAction extends Action
     /**
      * ID профессии.
      *
-     * @var int|string|null
+     * @var int|string
      */
-    public int|string|null $id = null;
+    private int|string $id;
+
+    /**
+     * @param int|string $id ID профессии.
+     */
+    public function __construct(int|string $id)
+    {
+        $this->id = $id;
+    }
 
     /**
      * Метод запуска логики.
      *
      * @return ProfessionEntity|null Вернет результаты исполнения.
-     * @throws ParameterInvalidException
      */
     public function run(): ?ProfessionEntity
     {
@@ -49,7 +55,7 @@ class ProfessionGetAction extends Action
                         'analyzers',
                     ])->first();
 
-                return $profession ? new ProfessionEntity($profession->toArray()) : null;
+                return $profession ? ProfessionEntity::from($profession->toArray()) : null;
             }
         );
     }

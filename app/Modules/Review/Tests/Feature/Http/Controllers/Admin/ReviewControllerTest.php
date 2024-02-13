@@ -15,7 +15,6 @@ use App\Modules\Review\Models\Review;
 use App\Modules\School\Models\School;
 use Carbon\Carbon;
 use Faker\Factory as Faker;
-use JetBrains\PhpStorm\Pure;
 use Tests\TestCase;
 
 /**
@@ -334,7 +333,7 @@ class ReviewControllerTest extends TestCase
      *
      * @return array Массив структуры данных отзывов.
      */
-    #[Pure] private function getReviewStructure($full = true): array
+    private function getReviewStructure($full = true): array
     {
         $structure = [
             'id',

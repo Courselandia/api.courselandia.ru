@@ -16,11 +16,11 @@ use Eloquent;
 use App\Models\Validate;
 use App\Models\Delete;
 use EloquentFilter\Filterable;
+use Illuminate\Database\Eloquent\Concerns\HasTimestamps;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use JetBrains\PhpStorm\ArrayShape;
 use App\Modules\User\Enums\Role;
 
 /**
@@ -40,6 +40,7 @@ class UserRole extends Eloquent
     use SoftDeletes;
     use Validate;
     use Filterable;
+    use HasTimestamps;
 
     /**
      * Атрибуты, для которых разрешено массовое назначение.
@@ -57,11 +58,11 @@ class UserRole extends Eloquent
      *
      * @return array Вернет массив правил.
      */
-    #[ArrayShape(['user_id' => 'string', 'name' => 'string'])] protected function getRules(): array
+    protected function getRules(): array
     {
         return [
             'user_id' => 'required|integer|digits_between:1,20',
-            'name' => 'required|in:' . implode(',' , EnumList::getValues(Role::class)),
+            'name' => 'required|in:' . implode(',', EnumList::getValues(Role::class)),
         ];
     }
 
@@ -70,7 +71,7 @@ class UserRole extends Eloquent
      *
      * @return array Массив возможных ошибок валидации.
      */
-    #[ArrayShape(['name' => 'string', 'user_id' => 'string'])] protected function getNames(): array
+    protected function getNames(): array
     {
         return [
             'user_id' => trans('user::models.userRole.userId'),

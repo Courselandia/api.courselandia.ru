@@ -24,15 +24,24 @@ class AccessGateAction extends Action
     /**
      * ID пользователя.
      *
-     * @var int|string|null
+     * @var int|string
      */
-    public int|string|null $id = null;
+    private int|string $id;
+
+    /**
+     * ID пользователя.
+     *
+     * @param int|string $id
+     */
+    public function __construct(int|string $id)
+    {
+        $this->id = $id;
+    }
 
     /**
      * Метод запуска логики.
      *
      * @return UserEntity|null Вернет результаты исполнения.
-     * @throws ParameterInvalidException
      */
     public function run(): ?UserEntity
     {
@@ -50,7 +59,7 @@ class AccessGateAction extends Action
                     ])->first();
 
                 if ($user) {
-                    $userEntity = new UserEntity($user->toArray());
+                    $userEntity = UserEntity::from($user->toArray());
                     $userEntity->password = null;
 
                     return $userEntity;

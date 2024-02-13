@@ -12,7 +12,6 @@ use App\Modules\User\Models\UserVerification;
 use Carbon\Carbon;
 use Crypt;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use JetBrains\PhpStorm\ArrayShape;
 
 /**
  * Фабрика модели верификации пользователя.
@@ -31,7 +30,7 @@ class UserVerificationFactory extends Factory
      *
      * @return array
      */
-    #[ArrayShape(['code' => 'string', 'status' => 'bool'])] public function definition(): array
+    public function definition(): array
     {
         return [
             'code' => Crypt::encrypt(intval(Carbon::now()->format('U')) + rand(1000000, 100000000)),

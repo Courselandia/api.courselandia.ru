@@ -28,9 +28,17 @@ class AnalyzerAnalyzeAction extends Action
     /**
      * ID статьи.
      *
-     * @var int|string|null
+     * @var int|string
      */
-    public int|string|null $id = null;
+    private int|string $id;
+
+    /**
+     * @param int|string $id ID статьи.
+     */
+    public function __construct(int|string $id)
+    {
+        $this->id = $id;
+    }
 
     /**
      * Метод запуска логики.
@@ -41,8 +49,7 @@ class AnalyzerAnalyzeAction extends Action
      */
     public function run(): AnalyzerEntity
     {
-        $action = app(AnalyzerGetAction::class);
-        $action->id = $this->id;
+        $action = new AnalyzerGetAction($this->id);
         $analyzerEntity = $action->run();
 
         if ($analyzerEntity) {
@@ -69,8 +76,7 @@ class AnalyzerAnalyzeAction extends Action
 
             Cache::tags(['analyzer'])->flush();
 
-            $action = app(AnalyzerGetAction::class);
-            $action->id = $this->id;
+            $action = new AnalyzerGetAction($this->id);
 
             return $action->run();
         }

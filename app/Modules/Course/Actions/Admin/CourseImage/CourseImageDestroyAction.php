@@ -8,10 +8,10 @@
 
 namespace App\Modules\Course\Actions\Admin\CourseImage;
 
+use Util;
 use Cache;
 use ImageStore;
 use ReflectionException;
-use Util;
 use App\Models\Action;
 use App\Models\Enums\CacheTime;
 use App\Models\Exceptions\ParameterInvalidException;
@@ -26,9 +26,17 @@ class CourseImageDestroyAction extends Action
     /**
      * ID курса.
      *
-     * @var int|string|null
+     * @var int|string
      */
-    public int|string|null $id = null;
+    private int|string $id;
+
+    /**
+     * @param int|string $id ID курса.
+     */
+    public function __construct(int|string $id)
+    {
+        $this->id = $id;
+    }
 
     /**
      * Метод запуска логики.

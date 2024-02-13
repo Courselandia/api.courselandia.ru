@@ -9,7 +9,6 @@
 namespace App\Modules\User\Actions\Admin\UserImage;
 
 use App\Models\Action;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\UserNotExistException;
 use App\Modules\User\Actions\Admin\User\UserGetAction;
 use App\Modules\User\Entities\User as UserEntity;
@@ -25,37 +24,46 @@ class UserImageUpdateAction extends Action
     /**
      * ID пользователей.
      *
-     * @var int|string|null
+     * @var int|string
      */
-    public int|string|null $id = null;
+    private int|string $id;
 
     /**
      * Изображение.
      *
-     * @var UploadedFile|null
+     * @var UploadedFile
      */
-    public ?UploadedFile $image = null;
+    private UploadedFile $image;
+
+    /**
+     * @param int|string $id ID пользователей.
+     * @param UploadedFile $image Изображение.
+     */
+    public function __construct(int|string $id, UploadedFile $image)
+    {
+        $this->id = $id;
+        $this->image = $image;
+    }
 
     /**
      * Метод запуска логики.
      *
      * @return UserEntity Вернет результаты исполнения.
      * @throws UserNotExistException
-     * @throws ParameterInvalidException
      */
     public function run(): UserEntity
     {
         if ($this->id) {
-            $action = app(UserGetAction::class);
-            $action->id = $this->id;
+            $action = new UserGetAction($this->id);
             $user = $action->run();
 
             if ($user) {
-                $user->image_small_id = $this->image;
-                $user->image_middle_id = $this->image;
-                $user->image_big_id = $this->image;
+                $user = $user->toArray();
+                $user['image_small_id'] = $this->image;
+                $user['image_middle_id'] = $this->image;
+                $user['image_big_id'] = $this->image;
 
-                User::find($this->id)->update($user->toArray());
+                User::find($this->id)->update($user);
                 Cache::tags(['user'])->flush();
 
                 return $action->run();

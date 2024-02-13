@@ -11,7 +11,6 @@ namespace App\Modules\Course\Http\Requests\Admin\Course;
 use App\Models\Enums\EnumList;
 use App\Models\FormRequest;
 use App\Modules\Course\Enums\Status;
-use JetBrains\PhpStorm\ArrayShape;
 use Schema;
 
 /**
@@ -24,18 +23,7 @@ class CourseReadRequest extends FormRequest
      *
      * @return array Массив правил проверки.
      */
-    #[ArrayShape([
-        'sorts' => 'string',
-        'offset' => 'string',
-        'limit' => 'string',
-        'filters' => 'string',
-        'filters.status.*' => 'string',
-        'filters.rating' => 'string',
-        'filters.price.*' => 'string',
-        'filters.online' => 'string',
-        'filters.employment' => 'string',
-        'filters.duration.*' => 'string',
-    ])] public function rules(): array
+    public function rules(): array
     {
         $columns = Schema::getColumnListing('courses');
 
@@ -85,18 +73,7 @@ class CourseReadRequest extends FormRequest
      *
      * @return array Массив атрибутов.
      */
-    #[ArrayShape([
-        'sorts' => 'string',
-        'offset' => 'string',
-        'limit' => 'string',
-        'filters' => 'string',
-        'filters.status.*' => 'string',
-        'filters.rating' => 'string',
-        'filters.price.*' => 'string',
-        'filters.online' => 'string',
-        'filters.employment' => 'string',
-        'filters.duration.*' => 'string',
-    ])] public function attributes(): array
+    public function attributes(): array
     {
         return [
             'sorts' => trans('course::http.requests.admin.courseReadRequest.sorts'),

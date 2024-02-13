@@ -8,21 +8,21 @@
 
 namespace App\Modules\Analyzer\Jobs;
 
-use App\Modules\Plagiarism\Entities\Result;
-use Log;
-use Throwable;
-use Plagiarism;
+use App\Models\Exceptions\ParameterInvalidException;
+use App\Models\Exceptions\ProcessingException;
+use App\Modules\Analyzer\Actions\Admin\AnalyzerGetAction;
+use App\Modules\Analyzer\Enums\Status;
+use App\Modules\Analyzer\Models\Analyzer;
+use App\Modules\Plagiarism\Values\Quality;
 use Cache;
 use Illuminate\Bus\Queueable;
-use App\Modules\Analyzer\Models\Analyzer;
-use App\Models\Exceptions\ProcessingException;
-use App\Models\Exceptions\ParameterInvalidException;
-use App\Modules\Analyzer\Actions\Admin\AnalyzerGetAction;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use App\Modules\Analyzer\Enums\Status;
+use Log;
+use Plagiarism;
+use Throwable;
 
 /**
  * Задание на получения результата анализа текста.
@@ -39,9 +39,9 @@ class AnalyzerSaveResultJob implements ShouldQueue
     /**
      * ID данных анализа (модель Analyzer).
      *
-     * @var int|null
+     * @var int
      */
-    public ?int $id = null;
+    private int $id;
 
     /**
      * Конструктор.
@@ -61,25 +61,24 @@ class AnalyzerSaveResultJob implements ShouldQueue
      */
     public function handle(): void
     {
-        $action = app(AnalyzerGetAction::class);
-        $action->id = $this->id;
+        $action = new AnalyzerGetAction($this->id);
         $analyzerEntity = $action->run();
 
         if ($analyzerEntity && $analyzerEntity->status === Status::PROCESSING) {
             try {
                 /**
-                 * @var Result $result
+                 * @var Quality $result
                  */
                 $result = Plagiarism::result($analyzerEntity->task_id);
 
                 Analyzer::find($this->id)->update([
-                    'unique' => $result->unique,
-                    'water' => $result->water,
-                    'spam' => $result->spam,
+                    'unique' => $result->getUnique(),
+                    'water' => $result->getWater(),
+                    'spam' => $result->getSpam(),
                     'status' => Status::READY->value,
                     'tries' => $analyzerEntity->tries + 1,
                 ]);
-            } catch (ProcessingException $error) {
+            } catch (ProcessingException) {
                 if ($analyzerEntity->tries < self::MAX_TRIES) {
                     AnalyzerSaveResultJob::dispatch($this->id)
                         ->delay(now()->addMinutes(2));

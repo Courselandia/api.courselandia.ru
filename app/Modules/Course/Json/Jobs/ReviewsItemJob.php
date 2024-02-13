@@ -10,6 +10,7 @@ namespace App\Modules\Course\Json\Jobs;
 
 use App\Modules\Review\Actions\Site\ReviewReadAction;
 use App\Models\Exceptions\ParameterInvalidException;
+use App\Modules\Review\Data\Site\ReviewRead;
 
 /**
  * Задача для формирования всех отзывов.
@@ -24,11 +25,12 @@ class ReviewsItemJob extends JsonItemJob
      */
     public function handle(): void
     {
-        $action = app(ReviewReadAction::class);
-        $action->sorts = ['created_at' => 'DESC'];
-        $action->offset = 0;
-        $action->limit = 20;
-        $action->link = $this->link;
+        $action = new ReviewReadAction(ReviewRead::from([
+            'sorts' => ['created_at' => 'DESC'],
+            'offset' => 0,
+            'limit' => 20,
+            'link' => $this->link,
+        ]));
 
         $data = $action->run();
         $data['success'] = true;

@@ -9,7 +9,6 @@
 namespace App\Modules\Teacher\Database\Factories;
 
 use Carbon\Carbon;
-use JetBrains\PhpStorm\ArrayShape;
 use App\Modules\Teacher\Models\Teacher;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Modules\Teacher\Models\TeacherExperience;
@@ -31,14 +30,7 @@ class TeacherExperienceFactory extends Factory
      *
      * @return array
      */
-    #[ArrayShape([
-        'teacher_id' => '\Illuminate\Database\Eloquent\Factories\Factory',
-        'place' => 'string',
-        'position' => 'string',
-        'started' => 'string',
-        'finished' => 'string',
-        'weight' => 'string',
-    ])] public function definition(): array
+    public function definition(): array
     {
         return [
             'teacher_id' => Teacher::factory(),
@@ -46,7 +38,7 @@ class TeacherExperienceFactory extends Factory
             'position' => $this->faker->text(160),
             'started' => Carbon::now()->subMonths(5),
             'finished' => Carbon::now()->subMonths(2),
-            'weight' =>  $this->faker->numberBetween(1, 20),
+            'weight' => $this->faker->numberBetween(1, 20),
         ];
     }
 }

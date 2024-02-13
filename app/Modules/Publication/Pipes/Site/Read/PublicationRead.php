@@ -8,6 +8,7 @@
 
 namespace App\Modules\Publication\Pipes\Site\Read;
 
+use App\Models\Data;
 use App\Models\Enums\CacheTime;
 use App\Modules\Publication\Entities\Publication as PublicationEntity;
 use Cache;
@@ -15,12 +16,11 @@ use Closure;
 use Util;
 use View;
 use Storage;
-use App\Models\Entity;
 use ReflectionException;
 use App\Models\Contracts\Pipe;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Publication\Models\Publication;
-use App\Modules\Publication\Entities\PublicationRead as PublicationReadEntity;
+use App\Modules\Publication\Data\Decorators\PublicationRead as PublicationReadData;
 
 /**
  * Класс пайплайн для публикации.
@@ -30,18 +30,18 @@ class PublicationRead implements Pipe
     /**
      * Метод, который будет вызван у pipeline.
      *
-     * @param Entity|PublicationReadEntity $entity Сущность для чтения публикаций.
+     * @param Data|PublicationReadData $data $entity Данные для чтения публикаций.
      * @param Closure $next Ссылка на следующий pipe.
      *
      * @return mixed Вернет значение полученное после выполнения следующего pipe.
      * @throws ParameterInvalidException|ReflectionException
      */
-    public function handle(Entity|PublicationReadEntity $entity, Closure $next): mixed
+    public function handle(Data|PublicationReadData $data, Closure $next): mixed
     {
-        $id = $entity->id;
-        $year = $entity->year;
-        $link = $entity->link;
-        $limit = $entity->limit;
+        $id = $data->id;
+        $year = $data->year;
+        $link = $data->link;
+        $limit = $data->limit;
 
         $cacheKey = Util::getKey(
             'publication',
@@ -58,7 +58,7 @@ class PublicationRead implements Pipe
             $cacheKey,
             CacheTime::GENERAL->value,
             function () use ($year, $link, $id, $limit) {
-                $publication = Publication::limit($limit)
+                $publications = Publication::limit($limit)
                     ->year($year)
                     ->link($link)
                     ->id($id)
@@ -68,11 +68,11 @@ class PublicationRead implements Pipe
                     ->active()
                     ->get();
 
-                return $publication ? Entity::toEntities($publication->toArray(), new PublicationEntity()) : null;
+                return $publications ? PublicationEntity::collection($publications) : null;
             }
         );
 
-        if ($entity->id || $entity->link) {
+        if ($data->id || $data->link) {
             if (isset($publications[0])) {
                 $publication = $publications[0];
 
@@ -86,13 +86,13 @@ class PublicationRead implements Pipe
                     $publication->article = View::make('tmp.publications.' . $publication->id)
                         ->render();
 
-                    $entity->publication = $publication;
+                    $data->publication = $publication;
                 }
             }
         } else {
-            $entity->publications = $publications;
+            $data->publications = $publications;
         }
 
-        return $next($entity);
+        return $next($data);
     }
 }

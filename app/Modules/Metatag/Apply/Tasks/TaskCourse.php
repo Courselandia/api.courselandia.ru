@@ -8,6 +8,7 @@
 
 namespace App\Modules\Metatag\Apply\Tasks;
 
+use App\Modules\Metatag\Data\MetatagSet;
 use Throwable;
 use App\Modules\Metatag\Apply\Apply;
 use App\Modules\Course\Enums\Currency;
@@ -75,10 +76,10 @@ class TaskCourse extends Task
             'metatag',
             'school',
         ])
-        ->where('status', Status::ACTIVE->value)
-        ->whereHas('school', function ($query) {
-            $query->where('status', true);
-        });
+            ->where('status', Status::ACTIVE->value)
+            ->whereHas('school', function ($query) {
+                $query->where('status', true);
+            });
 
         for ($i = 0; $i < $count; $i++) {
             $course = $query->clone()
@@ -99,14 +100,14 @@ class TaskCourse extends Task
                     'currency' => Currency::from($course->currency),
                 ];
 
-                $action = app(MetatagSetAction::class);
+                $dataMetatagSet = new MetatagSet();
 
                 if ($this->onlyUpdate()) {
-                    $action->description = $course->metatag?->description_template
+                    $dataMetatagSet->description = $course->metatag?->description_template
                         ? $template->convert($course->metatag?->description_template, $templateValues)
                         : null;
 
-                    $action->title = $course->metatag?->title_template
+                    $dataMetatagSet->title = $course->metatag?->title_template
                         ? $template->convert($course->metatag?->title_template, $templateValues)
                         : null;
 
@@ -114,19 +115,22 @@ class TaskCourse extends Task
                         ? $template->convert($course->header_template, $templateValues)
                         : null;
 
-                    $action->description_template = $course->metatag?->description_template;
-                    $action->title_template = $course->metatag?->title_template;
+                    $dataMetatagSet->description_template = $course->metatag?->description_template;
+                    $dataMetatagSet->title_template = $course->metatag?->title_template;
                 } else {
-                    $action->description = $template->convert($this->description_template, $templateValues);
-                    $action->title = $template->convert($this->title_template, $templateValues);
+                    $dataMetatagSet->description = $template->convert($this->description_template, $templateValues);
+                    $dataMetatagSet->title = $template->convert($this->title_template, $templateValues);
                     $course->header = $template->convert($this->header_template, $templateValues);
-                    $action->description_template = $this->description_template;
-                    $action->title_template = $this->title_template;
+                    $dataMetatagSet->description_template = $this->description_template;
+                    $dataMetatagSet->title_template = $this->title_template;
                     $course->header_template = $this->header_template;
                 }
 
-                $action->keywords = $course->metatag?->keywords;
-                $action->id = $course->metatag_id ?: null;
+                $dataMetatagSet->keywords = $course->metatag?->keywords;
+                $dataMetatagSet->id = $course->metatag_id ?: null;
+
+                $action = new MetatagSetAction($dataMetatagSet);
+
                 $metatagId = $action->run()->id;
                 $course->metatag_id = $metatagId;
 

@@ -12,7 +12,6 @@ use Cache;
 use Util;
 use App\Models\Action;
 use App\Models\Enums\CacheTime;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Category\Entities\Category as CategoryEntity;
 use App\Modules\Category\Models\Category;
 
@@ -24,15 +23,24 @@ class CategoryGetAction extends Action
     /**
      * ID категории.
      *
-     * @var int|string|null
+     * @var int|string
      */
-    public int|string|null $id = null;
+    private int|string $id;
+
+    /**
+     * ID категории.
+     *
+     * @param int|string $id
+     */
+    public function __construct(int|string $id)
+    {
+        $this->id = $id;
+    }
 
     /**
      * Метод запуска логики.
      *
      * @return CategoryEntity|null Вернет результаты исполнения.
-     * @throws ParameterInvalidException
      */
     public function run(): ?CategoryEntity
     {
@@ -49,15 +57,7 @@ class CategoryGetAction extends Action
                     'analyzers',
                 ])->find($this->id);
 
-                if ($result) {
-                    $item = $result->toArray();
-                    $entity = new CategoryEntity();
-                    $entity->set($item);
-
-                    return $entity;
-                }
-
-                return null;
+                return $result ? CategoryEntity::from($result->toArray()) : null;
             }
         );
     }

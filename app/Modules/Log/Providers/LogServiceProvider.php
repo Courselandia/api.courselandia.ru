@@ -30,7 +30,7 @@ class LogServiceProvider extends ServiceProvider
         $this->registerTranslations();
         $this->registerConfig();
 
-        $this->loadMigrationsFrom(__DIR__.'/../Database/Migrations');
+        $this->loadMigrationsFrom(__DIR__ . '/../Database/Migrations');
     }
 
     /**
@@ -41,7 +41,7 @@ class LogServiceProvider extends ServiceProvider
     public function register(): void
     {
         App::singleton(LogRepository::class, function () {
-            return new LogRepository(new LogMongoDbModel(), new LogEntity());
+            return new LogRepository(new LogMongoDbModel(), LogEntity::class);
         });
     }
 
@@ -53,10 +53,10 @@ class LogServiceProvider extends ServiceProvider
     protected function registerConfig(): void
     {
         $this->publishes([
-            __DIR__.'/../Config/config.php' => config_path('log.php'),
+            __DIR__ . '/../Config/config.php' => config_path('log.php'),
         ]);
         $this->mergeConfigFrom(
-            __DIR__.'/../Config/config.php',
+            __DIR__ . '/../Config/config.php',
             'log'
         );
     }
@@ -70,7 +70,7 @@ class LogServiceProvider extends ServiceProvider
     {
         $viewPath = base_path('resources/views/modules/log');
 
-        $sourcePath = __DIR__.'/../Resources/views';
+        $sourcePath = __DIR__ . '/../Resources/views';
 
         $this->publishes([
             $sourcePath => $viewPath
@@ -79,7 +79,7 @@ class LogServiceProvider extends ServiceProvider
         $this->loadViewsFrom(
             array_merge(
                 array_map(function ($path) {
-                    return $path.'/modules/log';
+                    return $path . '/modules/log';
                 }, Config::get('view.paths')),
                 [$sourcePath]
             ),
@@ -99,7 +99,7 @@ class LogServiceProvider extends ServiceProvider
         if (is_dir($langPath)) {
             $this->loadTranslationsFrom($langPath, 'log');
         } else {
-            $this->loadTranslationsFrom(__DIR__.'/../Resources/lang', 'log');
+            $this->loadTranslationsFrom(__DIR__ . '/../Resources/lang', 'log');
         }
     }
 

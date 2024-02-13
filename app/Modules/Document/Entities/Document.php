@@ -70,4 +70,35 @@ class Document extends Entity
      * @var string|null
      */
     public ?string $pathSource = null;
+
+    /**
+     * @param int|string|null $id ID записи.
+     * @param string|null $byte Байткод.
+     * @param string|null $folder Папка хранения файла.
+     * @param string|null $format Папка хранения файла.
+     * @param string|null $cache Постфикс для кеширования.
+     * @param string|null $path Путь к файлу.
+     * @param string|null $pathCache Путь к файлу с кешированием.
+     * @param string|null $pathSource Путь фактического месторасположения файла.
+     */
+    public function __construct(
+        int|string|null $id = null,
+        ?string         $byte = null,
+        ?string         $folder = null,
+        ?string         $format = null,
+        ?string         $cache = null,
+        ?string         $path = null,
+        ?string         $pathCache = null,
+        ?string         $pathSource = null
+    )
+    {
+        $this->id = $id;
+        $this->byte = $byte;
+        $this->folder = $folder;
+        $this->format = $format;
+        $this->cache = $cache;
+        $this->path = $path;
+        $this->pathCache = $pathCache;
+        $this->pathSource = $pathSource;
+    }
 }

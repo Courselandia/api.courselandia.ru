@@ -32,7 +32,7 @@ class SchoolServiceProvider extends ServiceProvider
         $this->registerTranslations();
         $this->registerConfig();
 
-        $this->loadMigrationsFrom(__DIR__.'/../Database/Migrations');
+        $this->loadMigrationsFrom(__DIR__ . '/../Database/Migrations');
 
         SchoolModel::observe(SchoolListener::class);
     }
@@ -58,10 +58,10 @@ class SchoolServiceProvider extends ServiceProvider
     protected function registerConfig(): void
     {
         $this->publishes([
-            __DIR__.'/../Config/config.php' => config_path('school.php'),
+            __DIR__ . '/../Config/config.php' => config_path('school.php'),
         ]);
         $this->mergeConfigFrom(
-            __DIR__.'/../Config/config.php',
+            __DIR__ . '/../Config/config.php',
             'school'
         );
     }
@@ -75,7 +75,7 @@ class SchoolServiceProvider extends ServiceProvider
     {
         $viewPath = base_path('resources/views/modules/school');
 
-        $sourcePath = __DIR__.'/../Resources/views';
+        $sourcePath = __DIR__ . '/../Resources/views';
 
         $this->publishes([
             $sourcePath => $viewPath
@@ -84,7 +84,7 @@ class SchoolServiceProvider extends ServiceProvider
         $this->loadViewsFrom(
             array_merge(
                 array_map(function ($path) {
-                    return $path.'/modules/school';
+                    return $path . '/modules/school';
                 }, Config::get('view.paths')),
                 [$sourcePath]
             ),
@@ -104,7 +104,7 @@ class SchoolServiceProvider extends ServiceProvider
         if (is_dir($langPath)) {
             $this->loadTranslationsFrom($langPath, 'school');
         } else {
-            $this->loadTranslationsFrom(__DIR__.'/../Resources/lang', 'school');
+            $this->loadTranslationsFrom(__DIR__ . '/../Resources/lang', 'school');
         }
     }
 

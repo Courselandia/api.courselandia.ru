@@ -30,19 +30,15 @@ class UserImageController extends Controller
     /**
      * Обновление данных.
      *
-     * @param  int|string  $id  ID пользователя.
-     * @param  UserImageUpdateRequest  $request  Запрос.
+     * @param int|string $id ID пользователя.
+     * @param UserImageUpdateRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException|ParameterInvalidException
      */
     public function update(int|string $id, UserImageUpdateRequest $request): JsonResponse
     {
         try {
-            $action = app(UserImageUpdateAction::class);
-            $action->id = $id;
-            $action->image = $request->file('image');
-
+            $action = new UserImageUpdateAction($id, $request->file('image'));
             $user = $action->run();
 
             Log::info(trans('access::http.controllers.admin.userImageController.update.log'), [
@@ -73,16 +69,15 @@ class UserImageController extends Controller
     /**
      * Удаление данных.
      *
-     * @param  int|string  $id  ID пользователя.
+     * @param int|string $id ID пользователя.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException|ParameterInvalidException|ReflectionException
+     * @throws ParameterInvalidException|ReflectionException
      */
     public function destroy(int|string $id): JsonResponse
     {
         try {
-            $action = app(UserImageDestroyAction::class);
-            $action->id = $id;
+            $action = new UserImageDestroyAction($id);
             $user = $action->run();
 
             Log::info(trans('access::http.controllers.admin.userImageController.destroy.log'), [

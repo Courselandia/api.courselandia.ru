@@ -13,7 +13,6 @@ use App\Modules\Salary\Enums\Level;
 use App\Models\Test\TokenTest;
 use App\Modules\Salary\Models\Salary;
 use Faker\Factory as Faker;
-use JetBrains\PhpStorm\Pure;
 use Tests\TestCase;
 
 /**
@@ -339,7 +338,7 @@ class SalaryControllerTest extends TestCase
      *
      * @return array Массив структуры данных зарплаты.
      */
-    #[Pure] private function getSalaryStructure(): array
+    private function getSalaryStructure(): array
     {
         return [
             'id',

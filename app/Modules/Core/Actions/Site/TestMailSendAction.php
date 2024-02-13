@@ -20,9 +20,17 @@ class TestMailSendAction extends Action
     /**
      * E-mail.
      *
-     * @var string|null
+     * @var string
      */
-    public ?string $email = null;
+    private string $email;
+
+    /**
+     * @param string $email E-mail.
+     */
+    public function __construct(string $email)
+    {
+        $this->email = $email;
+    }
 
     /**
      * Метод запуска логики.

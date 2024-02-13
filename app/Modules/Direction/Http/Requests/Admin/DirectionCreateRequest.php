@@ -9,7 +9,6 @@
 namespace App\Modules\Direction\Http\Requests\Admin;
 
 use App\Models\FormRequest;
-use JetBrains\PhpStorm\ArrayShape;
 
 /**
  * Класс запрос для создания направлений.
@@ -21,7 +20,7 @@ class DirectionCreateRequest extends FormRequest
      *
      * @return array Массив правил проверки.
      */
-    #[ArrayShape(['weight' => 'string', 'status' => 'string'])] public function rules(): array
+    public function rules(): array
     {
         return [
             'weight' => 'integer',
@@ -34,7 +33,7 @@ class DirectionCreateRequest extends FormRequest
      *
      * @return array Массив атрибутов.
      */
-    #[ArrayShape(['weight' => 'string', 'status' => 'string'])] public function attributes(): array
+    public function attributes(): array
     {
         return [
             'weight' => trans('direction::http.requests.admin.directionCreateRequest.weight'),

@@ -8,18 +8,18 @@
 
 namespace App\Modules\Access\Actions\Site;
 
-use App\Models\Enums\CacheTime;
-use App\Modules\User\Entities\User as UserEntity;
 use Cache;
 use Exception;
 use Mail;
+use Util;
 use App\Models\Action;
+use App\Models\Enums\CacheTime;
+use App\Modules\User\Entities\User as UserEntity;
 use App\Modules\User\Models\User;
 use App\Modules\User\Models\UserRecovery;
 use App\Modules\Access\Emails\Site\Recovery;
 use App\Models\Exceptions\UserNotExistException;
 use App\Modules\User\Entities\UserRecovery as UserRecoveryEntity;
-use Util;
 
 /**
  * Отправка e-mail для восстановления пароля.
@@ -29,9 +29,17 @@ class AccessForgetAction extends Action
     /**
      * Логин пользователя.
      *
-     * @var string|null
+     * @var string
      */
-    public ?string $login = null;
+    private string $login;
+
+    /**
+     * @param string|null $login Логин пользователя.
+     */
+    public function __construct(string $login = null)
+    {
+        $this->login = $login;
+    }
 
     /**
      * Метод запуска логики.
@@ -52,11 +60,7 @@ class AccessForgetAction extends Action
                     ->active()
                     ->first();
 
-                if ($user) {
-                    return new UserEntity($user->toArray());
-                }
-
-                return null;
+                return $user ? UserEntity::from($user->toArray()) : null;
             }
         );
 
@@ -77,11 +81,10 @@ class AccessForgetAction extends Action
                 $recovery->code = $code;
                 $recovery->save();
             } else {
-                $recovery = new UserRecoveryEntity();
-                $recovery->user_id = $user->id;
-                $recovery->code = $code;
-
-                UserRecovery::create($recovery->toArray());
+                UserRecovery::create([
+                    'user_id' => $user->id,
+                    'code' => $code,
+                ]);
             }
 
             Cache::tags(['access', 'user'])->flush();

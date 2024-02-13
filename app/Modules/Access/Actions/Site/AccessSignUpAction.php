@@ -10,13 +10,14 @@ namespace App\Modules\Access\Actions\Site;
 
 use App\Models\Action;
 use App\Modules\Access\Decorators\Site\AccessSignUpDecorator;
+use App\Modules\Access\Data\Actions\AccessSignUp;
 use App\Modules\Access\Entities\AccessSignedUp;
 use App\Modules\Access\Pipes\Site\SignUp\CreatePipe;
 use App\Modules\Access\Pipes\Site\SignUp\RolePipe;
 use App\Modules\Access\Pipes\Site\SignUp\VerificationPipe;
 use App\Modules\Access\Pipes\Gate\GetPipe;
 use App\Modules\Access\Pipes\Site\SignIn\AuthPipe;
-use App\Modules\Access\Pipes\Site\SignUp\DataPipe;
+use App\Modules\Access\Data\Decorators\AccessSignUp as AccessSignUpDataDecorator;
 
 /**
  * Регистрация нового пользователя.
@@ -24,71 +25,25 @@ use App\Modules\Access\Pipes\Site\SignUp\DataPipe;
 class AccessSignUpAction extends Action
 {
     /**
-     * Логин.
+     * Данные для действия регистрация нового пользователя.
      *
-     * @var string|null
+     * @var AccessSignUp
      */
-    public ?string $login = null;
+    private AccessSignUp $data;
 
-    /**
-     * Пароль.
-     *
-     * @var string|null
-     */
-    public ?string $password = null;
-
-    /**
-     * Имя.
-     *
-     * @var string|null
-     */
-    public ?string $first_name = null;
-
-    /**
-     * Фамилия.
-     *
-     * @var string|null
-     */
-    public ?string $second_name = null;
-
-    /**
-     * Телефон.
-     *
-     * @var string|null
-     */
-    public ?string $phone = null;
-
-    /**
-     * Верифицировать пользователя.
-     *
-     * @var bool
-     */
-    public bool $verify = false;
-
-    /**
-     * Уникальный индикационный номер для авторизации через соц сети.
-     *
-     * @var string|null
-     */
-    public ?string $uid = null;
+    public function __construct(AccessSignUp $data)
+    {
+        $this->data = $data;
+    }
 
     /**
      * Метод запуска логики.
      *
-     * @return AccessSignedUp Вернет результаты исполнения.
+     * @return AccessSignedUp Сущность для зарегистрированного пользователя.
      */
     public function run(): AccessSignedUp
     {
-        $decorator = app(AccessSignUpDecorator::class);
-
-        $decorator->login = $this->login;
-        $decorator->password = $this->password;
-        $decorator->first_name = $this->first_name;
-        $decorator->second_name = $this->second_name;
-        $decorator->phone = $this->phone;
-        $decorator->verify = $this->verify;
-        $decorator->uid = $this->uid;
-        $decorator->create = true;
+        $decorator = new AccessSignUpDecorator(AccessSignUpDataDecorator::from($this->data->toArray()));
 
         return $decorator->setActions([
             CreatePipe::class,
@@ -96,7 +51,6 @@ class AccessSignUpAction extends Action
             VerificationPipe::class,
             GetPipe::class,
             AuthPipe::class,
-            DataPipe::class
         ])->run();
     }
 }

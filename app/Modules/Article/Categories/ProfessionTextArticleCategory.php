@@ -49,12 +49,11 @@ class ProfessionTextArticleCategory extends ArticleCategory
      * @param int $id ID сущности для которой пишется статья.
      *
      * @return string Метка.
-     * @throws RecordNotExistException|ParameterInvalidException
+     * @throws RecordNotExistException
      */
     public function label(int $id): string
     {
-        $action = app(ProfessionGetAction::class);
-        $action->id = $id;
+        $action = new ProfessionGetAction($id);
         $professionEntity = $action->run();
 
         if ($professionEntity) {
@@ -77,18 +76,17 @@ class ProfessionTextArticleCategory extends ArticleCategory
      */
     public function apply(int $id): void
     {
-        $action = app(ArticleGetAction::class);
-        $action->id = $id;
+        $action = new ArticleGetAction($id);
         $articleEntity = $action->run();
 
         if ($articleEntity) {
             $profession = $articleEntity->articleable;
-            $profession->text = Typography::process($articleEntity->text);
+            $profession['text'] = Typography::process($articleEntity->text);
 
-            Profession::find($articleEntity->articleable->id)->update($profession->toArray());
+            Profession::find($articleEntity->articleable['id'])->update($profession);
 
             if ($articleEntity->analyzers) {
-                $action = new ArticleMoveAnalyzer($profession->id, $articleEntity->analyzers, 'profession.text', Profession::class);
+                $action = new ArticleMoveAnalyzer($profession['id'], $articleEntity->analyzers, 'profession.text', Profession::class);
                 $action->run();
             }
 
@@ -106,12 +104,11 @@ class ProfessionTextArticleCategory extends ArticleCategory
      * @param int $id ID сущности для которой пишется статья.
      *
      * @return string Запрос.
-     * @throws RecordNotExistException|ParameterInvalidException
+     * @throws RecordNotExistException
      */
     public function requestTemplate(int $id): string
     {
-        $action = app(ProfessionGetAction::class);
-        $action->id = $id;
+        $action = new ProfessionGetAction($id);
         $professionEntity = $action->run();
 
         if ($professionEntity) {

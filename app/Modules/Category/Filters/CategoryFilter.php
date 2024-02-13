@@ -22,7 +22,7 @@ class CategoryFilter extends ModelFilter
      *
      * @return CategoryFilter Правила поиска.
      */
-    public function id(int|string $id): CategoryFilter
+    public function id(int|string $id): self
     {
         return $this->where('categories.id', $id);
     }
@@ -34,7 +34,7 @@ class CategoryFilter extends ModelFilter
      *
      * @return CategoryFilter Правила поиска.
      */
-    public function name(string $query): CategoryFilter
+    public function name(string $query): self
     {
         return $this->whereLike('categories.name', $query);
     }
@@ -46,7 +46,7 @@ class CategoryFilter extends ModelFilter
      *
      * @return CategoryFilter Правила поиска.
      */
-    public function status(bool $status): CategoryFilter
+    public function status(bool $status): self
     {
         return $this->where('categories.status', $status);
     }

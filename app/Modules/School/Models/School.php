@@ -13,31 +13,26 @@ use App\Modules\Article\Models\Article;
 use App\Modules\Course\Models\Course;
 use App\Modules\Faq\Models\Faq;
 use App\Modules\Review\Models\Review;
+use App\Modules\School\Images\ImageLogo;
+use App\Modules\School\Images\ImageSite;
 use App\Modules\Teacher\Models\Teacher;
-use Exception;
+use Illuminate\Database\Eloquent\Concerns\HasTimestamps;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
-use Size;
 use Eloquent;
-use ImageStore;
 use App\Models\Status;
 use App\Models\Delete;
 use App\Models\Validate;
 use App\Models\Sortable;
-use CodeBuds\WebPConverter\WebPConverter;
 use EloquentFilter\Filterable;
-use App\Models\Rep\RepositoryQueryBuilder;
 use App\Modules\Image\Entities\Image as ImageEntity;
-use App\Modules\Image\Helpers\Image;
 use App\Modules\Metatag\Models\Metatag;
 use Illuminate\Http\UploadedFile;
-use JetBrains\PhpStorm\ArrayShape;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Modules\School\Database\Factories\SchoolFactory;
-use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Modules\School\Filters\SchoolFilter;
 
@@ -75,6 +70,7 @@ class School extends Eloquent
     use Status;
     use Validate;
     use Filterable;
+    use HasTimestamps;
 
     /**
      * Типизирование атрибутов.
@@ -83,6 +79,8 @@ class School extends Eloquent
      */
     protected $casts = [
         'amount_courses' => 'array',
+        'image_logo_id' => ImageLogo::class,
+        'image_site_id' => ImageSite::class,
     ];
 
     /**
@@ -111,21 +109,7 @@ class School extends Eloquent
      *
      * @return array Вернет массив правил.
      */
-    #[ArrayShape([
-        'id' => 'string',
-        'metatag_id' => 'string',
-        'name' => 'string',
-        'header' => 'string',
-        'header_template' => 'string',
-        'link' => 'string',
-        'text' => 'string',
-        'rating' => 'string',
-        'site' => 'string',
-        'status' => 'string',
-        'image_logo_id' => 'string',
-        'image_site_id' => 'string',
-        'amount_courses' => 'string',
-    ])] protected function getRules(): array
+    protected function getRules(): array
     {
         return [
             'metatag_id' => 'digits_between:0,20',
@@ -182,128 +166,6 @@ class School extends Eloquent
     protected static function newFactory(): Factory
     {
         return SchoolFactory::new();
-    }
-
-    /**
-     * Преобразователь атрибута - запись: изображение логотипа.
-     *
-     * @param  mixed  $value  Значение атрибута.
-     *
-     * @return void
-     * @throws FileNotFoundException|Exception
-     */
-    public function setImageLogoIdAttribute(mixed $value): void
-    {
-        $name = 'image_logo_id';
-        $folder = 'schools';
-
-        $this->attributes[$name] = Image::set(
-            $name,
-            $value,
-            function (string $name, UploadedFile $value) use ($folder) {
-                $path = ImageStore::tmp($value->getClientOriginalExtension());
-
-                Size::make($value)->resize(
-                    200,
-                    null,
-                    function ($constraint) {
-                        $constraint->aspectRatio();
-                        $constraint->upsize();
-                    }
-                )->save($path);
-
-                $imageWebp = $value->getClientOriginalExtension() !== 'webp'
-                    ? WebPConverter::createWebpImage($path, ['saveFile' => true])
-                    : ['path' => $path];
-
-                ImageStore::setFolder($folder);
-                $image = new ImageEntity();
-                $image->path = $imageWebp['path'];
-
-                if (isset($this->attributes[$name]) && $this->attributes[$name] !== '') {
-                    return ImageStore::update($this->attributes[$name], $image);
-                }
-
-                return ImageStore::create($image);
-            }
-        );
-    }
-
-    /**
-     * Преобразователь атрибута - получение: изображение логотипа.
-     *
-     * @param  mixed  $value  Значение атрибута.
-     *
-     * @return ImageEntity|null Маленькое изображение.
-     */
-    public function getImageLogoIdAttribute(mixed $value): ?ImageEntity
-    {
-        if (is_numeric($value) || is_string($value)) {
-            return ImageStore::get(new RepositoryQueryBuilder($value));
-        }
-
-        return $value;
-    }
-
-    /**
-     * Преобразователь атрибута - запись: среднее изображение.
-     *
-     * @param  mixed  $value  Значение атрибута.
-     *
-     * @return void
-     * @throws FileNotFoundException|Exception
-     */
-    public function setImageSiteIdAttribute(mixed $value): void
-    {
-        $name = 'image_site_id';
-        $folder = 'schools';
-
-        $this->attributes[$name] = Image::set(
-            $name,
-            $value,
-            function (string $name, UploadedFile $value) use ($folder) {
-                $path = ImageStore::tmp($value->getClientOriginalExtension());
-
-                Size::make($value)->resize(
-                    800,
-                    null,
-                    function ($constraint) {
-                        $constraint->aspectRatio();
-                        $constraint->upsize();
-                    }
-                )->save($path);
-
-                $imageWebp = $value->getClientOriginalExtension() !== 'webp'
-                    ? WebPConverter::createWebpImage($path, ['saveFile' => true])
-                    : ['path' => $path];
-
-                ImageStore::setFolder($folder);
-                $image = new ImageEntity();
-                $image->path = $imageWebp['path'];
-
-                if (isset($this->attributes[$name]) && $this->attributes[$name] !== '') {
-                    return ImageStore::update($this->attributes[$name], $image);
-                }
-
-                return ImageStore::create($image);
-            }
-        );
-    }
-
-    /**
-     * Преобразователь атрибута - получение: среднее изображение.
-     *
-     * @param  mixed  $value  Значение атрибута.
-     *
-     * @return ImageEntity|null Среднее изображение.
-     */
-    public function getImageSiteIdAttribute(mixed $value): ?ImageEntity
-    {
-        if (is_numeric($value) || is_string($value)) {
-            return ImageStore::get(new RepositoryQueryBuilder($value));
-        }
-
-        return $value;
     }
 
     /**

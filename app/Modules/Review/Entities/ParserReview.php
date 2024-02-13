@@ -71,4 +71,35 @@ class ParserReview extends Entity
      * @var ?Carbon
      */
     public ?Carbon $date = null;
+
+    /**
+     * @param int|null $id ID тзыва.
+     * @param string|null $name Имя автора.
+     * @param string|null $title Заголовок.
+     * @param string|null $review Отзыв.
+     * @param string|null $advantages Достоинства.
+     * @param string|null $disadvantages Недостатки.
+     * @param int|null $rating Рейтинг.
+     * @param Carbon|null $date Дата создания.
+     */
+    public function __construct(
+        ?int    $id = null,
+        ?string $name = null,
+        ?string $title = null,
+        ?string $review = null,
+        ?string $advantages = null,
+        ?string $disadvantages = null,
+        ?int    $rating = null,
+        Carbon  $date = null
+    )
+    {
+        $this->id = $id;
+        $this->name = $name;
+        $this->title = $title;
+        $this->review = $review;
+        $this->advantages = $advantages;
+        $this->disadvantages = $disadvantages;
+        $this->rating = $rating;
+        $this->date = $date;
+    }
 }

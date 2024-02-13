@@ -9,17 +9,17 @@
 namespace App\Modules\School\Actions\Admin\School;
 
 use App\Modules\Analyzer\Actions\Admin\AnalyzerUpdateAction;
+use App\Modules\Metatag\Data\MetatagSet;
+use App\Modules\School\Data\SchoolCreate;
 use Cache;
 use Typography;
 use App\Models\Action;
 use App\Models\Exceptions\ParameterInvalidException;
-use App\Modules\Image\Entities\Image;
 use App\Modules\Metatag\Actions\MetatagSetAction;
 use App\Modules\Metatag\Template\Template;
 use App\Modules\Metatag\Template\TemplateException;
 use App\Modules\School\Entities\School as SchoolEntity;
 use App\Modules\School\Models\School;
-use Illuminate\Http\UploadedFile;
 
 /**
  * Класс действия для создания школы.
@@ -27,88 +27,19 @@ use Illuminate\Http\UploadedFile;
 class SchoolCreateAction extends Action
 {
     /**
-     * Название.
+     * Данные для создания школы.
      *
-     * @var string|null
+     * @var SchoolCreate
      */
-    public ?string $name = null;
+    private SchoolCreate $data;
 
     /**
-     * Шаблон заголовка.
-     *
-     * @var string|null
+     * @param SchoolCreate $data Данные для создания школы.
      */
-    public ?string $header_template = null;
-
-    /**
-     * Ссылка.
-     *
-     * @var string|null
-     */
-    public ?string $link = null;
-
-    /**
-     * Текст.
-     *
-     * @var string|null
-     */
-    public ?string $text = null;
-
-    /**
-     * Рейтинг.
-     *
-     * @var float|null
-     */
-    public ?float $rating = null;
-
-    /**
-     * Сыылка на сайт.
-     *
-     * @var string|null
-     */
-    public ?string $site = null;
-
-    /**
-     * Изображение логотипа.
-     *
-     * @var int|UploadedFile|Image|null
-     */
-    public int|UploadedFile|Image|null $image_logo_id = null;
-
-    /**
-     * Изображение сайта.
-     *
-     * @var int|UploadedFile|Image|null
-     */
-    public int|UploadedFile|Image|null $image_site_id = null;
-
-    /**
-     * Статус.
-     *
-     * @var bool|null
-     */
-    public ?bool $status = null;
-
-    /**
-     * Шаблон описания.
-     *
-     * @var string|null
-     */
-    public ?string $description_template = null;
-
-    /**
-     * Ключевые слова.
-     *
-     * @var string|null
-     */
-    public ?string $keywords = null;
-
-    /**
-     * Шаблон заголовка.
-     *
-     * @var string|null
-     */
-    public ?string $title_template = null;
+    public function __construct(SchoolCreate $data)
+    {
+        $this->data = $data;
+    }
 
     /**
      * Метод запуска логики.
@@ -119,46 +50,42 @@ class SchoolCreateAction extends Action
      */
     public function run(): SchoolEntity
     {
-        $action = app(MetatagSetAction::class);
         $template = new Template();
 
         $templateValues = [
-            'school' => $this->name,
+            'school' => $this->data->name,
             'countSchoolCourses' => 0,
         ];
 
-        $action->description = $template->convert($this->description_template, $templateValues);
-        $action->title = $template->convert($this->title_template, $templateValues);
-        $action->description_template = $this->description_template;
-        $action->title_template = $this->title_template;
-        $action->keywords = $this->keywords;
+        $action = new MetatagSetAction(MetatagSet::from([
+            'description' => $template->convert($this->data->description_template, $templateValues),
+            'title' => $template->convert($this->data->title_template, $templateValues),
+            'description_template' => $this->data->description_template,
+            'title_template' => $this->data->title_template,
+            'keywords' => $this->data->keywords
+        ]));
 
         $metatag = $action->run();
 
-        $schoolEntity = new SchoolEntity();
-        $schoolEntity->name = Typography::process($this->name, true);
-        $schoolEntity->header = Typography::process($template->convert($this->header_template, $templateValues), true);
-        $schoolEntity->header_template = $this->header_template;
-        $schoolEntity->link = $this->link;
-        $schoolEntity->text = Typography::process($this->text);
-        $schoolEntity->site = $this->site;
-        $schoolEntity->rating = $this->rating;
-        $schoolEntity->image_logo_id = $this->image_logo_id;
-        $schoolEntity->image_site_id = $this->image_site_id;
-        $schoolEntity->status = $this->status;
-        $schoolEntity->metatag_id = $metatag->id;
+        $schoolEntity = SchoolEntity::from([
+            ...$this->data->except('image_logo_id', 'image_site_id')->toArray(),
+            'name' => Typography::process($this->data->name, true),
+            'header' => Typography::process($template->convert($this->data->header_template, $templateValues), true),
+            'text' => Typography::process($this->data->text),
+            'metatag_id' => $metatag->id,
+        ]);
 
-        $school = School::create($schoolEntity->toArray());
+        $school = School::create([
+            ...$schoolEntity->toArray(),
+            'image_logo_id' => $this->data->image_logo_id,
+            'image_site_id' => $this->data->image_site_id,
+        ]);
         Cache::tags(['catalog', 'school', 'teacher', 'review', 'faq'])->flush();
 
-        $action = app(AnalyzerUpdateAction::class);
-        $action->id = $school->id;
-        $action->model = School::class;
-        $action->category = 'school.text';
+        $action = new AnalyzerUpdateAction($school->id, School::class, 'school.text');
         $action->run();
 
-        $action = app(SchoolGetAction::class);
-        $action->id = $school->id;
+        $action = new SchoolGetAction($school->id);
 
         return $action->run();
     }

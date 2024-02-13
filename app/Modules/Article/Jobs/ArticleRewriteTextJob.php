@@ -8,11 +8,9 @@
 
 namespace App\Modules\Article\Jobs;
 
-use App\Models\Exceptions\LimitException;
 use Log;
 use Writer;
 use Cache;
-use ArticleCategory;
 use Illuminate\Bus\Queueable;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\PaymentException;
@@ -23,6 +21,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use App\Models\Exceptions\LimitException;
 
 /**
  * Задание на переписание текста для описания курса.
@@ -39,28 +38,28 @@ class ArticleRewriteTextJob implements ShouldQueue
      *
      * @var int
      */
-    public int $id;
+    private int $id;
 
     /**
      * Категория.
      *
      * @var string
      */
-    public string $category;
+    private string $category;
 
     /**
      * Текст для переписания.
      *
      * @var string
      */
-    public string $text;
+    private string $text;
 
     /**
      * Показатель креативности сети.
      *
-     * @var int|null
+     * @var int
      */
-    protected ?int $creative;
+    private int $creative;
 
     /**
      * Конструктор.
@@ -68,9 +67,9 @@ class ArticleRewriteTextJob implements ShouldQueue
      * @param int $id ID статьи.
      * @param string $category Категория.
      * @param string $text Текст для переписания.
-     * @param ?int $creative Показатель креативности сети.
+     * @param int $creative Показатель креативности сети.
      */
-    public function __construct(int $id, string $category, string $text, ?int $creative)
+    public function __construct(int $id, string $category, string $text, int $creative = 7)
     {
         $this->id = $id;
         $this->category = $category;
@@ -87,15 +86,14 @@ class ArticleRewriteTextJob implements ShouldQueue
     public function handle(): void
     {
         try {
-            $action = app(ArticleGetAction::class);
-            $action->id = $this->id;
+            $action = new ArticleGetAction($this->id);
             $articleEntity = $action->run();
 
             if ($articleEntity && $articleEntity->status === Status::PENDING) {
                 $taskId = Writer::request($this->text, [
                     'rewrite' => true,
                     'strong' => true,
-                    'creative' => $this->creative ?? 7,
+                    'creative' => $this->creative,
                 ]);
 
                 Article::find($this->id)->update([

@@ -38,9 +38,9 @@ class CountAmountCoursesCommand extends Command
      */
     public function handle(): void
     {
-        $action = app(SchoolCountAmountCoursesAction::class);
+        $action = new SchoolCountAmountCoursesAction();
 
-        $this->line('Запуск подсчета количеста курсов в школах...');
+        $this->line('Запуск подсчета количества курсов в школах...');
 
         $bar = $this->output->createProgressBar(SchoolCountAmountCoursesAction::getCountSchools());
         $bar->start();
@@ -52,6 +52,6 @@ class CountAmountCoursesCommand extends Command
         $action->run();
 
         $this->info("\n\nПодсчет завершен.");
-        Log::info('Запуск подсчета количеста курсов для школ.');
+        Log::info('Запуск подсчета количества курсов для школ.');
     }
 }

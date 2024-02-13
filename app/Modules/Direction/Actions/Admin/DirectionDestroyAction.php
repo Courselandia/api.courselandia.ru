@@ -18,11 +18,19 @@ use Cache;
 class DirectionDestroyAction extends Action
 {
     /**
-     * Массив ID пользователей.
+     * Массив ID направлений.
      *
      * @var int[]|string[]
      */
-    public ?array $ids = null;
+    private array $ids;
+
+    /**
+     * @param int[]|string[] $ids Массив ID направлений.
+     */
+    public function __construct(array $ids)
+    {
+        $this->ids = $ids;
+    }
 
     /**
      * Метод запуска логики.

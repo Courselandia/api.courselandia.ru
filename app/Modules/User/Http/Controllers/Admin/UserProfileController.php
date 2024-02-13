@@ -10,6 +10,7 @@ namespace App\Modules\User\Http\Controllers\Admin;
 
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\User\Actions\Admin\UserImage\UserImageUpdateAction;
+use App\Modules\User\Data\Actions\UserProfileUpdate;
 use App\Modules\User\Http\Requests\Admin\Profile\UserProfileUpdateImageRequest;
 use Auth;
 use Log;
@@ -34,19 +35,21 @@ class UserProfileController extends Controller
     /**
      * Обновление данных.
      *
-     * @param  UserProfileUpdateRequest  $request  Запрос.
+     * @param UserProfileUpdateRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
      */
     public function update(UserProfileUpdateRequest $request): JsonResponse
     {
         try {
-            $action = app(UserProfileUpdateAction::class);
-            $action->id = Auth::getUser()->id;
-            $action->first_name = $request->get('first_name');
-            $action->second_name = $request->get('second_name');
-            $action->phone = $request->get('phone');
-            $action->image = ($request->hasFile('image') && $request->file('image')->isValid()) ? $request->file('image') : null;
+            $data = UserProfileUpdate::from([
+                ...$request->all(),
+                'id' => Auth::getUser()->id,
+                'image' => ($request->hasFile('image') && $request->file('image')->isValid())
+                    ? $request->file('image')
+                    : null,
+            ]);
+            $action = new UserProfileUpdateAction($data);
             $data = $action->run();
 
             Log::info(trans('access::http.controllers.admin.userController.update.log'), [
@@ -77,17 +80,14 @@ class UserProfileController extends Controller
     /**
      * Обновление пароля профиля.
      *
-     * @param  Request  $request  Запрос.
+     * @param Request $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException
      */
     public function password(Request $request): JsonResponse
     {
         try {
-            $action = app(UserPasswordAction::class);
-            $action->id = Auth::getUser()->id;
-            $action->password = $request->get('password');
+            $action = new UserPasswordAction(Auth::getUser()->id, $request->get('password'));
             $user = $action->run();
 
             Log::info(trans('access::http.controllers.admin.userController.password.log'), [
@@ -119,8 +119,7 @@ class UserProfileController extends Controller
     public function destroyImage(): JsonResponse
     {
         try {
-            $action = app(UserImageDestroyAction::class);
-            $action->id = Auth::getUser()->id;
+            $action = new UserImageDestroyAction(Auth::getUser()->id);
             $data = $action->run();
 
             Log::info(trans('access::http.controllers.admin.userController.destroyImage.log'), [
@@ -146,17 +145,14 @@ class UserProfileController extends Controller
     /**
      * Удаление данных.
      *
-     * @param  UserProfileUpdateImageRequest  $request  Запрос.
+     * @param UserProfileUpdateImageRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException
      */
     public function updateImage(UserProfileUpdateImageRequest $request): JsonResponse
     {
         try {
-            $action = app(UserImageUpdateAction::class);
-            $action->id = Auth::getUser()->id;
-            $action->image = ($request->hasFile('image') && $request->file('image')->isValid()) ? $request->file('image') : null;
+            $action = new UserImageUpdateAction(Auth::getUser()->id, $request->file('image'));
             $data = $action->run();
 
             Log::info(trans('access::http.controllers.admin.userController.destroyImage.log'), [

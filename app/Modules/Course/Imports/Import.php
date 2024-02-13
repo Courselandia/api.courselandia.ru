@@ -8,6 +8,7 @@
 
 namespace App\Modules\Course\Imports;
 
+use App\Modules\Metatag\Data\MetatagSet;
 use Util;
 use File;
 use Cache;
@@ -194,7 +195,7 @@ class Import
                 ->first();
 
             $name = html_entity_decode($courseEntity->name);
-            $name = rtrim($name,'.');
+            $name = rtrim($name, '.');
             $text = html_entity_decode($courseEntity->text);
 
             if ($course) {
@@ -232,14 +233,13 @@ class Import
                     $data['image_big_id'] = $image;
                 }
 
-                $hasToBeChange = $this->hasToBeChanged(new CourseEntity($course->toArray()), new CourseEntity($data));
+                $hasToBeChange = $this->hasToBeChanged(CourseEntity::from($course->toArray()), CourseEntity::from($data));
 
                 if ($hasToBeChange) {
                     $course->update($data);
                 }
             } else {
                 $template = new Template();
-                $action = app(MetatagSetAction::class);
 
                 $templateValues = [
                     'course' => $name,
@@ -252,10 +252,12 @@ class Import
                 $templateDescription = 'Приступите к программе обучения прям сейчас онлайн-курса {course} от {school:genitive} выбрав его в каталоге Courselandia, легкий поиск, возможность сравнивать курсы по разным параметрам';
                 $headerTemplate = '{course} от {school:genitive}';
 
-                $action->title = $template->convert($templateTitle, $templateValues);
-                $action->description = $template->convert($templateDescription, $templateValues);
-                $action->title_template = $templateTitle;
-                $action->description_template = $templateDescription;
+                $action = new MetatagSetAction(MetatagSet::from([
+                    'title' => $template->convert($templateTitle, $templateValues),
+                    'description' => $template->convert($templateDescription, $templateValues),
+                    'title_template' => $templateTitle,
+                    'description_template' => $templateDescription,
+                ]));
 
                 $metatag = $action->run();
 

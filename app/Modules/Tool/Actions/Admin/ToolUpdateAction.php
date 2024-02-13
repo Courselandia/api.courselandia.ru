@@ -8,6 +8,8 @@
 
 namespace App\Modules\Tool\Actions\Admin;
 
+use App\Modules\Metatag\Data\MetatagSet;
+use App\Modules\Tool\Data\ToolUpdate;
 use Cache;
 use Typography;
 use App\Models\Action;
@@ -28,67 +30,19 @@ use App\Modules\Analyzer\Actions\Admin\AnalyzerUpdateAction;
 class ToolUpdateAction extends Action
 {
     /**
-     * ID инструмента.
+     * Данные для обновления инструмента.
      *
-     * @var int|string|null
+     * @var ToolUpdate
      */
-    public int|string|null $id = null;
+    private ToolUpdate $data;
 
     /**
-     * Название.
-     *
-     * @var string|null
+     * @param ToolUpdate $data Данные для обновления инструмента.
      */
-    public ?string $name = null;
-
-    /**
-     * Шаблон заголовка.
-     *
-     * @var string|null
-     */
-    public ?string $header_template = null;
-
-    /**
-     * Ссылка.
-     *
-     * @var string|null
-     */
-    public ?string $link = null;
-
-    /**
-     * Статья.
-     *
-     * @var string|null
-     */
-    public ?string $text = null;
-
-    /**
-     * Статус.
-     *
-     * @var bool|null
-     */
-    public ?bool $status = null;
-
-    /**
-     * Шаблон описания.
-     *
-     * @var string|null
-     */
-    public ?string $description_template = null;
-
-    /**
-     * Ключевые слова.
-     *
-     * @var string|null
-     */
-    public ?string $keywords = null;
-
-    /**
-     * Шаблон заголовка.
-     *
-     * @var string|null
-     */
-    public ?string $title_template = null;
+    public function __construct(ToolUpdate $data)
+    {
+        $this->data = $data;
+    }
 
     /**
      * Метод запуска логики.
@@ -100,8 +54,7 @@ class ToolUpdateAction extends Action
      */
     public function run(): ToolEntity
     {
-        $action = app(ToolGetAction::class);
-        $action->id = $this->id;
+        $action = new ToolGetAction($this->data->id);
         $toolEntity = $action->run();
 
         if ($toolEntity) {
@@ -110,46 +63,42 @@ class ToolUpdateAction extends Action
                     $query->where('schools.status', true);
                 })
                 ->whereHas('tools', function ($query) {
-                    $query->where('tools.id', $this->id);
+                    $query->where('tools.id', $this->data->id);
                 })
                 ->count();
 
             $templateValues = [
-                'tool' => $this->name,
+                'tool' => $this->data->name,
                 'countToolCourses' => $countToolCourses,
             ];
 
             $template = new Template();
 
-            $action = app(MetatagSetAction::class);
-            $action->description = $template->convert($this->description_template, $templateValues);
-            $action->title = $template->convert($this->title_template, $templateValues);
-            $action->description_template = $this->description_template;
-            $action->title_template = $this->title_template;
-            $action->keywords = $this->keywords;
-            $action->id = $toolEntity->metatag_id ?: null;
+            $action = new MetatagSetAction(MetatagSet::from([
+                'description' => $template->convert($this->data->description_template, $templateValues),
+                'title' => $template->convert($this->data->title_template, $templateValues),
+                'description_template' => $this->data->description_template,
+                'title_template' => $this->data->title_template,
+                'keywords' => $this->data->keywords,
+                'id' => $toolEntity->metatag_id ?: null,
+            ]));
 
-            $toolEntity->metatag_id = $action->run()->id;
+            $toolEntity = ToolEntity::from([
+                ...$toolEntity->toArray(),
+                ...$this->data->toArray(),
+                'metatag_id' => $action->run()->id,
+                'name' => Typography::process($this->data->name, true),
+                'header' => Typography::process($template->convert($this->data->header_template, $templateValues), true),
+                'text' => Typography::process($this->data->text),
+            ]);
 
-            $toolEntity->id = $this->id;
-            $toolEntity->name = Typography::process($this->name, true);
-            $toolEntity->header = Typography::process($template->convert($this->header_template, $templateValues), true);
-            $toolEntity->header_template = $this->header_template;
-            $toolEntity->link = $this->link;
-            $toolEntity->text = Typography::process($this->text);
-            $toolEntity->status = $this->status;
-
-            Tool::find($this->id)->update($toolEntity->toArray());
+            Tool::find($this->data->id)->update($toolEntity->toArray());
             Cache::tags(['catalog', 'tool'])->flush();
 
-            $action = app(AnalyzerUpdateAction::class);
-            $action->id = $toolEntity->id;
-            $action->model = Tool::class;
-            $action->category = 'tool.text';
+            $action = new AnalyzerUpdateAction($toolEntity->id, Tool::class, 'tool.text');
             $action->run();
 
-            $action = app(ToolGetAction::class);
-            $action->id = $this->id;
+            $action = new ToolGetAction($this->data->id);
 
             return $action->run();
         }

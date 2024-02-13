@@ -8,15 +8,13 @@
 
 namespace App\Modules\Review\Actions\Admin;
 
+use App\Models\Action;
+use App\Models\Exceptions\RecordNotExistException;
+use App\Modules\Review\Data\Admin\ReviewUpdate;
+use App\Modules\Review\Entities\Review as ReviewEntity;
+use App\Modules\Review\Models\Review;
 use Cache;
 use Typography;
-use Carbon\Carbon;
-use App\Models\Action;
-use App\Models\Exceptions\ParameterInvalidException;
-use App\Models\Exceptions\RecordNotExistException;
-use App\Modules\Review\Entities\Review as ReviewEntity;
-use App\Modules\Review\Enums\Status;
-use App\Modules\Review\Models\Review;
 
 /**
  * Класс действия для обновления отзывов.
@@ -24,121 +22,43 @@ use App\Modules\Review\Models\Review;
 class ReviewUpdateAction extends Action
 {
     /**
-     * ID отзывов.
-     *
-     * @var int|string|null
+     * @var ReviewUpdate Данные для обновления отзыва.
      */
-    public int|string|null $id = null;
+    private ReviewUpdate $data;
 
     /**
-     * ID школы.
-     *
-     * @var int|null
+     * @param ReviewUpdate $data Данные для обновления отзыва.
      */
-    public ?int $school_id = null;
-
-    /**
-     * ID курса.
-     *
-     * @var int|null
-     */
-    public ?int $course_id = null;
-
-    /**
-     * Имя автора.
-     *
-     * @var string|null
-     */
-    public ?string $name = null;
-
-    /**
-     * Заголовок.
-     *
-     * @var string|null
-     */
-    public ?string $title = null;
-
-    /**
-     * Отзыв.
-     *
-     * @var string|null
-     */
-    public ?string $review = null;
-
-    /**
-     * Достоинства.
-     *
-     * @var string|null
-     */
-    public ?string $advantages = null;
-
-    /**
-     * Недостатки.
-     *
-     * @var string|null
-     */
-    public ?string $disadvantages = null;
-
-    /**
-     * Рейтинг.
-     *
-     * @var int|null
-     */
-    public ?int $rating = null;
-
-    /**
-     * Статус.
-     *
-     * @var Status|null
-     */
-    public ?Status $status = null;
-
-    /**
-     * Дата добавления.
-     *
-     * @var ?Carbon
-     */
-    public ?Carbon $created_at = null;
-
-    /**
-     * Источник.
-     *
-     * @var ?string
-     */
-    public ?string $source = null;
+    public function __construct(ReviewUpdate $data)
+    {
+        $this->data = $data;
+    }
 
     /**
      * Метод запуска логики.
      *
      * @return ReviewEntity Вернет результаты исполнения.
      * @throws RecordNotExistException
-     * @throws ParameterInvalidException
      */
     public function run(): ReviewEntity
     {
-        $action = app(ReviewGetAction::class);
-        $action->id = $this->id;
+        $action = new ReviewGetAction($this->data->id);
         $reviewEntity = $action->run();
 
         if ($reviewEntity) {
-            $reviewEntity->id = $this->id;
-            $reviewEntity->school_id = $this->school_id;
-            $reviewEntity->course_id = $this->course_id;
-            $reviewEntity->name = $this->name;
-            $reviewEntity->title = Typography::process($this->title, true);
-            $reviewEntity->review = Typography::process($this->review, true);
-            $reviewEntity->advantages = Typography::process($this->advantages, true);
-            $reviewEntity->disadvantages = Typography::process($this->disadvantages, true);
-            $reviewEntity->rating = $this->rating;
-            $reviewEntity->status = $this->status;
-            $reviewEntity->created_at = $this->created_at;
-            $reviewEntity->source = $this->source;
+            $reviewEntity = ReviewEntity::from([
+                ...$reviewEntity->toArray(),
+                ...$this->data->toArray(),
+                'title' => Typography::process($this->data->title, true),
+                'review' => Typography::process($this->data->review, true),
+                'advantages' => Typography::process($this->data->advantages, true),
+                'disadvantages' => Typography::process($this->data->disadvantages, true),
+            ]);
 
-            Review::find($this->id)->update($reviewEntity->toArray());
+            Review::find($this->data->id)->update($reviewEntity->toArray());
             Cache::tags(['catalog', 'school', 'review', 'course'])->flush();
 
-            $action = app(ReviewGetAction::class);
-            $action->id = $this->id;
+            $action = new ReviewGetAction($this->data->id);
 
             return $action->run();
         }

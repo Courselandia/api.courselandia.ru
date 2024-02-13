@@ -25,9 +25,6 @@ class LocationControllerTest extends TestCase
         $this->json(
             'GET',
             'api/private/location/countries',
-            [],
-            [
-            ]
         )->assertStatus(200)->assertJsonStructure([
             'data' => [
                 '*' => $this->getLocationStructure()
@@ -46,9 +43,6 @@ class LocationControllerTest extends TestCase
         $this->json(
             'GET',
             'api/private/location/regions/RU',
-            [],
-            [
-            ]
         )->assertStatus(200)->assertJsonStructure([
             'data' => [
                 '*' => $this->getLocationStructure()
@@ -67,9 +61,6 @@ class LocationControllerTest extends TestCase
         $this->json(
             'GET',
             'api/private/location/regions/RU2',
-            [],
-            [
-            ]
         )->assertStatus(404)->assertJsonStructure([
             'data',
             'success',

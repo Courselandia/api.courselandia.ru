@@ -29,7 +29,7 @@ class ToolServiceProvider extends ServiceProvider
         $this->registerTranslations();
         $this->registerConfig();
 
-        $this->loadMigrationsFrom(__DIR__.'/../Database/Migrations');
+        $this->loadMigrationsFrom(__DIR__ . '/../Database/Migrations');
 
         ToolModel::observe(ToolListener::class);
     }
@@ -51,10 +51,10 @@ class ToolServiceProvider extends ServiceProvider
     protected function registerConfig(): void
     {
         $this->publishes([
-            __DIR__.'/../Config/config.php' => config_path('tool.php'),
+            __DIR__ . '/../Config/config.php' => config_path('tool.php'),
         ]);
         $this->mergeConfigFrom(
-            __DIR__.'/../Config/config.php',
+            __DIR__ . '/../Config/config.php',
             'tool'
         );
     }
@@ -68,7 +68,7 @@ class ToolServiceProvider extends ServiceProvider
     {
         $viewPath = base_path('resources/views/modules/tool');
 
-        $sourcePath = __DIR__.'/../Resources/views';
+        $sourcePath = __DIR__ . '/../Resources/views';
 
         $this->publishes([
             $sourcePath => $viewPath
@@ -77,7 +77,7 @@ class ToolServiceProvider extends ServiceProvider
         $this->loadViewsFrom(
             array_merge(
                 array_map(function ($path) {
-                    return $path.'/modules/tool';
+                    return $path . '/modules/tool';
                 }, Config::get('view.paths')),
                 [$sourcePath]
             ),
@@ -97,7 +97,7 @@ class ToolServiceProvider extends ServiceProvider
         if (is_dir($langPath)) {
             $this->loadTranslationsFrom($langPath, 'tool');
         } else {
-            $this->loadTranslationsFrom(__DIR__.'/../Resources/lang', 'tool');
+            $this->loadTranslationsFrom(__DIR__ . '/../Resources/lang', 'tool');
         }
     }
 

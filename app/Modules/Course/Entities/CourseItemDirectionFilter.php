@@ -8,7 +8,8 @@
 
 namespace App\Modules\Course\Entities;
 
-use App\Models\Entities;
+use Spatie\LaravelData\Attributes\DataCollectionOf;
+use Spatie\LaravelData\DataCollection;
 
 /**
  * Сущность для пункта фильтра.
@@ -18,8 +19,8 @@ class CourseItemDirectionFilter extends CourseItemFilter
     /**
      * Категории.
      *
-     * @var CourseItemFilter[]
+     * @var ?DataCollection
      */
-    #[Entities(CourseItemFilter::class)]
-    public ?array $categories = null;
+    #[DataCollectionOf(CourseItemFilter::class)]
+    public ?DataCollection $categories = null;
 }

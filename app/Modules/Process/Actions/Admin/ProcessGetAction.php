@@ -10,7 +10,6 @@ namespace App\Modules\Process\Actions\Admin;
 
 use App\Models\Action;
 use App\Models\Enums\CacheTime;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Process\Entities\Process as ProcessEntity;
 use App\Modules\Process\Models\Process;
 use Cache;
@@ -24,15 +23,22 @@ class ProcessGetAction extends Action
     /**
      * ID объяснения как проходит обучение.
      *
-     * @var int|string|null
+     * @var int|string
      */
-    public int|string|null $id = null;
+    private int|string $id;
+
+    /**
+     * @param int|string $id ID объяснения как проходит обучение.
+     */
+    public function __construct(int|string $id)
+    {
+        $this->id = $id;
+    }
 
     /**
      * Метод запуска логики.
      *
      * @return ProcessEntity|null Вернет результаты исполнения.
-     * @throws ParameterInvalidException
      */
     public function run(): ?ProcessEntity
     {
@@ -45,7 +51,7 @@ class ProcessGetAction extends Action
                 $process = Process::where('id', $this->id)
                     ->first();
 
-                return $process ? new ProcessEntity($process->toArray()) : null;
+                return $process ? ProcessEntity::from($process->toArray()) : null;
             }
         );
     }

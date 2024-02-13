@@ -26,16 +26,26 @@ class SchoolImageDestroyAction extends Action
     /**
      * ID школы.
      *
-     * @var int|string|null
+     * @var int|string
      */
-    public int|string|null $id = null;
+    private int|string $id;
 
     /**
      * Тип изображения.
      *
-     * @var string|null
+     * @var string
      */
-    public string|null $type = null;
+    private string $type;
+
+    /**
+     * @param int|string $id ID школы.
+     * @param string $type Тип изображения.
+     */
+    public function __construct(int|string $id, string $type)
+    {
+        $this->id = $id;
+        $this->type = $type;
+    }
 
     /**
      * Метод запуска логики.

@@ -18,11 +18,19 @@ use Cache;
 class SalaryDestroyAction extends Action
 {
     /**
-     * Массив ID пользователей.
+     * Массив ID зарплат.
      *
      * @var int[]|string[]
      */
-    public ?array $ids = null;
+    private array $ids;
+
+    /**
+     * @param int[]|string[] $ids Массив ID зарплат.
+     */
+    public function __construct(array $ids)
+    {
+        $this->ids = $ids;
+    }
 
     /**
      * Метод запуска логики.

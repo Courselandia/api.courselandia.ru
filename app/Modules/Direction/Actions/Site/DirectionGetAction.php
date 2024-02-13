@@ -24,9 +24,17 @@ class DirectionGetAction extends Action
     /**
      * ID категории.
      *
-     * @var int|string|null
+     * @var int|string
      */
-    public int|string|null $id = null;
+    private int|string $id;
+
+    /**
+     * @param int|string $id ID категории.
+     */
+    public function __construct(int|string $id)
+    {
+        $this->id = $id;
+    }
 
     /**
      * Метод запуска логики.
@@ -43,20 +51,12 @@ class DirectionGetAction extends Action
             CacheTime::GENERAL->value,
             function () {
                 $result = Direction::with([
-                        'metatag',
-                    ])
+                    'metatag',
+                ])
                     ->active()
                     ->find($this->id);
 
-                if ($result) {
-                    $item = $result->toArray();
-                    $entity = new DirectionEntity();
-                    $entity->set($item);
-
-                    return $entity;
-                }
-
-                return null;
+                return $result ? DirectionEntity::from($result->toArray()) : null;
             }
         );
     }

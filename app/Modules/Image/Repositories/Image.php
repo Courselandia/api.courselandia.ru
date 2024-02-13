@@ -9,14 +9,12 @@
 namespace App\Modules\Image\Repositories;
 
 use Config;
-use App\Models\Entity;
-use App\Modules\Image\Entities\Image as ImageEntity;
-use File;
-use App\Models\Rep\Repository;
-use App\Models\Exceptions\InvalidFormatException;
 use Exception;
+use File;
 use Generator;
-use JetBrains\PhpStorm\Pure;
+use App\Models\Repository;
+use App\Models\Exceptions\InvalidFormatException;
+use App\Modules\Image\Entities\Image as ImageEntity;
 
 /**
  * Абстрактный класс построения репозитория.
@@ -66,11 +64,11 @@ abstract class Image extends Repository
     /**
      * Получение всех записей.
      *
-     * @param Entity|ImageEntity|null $entity Сущность.
+     * @param ImageEntity|null $entity Сущность.
      *
      * @return Generator|ImageEntity|null Генератор.
      */
-    abstract public function all(Entity|ImageEntity $entity = null): Generator|ImageEntity|null;
+    abstract public function all(ImageEntity $entity = null): Generator|ImageEntity|null;
 
     /**
      * Получить количество всех изображений.
@@ -82,21 +80,21 @@ abstract class Image extends Repository
     /**
      * Создание.
      *
-     * @param Entity|ImageEntity $entity Данные для добавления.
+     * @param ImageEntity $entity Данные для добавления.
      *
      * @return int|string Вернет ID последней вставленной строки.
      */
-    abstract public function create(Entity|ImageEntity $entity): int|string;
+    abstract public function create(ImageEntity $entity): int|string;
 
     /**
      * Обновление.
      *
      * @param int|string $id Id записи для обновления.
-     * @param Entity|ImageEntity $entity Данные для добавления.
+     * @param ImageEntity $entity Данные для добавления.
      *
      * @return int|string Вернет ID вставленной строки.
      */
-    abstract public function update(int|string $id, Entity|ImageEntity $entity): int|string;
+    abstract public function update(int|string $id, ImageEntity $entity): int|string;
 
     /**
      * Обновление байт кода картинки.
@@ -205,7 +203,7 @@ abstract class Image extends Repository
      *
      * @return bool Возвращает true если расширение относиться к изображению.
      */
-    #[Pure] public function isImageByExtension(string $extension): bool
+    public function isImageByExtension(string $extension): bool
     {
         return $this->isRastorGtByExtension($extension) || $this->isVektorByExtension($extension);
     }

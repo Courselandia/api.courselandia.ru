@@ -18,7 +18,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Models\Status;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use JetBrains\PhpStorm\ArrayShape;
+use Illuminate\Database\Eloquent\Concerns\HasTimestamps;
 
 /**
  * Класс модель для таблицы верификации пользователей на основе Eloquent.
@@ -37,6 +37,7 @@ class UserVerification extends Eloquent
     use Status;
     use Validate;
     use Filterable;
+    use HasTimestamps;
 
     /**
      * Атрибуты, для которых разрешено массовое назначение.
@@ -65,11 +66,7 @@ class UserVerification extends Eloquent
      *
      * @return array Вернет массив правил.
      */
-    #[ArrayShape([
-        'user_id' => 'string',
-        'code' => 'string',
-        'status' => 'string'
-    ])] protected function getRules(): array
+    protected function getRules(): array
     {
         return [
             'user_id' => 'required|integer|digits_between:1,20',
@@ -83,11 +80,7 @@ class UserVerification extends Eloquent
      *
      * @return array Массив возможных ошибок валидации.
      */
-    #[ArrayShape([
-        'user_id' => 'string',
-        'code' => 'string',
-        'status' => 'string'
-    ])] protected function getNames(): array
+    protected function getNames(): array
     {
         return [
             'user_id' => trans('user::models.userVerification.userId'),

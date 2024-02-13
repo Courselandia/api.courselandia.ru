@@ -9,7 +9,6 @@
 namespace App\Modules\User\Http\Requests\Admin\Profile;
 
 use App\Models\FormRequest;
-use JetBrains\PhpStorm\ArrayShape;
 
 /**
  * Класс запрос для обновления профиля пользователя.
@@ -21,9 +20,7 @@ class UserProfileUpdateRequest extends FormRequest
      *
      * @return array Массив правил проверки.
      */
-    #[ArrayShape([
-        'image' => 'string',
-    ])] public function rules(): array
+    public function rules(): array
     {
         return [
             'image' => 'nullable|file|media:jpg,png,gif,webp',
@@ -35,9 +32,7 @@ class UserProfileUpdateRequest extends FormRequest
      *
      * @return array Массив атрибутов.
      */
-    #[ArrayShape([
-        'image' => 'string',
-    ])] public function attributes(): array
+    public function attributes(): array
     {
         return [
             'image' => trans('user::http.requests.admin.user.userProfileUpdateRequest.image'),

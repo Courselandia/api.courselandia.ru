@@ -24,8 +24,7 @@ class ToolItemJob extends JsonItemJob
      */
     public function handle(): void
     {
-        $action = app(ToolLinkAction::class);
-        $action->link = $this->link;
+        $action = new ToolLinkAction($this->link);
 
         $data = $action->run();
 

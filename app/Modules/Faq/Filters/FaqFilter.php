@@ -33,7 +33,7 @@ class FaqFilter extends ModelFilter
      *
      * @return FaqFilter Правила поиска.
      */
-    public function id(int|string $id): FaqFilter
+    public function id(int|string $id): self
     {
         return $this->where('faqs.id', $id);
     }
@@ -45,7 +45,7 @@ class FaqFilter extends ModelFilter
      *
      * @return FaqFilter Правила поиска.
      */
-    public function schoolId(array|int|string $schoolIds): FaqFilter
+    public function schoolId(array|int|string $schoolIds): self
     {
         return $this->whereIn('school_id', is_array($schoolIds) ? $schoolIds : [$schoolIds]);
     }
@@ -57,7 +57,7 @@ class FaqFilter extends ModelFilter
      *
      * @return FaqFilter Правила поиска.
      */
-    public function question(string $query): FaqFilter
+    public function question(string $query): self
     {
         return $this->whereLike('faqs.question', $query);
     }
@@ -69,7 +69,7 @@ class FaqFilter extends ModelFilter
      *
      * @return FaqFilter Правила поиска.
      */
-    public function answer(string $query): FaqFilter
+    public function answer(string $query): self
     {
         return $this->whereLike('faqs.answer', $query);
     }
@@ -81,7 +81,7 @@ class FaqFilter extends ModelFilter
      *
      * @return FaqFilter Правила поиска.
      */
-    public function status(bool $status): FaqFilter
+    public function status(bool $status): self
     {
         return $this->where('faqs.status', $status);
     }

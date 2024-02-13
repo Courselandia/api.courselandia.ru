@@ -23,7 +23,7 @@ abstract class Location
     /**
      * Вернуть название страны по коду.
      *
-     * @param  string  $code  Код страны.
+     * @param string $code Код страны.
      *
      * @return string|null Название страны.
      */
@@ -32,7 +32,7 @@ abstract class Location
     /**
      * Получить все регионы страны.
      *
-     * @param  string  $country  Код страны.
+     * @param string $country Код страны.
      *
      * @return array Регионы страны.
      */
@@ -41,8 +41,8 @@ abstract class Location
     /**
      * Получить название региона по коду региона.
      *
-     * @param  string  $country  Код страны.
-     * @param  string  $code  Код региона.
+     * @param string $country Код страны.
+     * @param string $code Код региона.
      *
      * @return string|null Регионы страны.
      */
@@ -51,8 +51,8 @@ abstract class Location
     /**
      * Получить все города по стране и региону.
      *
-     * @param  string  $country  Код страны.
-     * @param  string  $region  Код региона.
+     * @param string $country Код страны.
+     * @param string $region Код региона.
      *
      * @return array Города страны и его региона.
      */
@@ -61,9 +61,9 @@ abstract class Location
     /**
      * Получить название города по его коду.
      *
-     * @param  string  $country  Код страны.
-     * @param  string  $region  Код региона.
-     * @param  string  $code  Код города.
+     * @param string $country Код страны.
+     * @param string $region Код региона.
+     * @param string $code Код города.
      *
      * @return string|null Название города.
      */

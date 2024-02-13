@@ -9,7 +9,6 @@
 namespace App\Modules\Category\Actions\Admin;
 
 use App\Models\Action;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Modules\Category\Entities\Category as CategoryEntity;
 use App\Modules\Category\Models\Category;
@@ -23,27 +22,36 @@ class CategoryUpdateStatusAction extends Action
     /**
      * ID категории.
      *
-     * @var int|string|null
+     * @var int|string
      */
-    public int|string|null $id = null;
+    private int|string $id;
 
     /**
      * Статус.
      *
-     * @var bool|null
+     * @var bool
      */
-    public ?bool $status = null;
+    private bool $status;
+
+    /**
+     * @param int|string $id ID категории.
+     * @param bool $status Статус.
+     */
+    public function __construct(int|string $id, bool $status)
+    {
+        $this->id = $id;
+        $this->status = $status;
+    }
 
     /**
      * Метод запуска логики.
      *
      * @return CategoryEntity Вернет результаты исполнения.
-     * @throws RecordNotExistException|ParameterInvalidException
+     * @throws RecordNotExistException
      */
     public function run(): CategoryEntity
     {
-        $action = app(CategoryGetAction::class);
-        $action->id = $this->id;
+        $action = new CategoryGetAction($this->id);
         $categoryEntity = $action->run();
 
         if ($categoryEntity) {

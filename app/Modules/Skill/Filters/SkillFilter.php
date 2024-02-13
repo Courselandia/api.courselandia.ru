@@ -22,7 +22,7 @@ class SkillFilter extends ModelFilter
      *
      * @return SkillFilter Правила поиска.
      */
-    public function id(int|string $id): SkillFilter
+    public function id(int|string $id): self
     {
         return $this->where('skills.id', $id);
     }
@@ -34,7 +34,7 @@ class SkillFilter extends ModelFilter
      *
      * @return SkillFilter Правила поиска.
      */
-    public function name(string $query): SkillFilter
+    public function name(string $query): self
     {
         return $this->whereLike('skills.name', $query);
     }
@@ -46,7 +46,7 @@ class SkillFilter extends ModelFilter
      *
      * @return SkillFilter Правила поиска.
      */
-    public function status(bool $status): SkillFilter
+    public function status(bool $status): self
     {
         return $this->where('skills.status', $status);
     }

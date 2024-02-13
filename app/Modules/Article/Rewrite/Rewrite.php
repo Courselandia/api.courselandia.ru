@@ -9,7 +9,6 @@
 namespace App\Modules\Article\Rewrite;
 
 use App\Modules\Article\Write\Write;
-use App\Modules\Article\Write\Tasks\Task;
 use App\Modules\Article\Rewrite\Tasks\CourseTextTask;
 use App\Modules\Article\Rewrite\Tasks\SkillTextTask;
 use App\Modules\Article\Rewrite\Tasks\ToolTextTask;
@@ -24,13 +23,6 @@ use App\Modules\Article\Rewrite\Tasks\TeacherTextTask;
  */
 class Rewrite extends Write
 {
-    /**
-     * Задания на переписание текстов.
-     *
-     * @var Task[]
-     */
-    private array $tasks = [];
-
     /**
      * Нижний порог уникальность, который нужно переписывать.
      *

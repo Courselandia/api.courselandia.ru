@@ -9,7 +9,6 @@
 namespace App\Modules\Teacher\Database\Factories;
 
 use App\Modules\Teacher\Enums\SocialMedia;
-use JetBrains\PhpStorm\ArrayShape;
 use App\Modules\Teacher\Models\Teacher;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Modules\Teacher\Models\TeacherExperience;
@@ -31,11 +30,7 @@ class TeacherSocialMediaFactory extends Factory
      *
      * @return array
      */
-    #[ArrayShape([
-        'teacher_id' => '\Illuminate\Database\Eloquent\Factories\Factory',
-        'name' => 'string',
-        'value' => 'string',
-    ])] public function definition(): array
+    public function definition(): array
     {
         return [
             'teacher_id' => Teacher::factory(),

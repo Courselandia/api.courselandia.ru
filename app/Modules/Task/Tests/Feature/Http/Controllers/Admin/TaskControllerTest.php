@@ -11,7 +11,6 @@ namespace App\Modules\Task\Tests\Feature\Http\Controllers\Admin;
 use Tests\TestCase;
 use App\Models\Test\TokenTest;
 use App\Modules\Task\Models\Task;
-use JetBrains\PhpStorm\Pure;
 
 /**
  * Тестирование: Класс контроллер для навыков.
@@ -59,7 +58,7 @@ class TaskControllerTest extends TestCase
      *
      * @return array Массив структуры данных задания.
      */
-    #[Pure] private function getTaskStructure(): array
+    private function getTaskStructure(): array
     {
         return [
             'id',

@@ -14,8 +14,8 @@ use Eloquent;
 use App\Models\Validate;
 use App\Models\Delete;
 use EloquentFilter\Filterable;
+use Illuminate\Database\Eloquent\Concerns\HasTimestamps;
 use Illuminate\Database\Eloquent\Relations\HasOne;
-use JetBrains\PhpStorm\ArrayShape;
 
 /**
  * Класс модель для аутентификации через API для хранения токенов обновления на основе Eloquent.
@@ -33,6 +33,7 @@ class OAuthRefreshTokenEloquent extends Eloquent
     use Sortable;
     use Validate;
     use Filterable;
+    use HasTimestamps;
 
     /**
      * Название таблицы базы данных.
@@ -54,12 +55,12 @@ class OAuthRefreshTokenEloquent extends Eloquent
     ];
 
     /**
-     * Атрибуты, которые должны быть преобразованы к дате.
+     * Типизирование атрибутов.
      *
      * @var array
      */
-    protected $dates = [
-        'expires_at'
+    protected $casts = [
+        'expires_at' => 'datetime',
     ];
 
     /**
@@ -67,11 +68,7 @@ class OAuthRefreshTokenEloquent extends Eloquent
      *
      * @return array Вернет массив правил.
      */
-    #[ArrayShape([
-        'oauth_token_id' => 'string',
-        'refresh_token' => 'string',
-        'expires_at' => 'string'
-    ])] protected function getRules(): array
+    protected function getRules(): array
     {
         return [
             'oauth_token_id' => 'required|integer|digits_between:1,20',
@@ -85,11 +82,7 @@ class OAuthRefreshTokenEloquent extends Eloquent
      *
      * @return array Массив возможных ошибок валидации.
      */
-    #[ArrayShape([
-        'oauth_token_id' => 'string',
-        'refresh_token' => 'string',
-        'expires_at' => 'string'
-    ])] protected function getNames(): array
+    protected function getNames(): array
     {
         return [
             'oauth_token_id' => trans('oauth::models.oAuthRefreshToken.oauthTokenId'),

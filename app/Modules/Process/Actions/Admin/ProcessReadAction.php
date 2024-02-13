@@ -9,13 +9,11 @@
 namespace App\Modules\Process\Actions\Admin;
 
 use App\Models\Action;
-use App\Models\Entity;
 use App\Models\Enums\CacheTime;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Process\Entities\Process as ProcessEntity;
 use App\Modules\Process\Models\Process;
 use Cache;
-use JetBrains\PhpStorm\ArrayShape;
 use ReflectionException;
 use Util;
 
@@ -29,28 +27,47 @@ class ProcessReadAction extends Action
      *
      * @var array|null
      */
-    public ?array $sorts = null;
+    private ?array $sorts;
 
     /**
      * Фильтрация данных.
      *
      * @var array|null
      */
-    public ?array $filters = null;
+    private ?array $filters;
 
     /**
      * Начать выборку.
      *
      * @var int|null
      */
-    public ?int $offset = null;
+    private ?int $offset;
 
     /**
      * Лимит выборки выборку.
      *
      * @var int|null
      */
-    public ?int $limit = null;
+    private ?int $limit;
+
+    /**
+     * @param array|null $sorts Сортировка данных.
+     * @param array|null $filters Фильтрация данных.
+     * @param int|null $offset Начать выборку.
+     * @param int|null $limit Лимит выборки выборку.
+     */
+    public function __construct(
+        array  $sorts = null,
+        ?array $filters = null,
+        ?int   $offset = null,
+        ?int   $limit = null
+    )
+    {
+        $this->sorts = $sorts;
+        $this->filters = $filters;
+        $this->offset = $offset;
+        $this->limit = $limit;
+    }
 
     /**
      * Метод запуска логики.
@@ -58,7 +75,7 @@ class ProcessReadAction extends Action
      * @return mixed Вернет результаты исполнения.
      * @throws ParameterInvalidException|ReflectionException
      */
-    #[ArrayShape(['data' => 'array', 'total' => 'int'])] public function run(): array
+    public function run(): array
     {
         $cacheKey = Util::getKey(
             'process',
@@ -92,7 +109,7 @@ class ProcessReadAction extends Action
                 $items = $query->get()->toArray();
 
                 return [
-                    'data' => Entity::toEntities($items, new ProcessEntity()),
+                    'data' => ProcessEntity::collection($items),
                     'total' => $queryCount->count(),
                 ];
             }

@@ -48,8 +48,7 @@ class ArticleTextAnalyzerCategory extends AnalyzerCategory
      */
     public function label(int $id): string
     {
-        $action = app(ArticleGetAction::class);
-        $action->id = $id;
+        $action = new ArticleGetAction($id);
         $articleEntity = $action->run();
 
         if ($articleEntity) {
@@ -71,8 +70,7 @@ class ArticleTextAnalyzerCategory extends AnalyzerCategory
      */
     public function text(int $id): ?string
     {
-        $action = app(ArticleGetAction::class);
-        $action->id = $id;
+        $action = new ArticleGetAction($id);
         $articleEntity = $action->run();
 
         if ($articleEntity) {

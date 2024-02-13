@@ -12,7 +12,6 @@ use Cache;
 use Util;
 use App\Models\Action;
 use App\Models\Enums\CacheTime;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Feedback\Models\Feedback;
 use App\Modules\Feedback\Entities\Feedback as FeedbackEntity;
 
@@ -22,17 +21,24 @@ use App\Modules\Feedback\Entities\Feedback as FeedbackEntity;
 class FeedbackGetAction extends Action
 {
     /**
-     * ID пользователей.
+     * ID обратной связи.
      *
-     * @var int|string|null
+     * @var int|string
      */
-    public int|string|null $id = null;
+    private int|string $id;
+
+    /**
+     * @param int|string $id ID обратной связи.
+     */
+    public function __construct(int|string $id)
+    {
+        $this->id = $id;
+    }
 
     /**
      * Метод запуска логики.
      *
      * @return FeedbackEntity|null Вернет результаты исполнения.
-     * @throws ParameterInvalidException
      */
     public function run(): ?FeedbackEntity
     {
@@ -45,7 +51,7 @@ class FeedbackGetAction extends Action
                 function () {
                     $feedback = Feedback::find($this->id);
 
-                    return $feedback ? new FeedbackEntity($feedback->toArray()) : null;
+                    return $feedback ? FeedbackEntity::from($feedback->toArray()) : null;
                 }
             );
         }

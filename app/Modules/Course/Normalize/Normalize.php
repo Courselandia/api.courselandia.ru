@@ -130,6 +130,6 @@ class Normalize
             || $sourceCourse->teacher_ids !== $targetCourse->teacher_ids
             || $sourceCourse->tool_ids !== $targetCourse->tool_ids
             || $sourceCourse->level_values !== $targetCourse->level_values
-            || (bool)$sourceCourse->has_active_school !== (bool)$targetCourse->has_active_school;
+            || $sourceCourse->has_active_school !== $targetCourse->has_active_school;
     }
 }

@@ -8,10 +8,10 @@
 
 namespace App\Modules\Access\Http\Controllers;
 
-use App\Models\Exceptions\ParameterInvalidException;
 use Auth;
 use Illuminate\Routing\Controller;
 use Illuminate\Http\JsonResponse;
+use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Access\Actions\AccessGateAction;
 
 /**
@@ -27,8 +27,7 @@ class AccessController extends Controller
      */
     public function gate(): JsonResponse
     {
-        $action = app(AccessGateAction::class);
-        $action->id = Auth::getUser()->id;
+        $action = new AccessGateAction(Auth::getUser()->id);
 
         $data = $action->run();
 

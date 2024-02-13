@@ -18,7 +18,6 @@ use App\Modules\Feedback\Emails\Feedback as FeedbackMail;
 use App\Modules\Feedback\Models\Feedback;
 use App\Modules\Feedback\Entities\Feedback as FeedbackEntity;
 use App\Modules\Feedback\Actions\Admin\FeedbackGetAction;
-use App\Models\Exceptions\ParameterInvalidException;
 
 /**
  * Класс для отправки сообщения через форму обратной связи.
@@ -28,36 +27,54 @@ class FeedbackSendAction extends Action
     /**
      * Имя.
      *
-     * @var string|null
+     * @var string
      */
-    public ?string $name = null;
+    private string $name;
 
     /**
      * E-mail.
      *
-     * @var string|null
+     * @var string
      */
-    public ?string $email = null;
+    private string $email;
+
+    /**
+     * Сообщение.
+     *
+     * @var string
+     */
+    private string $message;
 
     /**
      * Телефон.
      *
      * @var string|null
      */
-    public ?string $phone = null;
+    private ?string $phone;
 
     /**
-     * Сообщение.
-     *
-     * @var string|null
+     * @param string $name Имя.
+     * @param string $email E-mail.
+     * @param string $message Сообщение.
+     * @param string|null $phone Телефон.
      */
-    public ?string $message = null;
+    public function __construct(
+        string $name,
+        string $email,
+        string $message,
+        string $phone = null,
+    )
+    {
+        $this->name = $name;
+        $this->email = $email;
+        $this->message = $message;
+        $this->phone = $phone;
+    }
 
     /**
      * Метод запуска логики.
      *
      * @return FeedbackEntity Вернет результаты исполнения.
-     * @throws ParameterInvalidException
      */
     public function run(): FeedbackEntity
     {
@@ -65,11 +82,12 @@ class FeedbackSendAction extends Action
             new FeedbackMail($this->name, $this->email, $this->phone, $this->message)
         );
 
-        $feedbackEntity = new FeedbackEntity();
-        $feedbackEntity->name = $this->name;
-        $feedbackEntity->email = $this->email;
-        $feedbackEntity->phone = $this->phone;
-        $feedbackEntity->message = Util::getText($this->message);
+        $feedbackEntity = FeedbackEntity::from([
+            'name' => $this->name,
+            'email' => $this->email,
+            'phone' => $this->phone,
+            'message' => Util::getText($this->message),
+        ]);
 
         $feedback = Feedback::create($feedbackEntity->toArray());
         Cache::tags(['feedback'])->flush();
@@ -83,8 +101,7 @@ class FeedbackSendAction extends Action
             'green'
         );
 
-        $action = app(FeedbackGetAction::class);
-        $action->id = $feedback->id;
+        $action = new FeedbackGetAction($feedback->id);
 
         return $action->run();
     }

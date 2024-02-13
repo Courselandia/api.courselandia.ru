@@ -8,21 +8,22 @@
 
 namespace App\Modules\Access\Actions;
 
-use Hash;
-use Cache;
-use OAuth;
-use Config;
-use Util;
+use App\Models\Action;
 use App\Models\Enums\CacheTime;
 use App\Models\Exceptions\InvalidPasswordException;
-use App\Models\Exceptions\UserNotExistException;
-use App\Modules\User\Entities\User as UserEntity;
-use App\Modules\Access\Entities\AccessApiToken;
-use App\Modules\OAuth\Entities\Token;
 use App\Models\Exceptions\ParameterInvalidException;
+use App\Models\Exceptions\UserNotExistException;
+use App\Modules\Access\Data\Actions\AccessApiToken as AccessApiTokenData;
+use App\Modules\Access\Entities\AccessApiToken;
+use App\Modules\OAuth\Values\Token;
+use App\Modules\User\Entities\User as UserEntity;
 use App\Modules\User\Models\User;
-use App\Models\Action;
+use Cache;
+use Config;
+use Hash;
+use OAuth;
 use ReflectionException;
+use Util;
 
 /**
  * Класс действия для генерации токена.
@@ -30,32 +31,16 @@ use ReflectionException;
 class AccessApiTokenAction extends Action
 {
     /**
-     * Запомнить пользователя.
+     * Данные для генерации токена.
      *
-     * @var bool
+     * @var AccessApiTokenData
      */
-    public bool $remember = false;
+    private AccessApiTokenData $data;
 
-    /**
-     * Логин пользователя.
-     *
-     * @var string|null
-     */
-    public ?string $login = null;
-
-    /**
-     * Пароль пользователя.
-     *
-     * @var string|null
-     */
-    public ?string $password = null;
-
-    /**
-     * Пропустить проверку пароля пользователя.
-     *
-     * @var bool
-     */
-    public bool $force = false;
+    public function __construct(AccessApiTokenData $data)
+    {
+        $this->data = $data;
+    }
 
     /**
      * Метод запуска логики.
@@ -67,13 +52,13 @@ class AccessApiTokenAction extends Action
      */
     public function run(): AccessApiToken
     {
-        $cacheKey = Util::getKey('access', 'user', 'login', $this->login, 'role', 'verification');
+        $cacheKey = Util::getKey('access', 'user', 'login', $this->data->login, 'role', 'verification');
 
         $user = Cache::tags(['access', 'user'])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
             function () {
-                $user = User::where('login', $this->login)
+                $user = User::where('login', $this->data->login)
                     ->with([
                         'role',
                         'verification',
@@ -81,25 +66,21 @@ class AccessApiTokenAction extends Action
                     ->active()
                     ->first();
 
-                if ($user) {
-                    return new UserEntity($user->toArray());
-                }
-
-                return null;
+                return $user ? UserEntity::from($user->toArray()) : null;
             }
         );
 
         if ($user) {
             $check = false;
 
-            if ($this->password) {
-                $check = Hash::check($this->password, $user->password);
-            } elseif ($this->force) {
+            if ($this->data->password) {
+                $check = Hash::check($this->data->password, $user->password);
+            } elseif ($this->data->force) {
                 $check = true;
             }
 
             if ($check) {
-                if ($this->remember) {
+                if ($this->data->remember) {
                     OAuth::setSecondsTokenLife(Config::get('token.remember.token_life'))
                         ->setSecondsRefreshTokenLife(Config::get('token.remember.refresh_token_life'));
                 }
@@ -108,31 +89,26 @@ class AccessApiTokenAction extends Action
                  * @var Token $token
                  */
                 $token = OAuth::token($user->id);
-
-                $accessApiToken = new AccessApiToken();
-                $accessApiToken->accessToken = $token->accessToken;
-                $accessApiToken->refreshToken = $token->refreshToken;
-
                 $id = $user->id;
                 $cacheKey = Util::getKey('access', 'user', $user->id, 'role');
 
-                $accessApiToken->user = Cache::tags(['access', 'user'])->remember(
+                $user = Cache::tags(['access', 'user'])->remember(
                     $cacheKey,
                     CacheTime::GENERAL->value,
                     function () use ($id) {
                         $user = User::where('id', $id)->with('role')->active()->first();
 
                         if ($user) {
-                            return new UserEntity($user->toArray());
+                            return UserEntity::from($user->toArray());
                         }
 
                         return null;
                     }
                 );
 
-                $accessApiToken->user->password = null;
+                $user->password = null;
 
-                return $accessApiToken;
+                return new AccessApiToken($token->getAccessToken(), $token->getRefreshToken(), $user);
             }
 
             throw new InvalidPasswordException(trans('access::actions.accessApiTokenAction.passwordNotMatch'));

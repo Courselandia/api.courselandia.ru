@@ -25,7 +25,7 @@ class TaskFilter extends ModelFilter
      */
     public $relations = [
         'user' => [
-            'user-id'  => 'userId',
+            'user-id' => 'userId',
         ],
     ];
 
@@ -36,7 +36,7 @@ class TaskFilter extends ModelFilter
      *
      * @return TaskFilter Правила поиска.
      */
-    public function id(int|string $id): TaskFilter
+    public function id(int|string $id): self
     {
         return $this->where('tasks.id', $id);
     }
@@ -48,7 +48,7 @@ class TaskFilter extends ModelFilter
      *
      * @return TaskFilter Правила поиска.
      */
-    public function name(string $query): TaskFilter
+    public function name(string $query): self
     {
         return $this->whereLike('tasks.name', $query);
     }
@@ -60,7 +60,7 @@ class TaskFilter extends ModelFilter
      *
      * @return TaskFilter Правила поиска.
      */
-    public function reason(string $query): TaskFilter
+    public function reason(string $query): self
     {
         return $this->whereLike('tasks.reason', $query);
     }
@@ -72,7 +72,7 @@ class TaskFilter extends ModelFilter
      *
      * @return TaskFilter Правила поиска.
      */
-    public function userId(array|int|string $userIds): TaskFilter
+    public function userId(array|int|string $userIds): self
     {
         return $this->whereIn('tasks.user_id', is_array($userIds) ? $userIds : [$userIds]);
     }

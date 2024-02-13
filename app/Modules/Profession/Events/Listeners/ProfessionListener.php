@@ -18,7 +18,7 @@ class ProfessionListener
     /**
      * Обработчик события при удалении записи.
      *
-     * @param  Profession  $profession  Модель для таблицы профессий.
+     * @param Profession $profession Модель для таблицы профессий.
      *
      * @return bool Вернет успешность выполнения операции.
      */

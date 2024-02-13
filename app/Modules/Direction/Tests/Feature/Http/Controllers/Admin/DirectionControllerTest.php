@@ -12,7 +12,6 @@ use Util;
 use App\Models\Test\TokenTest;
 use App\Modules\Direction\Models\Direction;
 use Faker\Factory as Faker;
-use JetBrains\PhpStorm\Pure;
 use Tests\TestCase;
 
 /**
@@ -370,7 +369,7 @@ class DirectionControllerTest extends TestCase
      *
      * @return array Массив структуры данных направления.
      */
-    #[Pure] private function getDirectionStructure(): array
+    private function getDirectionStructure(): array
     {
         return [
             'id',

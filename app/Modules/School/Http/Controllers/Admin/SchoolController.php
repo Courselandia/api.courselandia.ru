@@ -19,6 +19,8 @@ use App\Modules\School\Actions\Admin\School\SchoolGetAction;
 use App\Modules\School\Actions\Admin\School\SchoolReadAction;
 use App\Modules\School\Actions\Admin\School\SchoolUpdateAction;
 use App\Modules\School\Actions\Admin\School\SchoolUpdateStatusAction;
+use App\Modules\School\Data\SchoolCreate;
+use App\Modules\School\Data\SchoolUpdate;
 use App\Modules\School\Http\Requests\Admin\School\SchoolCreateRequest;
 use App\Modules\School\Http\Requests\Admin\School\SchoolDestroyRequest;
 use App\Modules\School\Http\Requests\Admin\School\SchoolReadRequest;
@@ -41,12 +43,10 @@ class SchoolController extends Controller
      * @param int|string $id ID школы.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException
      */
     public function get(int|string $id): JsonResponse
     {
-        $action = app(SchoolGetAction::class);
-        $action->id = $id;
+        $action = new SchoolGetAction($id);
         $data = $action->run();
 
         if ($data) {
@@ -76,11 +76,12 @@ class SchoolController extends Controller
      */
     public function read(SchoolReadRequest $request): JsonResponse
     {
-        $action = app(SchoolReadAction::class);
-        $action->sorts = $request->get('sorts');
-        $action->filters = $request->get('filters');
-        $action->offset = $request->get('offset');
-        $action->limit = $request->get('limit');
+        $action = new SchoolReadAction(
+            $request->get('sorts'),
+            $request->get('filters'),
+            $request->get('offset'),
+            $request->get('limit'),
+        );
 
         $data = $action->run();
 
@@ -100,26 +101,20 @@ class SchoolController extends Controller
     public function create(SchoolCreateRequest $request): JsonResponse
     {
         try {
-            $action = app(SchoolCreateAction::class);
-            $action->name = $request->get('name');
-            $action->header_template = $request->get('header_template');
-            $action->link = $request->get('link');
-            $action->text = $request->get('text');
-            $action->rating = $request->get('rating', 0);
-            $action->site = $request->get('site');
-            $action->status = $request->get('status');
-            $action->description_template = $request->get('description_template');
-            $action->title_template = $request->get('title_template');
-            $action->keywords = $request->get('keywords');
+            $data = SchoolCreate::from([
+                ...$request->all(),
+                'rating' => $request->get('rating', 0),
+            ]);
 
             if ($request->hasFile('imageLogo') && $request->file('imageLogo')->isValid()) {
-                $action->image_logo_id = $request->file('imageLogo');
+                $data->image_logo_id = $request->file('imageLogo');
             }
 
             if ($request->hasFile('imageSite') && $request->file('imageSite')->isValid()) {
-                $action->image_site_id = $request->file('imageSite');
+                $data->image_site_id = $request->file('imageSite');
             }
 
+            $action = new SchoolCreateAction($data);
             $data = $action->run();
 
             Log::info(
@@ -162,27 +157,21 @@ class SchoolController extends Controller
     public function update(int|string $id, SchoolUpdateRequest $request): JsonResponse
     {
         try {
-            $action = app(SchoolUpdateAction::class);
-            $action->id = $id;
-            $action->name = $request->get('name');
-            $action->header_template = $request->get('header_template');
-            $action->link = $request->get('link');
-            $action->text = $request->get('text');
-            $action->rating = $request->get('rating', 0);
-            $action->site = $request->get('site');
-            $action->status = $request->get('status');
-            $action->description_template = $request->get('description_template');
-            $action->title_template = $request->get('title_template');
-            $action->keywords = $request->get('keywords');
+            $data = SchoolUpdate::from([
+                ...$request->all(),
+                'id' => $id,
+                'rating' => $request->get('rating', 0),
+            ]);
 
             if ($request->hasFile('imageLogo') && $request->file('imageLogo')->isValid()) {
-                $action->image_logo_id = $request->file('imageLogo');
+                $data->image_logo_id = $request->file('imageLogo');
             }
 
             if ($request->hasFile('imageSite') && $request->file('imageSite')->isValid()) {
-                $action->image_site_id = $request->file('imageSite');
+                $data->image_site_id = $request->file('imageSite');
             }
 
+            $action = new SchoolUpdateAction($data);
             $data = $action->run();
 
             Log::info(
@@ -220,15 +209,11 @@ class SchoolController extends Controller
      * @param SchoolUpdateStatusRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException
      */
     public function updateStatus(int|string $id, SchoolUpdateStatusRequest $request): JsonResponse
     {
         try {
-            $action = app(SchoolUpdateStatusAction::class);
-            $action->id = $id;
-            $action->status = $request->get('status');
-
+            $action = new SchoolUpdateStatusAction($id, $request->get('status'));
             $data = $action->run();
 
             Log::info(trans('school::http.controllers.admin.schoolController.update.log'), [
@@ -265,8 +250,7 @@ class SchoolController extends Controller
      */
     public function destroy(SchoolDestroyRequest $request): JsonResponse
     {
-        $action = app(SchoolDestroyAction::class);
-        $action->ids = $request->get('ids');
+        $action = new SchoolDestroyAction($request->get('ids'));
         $action->run();
 
         Log::info(

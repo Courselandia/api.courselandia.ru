@@ -14,8 +14,8 @@ use Eloquent;
 use App\Models\Delete;
 use App\Models\Validate;
 use EloquentFilter\Filterable;
+use Illuminate\Database\Eloquent\Concerns\HasTimestamps;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use JetBrains\PhpStorm\ArrayShape;
 
 /**
  * Класс модель для таблицы изображений на основе Eloquent.
@@ -38,6 +38,7 @@ class ImageEloquent extends Eloquent
     use SoftDeletes;
     use Validate;
     use Filterable;
+    use HasTimestamps;
 
     /**
      * Название таблицы базы данных.
@@ -94,13 +95,7 @@ class ImageEloquent extends Eloquent
      *
      * @return array Вернет массив правил.
      */
-    #[ArrayShape([
-        'format' => 'string',
-        'folder' => 'string',
-        'cache' => 'string',
-        'width' => 'string',
-        'height' => 'string'
-    ])] protected function getRules(): array
+    protected function getRules(): array
     {
         return [
             'format' => 'required|between:1,20',
@@ -116,14 +111,7 @@ class ImageEloquent extends Eloquent
      *
      * @return array Массив возможных ошибок валидации.
      */
-    #[ArrayShape([
-        'byte' => 'string',
-        'folder' => 'string',
-        'format' => 'string',
-        'cache' => 'string',
-        'width' => 'string',
-        'height' => 'string'
-    ])] protected function getNames(): array
+    protected function getNames(): array
     {
         return [
             'byte' => trans('image::models.image.byte'),

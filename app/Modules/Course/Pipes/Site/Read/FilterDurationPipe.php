@@ -8,6 +8,8 @@
 
 namespace App\Modules\Course\Pipes\Site\Read;
 
+use App\Models\Data;
+use App\Modules\Course\Data\Decorators\CourseRead;
 use App\Modules\Course\Enums\Status;
 use DB;
 use Util;
@@ -16,8 +18,6 @@ use Closure;
 use App\Models\Enums\CacheTime;
 use App\Modules\Course\Models\Course;
 use App\Models\Contracts\Pipe;
-use App\Models\Entity;
-use App\Modules\Course\Entities\CourseRead;
 
 /**
  * Чтение курсов: фильтры: продолжительность от и до.
@@ -27,14 +27,14 @@ class FilterDurationPipe implements Pipe
     /**
      * Метод, который будет вызван у pipeline.
      *
-     * @param Entity|CourseRead $entity Сущность.
+     * @param Data|CourseRead $data Данные для декоратора для чтения курсов.
      * @param Closure $next Ссылка на следующий pipe.
      *
      * @return mixed Вернет значение полученное после выполнения следующего pipe.
      */
-    public function handle(Entity|CourseRead $entity, Closure $next): mixed
+    public function handle(Data|CourseRead $data, Closure $next): mixed
     {
-        $currentFilters = $entity->filters;
+        $currentFilters = $data->filters;
 
         if (isset($currentFilters['duration'])) {
             unset($currentFilters['duration']);
@@ -67,11 +67,11 @@ class FilterDurationPipe implements Pipe
                 $durationMin = Course::select([
                     DB::raw('MIN(duration_rate) as duration'),
                 ])
-                ->filter($currentFilters ?: [])
-                ->where('status', Status::ACTIVE->value)
-                ->where('has_active_school', true)
-                ->first()
-                ->toArray();
+                    ->filter($currentFilters ?: [])
+                    ->where('status', Status::ACTIVE->value)
+                    ->where('has_active_school', true)
+                    ->first()
+                    ->toArray();
 
                 if ($durationMin && $durationMin['duration']) {
                     $min = $durationMin['duration'] < 1 ? 0 : $durationMin['duration'];
@@ -82,11 +82,11 @@ class FilterDurationPipe implements Pipe
                 $durationMax = Course::select([
                     DB::raw('MAX(duration_rate) as duration'),
                 ])
-                ->filter($currentFilters ?: [])
-                ->where('status', Status::ACTIVE->value)
-                ->where('has_active_school', true)
-                ->first()
-                ->toArray();
+                    ->filter($currentFilters ?: [])
+                    ->where('status', Status::ACTIVE->value)
+                    ->where('has_active_school', true)
+                    ->first()
+                    ->toArray();
 
                 if ($durationMax && $durationMax['duration']) {
                     $max = max($durationMax['duration'], 1);
@@ -99,9 +99,9 @@ class FilterDurationPipe implements Pipe
             }
         );
 
-        $entity->filter->duration->min = $duration['min'];
-        $entity->filter->duration->max = $duration['max'];
+        $data->filter->duration->min = $duration['min'];
+        $data->filter->duration->max = $duration['max'];
 
-        return $next($entity);
+        return $next($data);
     }
 }

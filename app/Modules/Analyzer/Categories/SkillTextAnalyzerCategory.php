@@ -8,7 +8,6 @@
 
 namespace App\Modules\Analyzer\Categories;
 
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Modules\Skill\Actions\Admin\SkillGetAction;
 use App\Modules\Analyzer\Contracts\AnalyzerCategory;
@@ -44,12 +43,11 @@ class SkillTextAnalyzerCategory extends AnalyzerCategory
      * @param int $id ID сущности для которой производится анализ.
      *
      * @return string Метка.
-     * @throws RecordNotExistException|ParameterInvalidException
+     * @throws RecordNotExistException
      */
     public function label(int $id): string
     {
-        $action = app(SkillGetAction::class);
-        $action->id = $id;
+        $action = new SkillGetAction($id);
         $skillEntity = $action->run();
 
         if ($skillEntity) {
@@ -67,12 +65,11 @@ class SkillTextAnalyzerCategory extends AnalyzerCategory
      * @param int $id ID сущности для которой проводится анализ.
      *
      * @return string|null Текст для проверки.
-     * @throws RecordNotExistException|ParameterInvalidException
+     * @throws RecordNotExistException
      */
     public function text(int $id): ?string
     {
-        $action = app(SkillGetAction::class);
-        $action->id = $id;
+        $action = new SkillGetAction($id);
         $skillEntity = $action->run();
 
         if ($skillEntity) {

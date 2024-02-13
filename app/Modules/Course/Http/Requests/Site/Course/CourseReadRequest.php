@@ -8,7 +8,6 @@
 
 namespace App\Modules\Course\Http\Requests\Site\Course;
 
-use JetBrains\PhpStorm\ArrayShape;
 use Schema;
 
 /**
@@ -21,24 +20,7 @@ class CourseReadRequest extends CourseFilterItemReadRequest
      *
      * @return array Массив правил проверки.
      */
-    #[ArrayShape([
-        'sorts' => 'string',
-        'offset' => 'string',
-        'limit' => 'string',
-        'filters' => 'string',
-        'filters.status' => 'string',
-        'filters.rating' => 'string',
-        'filters.price.*' => 'string',
-        'filters.online' => 'string',
-        'filters.employment' => 'string',
-        'filters.duration.*' => 'string',
-        'openedSchools' => 'string',
-        'openedCategories' => 'string',
-        'openedProfessions' => 'string',
-        'openedTeachers' => 'string',
-        'openedSkills' => 'string',
-        'openedTools' => 'string',
-    ])] public function rules(): array
+    public function rules(): array
     {
         $columns = Schema::getColumnListing('courses');
         $columnsSort = array_merge($columns,
@@ -75,24 +57,7 @@ class CourseReadRequest extends CourseFilterItemReadRequest
      *
      * @return array Массив атрибутов.
      */
-    #[ArrayShape([
-        'sorts' => 'string',
-        'offset' => 'string',
-        'limit' => 'string',
-        'filters' => 'string',
-        'filters.status' => 'string',
-        'filters.rating' => 'string',
-        'filters.price.*' => 'string',
-        'filters.online' => 'string',
-        'filters.employment' => 'string',
-        'filters.duration.*' => 'string',
-        'openedSchools' => 'string',
-        'openedCategories' => 'string',
-        'openedProfessions' => 'string',
-        'openedTeachers' => 'string',
-        'openedSkills' => 'string',
-        'openedTools' => 'string',
-    ])] public function attributes(): array
+    public function attributes(): array
     {
         return array_merge(parent::rules(),
             [

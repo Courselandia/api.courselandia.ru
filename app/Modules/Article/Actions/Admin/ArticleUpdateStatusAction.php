@@ -24,16 +24,26 @@ class ArticleUpdateStatusAction extends Action
     /**
      * ID направления.
      *
-     * @var int|string|null
+     * @var int|string
      */
-    public int|string|null $id = null;
+    private int|string $id;
 
     /**
      * Статус.
      *
-     * @var Status|null
+     * @var Status
      */
-    public ?Status $status = null;
+    private Status $status;
+
+    /**
+     * @param int|string $id ID направления.
+     * @param Status $status Статус.
+     */
+    public function __construct(int|string $id, Status $status)
+    {
+        $this->id = $id;
+        $this->status = $status;
+    }
 
     /**
      * Метод запуска логики.
@@ -43,8 +53,7 @@ class ArticleUpdateStatusAction extends Action
      */
     public function run(): ArticleEntity
     {
-        $action = app(ArticleGetAction::class);
-        $action->id = $this->id;
+        $action = new ArticleGetAction($this->id);
         $articleEntity = $action->run();
 
         if ($articleEntity) {

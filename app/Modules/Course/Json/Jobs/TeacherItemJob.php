@@ -24,9 +24,7 @@ class TeacherItemJob extends JsonItemJob
      */
     public function handle(): void
     {
-        $action = app(TeacherLinkAction::class);
-        $action->link = $this->link;
-
+        $action = new TeacherLinkAction($this->link);
         $data = $action->run();
 
         if ($data) {

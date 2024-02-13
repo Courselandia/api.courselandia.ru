@@ -10,7 +10,6 @@ namespace App\Modules\Direction\Database\Factories;
 
 use App\Modules\Metatag\Models\Metatag;
 use Util;
-use JetBrains\PhpStorm\ArrayShape;
 use App\Modules\Direction\Models\Direction;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -31,16 +30,7 @@ class DirectionFactory extends Factory
      *
      * @return array
      */
-    #[ArrayShape([
-        'metatag_id' => '\Illuminate\Database\Eloquent\Factories\Factory',
-        'name' => 'string',
-        'header' => 'string',
-        'header_template' => 'string',
-        'weight' => 'string',
-        'link' => 'string',
-        'text' => 'string',
-        'status' => 'bool'
-    ])] public function definition(): array
+    public function definition(): array
     {
         return [
             'metatag_id' => Metatag::factory(),

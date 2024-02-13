@@ -13,7 +13,6 @@ use App\Modules\Access\Decorators\Site\AccessVerifyDecorator;
 use App\Modules\Access\Entities\AccessVerified;
 use App\Modules\Access\Pipes\Site\Verified\CheckPipe;
 use App\Modules\Access\Pipes\Gate\GetPipe;
-use App\Modules\Access\Pipes\Site\Verified\DataPipe;
 
 /**
  * Верификация пользователя.
@@ -23,16 +22,26 @@ class AccessVerifyAction extends Action
     /**
      * ID пользователя.
      *
-     * @var int|string|null
+     * @var int|string
      */
-    public int|string|null $id = null;
+    public int|string $id;
 
     /**
      * Код верификации.
      *
-     * @var string|null
+     * @var string
      */
-    public ?string $code = null;
+    public string $code;
+
+    /**
+     * @param int|string $id ID пользователя.
+     * @param string $code Код верификации.
+     */
+    public function __construct(int|string $id, string $code)
+    {
+        $this->id = $id;
+        $this->code = $code;
+    }
 
     /**
      * Метод запуска логики.
@@ -41,14 +50,11 @@ class AccessVerifyAction extends Action
      */
     public function run(): AccessVerified
     {
-        $decorator = app(AccessVerifyDecorator::class);
-        $decorator->id = $this->id;
-        $decorator->code = $this->code;
+        $decorator = new AccessVerifyDecorator($this->id, $this->code);
 
         return $decorator->setActions([
             CheckPipe::class,
             GetPipe::class,
-            DataPipe::Class
         ])->run();
     }
 }

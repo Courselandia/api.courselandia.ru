@@ -9,7 +9,7 @@
 namespace App\Modules\Access\Entities;
 
 /**
- * Сущность для авторизации пользователя.
+ * Сущность для авторизованного пользователя.
  */
 class AccessSignedIn extends AccessSignedUp
 {

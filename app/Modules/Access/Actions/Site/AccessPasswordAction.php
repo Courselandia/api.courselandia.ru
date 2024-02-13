@@ -28,23 +28,35 @@ class AccessPasswordAction extends Action
     /**
      * ID пользователя.
      *
-     * @var int|string|null
+     * @var int|string
      */
-    public int|string|null $id = null;
+    private int|string $id;
 
     /**
      * Текущий пароль пользователя.
      *
-     * @var string|null
+     * @var string
      */
-    public ?string $password_current = null;
+    private string $password_current;
 
     /**
      * Новый пароль пользователя.
      *
-     * @var string|null
+     * @var string
      */
-    public ?string $password = null;
+    private string $password;
+
+    /**
+     * @param int|string $id ID пользователя.
+     * @param string $password_current Текущий пароль пользователя.
+     * @param string $password Новый пароль пользователя.
+     */
+    public function __construct(int|string $id, string $password_current, string $password)
+    {
+        $this->id = $id;
+        $this->password = $password;
+        $this->password_current = $password_current;
+    }
 
     /**
      * Метод запуска логики.

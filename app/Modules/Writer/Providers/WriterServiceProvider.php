@@ -31,7 +31,7 @@ class WriterServiceProvider extends ServiceProvider
         $this->registerTranslations();
         $this->registerConfig();
 
-        $this->loadMigrationsFrom(__DIR__.'/../Database/Migrations');
+        $this->loadMigrationsFrom(__DIR__ . '/../Database/Migrations');
     }
 
     /**
@@ -62,10 +62,10 @@ class WriterServiceProvider extends ServiceProvider
     protected function registerConfig(): void
     {
         $this->publishes([
-            __DIR__.'/../Config/config.php' => config_path('writer.php'),
+            __DIR__ . '/../Config/config.php' => config_path('writer.php'),
         ]);
         $this->mergeConfigFrom(
-            __DIR__.'/../Config/config.php',
+            __DIR__ . '/../Config/config.php',
             'writer'
         );
     }
@@ -79,7 +79,7 @@ class WriterServiceProvider extends ServiceProvider
     {
         $viewPath = base_path('resources/views/modules/writer');
 
-        $sourcePath = __DIR__.'/../Resources/views';
+        $sourcePath = __DIR__ . '/../Resources/views';
 
         $this->publishes([
             $sourcePath => $viewPath
@@ -88,7 +88,7 @@ class WriterServiceProvider extends ServiceProvider
         $this->loadViewsFrom(
             array_merge(
                 array_map(function ($path) {
-                    return $path.'/modules/writer';
+                    return $path . '/modules/writer';
                 }, Config::get('view.paths')),
                 [$sourcePath]
             ),
@@ -108,7 +108,7 @@ class WriterServiceProvider extends ServiceProvider
         if (is_dir($langPath)) {
             $this->loadTranslationsFrom($langPath, 'writer');
         } else {
-            $this->loadTranslationsFrom(__DIR__.'/../Resources/lang', 'writer');
+            $this->loadTranslationsFrom(__DIR__ . '/../Resources/lang', 'writer');
         }
     }
 

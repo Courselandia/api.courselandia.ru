@@ -40,32 +40,40 @@ class YandexServiceTest extends TestCase
      * Тестирование отправки URL на переобход.
      *
      * @return void
-     * @throws LimitException|ParameterInvalidException|ResponseException|GuzzleException|InvalidCodeException
+     * @throws ParameterInvalidException|ResponseException|GuzzleException|InvalidCodeException
      */
     public function testPush(): void
     {
         $service = new YandexService();
-        $idTask = $service->push('https://courselandia.ru');
 
-        $this->assertIsString($idTask);
+        try {
+            $idTask = $service->push('https://courselandia.ru');
+
+            $this->assertIsString($idTask);
+        } catch (LimitException) {
+            $this->assertIsBool(true);
+        }
     }
 
     /**
      * Тестирование работы метода проверки, что переобход призошел.
      *
      * @return void
-     * @throws LimitException|ParameterInvalidException|ResponseException|GuzzleException|InvalidCodeException
+     * @throws ParameterInvalidException|ResponseException|GuzzleException|InvalidCodeException
      * @throws ProcessingException
      */
     public function testIsPushed(): void
     {
         $service = new YandexService();
-        $idTask = $service->push('https://courselandia.ru');
 
-        $this->assertIsString($idTask);
+        try {
+            $idTask = $service->push('https://courselandia.ru');
+            $this->assertIsString($idTask);
 
-        $status = $service->isPushed($idTask);
-
-        $this->assertIsBool($status);
+            $status = $service->isPushed($idTask);
+            $this->assertIsBool($status);
+        } catch (LimitException) {
+            $this->assertIsBool(true);
+        }
     }
 }

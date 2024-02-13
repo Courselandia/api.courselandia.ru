@@ -37,7 +37,7 @@ class Offer
     /**
      * ID категории.
      *
-     * @var int
+     * @var int|null
      */
     public int|null $categoryId = null;
 
@@ -79,9 +79,9 @@ class Offer
     /**
      * Путь к изображению.
      *
-     * @var string
+     * @var string|null
      */
-    public string $picture;
+    public ?string $picture = null;
 
     /**
      * Валюта.

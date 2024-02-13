@@ -9,7 +9,6 @@
 namespace App\Modules\Document\Http\Requests;
 
 use App\Models\FormRequest;
-use JetBrains\PhpStorm\ArrayShape;
 
 /**
  * Класс проверки запроса для удаления документа.
@@ -21,7 +20,7 @@ class DocumentDestroyRequest extends FormRequest
      *
      * @return array Правила валидирования.
      */
-    #[ArrayShape(['id' => 'string', 'format' => 'string'])] public function rules(): array
+    public function rules(): array
     {
         return [
             'id' => 'required|integer|digits_between:1,20',
@@ -34,7 +33,7 @@ class DocumentDestroyRequest extends FormRequest
      *
      * @return array Массив атрибутов.
      */
-    #[ArrayShape(['id' => 'string', 'format' => 'string'])] public function attributes(): array
+    public function attributes(): array
     {
         return [
             'id' => trans('document::http.requests.documentDestroy.id'),

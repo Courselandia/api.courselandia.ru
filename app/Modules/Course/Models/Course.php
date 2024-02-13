@@ -8,25 +8,20 @@
 
 namespace App\Modules\Course\Models;
 
-use SVG\SVG;
-use Size;
-use ImageStore;
-use Exception;
 use Eloquent;
 use App\Modules\Article\Models\Article;
 use App\Modules\Course\Enums\Duration;
 use App\Modules\Course\Enums\Language;
 use App\Modules\Metatag\Models\Metatag;
 use App\Modules\Review\Models\Review;
+use Illuminate\Database\Eloquent\Concerns\HasTimestamps;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use App\Models\Enums\EnumList;
-use App\Models\Rep\RepositoryQueryBuilder;
 use App\Modules\Category\Models\Category;
 use App\Modules\Course\Enums\Currency;
 use App\Modules\Course\Enums\Status;
 use App\Modules\Direction\Models\Direction;
 use App\Modules\Image\Entities\Image as ImageEntity;
-use App\Modules\Image\Helpers\Image;
 use App\Modules\Profession\Models\Profession;
 use App\Modules\School\Models\School;
 use App\Modules\Skill\Models\Skill;
@@ -34,16 +29,13 @@ use App\Modules\Teacher\Models\Teacher;
 use App\Modules\Tool\Models\Tool;
 use App\Modules\Process\Models\Process;
 use App\Modules\Employment\Models\Employment;
-use CodeBuds\WebPConverter\WebPConverter;
 use App\Models\Delete;
 use App\Models\Validate;
 use App\Models\Sortable;
 use EloquentFilter\Filterable;
-use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Http\UploadedFile;
-use JetBrains\PhpStorm\ArrayShape;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -51,6 +43,9 @@ use App\Modules\Course\Database\Factories\CourseFactory;
 use App\Modules\Course\Filters\CourseFilter;
 use App\Modules\Analyzer\Models\Analyzer;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use App\Modules\Course\Images\ImageMiddle;
+use App\Modules\Course\Images\ImageSmall;
+use App\Modules\Course\Images\ImageBig;
 
 /**
  * Класс модель для таблицы курсов на основе Eloquent.
@@ -119,6 +114,7 @@ class Course extends Eloquent
     use SoftDeletes;
     use Validate;
     use Filterable;
+    use HasTimestamps;
 
     /**
      * Типизирование атрибутов.
@@ -134,6 +130,9 @@ class Course extends Eloquent
         'teacher_ids' => 'array',
         'tool_ids' => 'array',
         'level_values' => 'array',
+        'image_small_id' => ImageSmall::class,
+        'image_middle_id' => ImageMiddle::class,
+        'image_big_id' => ImageBig::class,
     ];
 
     /**
@@ -187,45 +186,7 @@ class Course extends Eloquent
      *
      * @return array Вернет массив правил.
      */
-    #[ArrayShape([
-        'uuid' => 'string',
-        'metatag_id' => 'string',
-        'school_id' => 'string',
-        'image_big_id' => 'string',
-        'image_middle_id' => 'string',
-        'image_small_id' => 'string',
-        'name' => 'string',
-        'header' => 'string',
-        'header_template' => 'string',
-        'text' => 'string',
-        'name_morphy' => 'string',
-        'text_morphy' => 'string',
-        'link' => 'string',
-        'url' => 'string',
-        'language' => 'string',
-        'rating' => 'string',
-        'price' => 'string',
-        'price_old' => 'string',
-        'price_recurrent' => 'string',
-        'currency' => 'string',
-        'online' => 'string',
-        'employment' => 'string',
-        'duration' => 'string',
-        'duration_rate' => 'string',
-        'duration_unit' => 'string',
-        'lessons_amount' => 'string',
-        'modules_amount' => 'string',
-        'program' => 'string',
-        'direction_ids' => 'string',
-        'profession_ids' => 'string',
-        'category_ids' => 'string',
-        'skill_ids' => 'string',
-        'teacher_ids' => 'string',
-        'tool_ids' => 'string',
-        'level_values' => 'string',
-        'has_active_school' => 'string',
-        'status' => 'string',
-    ])] protected function getRules(): array
+    protected function getRules(): array
     {
         return [
             'uuid' => 'max:191',
@@ -491,207 +452,5 @@ class Course extends Eloquent
     public function analyzers(): MorphMany
     {
         return $this->morphMany(Analyzer::class, 'analyzerable');
-    }
-
-    /**
-     * Преобразователь атрибута - запись: маленькое изображение.
-     *
-     * @param  mixed  $value  Значение атрибута.
-     *
-     * @return void
-     * @throws FileNotFoundException|Exception
-     */
-    public function setImageSmallIdAttribute(mixed $value): void
-    {
-        $name = 'image_small_id';
-        $folder = 'courses';
-
-        $this->attributes[$name] = Image::set(
-            $name,
-            $value,
-            function (string $name, UploadedFile $value) use ($folder) {
-                if ($value->getClientOriginalExtension() === 'svg') {
-                    $imageSvg = SVG::fromFile($value->path());
-                    $imageRaster = $imageSvg->toRasterImage(600, 600);
-                    $path = ImageStore::tmp('png');
-                    imagepng($imageRaster, $path);
-
-                    $image = Size::make($path);
-                } else {
-                    $path = ImageStore::tmp($value->getClientOriginalExtension());
-                    $image = Size::make($value);
-                }
-
-                $image->fit(150, 150)->save($path);
-
-                $imageWebp = $value->getClientOriginalExtension() !== 'webp'
-                    ? WebPConverter::createWebpImage($path, ['saveFile' => true])
-                    : ['path' => $path];
-
-                ImageStore::setFolder($folder);
-                $image = new ImageEntity();
-                $image->path = $imageWebp['path'];
-
-                if (isset($this->attributes[$name]) && $this->attributes[$name] !== '') {
-                    return ImageStore::update($this->attributes[$name], $image);
-                }
-
-                return ImageStore::create($image);
-            }
-        );
-    }
-
-    /**
-     * Преобразователь атрибута - получение: маленькое изображение.
-     *
-     * @param  mixed  $value  Значение атрибута.
-     *
-     * @return ImageEntity|null Маленькое изображение.
-     */
-    public function getImageSmallIdAttribute(mixed $value): ?ImageEntity
-    {
-        if (is_numeric($value) || is_string($value)) {
-            return ImageStore::get(new RepositoryQueryBuilder($value));
-        }
-
-        return $value;
-    }
-
-    /**
-     * Преобразователь атрибута - запись: среднее изображение.
-     *
-     * @param  mixed  $value  Значение атрибута.
-     *
-     * @return void
-     * @throws FileNotFoundException|Exception
-     */
-    public function setImageMiddleIdAttribute(mixed $value): void
-    {
-        $name = 'image_middle_id';
-        $folder = 'courses';
-
-        $this->attributes[$name] = Image::set(
-            $name,
-            $value,
-            function (string $name, UploadedFile $value) use ($folder) {
-                if ($value->getClientOriginalExtension() === 'svg') {
-                    $imageSvg = SVG::fromFile($value->path());
-                    $imageRaster = $imageSvg->toRasterImage(500, 500);
-                    $path = ImageStore::tmp('png');
-                    imagepng($imageRaster, $path);
-
-                    $image = Size::make($path);
-                } else {
-                    $path = ImageStore::tmp($value->getClientOriginalExtension());
-                    $image = Size::make($value);
-                }
-
-                $image->resize(
-                    500,
-                    null,
-                    function ($constraint) {
-                        $constraint->aspectRatio();
-                        $constraint->upsize();
-                    }
-                )->save($path);
-
-                $imageWebp = WebPConverter::createWebpImage($path, ['saveFile' => true]);
-
-                ImageStore::setFolder($folder);
-                $image = new ImageEntity();
-                $image->path = $imageWebp['path'];
-
-                if (isset($this->attributes[$name]) && $this->attributes[$name] !== '') {
-                    return ImageStore::update($this->attributes[$name], $image);
-                }
-
-                return ImageStore::create($image);
-            }
-        );
-    }
-
-    /**
-     * Преобразователь атрибута - получение: среднее изображение.
-     *
-     * @param  mixed  $value  Значение атрибута.
-     *
-     * @return ImageEntity|null Среднее изображение.
-     */
-    public function getImageMiddleIdAttribute(mixed $value): ?ImageEntity
-    {
-        if (is_numeric($value) || is_string($value)) {
-            return ImageStore::get(new RepositoryQueryBuilder($value));
-        }
-
-        return $value;
-    }
-
-    /**
-     * Преобразователь атрибута - запись: большое изображение.
-     *
-     * @param  mixed  $value  Значение атрибута.
-     *
-     * @return void
-     * @throws FileNotFoundException|Exception
-     */
-    public function setImageBigIdAttribute(mixed $value): void
-    {
-        $name = 'image_big_id';
-        $folder = 'courses';
-
-        $this->attributes[$name] = Image::set(
-            $name,
-            $value,
-            function (string $name, UploadedFile $value) use ($folder) {
-                if ($value->getClientOriginalExtension() === 'svg') {
-                    $imageSvg = SVG::fromFile($value->path());
-                    $imageRaster = $imageSvg->toRasterImage(600, 600);
-                    $path = ImageStore::tmp('png');
-                    imagepng($imageRaster, $path);
-
-                    $image = Size::make($path);
-                } else {
-                    $path = ImageStore::tmp($value->getClientOriginalExtension());
-                    $image = Size::make($value);
-                }
-
-                $image->resize(
-                    600,
-                    null,
-                    function ($constraint) {
-                        $constraint->aspectRatio();
-                        $constraint->upsize();
-                    }
-                )->save($path);
-
-                $imageWebp = WebPConverter::createWebpImage($path, ['saveFile' => true]);
-
-                ImageStore::setFolder($folder);
-                $image = new ImageEntity();
-                $image->path = $imageWebp['path'];
-
-                if (isset($this->attributes[$name]) && $this->attributes[$name] !== '') {
-                    return ImageStore::update($this->attributes[$name], $image);
-                }
-
-                return ImageStore::create($image);
-            }
-        );
-    }
-
-    /**
-     * Преобразователь атрибута - получение: большое изображение.
-     *
-     * @param  mixed  $value  Значение атрибута.
-     *
-     * @return ImageEntity|null Большое изображение.
-     */
-    public function getImageBigIdAttribute(mixed $value): ?ImageEntity
-    {
-        if (is_numeric($value) || is_string($value)) {
-            return ImageStore::get(new RepositoryQueryBuilder($value));
-        }
-
-        return $value;
     }
 }

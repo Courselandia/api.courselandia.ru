@@ -23,27 +23,27 @@ use Illuminate\Http\UploadedFile;
 class PublicationImageUpdateAction extends Action
 {
     /**
-     * ID пользователей.
+     * ID публикации.
      *
-     * @var int|string|null
+     * @var int|string
      */
-    public int|string|null $id = null;
+    private int|string $id;
 
     /**
      * Изображение.
      *
-     * @var UploadedFile|null
+     * @var UploadedFile
      */
-    public ?UploadedFile $image = null;
+    private UploadedFile $image;
 
     /**
-     * Конструктор.
-     *
-     * @param  Publication  $publication  Репозиторий публикации.
+     * @param int|string $id ID публикации.
+     * @param UploadedFile $image Изображение.
      */
-    public function __construct(Publication $publication)
+    public function __construct(int|string $id, UploadedFile $image)
     {
-        $this->publication = $publication;
+        $this->id = $id;
+        $this->image = $image;
     }
 
     /**
@@ -51,21 +51,20 @@ class PublicationImageUpdateAction extends Action
      *
      * @return PublicationEntity Вернет результаты исполнения.
      * @throws RecordNotExistException
-     * @throws ParameterInvalidException
      */
     public function run(): PublicationEntity
     {
         if ($this->id) {
-            $action = app(PublicationGetAction::class);
-            $action->id = $this->id;
+            $action = new PublicationGetAction($this->id);
             $publication = $action->run();
 
             if ($publication) {
-                $publication->image_small_id = $this->image;
-                $publication->image_middle_id = $this->image;
-                $publication->image_big_id = $this->image;
-
-                Publication::find($this->id)->update($publication->toArray());
+                Publication::find($this->id)->update([
+                    ...$publication->toArray(),
+                    'image_small_id' => $this->image,
+                    'image_middle_id' => $this->image,
+                    'image_big_id' => $this->image,
+                ]);
 
                 Cache::tags(['publication'])->flush();
 

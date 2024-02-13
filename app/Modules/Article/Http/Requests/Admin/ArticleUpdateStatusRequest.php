@@ -11,7 +11,6 @@ namespace App\Modules\Article\Http\Requests\Admin;
 use App\Models\Enums\EnumList;
 use App\Models\FormRequest;
 use App\Modules\Article\Enums\Status;
-use JetBrains\PhpStorm\ArrayShape;
 
 /**
  * Класс запрос для обновления статуса.
@@ -23,7 +22,7 @@ class ArticleUpdateStatusRequest extends FormRequest
      *
      * @return array Массив правил проверки.
      */
-    #[ArrayShape(['status' => 'string'])] public function rules(): array
+    public function rules(): array
     {
         return [
             'status' => 'required|in:' . implode(',', EnumList::getValues(Status::class)),
@@ -35,7 +34,7 @@ class ArticleUpdateStatusRequest extends FormRequest
      *
      * @return array Массив атрибутов.
      */
-    #[ArrayShape(['status' => 'string'])] public function attributes(): array
+    public function attributes(): array
     {
         return [
             'status' => trans('article::http.requests.admin.articleUpdateStatusRequest.status'),

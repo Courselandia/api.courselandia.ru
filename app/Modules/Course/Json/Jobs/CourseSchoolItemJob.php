@@ -8,8 +8,9 @@
 
 namespace App\Modules\Course\Json\Jobs;
 
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Course\Actions\Site\Course\CourseReadAction;
+use App\Modules\Course\Entities\CourseRead;
+use App\Modules\Course\Helpers\CleanCourseRead;
 
 /**
  * Задача для формирования курсов школы.
@@ -20,23 +21,24 @@ class CourseSchoolItemJob extends JsonItemJob
      * Выполнение задачи.
      *
      * @return void
-     * @throws ParameterInvalidException
      */
     public function handle(): void
     {
-        $action = app(CourseReadAction::class);
-        $action->sorts = ['name' => 'ASC'];
-        $action->filters = ['school-id' => $this->id];
-        $action->offset = 0;
-        $action->limit = 36;
-        $action->section = 'school';
-        $action->sectionLink = $this->link;
+        $action = new CourseReadAction(CourseRead::from([
+            'sorts' => ['name' => 'ASC'],
+            'filters' => ['school-id' => $this->id],
+            'offset' => 0,
+            'limit' => 36,
+            'section' => 'school',
+            'sectionLink' => $this->link,
+        ]));
 
         $entityCourseRead = $action->run();
+        $data = CleanCourseRead::do($entityCourseRead->toArray());
 
-        if ($entityCourseRead) {
+        if ($data) {
             $data = [
-                'data' => $entityCourseRead->toArray(),
+                'data' => $data,
                 'success' => true,
             ];
 

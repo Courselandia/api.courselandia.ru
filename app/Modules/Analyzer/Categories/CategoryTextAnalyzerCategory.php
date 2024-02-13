@@ -8,7 +8,6 @@
 
 namespace App\Modules\Analyzer\Categories;
 
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Modules\Category\Actions\Admin\CategoryGetAction;
 use App\Modules\Analyzer\Contracts\AnalyzerCategory;
@@ -44,12 +43,11 @@ class CategoryTextAnalyzerCategory extends AnalyzerCategory
      * @param int $id ID сущности для которой производится анализ.
      *
      * @return string Метка.
-     * @throws RecordNotExistException|ParameterInvalidException
+     * @throws RecordNotExistException
      */
     public function label(int $id): string
     {
-        $action = app(CategoryGetAction::class);
-        $action->id = $id;
+        $action = new CategoryGetAction($id);
         $categoryEntity = $action->run();
 
         if ($categoryEntity) {
@@ -67,12 +65,11 @@ class CategoryTextAnalyzerCategory extends AnalyzerCategory
      * @param int $id ID сущности для которой проводится анализ.
      *
      * @return string|null Текст для проверки.
-     * @throws RecordNotExistException|ParameterInvalidException
+     * @throws RecordNotExistException
      */
     public function text(int $id): ?string
     {
-        $action = app(CategoryGetAction::class);
-        $action->id = $id;
+        $action = new CategoryGetAction($id);
         $categoryEntity = $action->run();
 
         if ($categoryEntity) {

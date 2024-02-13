@@ -10,7 +10,6 @@ namespace App\Modules\Teacher\Actions\Admin\Teacher;
 
 use App\Models\Action;
 use App\Models\Enums\CacheTime;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Teacher\Entities\Teacher as TeacherEntity;
 use App\Modules\Teacher\Models\Teacher;
 use Cache;
@@ -24,15 +23,22 @@ class TeacherGetAction extends Action
     /**
      * ID учителя.
      *
-     * @var int|string|null
+     * @var int|string
      */
-    public int|string|null $id = null;
+    private int|string $id;
+
+    /**
+     * @param int|string $id ID учителя.
+     */
+    public function __construct(int|string $id)
+    {
+        $this->id = $id;
+    }
 
     /**
      * Метод запуска логики.
      *
      * @return TeacherEntity|null Вернет результаты исполнения.
-     * @throws ParameterInvalidException
      */
     public function run(): ?TeacherEntity
     {
@@ -53,7 +59,7 @@ class TeacherGetAction extends Action
                     ])
                     ->first();
 
-                return $teacher ? new TeacherEntity($teacher->toArray()) : null;
+                return $teacher ? TeacherEntity::from($teacher->toArray()) : null;
             }
         );
     }

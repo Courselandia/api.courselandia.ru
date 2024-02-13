@@ -9,13 +9,11 @@
 namespace App\Modules\School\Actions\Site\School;
 
 use App\Models\Action;
-use App\Models\Entity;
 use App\Models\Enums\CacheTime;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\School\Entities\School as SchoolEntity;
 use App\Modules\School\Models\School;
 use Cache;
-use JetBrains\PhpStorm\ArrayShape;
 use ReflectionException;
 use Util;
 
@@ -29,21 +27,37 @@ class SchoolReadAction extends Action
      *
      * @var array|null
      */
-    public ?array $sorts = null;
+    private ?array $sorts;
 
     /**
      * Начать выборку.
      *
      * @var int|null
      */
-    public ?int $offset = null;
+    private ?int $offset;
 
     /**
      * Лимит выборки выборку.
      *
      * @var int|null
      */
-    public ?int $limit = null;
+    private ?int $limit;
+
+    /**
+     * @param array|null $sorts Сортировка данных.
+     * @param int|null $offset Начать выборку.
+     * @param int|null $limit Лимит выборки выборку.
+     */
+    public function __construct(
+        array  $sorts = null,
+        ?int   $offset = null,
+        ?int   $limit = null
+    )
+    {
+        $this->sorts = $sorts;
+        $this->offset = $offset;
+        $this->limit = $limit;
+    }
 
     /**
      * Метод запуска логики.
@@ -51,7 +65,7 @@ class SchoolReadAction extends Action
      * @return mixed Вернет результаты исполнения.
      * @throws ParameterInvalidException|ReflectionException
      */
-    #[ArrayShape(['data' => 'array', 'total' => 'int'])] public function run(): array
+    public function run(): array
     {
         $cacheKey = Util::getKey(
             'school',
@@ -88,7 +102,7 @@ class SchoolReadAction extends Action
                 $items = $query->get()->toArray();
 
                 return [
-                    'data' => Entity::toEntities($items, new SchoolEntity()),
+                    'data' => SchoolEntity::collection($items),
                     'total' => $queryCount->count(),
                 ];
             }

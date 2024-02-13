@@ -9,12 +9,10 @@
 namespace App\Modules\Course\Actions\Site\Course;
 
 use App\Models\Action;
-use App\Models\Clean;
 use App\Modules\Course\Entities\CourseRead;
 use App\Modules\Course\Pipes\Site\Read\ReadPipe;
-use App\Modules\Course\Pipes\Site\Rated\DataPipe;
 use App\Modules\Course\Decorators\Site\CourseReadDecorator;
-use JetBrains\PhpStorm\ArrayShape;
+use App\Modules\Course\Data\Decorators\CourseRead as CourseReadDecoratorData;
 
 /**
  * Класс действия для получения избранного.
@@ -26,35 +24,32 @@ class CourseReadFavoritesAction extends Action
      *
      * @var int[]
      */
-    public array $ids = [];
+    private array $ids;
+
+    /**
+     * @param array $ids IDs избранного.
+     */
+    public function __construct(array $ids = [])
+    {
+        $this->ids = $ids;
+    }
 
     /**
      * Метод запуска логики.
      *
      * @return array Вернет результаты исполнения.
      */
-    #[ArrayShape(['data' => 'array', 'total' => 'int'])] public function run(): array
+    public function run(): array
     {
-        $decorator = app(CourseReadDecorator::class);
-
-        $decorator->filters = [
-            'ids' => $this->ids,
-        ];
+        $decorator = new CourseReadDecorator(CourseReadDecoratorData::from([
+            'filters' => [
+                'ids' => $this->ids,
+            ],
+        ]));
 
         $result = $decorator->setActions([
             ReadPipe::class,
-            DataPipe::class,
         ])->run();
-
-        $result = Clean::do($result, [
-            'openedSchools',
-            'openedCategories',
-            'openedProfessions',
-            'openedProfessions',
-            'openedTeachers',
-            'openedSkills',
-            'openedTools',
-        ]);
 
         /**
          * @var CourseRead $result

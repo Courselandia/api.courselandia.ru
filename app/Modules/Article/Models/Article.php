@@ -14,8 +14,8 @@ use App\Models\Delete;
 use App\Models\Validate;
 use App\Models\Sortable;
 use EloquentFilter\Filterable;
+use Illuminate\Database\Eloquent\Concerns\HasTimestamps;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
-use JetBrains\PhpStorm\ArrayShape;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -48,6 +48,7 @@ class Article extends Eloquent
     use SoftDeletes;
     use Validate;
     use Filterable;
+    use HasTimestamps;
 
     /**
      * Типизирование атрибутов.
@@ -81,18 +82,7 @@ class Article extends Eloquent
      *
      * @return array Вернет массив правил.
      */
-    #[ArrayShape([
-        'id' => 'string',
-        'task_id' => 'string',
-        'category' => 'string',
-        'request' => 'string',
-        'text' => 'string',
-        'params' => 'string',
-        'tries' => 'string',
-        'status' => 'string',
-        'articleable_id' => 'string',
-        'articleable_type' => 'string',
-    ])] protected function getRules(): array
+    protected function getRules(): array
     {
         return [
             'task_id' => 'nullable|digits_between:0,20',

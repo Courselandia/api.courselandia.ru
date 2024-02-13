@@ -1252,7 +1252,7 @@
          * Call the given Closure / class@method and inject its dependencies.
          *
          * @param callable|string $callback
-         * @param \Illuminate\Container\array<string,  mixed>  $parameters
+         * @param array<string, mixed> $parameters
          * @param string|null $defaultMethod
          * @return mixed 
          * @throws \InvalidArgumentException
@@ -9775,6 +9775,200 @@
                         return $instance->setConnectionName($name);
         }
                     /**
+         * 
+         *
+         * @throws AMQPProtocolChannelException
+         * @static 
+         */ 
+        public static function laterRaw($delay, $payload, $queue = null, $attempts = 0)
+        {
+                        /** @var \VladimirYuldashev\LaravelQueueRabbitMQ\Queue\RabbitMQQueue $instance */
+                        return $instance->laterRaw($delay, $payload, $queue, $attempts);
+        }
+                    /**
+         * 
+         *
+         * @throws AMQPProtocolChannelException
+         * @static 
+         */ 
+        public static function bulkRaw($payload, $queue = null, $options = [])
+        {
+                        /** @var \VladimirYuldashev\LaravelQueueRabbitMQ\Queue\RabbitMQQueue $instance */
+                        return $instance->bulkRaw($payload, $queue, $options);
+        }
+                    /**
+         * 
+         *
+         * @throws RuntimeException
+         * @static 
+         */ 
+        public static function getConnection()
+        {
+                        /** @var \VladimirYuldashev\LaravelQueueRabbitMQ\Queue\RabbitMQQueue $instance */
+                        return $instance->getConnection();
+        }
+                    /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function setConnection($connection)
+        {
+                        /** @var \VladimirYuldashev\LaravelQueueRabbitMQ\Queue\RabbitMQQueue $instance */
+                        return $instance->setConnection($connection);
+        }
+                    /**
+         * Job class to use.
+         *
+         * @throws Throwable
+         * @static 
+         */ 
+        public static function getJobClass()
+        {
+                        /** @var \VladimirYuldashev\LaravelQueueRabbitMQ\Queue\RabbitMQQueue $instance */
+                        return $instance->getJobClass();
+        }
+                    /**
+         * Gets a queue/destination, by default the queue option set on the connection.
+         *
+         * @param null $queue
+         * @static 
+         */ 
+        public static function getQueue($queue = null)
+        {
+                        /** @var \VladimirYuldashev\LaravelQueueRabbitMQ\Queue\RabbitMQQueue $instance */
+                        return $instance->getQueue($queue);
+        }
+                    /**
+         * Checks if the given exchange already present/defined in RabbitMQ.
+         * 
+         * Returns false when the exchange is missing.
+         *
+         * @throws AMQPProtocolChannelException
+         * @static 
+         */ 
+        public static function isExchangeExists($exchange)
+        {
+                        /** @var \VladimirYuldashev\LaravelQueueRabbitMQ\Queue\RabbitMQQueue $instance */
+                        return $instance->isExchangeExists($exchange);
+        }
+                    /**
+         * Declare an exchange in rabbitMQ, when not already declared.
+         *
+         * @static 
+         */ 
+        public static function declareExchange($name, $type = 'direct', $durable = true, $autoDelete = false, $arguments = [])
+        {
+                        /** @var \VladimirYuldashev\LaravelQueueRabbitMQ\Queue\RabbitMQQueue $instance */
+                        return $instance->declareExchange($name, $type, $durable, $autoDelete, $arguments);
+        }
+                    /**
+         * Delete an exchange from rabbitMQ, only when present in RabbitMQ.
+         *
+         * @throws AMQPProtocolChannelException
+         * @static 
+         */ 
+        public static function deleteExchange($name, $unused = false)
+        {
+                        /** @var \VladimirYuldashev\LaravelQueueRabbitMQ\Queue\RabbitMQQueue $instance */
+                        return $instance->deleteExchange($name, $unused);
+        }
+                    /**
+         * Checks if the given queue already present/defined in RabbitMQ.
+         * 
+         * Returns false when the queue is missing.
+         *
+         * @throws AMQPProtocolChannelException
+         * @static 
+         */ 
+        public static function isQueueExists($name = null)
+        {
+                        /** @var \VladimirYuldashev\LaravelQueueRabbitMQ\Queue\RabbitMQQueue $instance */
+                        return $instance->isQueueExists($name);
+        }
+                    /**
+         * Declare a queue in rabbitMQ, when not already declared.
+         *
+         * @static 
+         */ 
+        public static function declareQueue($name, $durable = true, $autoDelete = false, $arguments = [])
+        {
+                        /** @var \VladimirYuldashev\LaravelQueueRabbitMQ\Queue\RabbitMQQueue $instance */
+                        return $instance->declareQueue($name, $durable, $autoDelete, $arguments);
+        }
+                    /**
+         * Delete a queue from rabbitMQ, only when present in RabbitMQ.
+         *
+         * @throws AMQPProtocolChannelException
+         * @static 
+         */ 
+        public static function deleteQueue($name, $if_unused = false, $if_empty = false)
+        {
+                        /** @var \VladimirYuldashev\LaravelQueueRabbitMQ\Queue\RabbitMQQueue $instance */
+                        return $instance->deleteQueue($name, $if_unused, $if_empty);
+        }
+                    /**
+         * Bind a queue to an exchange.
+         *
+         * @static 
+         */ 
+        public static function bindQueue($queue, $exchange, $routingKey = '')
+        {
+                        /** @var \VladimirYuldashev\LaravelQueueRabbitMQ\Queue\RabbitMQQueue $instance */
+                        return $instance->bindQueue($queue, $exchange, $routingKey);
+        }
+                    /**
+         * Purge the queue of messages.
+         *
+         * @static 
+         */ 
+        public static function purge($queue = null)
+        {
+                        /** @var \VladimirYuldashev\LaravelQueueRabbitMQ\Queue\RabbitMQQueue $instance */
+                        return $instance->purge($queue);
+        }
+                    /**
+         * Acknowledge the message.
+         *
+         * @static 
+         */ 
+        public static function ack($job)
+        {
+                        /** @var \VladimirYuldashev\LaravelQueueRabbitMQ\Queue\RabbitMQQueue $instance */
+                        return $instance->ack($job);
+        }
+                    /**
+         * Reject the message.
+         *
+         * @static 
+         */ 
+        public static function reject($job, $requeue = false)
+        {
+                        /** @var \VladimirYuldashev\LaravelQueueRabbitMQ\Queue\RabbitMQQueue $instance */
+                        return $instance->reject($job, $requeue);
+        }
+                    /**
+         * Close the connection to RabbitMQ.
+         *
+         * @throws Exception
+         * @static 
+         */ 
+        public static function close()
+        {
+                        /** @var \VladimirYuldashev\LaravelQueueRabbitMQ\Queue\RabbitMQQueue $instance */
+                        return $instance->close();
+        }
+                    /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function getChannel($forceNew = false)
+        {
+                        /** @var \VladimirYuldashev\LaravelQueueRabbitMQ\Queue\RabbitMQQueue $instance */
+                        return $instance->getChannel($forceNew);
+        }
+                    /**
          * Get the backoff for an object-based queue handler.
          *
          * @param mixed $job
@@ -9783,7 +9977,7 @@
          */ 
         public static function getJobBackoff($job)
         {            //Method inherited from \Illuminate\Queue\Queue         
-                        /** @var \Illuminate\Queue\SyncQueue $instance */
+                        /** @var \VladimirYuldashev\LaravelQueueRabbitMQ\Queue\RabbitMQQueue $instance */
                         return $instance->getJobBackoff($job);
         }
                     /**
@@ -9795,7 +9989,7 @@
          */ 
         public static function getJobExpiration($job)
         {            //Method inherited from \Illuminate\Queue\Queue         
-                        /** @var \Illuminate\Queue\SyncQueue $instance */
+                        /** @var \VladimirYuldashev\LaravelQueueRabbitMQ\Queue\RabbitMQQueue $instance */
                         return $instance->getJobExpiration($job);
         }
                     /**
@@ -9807,7 +10001,7 @@
          */ 
         public static function createPayloadUsing($callback)
         {            //Method inherited from \Illuminate\Queue\Queue         
-                        \Illuminate\Queue\SyncQueue::createPayloadUsing($callback);
+                        \VladimirYuldashev\LaravelQueueRabbitMQ\Queue\RabbitMQQueue::createPayloadUsing($callback);
         }
                     /**
          * Get the container instance being used by the connection.
@@ -9817,7 +10011,7 @@
          */ 
         public static function getContainer()
         {            //Method inherited from \Illuminate\Queue\Queue         
-                        /** @var \Illuminate\Queue\SyncQueue $instance */
+                        /** @var \VladimirYuldashev\LaravelQueueRabbitMQ\Queue\RabbitMQQueue $instance */
                         return $instance->getContainer();
         }
                     /**
@@ -9829,7 +10023,7 @@
          */ 
         public static function setContainer($container)
         {            //Method inherited from \Illuminate\Queue\Queue         
-                        /** @var \Illuminate\Queue\SyncQueue $instance */
+                        /** @var \VladimirYuldashev\LaravelQueueRabbitMQ\Queue\RabbitMQQueue $instance */
                         $instance->setContainer($container);
         }
          
@@ -10648,12 +10842,12 @@
          * Clones a request and overrides some of its parameters.
          *
          * @return static 
-         * @param array $query The GET parameters
-         * @param array $request The POST parameters
-         * @param array $attributes The request attributes (parameters parsed from the PATH_INFO, ...)
-         * @param array $cookies The COOKIE parameters
-         * @param array $files The FILES parameters
-         * @param array $server The SERVER parameters
+         * @param array|null $query The GET parameters
+         * @param array|null $request The POST parameters
+         * @param array|null $attributes The request attributes (parameters parsed from the PATH_INFO, ...)
+         * @param array|null $cookies The COOKIE parameters
+         * @param array|null $files The FILES parameters
+         * @param array|null $server The SERVER parameters
          * @static 
          */ 
         public static function duplicate($query = null, $request = null, $attributes = null, $cookies = null, $files = null, $server = null)
@@ -10902,12 +11096,13 @@
          * @param array $files The FILES parameters
          * @param array $server The SERVER parameters
          * @param string|resource|null $content The raw body data
+         * @return void 
          * @static 
          */ 
         public static function initialize($query = [], $request = [], $attributes = [], $cookies = [], $files = [], $server = [], $content = null)
         {            //Method inherited from \Symfony\Component\HttpFoundation\Request         
                         /** @var \Illuminate\Http\Request $instance */
-                        return $instance->initialize($query, $request, $attributes, $cookies, $files, $server, $content);
+                        $instance->initialize($query, $request, $attributes, $cookies, $files, $server, $content);
         }
                     /**
          * Creates a new request with values from PHP's super globals.
@@ -10944,11 +11139,12 @@
          * to keep BC with an existing system. It should not be used for any
          * other purpose.
          *
+         * @return void 
          * @static 
          */ 
         public static function setFactory($callable)
         {            //Method inherited from \Symfony\Component\HttpFoundation\Request         
-                        return \Illuminate\Http\Request::setFactory($callable);
+                        \Illuminate\Http\Request::setFactory($callable);
         }
                     /**
          * Overrides the PHP global variables according to this request instance.
@@ -10956,12 +11152,13 @@
          * It overrides $_GET, $_POST, $_REQUEST, $_SERVER, $_COOKIE.
          * $_FILES is never overridden, see rfc1867
          *
+         * @return void 
          * @static 
          */ 
         public static function overrideGlobals()
         {            //Method inherited from \Symfony\Component\HttpFoundation\Request         
                         /** @var \Illuminate\Http\Request $instance */
-                        return $instance->overrideGlobals();
+                        $instance->overrideGlobals();
         }
                     /**
          * Sets a list of trusted proxies.
@@ -10970,11 +11167,12 @@
          *
          * @param array $proxies A list of trusted proxies, the string 'REMOTE_ADDR' will be replaced with $_SERVER['REMOTE_ADDR']
          * @param int $trustedHeaderSet A bit field of Request::HEADER_*, to set which headers to trust from your proxies
+         * @return void 
          * @static 
          */ 
         public static function setTrustedProxies($proxies, $trustedHeaderSet)
         {            //Method inherited from \Symfony\Component\HttpFoundation\Request         
-                        return \Illuminate\Http\Request::setTrustedProxies($proxies, $trustedHeaderSet);
+                        \Illuminate\Http\Request::setTrustedProxies($proxies, $trustedHeaderSet);
         }
                     /**
          * Gets the list of trusted proxies.
@@ -11002,11 +11200,12 @@
          * You should only list the hosts you manage using regexs.
          *
          * @param array $hostPatterns A list of trusted host patterns
+         * @return void 
          * @static 
          */ 
         public static function setTrustedHosts($hostPatterns)
         {            //Method inherited from \Symfony\Component\HttpFoundation\Request         
-                        return \Illuminate\Http\Request::setTrustedHosts($hostPatterns);
+                        \Illuminate\Http\Request::setTrustedHosts($hostPatterns);
         }
                     /**
          * Gets the list of trusted host patterns.
@@ -11041,11 +11240,12 @@
          * 
          * The HTTP method can only be overridden when the real HTTP method is POST.
          *
+         * @return void 
          * @static 
          */ 
         public static function enableHttpMethodParameterOverride()
         {            //Method inherited from \Symfony\Component\HttpFoundation\Request         
-                        return \Illuminate\Http\Request::enableHttpMethodParameterOverride();
+                        \Illuminate\Http\Request::enableHttpMethodParameterOverride();
         }
                     /**
          * Checks whether support for the _method request parameter is enabled.
@@ -11070,12 +11270,13 @@
                     /**
          * 
          *
+         * @return void 
          * @static 
          */ 
         public static function setSession($session)
         {            //Method inherited from \Symfony\Component\HttpFoundation\Request         
                         /** @var \Illuminate\Http\Request $instance */
-                        return $instance->setSession($session);
+                        $instance->setSession($session);
         }
                     /**
          * 
@@ -11376,12 +11577,13 @@
                     /**
          * Sets the request method.
          *
+         * @return void 
          * @static 
          */ 
         public static function setMethod($method)
         {            //Method inherited from \Symfony\Component\HttpFoundation\Request         
                         /** @var \Illuminate\Http\Request $instance */
-                        return $instance->setMethod($method);
+                        $instance->setMethod($method);
         }
                     /**
          * Gets the request "intended" method.
@@ -11447,12 +11649,13 @@
          * Associates a format with mime types.
          *
          * @param string|string[] $mimeTypes The associated mime types (the preferred one must be the first as it will be used as the content type)
+         * @return void 
          * @static 
          */ 
         public static function setFormat($format, $mimeTypes)
         {            //Method inherited from \Symfony\Component\HttpFoundation\Request         
                         /** @var \Illuminate\Http\Request $instance */
-                        return $instance->setFormat($format, $mimeTypes);
+                        $instance->setFormat($format, $mimeTypes);
         }
                     /**
          * Gets the request format.
@@ -11474,12 +11677,13 @@
                     /**
          * Sets the request format.
          *
+         * @return void 
          * @static 
          */ 
         public static function setRequestFormat($format)
         {            //Method inherited from \Symfony\Component\HttpFoundation\Request         
                         /** @var \Illuminate\Http\Request $instance */
-                        return $instance->setRequestFormat($format);
+                        $instance->setRequestFormat($format);
         }
                     /**
          * Gets the usual name of the format associated with the request's media type (provided in the Content-Type header).
@@ -11506,12 +11710,13 @@
                     /**
          * Sets the default locale.
          *
+         * @return void 
          * @static 
          */ 
         public static function setDefaultLocale($locale)
         {            //Method inherited from \Symfony\Component\HttpFoundation\Request         
                         /** @var \Illuminate\Http\Request $instance */
-                        return $instance->setDefaultLocale($locale);
+                        $instance->setDefaultLocale($locale);
         }
                     /**
          * Get the default locale.
@@ -11526,12 +11731,13 @@
                     /**
          * Sets the locale.
          *
+         * @return void 
          * @static 
          */ 
         public static function setLocale($locale)
         {            //Method inherited from \Symfony\Component\HttpFoundation\Request         
                         /** @var \Illuminate\Http\Request $instance */
-                        return $instance->setLocale($locale);
+                        $instance->setLocale($locale);
         }
                     /**
          * Get the locale.
@@ -11614,6 +11820,17 @@
         {            //Method inherited from \Symfony\Component\HttpFoundation\Request         
                         /** @var \Illuminate\Http\Request $instance */
                         return $instance->getContent($asResource);
+        }
+                    /**
+         * Gets the decoded form or json request body.
+         *
+         * @throws JsonException When the body cannot be decoded to an array
+         * @static 
+         */ 
+        public static function getPayload()
+        {            //Method inherited from \Symfony\Component\HttpFoundation\Request         
+                        /** @var \Illuminate\Http\Request $instance */
+                        return $instance->getPayload();
         }
                     /**
          * Gets the Etags.
@@ -18962,13 +19179,14 @@
          *
          * @param \App\Models\Typography\?string $text Текст для тпиографирования.
          * @param bool $htmlEntityDecode Преобразует HTML-сущности в соответствующие им символы.
+         * @param bool $removeRn = true Удалить переводы строк.
          * @return \App\Models\Typography\?string Оттипографированный текст.
          * @static 
          */ 
-        public static function process($text, $htmlEntityDecode = false)
+        public static function process($text, $htmlEntityDecode = false, $removeRn = true)
         {
                         /** @var \App\Models\Typography\Typography $instance */
-                        return $instance->process($text, $htmlEntityDecode);
+                        return $instance->process($text, $htmlEntityDecode, $removeRn);
         }
          
     }
@@ -19684,7 +19902,6 @@
          * @param string|null $tag Тэг.
          * @param string|null $color Цвет тэга.
          * @return int Вернет ID последней вставленной строки.
-         * @throws ParameterInvalidException
          * @static 
          */ 
         public static function add($title, $status = true, $description = null, $url = null, $tag = null, $color = null)
@@ -19711,7 +19928,6 @@
          * @param bool $status Если поставить true, то будет иметь статус не прочитанного.
          * @return bool Вернет успешность установки статуса.
          * @throws RecordNotExistException
-         * @throws ParameterInvalidException
          * @static 
          */ 
         public static function setStatus($id, $status = true)
@@ -19724,7 +19940,6 @@
          *
          * @param int|string $id ID предупреждения.
          * @return \App\Modules\Alert\Entities\Alert|null Вернет сущность предупреждения.
-         * @throws ParameterInvalidException
          * @static 
          */ 
         public static function get($id)
@@ -19738,7 +19953,7 @@
          * @param int|null $offset Отступ вывода.
          * @param int|null $limit Лимит вывода.
          * @param bool $status Если установить true, то получит только прочитанные.
-         * @return \App\Modules\Alert\Entities\Alert[] Вернет массив данных предупреждений.
+         * @return \Spatie\LaravelData\DataCollection Вернет коллекцию данных предупреждений.
          * @throws ParameterInvalidException
          * @static 
          */ 
@@ -20384,6 +20599,27 @@
                     /**
          * 
          *
+         * @param array<class-string<ArgumentReducer>|ArgumentReducer>|\Spatie\Backtrace\Arguments\ArgumentReducers|null $argumentReducers
+         * @static 
+         */ 
+        public static function argumentReducers($argumentReducers)
+        {
+                        /** @var \Spatie\FlareClient\Flare $instance */
+                        return $instance->argumentReducers($argumentReducers);
+        }
+                    /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function withStackFrameArguments($withStackFrameArguments = true)
+        {
+                        /** @var \Spatie\FlareClient\Flare $instance */
+                        return $instance->withStackFrameArguments($withStackFrameArguments);
+        }
+                    /**
+         * 
+         *
          * @static 
          */ 
         public static function version()
@@ -20455,7 +20691,7 @@
                     /**
          * 
          *
-         * @param \Spatie\FlareClient\FlareMiddleware\FlareMiddleware|array<FlareMiddleware>|\Spatie\FlareClient\class-string<FlareMiddleware> $middleware
+         * @param \Spatie\FlareClient\FlareMiddleware\FlareMiddleware|array<FlareMiddleware>|\Spatie\FlareClient\class-string<FlareMiddleware>|callable $middleware
          * @return \Spatie\FlareClient\Flare 
          * @static 
          */ 
@@ -20480,7 +20716,7 @@
          *
          * @param string $name
          * @param string $messageLevel
-         * @param \Spatie\FlareClient\array<int,  mixed> $metaData
+         * @param array<int, mixed> $metaData
          * @return \Spatie\FlareClient\Flare 
          * @static 
          */ 
@@ -20573,7 +20809,7 @@
                     /**
          * 
          *
-         * @param \Spatie\FlareClient\array<int,  string> $fieldNames
+         * @param array<int, string> $fieldNames
          * @return \Spatie\FlareClient\Flare 
          * @static 
          */ 
@@ -20649,7 +20885,7 @@
          * 
          *
          * @param string $groupName
-         * @param \Spatie\FlareClient\array<string,  mixed> $properties
+         * @param array<string, mixed> $properties
          * @return \Spatie\FlareClient\Flare 
          * @static 
          */ 

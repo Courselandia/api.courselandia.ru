@@ -8,13 +8,12 @@
 
 namespace App\Modules\Teacher\Actions\Admin\TeacherImage;
 
+use Cache;
 use App\Models\Action;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Modules\Teacher\Actions\Admin\Teacher\TeacherGetAction;
 use App\Modules\Teacher\Entities\Teacher as TeacherEntity;
 use App\Modules\Teacher\Models\Teacher;
-use Cache;
 use Illuminate\Http\UploadedFile;
 
 /**
@@ -25,44 +24,46 @@ class TeacherImageUpdateAction extends Action
     /**
      * ID учителя.
      *
-     * @var int|string|null
+     * @var int|string
      */
-    public int|string|null $id = null;
-
-    /**
-     * Тип изображения.
-     *
-     * @var string|null
-     */
-    public string|null $type = null;
+    private int|string $id;
 
     /**
      * Изображение.
      *
-     * @var UploadedFile|null
+     * @var UploadedFile
      */
-    public ?UploadedFile $image = null;
+    private UploadedFile $image;
+
+    /**
+     * @param int|string $id ID учителя.
+     * @param UploadedFile $image Изображение.
+     */
+    public function __construct(int|string $id, UploadedFile $image)
+    {
+        $this->id = $id;
+        $this->image = $image;
+    }
 
     /**
      * Метод запуска логики.
      *
      * @return TeacherEntity Вернет результаты исполнения.
      * @throws RecordNotExistException
-     * @throws ParameterInvalidException
      */
     public function run(): TeacherEntity
     {
         if ($this->id) {
-            $action = app(TeacherGetAction::class);
-            $action->id = $this->id;
+            $action = new TeacherGetAction($this->id);
             $teacher = $action->run();
 
             if ($teacher) {
-                $teacher->image_small_id = $this->image;
-                $teacher->image_middle_id = $this->image;
-                $teacher->image_big_id = $this->image;
+                $teacher = $teacher->toArray();
+                $teacher['image_small_id'] = $this->image;
+                $teacher['image_middle_id'] = $this->image;
+                $teacher['image_big_id'] = $this->image;
 
-                Teacher::find($this->id)->update($teacher->toArray());
+                Teacher::find($this->id)->update($teacher);
                 Cache::tags(['catalog', 'teacher', 'direction', 'school'])->flush();
 
                 return $action->run();

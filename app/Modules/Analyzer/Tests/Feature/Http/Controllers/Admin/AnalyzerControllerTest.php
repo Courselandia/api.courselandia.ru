@@ -11,7 +11,6 @@ namespace App\Modules\Analyzer\Tests\Feature\Http\Controllers\Admin;
 use App\Models\Test\TokenTest;
 use App\Modules\Analyzer\Models\Analyzer;
 use Faker\Factory as Faker;
-use JetBrains\PhpStorm\Pure;
 use Tests\TestCase;
 
 /**
@@ -151,7 +150,7 @@ class AnalyzerControllerTest extends TestCase
      *
      * @return array Массив структуры данных статьи.
      */
-    #[Pure] private function getAnalyzerStructure(): array
+    private function getAnalyzerStructure(): array
     {
         return [
             'id',

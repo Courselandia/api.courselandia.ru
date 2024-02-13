@@ -29,7 +29,7 @@ class ProfessionServiceProvider extends ServiceProvider
         $this->registerTranslations();
         $this->registerConfig();
 
-        $this->loadMigrationsFrom(__DIR__.'/../Database/Migrations');
+        $this->loadMigrationsFrom(__DIR__ . '/../Database/Migrations');
 
         ProfessionModel::observe(ProfessionListener::class);
     }
@@ -51,10 +51,10 @@ class ProfessionServiceProvider extends ServiceProvider
     protected function registerConfig(): void
     {
         $this->publishes([
-            __DIR__.'/../Config/config.php' => config_path('profession.php'),
+            __DIR__ . '/../Config/config.php' => config_path('profession.php'),
         ]);
         $this->mergeConfigFrom(
-            __DIR__.'/../Config/config.php',
+            __DIR__ . '/../Config/config.php',
             'profession'
         );
     }
@@ -68,7 +68,7 @@ class ProfessionServiceProvider extends ServiceProvider
     {
         $viewPath = base_path('resources/views/modules/profession');
 
-        $sourcePath = __DIR__.'/../Resources/views';
+        $sourcePath = __DIR__ . '/../Resources/views';
 
         $this->publishes([
             $sourcePath => $viewPath
@@ -77,7 +77,7 @@ class ProfessionServiceProvider extends ServiceProvider
         $this->loadViewsFrom(
             array_merge(
                 array_map(function ($path) {
-                    return $path.'/modules/profession';
+                    return $path . '/modules/profession';
                 }, Config::get('view.paths')),
                 [$sourcePath]
             ),
@@ -97,7 +97,7 @@ class ProfessionServiceProvider extends ServiceProvider
         if (is_dir($langPath)) {
             $this->loadTranslationsFrom($langPath, 'profession');
         } else {
-            $this->loadTranslationsFrom(__DIR__.'/../Resources/lang', 'profession');
+            $this->loadTranslationsFrom(__DIR__ . '/../Resources/lang', 'profession');
         }
     }
 

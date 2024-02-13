@@ -22,7 +22,7 @@ class ToolFilter extends ModelFilter
      *
      * @return ToolFilter Правила поиска.
      */
-    public function id(int|string $id): ToolFilter
+    public function id(int|string $id): self
     {
         return $this->where('tools.id', $id);
     }
@@ -34,7 +34,7 @@ class ToolFilter extends ModelFilter
      *
      * @return ToolFilter Правила поиска.
      */
-    public function name(string $query): ToolFilter
+    public function name(string $query): self
     {
         return $this->whereLike('tools.name', $query);
     }
@@ -46,7 +46,7 @@ class ToolFilter extends ModelFilter
      *
      * @return ToolFilter Правила поиска.
      */
-    public function status(bool $status): ToolFilter
+    public function status(bool $status): self
     {
         return $this->where('tools.status', $status);
     }

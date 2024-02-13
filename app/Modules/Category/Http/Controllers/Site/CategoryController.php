@@ -25,12 +25,10 @@ class CategoryController extends Controller
      * @param int|string $id ID категории.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException
      */
     public function get(int|string $id): JsonResponse
     {
-        $action = app(CategoryGetAction::class);
-        $action->id = $id;
+        $action = new CategoryGetAction($id);
         $data = $action->run();
 
         if ($data) {
@@ -60,8 +58,7 @@ class CategoryController extends Controller
      */
     public function link(string $link): JsonResponse
     {
-        $action = app(CategoryLinkAction::class);
-        $action->link = $link;
+        $action = new CategoryLinkAction($link);
         $data = $action->run();
 
         if ($data) {

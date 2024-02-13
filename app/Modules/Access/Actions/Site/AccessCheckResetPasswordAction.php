@@ -9,7 +9,6 @@
 namespace App\Modules\Access\Actions\Site;
 
 use App\Models\Action;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\UserNotExistException;
 use App\Models\Exceptions\InvalidCodeException;
 
@@ -21,28 +20,36 @@ class AccessCheckResetPasswordAction extends Action
     /**
      * ID пользователя.
      *
-     * @var int|string|null
+     * @var int|string
      */
-    public int|string|null $id = null;
+    private int|string $id;
 
     /**
      * Код восстановления пользователя.
      *
-     * @var string|null
+     * @var string
      */
-    public ?string $code = null;
+    private string $code;
+
+    /**
+     * @param int|string $id ID пользователя.
+     * @param string $code Код восстановления пользователя.
+     */
+    public function __construct(int|string $id, string $code)
+    {
+        $this->id = $id;
+        $this->code = $code;
+    }
 
     /**
      * Метод запуска логики.
      *
-     * @return mixed Вернет результаты исполнения.
-     * @throws UserNotExistException|InvalidCodeException|ParameterInvalidException
+     * @return bool Вернет результаты исполнения.
+     * @throws UserNotExistException|InvalidCodeException
      */
-    public function run(): mixed
+    public function run(): bool
     {
-        $action = app(AccessCheckCodeResetPasswordAction::class);
-        $action->id = $this->id;
-        $action->code = $this->code;
+        $action = new AccessCheckCodeResetPasswordAction($this->id, $this->code);
 
         return $action->run();
     }

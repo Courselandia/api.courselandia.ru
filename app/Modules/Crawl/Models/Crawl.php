@@ -14,7 +14,7 @@ use App\Models\Delete;
 use App\Models\Validate;
 use App\Models\Sortable;
 use EloquentFilter\Filterable;
-use JetBrains\PhpStorm\ArrayShape;
+use Illuminate\Database\Eloquent\Concerns\HasTimestamps;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -43,15 +43,16 @@ class Crawl extends Eloquent
     use SoftDeletes;
     use Validate;
     use Filterable;
+    use HasTimestamps;
 
     /**
-     * Атрибуты, которые должны быть преобразованы к дате.
+     * Типизирование атрибутов.
      *
      * @var array
      */
-    protected $dates = [
-        'pushed_at',
-        'crawled_at',
+    protected $casts = [
+        'pushed_at' => 'datetime',
+        'crawled_at' => 'datetime',
     ];
 
     /**
@@ -73,13 +74,7 @@ class Crawl extends Eloquent
      *
      * @return array Вернет массив правил.
      */
-    #[ArrayShape([
-        'page_id' => 'string',
-        'task_id' => 'string',
-        'pushed_at' => 'string',
-        'crawled_at' => 'string',
-        'engine' => 'string',
-    ])] protected function getRules(): array
+    protected function getRules(): array
     {
         return [
             'page_id' => 'required|digits_between:0,20',

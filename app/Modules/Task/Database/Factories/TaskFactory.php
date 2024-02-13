@@ -10,7 +10,6 @@ namespace App\Modules\Task\Database\Factories;
 
 use Carbon\Carbon;
 use App\Modules\Task\Enums\Status;
-use JetBrains\PhpStorm\ArrayShape;
 use App\Modules\Task\Models\Task;
 use App\Modules\User\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -32,14 +31,7 @@ class TaskFactory extends Factory
      *
      * @return array
      */
-    #[ArrayShape([
-        'user_id' => '\Illuminate\Database\Eloquent\Factories\Factory',
-        'name' => 'string',
-        'reason' => 'string',
-        'status' => 'string',
-        'launched_at' => '\Carbon\Carbon',
-        'finished_at' => '\Carbon\Carbon',
-    ])] public function definition(): array
+    public function definition(): array
     {
         return [
             'user_id' => User::factory(),

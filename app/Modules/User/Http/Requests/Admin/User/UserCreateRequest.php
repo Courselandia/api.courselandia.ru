@@ -11,7 +11,6 @@ namespace App\Modules\User\Http\Requests\Admin\User;
 use App\Models\Enums\EnumList;
 use App\Models\FormRequest;
 use App\Modules\User\Enums\Role;
-use JetBrains\PhpStorm\ArrayShape;
 
 /**
  * Класс запрос для создания пользователя.
@@ -23,14 +22,7 @@ class UserCreateRequest extends FormRequest
      *
      * @return array Массив правил проверки.
      */
-    #[ArrayShape([
-        'image' => 'string',
-        'invitation' => 'string',
-        'role' => 'string',
-        'verified' => 'string',
-        'two_factor' => 'string',
-        'status' => 'string',
-    ])] public function rules(): array
+    public function rules(): array
     {
         return [
             'image' => 'nullable|file|media:jpg,png,gif,webp',
@@ -47,14 +39,7 @@ class UserCreateRequest extends FormRequest
      *
      * @return array Массив атрибутов.
      */
-    #[ArrayShape([
-        'image' => 'string',
-        'invitation' => 'string',
-        'role' => 'string',
-        'verified' => 'string',
-        'two_factor' => 'string',
-        'status' => 'string',
-    ])] public function attributes(): array
+    public function attributes(): array
     {
         return [
             'image' => trans('user::http.requests.admin.user.userCreateRequest.image'),

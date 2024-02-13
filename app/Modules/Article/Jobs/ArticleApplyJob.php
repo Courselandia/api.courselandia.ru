@@ -30,9 +30,9 @@ class ArticleApplyJob implements ShouldQueue
     /**
      * ID написанных текстов.
      *
-     * @var int|null
+     * @var int
      */
-    public ?int $id = null;
+    private int $id;
 
     /**
      * Конструктор.
@@ -53,8 +53,7 @@ class ArticleApplyJob implements ShouldQueue
      */
     public function handle(): void
     {
-        $action = app(ArticleApplyAction::class);
-        $action->id = $this->id;
+        $action = new ArticleApplyAction($this->id);
         $action->run();
     }
 }

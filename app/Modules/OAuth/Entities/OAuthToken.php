@@ -8,38 +8,58 @@
 
 namespace App\Modules\OAuth\Entities;
 
+use App\Models\Entity;
 use Carbon\Carbon;
 
 /**
  * Сущность для токена.
  */
-class OAuthToken extends Token
+class OAuthToken extends Entity
 {
     /**
      * ID токена на обновления.
      *
      * @var string|int|null
      */
-    public string|int|null $id = null;
+    public string|int|null $id;
 
     /**
      * ID пользователя.
      *
-     * @var string|int|null
+     * @var string|int
      */
-    public string|int|null $user_id = null;
+    public string|int $user_id;
 
     /**
      * Токен.
      *
-     * @var ?string
+     * @var string
      */
-    public ?string $token = null;
+    public string $token;
 
     /**
      * Дата истечения.
      *
-     * @var ?Carbon
+     * @var Carbon
      */
-    public ?Carbon $expires_at = null;
+    public Carbon $expires_at;
+
+    /**
+     * @param string|int|null $id ID токена на обновления.
+     * @param string|int $user_id ID пользователя.
+     * @param string $token Токен.
+     * @param Carbon $expires_at Дата истечения.
+     */
+    public function __construct(
+        string|int|null $id,
+        string|int      $user_id,
+        string          $token,
+        Carbon          $expires_at,
+    )
+    {
+        $this->id = $id;
+        $this->user_id = $user_id;
+        $this->token = $token;
+        $this->expires_at = $expires_at;
+    }
 }

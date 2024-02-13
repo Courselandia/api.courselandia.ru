@@ -8,16 +8,15 @@
 
 namespace App\Modules\Access\Actions\Site;
 
-use App\Modules\User\Entities\User as UserEntity;
 use Util;
 use Cache;
 use Config;
 use App\Models\Action;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\User\Models\User;
 use App\Models\Exceptions\UserNotExistException;
 use App\Models\Exceptions\InvalidCodeException;
 use App\Models\Enums\CacheTime;
+use App\Modules\User\Entities\User as UserEntity;
 
 /**
  * Проверка кода на изменение пароля пользователя.
@@ -27,16 +26,26 @@ class AccessCheckCodeResetPasswordAction extends Action
     /**
      * ID пользователя.
      *
-     * @var int|string|null
+     * @var int|string
      */
-    public int|string|null $id = null;
+    private int|string $id;
 
     /**
      * Код восстановления пользователя.
      *
-     * @var string|null
+     * @var string
      */
-    public ?string $code = null;
+    private string $code;
+
+    /**
+     * @param int|string $id ID пользователя.
+     * @param string $code Код восстановления пользователя.
+     */
+    public function __construct(int|string $id, string $code)
+    {
+        $this->id = $id;
+        $this->code = $code;
+    }
 
     /**
      * Метод запуска логики.
@@ -44,7 +53,6 @@ class AccessCheckCodeResetPasswordAction extends Action
      * @return bool Вернет результаты исполнения.
      * @throws InvalidCodeException
      * @throws UserNotExistException
-     * @throws ParameterInvalidException
      */
     public function run(): bool
     {
@@ -60,11 +68,7 @@ class AccessCheckCodeResetPasswordAction extends Action
                         'recovery'
                     ])->first();
 
-                if ($user) {
-                    return new UserEntity($user->toArray());
-                }
-
-                return null;
+                return $user ? UserEntity::from($user->toArray()) : null;
             }
         );
 

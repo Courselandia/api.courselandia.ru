@@ -49,12 +49,11 @@ class TeacherTextArticleCategory extends ArticleCategory
      * @param int $id ID сущности для которой пишется статья.
      *
      * @return string Метка.
-     * @throws RecordNotExistException|ParameterInvalidException
+     * @throws RecordNotExistException
      */
     public function label(int $id): string
     {
-        $action = app(TeacherGetAction::class);
-        $action->id = $id;
+        $action = new TeacherGetAction($id);
         $teacherEntity = $action->run();
 
         if ($teacherEntity) {
@@ -77,19 +76,18 @@ class TeacherTextArticleCategory extends ArticleCategory
      */
     public function apply(int $id): void
     {
-        $action = app(ArticleGetAction::class);
-        $action->id = $id;
+        $action = new ArticleGetAction($id);
         $articleEntity = $action->run();
 
         if ($articleEntity) {
             $teacher = $articleEntity->articleable;
-            $teacher->text = Typography::process($articleEntity->text);
-            $teacher->copied = false;
+            $teacher['text'] = Typography::process($articleEntity->text);
+            $teacher['copied'] = false;
 
-            Teacher::find($articleEntity->articleable->id)->update($teacher->toArray());
+            Teacher::find($articleEntity->articleable['id'])->update($teacher);
 
             if ($articleEntity->analyzers) {
-                $action = new ArticleMoveAnalyzer($teacher->id, $articleEntity->analyzers, 'teacher.text', Teacher::class);
+                $action = new ArticleMoveAnalyzer($teacher['id'], $articleEntity->analyzers, 'teacher.text', Teacher::class);
                 $action->run();
             }
 
@@ -107,12 +105,11 @@ class TeacherTextArticleCategory extends ArticleCategory
      * @param int $id ID сущности для которой пишется статья.
      *
      * @return string Запрос.
-     * @throws RecordNotExistException|ParameterInvalidException
+     * @throws RecordNotExistException
      */
     public function requestTemplate(int $id): string
     {
-        $action = app(TeacherGetAction::class);
-        $action->id = $id;
+        $action = new TeacherGetAction($id);
         $teacherEntity = $action->run();
 
         if ($teacherEntity) {

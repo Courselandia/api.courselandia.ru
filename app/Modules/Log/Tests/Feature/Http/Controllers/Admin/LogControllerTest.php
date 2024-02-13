@@ -43,7 +43,7 @@ class LogControllerTest extends TestCase
                 ],
             ],
             [
-                'Authorization' => 'Bearer '.$this->getAdminToken()
+                'Authorization' => 'Bearer ' . $this->getAdminToken()
             ]
         )->assertStatus(200)->assertJsonStructure([
             'data' => [
@@ -94,10 +94,10 @@ class LogControllerTest extends TestCase
 
         $this->json(
             'GET',
-            'api/private/admin/log/get/'.$log['id'],
+            'api/private/admin/log/get/' . $log['id'],
             [],
             [
-                'Authorization' => 'Bearer '.$this->getAdminToken()
+                'Authorization' => 'Bearer ' . $this->getAdminToken()
             ]
         )->assertStatus(200)->assertJsonStructure([
             'data' => $this->getLogStructure(),
@@ -117,7 +117,7 @@ class LogControllerTest extends TestCase
             'api/private/admin/log/get/1000',
             [],
             [
-                'Authorization' => 'Bearer '.$this->getAdminToken()
+                'Authorization' => 'Bearer ' . $this->getAdminToken()
             ]
         )->assertStatus(404)->assertJsonStructure([
             'data',
@@ -141,7 +141,7 @@ class LogControllerTest extends TestCase
                 'ids' => [$log['id']],
             ],
             [
-                'Authorization' => 'Bearer '.$this->getAdminToken()
+                'Authorization' => 'Bearer ' . $this->getAdminToken()
             ]
         )->assertStatus(200)->assertJsonStructure([
             'success',

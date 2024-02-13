@@ -9,7 +9,6 @@
 namespace App\Modules\User\Http\Requests\Admin\Config;
 
 use App\Models\FormRequest;
-use JetBrains\PhpStorm\ArrayShape;
 
 /**
  * Класс запрос для обновления конфигурации пользователя.
@@ -21,9 +20,7 @@ class UserConfigUpdateRequest extends FormRequest
      *
      * @return array Массив правил проверки.
      */
-    #[ArrayShape([
-        'configs' => 'string',
-    ])] public function rules(): array
+    public function rules(): array
     {
         return [
             'configs' => 'required|json',
@@ -35,9 +32,7 @@ class UserConfigUpdateRequest extends FormRequest
      *
      * @return array Массив атрибутов.
      */
-    #[ArrayShape([
-        'configs' => 'string',
-    ])] public function attributes(): array
+    public function attributes(): array
     {
         return [
             'configs' => trans('user::http.requests.admin.config.userConfigUpdateRequest.configs'),

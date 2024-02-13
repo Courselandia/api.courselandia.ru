@@ -12,7 +12,6 @@ use Log;
 use Act;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Feedback\Actions\Site\FeedbackSendAction;
 use App\Modules\Feedback\Http\Requests\Site\FeedbackSendRequest;
 
@@ -24,18 +23,18 @@ class FeedbackController extends Controller
     /**
      * Добавление данных.
      *
-     * @param  FeedbackSendRequest  $request  Запрос.
+     * @param FeedbackSendRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException
      */
     public function send(FeedbackSendRequest $request): JsonResponse
     {
-        $action = app(FeedbackSendAction::class);
-        $action->name = $request->get('name');
-        $action->email = $request->get('email');
-        $action->phone = $request->get('phone');
-        $action->message = $request->get('message');
+        $action = new FeedbackSendAction(
+            $request->get('name'),
+            $request->get('email'),
+            $request->get('message'),
+            $request->get('phone')
+        );
 
         $data = $action->run();
         Act::add('feedback');

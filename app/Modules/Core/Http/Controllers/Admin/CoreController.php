@@ -29,7 +29,8 @@ class CoreController extends Controller
      */
     public function clean(): JsonResponse
     {
-        app(CacheFlushAction::class)->run();
+        $action = new CacheFlushAction();
+        $action->run();
 
         Log::info(trans('core::http.controllers.admin.coreController.clean.log'), [
             'module' => 'Cache',

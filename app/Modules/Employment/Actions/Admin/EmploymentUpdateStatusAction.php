@@ -9,7 +9,6 @@
 namespace App\Modules\Employment\Actions\Admin;
 
 use App\Models\Action;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Modules\Employment\Entities\Employment as EmploymentEntity;
 use App\Modules\Employment\Models\Employment;
@@ -23,27 +22,36 @@ class EmploymentUpdateStatusAction extends Action
     /**
      * ID трудоустройства.
      *
-     * @var int|string|null
+     * @var int|string
      */
-    public int|string|null $id = null;
+    private int|string $id;
 
     /**
      * Статус.
      *
-     * @var bool|null
+     * @var bool
      */
-    public ?bool $status = null;
+    private bool $status;
+
+    /**
+     * @param int|string $id ID трудоустройства.
+     * @param bool $status Статус.
+     */
+    public function __construct(int|string $id, bool $status)
+    {
+        $this->id = $id;
+        $this->status = $status;
+    }
 
     /**
      * Метод запуска логики.
      *
      * @return EmploymentEntity Вернет результаты исполнения.
-     * @throws RecordNotExistException|ParameterInvalidException
+     * @throws RecordNotExistException
      */
     public function run(): EmploymentEntity
     {
-        $action = app(EmploymentGetAction::class);
-        $action->id = $this->id;
+        $action = new EmploymentGetAction($this->id);
         $employmentEntity = $action->run();
 
         if ($employmentEntity) {

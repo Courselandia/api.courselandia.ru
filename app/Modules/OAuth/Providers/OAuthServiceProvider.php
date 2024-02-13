@@ -11,7 +11,6 @@ namespace App\Modules\OAuth\Providers;
 use Config;
 use App;
 use Illuminate\Support\ServiceProvider;
-
 use App\Modules\OAuth\Models\OAuthTokenEloquent as ModelOAuthTokenEloquent;
 use App\Modules\OAuth\Repositories\OAuthTokenEloquent as RepositoryOAuthTokenEloquent;
 use App\Modules\OAuth\Events\Listeners\OAuthTokenEloquentListener;
@@ -52,13 +51,13 @@ class OAuthServiceProvider extends ServiceProvider
     public function register(): void
     {
         App::singleton(RepositoryOAuthTokenEloquent::class, function () {
-            return new RepositoryOAuthTokenEloquent(new ModelOAuthTokenEloquent(), new OAuthToken());
+            return new RepositoryOAuthTokenEloquent(new ModelOAuthTokenEloquent(), OAuthToken::class);
         });
 
         //
 
         App::singleton(RepositoryOAuthRefreshTokenEloquent::class, function () {
-            return new RepositoryOAuthRefreshTokenEloquent(new ModelOAuthRefreshTokenEloquent(), new OAuthRefresh());
+            return new RepositoryOAuthRefreshTokenEloquent(new ModelOAuthRefreshTokenEloquent(), OAuthRefresh::class);
         });
 
         //

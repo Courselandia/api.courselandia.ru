@@ -49,12 +49,11 @@ class CourseTextArticleCategory extends ArticleCategory
      * @param int $id ID сущности для которой пишется статья.
      *
      * @return string Метка.
-     * @throws RecordNotExistException|ParameterInvalidException
+     * @throws RecordNotExistException
      */
     public function label(int $id): string
     {
-        $action = app(CourseGetAction::class);
-        $action->id = $id;
+        $action = new CourseGetAction($id);
         $courseEntity = $action->run();
 
         if ($courseEntity) {
@@ -77,18 +76,17 @@ class CourseTextArticleCategory extends ArticleCategory
      */
     public function apply(int $id): void
     {
-        $action = app(ArticleGetAction::class);
-        $action->id = $id;
+        $action = new ArticleGetAction($id);
         $articleEntity = $action->run();
 
         if ($articleEntity) {
             $course = $articleEntity->articleable;
-            $course->text = Typography::process($articleEntity->text);
+            $course['text'] = Typography::process($articleEntity->text);
 
-            Course::find($articleEntity->articleable->id)->update($course->toArray());
+            Course::find($articleEntity->articleable['id'])->update($course);
 
             if ($articleEntity->analyzers) {
-                $action = new ArticleMoveAnalyzer($course->id, $articleEntity->analyzers, 'course.text', Course::class);
+                $action = new ArticleMoveAnalyzer($course['id'], $articleEntity->analyzers, 'course.text', Course::class);
                 $action->run();
             }
 
@@ -106,12 +104,11 @@ class CourseTextArticleCategory extends ArticleCategory
      * @param int $id ID сущности для которой пишется статья.
      *
      * @return string Запрос.
-     * @throws RecordNotExistException|ParameterInvalidException
+     * @throws RecordNotExistException
      */
     public function requestTemplate(int $id): string
     {
-        $action = app(CourseGetAction::class);
-        $action->id = $id;
+        $action = new CourseGetAction($id);
         $courseEntity = $action->run();
 
         if ($courseEntity) {

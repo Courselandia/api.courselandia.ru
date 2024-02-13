@@ -8,6 +8,7 @@
 
 namespace App\Modules\Metatag\Apply\Tasks;
 
+use App\Modules\Metatag\Data\MetatagSet;
 use Throwable;
 use App\Modules\School\Models\School;
 use App\Modules\Metatag\Apply\Apply;
@@ -55,8 +56,8 @@ class TaskSchool extends Task
         return School::whereHas('courses', function ($query) {
             $query->where('status', Status::ACTIVE->value);
         })
-        ->where('status', true)
-        ->count();
+            ->where('status', true)
+            ->count();
     }
 
     /**
@@ -74,10 +75,10 @@ class TaskSchool extends Task
         $query = School::with([
             'metatag',
         ])
-        ->whereHas('courses', function ($query) {
-            $query->where('status', Status::ACTIVE->value);
-        })
-        ->where('status', true);
+            ->whereHas('courses', function ($query) {
+                $query->where('status', Status::ACTIVE->value);
+            })
+            ->where('status', true);
 
         for ($i = 0; $i < $count; $i++) {
             $school = $query->clone()
@@ -105,34 +106,37 @@ class TaskSchool extends Task
                     'countSchoolCourses' => $countSchoolCourses,
                 ];
 
-                $action = app(MetatagSetAction::class);
+                $dataMetatagSet = new MetatagSet();
 
                 if ($this->onlyUpdate()) {
-                    $action->description = $school->metatag?->description_template
+                    $dataMetatagSet->description = $school->metatag?->description_template
                         ? $template->convert($school->metatag?->description_template, $templateValues)
                         : null;
 
-                    $action->title = $school->metatag?->title_template
+                    $dataMetatagSet->title = $school->metatag?->title_template
                         ? $template->convert($school->metatag?->title_template, $templateValues)
                         : null;
 
-                    $school->header = $school->header_template
+                    $dataMetatagSet->header = $school->header_template
                         ? $template->convert($school->header_template, $templateValues)
                         : null;
 
-                    $action->description_template = $school->metatag?->description_template;
-                    $action->title_template = $school->metatag?->title_template;
+                    $dataMetatagSet->description_template = $school->metatag?->description_template;
+                    $dataMetatagSet->title_template = $school->metatag?->title_template;
                 } else {
-                    $action->description = $template->convert($this->description_template, $templateValues);
-                    $action->title = $template->convert($this->title_template, $templateValues);
+                    $dataMetatagSet->description = $template->convert($this->description_template, $templateValues);
+                    $dataMetatagSet->title = $template->convert($this->title_template, $templateValues);
                     $school->header = $template->convert($this->header_template, $templateValues);
-                    $action->description_template = $this->description_template;
-                    $action->title_template = $this->title_template;
+                    $dataMetatagSet->description_template = $this->description_template;
+                    $dataMetatagSet->title_template = $this->title_template;
                     $school->header_template = $this->header_template;
                 }
 
-                $action->keywords = $school->metatag?->keywords;
-                $action->id = $school->metatag_id ?: null;
+                $dataMetatagSet->keywords = $school->metatag?->keywords;
+                $dataMetatagSet->id = $school->metatag_id ?: null;
+
+                $action = new MetatagSetAction($dataMetatagSet);
+
                 $metatagId = $action->run()->id;
                 $school->metatag_id = $metatagId;
 

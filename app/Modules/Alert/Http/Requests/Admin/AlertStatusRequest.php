@@ -9,7 +9,6 @@
 namespace App\Modules\Alert\Http\Requests\Admin;
 
 use App\Models\FormRequest;
-use JetBrains\PhpStorm\ArrayShape;
 
 /**
  * Класс запрос для установки предупреждения в статус прочитанного.
@@ -21,7 +20,7 @@ class AlertStatusRequest extends FormRequest
      *
      * @return array Массив правил проверки.
      */
-    #[ArrayShape(['status' => 'string'])] public function rules(): array
+    public function rules(): array
     {
         return [
             'status' => 'required|bool',
@@ -33,7 +32,7 @@ class AlertStatusRequest extends FormRequest
      *
      * @return array Массив атрибутов.
      */
-    #[ArrayShape(['status' => 'mixed'])] public function attributes(): array
+    public function attributes(): array
     {
         return [
             'status' => trans('alert::http.requests.site.alertStatus.status')

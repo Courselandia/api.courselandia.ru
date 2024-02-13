@@ -49,12 +49,11 @@ class DirectionTextArticleCategory extends ArticleCategory
      * @param int $id ID сущности для которой пишется статья.
      *
      * @return string Метка.
-     * @throws RecordNotExistException|ParameterInvalidException
+     * @throws RecordNotExistException
      */
     public function label(int $id): string
     {
-        $action = app(DirectionGetAction::class);
-        $action->id = $id;
+        $action = new DirectionGetAction($id);
         $directionEntity = $action->run();
 
         if ($directionEntity) {
@@ -77,18 +76,17 @@ class DirectionTextArticleCategory extends ArticleCategory
      */
     public function apply(int $id): void
     {
-        $action = app(ArticleGetAction::class);
-        $action->id = $id;
+        $action = new ArticleGetAction($id);
         $articleEntity = $action->run();
 
         if ($articleEntity) {
             $direction = $articleEntity->articleable;
-            $direction->text = Typography::process($articleEntity->text);
+            $direction['text'] = Typography::process($articleEntity->text);
 
-            Direction::find($articleEntity->articleable->id)->update($direction->toArray());
+            Direction::find($articleEntity->articleable['id'])->update($direction);
 
             if ($articleEntity->analyzers) {
-                $action = new ArticleMoveAnalyzer($direction->id, $articleEntity->analyzers, 'direction.text', Direction::class);
+                $action = new ArticleMoveAnalyzer($direction['id'], $articleEntity->analyzers, 'direction.text', Direction::class);
                 $action->run();
             }
 
@@ -106,12 +104,11 @@ class DirectionTextArticleCategory extends ArticleCategory
      * @param int $id ID сущности для которой пишется статья.
      *
      * @return string Запрос.
-     * @throws RecordNotExistException|ParameterInvalidException
+     * @throws RecordNotExistException
      */
     public function requestTemplate(int $id): string
     {
-        $action = app(DirectionGetAction::class);
-        $action->id = $id;
+        $action = new DirectionGetAction($id);
         $directionEntity = $action->run();
 
         if ($directionEntity) {

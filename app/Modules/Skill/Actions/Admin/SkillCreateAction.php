@@ -8,6 +8,8 @@
 
 namespace App\Modules\Skill\Actions\Admin;
 
+use App\Modules\Metatag\Data\MetatagSet;
+use App\Modules\Skill\Data\SkillCreate;
 use Cache;
 use Typography;
 use App\Models\Action;
@@ -25,60 +27,19 @@ use App\Modules\Analyzer\Actions\Admin\AnalyzerUpdateAction;
 class SkillCreateAction extends Action
 {
     /**
-     * Название.
+     * Данные для создания навыка.
      *
-     * @var string|null
+     * @var SkillCreate
      */
-    public ?string $name = null;
+    private SkillCreate $data;
 
     /**
-     * Шаблон заголовка.
-     *
-     * @var string|null
+     * @param SkillCreate $data Данные для создания навыка.
      */
-    public ?string $header_template = null;
-
-    /**
-     * Ссылка.
-     *
-     * @var string|null
-     */
-    public ?string $link = null;
-
-    /**
-     * Статья.
-     *
-     * @var string|null
-     */
-    public ?string $text = null;
-
-    /**
-     * Статус.
-     *
-     * @var bool|null
-     */
-    public ?bool $status = null;
-
-    /**
-     * Шаблон описания.
-     *
-     * @var string|null
-     */
-    public ?string $description_template = null;
-
-    /**
-     * Ключевые слова.
-     *
-     * @var string|null
-     */
-    public ?string $keywords = null;
-
-    /**
-     * Шаблон заголовка.
-     *
-     * @var string|null
-     */
-    public ?string $title_template = null;
+    public function __construct(SkillCreate $data)
+    {
+        $this->data = $data;
+    }
 
     /**
      * Метод запуска логики.
@@ -89,42 +50,38 @@ class SkillCreateAction extends Action
      */
     public function run(): SkillEntity
     {
-        $action = app(MetatagSetAction::class);
         $template = new Template();
 
         $templateValues = [
-            'skill' => $this->name,
+            'skill' => $this->data->name,
             'countSkillCourses' => 0,
         ];
 
-        $action->description = $template->convert($this->description_template, $templateValues);
-        $action->title = $template->convert($this->title_template, $templateValues);
-        $action->description_template = $this->description_template;
-        $action->title_template = $this->title_template;
-        $action->keywords = $this->keywords;
+        $action = new MetatagSetAction(MetatagSet::from([
+            'description' => $template->convert($this->data->description_template, $templateValues),
+            'title' => $template->convert($this->data->title_template, $templateValues),
+            'description_template' => $this->data->description_template,
+            'title_template' => $this->data->title_template,
+            'keywords' => $this->data->keywords,
+        ]));
 
         $metatag = $action->run();
 
-        $skillEntity = new SkillEntity();
-        $skillEntity->name = Typography::process($this->name, true);
-        $skillEntity->header = Typography::process($template->convert($this->header_template, $templateValues), true);
-        $skillEntity->header_template = $this->header_template;
-        $skillEntity->link = $this->link;
-        $skillEntity->text = Typography::process($this->text);
-        $skillEntity->status = $this->status;
-        $skillEntity->metatag_id = $metatag->id;
+        $skillEntity = SkillEntity::from([
+            ...$this->data->toArray(),
+            'name' => Typography::process($this->data->name, true),
+            'header' => Typography::process($template->convert($this->data->header_template, $templateValues), true),
+            'text' => Typography::process($this->data->text),
+            'metatag_id' => $metatag->id,
+        ]);
 
         $skill = Skill::create($skillEntity->toArray());
         Cache::tags(['catalog', 'skill'])->flush();
 
-        $action = app(AnalyzerUpdateAction::class);
-        $action->id = $skill->id;
-        $action->model = Skill::class;
-        $action->category = 'skill.text';
+        $action = new AnalyzerUpdateAction($skill->id, Skill::class, 'skill.text');
         $action->run();
 
-        $action = app(SkillGetAction::class);
-        $action->id = $skill->id;
+        $action = new SkillGetAction($skill->id);
 
         return $action->run();
     }

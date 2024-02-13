@@ -8,7 +8,6 @@
 
 namespace App\Modules\Article\Http\Controllers\Admin;
 
-use App\Models\Exceptions\LimitException;
 use Auth;
 use Log;
 use ReflectionException;
@@ -30,6 +29,7 @@ use App\Modules\Article\Http\Requests\Admin\ArticleRewriteRequest;
 use App\Modules\Article\Actions\Admin\ArticleRewriteAction;
 use App\Modules\Article\Actions\Admin\ArticleApplyAction;
 use App\Models\Exceptions\PaymentException;
+use App\Models\Exceptions\LimitException;
 
 /**
  * Класс контроллер для работы с категориями в административной части.
@@ -46,8 +46,7 @@ class ArticleController extends Controller
      */
     public function get(int|string $id): JsonResponse
     {
-        $action = app(ArticleGetAction::class);
-        $action->id = $id;
+        $action = new ArticleGetAction($id);
         $data = $action->run();
 
         if ($data) {
@@ -77,14 +76,14 @@ class ArticleController extends Controller
      */
     public function read(ArticleReadRequest $request): JsonResponse
     {
-        $action = app(ArticleReadAction::class);
-        $action->sorts = $request->get('sorts');
-        $action->filters = $request->get('filters');
-        $action->offset = $request->get('offset');
-        $action->limit = $request->get('limit');
+        $action = new ArticleReadAction(
+            $request->get('sorts'),
+        $request->get('filters'),
+        $request->get('offset'),
+        $request->get('limit'),
+        );
 
         $data = $action->run();
-
         $data['success'] = true;
 
         return response()->json($data);
@@ -102,10 +101,7 @@ class ArticleController extends Controller
     public function update(int|string $id, ArticleUpdateRequest $request): JsonResponse
     {
         try {
-            $action = app(ArticleUpdateAction::class);
-            $action->id = $id;
-            $action->text = $request->get('text');
-            $action->apply = $request->get('apply', false);
+            $action = new ArticleUpdateAction($id, $request->get('text'), $request->get('apply', false));
             $data = $action->run();
 
             Log::info(
@@ -148,10 +144,7 @@ class ArticleController extends Controller
     public function updateStatus(int|string $id, ArticleUpdateStatusRequest $request): JsonResponse
     {
         try {
-            $action = app(ArticleUpdateStatusAction::class);
-            $action->id = $id;
-            $action->status = Status::from($request->get('status'));
-
+            $action = new ArticleUpdateStatusAction($id, Status::from($request->get('status')));
             $data = $action->run();
 
             Log::info(trans('article::http.controllers.admin.articleController.update.log'), [
@@ -191,10 +184,7 @@ class ArticleController extends Controller
     public function rewrite(int|string $id, ArticleRewriteRequest $request): JsonResponse
     {
         try {
-            $action = app(ArticleRewriteAction::class);
-            $action->id = $id;
-            $action->request = $request->get('request');
-
+            $action = new ArticleRewriteAction($id, $request->get('request'));
             $data = $action->run();
 
             Log::info(trans('article::http.controllers.admin.articleController.rewrite.log'), [
@@ -248,9 +238,7 @@ class ArticleController extends Controller
     public function apply(int|string $id): JsonResponse
     {
         try {
-            $action = app(ArticleApplyAction::class);
-            $action->id = $id;
-
+            $action = new ArticleApplyAction($id);
             $data = $action->run();
 
             Log::info(trans('article::http.controllers.admin.articleController.apply.log'), [

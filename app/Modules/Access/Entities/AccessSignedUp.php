@@ -17,23 +17,35 @@ use App\Modules\User\Entities\User as UserEntity;
 class AccessSignedUp extends Entity
 {
     /**
-     * Пользователь со всеми его правами.
+     * Сущность пользователя.
      *
-     * @var UserEntity|null
+     * @var string
      */
-    public ?UserEntity $user = null;
+    public string $accessToken;
 
     /**
-     * Токен авторизации.
+     * Токен доступа.
      *
-     * @var string|null
+     * @var string
      */
-    public ?string $accessToken = null;
+    public string $refreshToken;
 
     /**
      * Токен обновления.
      *
-     * @var string|null
+     * @var UserEntity
      */
-    public ?string $refreshToken = null;
+    public UserEntity $user;
+
+    /**
+     * @param UserEntity $user Сущность пользователя.
+     * @param string $accessToken Токен доступа.
+     * @param string $refreshToken Токен обновления.
+     */
+    public function __construct(UserEntity $user, string $accessToken, string $refreshToken)
+    {
+        $this->user = $user;
+        $this->accessToken = $accessToken;
+        $this->refreshToken = $refreshToken;
+    }
 }

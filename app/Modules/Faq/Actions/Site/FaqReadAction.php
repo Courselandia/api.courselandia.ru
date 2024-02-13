@@ -9,13 +9,11 @@
 namespace App\Modules\Faq\Actions\Site;
 
 use App\Models\Action;
-use App\Models\Entity;
 use App\Models\Enums\CacheTime;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Faq\Entities\Faq as FaqEntity;
 use App\Modules\Faq\Models\Faq;
 use Cache;
-use JetBrains\PhpStorm\ArrayShape;
 use Util;
 
 /**
@@ -28,7 +26,15 @@ class FaqReadAction extends Action
      *
      * @var string
      */
-    public ?string $school = null;
+    private string $link;
+
+    /**
+     * @param string $link Ссылка на школу.
+     */
+    public function __construct(string $link)
+    {
+        $this->link = $link;
+    }
 
     /**
      * Метод запуска логики.
@@ -36,14 +42,14 @@ class FaqReadAction extends Action
      * @return mixed Вернет результаты исполнения.
      * @throws ParameterInvalidException
      */
-    #[ArrayShape(['data' => 'array', 'total' => 'int'])] public function run(): array
+    public function run(): array
     {
         $cacheKey = Util::getKey(
             'faq',
             'admin',
             'read',
             'count',
-            $this->school,
+            $this->link,
             'school',
         );
 
@@ -52,7 +58,7 @@ class FaqReadAction extends Action
             CacheTime::GENERAL->value,
             function () {
                 $query = Faq::whereHas('school', function ($query) {
-                    $query->where('link', $this->school);
+                    $query->where('link', $this->link);
                 })
                 ->where('status', 1)
                 ->orderBy('question', 'ASC');
@@ -60,7 +66,7 @@ class FaqReadAction extends Action
                 $items = $query->get()->toArray();
 
                 return [
-                    'data' => Entity::toEntities($items, new FaqEntity()),
+                    'data' => FaqEntity::collection($items),
                 ];
             }
         );

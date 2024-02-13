@@ -93,25 +93,25 @@ class Apply
      */
     private function getQuery(): Builder
     {
-         $query = Article::where('status', Status::READY->value);
+        $query = Article::where('status', Status::READY->value);
 
-         if ($this->unique || $this->water || $this->spam) {
-             $query->whereHas('analyzers', function ($query) {
-                 $query->where('category', 'article.text');
-                 if ($this->unique) {
-                     $query->where('unique', '>=', $this->unique);
-                 }
+        if ($this->unique || $this->water || $this->spam) {
+            $query->whereHas('analyzers', function ($query) {
+                $query->where('category', 'article.text');
+                if ($this->unique) {
+                    $query->where('unique', '>=', $this->unique);
+                }
 
-                 if ($this->water) {
-                     $query->where('water', '<', $this->water);
-                 }
+                if ($this->water) {
+                    $query->where('water', '<', $this->water);
+                }
 
-                 if ($this->spam) {
-                     $query->where('spam', '<', $this->water);
-                 }
-             });
-         }
+                if ($this->spam) {
+                    $query->where('spam', '<', $this->water);
+                }
+            });
+        }
 
-         return $query;
+        return $query;
     }
 }

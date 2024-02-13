@@ -28,7 +28,7 @@ class PageServiceProvider extends ServiceProvider
         $this->registerTranslations();
         $this->registerConfig();
 
-        $this->loadMigrationsFrom(__DIR__.'/../Database/Migrations');
+        $this->loadMigrationsFrom(__DIR__ . '/../Database/Migrations');
 
         PageModel::observe(PageListener::class);
     }
@@ -50,10 +50,10 @@ class PageServiceProvider extends ServiceProvider
     protected function registerConfig(): void
     {
         $this->publishes([
-            __DIR__.'/../Config/config.php' => config_path('page.php'),
+            __DIR__ . '/../Config/config.php' => config_path('page.php'),
         ]);
         $this->mergeConfigFrom(
-            __DIR__.'/../Config/config.php',
+            __DIR__ . '/../Config/config.php',
             'page'
         );
     }
@@ -67,7 +67,7 @@ class PageServiceProvider extends ServiceProvider
     {
         $viewPath = base_path('resources/views/modules/page');
 
-        $sourcePath = __DIR__.'/../Resources/views';
+        $sourcePath = __DIR__ . '/../Resources/views';
 
         $this->publishes([
             $sourcePath => $viewPath
@@ -76,7 +76,7 @@ class PageServiceProvider extends ServiceProvider
         $this->loadViewsFrom(
             array_merge(
                 array_map(function ($path) {
-                    return $path.'/modules/page';
+                    return $path . '/modules/page';
                 }, Config::get('view.paths')),
                 [$sourcePath]
             ),
@@ -96,7 +96,7 @@ class PageServiceProvider extends ServiceProvider
         if (is_dir($langPath)) {
             $this->loadTranslationsFrom($langPath, 'page');
         } else {
-            $this->loadTranslationsFrom(__DIR__.'/../Resources/lang', 'page');
+            $this->loadTranslationsFrom(__DIR__ . '/../Resources/lang', 'page');
         }
     }
 

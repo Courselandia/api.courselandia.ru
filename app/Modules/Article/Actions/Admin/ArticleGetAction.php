@@ -23,11 +23,19 @@ use App\Modules\Article\Models\Article;
 class ArticleGetAction extends Action
 {
     /**
-     * ID направления.
+     * ID статьи.
      *
-     * @var int|string|null
+     * @var int|string
      */
-    public int|string|null $id = null;
+    private int|string $id;
+
+    /**
+     * @param int|string $id ID статьи.
+     */
+    public function __construct(int|string $id)
+    {
+        $this->id = $id;
+    }
 
     /**
      * Метод запуска логики.
@@ -49,17 +57,17 @@ class ArticleGetAction extends Action
                     ->first();
 
                 if ($article) {
-                    $entity = new ArticleEntity($article->toArray());
+                    $entity = ArticleEntity::from($article->toArray());
                     $field = ArticleCategory::driver($entity->category)->field();
                     $entity->category_name = ArticleCategory::driver($entity->category)->name();
                     $entity->category_label = ArticleCategory::driver($entity->category)->label($article->articleable_id);
-                    $entity->text_current = $entity->articleable->{$field};
+                    $entity->text_current = $entity->articleable[$field];
                     $entity->request_template = ArticleCategory::driver($entity->category)->requestTemplate($article->articleable_id);
 
-                    for ($z = 0; $z < count($entity->articleable->analyzers); $z++) {
-                        $category = $entity->articleable->analyzers[$z]->category;
-                        $entity->articleable->analyzers[$z]->category_name = ArticleCategory::driver($category)->name();
-                        $entity->articleable->analyzers[$z]->category_label = ArticleCategory::driver($category)->label($article->articleable_id);
+                    for ($z = 0; $z < count($entity->articleable['analyzers']); $z++) {
+                        $category = $entity->articleable['analyzers'][$z]['category'];
+                        $entity->articleable['analyzers'][$z]['category_name'] = ArticleCategory::driver($category)->name();
+                        $entity->articleable['analyzers'][$z]['category_label'] = ArticleCategory::driver($category)->label($article->articleable_id);
                     }
 
                     return $entity;

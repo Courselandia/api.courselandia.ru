@@ -8,8 +8,6 @@
 
 namespace App\Modules\Course\Http\Requests\Site\Course;
 
-use JetBrains\PhpStorm\ArrayShape;
-
 /**
  * Класс запрос для чтения категорий.
  */
@@ -20,9 +18,7 @@ class CourseReadSearchRequest extends CourseFilterItemReadRequest
      *
      * @return array Массив правил проверки.
      */
-    #[ArrayShape([
-        'limit' => 'string',
-    ])] public function rules(): array
+    public function rules(): array
     {
         return array_merge(parent::rules(),
             [
@@ -36,9 +32,7 @@ class CourseReadSearchRequest extends CourseFilterItemReadRequest
      *
      * @return array Массив атрибутов.
      */
-    #[ArrayShape([
-        'limit' => 'string',
-    ])] public function attributes(): array
+    public function attributes(): array
     {
         return array_merge(parent::rules(),
             [

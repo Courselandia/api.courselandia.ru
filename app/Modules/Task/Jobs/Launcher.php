@@ -19,7 +19,6 @@ use Illuminate\Queue\SerializesModels;
 use App\Modules\Task\Models\Task;
 use App\Modules\Task\Entities\Task as TaskEntity;
 use App\Modules\Task\Enums\Status;
-use App\Models\Exceptions\ParameterInvalidException;
 use Illuminate\Foundation\Bus\PendingDispatch;
 
 /**
@@ -108,7 +107,6 @@ class Launcher implements ShouldQueue
      *
      * @param mixed ...$arguments
      * @return PendingDispatch
-     * @throws ParameterInvalidException
      */
     public static function dispatch(...$arguments): PendingDispatch
     {

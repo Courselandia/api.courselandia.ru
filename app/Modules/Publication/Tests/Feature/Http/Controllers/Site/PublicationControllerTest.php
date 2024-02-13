@@ -9,7 +9,6 @@
 namespace App\Modules\Publication\Tests\Feature\Http\Controllers\Site;
 
 use Carbon\Carbon;
-use JetBrains\PhpStorm\Pure;
 use Tests\TestCase;
 use App\Models\Test\TokenTest;
 use App\Modules\Publication\Models\Publication;
@@ -44,7 +43,7 @@ class PublicationControllerTest extends TestCase
                 'offset' => 0,
             ],
             [
-                'Authorization' => 'Bearer '.$this->getAdminToken()
+                'Authorization' => 'Bearer ' . $this->getAdminToken()
             ]
         )->assertStatus(200)->assertJsonStructure([
             'data' => [
@@ -80,7 +79,7 @@ class PublicationControllerTest extends TestCase
                 'link' => $publication->link,
             ],
             [
-                'Authorization' => 'Bearer '.$this->getAdminToken()
+                'Authorization' => 'Bearer ' . $this->getAdminToken()
             ]
         )->assertStatus(200)->assertJsonStructure([
             'data' => $this->getPublicationStructure(),
@@ -102,7 +101,7 @@ class PublicationControllerTest extends TestCase
                 'link' => 'test',
             ],
             [
-                'Authorization' => 'Bearer '.$this->getAdminToken()
+                'Authorization' => 'Bearer ' . $this->getAdminToken()
             ]
         )->assertStatus(404)->assertJsonStructure([
             'data',
@@ -115,7 +114,7 @@ class PublicationControllerTest extends TestCase
      *
      * @return array Массив структуры данных публикации.
      */
-    #[Pure] private function getPublicationStructure(): array
+    private function getPublicationStructure(): array
     {
         return [
             'id',

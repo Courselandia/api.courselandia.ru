@@ -38,7 +38,7 @@ class CountRatingCommand extends Command
      */
     public function handle(): void
     {
-        $action = app(SchoolCountRatingAction::class);
+        $action = new SchoolCountRatingAction();
 
         $this->line('Запуск подсчета рейтинга для школ...');
 

@@ -11,7 +11,6 @@ namespace App\Modules\Employment\Tests\Feature\Http\Controllers\Admin;
 use App\Models\Test\TokenTest;
 use App\Modules\Employment\Models\Employment;
 use Faker\Factory as Faker;
-use JetBrains\PhpStorm\Pure;
 use Tests\TestCase;
 
 /**
@@ -327,7 +326,7 @@ class EmploymentControllerTest extends TestCase
      *
      * @return array Массив структуры данных трудоустройства.
      */
-    #[Pure] private function getEmploymentStructure(): array
+    private function getEmploymentStructure(): array
     {
         return [
             'id',

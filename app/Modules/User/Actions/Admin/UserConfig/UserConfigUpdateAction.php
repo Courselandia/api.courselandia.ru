@@ -11,7 +11,6 @@ namespace App\Modules\User\Actions\Admin\UserConfig;
 use Cache;
 use App\Models\Action;
 use App\Modules\User\Models\User;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\UserNotExistException;
 use App\Modules\User\Actions\Admin\User\UserGetAction;
 
@@ -23,29 +22,37 @@ class UserConfigUpdateAction extends Action
     /**
      * ID пользователей.
      *
-     * @var int|string|null
+     * @var int|string
      */
-    public int|string|null $id = null;
+    private int|string $id;
 
     /**
      * Массив данных для сохранения в виде флагов.
      *
-     * @var array|null
+     * @var array
      */
-    public ?array $data = null;
+    private array $data;
+
+    /**
+     * @param int|string $id ID пользователей.
+     * @param array $data Массив данных для сохранения в виде флагов.
+     */
+    public function __construct(int|string $id, array $data)
+    {
+        $this->id = $id;
+        $this->data = $data;
+    }
 
     /**
      * Метод запуска логики.
      *
      * @return array Вернет результаты исполнения.
      * @throws UserNotExistException
-     * @throws ParameterInvalidException
      */
     public function run(): array
     {
         if ($this->id) {
-            $action = app(UserGetAction::class);
-            $action->id = $this->id;
+            $action = new UserGetAction($this->id);
             $user = $action->run();
 
             if ($user) {
@@ -55,8 +62,7 @@ class UserConfigUpdateAction extends Action
 
                 Cache::tags(['user'])->flush();
 
-                $action = app(UserConfigGetAction::class);
-                $action->id = $this->id;
+                $action = new UserConfigGetAction($this->id);
                 return $action->run();
             }
         }

@@ -17,8 +17,8 @@ use App\Modules\User\Pipes\Admin\User\Create\ImagePipe;
 use App\Modules\User\Pipes\Admin\User\Create\RolePipe;
 use App\Modules\User\Pipes\Admin\User\Create\InvitationPipe;
 use App\Modules\User\Pipes\Admin\User\Create\VerifyPipe;
-use Illuminate\Http\UploadedFile;
-use App\Modules\User\Enums\Role;
+use App\Modules\User\Data\Actions\UserCreate;
+use App\Modules\User\Data\Decorators\UserCreate as UserCreateDecoratorData;
 
 /**
  * Создание пользователя.
@@ -26,81 +26,19 @@ use App\Modules\User\Enums\Role;
 class UserCreateAction extends Action
 {
     /**
-     * Логин.
+     * Данные для действия создание пользователя.
      *
-     * @var string|null
+     * @var UserCreate
      */
-    public ?string $login = null;
+    private UserCreate $data;
 
     /**
-     * Пароль.
-     *
-     * @var string|null
+     * @param UserCreate $data Данные для действия создание пользователя.
      */
-    public ?string $password = null;
-
-    /**
-     * Имя.
-     *
-     * @var string|null
-     */
-    public ?string $first_name = null;
-
-    /**
-     * Фамилия.
-     *
-     * @var string|null
-     */
-    public ?string $second_name = null;
-
-    /**
-     * Телефон.
-     *
-     * @var string|null
-     */
-    public ?string $phone = null;
-
-    /**
-     * Статус верификации.
-     *
-     * @var bool
-     */
-    public bool $verified = false;
-
-    /**
-     * Двухфакторная аутентификация.
-     *
-     * @var bool
-     */
-    public bool $two_factor = false;
-
-    /**
-     * Статус пользователя.
-     *
-     * @var bool
-     */
-    public bool $status = false;
-
-    /**
-     * Роль.
-     *
-     * @var Role|null
-     */
-    public ?Role $role = null;
-
-    /**
-     * Выслать приглашение.
-     *
-     * @var bool
-     */
-    public bool $invitation = false;
-
-    /**
-     * Изображение.
-     *
-     * @var UploadedFile|null
-     */
-    public ?UploadedFile $image = null;
+    public function __construct(UserCreate $data)
+    {
+        $this->data = $data;
+    }
 
     /**
      * Метод запуска логики.
@@ -109,19 +47,7 @@ class UserCreateAction extends Action
      */
     public function run(): User
     {
-        $decorator = app(UserCreateDecorator::class);
-
-        $decorator->login = $this->login;
-        $decorator->password = $this->password;
-        $decorator->first_name = $this->first_name;
-        $decorator->second_name = $this->second_name;
-        $decorator->phone = $this->phone;
-        $decorator->verified = $this->verified;
-        $decorator->status = $this->status;
-        $decorator->two_factor = $this->two_factor;
-        $decorator->image = $this->image;
-        $decorator->role = $this->role;
-        $decorator->invitation = $this->invitation;
+        $decorator = new UserCreateDecorator(UserCreateDecoratorData::from($this->data->toArray()));
 
         return $decorator->setActions([
             CreatePipe::class,

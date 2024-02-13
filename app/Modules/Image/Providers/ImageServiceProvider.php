@@ -63,11 +63,11 @@ class ImageServiceProvider extends ServiceProvider
         });
 
         ImageStore::extend('database', function () {
-            return new ImageEloquent(new ImageEloquentModel(), new Image());
+            return new ImageEloquent(new ImageEloquentModel(), Image::class);
         });
 
         ImageStore::extend('mongodb', function () {
-            return new ImageMongoDb(new ImageMongoDbModel(), new Image());
+            return new ImageMongoDb(new ImageMongoDbModel(), Image::class);
         });
 
         App::singleton('image.store.driver', function ($app) {

@@ -10,7 +10,6 @@ namespace App\Modules\Crawl\Tests\Feature\Http\Controllers\Admin;
 
 use App\Models\Test\TokenTest;
 use App\Modules\Crawl\Models\Crawl;
-use JetBrains\PhpStorm\Pure;
 use Tests\TestCase;
 
 /**
@@ -59,7 +58,7 @@ class CrawlControllerTest extends TestCase
      *
      * @return array Массив структуры данных направления.
      */
-    #[Pure] private function getCrawlStructure(): array
+    private function getCrawlStructure(): array
     {
         return [
             'id',

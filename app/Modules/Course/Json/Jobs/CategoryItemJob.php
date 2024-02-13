@@ -24,9 +24,7 @@ class CategoryItemJob extends JsonItemJob
      */
     public function handle(): void
     {
-        $action = app(CategoryLinkAction::class);
-        $action->link = $this->link;
-
+        $action = new CategoryLinkAction($this->link);
         $data = $action->run();
 
         if ($data) {

@@ -7,13 +7,14 @@
 namespace App\Modules\Access\Pipes\Site\SignIn;
 
 use App\Models\Contracts\Pipe;
-use App\Models\Entity;
+use App\Models\Data;
 use App\Models\Exceptions\InvalidPasswordException;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\UserNotExistException;
 use App\Modules\Access\Actions\AccessApiTokenAction;
-use App\Modules\Access\Entities\AccessSignIn;
-use App\Modules\OAuth\Entities\Token;
+use App\Modules\Access\Data\Actions\AccessApiToken;
+use App\Modules\Access\Data\Decorators\AccessSignIn;
+use App\Modules\OAuth\Values\Token;
 use Closure;
 use ReflectionException;
 
@@ -25,8 +26,8 @@ class LoginPipe implements Pipe
     /**
      * Метод, который будет вызван у pipeline.
      *
-     * @param  Entity|AccessSignIn  $entity  Сущность.
-     * @param  Closure  $next  Ссылка на следующий pipe.
+     * @param Data|AccessSignIn $data Данные.
+     * @param Closure $next Ссылка на следующий pipe.
      *
      * @return mixed Вернет значение полученное после выполнения следующего pipe.
      * @throws ParameterInvalidException
@@ -34,20 +35,14 @@ class LoginPipe implements Pipe
      * @throws UserNotExistException
      * @throws ReflectionException
      */
-    public function handle(Entity|AccessSignIn $entity, Closure $next): mixed
+    public function handle(Data|AccessSignIn $data, Closure $next): mixed
     {
-        $action = app(AccessApiTokenAction::class);
-        $action->login = $entity->login;
-        $action->password = $entity->password;
-        $action->remember = $entity->remember;
-
+        $action = new AccessApiTokenAction(new AccessApiToken($data->login, $data->password, $data->remember));
         $token = $action->run();
+        $data->token = new Token($token->accessToken, $token->refreshToken);
+        $data->id = $token->user->id;
+        $data->user = $token->user;
 
-        $entity->id = $token->user->id;
-        $entity->token = new Token();
-        $entity->token->accessToken = $token->accessToken;
-        $entity->token->refreshToken = $token->refreshToken;
-
-        return $next($entity);
+        return $next($data);
     }
 }

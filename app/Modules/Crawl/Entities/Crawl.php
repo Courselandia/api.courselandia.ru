@@ -87,4 +87,41 @@ class Crawl extends Entity
      * @var ?Page
      */
     public ?Page $page = null;
+
+    /**
+     * @param int|string|null $id ID записи.
+     * @param int|string|null $page_id ID страницы.
+     * @param string|null $task_id ID задачи на индексацию.
+     * @param Carbon|null $pushed_at Дата отправки на индексацию.
+     * @param Carbon|null $crawled_at Дата индексации.
+     * @param Engine|null $engine Поисковая система.
+     * @param Carbon|null $created_at Дата создания.
+     * @param Carbon|null $updated_at Дата обновления.
+     * @param Carbon|null $deleted_at Дата удаления.
+     * @param Page|null $page Страница.
+     */
+    public function __construct(
+        int|string|null $id = null,
+        int|string|null $page_id = null,
+        ?string         $task_id = null,
+        ?Carbon         $pushed_at = null,
+        ?Carbon         $crawled_at = null,
+        ?Engine         $engine = null,
+        ?Carbon         $created_at = null,
+        ?Carbon         $updated_at = null,
+        ?Carbon         $deleted_at = null,
+        ?Page           $page = null
+    )
+    {
+        $this->id = $id;
+        $this->page_id = $page_id;
+        $this->task_id = $task_id;
+        $this->pushed_at = $pushed_at;
+        $this->crawled_at = $crawled_at;
+        $this->engine = $engine;
+        $this->created_at = $created_at;
+        $this->updated_at = $updated_at;
+        $this->deleted_at = $deleted_at;
+        $this->page = $page;
+    }
 }

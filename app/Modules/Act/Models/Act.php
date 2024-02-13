@@ -14,7 +14,7 @@ use Eloquent;
 use App\Models\Validate;
 use App\Models\Delete;
 use EloquentFilter\Filterable;
-use JetBrains\PhpStorm\ArrayShape;
+use Illuminate\Database\Eloquent\Concerns\HasTimestamps;
 
 /**
  * Класс модель для действий на основе Eloquent.
@@ -30,6 +30,7 @@ class Act extends Eloquent
     use Sortable;
     use Validate;
     use Filterable;
+    use HasTimestamps;
 
     /**
      * Атрибуты, для которых разрешено массовое назначение.
@@ -48,11 +49,10 @@ class Act extends Eloquent
      *
      * @return array Вернет массив правил.
      */
-    #[ArrayShape(['index' => 'string', 'count' => 'string', 'minutes' => 'string'])] protected function getRules(
-    ): array
+    protected function getRules(): array
     {
         return [
-            'index' => 'required|between:1,191|unique:acts,index,'.$this->id.',id',
+            'index' => 'required|between:1,191|unique:acts,index,' . $this->id . ',id',
             'count' => 'required|integer',
             'minutes' => 'required|integer'
         ];
@@ -63,8 +63,7 @@ class Act extends Eloquent
      *
      * @return array Массив возможных ошибок валидации.
      */
-    #[ArrayShape(['index' => 'string', 'count' => 'string', 'minutes' => 'string'])] protected function getNames(
-    ): array
+    protected function getNames(): array
     {
         return [
             'index' => trans('act::models.act.index'),

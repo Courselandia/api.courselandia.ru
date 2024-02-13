@@ -13,7 +13,6 @@ use App\Models\Test\TokenTest;
 use App\Modules\School\Models\School;
 use Faker\Factory as Faker;
 use Illuminate\Http\UploadedFile;
-use JetBrains\PhpStorm\Pure;
 use Tests\TestCase;
 
 /**
@@ -388,7 +387,7 @@ class SchoolControllerTest extends TestCase
      *
      * @return array Массив структуры данных школы.
      */
-    #[Pure] private function getSchoolStructure(bool $image = false): array
+    private function getSchoolStructure(bool $image = false): array
     {
         $structure = [
             'id',

@@ -8,6 +8,8 @@
 
 namespace App\Modules\Tool\Actions\Admin;
 
+use App\Modules\Metatag\Data\MetatagSet;
+use App\Modules\Tool\Data\ToolCreate;
 use Cache;
 use Typography;
 use App\Models\Action;
@@ -25,60 +27,19 @@ use App\Modules\Analyzer\Actions\Admin\AnalyzerUpdateAction;
 class ToolCreateAction extends Action
 {
     /**
-     * Название.
+     * Данные для создания инструмента.
      *
-     * @var string|null
+     * @var ToolCreate
      */
-    public ?string $name = null;
+    private ToolCreate $data;
 
     /**
-     * Шаблон заголовка.
-     *
-     * @var string|null
+     * @param ToolCreate $data Данные для создания инструмента.
      */
-    public ?string $header_template = null;
-
-    /**
-     * Ссылка.
-     *
-     * @var string|null
-     */
-    public ?string $link = null;
-
-    /**
-     * Статья.
-     *
-     * @var string|null
-     */
-    public ?string $text = null;
-
-    /**
-     * Статус.
-     *
-     * @var bool|null
-     */
-    public ?bool $status = null;
-
-    /**
-     * Шаблон описания.
-     *
-     * @var string|null
-     */
-    public ?string $description_template = null;
-
-    /**
-     * Ключевые слова.
-     *
-     * @var string|null
-     */
-    public ?string $keywords = null;
-
-    /**
-     * Шаблон заголовка.
-     *
-     * @var string|null
-     */
-    public ?string $title_template = null;
+    public function __construct(ToolCreate $data)
+    {
+        $this->data = $data;
+    }
 
     /**
      * Метод запуска логики.
@@ -89,42 +50,38 @@ class ToolCreateAction extends Action
      */
     public function run(): ToolEntity
     {
-        $action = app(MetatagSetAction::class);
         $template = new Template();
 
         $templateValues = [
-            'tool' => $this->name,
+            'tool' => $this->data->name,
             'countToolCourses' => 0,
         ];
 
-        $action->description = $template->convert($this->description_template, $templateValues);
-        $action->title = $template->convert($this->title_template, $templateValues);
-        $action->description_template = $this->description_template;
-        $action->title_template = $this->title_template;
-        $action->keywords = $this->keywords;
+        $action = new MetatagSetAction(MetatagSet::from([
+            'description' => $template->convert($this->data->description_template, $templateValues),
+            'title' => $template->convert($this->data->title_template, $templateValues),
+            'description_template' => $this->data->description_template,
+            'title_template' => $this->data->title_template,
+            'keywords' => $this->data->keywords,
+        ]));
 
         $metatag = $action->run();
 
-        $toolEntity = new ToolEntity();
-        $toolEntity->name = Typography::process($this->name, true);
-        $toolEntity->header = Typography::process($template->convert($this->header_template, $templateValues), true);
-        $toolEntity->header_template = $this->header_template;
-        $toolEntity->link = $this->link;
-        $toolEntity->text = Typography::process($this->text);
-        $toolEntity->status = $this->status;
-        $toolEntity->metatag_id = $metatag->id;
+        $toolEntity = ToolEntity::from([
+            ...$this->data->toArray(),
+            'name' => Typography::process($this->data->name, true),
+            'header' => Typography::process($template->convert($this->data->header_template, $templateValues), true),
+            'text' => Typography::process($this->data->text),
+            'metatag_id' => $metatag->id,
+        ]);
 
         $tool = Tool::create($toolEntity->toArray());
         Cache::tags(['catalog', 'tool'])->flush();
 
-        $action = app(AnalyzerUpdateAction::class);
-        $action->id = $tool->id;
-        $action->model = Tool::class;
-        $action->category = 'tool.text';
+        $action = new AnalyzerUpdateAction($tool->id, Tool::class, 'tool.text');
         $action->run();
 
-        $action = app(ToolGetAction::class);
-        $action->id = $tool->id;
+        $action = new ToolGetAction($tool->id);
 
         return $action->run();
     }

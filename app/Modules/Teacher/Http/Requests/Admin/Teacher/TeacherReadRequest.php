@@ -10,7 +10,6 @@ namespace App\Modules\Teacher\Http\Requests\Admin\Teacher;
 
 use Schema;
 use App\Models\FormRequest;
-use JetBrains\PhpStorm\ArrayShape;
 
 /**
  * Класс запрос для чтения учителя.
@@ -22,13 +21,7 @@ class TeacherReadRequest extends FormRequest
      *
      * @return array Массив правил проверки.
      */
-    #[ArrayShape([
-        'sorts' => 'string',
-        'offset' => 'string',
-        'limit' => 'string',
-        'filters' => 'string',
-        'filters.status' => 'string',
-    ])] public function rules(): array
+    public function rules(): array
     {
         $columnsSorts = Schema::getColumnListing('teachers');
         $columnsSorts = implode(',', $columnsSorts);
@@ -54,13 +47,7 @@ class TeacherReadRequest extends FormRequest
      *
      * @return array Массив атрибутов.
      */
-    #[ArrayShape([
-        'sorts' => 'string',
-        'offset' => 'string',
-        'limit' => 'string',
-        'filters' => 'string',
-        'filters.status' => 'string',
-    ])] public function attributes(): array
+    public function attributes(): array
     {
         return [
             'sorts' => trans('teacher::http.requests.admin.teacherReadRequest.sorts'),

@@ -8,7 +8,6 @@
 
 namespace App\Modules\Course\Json\Jobs;
 
-use ReflectionException;
 use App\Modules\Faq\Actions\Site\FaqReadAction;
 use App\Models\Exceptions\ParameterInvalidException;
 
@@ -25,9 +24,7 @@ class FaqsItemJob extends JsonItemJob
      */
     public function handle(): void
     {
-        $action = app(FaqReadAction::class);
-        $action->school = $this->link;
-
+        $action = new FaqReadAction($this->link);
         $data = $action->run();
         $data['success'] = true;
 

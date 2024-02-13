@@ -8,12 +8,12 @@
 
 namespace App\Modules\Course\Pipes\Site\Read;
 
+use App\Models\Data;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Course\Actions\Site\Course\CourseToolReadAction;
+use App\Modules\Course\Data\Decorators\CourseRead;
 use Closure;
 use App\Models\Contracts\Pipe;
-use App\Models\Entity;
-use App\Modules\Course\Entities\CourseRead;
 
 /**
  * Чтение курсов: фильтры: инструменты.
@@ -23,22 +23,18 @@ class FilterToolPipe implements Pipe
     /**
      * Метод, который будет вызван у pipeline.
      *
-     * @param Entity|CourseRead $entity Сущность.
+     * @param Data|CourseRead $data Данные для декоратора для чтения курсов.
      * @param Closure $next Ссылка на следующий pipe.
      *
      * @return mixed Вернет значение полученное после выполнения следующего pipe.
      * @throws ParameterInvalidException
      */
-    public function handle(Entity|CourseRead $entity, Closure $next): mixed
+    public function handle(Data|CourseRead $data, Closure $next): mixed
     {
-        $action = app(CourseToolReadAction::class);
-        $action->filters = $entity->filters;
-        $action->offset = 0;
-        $action->limit = $entity->openedTools ? null : 11;
-        $action->disabled = true;
+        $action = new CourseToolReadAction($data->filters, 0, $data->openedTools ? null : 11, true);
 
-        $entity->filter->tools = $action->run();
+        $data->filter->tools = $action->run();
 
-        return $next($entity);
+        return $next($data);
     }
 }

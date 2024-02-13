@@ -34,16 +34,11 @@ class SchoolImageController extends Controller
      * @param  SchoolImageUpdateRequest  $request  Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException
      */
     public function update(int|string $id, SchoolImageUpdateRequest $request): JsonResponse
     {
         try {
-            $action = app(SchoolImageUpdateAction::class);
-            $action->id = $id;
-            $action->image = $request->file('image');
-            $action->type = $request->get('type');
-
+            $action = new SchoolImageUpdateAction($id, $request->get('type'), $request->file('image'));
             $school = $action->run();
 
             Log::info(trans('access::http.controllers.admin.schoolController.update.log'), [
@@ -83,9 +78,7 @@ class SchoolImageController extends Controller
     public function destroy(int|string $id, SchoolImageDestroyRequest $request): JsonResponse
     {
         try {
-            $action = app(SchoolImageDestroyAction::class);
-            $action->id = $id;
-            $action->type = $request->get('type');
+            $action = new SchoolImageDestroyAction($id, $request->get('type'));;
             $action->run();
 
             Log::info(trans('school::http.controllers.admin.schoolController.destroyImage.log'), [

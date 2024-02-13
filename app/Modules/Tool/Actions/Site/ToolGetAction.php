@@ -12,7 +12,6 @@ use Cache;
 use Util;
 use App\Models\Action;
 use App\Models\Enums\CacheTime;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Tool\Entities\Tool as ToolEntity;
 use App\Modules\Tool\Models\Tool;
 
@@ -22,17 +21,24 @@ use App\Modules\Tool\Models\Tool;
 class ToolGetAction extends Action
 {
     /**
-     * ID категории.
+     * ID инструмента.
      *
-     * @var int|string|null
+     * @var int|string
      */
-    public int|string|null $id = null;
+    private int|string $id;
+
+    /**
+     * @param int|string $id ID инструмента.
+     */
+    public function __construct(int|string $id)
+    {
+        $this->id = $id;
+    }
 
     /**
      * Метод запуска логики.
      *
      * @return ToolEntity|null Вернет результаты исполнения.
-     * @throws ParameterInvalidException
      */
     public function run(): ?ToolEntity
     {
@@ -46,15 +52,7 @@ class ToolGetAction extends Action
                     'metatag',
                 ])->find($this->id);
 
-                if ($result) {
-                    $item = $result->toArray();
-                    $entity = new ToolEntity();
-                    $entity->set($item);
-
-                    return $entity;
-                }
-
-                return null;
+                return $result ? ToolEntity::from($result->toArray()) : null;
             }
         );
     }

@@ -28,16 +28,26 @@ class ArticleRewriteAction extends Action
     /**
      * ID статьи.
      *
-     * @var int|string|null
+     * @var int|string
      */
-    public int|string|null $id = null;
+    private int|string $id;
 
     /**
      * Запрос на переписания.
      *
-     * @var string|null
+     * @var string
      */
-    public ?string $request = null;
+    private string $request;
+
+    /**
+     * @param int|string $id
+     * @param string $request
+     */
+    public function __construct(int|string $id, string $request)
+    {
+        $this->id = $id;
+        $this->request = $request;
+    }
 
     /**
      * Метод запуска логики.
@@ -48,8 +58,7 @@ class ArticleRewriteAction extends Action
      */
     public function run(): ArticleEntity
     {
-        $action = app(ArticleGetAction::class);
-        $action->id = $this->id;
+        $action = new ArticleGetAction($this->id);
         $articleEntity = $action->run();
 
         if ($articleEntity) {
@@ -68,8 +77,7 @@ class ArticleRewriteAction extends Action
 
             Cache::tags(['article'])->flush();
 
-            $action = app(ArticleGetAction::class);
-            $action->id = $this->id;
+            $action = new ArticleGetAction($this->id);
 
             return $action->run();
         }

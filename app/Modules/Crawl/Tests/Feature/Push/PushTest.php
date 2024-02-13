@@ -8,7 +8,7 @@
 
 namespace App\Modules\Crawl\Tests\Feature\Push;
 
-use App\Models\Exceptions\ParameterInvalidException;
+use App\Modules\Crawl\Models\Crawl;
 use App\Modules\Crawl\Push\Push;
 use App\Modules\Crawl\Push\Pushers\FakePusher;
 use App\Modules\Page\Models\Page;
@@ -24,14 +24,11 @@ class PushTest extends TestCase
      * Тестирование запуска.
      *
      * @return void
-     * @throws ParameterInvalidException
      */
     public function testRun(): void
     {
-        Page::factory()->create([
-            'path' => '/',
-            'lastmod' => Carbon::now()->addMonths(-5),
-        ]);
+        Page::truncate();
+        Crawl::truncate();
 
         Page::factory()->create([
             'path' => '/test-1',
@@ -41,6 +38,11 @@ class PushTest extends TestCase
         Page::factory()->create([
             'path' => '/test-2',
             'lastmod' => Carbon::now()->addMonths(-3),
+        ]);
+
+        Page::factory()->create([
+            'path' => '/test-3',
+            'lastmod' => Carbon::now()->addMonths(-5),
         ]);
 
         $push = new Push();

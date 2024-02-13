@@ -8,7 +8,7 @@
 
 namespace App\Modules\Plagiarism\Contracts;
 
-use App\Modules\Plagiarism\Entities\Result;
+use App\Modules\Plagiarism\Values\Quality;
 
 /**
  * Абстрактный класс для проведения анализа текста.
@@ -27,7 +27,7 @@ abstract class Plagiarism
      * Получить результат.
      *
      * @param string $id ID задачи.
-     * @return Result Готовый анализ.
+     * @return Quality Готовый анализ.
      */
-    abstract public function result(string $id): Result;
+    abstract public function result(string $id): Quality;
 }

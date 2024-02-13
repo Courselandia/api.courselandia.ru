@@ -18,11 +18,19 @@ use Cache;
 class TeacherDestroyAction extends Action
 {
     /**
-     * Массив ID пользователей.
+     * Массив ID учителей.
      *
      * @var int[]|string[]
      */
-    public ?array $ids = null;
+    private array $ids;
+
+    /**
+     * @param array $ids Массив ID учителей.
+     */
+    public function __construct(array $ids)
+    {
+        $this->ids = $ids;
+    }
 
     /**
      * Метод запуска логики.

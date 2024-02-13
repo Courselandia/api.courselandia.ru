@@ -19,7 +19,7 @@ class ReviewListener
     /**
      * Обработчик события при добавлении записи.
      *
-     * @param  Review  $review  Модель для таблицы отзывов.
+     * @param Review $review Модель для таблицы отзывов.
      *
      * @return bool Вернет успешность выполнения операции.
      * @throws RecordExistException
@@ -48,7 +48,7 @@ class ReviewListener
     /**
      * Обработчик события при обновлении записи.
      *
-     * @param  Review  $review  Модель для таблицы отзывов.
+     * @param Review $review Модель для таблицы отзывов.
      *
      * @return bool Вернет успешность выполнения операции.
      * @throws RecordExistException

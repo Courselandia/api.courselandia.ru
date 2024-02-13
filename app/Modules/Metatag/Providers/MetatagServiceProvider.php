@@ -27,7 +27,7 @@ class MetatagServiceProvider extends ServiceProvider
         $this->registerTranslations();
         $this->registerConfig();
 
-        $this->loadMigrationsFrom(__DIR__.'/../Database/Migrations');
+        $this->loadMigrationsFrom(__DIR__ . '/../Database/Migrations');
     }
 
     /**
@@ -50,10 +50,10 @@ class MetatagServiceProvider extends ServiceProvider
     protected function registerConfig(): void
     {
         $this->publishes([
-            __DIR__.'/../Config/config.php' => config_path('metatag.php'),
+            __DIR__ . '/../Config/config.php' => config_path('metatag.php'),
         ]);
         $this->mergeConfigFrom(
-            __DIR__.'/../Config/config.php',
+            __DIR__ . '/../Config/config.php',
             'metatag'
         );
     }
@@ -67,7 +67,7 @@ class MetatagServiceProvider extends ServiceProvider
     {
         $viewPath = base_path('resources/views/modules/metatag');
 
-        $sourcePath = __DIR__.'/../Resources/views';
+        $sourcePath = __DIR__ . '/../Resources/views';
 
         $this->publishes([
             $sourcePath => $viewPath
@@ -76,7 +76,7 @@ class MetatagServiceProvider extends ServiceProvider
         $this->loadViewsFrom(
             array_merge(
                 array_map(function ($path) {
-                    return $path.'/modules/metatag';
+                    return $path . '/modules/metatag';
                 }, Config::get('view.paths')),
                 [$sourcePath]
             ),
@@ -96,7 +96,7 @@ class MetatagServiceProvider extends ServiceProvider
         if (is_dir($langPath)) {
             $this->loadTranslationsFrom($langPath, 'metatag');
         } else {
-            $this->loadTranslationsFrom(__DIR__.'/../Resources/lang', 'metatag');
+            $this->loadTranslationsFrom(__DIR__ . '/../Resources/lang', 'metatag');
         }
     }
 

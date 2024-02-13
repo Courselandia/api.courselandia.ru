@@ -19,7 +19,7 @@ class PublicationListener
     /**
      * Обработчик события при удалении записи.
      *
-     * @param  Publication  $publication  Модель для таблицы публикаций.
+     * @param Publication $publication Модель для таблицы публикаций.
      *
      * @return bool Вернет успешность выполнения операции.
      */

@@ -21,9 +21,9 @@ class CourseLevelFilter extends ModelFilter
      *
      * @param int|string $id ID.
      *
-     * @return CourseLevelFilter Правила поиска.
+     * @return self Правила поиска.
      */
-    public function id(int|string $id): CourseLevelFilter
+    public function id(int|string $id): self
     {
         return $this->where('course_levels.id', $id);
     }
@@ -33,9 +33,9 @@ class CourseLevelFilter extends ModelFilter
      *
      * @param Level[]|Level|string[]|string $levels Уровни.
      *
-     * @return CourseLevelFilter Правила поиска.
+     * @return self Правила поиска.
      */
-    public function level(array|Level|string $levels): CourseLevelFilter
+    public function level(array|Level|string $levels): self
     {
         return $this->whereIn('course_levels.level', is_array($levels) ? $levels : [$levels]);
     }

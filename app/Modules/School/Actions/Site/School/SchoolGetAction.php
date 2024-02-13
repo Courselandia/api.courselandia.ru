@@ -26,9 +26,17 @@ class SchoolGetAction extends Action
     /**
      * ID школы.
      *
-     * @var int|string|null
+     * @var int|string
      */
-    public int|string|null $id = null;
+    private int|string $id;
+
+    /**
+     * @param int|string $id ID школы.
+     */
+    public function __construct(int|string $id)
+    {
+        $this->id = $id;
+    }
 
     /**
      * Метод запуска логики.
@@ -82,7 +90,7 @@ class SchoolGetAction extends Action
                     ])
                     ->first();
 
-                return $school ? new SchoolEntity($school->toArray()) : null;
+                return $school ? SchoolEntity::from($school->toArray()) : null;
             }
         );
     }

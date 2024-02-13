@@ -17,7 +17,6 @@ use App\Modules\Analyzer\Categories\SchoolTextAnalyzerCategory;
 use App\Modules\Analyzer\Categories\SkillTextAnalyzerCategory;
 use App\Modules\Analyzer\Categories\TeacherTextAnalyzerCategory;
 use App\Modules\Analyzer\Categories\ToolTextAnalyzerCategory;
-use App\Modules\Analyzer\Commands\AnalyzerShiftToCourseTextCommand;
 use Config;
 use AnalyzerCategory;
 use Illuminate\Support\ServiceProvider;
@@ -89,11 +88,6 @@ class AnalyzerServiceProvider extends ServiceProvider
         AnalyzerCategory::extend('teacher.text', function () {
             return new TeacherTextAnalyzerCategory();
         });
-
-        $this->commands([
-            AnalyzerAnalyzeCommand::class,
-            AnalyzerShiftToCourseTextCommand::class,
-        ]);
     }
 
     /**

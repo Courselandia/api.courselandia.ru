@@ -14,8 +14,9 @@ use App\Modules\Publication\Entities\PublicationList;
 use App\Modules\Publication\Pipes\Site\Read\PublicationTotal;
 use App\Modules\Publication\Pipes\Site\Read\PublicationRead;
 use App\Modules\Publication\Pipes\Site\Read\PublicationYear;
-use App\Modules\Publication\Pipes\Site\Read\PublicationData;
 use App\Modules\Publication\Decorators\Site\PublicationReadDecorator;
+use App\Modules\Publication\Data\Actions\Site\PublicationRead as PublicationReadDataAction;
+use App\Modules\Publication\Data\Decorators\PublicationRead as PublicationReadDecoratorData;
 
 /**
  * Класс действия для чтения публикаций.
@@ -23,39 +24,17 @@ use App\Modules\Publication\Decorators\Site\PublicationReadDecorator;
 class PublicationReadAction extends Action
 {
     /**
-     * Год.
-     *
-     * @var int|null
+     * @var PublicationReadDataAction Данные для чтения публикаций.
      */
-    public ?int $year = null;
+    private PublicationReadDataAction $data;
 
     /**
-     * Лимит.
-     *
-     * @var int|null
+     * @param PublicationReadDataAction $data Данные для чтения публикаций.
      */
-    public ?int $limit = null;
-
-    /**
-     * Отступ.
-     *
-     * @var int|null
-     */
-    public ?int $offset = null;
-
-    /**
-     * ID публикации.
-     *
-     * @var int|string|null
-     */
-    public int|string|null $id = null;
-
-    /**
-     * Ссылка.
-     *
-     * @var string|null
-     */
-    public ?string $link = null;
+    public function __construct(PublicationReadDataAction $data)
+    {
+        $this->data = $data;
+    }
 
     /**
      * Метод запуска логики.
@@ -64,18 +43,12 @@ class PublicationReadAction extends Action
      */
     public function run(): PublicationList|Publication|null
     {
-        $decorator = app(PublicationReadDecorator::class);
-        $decorator->year = $this->year;
-        $decorator->limit = $this->limit;
-        $decorator->offset = $this->offset;
-        $decorator->id = $this->id;
-        $decorator->link = $this->link;
+        $decorator = new PublicationReadDecorator(PublicationReadDecoratorData::from($this->data->toArray()));
 
         return $decorator->setActions([
             PublicationRead::class,
             PublicationTotal::class,
             PublicationYear::class,
-            PublicationData::class
         ])->run();
     }
 }

@@ -29,7 +29,7 @@ class PublicationServiceProvider extends ServiceProvider
         $this->registerTranslations();
         $this->registerConfig();
 
-        $this->loadMigrationsFrom(__DIR__.'/../Database/Migrations');
+        $this->loadMigrationsFrom(__DIR__ . '/../Database/Migrations');
 
         PublicationModel::observe(PublicationListener::class);
     }
@@ -51,10 +51,10 @@ class PublicationServiceProvider extends ServiceProvider
     protected function registerConfig(): void
     {
         $this->publishes([
-            __DIR__.'/../Config/config.php' => config_path('publication.php'),
+            __DIR__ . '/../Config/config.php' => config_path('publication.php'),
         ]);
         $this->mergeConfigFrom(
-            __DIR__.'/../Config/config.php',
+            __DIR__ . '/../Config/config.php',
             'publication'
         );
     }
@@ -68,7 +68,7 @@ class PublicationServiceProvider extends ServiceProvider
     {
         $viewPath = base_path('resources/views/modules/publication');
 
-        $sourcePath = __DIR__.'/../Resources/views';
+        $sourcePath = __DIR__ . '/../Resources/views';
 
         $this->publishes([
             $sourcePath => $viewPath
@@ -77,7 +77,7 @@ class PublicationServiceProvider extends ServiceProvider
         $this->loadViewsFrom(
             array_merge(
                 array_map(function ($path) {
-                    return $path.'/modules/publication';
+                    return $path . '/modules/publication';
                 }, Config::get('view.paths')),
                 [$sourcePath]
             ),
@@ -97,7 +97,7 @@ class PublicationServiceProvider extends ServiceProvider
         if (is_dir($langPath)) {
             $this->loadTranslationsFrom($langPath, 'publication');
         } else {
-            $this->loadTranslationsFrom(__DIR__.'/../Resources/lang', 'publication');
+            $this->loadTranslationsFrom(__DIR__ . '/../Resources/lang', 'publication');
         }
     }
 

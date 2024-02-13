@@ -8,12 +8,12 @@
 
 namespace App\Modules\Access\Pipes\Site\SignUp;
 
-use App\Modules\Access\Entities\AccessSignUp;
+use App\Models\Data;
 use Cache;
 use Exception;
 use Closure;
-use App\Models\Entity;
-use App\Modules\Access\Entities\AccessSocial;
+use App\Modules\Access\Data\Decorators\AccessSocial;
+use App\Modules\Access\Data\Decorators\AccessSignUp;
 use App\Models\Contracts\Pipe;
 use App\Modules\User\Models\User;
 use App\Modules\User\Models\UserVerification;
@@ -28,44 +28,43 @@ class VerificationPipe implements Pipe
     /**
      * Метод, который будет вызван у pipeline.
      *
-     * @param  Entity|AccessSocial|AccessSignUp  $entity  Содержит массив свойств, которые можно передавать от pipe к pipe.
-     * @param  Closure  $next  Ссылка на следующий pipe.
+     * @param Data|AccessSocial|AccessSignUp $data Данные.
+     * @param Closure $next Ссылка на следующий pipe.
      *
      * @return mixed Вернет значение полученное после выполнения следующего pipe.
      * @throws Exception
      */
-    public function handle(Entity|AccessSocial|AccessSignUp $entity, Closure $next): mixed
+    public function handle(Data|AccessSocial|AccessSignUp $data, Closure $next): mixed
     {
-        if ($entity->create) {
-            $userVerificationEntity = new UserVerificationEntity();
-            $userVerificationEntity->user_id = $entity->id;
-            $userVerificationEntity->code = UserVerificationEntity::generateCode($entity->id);
-            $userVerificationEntity->status = $entity->verified;
+        if ($data->create) {
+            UserVerification::create([
+                'user_id' => $data->id,
+                'code' => UserVerificationEntity::generateCode($data->id),
+                'status' => $data->verified,
+            ]);
 
-            UserVerification::create($userVerificationEntity->toArray());
             Cache::tags(['access', 'user'])->flush();
 
             try {
-                if (!$entity->verified) {
+                if (!$data->verified) {
                     try {
-                        $action = app(AccessSendEmailVerificationCodeAction::class);
-                        $action->id = $entity->id;
+                        $action = new AccessSendEmailVerificationCodeAction($data->id);
                         $action->run();
                     } catch (Exception $error) {
-                        User::destroy($entity->id);
+                        User::destroy($data->id);
                         Cache::tags(['access', 'user'])->flush();
 
                         throw $error;
                     }
                 }
             } catch (Exception $error) {
-                User::destroy($entity->id);
+                User::destroy($data->id);
                 Cache::tags(['access', 'user'])->flush();
 
                 throw $error;
             }
         }
 
-        return $next($entity);
+        return $next($data);
     }
 }

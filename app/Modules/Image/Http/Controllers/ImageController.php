@@ -8,7 +8,6 @@
 
 namespace App\Modules\Image\Http\Controllers;
 
-use App\Models\Rep\RepositoryQueryBuilder;
 use Util;
 use ImageStore;
 use Storage;
@@ -38,7 +37,7 @@ class ImageController extends Controller
         $id = substr($info['basename'], 0, Util::strlen($info['basename']) - Util::strlen($info['extension']) - 1);
         $format = strtolower($info['extension']);
 
-        $image = ImageStore::get(new RepositoryQueryBuilder($id));
+        $image = ImageStore::get($id);
 
         if ($image->format === $format) {
             $format = null;

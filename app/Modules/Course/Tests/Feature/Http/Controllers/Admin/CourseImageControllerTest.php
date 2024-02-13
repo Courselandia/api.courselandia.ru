@@ -11,7 +11,6 @@ namespace App\Modules\Course\Tests\Feature\Http\Controllers\Admin;
 use App\Models\Test\TokenTest;
 use App\Modules\Course\Models\Course;
 use Illuminate\Http\UploadedFile;
-use JetBrains\PhpStorm\Pure;
 use Tests\TestCase;
 
 /**
@@ -141,7 +140,7 @@ class CourseImageControllerTest extends TestCase
      *
      * @return array Массив структуры данных публикации.
      */
-    #[Pure] private function getCourseStructure(bool $image = false): array
+    private function getCourseStructure(bool $image = false): array
     {
         $structure = [
             'id',

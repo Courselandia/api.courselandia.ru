@@ -20,7 +20,6 @@ use App\Modules\Skill\Models\Skill;
 use App\Modules\Teacher\Models\Teacher;
 use App\Modules\Tool\Models\Tool;
 use App\Modules\Course\Models\Course;
-use JetBrains\PhpStorm\Pure;
 use Tests\TestCase;
 
 /**
@@ -373,7 +372,7 @@ class CourseControllerTest extends TestCase
      *
      * @return array Массив структуры данных курса.
      */
-    #[Pure] private function getCourseStructure(): array
+    private function getCourseStructure(): array
     {
         return [
             'id',
@@ -570,7 +569,7 @@ class CourseControllerTest extends TestCase
      *
      * @return array Массив структуры данных курса.
      */
-    #[Pure] private function getCoursesStructure(): array
+    private function getCoursesStructure(): array
     {
         return [
             'id',
@@ -602,7 +601,7 @@ class CourseControllerTest extends TestCase
      *
      * @return array Массив структуры описания.
      */
-    #[Pure] private function getDescriptionStructure(): array
+    private function getDescriptionStructure(): array
     {
         return [
             'id',
@@ -616,7 +615,7 @@ class CourseControllerTest extends TestCase
      *
      * @return array Массив структуры фильтра.
      */
-    #[Pure] private function getFilterStructure(): array
+    private function getFilterStructure(): array
     {
         return [
             'id',

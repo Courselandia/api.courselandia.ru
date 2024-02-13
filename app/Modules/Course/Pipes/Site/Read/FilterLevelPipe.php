@@ -8,18 +8,15 @@
 
 namespace App\Modules\Course\Pipes\Site\Read;
 
+use App\Models\Data;
+use App\Modules\Course\Data\Decorators\CourseRead;
 use App\Modules\Course\Models\CourseLevel;
 use Cache;
 use Util;
 use Closure;
 use App\Models\Enums\CacheTime;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Course\Enums\Status;
-use App\Modules\Course\Models\Course;
-use App\Modules\Salary\Enums\Level;
 use App\Models\Contracts\Pipe;
-use App\Models\Entity;
-use App\Modules\Course\Entities\CourseRead;
 
 /**
  * Чтение курсов: фильтры: уровни.
@@ -29,15 +26,14 @@ class FilterLevelPipe implements Pipe
     /**
      * Метод, который будет вызван у pipeline.
      *
-     * @param Entity|CourseRead $entity Сущность.
+     * @param Data|CourseRead $data Данные для декоратора для чтения курсов.
      * @param Closure $next Ссылка на следующий pipe.
      *
      * @return mixed Вернет значение полученное после выполнения следующего pipe.
-     * @throws ParameterInvalidException
      */
-    public function handle(Entity|CourseRead $entity, Closure $next): mixed
+    public function handle(Data|CourseRead $data, Closure $next): mixed
     {
-        $currentFilters = $entity->filters;
+        $currentFilters = $data->filters;
 
         if (isset($currentFilters['levels-level'])) {
             unset($currentFilters['levels-level']);
@@ -84,8 +80,8 @@ class FilterLevelPipe implements Pipe
             }
         );
 
-        $entity->filter->levels = $levels;
+        $data->filter->levels = $levels;
 
-        return $next($entity);
+        return $next($data);
     }
 }

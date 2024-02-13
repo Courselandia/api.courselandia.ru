@@ -8,7 +8,6 @@
 
 namespace App\Modules\Course\Json\Jobs;
 
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\School\Actions\Site\School\SchoolLinkAction;
 
 /**
@@ -20,13 +19,10 @@ class SchoolItemJob extends JsonItemJob
      * Выполнение задачи.
      *
      * @return void
-     * @throws ParameterInvalidException
      */
     public function handle(): void
     {
-        $action = app(SchoolLinkAction::class);
-        $action->link = $this->link;
-
+        $action = new SchoolLinkAction($this->link);
         $data = $action->run();
 
         if ($data) {
