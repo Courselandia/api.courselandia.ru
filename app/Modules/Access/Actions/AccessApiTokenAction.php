@@ -54,8 +54,6 @@ class AccessApiTokenAction extends Action
     {
         $cacheKey = Util::getKey('access', 'user', 'login', $this->data->login, 'role', 'verification');
 
-        Cache::flush();
-
         $user = Cache::tags(['access', 'user'])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,

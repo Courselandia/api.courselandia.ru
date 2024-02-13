@@ -186,7 +186,7 @@ class Article extends Entity
         ?string         $text_current = null,
         ?string         $request_template = null,
         array|null      $params = null,
-        int|null        $tries = null,
+        int|null        $tries = 0,
         Status|null     $status = null,
         int|string|null $articleable_id = null,
         string|null     $articleable_type = null,

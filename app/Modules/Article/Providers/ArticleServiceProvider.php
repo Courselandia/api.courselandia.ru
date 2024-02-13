@@ -9,7 +9,6 @@
 namespace App\Modules\Article\Providers;
 
 use App;
-use App\Modules\Article\Commands\ArticleShiftEntityTextToArticleCommand;
 use Config;
 use ArticleCategory;
 use Illuminate\Support\ServiceProvider;
@@ -91,7 +90,6 @@ class ArticleServiceProvider extends ServiceProvider
             ArticleWriteCommand::class,
             ArticleApplyCommand::class,
             ArticleRewriteCommand::class,
-            ArticleShiftEntityTextToArticleCommand::class,
         ]);
     }
 

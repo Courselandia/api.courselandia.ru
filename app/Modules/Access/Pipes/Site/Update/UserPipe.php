@@ -44,8 +44,6 @@ class UserPipe implements Pipe
         $id = $data->id;
         $cacheKey = Util::getKey('access', 'user', 'model', $id, 'role', 'verification');
 
-        Cache::flush();
-
         $user = Cache::tags(['access', 'user'])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
