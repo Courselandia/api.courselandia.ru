@@ -8,11 +8,11 @@
 
 namespace App\Modules\OAuth\Repositories;
 
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Models\Repository;
 use App\Modules\OAuth\Entities\OAuthToken;
 use Carbon\Carbon;
+use Spatie\LaravelData\DataCollection;
 
 /**
  * Класс репозитория токенов на основе Eloquent.
@@ -25,16 +25,12 @@ class OAuthTokenEloquent extends Repository
      * @param string|int|null $userId ID пользователя.
      * @param string|null $token Токен.
      * @param string|int|null $oauthTokenId ID токена.
-     * @param Carbon|null $expiresAt Дата действия.
      * @return OAuthToken|null Сущность токена.
-     *
-     * @throws ParameterInvalidException
      */
     public function get(
         string|int|null $userId = null,
         ?string         $token = null,
-        string|int|null $oauthTokenId = null,
-        ?Carbon         $expiresAt = null
+        string|int|null $oauthTokenId = null
     ): ?OAuthToken
     {
         $query = $this->newInstance()->newQuery();
@@ -51,13 +47,28 @@ class OAuthTokenEloquent extends Repository
             $query->where('id', $oauthTokenId);
         }
 
+        $item = $query->first();
+
+        return $item ? OAuthToken::from($item->toArray()) : null;
+    }
+
+    /**
+     * Получение токенов.
+     *
+     * @param Carbon|null $expiresAt Дата действия.
+     * @return DataCollection
+     */
+    public function find(?Carbon $expiresAt = null): DataCollection
+    {
+        $query = $this->newInstance()->newQuery();
+
         if ($expiresAt) {
             $query->where('expires_at', '<=', $expiresAt);
         }
 
-        $item = $query->first();
+        $items = $query->get();
 
-        return $item ? OAuthToken::from($item->toArray()) : null;
+        return OAuthToken::collection($items);
     }
 
     /**
@@ -66,8 +77,6 @@ class OAuthTokenEloquent extends Repository
      * @param OAuthToken $entity Сущность токена.
      *
      * @return int|string ID токена.
-     *
-     * @throws ParameterInvalidException
      */
     public function create(OAuthToken $entity): int|string
     {
@@ -90,7 +99,6 @@ class OAuthTokenEloquent extends Repository
      *
      * @return int|string ID токена.
      *
-     * @throws ParameterInvalidException
      * @throws RecordNotExistException
      */
     public function update(string|int $id, OAuthToken $entity): int|string
@@ -116,7 +124,6 @@ class OAuthTokenEloquent extends Repository
      * @param int|string|array|null $id Id записи для удаления.
      *
      * @return bool Вернет булево значение успешности операции.
-     * @throws ParameterInvalidException
      */
     public function destroy(int|string|array $id = null): bool
     {

@@ -324,7 +324,7 @@ class OAuthDriverDatabase extends OAuthDriver
      */
     public function clean(): void
     {
-        $tokens = $this->oAuthTokenEloquent->get(null, null, null, Carbon::now());
+        $tokens = $this->oAuthTokenEloquent->find(Carbon::now());
 
         foreach ($tokens as $token) {
             $this->oAuthTokenEloquent->destroy($token->id);
