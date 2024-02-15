@@ -51,6 +51,13 @@ class DirectionCreate extends Data
     public ?string $text = null;
 
     /**
+     * Дополнительное описание.
+     *
+     * @var string|null
+     */
+    public ?string $additional = null;
+
+    /**
      * Статус.
      *
      * @var bool|null
@@ -84,6 +91,7 @@ class DirectionCreate extends Data
      * @param int|null $weight Вес.
      * @param string|null $link Ссылка.
      * @param string|null $text Статья.
+     * @param string|null $additional Дополнительное описание.
      * @param bool|null $status Статус.
      * @param string|null $description_template Шаблон описания.
      * @param string|null $keywords Ключевые слова.
@@ -95,6 +103,7 @@ class DirectionCreate extends Data
         ?int    $weight = null,
         ?string $link = null,
         ?string $text = null,
+        ?string $additional = null,
         ?bool   $status = null,
         ?string $description_template = null,
         ?string $keywords = null,
@@ -106,6 +115,7 @@ class DirectionCreate extends Data
         $this->weight = $weight;
         $this->link = $link;
         $this->text = $text;
+        $this->additional = $additional;
         $this->status = $status;
         $this->description_template = $description_template;
         $this->keywords = $keywords;

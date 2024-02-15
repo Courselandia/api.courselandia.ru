@@ -78,6 +78,13 @@ class Direction extends Entity
     public ?string $text = null;
 
     /**
+     * Дополнительное описание.
+     *
+     * @var string|null
+     */
+    public ?string $additional = null;
+
+    /**
      * Статус.
      *
      * @var bool|null
@@ -137,6 +144,7 @@ class Direction extends Entity
      * @param int|null $weight Вес.
      * @param string|null $link Ссылка.
      * @param string|null $text Статья.
+     * @param string|null $additional Дополнительное описание.
      * @param bool|null $status Статус.
      * @param Carbon|null $created_at Дата создания.
      * @param Carbon|null $updated_at Дата обновления.
@@ -153,6 +161,7 @@ class Direction extends Entity
         ?string         $header_template = null,
         ?int            $weight = null,
         ?string         $link = null,
+        ?string         $additional = null,
         ?string         $text = null,
         ?bool           $status = null,
         ?Carbon         $created_at = null,
@@ -171,6 +180,7 @@ class Direction extends Entity
         $this->weight = $weight;
         $this->link = $link;
         $this->text = $text;
+        $this->additional = $additional;
         $this->metatag = $metatag;
         $this->status = $status;
         $this->created_at = $created_at;

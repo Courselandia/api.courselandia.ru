@@ -41,6 +41,7 @@ use App\Modules\Direction\Filters\DirectionFilter;
  * @property string $weight Вес.
  * @property string $link Ссылка.
  * @property string $text Текст.
+ * @property string $additional Дополнительное описание.
  * @property string $status Статус.
  *
  * @property-read Metatag $metatag
@@ -75,6 +76,7 @@ class Direction extends Eloquent
         'weight',
         'link',
         'text',
+        'additional',
         'status',
     ];
 
@@ -93,6 +95,7 @@ class Direction extends Eloquent
             'weight' => 'integer|digits_between:0,5',
             'link' => 'required|between:1,191|alpha_dash|unique_soft:directions,link,' . $this->id . ',id',
             'text' => 'max:65000',
+            'additional' => 'max:65000',
             'status' => 'required|boolean'
         ];
     }
@@ -112,6 +115,7 @@ class Direction extends Eloquent
             'weight' => trans('direction::models.direction.weight'),
             'link' => trans('direction::models.direction.link'),
             'text' => trans('direction::models.direction.text'),
+            'additional' => trans('direction::models.direction.additional'),
             'status' => trans('direction::models.direction.status')
         ];
     }

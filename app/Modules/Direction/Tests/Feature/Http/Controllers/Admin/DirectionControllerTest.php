@@ -143,6 +143,7 @@ class DirectionControllerTest extends TestCase
                 'weight' => $faker->numberBetween(1, 500),
                 'link' => Util::latin($faker->text(150)),
                 'text' => $faker->text(10000),
+                'additional' => $faker->text(10000),
                 'status' => true,
             ],
             [
@@ -171,6 +172,7 @@ class DirectionControllerTest extends TestCase
                 'weight' => $faker->numberBetween(1, 500),
                 'link' => Util::latin($faker->text(150)),
                 'text' => $faker->text(10000),
+                'additional' => $faker->text(10000),
                 'status' => true,
             ],
             [
@@ -201,6 +203,7 @@ class DirectionControllerTest extends TestCase
                 'weight' => $faker->numberBetween(1, 500),
                 'link' => Util::latin($faker->text(150)),
                 'text' => $faker->text(10000),
+                'additional' => $faker->text(10000),
                 'status' => true,
             ],
             [
@@ -231,6 +234,7 @@ class DirectionControllerTest extends TestCase
                 'weight' => $faker->numberBetween(1, 500),
                 'link' => Util::latin($faker->text(150)),
                 'text' => $faker->text(10000),
+                'additional' => $faker->text(10000),
                 'status' => 'test',
             ],
             [
@@ -260,6 +264,7 @@ class DirectionControllerTest extends TestCase
                 'weight' => $faker->numberBetween(1, 500),
                 'link' => Util::latin($faker->text(150)),
                 'text' => $faker->text(10000),
+                'additional' => $faker->text(10000),
                 'status' => true,
             ],
             [
@@ -379,6 +384,7 @@ class DirectionControllerTest extends TestCase
             'weight',
             'link',
             'text',
+            'additional',
             'status',
             'created_at',
             'updated_at',

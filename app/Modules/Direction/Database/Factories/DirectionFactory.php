@@ -40,6 +40,7 @@ class DirectionFactory extends Factory
             'weight' => $this->faker->numberBetween(1, 1000),
             'link' => Util::latin($this->faker->text(160)),
             'text' => $this->faker->text(1000),
+            'additional' => $this->faker->text(1000),
             'status' => true,
         ];
     }

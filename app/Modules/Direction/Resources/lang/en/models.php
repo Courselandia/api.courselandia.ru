@@ -9,6 +9,7 @@ return [
         'weight' => 'Weight',
         'link' => 'Link',
         'text' => 'Text',
+        'additional' => 'Additional',
         'status' => 'Status'
     ],
 ];

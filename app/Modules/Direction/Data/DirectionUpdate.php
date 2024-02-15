@@ -27,6 +27,7 @@ class DirectionUpdate extends DirectionCreate
      * @param int|null $weight Вес.
      * @param string|null $link Ссылка.
      * @param string|null $text Статья.
+     * @param string|null $additional Дополнительное описание.
      * @param bool|null $status Статус.
      * @param string|null $description_template Шаблон описания.
      * @param string|null $keywords Ключевые слова.
@@ -39,6 +40,7 @@ class DirectionUpdate extends DirectionCreate
         ?int       $weight = null,
         ?string    $link = null,
         ?string    $text = null,
+        ?string    $additional = null,
         ?bool      $status = null,
         ?string    $description_template = null,
         ?string    $keywords = null,
@@ -53,6 +55,7 @@ class DirectionUpdate extends DirectionCreate
             $weight,
             $link,
             $text,
+            $additional,
             $status,
             $description_template,
             $keywords,
