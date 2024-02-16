@@ -30,6 +30,7 @@ class TeacherUpdate extends TeacherCreate
      * @param string|null $text Текст.
      * @param string|null $city Город.
      * @param string|null $comment Комментарий.
+     * @param string|null $additional Дополнительное описание.
      * @param bool|null $copied Скопирован.
      * @param float|null $rating Рейтинг.
      * @param UploadedFile|null $image Изображение.
@@ -51,6 +52,7 @@ class TeacherUpdate extends TeacherCreate
         ?string         $text = null,
         ?string         $city = null,
         ?string         $comment = null,
+        ?string         $additional = null,
         ?bool           $copied = null,
         ?float          $rating = null,
         ?UploadedFile   $image = null,
@@ -74,6 +76,7 @@ class TeacherUpdate extends TeacherCreate
             $text,
             $city,
             $comment,
+            $additional,
             $copied,
             $rating,
             $image,

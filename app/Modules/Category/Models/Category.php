@@ -111,6 +111,7 @@ class Category extends Eloquent
             'headerTemplate' => trans('category::models.category.headerTemplate'),
             'link' => trans('category::models.category.link'),
             'text' => trans('category::models.category.text'),
+            'additional' => trans('category::models.category.additional'),
             'status' => trans('category::models.category.status')
         ];
     }

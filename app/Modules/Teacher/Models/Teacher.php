@@ -44,6 +44,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property string $name Название.
  * @property string|null $city Город.
  * @property string|null $comment Комментарий.
+ * @property string|null $additional Дополнительное описание.
  * @property string $link Ссылка.
  * @property bool $copied Скопирован.
  * @property string $text Текст.
@@ -86,6 +87,7 @@ class Teacher extends Eloquent
         'copied',
         'city',
         'comment',
+        'additional',
         'text',
         'rating',
         'status',
@@ -114,6 +116,7 @@ class Teacher extends Eloquent
             'name' => 'required|between:1,191',
             'link' => 'required|between:1,191|alpha_dash|unique_soft:teachers,link,' . $this->id . ',id',
             'text' => 'max:65000',
+            'additional' => 'max:65000',
             'city' => 'max:191',
             'comment' => 'max:191',
             'copied' => 'boolean',
@@ -137,6 +140,7 @@ class Teacher extends Eloquent
             'copied' => trans('teacher::models.teacher.copied'),
             'city' => trans('teacher::models.teacher.city'),
             'comment' => trans('teacher::models.teacher.comment'),
+            'additional' => trans('teacher::models.teacher.additional'),
             'text' => trans('teacher::models.teacher.text'),
             'image_small_id' => trans('teacher::models.teacher.imageSmallId'),
             'image_middle_id' => trans('teacher::models.teacher.imageMiddleId'),

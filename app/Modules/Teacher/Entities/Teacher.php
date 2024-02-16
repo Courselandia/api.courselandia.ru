@@ -80,6 +80,13 @@ class Teacher extends Entity
     public ?string $comment = null;
 
     /**
+     * Дополнительное описание.
+     *
+     * @var string|null
+     */
+    public ?string $additional = null;
+
+    /**
      * Скопировано.
      *
      * @var bool|null
@@ -158,7 +165,7 @@ class Teacher extends Entity
     public ?DataCollection $directions = null;
 
     /**
-     * Направления.
+     * Школы.
      *
      * @var ?DataCollection
      */
@@ -190,29 +197,30 @@ class Teacher extends Entity
     public ?DataCollection $analyzers = null;
 
     /**
-     * @param int|string|null $id
-     * @param int|string|null $metatag_id
-     * @param string|null $name
-     * @param string|null $link
-     * @param string|null $text
-     * @param float|null $rating
-     * @param string|null $city
-     * @param string|null $comment
-     * @param bool|null $copied
-     * @param Image|null $image_small_id
-     * @param Image|null $image_middle_id
-     * @param Image|null $image_big_id
-     * @param array|null $image_cropped_options
-     * @param bool|null $status
-     * @param Carbon|null $created_at
-     * @param Carbon|null $updated_at
-     * @param Carbon|null $deleted_at
-     * @param Metatag|null $metatag
-     * @param DataCollection|null $directions
-     * @param DataCollection|null $schools
-     * @param DataCollection|null $experiences
-     * @param DataCollection|null $social_medias
-     * @param DataCollection|null $analyzers
+     * @param int|string|null $id ID записи.
+     * @param int|string|null $metatag_id ID метатегов.
+     * @param string|null $name Название.
+     * @param string|null $link Ссылка.
+     * @param string|null $text Статья.
+     * @param float|null $rating Рейтинг.
+     * @param string|null $city Город.
+     * @param string|null $comment Комментарий.
+     * @param string|null $additional Дополнительное описание.
+     * @param bool|null $copied Скопировано.
+     * @param Image|null $image_small_id Изображение маленькое.
+     * @param Image|null $image_middle_id Изображение среднее.
+     * @param Image|null $image_big_id Изображение большое.
+     * @param array|null $image_cropped_options Опции порезанного изображения.
+     * @param bool|null $status Статус.
+     * @param Carbon|null $created_at Дата создания.
+     * @param Carbon|null $updated_at Дата обновления.
+     * @param Carbon|null $deleted_at Дата удаления.
+     * @param Metatag|null $metatag Метатеги.
+     * @param DataCollection|null $directions Направления.
+     * @param DataCollection|null $schools Школы.
+     * @param DataCollection|null $experiences Опыт работы учителя.
+     * @param DataCollection|null $social_medias Социальные сети учителя.
+     * @param DataCollection|null $analyzers Анализ хранения текстов.
      */
     public function __construct(
         int|string|null $id = null,
@@ -223,6 +231,7 @@ class Teacher extends Entity
         ?float          $rating = null,
         ?string         $city = null,
         ?string         $comment = null,
+        ?string         $additional = null,
         ?bool           $copied = null,
         ?Image          $image_small_id = null,
         ?Image          $image_middle_id = null,
@@ -248,6 +257,7 @@ class Teacher extends Entity
         $this->rating = $rating;
         $this->city = $city;
         $this->comment = $comment;
+        $this->additional = $additional;
         $this->copied = $copied;
         $this->image_small_id = $image_small_id;
         $this->image_middle_id = $image_middle_id;

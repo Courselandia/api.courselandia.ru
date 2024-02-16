@@ -13,6 +13,7 @@ return [
         'status' => 'Status',
         'city' => 'City',
         'comment' => 'Comment',
+        'additional' => 'Additional',
         'copied' => 'Copied',
         'imageCroppedOptions' => 'Image Cropped Options',
     ],

@@ -39,6 +39,7 @@ use App\Modules\Tool\Filters\ToolFilter;
  * @property string $header_template  Шаблон заголовка.
  * @property string $link Ссылка.
  * @property string $text Текст.
+ * @property string $additional Дополнительное описание.
  * @property string $status Статус.
  *
  * @property-read Metatag $metatag
@@ -70,6 +71,7 @@ class Tool extends Eloquent
         'header_template',
         'link',
         'text',
+        'additional',
         'status',
     ];
 
@@ -87,6 +89,7 @@ class Tool extends Eloquent
             'header_template' => 'max:191',
             'link' => 'required|between:1,191|alpha_dash|unique_soft:tools,link,' . $this->id . ',id',
             'text' => 'max:65000',
+            'additional' => 'max:65000',
             'status' => 'required|boolean'
         ];
     }
@@ -105,6 +108,7 @@ class Tool extends Eloquent
             'header_template' => trans('tool::models.tool.headerTemplate'),
             'link' => trans('tool::models.tool.link'),
             'text' => trans('tool::models.tool.text'),
+            'additional' => trans('tool::models.tool.additional'),
             'status' => trans('tool::models.tool.status')
         ];
     }

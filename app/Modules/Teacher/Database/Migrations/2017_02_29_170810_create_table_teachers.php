@@ -22,6 +22,7 @@ class CreateTableTeachers extends Migration
             $table->string('name', 191)->index('name');
             $table->string('link', 191)->index('link');
             $table->text('text')->nullable();
+            $table->text('additional')->nullable();
             $table->float('rating', 3)->nullable();
 
             $table->string('image_small_id')->nullable()->index();

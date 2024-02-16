@@ -24,6 +24,7 @@ class CreateTableSkills extends Migration
             $table->string('header_template', 191)->nullable();
             $table->string('link', 191)->index('link');
             $table->text('text')->nullable();
+            $table->text('additional')->nullable();
 
             $table->boolean('status')->default(1)->index();
 

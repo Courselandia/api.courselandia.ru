@@ -90,6 +90,7 @@ class ToolUpdateAction extends Action
                 'name' => Typography::process($this->data->name, true),
                 'header' => Typography::process($template->convert($this->data->header_template, $templateValues), true),
                 'text' => Typography::process($this->data->text),
+                'additional' => Typography::process($this->data->additional),
             ]);
 
             Tool::find($this->data->id)->update($toolEntity->toArray());

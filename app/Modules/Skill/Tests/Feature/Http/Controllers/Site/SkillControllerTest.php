@@ -99,6 +99,7 @@ class SkillControllerTest extends TestCase
             'header_template',
             'link',
             'text',
+            'additional',
             'status',
             'created_at',
             'updated_at',

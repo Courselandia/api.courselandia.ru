@@ -114,6 +114,7 @@ class SkillControllerTest extends TestCase
                 'header_template' => $faker->text(150),
                 'link' => Util::latin($faker->text(150)),
                 'text' => $faker->text(10000),
+                'additional' => $faker->text(10000),
                 'status' => true,
             ],
             [
@@ -141,6 +142,7 @@ class SkillControllerTest extends TestCase
                 'header_template' => $faker->text(150),
                 'link' => Util::latin($faker->text(150)),
                 'text' => $faker->text(10000),
+                'additional' => $faker->text(10000),
                 'status' => true,
             ],
             [
@@ -170,6 +172,7 @@ class SkillControllerTest extends TestCase
                 'header_template' => $faker->text(150),
                 'link' => Util::latin($faker->text(150)),
                 'text' => $faker->text(10000),
+                'additional' => $faker->text(10000),
                 'status' => true,
             ],
             [
@@ -199,6 +202,7 @@ class SkillControllerTest extends TestCase
                 'header_template' => $faker->realTextBetween(350, 500),
                 'link' => Util::latin($faker->text(150)),
                 'text' => $faker->text(10000),
+                'additional' => $faker->text(10000),
                 'status' => 'test',
             ],
             [
@@ -227,6 +231,7 @@ class SkillControllerTest extends TestCase
                 'header_template' => $faker->text(150),
                 'link' => Util::latin($faker->text(150)),
                 'text' => $faker->text(10000),
+                'additional' => $faker->text(10000),
                 'status' => true,
             ],
             [
@@ -345,6 +350,7 @@ class SkillControllerTest extends TestCase
             'header_template',
             'link',
             'text',
+            'additional',
             'status',
             'created_at',
             'updated_at',

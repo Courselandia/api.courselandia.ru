@@ -37,6 +37,7 @@ class TeacherFactory extends Factory
             'name' => $this->faker->text(160),
             'city' => $this->faker->text(160),
             'comment' => $this->faker->text(160),
+            'additional' => $this->faker->text(1000),
             'copied' => true,
             'link' => Util::latin($this->faker->text(160)),
             'text' => $this->faker->text(1000),

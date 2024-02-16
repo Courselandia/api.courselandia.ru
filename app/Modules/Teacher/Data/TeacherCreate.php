@@ -54,6 +54,13 @@ class TeacherCreate extends Data
     public ?string $comment = null;
 
     /**
+     * Дополнительное описание.
+     *
+     * @var string|null
+     */
+    public ?string $additional = null;
+
+    /**
      * Скопирован.
      *
      * @var bool|null
@@ -152,6 +159,7 @@ class TeacherCreate extends Data
      * @param string|null $text Текст.
      * @param string|null $city Город.
      * @param string|null $comment Комментарий.
+     * @param string|null $additional Дополнительное описание.
      * @param bool|null $copied Скопирован.
      * @param float|null $rating Рейтинг.
      * @param UploadedFile|null $image Изображение.
@@ -172,6 +180,7 @@ class TeacherCreate extends Data
         ?string         $text = null,
         ?string         $city = null,
         ?string         $comment = null,
+        ?string         $additional = null,
         ?bool           $copied = false,
         ?float          $rating = null,
         ?UploadedFile   $image = null,
@@ -192,6 +201,7 @@ class TeacherCreate extends Data
         $this->text = $text;
         $this->city = $city;
         $this->comment = $comment;
+        $this->additional = $additional;
         $this->copied = $copied;
         $this->rating = $rating;
         $this->image = $image;

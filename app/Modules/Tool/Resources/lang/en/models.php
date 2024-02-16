@@ -8,6 +8,7 @@ return [
         'headerTemplate' => 'Header template',
         'link' => 'Link',
         'text' => 'Text',
+        'additional' => 'Additional',
         'status' => 'Status'
     ],
 ];
