@@ -46,6 +46,13 @@ class SchoolCreate extends Data
     public ?string $text = null;
 
     /**
+     * Дополнительное описание.
+     *
+     * @var string|null
+     */
+    public ?string $additional = null;
+
+    /**
      * Рейтинг.
      *
      * @var float|null
@@ -106,6 +113,7 @@ class SchoolCreate extends Data
      * @param string|null $header_template Шаблон заголовка.
      * @param string|null $link Ссылка.
      * @param string|null $text Текст.
+     * @param string|null $additional Дополнительное описание.
      * @param float|null $rating Рейтинг.
      * @param string|null $site Ссылка на сайт.
      * @param UploadedFile|null $image_logo_id Изображение логотипа.
@@ -120,6 +128,7 @@ class SchoolCreate extends Data
         ?string           $header_template = null,
         ?string           $link = null,
         ?string           $text = null,
+        ?string           $additional = null,
         ?float            $rating = null,
         ?string           $site = null,
         UploadedFile|null $image_logo_id = null,
@@ -134,6 +143,7 @@ class SchoolCreate extends Data
         $this->header_template = $header_template;
         $this->link = $link;
         $this->text = $text;
+        $this->additional = $additional;
         $this->rating = $rating;
         $this->site = $site;
         $this->image_logo_id = $image_logo_id;

@@ -24,6 +24,7 @@ class CreateTableSchools extends Migration
             $table->string('header_template', 191)->nullable();
             $table->string('link', 191)->index('link');
             $table->text('text')->nullable();
+            $table->text('additional')->nullable();
             $table->string('site', 191)->nullable();
             $table->float('rating', 3)->default(0);
 

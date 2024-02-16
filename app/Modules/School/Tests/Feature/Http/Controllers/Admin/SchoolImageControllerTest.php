@@ -154,6 +154,7 @@ class SchoolImageControllerTest extends TestCase
             'header_template',
             'link',
             'text',
+            'additional',
             'rating',
             'site',
             'status',

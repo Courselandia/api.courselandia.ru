@@ -46,6 +46,7 @@ use App\Modules\School\Filters\SchoolFilter;
  * @property string $header_template Шаблон заголовок.
  * @property string $link Ссылка на статью.
  * @property string $text Текст.
+ * @property string $additional Дополнительное описание.
  * @property string $rating Рейтинг.
  * @property string $site Ссылка на сайт.
  * @property string $status Статус.
@@ -96,6 +97,7 @@ class School extends Eloquent
         'header_template',
         'link',
         'text',
+        'additional',
         'rating',
         'site',
         'status',
@@ -118,6 +120,7 @@ class School extends Eloquent
             'header_template' => 'max:191',
             'link' => 'required|between:1,191|alpha_dash|unique_soft:schools,link,'.$this->id.',id',
             'text' => 'max:65000',
+            'additional' => 'max:65000',
             'rating' => 'nullable|float|float_between:0,5',
             'site' => 'url',
             'status' => 'required|boolean',
@@ -139,6 +142,7 @@ class School extends Eloquent
             'header_template' => trans('school::models.school.headerTemplate'),
             'link' => trans('school::models.school.link'),
             'text' => trans('school::models.school.text'),
+            'additional' => trans('school::models.school.additional'),
             'image_logo_id' => trans('school::models.school.imageLogoId'),
             'image_site_id' => trans('school::models.school.imageSiteId'),
             'rating' => trans('school::models.school.rating'),

@@ -70,6 +70,14 @@ class School extends Entity
     public ?string $text = null;
 
     /**
+     * Дополнительное описание.
+     *
+     * @var string|null
+     */
+    public ?string $additional = null;
+
+
+    /**
      * Сайт.
      *
      * @var string|null
@@ -196,6 +204,7 @@ class School extends Entity
      * @param string|null $header_template Шаблон заголовка.
      * @param string|null $link Ссылка.
      * @param string|null $text Статья.
+     * @param string|null $additional Дополнительное описание.
      * @param string|null $site Сайт.
      * @param float|null $rating Рейтинг.
      * @param Image|null $image_logo_id Изображение логотипа.
@@ -222,6 +231,7 @@ class School extends Entity
         ?string         $header_template = null,
         ?string         $link = null,
         ?string         $text = null,
+        ?string         $additional = null,
         ?string         $site = null,
         ?float          $rating = null,
         ?Image          $image_logo_id = null,
@@ -248,6 +258,7 @@ class School extends Entity
         $this->header_template = $header_template;
         $this->link = $link;
         $this->text = $text;
+        $this->additional = $additional;
         $this->site = $site;
         $this->rating = $rating;
         $this->image_logo_id = $image_logo_id;

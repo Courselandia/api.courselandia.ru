@@ -14,5 +14,7 @@ return [
         'imageSmallId' => 'ID small image',
         'status' => 'Status',
         'rating' => 'Rating',
+        'text' => 'Text',
+        'additional' => 'Additional',
     ],
 ];

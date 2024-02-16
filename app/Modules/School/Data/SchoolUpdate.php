@@ -29,6 +29,7 @@ class SchoolUpdate extends SchoolCreate
      * @param string|null $header_template Шаблон заголовка.
      * @param string|null $link Ссылка.
      * @param string|null $text Текст.
+     * @param string|null $additional Дополнительное описание.
      * @param float|null $rating Рейтинг.
      * @param string|null $site Ссылка на сайт.
      * @param UploadedFile|null $image_logo_id Изображение логотипа.
@@ -44,6 +45,7 @@ class SchoolUpdate extends SchoolCreate
         ?string           $header_template = null,
         ?string           $link = null,
         ?string           $text = null,
+        ?string           $additional = null,
         ?float            $rating = null,
         ?string           $site = null,
         UploadedFile|null $image_logo_id = null,
@@ -61,6 +63,7 @@ class SchoolUpdate extends SchoolCreate
             $header_template,
             $link,
             $text,
+            $additional,
             $rating,
             $site,
             $image_logo_id,

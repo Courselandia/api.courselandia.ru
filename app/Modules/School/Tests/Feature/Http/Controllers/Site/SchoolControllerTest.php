@@ -128,6 +128,7 @@ class SchoolControllerTest extends TestCase
             'header_template',
             'link',
             'text',
+            'additional',
             'rating',
             'site',
             'status',
