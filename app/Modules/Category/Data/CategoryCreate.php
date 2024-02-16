@@ -44,6 +44,13 @@ class CategoryCreate extends Data
     public ?string $text = null;
 
     /**
+     * Дополнительное описание.
+     *
+     * @var string|null
+     */
+    public ?string $additional = null;
+
+    /**
      * Статус.
      *
      * @var bool|null
@@ -89,6 +96,7 @@ class CategoryCreate extends Data
      * @param string|null $name Название.
      * @param string|null $header_template Шаблон заголовка.
      * @param string|null $text Статья.
+     * @param string|null $additional Дополнительное описание.
      * @param string|null $link Ссылка.
      * @param bool|null $status Статус.
      * @param string|null $description_template Шаблон описания.
@@ -101,6 +109,7 @@ class CategoryCreate extends Data
         ?string $name = null,
         ?string $header_template = null,
         ?string $text = null,
+        ?string $additional = null,
         ?string $link = null,
         ?bool   $status = null,
         ?string $description_template = null,
@@ -113,6 +122,7 @@ class CategoryCreate extends Data
         $this->name = $name;
         $this->header_template = $header_template;
         $this->text = $text;
+        $this->additional = $additional;
         $this->link = $link;
         $this->status = $status;
         $this->description_template = $description_template;

@@ -72,6 +72,13 @@ class Category extends Entity
     public ?string $text = null;
 
     /**
+     * Дполнительная информация.
+     *
+     * @var string|null
+     */
+    public ?string $additional = null;
+
+    /**
      * Метатеги.
      *
      * @var Metatag|null
@@ -138,6 +145,7 @@ class Category extends Entity
      * @param string|null $header_template Шаблон заголовка.
      * @param string|null $link Ссылка.
      * @param string|null $text Статья.
+     * @param string|null $additional Дополнительное описание.
      * @param Metatag|null $metatag Метатеги.
      * @param bool|null $status Статус.
      * @param Carbon|null $created_at Дата создания.
@@ -155,6 +163,7 @@ class Category extends Entity
         ?string         $header_template = null,
         ?string         $link = null,
         ?string         $text = null,
+        ?string         $additional = null,
         ?Metatag        $metatag = null,
         ?bool           $status = null,
         ?Carbon         $created_at = null,
@@ -172,6 +181,7 @@ class Category extends Entity
         $this->header_template = $header_template;
         $this->link = $link;
         $this->text = $text;
+        $this->additional = $additional;
         $this->metatag = $metatag;
         $this->status = $status;
         $this->created_at = $created_at;

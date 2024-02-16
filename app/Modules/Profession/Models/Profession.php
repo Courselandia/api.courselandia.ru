@@ -40,6 +40,7 @@ use App\Modules\Profession\Filters\ProfessionFilter;
  * @property string $header_template Шаблон заголовка.
  * @property string $link Ссылка.
  * @property string $text Текст.
+ * @property string $additional Дополнительное описание.
  * @property string $status Статус.
  *
  * @property-read Metatag $metatag
@@ -72,6 +73,7 @@ class Profession extends Eloquent
         'header_template',
         'link',
         'text',
+        'additional',
         'status',
     ];
 
@@ -89,6 +91,7 @@ class Profession extends Eloquent
             'header_template' => 'max:191',
             'link' => 'required|between:1,191|alpha_dash|unique_soft:professions,link,' . $this->id . ',id',
             'text' => 'max:65000',
+            'additional' => 'max:65000',
             'status' => 'required|boolean'
         ];
     }
@@ -107,6 +110,7 @@ class Profession extends Eloquent
             'header_template' => trans('profession::models.profession.headerTemplate'),
             'link' => trans('profession::models.profession.link'),
             'text' => trans('profession::models.profession.text'),
+            'additional' => trans('profession::models.profession.additional'),
             'status' => trans('profession::models.profession.status')
         ];
     }

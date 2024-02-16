@@ -40,6 +40,7 @@ use App\Modules\Category\Filters\CategoryFilter;
  * @property string $header_template Шаблон заголовка.
  * @property string $link Ссылка.
  * @property string $text Текст.
+ * @property string $additional Дополнительное описание.
  * @property string $status Статус.
  *
  * @property-read Metatag $metatag
@@ -73,6 +74,7 @@ class Category extends Eloquent
         'header_template',
         'link',
         'text',
+        'additional',
         'status',
     ];
 
@@ -90,6 +92,7 @@ class Category extends Eloquent
             'header_template' => 'max:191',
             'link' => 'required|between:1,191|alpha_dash|unique_soft:categories,link,' . $this->id . ',id',
             'text' => 'max:65000',
+            'additional' => 'max:65000',
             'status' => 'required|boolean'
         ];
     }

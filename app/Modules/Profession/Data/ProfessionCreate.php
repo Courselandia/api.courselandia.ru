@@ -44,6 +44,13 @@ class ProfessionCreate extends Data
     public ?string $text = null;
 
     /**
+     * Дополнительное описание.
+     *
+     * @var string|null
+     */
+    public ?string $additional = null;
+
+    /**
      * Статус.
      *
      * @var bool|null
@@ -76,6 +83,7 @@ class ProfessionCreate extends Data
      * @param string|null $header_template Шаблон заголовка.
      * @param string|null $link Ссылка.
      * @param string|null $text Статья.
+     * @param string|null $additional Дополнительное описание.
      * @param bool|null $status Статус.
      * @param string|null $description_template Шаблон описания.
      * @param string|null $keywords Ключевые слова.
@@ -86,6 +94,7 @@ class ProfessionCreate extends Data
         ?string $header_template = null,
         ?string $link = null,
         ?string $text = null,
+        ?string $additional = null,
         ?bool   $status = null,
         ?string $description_template = null,
         ?string $keywords = null,
@@ -96,6 +105,7 @@ class ProfessionCreate extends Data
         $this->header_template = $header_template;
         $this->link = $link;
         $this->text = $text;
+        $this->additional = $additional;
         $this->status = $status;
         $this->description_template = $description_template;
         $this->keywords = $keywords;

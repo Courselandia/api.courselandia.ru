@@ -21,10 +21,11 @@ class CategoryUpdate extends CategoryCreate
     public string|int $id;
 
     /**
-     * @param string|int $name ID категории.
+     * @param string|int $id ID категории.
      * @param string|null $name Название.
      * @param string|null $header_template Шаблон заголовка.
      * @param string|null $text Статья.
+     * @param string|null $additional Дополнительное описание.
      * @param string|null $link Ссылка.
      * @param bool|null $status Статус.
      * @param string|null $description_template Шаблон описания.
@@ -38,6 +39,7 @@ class CategoryUpdate extends CategoryCreate
         ?string    $name = null,
         ?string    $header_template = null,
         ?string    $text = null,
+        ?string    $additional = null,
         ?string    $link = null,
         ?bool      $status = null,
         ?string    $description_template = null,
@@ -53,6 +55,7 @@ class CategoryUpdate extends CategoryCreate
             $name,
             $header_template,
             $text,
+            $additional,
             $link,
             $status,
             $description_template,

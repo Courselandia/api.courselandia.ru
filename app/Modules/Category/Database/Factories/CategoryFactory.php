@@ -39,6 +39,7 @@ class CategoryFactory extends Factory
             'header_template' => $this->faker->text(160),
             'link' => Util::latin($this->faker->text(160)),
             'text' => $this->faker->text(1000),
+            'additional' => $this->faker->text(1000),
             'status' => true,
         ];
     }

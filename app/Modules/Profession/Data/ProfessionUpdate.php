@@ -28,6 +28,7 @@ class ProfessionUpdate extends ProfessionCreate
      * @param string|null $header_template Шаблон заголовка.
      * @param string|null $link Ссылка.
      * @param string|null $text Статья.
+     * @param string|null $additional Дополнительное описание.
      * @param bool|null $status Статус.
      * @param string|null $description_template Шаблон описания.
      * @param string|null $keywords Ключевые слова.
@@ -39,6 +40,7 @@ class ProfessionUpdate extends ProfessionCreate
         ?string    $header_template = null,
         ?string    $link = null,
         ?string    $text = null,
+        ?string    $additional = null,
         ?bool      $status = null,
         ?string    $description_template = null,
         ?string    $keywords = null,
@@ -52,6 +54,7 @@ class ProfessionUpdate extends ProfessionCreate
             $header_template,
             $link,
             $text,
+            $additional,
             $status,
             $description_template,
             $keywords,
