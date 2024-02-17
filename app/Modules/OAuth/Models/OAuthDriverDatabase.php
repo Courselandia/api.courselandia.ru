@@ -149,7 +149,11 @@ class OAuthDriverDatabase extends OAuthDriver
             $tokenEntity = $this->oAuthTokenEloquent->get($userId);
             $now = Carbon::now();
 
-            if ($tokenEntity && $now->diffInSeconds($tokenEntity->expires_at) > Config::get('token.token_life', 3600)) {
+            if (
+                $tokenEntity
+                && $tokenEntity->expires_at > $now
+                && $now->diffInSeconds($tokenEntity->expires_at) > Config::get('token.token_life', 3600)
+            ) {
                 $refreshTokenEntity = $this->oAuthRefreshTokenEloquent->get($tokenEntity->id);
 
                 if ($refreshTokenEntity) {
@@ -233,7 +237,11 @@ class OAuthDriverDatabase extends OAuthDriver
                 $tokenEntity = $this->oAuthTokenEloquent->get(null, null, $refreshTokenEntity->oauth_token_id);
                 $now = Carbon::now();
 
-                if ($tokenEntity && $now->diffInSeconds($tokenEntity->expires_at) > Config::get('token.token_life', 3600)) {
+                if (
+                    $tokenEntity
+                    && $tokenEntity->expires_at > $now
+                    && $now->diffInSeconds($tokenEntity->expires_at) > Config::get('token.token_life', 3600)
+                ) {
                     return new Token($tokenEntity->token, $refreshToken);
                 }
 
