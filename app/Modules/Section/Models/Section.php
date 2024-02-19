@@ -105,7 +105,7 @@ class Section extends Eloquent
             'additional' => trans('section::models.section.additional'),
             'level' => trans('section::models.section.level'),
             'free' => trans('section::models.section.free'),
-            'status' => trans('section::models.section.status')
+            'status' => trans('section::models.section.status'),
         ];
     }
 
