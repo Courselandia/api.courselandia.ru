@@ -3,10 +3,10 @@
 return [
     'admin' => [
         'sectionUpdateAction' => [
-            'notExistPublication' => 'Навык не существует.'
+            'notExistSection' => 'Раздел не существует.'
         ],
         'sectionUpdateStatusAction' => [
-            'notExistPublication' => 'Навык не существует.'
+            'notExistSection' => 'Раздел не существует.'
         ],
     ]
 ];
