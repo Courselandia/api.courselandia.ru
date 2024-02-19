@@ -70,7 +70,7 @@ class Import
             ->addParser(new ParserMapsYandex(School::SKYPRO, 'https://yandex.ru/maps/org/skypro/121650580880/reviews/'))
             ->addParser(new ParserMapsYandex(School::GEEKBRAINS, 'https://yandex.ru/maps/org/geekbrains/1402263817/reviews/'))
             ->addParser(new ParserMapsYandex(School::NETOLOGIA, 'https://yandex.ru/maps/org/netologiya/205031471256/reviews/'))
-            ->addParser(new ParserMapsYandex(School::SKILL_FACTORY, 'https://yandex.ru/maps/org/skillfactory/237135461560/reviews/'))
+            // ->addParser(new ParserMapsYandex(School::SKILL_FACTORY, 'https://yandex.ru/maps/org/skillfactory/237135461560/reviews/'))
             // ->addParser(new ParserMapsYandex(School::CONTENTED, 'https://yandex.ru/maps/org/contented/115157665135/reviews/'))
             ->addParser(new ParserMapsYandex(School::XYZ_SCHOOL, 'https://yandex.ru/maps/org/xyz_school/151268379499/reviews/'))
             ->addParser(new ParserMapsYandex(School::INTERNATIONAL_SCHOOL_PROFESSIONS, 'https://yandex.ru/maps/org/mezhdunarodnaya_shkola_professiy/33978597831/reviews/'))
