@@ -96,6 +96,7 @@ class SectionReadAction extends Action
                 $query = Section::filter($this->filters ?: [])
                     ->with([
                         'metatag',
+                        'items.itemable',
                     ]);
 
                 $queryCount = $query->clone();

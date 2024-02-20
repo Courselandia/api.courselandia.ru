@@ -12,9 +12,9 @@ return [
         'status' => 'Статус'
     ],
     'sectionItem' => [
-        'section_id' => 'ID раздела',
+        'sectionId' => 'ID раздела',
         'weight' => 'Вес',
-        'itemable_id' => 'ID сущности для элемента.',
-        'itemable_type' => 'Имя класса сущности для элемента.',
+        'itemableId' => 'ID сущности для элемента.',
+        'itemableType' => 'Имя класса сущности для элемента.',
     ],
 ];

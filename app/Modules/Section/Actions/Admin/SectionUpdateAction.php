@@ -61,7 +61,7 @@ class SectionUpdateAction extends Action
                 'id' => $sectionEntity->metatag_id ?: null,
             ]));
 
-            $sectionEntity = SectionEntity::from([
+            $sectionEntityData = SectionEntity::from([
                 ...$sectionEntity->toArray(),
                 ...$this->data->toArray(),
                 'metatag_id' => $action->run()->id,
@@ -71,7 +71,7 @@ class SectionUpdateAction extends Action
                 'additional' => Typography::process($this->data->additional),
             ]);
 
-            Section::find($this->data->id)->update($sectionEntity->toArray());
+            Section::find($this->data->id)->update($sectionEntityData->toArray());
 
             SectionItem::whereIn('id', collect($sectionEntity->items)->pluck('id')->toArray())
                 ->forceDelete();

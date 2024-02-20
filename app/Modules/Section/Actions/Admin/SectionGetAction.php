@@ -51,7 +51,7 @@ class SectionGetAction extends Action
                 $section = Section::where('id', $this->id)
                     ->with([
                         'metatag',
-                        'items',
+                        'items.itemable',
                     ])
                     ->first();
 

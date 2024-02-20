@@ -12,9 +12,9 @@ return [
         'status' => 'Status',
     ],
     'sectionItem' => [
-        'section_id' => 'ID section',
+        'sectionId' => 'ID section',
         'weight' => 'Weight',
-        'itemable_id' => 'ID element',
-        'itemable_type' => 'Type element',
+        'itemableId' => 'ID element',
+        'itemableType' => 'Type element',
     ],
 ];

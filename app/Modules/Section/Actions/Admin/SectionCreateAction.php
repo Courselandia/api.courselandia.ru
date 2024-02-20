@@ -72,7 +72,7 @@ class SectionCreateAction extends Action
 
         foreach ($this->data->items as $item) {
             $sectionItemEntity = SectionItemEntity::from([
-                'section_id' => $sectionEntity->id,
+                'section_id' => $section->id,
                 'weight' => $weight,
                 'itemable_id' => $item['id'],
                 'itemable_type' => $item['type'],
