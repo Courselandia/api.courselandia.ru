@@ -83,7 +83,7 @@ class SchoolTextArticleCategory extends ArticleCategory
             $school = $articleEntity->articleable;
             $school['text'] = Typography::process($articleEntity->text);
 
-            School::find($articleEntity->articleable['id'])->update($school);
+            School::find($school['id'])->update($school);
 
             if ($articleEntity->analyzers) {
                 $action = new ArticleMoveAnalyzer($school['id'], $articleEntity->analyzers, 'school.text', School::class);

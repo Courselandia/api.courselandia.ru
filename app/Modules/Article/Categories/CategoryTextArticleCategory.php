@@ -83,7 +83,7 @@ class CategoryTextArticleCategory extends ArticleCategory
             $category = $articleEntity->articleable;
             $category['text'] = Typography::process($articleEntity->text);
 
-            Category::find($articleEntity->articleable['id'])->update($category);
+            Category::find($category['id'])->update($category);
 
             if ($articleEntity->analyzers) {
                 $action = new ArticleMoveAnalyzer($category['id'], $articleEntity->analyzers, 'category.text', Category::class);

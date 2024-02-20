@@ -83,7 +83,7 @@ class SkillTextArticleCategory extends ArticleCategory
             $skill = $articleEntity->articleable;
             $skill['text'] = Typography::process($articleEntity->text);
 
-            Skill::find($articleEntity->articleable['id'])->update($skill);
+            Skill::find($skill['id'])->update($skill);
 
             if ($articleEntity->analyzers) {
                 $action = new ArticleMoveAnalyzer($skill['id'], $articleEntity->analyzers, 'skill.text', Skill::class);

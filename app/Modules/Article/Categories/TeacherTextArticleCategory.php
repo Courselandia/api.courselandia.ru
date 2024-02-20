@@ -84,7 +84,7 @@ class TeacherTextArticleCategory extends ArticleCategory
             $teacher['text'] = Typography::process($articleEntity->text);
             $teacher['copied'] = false;
 
-            Teacher::find($articleEntity->articleable['id'])->update($teacher);
+            Teacher::find($teacher['id'])->update($teacher);
 
             if ($articleEntity->analyzers) {
                 $action = new ArticleMoveAnalyzer($teacher['id'], $articleEntity->analyzers, 'teacher.text', Teacher::class);

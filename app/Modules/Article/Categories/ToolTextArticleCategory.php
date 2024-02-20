@@ -83,7 +83,7 @@ class ToolTextArticleCategory extends ArticleCategory
             $tool = $articleEntity->articleable;
             $tool['text'] = Typography::process($articleEntity->text);
 
-            Tool::find($articleEntity->articleable->id)->update($tool);
+            Tool::find($tool['id'])->update($tool);
 
             if ($articleEntity->analyzers) {
                 $action = new ArticleMoveAnalyzer($tool['id'], $articleEntity->analyzers, 'tool.text', Tool::class);

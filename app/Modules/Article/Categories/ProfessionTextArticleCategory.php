@@ -83,7 +83,7 @@ class ProfessionTextArticleCategory extends ArticleCategory
             $profession = $articleEntity->articleable;
             $profession['text'] = Typography::process($articleEntity->text);
 
-            Profession::find($articleEntity->articleable['id'])->update($profession);
+            Profession::find($profession['id'])->update($profession);
 
             if ($articleEntity->analyzers) {
                 $action = new ArticleMoveAnalyzer($profession['id'], $articleEntity->analyzers, 'profession.text', Profession::class);
