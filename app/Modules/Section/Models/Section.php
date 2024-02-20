@@ -146,6 +146,6 @@ class Section extends Eloquent
      */
     public function items(): HasMany
     {
-        return $this->hasMany(Course::class);
+        return $this->hasMany(SectionItem::class);
     }
 }

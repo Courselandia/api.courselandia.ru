@@ -45,7 +45,7 @@ class SkillLinkAction extends Action
      */
     public function run(): ?SkillEntity
     {
-        $cacheKey = Util::getKey('skill', 'admin', 'get', $this->link);
+        $cacheKey = Util::getKey('skill', 'site', 'get', $this->link);
 
         return Cache::tags(['catalog', 'skill'])->remember(
             $cacheKey,

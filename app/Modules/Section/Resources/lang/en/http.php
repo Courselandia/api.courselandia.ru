@@ -32,5 +32,13 @@ return [
                 ],
             ],
         ],
-    ]
+        'site' => [
+            'sectionLinkRequest' => [
+                'links' => 'Links',
+                'links.*' => 'Links',
+                'level' => 'Level',
+                'free' => 'Free',
+            ],
+        ],
+    ],
 ];

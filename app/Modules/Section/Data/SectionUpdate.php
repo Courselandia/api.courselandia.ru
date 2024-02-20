@@ -9,7 +9,6 @@
 namespace App\Modules\Section\Data;
 
 use App\Modules\Salary\Enums\Level;
-use Spatie\LaravelData\DataCollection;
 
 /**
  * Данные для обновления раздела.
@@ -35,21 +34,21 @@ class SectionUpdate extends SectionCreate
      * @param string|null $description Описание.
      * @param string|null $keywords Ключевые слова.
      * @param string|null $title Заголовок.
-     * @param ?DataCollection $items Элементы.
+     * @param ?array $items Элементы.
      */
     public function __construct(
-        int|string      $id,
-        ?string         $name = null,
-        ?string         $header = null,
-        ?string         $text = null,
-        ?string         $additional = null,
-        ?Level          $level = null,
-        ?bool           $free = null,
-        ?bool           $status = null,
-        ?string         $description = null,
-        ?string         $keywords = null,
-        ?string         $title = null,
-        ?DataCollection $items = null,
+        int|string $id,
+        ?string    $name = null,
+        ?string    $header = null,
+        ?string    $text = null,
+        ?string    $additional = null,
+        ?Level     $level = null,
+        ?bool      $free = null,
+        ?bool      $status = null,
+        ?string    $description = null,
+        ?string    $keywords = null,
+        ?string    $title = null,
+        ?array     $items = null,
     )
     {
         $this->id = $id;

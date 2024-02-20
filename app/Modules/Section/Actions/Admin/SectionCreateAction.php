@@ -74,8 +74,8 @@ class SectionCreateAction extends Action
             $sectionItemEntity = SectionItemEntity::from([
                 'section_id' => $sectionEntity->id,
                 'weight' => $weight,
-                'itemable_id' => $item->itemable_id,
-                'itemable_type' => $item->itemable_type,
+                'itemable_id' => $item['id'],
+                'itemable_type' => $item['type'],
             ]);
 
             SectionItem::create($sectionItemEntity->toArray());

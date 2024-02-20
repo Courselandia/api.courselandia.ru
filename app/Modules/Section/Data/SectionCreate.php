@@ -10,8 +10,6 @@ namespace App\Modules\Section\Data;
 
 use App\Models\Data;
 use App\Modules\Salary\Enums\Level;
-use Spatie\LaravelData\Attributes\DataCollectionOf;
-use Spatie\LaravelData\DataCollection;
 
 /**
  * Данные для создания раздела.
@@ -91,10 +89,9 @@ class SectionCreate extends Data
     /**
      * Элементы.
      *
-     * @var ?DataCollection
+     * @var array|null
      */
-    #[DataCollectionOf(SectionItem::class)]
-    public ?DataCollection $items = null;
+    public ?array $items = null;
 
     /**
      * @param string|null $name Название.
@@ -107,7 +104,7 @@ class SectionCreate extends Data
      * @param string|null $description Описание.
      * @param string|null $keywords Ключевые слова.
      * @param string|null $title Заголовок.
-     * @param ?DataCollection $items Элементы.
+     * @param array $items Элементы.
      */
     public function __construct(
         ?string $name = null,
@@ -120,7 +117,7 @@ class SectionCreate extends Data
         ?string $description = null,
         ?string $keywords = null,
         ?string $title = null,
-        ?DataCollection $items = null,
+        ?array   $items = null,
     )
     {
         $this->name = $name;
