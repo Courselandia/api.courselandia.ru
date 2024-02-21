@@ -34,7 +34,7 @@ class SectionItemFactory extends Factory
         $skill = Skill::factory()->create();
 
         return [
-            'weight' => $this->faker->numberBetween(1, 1000),
+            'weight' => 0,
             'itemable_id' => $skill->id,
             'itemable_type' => Skill::class,
         ];

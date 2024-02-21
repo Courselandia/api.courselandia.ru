@@ -8,8 +8,8 @@
 
 namespace App\Modules\Section\Tests\Feature\Http\Controllers\Site;
 
-use App\Modules\Direction\Models\Direction;
 use App\Modules\Section\Models\Section;
+use App\Modules\Section\Models\SectionItem;
 use Tests\TestCase;
 
 /**
@@ -24,8 +24,8 @@ class SectionControllerTest extends TestCase
      */
     public function testLink(): void
     {
-        $direction = Direction::factory()->create();
         $section = Section::factory()->create();
+        $sectionItem = SectionItem::factory()->for($section)->create();
 
         $this->json(
             'GET',
@@ -35,8 +35,8 @@ class SectionControllerTest extends TestCase
                 'level' => $section->level,
                 'items' => [
                     [
-                        'type' => 'direction',
-                        'link' => $direction->link,
+                        'type' => 'skill',
+                        'link' => $sectionItem->itemable->link,
                     ],
                 ],
             ],
@@ -54,6 +54,7 @@ class SectionControllerTest extends TestCase
     public function testLinkNotExist(): void
     {
         $section = Section::factory()->create();
+        SectionItem::factory()->for($section)->create();
 
         $this->json(
             'GET',
@@ -63,13 +64,13 @@ class SectionControllerTest extends TestCase
                 'level' => $section->level,
                 'items' => [
                     [
-                        'type' => 'direction',
+                        'type' => 'skill',
                         'link' => 'test',
                     ],
                 ],
             ],
-        )->assertStatus(200)->assertJsonStructure([
-            'data' => $this->getSectionStructure(),
+        )->assertStatus(404)->assertJsonStructure([
+            'data',
             'success',
         ]);
     }

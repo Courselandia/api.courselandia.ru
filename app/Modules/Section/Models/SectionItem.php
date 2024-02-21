@@ -16,6 +16,7 @@ use App\Models\Validate;
 use App\Models\Sortable;
 use EloquentFilter\Filterable;
 use Illuminate\Database\Eloquent\Concerns\HasTimestamps;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -109,9 +110,21 @@ class SectionItem extends Eloquent
 
     /**
      * Получить все модели, обладающие itemable.
+     *
+     * @return MorphTo Вернет модель элемента.
      */
     public function itemable(): MorphTo
     {
         return $this->morphTo();
+    }
+
+    /**
+     * Получить раздел элемента.
+     *
+     * @return BelongsTo Раздел.
+     */
+    public function section(): BelongsTo
+    {
+        return $this->belongsTo(Section::class);
     }
 }
