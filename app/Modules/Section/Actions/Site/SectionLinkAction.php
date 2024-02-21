@@ -9,6 +9,7 @@
 namespace App\Modules\Section\Actions\Site;
 
 use Cache;
+use Config;
 use Util;
 use App\Models\Action;
 use App\Models\Enums\CacheTime;
@@ -23,11 +24,11 @@ use App\Modules\Salary\Enums\Level;
 class SectionLinkAction extends Action
 {
     /**
-     * Ссылки.
+     * Элементы.
      *
      * @var string[]
      */
-    private array $links;
+    private array $items;
 
     /**
      * Уровень.
@@ -44,13 +45,13 @@ class SectionLinkAction extends Action
     private bool $free;
 
     /**
-     * @param array $links Ссылки.
+     * @param array $items Элементы.
      * @param Level|null $level Уровень.
      * @param bool $free Признак бесплатности.
      */
-    public function __construct(array $links, ?Level $level = null, bool $free = false)
+    public function __construct(array $items, ?Level $level = null, bool $free = false)
     {
-        $this->links = $links;
+        $this->items = $items;
         $this->level = $level;
         $this->free = $free;
     }
@@ -67,7 +68,7 @@ class SectionLinkAction extends Action
             'section',
             'site',
             'link',
-            $this->links,
+            $this->items,
             $this->level,
             $this->free,
         );
@@ -79,7 +80,7 @@ class SectionLinkAction extends Action
                 $query = Section::active()
                     ->with([
                         'metatag',
-                        'items',
+                        'items.itemable',
                     ]);
 
                 if ($this->level) {
@@ -92,10 +93,15 @@ class SectionLinkAction extends Action
 
                 $weight = 0;
 
-                foreach ($this->links as $link) {
-                    $query->whereHas('items.itemable', static function ($query) use ($link, $weight) {
-                        $query->where('link', $link)
-                            ->where('weight', $weight);
+                $items = Config::get('section.items');
+
+                foreach ($this->items as $item) {
+                    $query->whereHas('items', static function ($query) use ($item, $weight, $items) {
+                        $query->where('itemable_type', $items[$item['type']])
+                            ->where('weight', $weight)
+                            ->whereHas('itemable', static function ($query) use ($item) {
+                                $query->where('link', $item['link']);
+                            });
                     });
 
                     $weight++;

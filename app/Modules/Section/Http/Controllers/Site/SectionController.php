@@ -31,7 +31,7 @@ class SectionController extends Controller
     public function link(SectionLinkRequest $request): JsonResponse
     {
         $action = new SectionLinkAction(
-            $request->get('links'),
+            $request->get('items'),
             $request->get('level') ? Level::from($request->get('level')) : null,
             $request->get('free', false),
         );

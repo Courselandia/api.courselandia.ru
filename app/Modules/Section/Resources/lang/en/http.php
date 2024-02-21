@@ -15,7 +15,20 @@ return [
             ],
             'sectionCreateRequest' => [
                 'status' => 'Status',
+                'level' => 'Level',
+                'items' => 'Items',
+                'id' => 'ID',
+                'type' => 'Type',
             ]
+        ],
+        'site' => [
+            'sectionLinkRequest' => [
+                'items' => 'Items',
+                'level' => 'Level',
+                'free' => 'Free',
+                'type' => 'Type',
+                'link' => 'Link',
+            ],
         ],
     ],
     'controllers' => [
@@ -30,14 +43,6 @@ return [
                 'destroy' => [
                     'log' => 'Destroy the section.'
                 ],
-            ],
-        ],
-        'site' => [
-            'sectionLinkRequest' => [
-                'links' => 'Links',
-                'links.*' => 'Links',
-                'level' => 'Level',
-                'free' => 'Free',
             ],
         ],
     ],

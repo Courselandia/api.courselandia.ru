@@ -8,6 +8,7 @@
 
 namespace App\Modules\Section\Http\Requests\Admin;
 
+use Config;
 use App\Models\Enums\EnumList;
 use App\Models\FormRequest;
 use App\Modules\Salary\Enums\Level;
@@ -24,11 +25,14 @@ class SectionCreateRequest extends FormRequest
      */
     public function rules(): array
     {
+        $types = array_keys(Config::get('section.items'));
+
         return [
             'status' => 'boolean',
             'level' => 'in:' . implode(',', EnumList::getValues(Level::class)),
             'items' => 'array',
-            'items.*' => 'array:id,type',
+            'items.*.id' => 'required',
+            'items.*.type' => 'required|in:' . implode(',', $types),
         ];
     }
 
@@ -40,7 +44,11 @@ class SectionCreateRequest extends FormRequest
     public function attributes(): array
     {
         return [
-            'status' => trans('section::http.requests.admin.sectionCreateRequest.status')
+            'status' => trans('section::http.requests.admin.sectionCreateRequest.status'),
+            'level' => trans('section::http.requests.admin.sectionCreateRequest.level'),
+            'items' => trans('section::http.requests.admin.sectionCreateRequest.items'),
+            'items.*.id' => trans('section::http.requests.admin.sectionCreateRequest.id'),
+            'items.*.type' => trans('section::http.requests.admin.sectionCreateRequest.type'),
         ];
     }
 }

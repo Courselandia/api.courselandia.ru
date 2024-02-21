@@ -146,6 +146,7 @@ class Section extends Eloquent
      */
     public function items(): HasMany
     {
-        return $this->hasMany(SectionItem::class);
+        return $this->hasMany(SectionItem::class)
+            ->orderBy('weight', 'ASC');
     }
 }

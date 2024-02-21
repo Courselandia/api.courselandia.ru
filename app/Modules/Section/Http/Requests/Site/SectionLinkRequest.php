@@ -8,6 +8,7 @@
 
 namespace App\Modules\Section\Http\Requests\Site;
 
+use Config;
 use App\Models\Enums\EnumList;
 use App\Models\FormRequest;
 use App\Modules\Salary\Enums\Level;
@@ -24,9 +25,12 @@ class SectionLinkRequest extends FormRequest
      */
     public function rules(): array
     {
+        $types = array_keys(Config::get('section.items'));
+
         return [
-            'links' => 'required|array',
-            'links.*' => 'string',
+            'items' => 'required|array',
+            'items.*.link' => 'required',
+            'items.*.type' => 'required|in:' . implode(',', $types),
             'level' => 'in:' . implode(',', EnumList::getValues(Level::class)),
             'free' => 'boolean',
         ];
@@ -40,8 +44,10 @@ class SectionLinkRequest extends FormRequest
     public function attributes(): array
     {
         return [
-            'links' => trans('section::http.requests.site.sectionLinkRequest.links'),
-            'links.*' => trans('section::http.requests.site.sectionLinkRequest.links'),
+            'items' => trans('section::http.requests.site.sectionLinkRequest.items'),
+            'items.*' => trans('section::http.requests.site.sectionLinkRequest.items'),
+            'items.*.link' => trans('section::http.requests.site.sectionLinkRequest.link'),
+            'items.*.type' => trans('section::http.requests.site.sectionLinkRequest.type'),
             'level' => trans('section::http.requests.site.sectionLinkRequest.level'),
             'free' => trans('section::http.requests.site.sectionLinkRequest.free'),
         ];

@@ -9,6 +9,7 @@
 namespace App\Modules\Section\Actions\Admin;
 
 use Cache;
+use Config;
 use Typography;
 use App\Models\Action;
 use App\Models\Exceptions\ParameterInvalidException;
@@ -69,13 +70,14 @@ class SectionCreateAction extends Action
 
         $section = Section::create($sectionEntity->toArray());
         $weight = 0;
+        $items = Config::get('section.items');
 
         foreach ($this->data->items as $item) {
             $sectionItemEntity = SectionItemEntity::from([
                 'section_id' => $section->id,
                 'weight' => $weight,
                 'itemable_id' => $item['id'],
-                'itemable_type' => $item['type'],
+                'itemable_type' => $items[$item['type']],
             ]);
 
             SectionItem::create($sectionItemEntity->toArray());

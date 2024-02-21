@@ -18,7 +18,20 @@ return [
             ],
             'sectionCreateRequest' => [
                 'status' => 'Статус',
+                'level' => 'Уровень',
+                'items' => 'Элементы',
+                'id' => 'ID',
+                'type' => 'Тип',
             ]
+        ],
+        'site' => [
+            'sectionLinkRequest' => [
+                'items' => 'Элементы',
+                'level' => 'Уровень',
+                'free' => 'Признак бесплатности',
+                'type' => 'Тип элемента раздела',
+                'link' => 'Ссылка элемента',
+            ],
         ],
     ],
     'controllers' => [
@@ -33,14 +46,6 @@ return [
                 'destroy' => [
                     'log' => 'Удаление раздела.'
                 ],
-            ],
-        ],
-        'site' => [
-            'sectionLinkRequest' => [
-                'links' => 'Ссылки',
-                'links.*' => 'Ссылки',
-                'level' => 'Уровень',
-                'free' => 'Признак бесплатности',
             ],
         ],
     ]

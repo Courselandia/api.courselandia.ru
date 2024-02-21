@@ -9,7 +9,7 @@
 namespace App\Modules\Section\Database\Factories;
 
 use App\Modules\Metatag\Models\Metatag;
-use App\Modules\Skill\Models\Skill;
+use App\Modules\Salary\Enums\Level;
 use App\Modules\Section\Models\Section;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -38,6 +38,8 @@ class SectionFactory extends Factory
             'header' => $this->faker->text(160),
             'text' => $this->faker->text(1000),
             'additional' => $this->faker->text(1000),
+            'free' => true,
+            'level' => Level::JUNIOR->value,
             'status' => true,
         ];
     }
