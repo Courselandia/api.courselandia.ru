@@ -65,22 +65,22 @@ class SectionGetAction extends Action
                     }
 
                     if (isset($entity->items[0]->itemable['link'])) {
-                        $link = Config::get('app.url');
-                        $link .= '/' . $entity->items[0]->type . '/' . $entity->items[0]->itemable['link'];
+                        $url = Config::get('app.url');
+                        $url .= '/' . $entity->items[0]->type . '/' . $entity->items[0]->itemable['link'];
 
                         if (isset($entity->items[1]->itemable['link'])) {
-                            $link .= '/' . $entity->items[1]->type . '/' . $entity->items[1]->itemable['link'];
+                            $url .= '/' . $entity->items[1]->type . '/' . $entity->items[1]->itemable['link'];
                         }
 
                         if ($entity->level) {
-                            $link .= '/level/' . $entity->level->value;
+                            $url .= '/level/' . $entity->level->value;
                         }
 
                         if ($entity->free) {
-                            $link .= '/free';
+                            $url .= '/free';
                         }
 
-                        $entity->link = $link;
+                        $entity->url = $url;
                     }
 
                     return $entity;
