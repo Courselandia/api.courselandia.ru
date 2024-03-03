@@ -107,9 +107,20 @@ class SectionLinkAction extends Action
                     $weight++;
                 }
 
-                $result = $query->first();
+                $section = $query->first();
 
-                return $result ? SectionEntity::from($result->toArray()) : null;
+                if ($section) {
+                    $items = Config::get('section.items');
+                    $entity = SectionEntity::from($section->toArray());
+
+                    foreach ($entity->items as $item) {
+                        $item->type = array_search($item->itemable_type, $items);
+                    }
+
+                    return $entity;
+                }
+
+                return null;
             }
         );
     }

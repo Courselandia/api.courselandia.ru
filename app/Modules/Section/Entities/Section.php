@@ -105,6 +105,13 @@ class Section extends Entity
     public ?Carbon $deleted_at = null;
 
     /**
+     * Ссылка на раздел.
+     *
+     * @var string|null
+     */
+    public ?string $link = null;
+
+    /**
      * Метатеги.
      *
      * @var ?Metatag
@@ -132,6 +139,7 @@ class Section extends Entity
      * @param Carbon|null $created_at Дата создания.
      * @param Carbon|null $updated_at Дата обновления.
      * @param Carbon|null $deleted_at Дата удаления.
+     * @param string|null $link Ссылка на раздел..
      * @param Metatag|null $metatag Метатеги.
      * @param DataCollection|null $items Элементы.
      */
@@ -148,6 +156,7 @@ class Section extends Entity
         ?Carbon         $created_at = null,
         ?Carbon         $updated_at = null,
         ?Carbon         $deleted_at = null,
+        ?string         $link = null,
         ?Metatag        $metatag = null,
         ?DataCollection $items = null,
     )
@@ -164,6 +173,7 @@ class Section extends Entity
         $this->created_at = $created_at;
         $this->updated_at = $updated_at;
         $this->deleted_at = $deleted_at;
+        $this->link = $link;
         $this->metatag = $metatag;
         $this->items = $items;
     }

@@ -8,12 +8,13 @@
 
 namespace App\Modules\Section\Actions\Admin;
 
+use Cache;
+use Util;
+use Config;
 use App\Models\Action;
 use App\Models\Enums\CacheTime;
 use App\Modules\Section\Entities\Section as SectionEntity;
 use App\Modules\Section\Models\Section;
-use Cache;
-use Util;
 
 /**
  * Класс действия для получения навыка.
@@ -55,7 +56,37 @@ class SectionGetAction extends Action
                     ])
                     ->first();
 
-                return $section ? SectionEntity::from($section->toArray()) : null;
+                if ($section) {
+                    $items = Config::get('section.items');
+                    $entity = SectionEntity::from($section->toArray());
+
+                    foreach ($entity->items as $item) {
+                        $item->type = array_search($item->itemable_type, $items);
+                    }
+
+                    if (isset($entity->items[0]->itemable['link'])) {
+                        $link = Config::get('app.url');
+                        $link .= '/' . $entity->items[0]->type . '/' . $entity->items[0]->itemable['link'];
+
+                        if (isset($entity->items[1]->itemable['link'])) {
+                            $link .= '/' . $entity->items[1]->type . '/' . $entity->items[1]->itemable['link'];
+                        }
+
+                        if ($entity->level) {
+                            $link .= '/level/' . $entity->level->value;
+                        }
+
+                        if ($entity->free) {
+                            $link .= '/free';
+                        }
+
+                        $entity->link = $link;
+                    }
+
+                    return $entity;
+                }
+
+                return null;
             }
         );
     }

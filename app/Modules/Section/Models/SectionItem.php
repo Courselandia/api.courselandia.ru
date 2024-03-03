@@ -8,9 +8,7 @@
 
 namespace App\Modules\Section\Models;
 
-use App\Modules\Section\Filters\SectionItemFilter;
 use Eloquent;
-use App\Models\Status;
 use App\Models\Delete;
 use App\Models\Validate;
 use App\Models\Sortable;
@@ -22,6 +20,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Modules\Section\Database\Factories\SectionItemFactory;
+use App\Modules\Section\Filters\SectionItemFilter;
 
 /**
  * Класс модель для таблицы элементов раздела на основе Eloquent.
@@ -40,7 +39,6 @@ class SectionItem extends Eloquent
     use HasFactory;
     use Sortable;
     use SoftDeletes;
-    use Status;
     use Validate;
     use Filterable;
     use HasTimestamps;

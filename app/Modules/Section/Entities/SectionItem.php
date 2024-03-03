@@ -51,6 +51,13 @@ class SectionItem extends Entity
     public string|null $itemable_type = null;
 
     /**
+     * Название элемента.
+     *
+     * @var string|null
+     */
+    public string|null $type = null;
+
+    /**
      * Значение модели этого элемента.
      *
      * @var array|null
@@ -63,6 +70,7 @@ class SectionItem extends Entity
      * @param int|null $weight Вес элемента.
      * @param int|string|null $itemable_id ID сущности для элемента.
      * @param string|null $itemable_type Имя класса сущности для элемента.
+     * @param string|null $type Название элемента.
      * @param array|null $itemable Значение модели этого элемента.
      */
     public function __construct(
@@ -71,6 +79,7 @@ class SectionItem extends Entity
         ?int            $weight = null,
         int|string|null $itemable_id = null,
         string|null     $itemable_type = null,
+        string|null     $type = null,
         array|null      $itemable = null,
     )
     {
@@ -79,6 +88,7 @@ class SectionItem extends Entity
         $this->weight = $weight;
         $this->itemable_id = $itemable_id;
         $this->itemable_type = $itemable_type;
+        $this->type = $type;
         $this->itemable = $itemable;
     }
 }
