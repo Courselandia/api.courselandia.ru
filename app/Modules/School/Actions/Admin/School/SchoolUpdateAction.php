@@ -8,10 +8,12 @@
 
 namespace App\Modules\School\Actions\Admin\School;
 
+use DB;
 use App\Modules\Analyzer\Actions\Admin\AnalyzerUpdateAction;
 use App\Modules\Metatag\Data\MetatagSet;
 use App\Modules\School\Data\SchoolUpdate;
 use Cache;
+use Throwable;
 use Typography;
 use App\Models\Action;
 use App\Models\Exceptions\ParameterInvalidException;
@@ -49,6 +51,7 @@ class SchoolUpdateAction extends Action
      * @throws RecordNotExistException
      * @throws ParameterInvalidException
      * @throws TemplateException
+     * @throws Throwable
      */
     public function run(): SchoolEntity
     {
@@ -56,54 +59,56 @@ class SchoolUpdateAction extends Action
         $schoolEntity = $action->run();
 
         if ($schoolEntity) {
-            $countSchoolCourses = Course::where('courses.status', Status::ACTIVE->value)
-                ->whereHas('school', function ($query) {
-                    $query->where('schools.status', true)
-                        ->where('schools.id', $this->data->id);
-                })
-                ->count();
+            DB::transaction(function () use ($schoolEntity) {
+                $countSchoolCourses = Course::where('courses.status', Status::ACTIVE->value)
+                    ->whereHas('school', function ($query) {
+                        $query->where('schools.status', true)
+                            ->where('schools.id', $this->data->id);
+                    })
+                    ->count();
 
-            $templateValues = [
-                'school' => $this->data->name,
-                'countSchoolCourses' => $countSchoolCourses,
-            ];
+                $templateValues = [
+                    'school' => $this->data->name,
+                    'countSchoolCourses' => $countSchoolCourses,
+                ];
 
-            $template = new Template();
+                $template = new Template();
 
-            $action = new MetatagSetAction(MetatagSet::from([
-                'description' => $template->convert($this->data->description_template, $templateValues),
-                'title' => $template->convert($this->data->title_template, $templateValues),
-                'description_template' => $this->data->description_template,
-                'title_template' => $this->data->title_template,
-                'keywords' => $this->data->keywords,
-                'id' => $schoolEntity->metatag_id ?: null,
-            ]));
+                $action = new MetatagSetAction(MetatagSet::from([
+                    'description' => $template->convert($this->data->description_template, $templateValues),
+                    'title' => $template->convert($this->data->title_template, $templateValues),
+                    'description_template' => $this->data->description_template,
+                    'title_template' => $this->data->title_template,
+                    'keywords' => $this->data->keywords,
+                    'id' => $schoolEntity->metatag_id ?: null,
+                ]));
 
-            $schoolEntity = SchoolEntity::from([
-                ...$schoolEntity->toArray(),
-                ...$this->data->except('image_logo_id', 'image_site_id')->toArray(),
-                'metatag_id' => $action->run()->id,
-                'name' => Typography::process($this->data->name, true),
-                'header' => Typography::process($template->convert($this->data->header_template, $templateValues), true),
-                'text' => Typography::process($this->data->text),
-                'additional' => Typography::process($this->data->additional),
-            ]);
+                $schoolEntity = SchoolEntity::from([
+                    ...$schoolEntity->toArray(),
+                    ...$this->data->except('image_logo_id', 'image_site_id')->toArray(),
+                    'metatag_id' => $action->run()->id,
+                    'name' => Typography::process($this->data->name, true),
+                    'header' => Typography::process($template->convert($this->data->header_template, $templateValues), true),
+                    'text' => Typography::process($this->data->text),
+                    'additional' => Typography::process($this->data->additional),
+                ]);
 
-            $data = $schoolEntity->toArray();
+                $data = $schoolEntity->toArray();
 
-            if ($this->data->image_logo_id) {
-                $data['image_logo_id'] = $this->data->image_logo_id;
-            }
+                if ($this->data->image_logo_id) {
+                    $data['image_logo_id'] = $this->data->image_logo_id;
+                }
 
-            if ($this->data->image_site_id) {
-                $data['image_site_id'] = $this->data->image_site_id;
-            }
+                if ($this->data->image_site_id) {
+                    $data['image_site_id'] = $this->data->image_site_id;
+                }
 
-            School::find($this->data->id)->update($data);
-            Cache::tags(['catalog', 'school', 'teacher', 'review', 'faq'])->flush();
+                School::find($this->data->id)->update($data);
+                Cache::tags(['catalog', 'school', 'teacher', 'review', 'faq'])->flush();
 
-            $action = new AnalyzerUpdateAction($schoolEntity->id, School::class, 'school.text');
-            $action->run();
+                $action = new AnalyzerUpdateAction($schoolEntity->id, School::class, 'school.text');
+                $action->run();
+            });
 
             $action = new SchoolGetAction($this->data->id);
 

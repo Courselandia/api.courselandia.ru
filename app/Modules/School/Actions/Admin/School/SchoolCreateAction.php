@@ -8,6 +8,7 @@
 
 namespace App\Modules\School\Actions\Admin\School;
 
+use DB;
 use App\Modules\Analyzer\Actions\Admin\AnalyzerUpdateAction;
 use App\Modules\Metatag\Data\MetatagSet;
 use App\Modules\School\Data\SchoolCreate;
@@ -50,43 +51,47 @@ class SchoolCreateAction extends Action
      */
     public function run(): SchoolEntity
     {
-        $template = new Template();
+        $id = DB::transaction(function () {
+            $template = new Template();
 
-        $templateValues = [
-            'school' => $this->data->name,
-            'countSchoolCourses' => 0,
-        ];
+            $templateValues = [
+                'school' => $this->data->name,
+                'countSchoolCourses' => 0,
+            ];
 
-        $action = new MetatagSetAction(MetatagSet::from([
-            'description' => $template->convert($this->data->description_template, $templateValues),
-            'title' => $template->convert($this->data->title_template, $templateValues),
-            'description_template' => $this->data->description_template,
-            'title_template' => $this->data->title_template,
-            'keywords' => $this->data->keywords
-        ]));
+            $action = new MetatagSetAction(MetatagSet::from([
+                'description' => $template->convert($this->data->description_template, $templateValues),
+                'title' => $template->convert($this->data->title_template, $templateValues),
+                'description_template' => $this->data->description_template,
+                'title_template' => $this->data->title_template,
+                'keywords' => $this->data->keywords
+            ]));
 
-        $metatag = $action->run();
+            $metatag = $action->run();
 
-        $schoolEntity = SchoolEntity::from([
-            ...$this->data->except('image_logo_id', 'image_site_id')->toArray(),
-            'name' => Typography::process($this->data->name, true),
-            'header' => Typography::process($template->convert($this->data->header_template, $templateValues), true),
-            'text' => Typography::process($this->data->text),
-            'additional' => Typography::process($this->data->additional),
-            'metatag_id' => $metatag->id,
-        ]);
+            $schoolEntity = SchoolEntity::from([
+                ...$this->data->except('image_logo_id', 'image_site_id')->toArray(),
+                'name' => Typography::process($this->data->name, true),
+                'header' => Typography::process($template->convert($this->data->header_template, $templateValues), true),
+                'text' => Typography::process($this->data->text),
+                'additional' => Typography::process($this->data->additional),
+                'metatag_id' => $metatag->id,
+            ]);
 
-        $school = School::create([
-            ...$schoolEntity->toArray(),
-            'image_logo_id' => $this->data->image_logo_id,
-            'image_site_id' => $this->data->image_site_id,
-        ]);
-        Cache::tags(['catalog', 'school', 'teacher', 'review', 'faq'])->flush();
+            $school = School::create([
+                ...$schoolEntity->toArray(),
+                'image_logo_id' => $this->data->image_logo_id,
+                'image_site_id' => $this->data->image_site_id,
+            ]);
+            Cache::tags(['catalog', 'school', 'teacher', 'review', 'faq'])->flush();
 
-        $action = new AnalyzerUpdateAction($school->id, School::class, 'school.text');
-        $action->run();
+            $action = new AnalyzerUpdateAction($school->id, School::class, 'school.text');
+            $action->run();
 
-        $action = new SchoolGetAction($school->id);
+            return $school->id;
+        });
+
+        $action = new SchoolGetAction($id);
 
         return $action->run();
     }

@@ -8,6 +8,7 @@
 
 namespace App\Modules\Publication\Actions\Admin\Publication;
 
+use DB;
 use App\Models\Action;
 use App\Modules\Metatag\Actions\MetatagSetAction;
 use App\Modules\Metatag\Data\MetatagSet;
@@ -44,31 +45,36 @@ class PublicationCreateAction extends Action
      */
     public function run(): PublicationEntity
     {
-        $action = new MetatagSetAction(MetatagSet::from([
-            'description' => $this->data->description,
-            'keywords' => $this->data->keywords,
-            'title' => $this->data->title,
-        ]));
+        $id = DB::transaction(function () {
+            $action = new MetatagSetAction(MetatagSet::from([
+                'description' => $this->data->description,
+                'keywords' => $this->data->keywords,
+                'title' => $this->data->title,
+            ]));
 
-        $metatag = $action->run();
+            $metatag = $action->run();
 
-        $publicationEntity = PublicationEntity::from([
-            ...$this->data->toArray(),
-            'header' => Typography::process($this->data->header, true),
-            'anons' => Typography::process($this->data->anons, true),
-            'article' => Typography::process($this->data->article),
-            'metatag_id' => $metatag->id,
-        ]);
+            $publicationEntity = PublicationEntity::from([
+                ...$this->data->toArray(),
+                'header' => Typography::process($this->data->header, true),
+                'anons' => Typography::process($this->data->anons, true),
+                'article' => Typography::process($this->data->article),
+                'metatag_id' => $metatag->id,
+            ]);
 
-        $publication = Publication::create([
-            ...$publicationEntity->toArray(),
-            'image_small_id' => $this->data->image,
-            'image_middle_id' => $this->data->image,
-            'image_big_id' => $this->data->image,
-        ]);
-        Cache::tags(['publication'])->flush();
+            $publication = Publication::create([
+                ...$publicationEntity->toArray(),
+                'image_small_id' => $this->data->image,
+                'image_middle_id' => $this->data->image,
+                'image_big_id' => $this->data->image,
+            ]);
 
-        $action = new PublicationGetAction($publication->id);
+            Cache::tags(['publication'])->flush();
+
+            return $publication->id;
+        });
+
+        $action = new PublicationGetAction($id);
 
         return $action->run();
     }

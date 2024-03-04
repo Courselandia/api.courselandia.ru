@@ -8,6 +8,7 @@
 
 namespace App\Modules\Direction\Actions\Admin;
 
+use DB;
 use App\Models\Action;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Analyzer\Actions\Admin\AnalyzerUpdateAction;
@@ -49,41 +50,45 @@ class DirectionCreateAction extends Action
      */
     public function run(): DirectionEntity
     {
-        $template = new Template();
+        $id = DB::transaction(function () {
+            $template = new Template();
 
-        $templateValues = [
-            'direction' => $this->data->name,
-            'countDirectionCourses' => 0,
-        ];
+            $templateValues = [
+                'direction' => $this->data->name,
+                'countDirectionCourses' => 0,
+            ];
 
-        $metatagSet = MetatagSet::from([
-            'description' => $template->convert($this->data->description_template, $templateValues),
-            'title' => $template->convert($this->data->title_template, $templateValues),
-            'description_template' => $this->data->description_template,
-            'title_template' => $this->data->title_template,
-            'keywords' => $this->data->keywords,
-        ]);
+            $metatagSet = MetatagSet::from([
+                'description' => $template->convert($this->data->description_template, $templateValues),
+                'title' => $template->convert($this->data->title_template, $templateValues),
+                'description_template' => $this->data->description_template,
+                'title_template' => $this->data->title_template,
+                'keywords' => $this->data->keywords,
+            ]);
 
-        $action = new MetatagSetAction($metatagSet);
-        $metatag = $action->run();
+            $action = new MetatagSetAction($metatagSet);
+            $metatag = $action->run();
 
-        $directionEntity = DirectionEntity::from([
-            ...$this->data->toArray(),
-            'name' => Typography::process($this->data->name, true),
-            'header' => Typography::process($template->convert($this->data->header_template, $templateValues), true),
-            'text' => Typography::process($this->data->text),
-            'additional' => Typography::process($this->data->additional),
-            'metatag_id' => $metatag->id,
-        ]);
+            $directionEntity = DirectionEntity::from([
+                ...$this->data->toArray(),
+                'name' => Typography::process($this->data->name, true),
+                'header' => Typography::process($template->convert($this->data->header_template, $templateValues), true),
+                'text' => Typography::process($this->data->text),
+                'additional' => Typography::process($this->data->additional),
+                'metatag_id' => $metatag->id,
+            ]);
 
-        $direction = Direction::create($directionEntity->toArray());
+            $direction = Direction::create($directionEntity->toArray());
 
-        Cache::tags(['catalog', 'category', 'direction', 'profession', 'teacher'])->flush();
+            Cache::tags(['catalog', 'category', 'direction', 'profession', 'teacher'])->flush();
 
-        $action = new AnalyzerUpdateAction($direction->id, Direction::class, 'direction.text');
-        $action->run();
+            $action = new AnalyzerUpdateAction($direction->id, Direction::class, 'direction.text');
+            $action->run();
 
-        $action = new DirectionGetAction($direction->id);
+            return $direction->id;
+        });
+
+        $action = new DirectionGetAction($id);
 
         return $action->run();
     }

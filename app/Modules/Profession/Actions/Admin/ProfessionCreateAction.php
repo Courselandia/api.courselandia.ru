@@ -8,9 +8,11 @@
 
 namespace App\Modules\Profession\Actions\Admin;
 
+use DB;
 use App\Modules\Analyzer\Actions\Admin\AnalyzerUpdateAction;
 use App\Modules\Metatag\Data\MetatagSet;
 use App\Modules\Profession\Data\ProfessionCreate;
+use Throwable;
 use Typography;
 use App\Models\Action;
 use App\Models\Exceptions\ParameterInvalidException;
@@ -45,41 +47,46 @@ class ProfessionCreateAction extends Action
      * @return ProfessionEntity Вернет результаты исполнения.
      * @throws ParameterInvalidException
      * @throws TemplateException
+     * @throws Throwable
      */
     public function run(): ProfessionEntity
     {
-        $template = new Template();
-        $templateValues = [
-            'profession' => $this->data->name,
-            'countProfessionCourses' => 0,
-        ];
+        $id = DB::transaction(function () {
+            $template = new Template();
+            $templateValues = [
+                'profession' => $this->data->name,
+                'countProfessionCourses' => 0,
+            ];
 
-        $action = new MetatagSetAction(MetatagSet::from([
-            'description' => $template->convert($this->data->description_template, $templateValues),
-            'title' => $template->convert($this->data->title_template, $templateValues),
-            'description_template' => $this->data->description_template,
-            'title_template' => $this->data->title_template,
-            'keywords' => $this->data->keywords,
-        ]));
+            $action = new MetatagSetAction(MetatagSet::from([
+                'description' => $template->convert($this->data->description_template, $templateValues),
+                'title' => $template->convert($this->data->title_template, $templateValues),
+                'description_template' => $this->data->description_template,
+                'title_template' => $this->data->title_template,
+                'keywords' => $this->data->keywords,
+            ]));
 
-        $metatag = $action->run();
+            $metatag = $action->run();
 
-        $professionEntity = ProfessionEntity::from([
-            ...$this->data->toArray(),
-            'name' => Typography::process($this->data->name, true),
-            'header' => Typography::process($template->convert($this->data->header_template, $templateValues), true),
-            'text' => Typography::process($this->data->text),
-            'additional' => Typography::process($this->data->additional),
-            'metatag_id' => $metatag->id,
-        ]);
+            $professionEntity = ProfessionEntity::from([
+                ...$this->data->toArray(),
+                'name' => Typography::process($this->data->name, true),
+                'header' => Typography::process($template->convert($this->data->header_template, $templateValues), true),
+                'text' => Typography::process($this->data->text),
+                'additional' => Typography::process($this->data->additional),
+                'metatag_id' => $metatag->id,
+            ]);
 
-        $profession = Profession::create($professionEntity->toArray());
-        Cache::tags(['catalog', 'category', 'direction', 'salary', 'profession'])->flush();
+            $profession = Profession::create($professionEntity->toArray());
+            Cache::tags(['catalog', 'category', 'direction', 'salary', 'profession'])->flush();
 
-        $action = new AnalyzerUpdateAction($profession->id, Profession::class, 'profession.text');
-        $action->run();
+            $action = new AnalyzerUpdateAction($profession->id, Profession::class, 'profession.text');
+            $action->run();
 
-        $action = new ProfessionGetAction($profession->id);
+            return $profession->id;
+        });
+
+        $action = new ProfessionGetAction($id);
 
         return $action->run();
     }
