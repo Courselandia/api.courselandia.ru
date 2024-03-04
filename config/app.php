@@ -313,6 +313,9 @@ return [
 
         App\Modules\Crawl\Providers\CrawlServiceProvider::class,
         App\Modules\Crawl\Providers\RouteServiceProvider::class,
+
+        App\Modules\Section\Providers\SectionServiceProvider::class,
+        App\Modules\Section\Providers\RouteServiceProvider::class,
     ],
 
     /*

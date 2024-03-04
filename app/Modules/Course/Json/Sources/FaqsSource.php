@@ -8,7 +8,7 @@
 
 namespace App\Modules\Course\Json\Sources;
 
-use App\Modules\Course\Json\Jobs\FaqsItemJob;
+use App\Modules\Course\Json\Jobs\FaqsItemLinkJob;
 use App\Modules\Course\Enums\Status;
 use App\Modules\Course\Json\Source;
 use App\Modules\School\Models\School;
@@ -47,7 +47,7 @@ class FaqsSource extends Source
                 ?->toArray();
 
             if ($result) {
-                FaqsItemJob::dispatch('/json/faqs/' . $result['link'] . '.json', $result['id'], $result['link'])
+                FaqsItemLinkJob::dispatch('/json/faqs/' . $result['link'] . '.json', $result['id'], $result['link'])
                     ->delay(now()->addMinute());
 
                 $this->fireEvent('export');

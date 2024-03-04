@@ -42,7 +42,7 @@ class SkillGetAction extends Action
      */
     public function run(): ?SkillEntity
     {
-        $cacheKey = Util::getKey('skill', 'admin', 'get', $this->id);
+        $cacheKey = Util::getKey('skill', 'site', 'get', $this->id);
 
         return Cache::tags(['catalog', 'skill'])->remember(
             $cacheKey,

@@ -138,7 +138,7 @@ class Article extends Eloquent
     }
 
     /**
-     * Получить все модели, обладающие commentable.
+     * Получить все модели, обладающие articleable.
      */
     public function articleable(): MorphTo
     {

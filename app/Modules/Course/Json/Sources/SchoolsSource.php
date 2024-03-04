@@ -8,7 +8,7 @@
 
 namespace App\Modules\Course\Json\Sources;
 
-use App\Modules\Course\Json\Jobs\SchoolsItemJob;
+use App\Modules\Course\Json\Jobs\SchoolsItemLinkJob;
 use App\Modules\Course\Json\Source;
 
 /**
@@ -33,7 +33,7 @@ class SchoolsSource extends Source
      */
     public function export(): void
     {
-        SchoolsItemJob::dispatch('/json/schools.json')
+        SchoolsItemLinkJob::dispatch('/json/schools.json')
             ->delay(now()->addMinute());
 
         $this->fireEvent('export');

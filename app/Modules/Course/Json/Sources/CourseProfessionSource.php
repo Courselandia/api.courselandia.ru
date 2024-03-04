@@ -8,7 +8,7 @@
 
 namespace App\Modules\Course\Json\Sources;
 
-use App\Modules\Course\Json\Jobs\CourseProfessionItemJob;
+use App\Modules\Course\Json\Jobs\CourseProfessionItemLinkJob;
 use App\Modules\Course\Enums\Status;
 use App\Modules\Course\Json\Source;
 use App\Modules\Profession\Models\Profession;
@@ -47,7 +47,7 @@ class CourseProfessionSource extends Source
                 ?->toArray();
 
             if ($result) {
-                CourseProfessionItemJob::dispatch('/json/courses/profession/' . $result['link'] . '.json', $result['id'], $result['link'])
+                CourseProfessionItemLinkJob::dispatch('/json/courses/profession/' . $result['link'] . '.json', $result['id'], $result['link'])
                     ->delay(now()->addMinute());
 
                 $this->fireEvent('export');

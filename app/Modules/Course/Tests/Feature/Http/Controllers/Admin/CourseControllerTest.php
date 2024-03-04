@@ -8,8 +8,6 @@
 
 namespace App\Modules\Course\Tests\Feature\Http\Controllers\Admin;
 
-use App\Modules\Employment\Models\Employment;
-use App\Modules\Process\Models\Process;
 use Util;
 use App\Modules\Category\Models\Category;
 use App\Modules\Course\Enums\Currency;
@@ -31,6 +29,8 @@ use App\Modules\Course\Models\Course;
 use Faker\Factory as Faker;
 use Illuminate\Http\UploadedFile;
 use Tests\TestCase;
+use App\Modules\Employment\Models\Employment;
+use App\Modules\Process\Models\Process;
 
 /**
  * Тестирование: Класс контроллер для курсов.

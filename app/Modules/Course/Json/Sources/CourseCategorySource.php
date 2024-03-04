@@ -9,7 +9,7 @@
 namespace App\Modules\Course\Json\Sources;
 
 use Storage;
-use App\Modules\Course\Json\Jobs\CourseCategoryItemJob;
+use App\Modules\Course\Json\Jobs\CourseCategoryItemLinkJob;
 use App\Modules\Course\Enums\Status;
 use App\Modules\Course\Json\Source;
 use App\Modules\Category\Models\Category;
@@ -47,7 +47,7 @@ class CourseCategorySource extends Source
                 ?->toArray();
 
             if ($result) {
-                CourseCategoryItemJob::dispatch('/json/courses/category/' . $result['link'] . '.json', $result['id'], $result['link'])
+                CourseCategoryItemLinkJob::dispatch('/json/courses/category/' . $result['link'] . '.json', $result['id'], $result['link'])
                     ->delay(now()->addMinute());
 
                 $this->fireEvent('export');
