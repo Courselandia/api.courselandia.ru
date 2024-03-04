@@ -56,8 +56,8 @@ class SectionUpdateAction extends Action
 
         if ($sectionEntity) {
             $action = new MetatagSetAction(MetatagSet::from([
-                'description' => $this->data->description,
-                'title' => $this->data->title,
+                'description' => Typography::process($this->data->description, true),
+                'title' => Typography::process($this->data->title, true),
                 'keywords' => $this->data->keywords,
                 'id' => $sectionEntity->metatag_id ?: null,
             ]));
