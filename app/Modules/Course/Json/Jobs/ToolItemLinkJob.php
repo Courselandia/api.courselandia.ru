@@ -8,29 +8,32 @@
 
 namespace App\Modules\Course\Json\Jobs;
 
-use ReflectionException;
 use App\Models\Exceptions\ParameterInvalidException;
-use App\Modules\School\Actions\Site\School\SchoolReadAction;
+use App\Modules\Tool\Actions\Site\ToolLinkAction;
 
 /**
- * Задача для формирования всех школ.
+ * Задача для формирования инструментов.
  */
-class SchoolsItemJob extends JsonItemJob
+class ToolItemLinkJob extends JsonItemLinkJob
 {
     /**
      * Выполнение задачи.
      *
      * @return void
      * @throws ParameterInvalidException
-     * @throws ReflectionException
      */
     public function handle(): void
     {
-        $action = new SchoolReadAction(['name' => 'ASC']);
+        $action = new ToolLinkAction($this->link);
+
         $data = $action->run();
 
         if ($data) {
-            $data['success'] = true;
+            $data = [
+                'data' => $data->toArray(),
+                'success' => true,
+            ];
+
             $this->save($data);
         }
     }

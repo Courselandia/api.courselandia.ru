@@ -8,7 +8,7 @@
 
 namespace App\Modules\Course\Json\Sources;
 
-use App\Modules\Course\Json\Jobs\DirectionItemJob;
+use App\Modules\Course\Json\Jobs\DirectionItemLinkJob;
 use App\Modules\Course\Enums\Status;
 use App\Modules\Course\Json\Source;
 use App\Modules\Direction\Models\Direction;
@@ -47,7 +47,7 @@ class DirectionSource extends Source
                 ?->toArray();
 
             if ($result) {
-                DirectionItemJob::dispatch('/json/directions/' . $result['link'] . '.json', $result['id'], $result['link'])
+                DirectionItemLinkJob::dispatch('/json/directions/' . $result['link'] . '.json', $result['id'], $result['link'])
                     ->delay(now()->addMinute());
 
                 $this->fireEvent('export');

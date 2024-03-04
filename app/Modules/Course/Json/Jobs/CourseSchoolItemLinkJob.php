@@ -13,9 +13,9 @@ use App\Modules\Course\Entities\CourseRead;
 use App\Modules\Course\Helpers\CleanCourseRead;
 
 /**
- * Задача для формирования курсов инструмента.
+ * Задача для формирования курсов школы.
  */
-class CourseToolItemJob extends JsonItemJob
+class CourseSchoolItemLinkJob extends JsonItemLinkJob
 {
     /**
      * Выполнение задачи.
@@ -26,10 +26,10 @@ class CourseToolItemJob extends JsonItemJob
     {
         $action = new CourseReadAction(CourseRead::from([
             'sorts' => ['name' => 'ASC'],
-            'filters' => ['tools-id' => $this->id],
+            'filters' => ['school-id' => $this->id],
             'offset' => 0,
             'limit' => 36,
-            'section' => 'tool',
+            'section' => 'school',
             'sectionLink' => $this->link,
         ]));
 

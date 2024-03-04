@@ -64,24 +64,7 @@ class SectionGetAction extends Action
                         $item->type = array_search($item->itemable_type, $items);
                     }
 
-                    if (isset($entity->items[0]->itemable['link'])) {
-                        $url = Config::get('app.url');
-                        $url .= '/' . $entity->items[0]->type . '/' . $entity->items[0]->itemable['link'];
-
-                        if (isset($entity->items[1]->itemable['link'])) {
-                            $url .= '/' . $entity->items[1]->type . '/' . $entity->items[1]->itemable['link'];
-                        }
-
-                        if ($entity->level) {
-                            $url .= '/level/' . $entity->level->value;
-                        }
-
-                        if ($entity->free) {
-                            $url .= '/free';
-                        }
-
-                        $entity->url = $url;
-                    }
+                    $entity->url = $this->getUrl($entity);
 
                     return $entity;
                 }
@@ -89,5 +72,35 @@ class SectionGetAction extends Action
                 return null;
             }
         );
+    }
+
+    /**
+     * Получение ссылки на раздел.
+     *
+     * @param SectionEntity $entity Сущность раздела.
+     * @return string|null URL раздела.
+     */
+    private function getUrl(SectionEntity $entity): string|null
+    {
+        if (isset($entity->items[0]->itemable['link'])) {
+            $url = Config::get('app.url');
+            $url .= '/' . $entity->items[0]->type . '/' . $entity->items[0]->itemable['link'];
+
+            if (isset($entity->items[1]->itemable['link'])) {
+                $url .= '/' . $entity->items[1]->type . '/' . $entity->items[1]->itemable['link'];
+            }
+
+            if ($entity->level) {
+                $url .= '/level/' . $entity->level->value;
+            }
+
+            if ($entity->free) {
+                $url .= '/free';
+            }
+
+            return $url;
+        }
+
+        return null;
     }
 }

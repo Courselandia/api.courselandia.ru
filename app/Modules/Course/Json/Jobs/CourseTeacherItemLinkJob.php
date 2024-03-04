@@ -15,7 +15,7 @@ use App\Modules\Course\Helpers\CleanCourseRead;
 /**
  * Задача для формирования курсов учителя.
  */
-class CourseTeacherItemJob extends JsonItemJob
+class CourseTeacherItemLinkJob extends JsonItemLinkJob
 {
     /**
      * Выполнение задачи.

@@ -15,7 +15,7 @@ use App\Modules\Review\Data\Site\ReviewRead;
 /**
  * Задача для формирования всех отзывов.
  */
-class ReviewsItemJob extends JsonItemJob
+class ReviewsItemLinkJob extends JsonItemLinkJob
 {
     /**
      * Выполнение задачи.

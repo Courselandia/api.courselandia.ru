@@ -8,13 +8,13 @@
 
 namespace App\Modules\Course\Json\Jobs;
 
-use App\Modules\Faq\Actions\Site\FaqReadAction;
 use App\Models\Exceptions\ParameterInvalidException;
+use App\Modules\Direction\Actions\Site\DirectionLinkAction;
 
 /**
- * Задача для формирования всех FAQ's.
+ * Задача для формирования направлений.
  */
-class FaqsItemJob extends JsonItemJob
+class DirectionItemLinkJob extends JsonItemLinkJob
 {
     /**
      * Выполнение задачи.
@@ -24,10 +24,16 @@ class FaqsItemJob extends JsonItemJob
      */
     public function handle(): void
     {
-        $action = new FaqReadAction($this->link);
+        $action = new DirectionLinkAction($this->link);
         $data = $action->run();
-        $data['success'] = true;
 
-        $this->save($data);
+        if ($data) {
+            $data = [
+                'data' => $data->toArray(),
+                'success' => true,
+            ];
+
+            $this->save($data);
+        }
     }
 }

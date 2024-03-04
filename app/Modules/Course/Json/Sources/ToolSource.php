@@ -8,7 +8,7 @@
 
 namespace App\Modules\Course\Json\Sources;
 
-use App\Modules\Course\Json\Jobs\ToolItemJob;
+use App\Modules\Course\Json\Jobs\ToolItemLinkJob;
 use App\Modules\Course\Enums\Status;
 use App\Modules\Course\Json\Source;
 use App\Modules\Tool\Models\Tool;
@@ -47,7 +47,7 @@ class ToolSource extends Source
                 ?->toArray();
 
             if ($result) {
-                ToolItemJob::dispatch('/json/tools/' . $result['link'] . '.json', $result['id'], $result['link'])
+                ToolItemLinkJob::dispatch('/json/tools/' . $result['link'] . '.json', $result['id'], $result['link'])
                     ->delay(now()->addMinute());
 
                 $this->fireEvent('export');

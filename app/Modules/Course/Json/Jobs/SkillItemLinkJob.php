@@ -9,12 +9,12 @@
 namespace App\Modules\Course\Json\Jobs;
 
 use App\Models\Exceptions\ParameterInvalidException;
-use App\Modules\Direction\Actions\Site\DirectionLinkAction;
+use App\Modules\Skill\Actions\Site\SkillLinkAction;
 
 /**
- * Задача для формирования направлений.
+ * Задача для формирования навыка.
  */
-class DirectionItemJob extends JsonItemJob
+class SkillItemLinkJob extends JsonItemLinkJob
 {
     /**
      * Выполнение задачи.
@@ -24,7 +24,7 @@ class DirectionItemJob extends JsonItemJob
      */
     public function handle(): void
     {
-        $action = new DirectionLinkAction($this->link);
+        $action = new SkillLinkAction($this->link);
         $data = $action->run();
 
         if ($data) {

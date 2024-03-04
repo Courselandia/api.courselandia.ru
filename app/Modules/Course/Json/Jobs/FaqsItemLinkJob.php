@@ -8,30 +8,26 @@
 
 namespace App\Modules\Course\Json\Jobs;
 
-use App\Modules\School\Actions\Site\School\SchoolLinkAction;
+use App\Modules\Faq\Actions\Site\FaqReadAction;
+use App\Models\Exceptions\ParameterInvalidException;
 
 /**
- * Задача для формирования школы.
+ * Задача для формирования всех FAQ's.
  */
-class SchoolItemJob extends JsonItemJob
+class FaqsItemLinkJob extends JsonItemLinkJob
 {
     /**
      * Выполнение задачи.
      *
      * @return void
+     * @throws ParameterInvalidException
      */
     public function handle(): void
     {
-        $action = new SchoolLinkAction($this->link);
+        $action = new FaqReadAction($this->link);
         $data = $action->run();
+        $data['success'] = true;
 
-        if ($data) {
-            $data = [
-                'data' => $data->toArray(),
-                'success' => true,
-            ];
-
-            $this->save($data);
-        }
+        $this->save($data);
     }
 }

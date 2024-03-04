@@ -33,34 +33,6 @@ abstract class JsonItemJob implements ShouldQueue
     protected string $path;
 
     /**
-     * ID сущности.
-     *
-     * @var string|int|null
-     */
-    protected string|int|null $id;
-
-    /**
-     * Раздел.
-     *
-     * @var ?string
-     */
-    protected ?string $link;
-
-    /**
-     * Конструктор.
-     *
-     * @param string $path Ссылка на файл для сохранения.
-     * @var string|int|null $id ID сущности.
-     * @var ?string $link $id Раздел.
-     */
-    public function __construct(string $path, string|int|null $id = null, ?string $link = null)
-    {
-        $this->path = $path;
-        $this->id = $id;
-        $this->link = $link;
-    }
-
-    /**
      * Сохранение данных в файл.
      *
      * @param array $data Данные.

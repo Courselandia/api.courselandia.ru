@@ -9,12 +9,12 @@
 namespace App\Modules\Course\Json\Jobs;
 
 use App\Models\Exceptions\ParameterInvalidException;
-use App\Modules\Tool\Actions\Site\ToolLinkAction;
+use App\Modules\Section\Actions\Site\SectionLinkAction;
 
 /**
- * Задача для формирования инструментов.
+ * Задача для формирования раздела.
  */
-class ToolItemJob extends JsonItemJob
+class SectionItemLinkJob extends JsonItemSectionJob
 {
     /**
      * Выполнение задачи.
@@ -24,8 +24,7 @@ class ToolItemJob extends JsonItemJob
      */
     public function handle(): void
     {
-        $action = new ToolLinkAction($this->link);
-
+        $action = new SectionLinkAction($this->items, $this->level, $this->free);
         $data = $action->run();
 
         if ($data) {

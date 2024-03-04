@@ -8,29 +8,29 @@
 
 namespace App\Modules\Course\Json\Jobs;
 
-use App\Modules\Course\Actions\Site\Course\CourseGetAction;
+use ReflectionException;
+use App\Models\Exceptions\ParameterInvalidException;
+use App\Modules\School\Actions\Site\School\SchoolReadAction;
 
 /**
- * Задача для формирования каегории.
+ * Задача для формирования всех школ.
  */
-class CourseItemJob extends JsonItemJob
+class SchoolsItemLinkJob extends JsonItemLinkJob
 {
     /**
      * Выполнение задачи.
      *
      * @return void
+     * @throws ParameterInvalidException
+     * @throws ReflectionException
      */
     public function handle(): void
     {
-        $action = new CourseGetAction(null, null, $this->id);
+        $action = new SchoolReadAction(['name' => 'ASC']);
         $data = $action->run();
 
         if ($data) {
-            $data = [
-                'data' => $data->toArray(),
-                'success' => true,
-            ];
-
+            $data['success'] = true;
             $this->save($data);
         }
     }

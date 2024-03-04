@@ -14,7 +14,7 @@ use App\Modules\Course\Helpers\CleanCourseList;
 /**
  * Задача для формирования всех категорий.
  */
-class RatedCoursesItemJob extends JsonItemJob
+class RatedCoursesItemLinkJob extends JsonItemLinkJob
 {
     /**
      * Количество выводимых курсов.

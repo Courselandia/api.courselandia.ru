@@ -8,23 +8,21 @@
 
 namespace App\Modules\Course\Json\Jobs;
 
-use App\Models\Exceptions\ParameterInvalidException;
-use App\Modules\Profession\Actions\Site\ProfessionLinkAction;
+use App\Modules\Course\Actions\Site\Course\CourseGetAction;
 
 /**
- * Задача для формирования профессии.
+ * Задача для формирования каегории.
  */
-class ProfessionItemJob extends JsonItemJob
+class CourseItemLinkJob extends JsonItemLinkJob
 {
     /**
      * Выполнение задачи.
      *
      * @return void
-     * @throws ParameterInvalidException
      */
     public function handle(): void
     {
-        $action = new ProfessionLinkAction($this->link);
+        $action = new CourseGetAction(null, null, $this->id);
         $data = $action->run();
 
         if ($data) {

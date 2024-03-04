@@ -14,7 +14,7 @@ use App\Modules\Course\Actions\Site\Course\CourseDirectionReadAction;
 /**
  * Задача для формирования всех направлений.
  */
-class DirectionsItemJob extends JsonItemJob
+class DirectionsItemLinkJob extends JsonItemLinkJob
 {
     /**
      * Выполнение задачи.
