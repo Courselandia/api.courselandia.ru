@@ -142,18 +142,7 @@ class Import
             $this->clearIds();
         }
 
-        Cache::tags([
-            'course',
-            'direction',
-            'profession',
-            'category',
-            'skill',
-            'teacher',
-            'tool',
-            'processes',
-            'employment',
-            'review',
-        ])->flush();
+        Cache::tags(['catalog', 'course'])->flush();
     }
 
     /**

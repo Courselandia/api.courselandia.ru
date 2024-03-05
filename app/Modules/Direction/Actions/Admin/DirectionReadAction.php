@@ -89,7 +89,7 @@ class DirectionReadAction extends Action
             'metatag',
         );
 
-        return Cache::tags(['catalog', 'category', 'direction', 'profession', 'teacher'])->remember(
+        return Cache::tags(['catalog', 'direction'])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
             function () {

@@ -41,7 +41,7 @@ class CategoryDestroyAction extends Action
     {
         if ($this->ids) {
             Category::destroy($this->ids);
-            Cache::tags(['catalog', 'category', 'direction', 'profession'])->flush();
+            Cache::tags(['catalog', 'category'])->flush();
         }
 
         return true;

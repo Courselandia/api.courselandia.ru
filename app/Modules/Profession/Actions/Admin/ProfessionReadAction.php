@@ -89,7 +89,7 @@ class ProfessionReadAction extends Action
             'metatag',
         );
 
-        return Cache::tags(['catalog', 'category', 'direction', 'salary', 'profession'])->remember(
+        return Cache::tags(['catalog', 'profession'])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
             function () {

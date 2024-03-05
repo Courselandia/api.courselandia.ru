@@ -51,18 +51,7 @@ class DescriptionPipe implements Pipe
         $section = $data->section;
         $link = $data->sectionLink;
 
-        $data->description = Cache::tags([
-            'course',
-            'direction',
-            'profession',
-            'category',
-            'skill',
-            'teacher',
-            'tool',
-            'process',
-            'employment',
-            'review',
-        ])->remember(
+        $data->description = Cache::tags(['catalog', 'course'])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
             function () use ($section, $link) {

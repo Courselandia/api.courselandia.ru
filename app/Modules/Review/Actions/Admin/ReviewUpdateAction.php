@@ -56,7 +56,7 @@ class ReviewUpdateAction extends Action
             ]);
 
             Review::find($this->data->id)->update($reviewEntity->toArray());
-            Cache::tags(['catalog', 'school', 'review', 'course'])->flush();
+            Cache::tags(['catalog', 'review'])->flush();
 
             $action = new ReviewGetAction($this->data->id);
 

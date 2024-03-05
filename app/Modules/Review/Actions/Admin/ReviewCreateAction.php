@@ -51,7 +51,7 @@ class ReviewCreateAction extends Action
         ]);
 
         $review = Review::create($reviewEntity->toArray());
-        Cache::tags(['catalog', 'school', 'review', 'course'])->flush();
+        Cache::tags(['catalog', 'review'])->flush();
 
         $action = new ReviewGetAction($review->id);
 

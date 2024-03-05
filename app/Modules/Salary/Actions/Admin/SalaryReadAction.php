@@ -89,7 +89,7 @@ class SalaryReadAction extends Action
             'profession'
         );
 
-        return Cache::tags(['catalog', 'profession', 'salary'])->remember(
+        return Cache::tags(['catalog', 'salary'])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
             function () {

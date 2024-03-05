@@ -135,7 +135,7 @@ class TeacherCreateAction extends Action
                 }
             }
 
-            Cache::tags(['catalog', 'teacher', 'direction', 'school'])->flush();
+            Cache::tags(['catalog', 'teacher'])->flush();
 
             return $teacher->id;
         });

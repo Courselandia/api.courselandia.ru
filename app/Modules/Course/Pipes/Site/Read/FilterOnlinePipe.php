@@ -48,17 +48,7 @@ class FilterOnlinePipe implements Pipe
             $currentFilters,
         );
 
-        $formats = Cache::tags([
-            'course',
-            'direction',
-            'profession',
-            'category',
-            'skill',
-            'teacher',
-            'tool',
-            'processes',
-            'employment',
-        ])->remember(
+        $formats = Cache::tags(['catalog', 'course'])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
             function () use ($currentFilters) {

@@ -44,7 +44,7 @@ class FaqGetAction extends Action
     {
         $cacheKey = Util::getKey('faq', $this->id, 'school');
 
-        return Cache::tags(['catalog', 'school', 'faq'])->remember(
+        return Cache::tags(['catalog', 'faq'])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
             function () {

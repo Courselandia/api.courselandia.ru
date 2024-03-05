@@ -47,7 +47,7 @@ class DirectionLinkAction extends Action
     {
         $cacheKey = Util::getKey('direction', 'admin', 'get', $this->link);
 
-        return Cache::tags(['catalog', 'category'])->remember(
+        return Cache::tags(['catalog', 'direction'])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
             function () {

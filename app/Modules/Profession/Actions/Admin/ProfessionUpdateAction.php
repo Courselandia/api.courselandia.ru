@@ -96,7 +96,7 @@ class ProfessionUpdateAction extends Action
                 ]);
 
                 Profession::find($this->data->id)->update($professionEntity->toArray());
-                Cache::tags(['catalog', 'category', 'direction', 'salary', 'profession'])->flush();
+                Cache::tags(['catalog', 'profession'])->flush();
 
                 $action = new AnalyzerUpdateAction($professionEntity->id, Profession::class, 'profession.text');
                 $action->run();

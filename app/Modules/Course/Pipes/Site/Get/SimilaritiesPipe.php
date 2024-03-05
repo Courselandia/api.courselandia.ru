@@ -50,18 +50,7 @@ class SimilaritiesPipe implements Pipe
         if ($course) {
             $cacheKey = Util::getKey('course', 'site', 'similarities', $course->id);
 
-            $courses = Cache::tags([
-                'course',
-                'direction',
-                'profession',
-                'category',
-                'skill',
-                'teacher',
-                'tool',
-                'process',
-                'employment',
-                'review',
-            ])->remember(
+            $courses = Cache::tags(['catalog', 'course'])->remember(
                 $cacheKey,
                 CacheTime::GENERAL->value,
                 function () use ($course) {

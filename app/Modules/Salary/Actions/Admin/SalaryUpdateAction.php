@@ -53,7 +53,7 @@ class SalaryUpdateAction extends Action
             ]);
 
             Salary::find($this->data->id)->update($salaryEntity->toArray());
-            Cache::tags(['catalog', 'profession', 'salary'])->flush();
+            Cache::tags(['catalog', 'salary'])->flush();
 
             $action = new SalaryGetAction($this->data->id);
 

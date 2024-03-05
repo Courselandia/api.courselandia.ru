@@ -60,7 +60,7 @@ class CategoryUpdateStatusAction extends Action
             $category = Category::find($this->id);
             $category->update($categoryEntity->toArray());
 
-            Cache::tags(['catalog', 'category', 'direction', 'profession'])->flush();
+            Cache::tags(['catalog', 'category'])->flush();
 
             return $categoryEntity;
         }

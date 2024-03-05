@@ -41,7 +41,7 @@ class ProfessionDestroyAction extends Action
     {
         if ($this->ids) {
             Profession::destroy($this->ids);
-            Cache::tags(['catalog', 'category', 'direction', 'salary', 'profession'])->flush();
+            Cache::tags(['catalog', 'profession'])->flush();
         }
 
         return true;

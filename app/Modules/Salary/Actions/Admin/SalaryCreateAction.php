@@ -44,7 +44,7 @@ class SalaryCreateAction extends Action
         $salaryEntity = SalaryEntity::from($this->data->toArray());
 
         $salary = Salary::create($salaryEntity->toArray());
-        Cache::tags(['catalog', 'profession', 'salary'])->flush();
+        Cache::tags(['catalog', 'salary'])->flush();
 
         $action = new SalaryGetAction($salary->id);
 

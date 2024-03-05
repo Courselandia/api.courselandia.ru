@@ -44,7 +44,7 @@ class SalaryGetAction extends Action
     {
         $cacheKey = Util::getKey('salary', $this->id, 'profession');
 
-        return Cache::tags(['catalog', 'profession', 'salary'])->remember(
+        return Cache::tags(['catalog', 'salary'])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
             function () {

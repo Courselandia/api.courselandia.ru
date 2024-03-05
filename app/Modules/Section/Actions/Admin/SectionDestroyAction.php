@@ -41,7 +41,7 @@ class SectionDestroyAction extends Action
     {
         if ($this->ids) {
             Section::destroy($this->ids);
-            Cache::tags(['section'])->flush();
+            Cache::tags(['catalog', 'section'])->flush();
         }
 
         return true;

@@ -90,7 +90,7 @@ class SectionReadAction extends Action
             'metatag',
         );
 
-        return Cache::tags(['section'])->remember(
+        return Cache::tags(['catalog', 'section'])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
             function () {

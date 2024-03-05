@@ -47,17 +47,7 @@ class FilterLevelPipe implements Pipe
             $currentFilters
         );
 
-        $levels = Cache::tags([
-            'course',
-            'direction',
-            'profession',
-            'category',
-            'skill',
-            'teacher',
-            'tool',
-            'processes',
-            'employment',
-        ])->remember(
+        $levels = Cache::tags(['catalog', 'course'])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
             function () use ($currentFilters) {

@@ -179,18 +179,7 @@ class CourseCreateAction extends Action
             return $course->id;
         });
 
-        Cache::tags([
-            'course',
-            'direction',
-            'profession',
-            'category',
-            'skill',
-            'teacher',
-            'tool',
-            'process',
-            'employment',
-            'review',
-        ])->flush();
+        Cache::tags(['catalog', 'course'])->flush();
 
         $action = new CourseGetAction($id);
 

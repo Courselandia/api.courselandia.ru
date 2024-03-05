@@ -57,7 +57,7 @@ class SectionUpdateStatusAction extends Action
         if ($sectionEntity) {
             $sectionEntity->status = $this->status;
             Section::find($this->id)->update($sectionEntity->toArray());
-            Cache::tags(['section'])->flush();
+            Cache::tags(['catalog', 'section'])->flush();
 
             return $sectionEntity;
         }

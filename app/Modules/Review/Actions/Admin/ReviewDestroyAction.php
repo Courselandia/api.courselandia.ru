@@ -41,7 +41,7 @@ class ReviewDestroyAction extends Action
     {
         if ($this->ids) {
             Review::destroy($this->ids);
-            Cache::tags(['catalog', 'school', 'review', 'course'])->flush();
+            Cache::tags(['catalog', 'review'])->flush();
         }
 
         return true;

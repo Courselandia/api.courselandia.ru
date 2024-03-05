@@ -42,7 +42,7 @@ class FaqDestroyAction extends Action
         if ($this->ids) {
             Faq::destroy($this->ids);
 
-            Cache::tags(['catalog', 'school', 'faq'])->flush();
+            Cache::tags(['catalog', 'faq'])->flush();
         }
 
         return true;

@@ -89,7 +89,7 @@ class ReviewReadAction extends Action
             'course',
         );
 
-        return Cache::tags(['catalog', 'school', 'review', 'course'])->remember(
+        return Cache::tags(['catalog', 'review'])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
             function () {

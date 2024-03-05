@@ -82,17 +82,7 @@ class FilterRatingPipe implements Pipe
             $filters,
         );
 
-        return Cache::tags([
-            'course',
-            'direction',
-            'profession',
-            'category',
-            'skill',
-            'teacher',
-            'tool',
-            'processes',
-            'employment',
-        ])->remember(
+        return Cache::tags(['catalog', 'course'])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
             function () use ($rating, $filters) {

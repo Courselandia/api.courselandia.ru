@@ -58,7 +58,7 @@ class SchoolImageDestroyAction extends Action
     {
         $cacheKey = Util::getKey('school', 'model', $this->id);
 
-        $school = Cache::tags(['catalog', 'school', 'faq'])->remember(
+        $school = Cache::tags(['catalog', 'school'])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
             function () {
@@ -84,7 +84,7 @@ class SchoolImageDestroyAction extends Action
             }
 
             $school->save();
-            Cache::tags(['catalog', 'school', 'teacher', 'faq'])->flush();
+            Cache::tags(['catalog', 'school'])->flush();
 
             return true;
         }

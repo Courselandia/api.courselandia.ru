@@ -97,7 +97,7 @@ class SectionUpdateAction extends Action
                     $weight++;
                 }
 
-                Cache::tags(['section'])->flush();
+                Cache::tags(['catalog', 'section'])->flush();
             });
 
             $action = new SectionGetAction($this->data->id);

@@ -44,7 +44,7 @@ class ToolGetAction extends Action
     {
         $cacheKey = Util::getKey('tool', 'admin', 'get', $this->id);
 
-        return Cache::tags(['catalog', 'tool', 'category'])->remember(
+        return Cache::tags(['catalog', 'tool'])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
             function () {

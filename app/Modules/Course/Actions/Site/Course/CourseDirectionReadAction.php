@@ -116,17 +116,7 @@ class CourseDirectionReadAction extends Action
                 $this->limit,
             );
 
-            return Cache::tags([
-                'course',
-                'direction',
-                'profession',
-                'category',
-                'skill',
-                'teacher',
-                'tool',
-                'process',
-                'employment',
-            ])->remember(
+            return Cache::tags(['catalog', 'course'])->remember(
                 $cacheKey,
                 CacheTime::GENERAL->value,
                 function () {
@@ -168,17 +158,7 @@ class CourseDirectionReadAction extends Action
                 'all',
             );
 
-            $allDirections = Cache::tags([
-                'course',
-                'direction',
-                'profession',
-                'category',
-                'skill',
-                'teacher',
-                'tool',
-                'process',
-                'employment',
-            ])->remember(
+            $allDirections = Cache::tags(['catalog', 'course'])->remember(
                 $cacheKey,
                 CacheTime::GENERAL->value,
                 function () use ($filters) {
@@ -218,17 +198,7 @@ class CourseDirectionReadAction extends Action
             $this->disabled,
         );
 
-        return Cache::tags([
-            'course',
-            'direction',
-            'profession',
-            'category',
-            'skill',
-            'teacher',
-            'tool',
-            'process',
-            'employment',
-        ])->remember(
+        return Cache::tags(['catalog', 'course'])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
             function () use ($filters, $allDirections) {

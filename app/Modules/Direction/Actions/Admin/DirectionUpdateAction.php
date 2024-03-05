@@ -101,7 +101,7 @@ class DirectionUpdateAction extends Action
 
                 Direction::find($this->data->id)->update($directionEntity->toArray());
 
-                Cache::tags(['catalog', 'category', 'direction', 'profession', 'teacher'])->flush();
+                Cache::tags(['catalog', 'direction'])->flush();
 
                 $action = new AnalyzerUpdateAction($directionEntity->id, Direction::class, 'direction.text');
                 $action->run();

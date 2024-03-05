@@ -41,7 +41,7 @@ class TeacherDestroyAction extends Action
     {
         if ($this->ids) {
             Teacher::destroy($this->ids);
-            Cache::tags(['catalog', 'teacher', 'direction', 'school'])->flush();
+            Cache::tags(['catalog', 'teacher'])->flush();
         }
 
         return true;

@@ -46,7 +46,7 @@ class SectionGetAction extends Action
     {
         $cacheKey = Util::getKey('section', $this->id);
 
-        return Cache::tags(['section'])->remember(
+        return Cache::tags(['catalog', 'section'])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
             function () {

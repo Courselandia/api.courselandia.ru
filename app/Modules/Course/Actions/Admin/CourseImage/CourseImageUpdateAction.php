@@ -64,7 +64,7 @@ class CourseImageUpdateAction extends Action
                 $course['image_big_id'] = $this->image;
 
                 Course::find($this->id)->update($course);
-                Cache::tags(['course'])->flush();
+                Cache::tags(['catalog', 'course'])->flush();
 
                 return $action->run();
             }

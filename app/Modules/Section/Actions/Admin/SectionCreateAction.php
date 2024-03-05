@@ -89,7 +89,7 @@ class SectionCreateAction extends Action
                 $weight++;
             }
 
-            Cache::tags(['section'])->flush();
+            Cache::tags(['catalog', 'section'])->flush();
 
             return $section->id;
         });

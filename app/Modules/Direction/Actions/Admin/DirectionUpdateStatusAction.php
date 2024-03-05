@@ -58,7 +58,7 @@ class DirectionUpdateStatusAction extends Action
             $directionEntity->status = $this->status;
 
             Direction::find($this->id)->update($directionEntity->toArray());
-            Cache::tags(['catalog', 'category', 'direction', 'profession', 'teacher'])->flush();
+            Cache::tags(['catalog', 'direction'])->flush();
 
             return $directionEntity;
         }

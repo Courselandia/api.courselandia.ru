@@ -48,7 +48,7 @@ class ReviewBreakDownAction extends Action
     {
         $cacheKey = Util::getKey('review', 'site', 'breakDown');
 
-        return Cache::tags(['catalog', 'school', 'review', 'course'])->remember(
+        return Cache::tags(['catalog', 'review'])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
             function () {

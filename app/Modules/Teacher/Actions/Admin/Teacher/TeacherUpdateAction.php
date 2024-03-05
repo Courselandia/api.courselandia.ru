@@ -159,7 +159,7 @@ class TeacherUpdateAction extends Action
                     }
                 }
 
-                Cache::tags(['catalog', 'teacher', 'direction', 'school'])->flush();
+                Cache::tags(['catalog', 'teacher'])->flush();
             });
 
             if (!$this->data->copied) {

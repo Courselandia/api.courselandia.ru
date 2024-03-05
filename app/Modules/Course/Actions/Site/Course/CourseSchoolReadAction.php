@@ -99,18 +99,7 @@ class CourseSchoolReadAction extends Action
                 $this->limit,
             );
 
-            return Cache::tags([
-                'course',
-                'direction',
-                'profession',
-                'category',
-                'skill',
-                'teacher',
-                'tool',
-                'process',
-                'employment',
-                'school',
-            ])->remember(
+            return Cache::tags(['catalog', 'course'])->remember(
                 $cacheKey,
                 CacheTime::GENERAL->value,
                 function () {
@@ -153,18 +142,7 @@ class CourseSchoolReadAction extends Action
                 'all',
             );
 
-            $allSchools = Cache::tags([
-                'course',
-                'direction',
-                'profession',
-                'category',
-                'skill',
-                'teacher',
-                'school',
-                'process',
-                'employment',
-                'school',
-            ])->remember(
+            $allSchools = Cache::tags(['catalog', 'course'])->remember(
                 $cacheKey,
                 CacheTime::GENERAL->value,
                 function () {
@@ -201,18 +179,7 @@ class CourseSchoolReadAction extends Action
             $this->disabled,
         );
 
-        return Cache::tags([
-            'course',
-            'direction',
-            'profession',
-            'category',
-            'skill',
-            'teacher',
-            'tool',
-            'process',
-            'employment',
-            'school',
-        ])->remember(
+        return Cache::tags(['catalog', 'course'])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
             function () use ($schoolFilters, $filters, $allSchools) {

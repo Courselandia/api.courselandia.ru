@@ -42,7 +42,7 @@ class DirectionDestroyAction extends Action
         if ($this->ids) {
             Direction::destroy($this->ids);
 
-            Cache::tags(['catalog', 'category', 'direction', 'profession', 'teacher'])->flush();
+            Cache::tags(['catalog', 'direction'])->flush();
         }
 
         return true;

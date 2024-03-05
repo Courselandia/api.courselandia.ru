@@ -48,7 +48,7 @@ class FaqCreateAction extends Action
 
 
         $faq = Faq::create($faqEntity->toArray());
-        Cache::tags(['catalog', 'school', 'faq'])->flush();
+        Cache::tags(['catalog', 'faq'])->flush();
 
         $action = new FaqGetAction($faq->id);
 

@@ -64,7 +64,7 @@ class TeacherImageUpdateAction extends Action
                 $teacher['image_big_id'] = $this->image;
 
                 Teacher::find($this->id)->update($teacher);
-                Cache::tags(['catalog', 'teacher', 'direction', 'school'])->flush();
+                Cache::tags(['catalog', 'teacher'])->flush();
 
                 return $action->run();
             }

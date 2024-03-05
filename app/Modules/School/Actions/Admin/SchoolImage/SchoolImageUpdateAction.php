@@ -78,7 +78,7 @@ class SchoolImageUpdateAction extends Action
                 }
 
                 School::find($this->id)->update($data);
-                Cache::tags(['catalog', 'school', 'teacher', 'faq'])->flush();
+                Cache::tags(['catalog', 'school'])->flush();
 
                 return $action->run();
             }

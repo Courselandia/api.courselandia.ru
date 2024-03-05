@@ -45,7 +45,7 @@ class ProfessionGetAction extends Action
         $id = $this->id;
         $cacheKey = Util::getKey('profession', $id, 'metatag');
 
-        return Cache::tags(['catalog', 'category', 'direction', 'salary', 'profession'])->remember(
+        return Cache::tags(['catalog', 'profession'])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
             function () use ($id) {

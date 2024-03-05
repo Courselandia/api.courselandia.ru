@@ -42,18 +42,7 @@ class GetPipe implements Pipe
 
         $cacheKey = Util::getKey('course', 'site', $school, $link, $id);
 
-        $course = Cache::tags([
-            'course',
-            'direction',
-            'profession',
-            'category',
-            'skill',
-            'teacher',
-            'tool',
-            'process',
-            'employment',
-            'review',
-        ])->remember(
+        $course = Cache::tags(['catalog', 'course'])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
             function () use ($school, $link, $id) {

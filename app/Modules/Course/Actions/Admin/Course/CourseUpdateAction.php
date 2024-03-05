@@ -187,18 +187,7 @@ class CourseUpdateAction extends Action
 
             $action->run();
 
-            Cache::tags([
-                'course',
-                'direction',
-                'profession',
-                'category',
-                'skill',
-                'teacher',
-                'tool',
-                'process',
-                'employment',
-                'review',
-            ])->flush();
+            Cache::tags(['catalog', 'course'])->flush();
 
             $action = new CourseGetAction($this->data->id);
 

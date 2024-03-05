@@ -89,7 +89,7 @@ class CategoryReadAction extends Action
             'metatag',
         );
 
-        return Cache::tags(['catalog', 'category', 'direction', 'profession'])->remember(
+        return Cache::tags(['catalog', 'category'])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
             function () {

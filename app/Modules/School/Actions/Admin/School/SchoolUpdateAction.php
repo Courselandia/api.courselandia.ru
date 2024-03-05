@@ -104,7 +104,7 @@ class SchoolUpdateAction extends Action
                 }
 
                 School::find($this->data->id)->update($data);
-                Cache::tags(['catalog', 'school', 'teacher', 'review', 'faq'])->flush();
+                Cache::tags(['catalog', 'school'])->flush();
 
                 $action = new AnalyzerUpdateAction($schoolEntity->id, School::class, 'school.text');
                 $action->run();

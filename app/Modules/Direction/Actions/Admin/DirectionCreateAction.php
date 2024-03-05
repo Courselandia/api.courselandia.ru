@@ -82,7 +82,7 @@ class DirectionCreateAction extends Action
 
             $direction = Direction::create($directionEntity->toArray());
 
-            Cache::tags(['catalog', 'category', 'direction', 'profession', 'teacher'])->flush();
+            Cache::tags(['catalog', 'direction'])->flush();
 
             $action = new AnalyzerUpdateAction($direction->id, Direction::class, 'direction.text');
             $action->run();

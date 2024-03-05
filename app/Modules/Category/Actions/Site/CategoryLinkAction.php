@@ -47,7 +47,7 @@ class CategoryLinkAction extends Action
     {
         $cacheKey = Util::getKey('category', 'admin', 'get', $this->link);
 
-        return Cache::tags(['catalog', 'category', 'direction', 'profession'])->remember(
+        return Cache::tags(['catalog', 'category'])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
             function () {

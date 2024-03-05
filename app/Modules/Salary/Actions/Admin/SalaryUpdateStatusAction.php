@@ -57,7 +57,7 @@ class SalaryUpdateStatusAction extends Action
         if ($salaryEntity) {
             $salaryEntity->status = $this->status;
             Salary::find($this->id)->update($salaryEntity->toArray());
-            Cache::tags(['catalog', 'profession', 'salary'])->flush();
+            Cache::tags(['catalog', 'salary'])->flush();
 
             return $salaryEntity;
         }

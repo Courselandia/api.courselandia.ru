@@ -44,7 +44,7 @@ class TeacherGetAction extends Action
     {
         $cacheKey = Util::getKey('teacher', 'admin', 'get', $this->id);
 
-        return Cache::tags(['catalog', 'teacher', 'directions', 'schools', 'category'])->remember(
+        return Cache::tags(['catalog', 'teacher'])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
             function () {

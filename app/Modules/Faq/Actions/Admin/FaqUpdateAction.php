@@ -56,7 +56,7 @@ class FaqUpdateAction extends Action
             ]);
 
             Faq::find($this->data->id)->update($faqEntity->toArray());
-            Cache::tags(['catalog', 'school', 'faq'])->flush();
+            Cache::tags(['catalog', 'faq'])->flush();
 
             $action = new FaqGetAction($this->data->id);
 

@@ -47,7 +47,7 @@ class TeacherLinkAction extends Action
     {
         $cacheKey = Util::getKey('teacher', 'admin', 'get', $this->link);
 
-        return Cache::tags(['catalog', 'teacher', 'directions', 'schools', 'category'])->remember(
+        return Cache::tags(['catalog', 'teacher'])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
             function () {

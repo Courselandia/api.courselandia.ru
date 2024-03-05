@@ -57,7 +57,7 @@ class TeacherDetachCoursesAction extends Action
                 }
             }
 
-            Cache::tags(['catalog', 'teacher', 'course'])->flush();
+            Cache::tags(['catalog', 'teacher'])->flush();
         }
 
         return true;

@@ -102,7 +102,7 @@ class CategoryUpdateAction extends Action
 
                 $category->directions()->sync($this->data->directions);
                 $category->professions()->sync($this->data->professions);
-                Cache::tags(['catalog', 'category', 'direction', 'profession'])->flush();
+                Cache::tags(['catalog', 'category'])->flush();
 
                 $action = new AnalyzerUpdateAction($categoryEntity->id, Category::class, 'category.text');
                 $action->run();

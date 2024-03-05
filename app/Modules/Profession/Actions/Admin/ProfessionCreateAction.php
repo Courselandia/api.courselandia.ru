@@ -78,7 +78,7 @@ class ProfessionCreateAction extends Action
             ]);
 
             $profession = Profession::create($professionEntity->toArray());
-            Cache::tags(['catalog', 'category', 'direction', 'salary', 'profession'])->flush();
+            Cache::tags(['catalog', 'profession'])->flush();
 
             $action = new AnalyzerUpdateAction($profession->id, Profession::class, 'profession.text');
             $action->run();

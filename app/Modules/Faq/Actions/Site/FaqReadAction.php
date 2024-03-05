@@ -53,7 +53,7 @@ class FaqReadAction extends Action
             'school',
         );
 
-        return Cache::tags(['catalog', 'school', 'faq'])->remember(
+        return Cache::tags(['catalog', 'faq'])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
             function () {

@@ -99,17 +99,7 @@ class CourseToolReadAction extends Action
                 $this->limit,
             );
 
-            return Cache::tags([
-                'course',
-                'direction',
-                'profession',
-                'category',
-                'skill',
-                'teacher',
-                'tool',
-                'process',
-                'employment',
-            ])->remember(
+            return Cache::tags(['catalog', 'course'])->remember(
                 $cacheKey,
                 CacheTime::GENERAL->value,
                 function () {
@@ -152,17 +142,7 @@ class CourseToolReadAction extends Action
                 'all',
             );
 
-            $allTools = Cache::tags([
-                'course',
-                'direction',
-                'profession',
-                'category',
-                'skill',
-                'teacher',
-                'tool',
-                'process',
-                'employment',
-            ])->remember(
+            $allTools = Cache::tags(['catalog', 'course'])->remember(
                 $cacheKey,
                 CacheTime::GENERAL->value,
                 function () {
@@ -200,17 +180,7 @@ class CourseToolReadAction extends Action
             $this->disabled,
         );
 
-        return Cache::tags([
-            'course',
-            'direction',
-            'profession',
-            'category',
-            'skill',
-            'teacher',
-            'tool',
-            'process',
-            'employment',
-        ])->remember(
+        return Cache::tags(['catalog', 'course'])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
             function () use ($toolFilters, $filters, $allTools) {

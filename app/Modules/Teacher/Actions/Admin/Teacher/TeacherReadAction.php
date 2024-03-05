@@ -89,7 +89,7 @@ class TeacherReadAction extends Action
             'metatag'
         );
 
-        return Cache::tags(['catalog', 'teacher', 'direction', 'school'])->remember(
+        return Cache::tags(['catalog', 'teacher'])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
             function () {

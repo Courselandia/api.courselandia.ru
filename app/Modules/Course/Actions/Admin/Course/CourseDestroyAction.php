@@ -44,18 +44,7 @@ class CourseDestroyAction extends Action
         if ($this->ids) {
             Course::destroy($this->ids);
 
-            Cache::tags([
-                'course',
-                'direction',
-                'profession',
-                'category',
-                'skill',
-                'teacher',
-                'tool',
-                'process',
-                'employment',
-                'review',
-            ])->flush();
+            Cache::tags(['catalog', 'course'])->flush();
         }
 
         return true;

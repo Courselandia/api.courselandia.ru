@@ -85,7 +85,7 @@ class SchoolCreateAction extends Action
                 'image_logo_id' => $this->data->image_logo_id,
                 'image_site_id' => $this->data->image_site_id,
             ]);
-            Cache::tags(['catalog', 'school', 'teacher', 'review', 'faq'])->flush();
+            Cache::tags(['catalog', 'school'])->flush();
 
             $action = new AnalyzerUpdateAction($school->id, School::class, 'school.text');
             $action->run();

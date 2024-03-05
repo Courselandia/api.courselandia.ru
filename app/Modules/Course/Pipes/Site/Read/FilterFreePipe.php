@@ -43,17 +43,7 @@ class FilterFreePipe implements Pipe
             $filters,
         );
 
-        $has = Cache::tags([
-            'course',
-            'direction',
-            'profession',
-            'category',
-            'skill',
-            'teacher',
-            'tool',
-            'processes',
-            'employment',
-        ])->remember(
+        $has = Cache::tags(['catalog', 'course'])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
             function () use ($filters) {

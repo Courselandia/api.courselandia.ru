@@ -49,7 +49,7 @@ class TeacherImageDestroyAction extends Action
     {
         $cacheKey = Util::getKey('teacher', 'model', $this->id);
 
-        $teacher = Cache::tags(['catalog', 'teacher', 'direction', 'school'])->remember(
+        $teacher = Cache::tags(['catalog', 'teacher'])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
             function () {
@@ -75,7 +75,7 @@ class TeacherImageDestroyAction extends Action
             $teacher->image_big_id = null;
 
             $teacher->save();
-            Cache::tags(['catalog', 'teacher', 'direction', 'school'])->flush();
+            Cache::tags(['catalog', 'teacher'])->flush();
 
             return true;
         }

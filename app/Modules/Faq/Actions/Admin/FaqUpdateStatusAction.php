@@ -58,7 +58,7 @@ class FaqUpdateStatusAction extends Action
             $categoryEntity->status = $this->status;
             Faq::find($this->id)->update($categoryEntity->toArray());
 
-            Cache::tags(['catalog', 'category', 'direction', 'profession'])->flush();
+            Cache::tags(['catalog', 'faq'])->flush();
 
             return $categoryEntity;
         }

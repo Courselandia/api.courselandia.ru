@@ -73,7 +73,7 @@ class SectionLinkAction extends Action
             $this->free,
         );
 
-        return Cache::tags(['section'])->remember(
+        return Cache::tags(['catalog', 'section'])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
             function () {

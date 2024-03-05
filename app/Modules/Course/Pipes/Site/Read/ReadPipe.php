@@ -52,18 +52,7 @@ class ReadPipe implements Pipe
             $data->onlyWithImage,
         );
 
-        $result = Cache::tags([
-            'course',
-            'direction',
-            'profession',
-            'category',
-            'skill',
-            'teacher',
-            'tool',
-            'processes',
-            'employment',
-            'review',
-        ])->remember(
+        $result = Cache::tags(['catalog', 'course'])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
             function () use ($data) {

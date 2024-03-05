@@ -46,7 +46,7 @@ class CategoryGetAction extends Action
     {
         $cacheKey = Util::getKey('category', 'admin', 'get', $this->id);
 
-        return Cache::tags(['catalog', 'category', 'direction', 'profession'])->remember(
+        return Cache::tags(['catalog', 'category'])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
             function () {

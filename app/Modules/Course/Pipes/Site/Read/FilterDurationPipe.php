@@ -48,17 +48,7 @@ class FilterDurationPipe implements Pipe
             $currentFilters,
         );
 
-        $duration = Cache::tags([
-            'course',
-            'direction',
-            'profession',
-            'category',
-            'skill',
-            'teacher',
-            'tool',
-            'processes',
-            'employment',
-        ])->remember(
+        $duration = Cache::tags(['catalog', 'course'])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
             function () use ($currentFilters) {

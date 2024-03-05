@@ -48,17 +48,7 @@ class FilterPricePipe implements Pipe
             $currentFilters,
         );
 
-        $price = Cache::tags([
-            'course',
-            'direction',
-            'profession',
-            'category',
-            'skill',
-            'teacher',
-            'tool',
-            'processes',
-            'employment',
-        ])->remember(
+        $price = Cache::tags(['catalog', 'course'])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
             function () use ($currentFilters) {

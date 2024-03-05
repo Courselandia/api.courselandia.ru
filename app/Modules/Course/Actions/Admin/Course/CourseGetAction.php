@@ -45,18 +45,7 @@ class CourseGetAction extends Action
     {
         $cacheKey = Util::getKey('course', 'admin', $this->id);
 
-        return Cache::tags([
-            'course',
-            'direction',
-            'profession',
-            'category',
-            'skill',
-            'teacher',
-            'tool',
-            'process',
-            'employment',
-            'review',
-        ])->remember(
+        return Cache::tags(['catalog', 'course'])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
             function () {

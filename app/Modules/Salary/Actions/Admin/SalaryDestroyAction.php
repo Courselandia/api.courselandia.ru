@@ -41,7 +41,7 @@ class SalaryDestroyAction extends Action
     {
         if ($this->ids) {
             Salary::destroy($this->ids);
-            Cache::tags(['catalog', 'profession', 'salary'])->flush();
+            Cache::tags(['catalog', 'salary'])->flush();
         }
 
         return true;
