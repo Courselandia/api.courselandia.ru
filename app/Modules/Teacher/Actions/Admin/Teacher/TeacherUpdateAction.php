@@ -158,9 +158,9 @@ class TeacherUpdateAction extends Action
                         TeacherSocialMedia::create($entity->toArray());
                     }
                 }
-            });
 
-            Cache::tags(['catalog', 'teacher', 'direction', 'school'])->flush();
+                Cache::tags(['catalog', 'teacher', 'direction', 'school'])->flush();
+            });
 
             if (!$this->data->copied) {
                 $action = new AnalyzerUpdateAction($this->data->id, Teacher::class, 'teacher.text');

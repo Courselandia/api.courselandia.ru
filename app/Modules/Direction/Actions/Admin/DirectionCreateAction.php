@@ -20,6 +20,7 @@ use App\Modules\Metatag\Data\MetatagSet;
 use App\Modules\Metatag\Template\Template;
 use App\Modules\Metatag\Template\TemplateException;
 use Cache;
+use Throwable;
 use Typography;
 
 /**
@@ -47,6 +48,7 @@ class DirectionCreateAction extends Action
      *
      * @return DirectionEntity Вернет результаты исполнения.
      * @throws ParameterInvalidException|TemplateException
+     * @throws Throwable
      */
     public function run(): DirectionEntity
     {

@@ -16,6 +16,7 @@ use App\Modules\Publication\Data\Actions\Admin\PublicationCreate;
 use App\Modules\Publication\Entities\Publication as PublicationEntity;
 use App\Modules\Publication\Models\Publication;
 use Cache;
+use Throwable;
 use Typography;
 
 /**
@@ -42,6 +43,7 @@ class PublicationCreateAction extends Action
      * Метод запуска логики.
      *
      * @return PublicationEntity Вернет результаты исполнения.
+     * @throws Throwable
      */
     public function run(): PublicationEntity
     {

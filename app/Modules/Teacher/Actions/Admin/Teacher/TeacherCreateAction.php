@@ -135,10 +135,10 @@ class TeacherCreateAction extends Action
                 }
             }
 
+            Cache::tags(['catalog', 'teacher', 'direction', 'school'])->flush();
+
             return $teacher->id;
         });
-
-        Cache::tags(['catalog', 'teacher', 'direction', 'school'])->flush();
 
         if (!$this->data->copied) {
             $action = new AnalyzerUpdateAction($id, Teacher::class, 'teacher.text');

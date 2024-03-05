@@ -8,9 +8,11 @@
 
 namespace App\Modules\Skill\Actions\Admin;
 
+use DB;
 use App\Modules\Metatag\Data\MetatagSet;
 use App\Modules\Skill\Data\SkillCreate;
 use Cache;
+use Throwable;
 use Typography;
 use App\Models\Action;
 use App\Models\Exceptions\ParameterInvalidException;
@@ -47,42 +49,47 @@ class SkillCreateAction extends Action
      * @return SkillEntity Вернет результаты исполнения.
      * @throws ParameterInvalidException
      * @throws TemplateException
+     * @throws Throwable
      */
     public function run(): SkillEntity
     {
-        $template = new Template();
+        $id = DB::transaction(function () {
+            $template = new Template();
 
-        $templateValues = [
-            'skill' => $this->data->name,
-            'countSkillCourses' => 0,
-        ];
+            $templateValues = [
+                'skill' => $this->data->name,
+                'countSkillCourses' => 0,
+            ];
 
-        $action = new MetatagSetAction(MetatagSet::from([
-            'description' => $template->convert($this->data->description_template, $templateValues),
-            'title' => $template->convert($this->data->title_template, $templateValues),
-            'description_template' => $this->data->description_template,
-            'title_template' => $this->data->title_template,
-            'keywords' => $this->data->keywords,
-        ]));
+            $action = new MetatagSetAction(MetatagSet::from([
+                'description' => $template->convert($this->data->description_template, $templateValues),
+                'title' => $template->convert($this->data->title_template, $templateValues),
+                'description_template' => $this->data->description_template,
+                'title_template' => $this->data->title_template,
+                'keywords' => $this->data->keywords,
+            ]));
 
-        $metatag = $action->run();
+            $metatag = $action->run();
 
-        $skillEntity = SkillEntity::from([
-            ...$this->data->toArray(),
-            'name' => Typography::process($this->data->name, true),
-            'header' => Typography::process($template->convert($this->data->header_template, $templateValues), true),
-            'text' => Typography::process($this->data->text),
-            'additional' => Typography::process($this->data->additional),
-            'metatag_id' => $metatag->id,
-        ]);
+            $skillEntity = SkillEntity::from([
+                ...$this->data->toArray(),
+                'name' => Typography::process($this->data->name, true),
+                'header' => Typography::process($template->convert($this->data->header_template, $templateValues), true),
+                'text' => Typography::process($this->data->text),
+                'additional' => Typography::process($this->data->additional),
+                'metatag_id' => $metatag->id,
+            ]);
 
-        $skill = Skill::create($skillEntity->toArray());
-        Cache::tags(['catalog', 'skill'])->flush();
+            $skill = Skill::create($skillEntity->toArray());
+            Cache::tags(['catalog', 'skill'])->flush();
 
-        $action = new AnalyzerUpdateAction($skill->id, Skill::class, 'skill.text');
-        $action->run();
+            $action = new AnalyzerUpdateAction($skill->id, Skill::class, 'skill.text');
+            $action->run();
 
-        $action = new SkillGetAction($skill->id);
+            return $skill->id;
+        });
+
+        $action = new SkillGetAction($id);
 
         return $action->run();
     }

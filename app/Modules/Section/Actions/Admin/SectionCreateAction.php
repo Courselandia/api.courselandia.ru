@@ -8,8 +8,10 @@
 
 namespace App\Modules\Section\Actions\Admin;
 
+use DB;
 use Cache;
 use Config;
+use Throwable;
 use Typography;
 use App\Models\Action;
 use App\Models\Exceptions\ParameterInvalidException;
@@ -48,46 +50,51 @@ class SectionCreateAction extends Action
      * @return SectionEntity Вернет результаты исполнения.
      * @throws ParameterInvalidException
      * @throws TemplateException
+     * @throws Throwable
      */
     public function run(): SectionEntity
     {
-        $action = new MetatagSetAction(MetatagSet::from([
-            'description' => Typography::process($this->data->description, true),
-            'title' => Typography::process($this->data->title,true),
-            'keywords' => $this->data->keywords,
-        ]));
+        $id = DB::transaction(function () {
+            $action = new MetatagSetAction(MetatagSet::from([
+                'description' => Typography::process($this->data->description, true),
+                'title' => Typography::process($this->data->title,true),
+                'keywords' => $this->data->keywords,
+            ]));
 
-        $metatag = $action->run();
+            $metatag = $action->run();
 
-        $sectionEntity = SectionEntity::from([
-            ...$this->data->toArray(),
-            'name' => Typography::process($this->data->name, true),
-            'header' => Typography::process($this->data->header, true),
-            'text' => Typography::process($this->data->text),
-            'additional' => Typography::process($this->data->additional),
-            'metatag_id' => $metatag->id,
-        ]);
-
-        $section = Section::create($sectionEntity->toArray());
-        $weight = 0;
-        $items = Config::get('section.items');
-
-        foreach ($this->data->items as $item) {
-            $sectionItemEntity = SectionItemEntity::from([
-                'section_id' => $section->id,
-                'weight' => $weight,
-                'itemable_id' => $item['id'],
-                'itemable_type' => $items[$item['type']],
+            $sectionEntity = SectionEntity::from([
+                ...$this->data->toArray(),
+                'name' => Typography::process($this->data->name, true),
+                'header' => Typography::process($this->data->header, true),
+                'text' => Typography::process($this->data->text),
+                'additional' => Typography::process($this->data->additional),
+                'metatag_id' => $metatag->id,
             ]);
 
-            SectionItem::create($sectionItemEntity->toArray());
+            $section = Section::create($sectionEntity->toArray());
+            $weight = 0;
+            $items = Config::get('section.items');
 
-            $weight++;
-        }
+            foreach ($this->data->items as $item) {
+                $sectionItemEntity = SectionItemEntity::from([
+                    'section_id' => $section->id,
+                    'weight' => $weight,
+                    'itemable_id' => $item['id'],
+                    'itemable_type' => $items[$item['type']],
+                ]);
 
-        Cache::tags(['section'])->flush();
+                SectionItem::create($sectionItemEntity->toArray());
 
-        $action = new SectionGetAction($section->id);
+                $weight++;
+            }
+
+            Cache::tags(['section'])->flush();
+
+            return $section->id;
+        });
+
+        $action = new SectionGetAction($id);
 
         return $action->run();
     }

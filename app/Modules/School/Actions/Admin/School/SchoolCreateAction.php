@@ -13,6 +13,7 @@ use App\Modules\Analyzer\Actions\Admin\AnalyzerUpdateAction;
 use App\Modules\Metatag\Data\MetatagSet;
 use App\Modules\School\Data\SchoolCreate;
 use Cache;
+use Throwable;
 use Typography;
 use App\Models\Action;
 use App\Models\Exceptions\ParameterInvalidException;
@@ -48,6 +49,7 @@ class SchoolCreateAction extends Action
      * @return SchoolEntity Вернет результаты исполнения.
      * @throws ParameterInvalidException
      * @throws TemplateException
+     * @throws Throwable
      */
     public function run(): SchoolEntity
     {
