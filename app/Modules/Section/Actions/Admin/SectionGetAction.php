@@ -84,7 +84,7 @@ class SectionGetAction extends Action
     {
         if (isset($entity->items[0]->itemable['link'])) {
             $url = Config::get('app.url');
-            $url .= '/' . $entity->items[0]->type . '/' . $entity->items[0]->itemable['link'];
+            $url .= '/courses/' . $entity->items[0]->type . '/' . $entity->items[0]->itemable['link'];
 
             if (isset($entity->items[1]->itemable['link'])) {
                 $url .= '/' . $entity->items[1]->type . '/' . $entity->items[1]->itemable['link'];

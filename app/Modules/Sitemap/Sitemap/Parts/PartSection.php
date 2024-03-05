@@ -48,7 +48,7 @@ class PartSection extends PartDirection
 
             if ($section) {
                 $item = new Item();
-                $item->path = '/courses' . $this->getUrl($section);
+                $item->path = $this->getPath($section);
                 $item->priority = 0.8;
                 $item->lastmod = Carbon::parse($section['updated_at']);
 
@@ -77,14 +77,13 @@ class PartSection extends PartDirection
      * @param array $section Данные раздела.
      * @return string|null URL раздела.
      */
-    private function getUrl(array $section): string|null
+    private function getPath(array $section): string|null
     {
         $items = Config::get('section.items');
 
         if (isset($section['items'][0]['itemable']['link'])) {
-            $url = Config::get('app.url');
             $sectionName = array_search($section['items'][0]['itemable_type'], $items);
-            $url .= '/' . $sectionName . '/' . $section['items'][0]['itemable']['link'];
+            $url = '/courses/' . $sectionName . '/' . $section['items'][0]['itemable']['link'];
 
             if (isset($section['items'][1]['itemable']['link'])) {
                 $sectionName = array_search($section['items'][1]['itemable_type'], $items);
