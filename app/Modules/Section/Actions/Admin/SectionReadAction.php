@@ -16,6 +16,7 @@ use App\Modules\Section\Models\Section;
 use Cache;
 use ReflectionException;
 use Util;
+use Config;
 
 /**
  * Класс действия для чтения раздела.
@@ -112,9 +113,17 @@ class SectionReadAction extends Action
                 }
 
                 $items = $query->get()->toArray();
+                $sections = SectionEntity::collection($items);
+                $configItems = Config::get('section.items');
+
+                foreach ($sections as $section) {
+                    foreach ($section->items as $item) {
+                        $item->type = array_search($item->itemable_type, $configItems);
+                    }
+                }
 
                 return [
-                    'data' => SectionEntity::collection($items),
+                    'data' => $sections,
                     'total' => $queryCount->count(),
                 ];
             }
