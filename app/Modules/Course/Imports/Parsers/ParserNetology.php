@@ -71,6 +71,7 @@ class ParserNetology extends ParserYml
             'Личная эффективность' => Direction::OTHER,
             'Онлайн Модульный набор Лайфстайл и хобби' => Direction::OTHER,
             'Онлайн Модульный набор Прочее' => Direction::OTHER,
+            'Онлайн Курс Greenbox' => Direction::OTHER,
         ];
     }
 
