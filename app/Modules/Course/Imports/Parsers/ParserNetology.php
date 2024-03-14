@@ -72,6 +72,13 @@ class ParserNetology extends ParserYml
             'Онлайн Модульный набор Лайфстайл и хобби' => Direction::OTHER,
             'Онлайн Модульный набор Прочее' => Direction::OTHER,
             'Онлайн Курс Greenbox' => Direction::OTHER,
+            'Онлайн Открытое занятие Креативные индустрии - Рескил' => Direction::DESIGN,
+            'Онлайн Модульный набор Креативные индустрии - Рескилл' => Direction::GAMES,
+            'Онлайн Курс Креативные индустрии - Рескилл' => Direction::GAMES,
+            'Онлайн Курс Бизнес и продукт - Рескилл' => Direction::BUSINESS,
+            'Онлайн Курс Бизнес и продукт - Апскилл' => Direction::BUSINESS,
+            'Онлайн Открытое занятие ИТ-профессии - Рескилл' => Direction::PROGRAMMING,
+            'Онлайн Модульный набор Бизнес и продукт - Апскилл' => Direction::OTHER,
         ];
     }
 
