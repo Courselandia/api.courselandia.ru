@@ -79,6 +79,9 @@ class ParserNetology extends ParserYml
             'Онлайн Курс Бизнес и продукт - Апскилл' => Direction::BUSINESS,
             'Онлайн Открытое занятие ИТ-профессии - Рескилл' => Direction::PROGRAMMING,
             'Онлайн Модульный набор Бизнес и продукт - Апскилл' => Direction::OTHER,
+            'Онлайн Открытое занятие Креативные индустрии - Рескилл' => Direction::DESIGN,
+            'Онлайн Модульный набор Бизнес и продукт - Рескилл' => Direction::BUSINESS,
+            'Онлайн Открытое занятие Бизнес и продукт - Рескилл' => Direction::BUSINESS,
         ];
     }
 
