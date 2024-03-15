@@ -66,7 +66,7 @@ class PublicationUpdateAction extends Action
                     ...$this->data->toArray(),
                     'metatag_id' => $action->run()->id,
                     'header' => Typography::process($this->data->header, true),
-                    'anons' => Typography::process($this->data->anons, true),
+                    'anons' => Typography::process($this->data->anons, true, false),
                     'article' => Typography::process($this->data->article),
                 ]);
 

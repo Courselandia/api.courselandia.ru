@@ -59,7 +59,7 @@ class PublicationCreateAction extends Action
             $publicationEntity = PublicationEntity::from([
                 ...$this->data->toArray(),
                 'header' => Typography::process($this->data->header, true),
-                'anons' => Typography::process($this->data->anons, true),
+                'anons' => Typography::process($this->data->anons, true, false),
                 'article' => Typography::process($this->data->article),
                 'metatag_id' => $metatag->id,
             ]);
