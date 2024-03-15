@@ -8,14 +8,14 @@
 
 namespace App\Modules\Publication\Pipes\Site\Read;
 
-use App\Models\Data;
-use App\Models\Enums\CacheTime;
-use App\Modules\Publication\Entities\Publication as PublicationEntity;
 use Cache;
 use Closure;
 use Util;
+use App\Models\Data;
 use ReflectionException;
+use App\Models\Enums\CacheTime;
 use App\Models\Contracts\Pipe;
+use App\Modules\Publication\Entities\Publication as PublicationEntity;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Publication\Models\Publication;
 use App\Modules\Publication\Data\Decorators\PublicationRead as PublicationReadData;
