@@ -60,16 +60,29 @@ class PublicationRead implements Pipe
             $cacheKey,
             CacheTime::GENERAL->value,
             function () use ($year, $link, $id, $limit, $offset) {
-                $publications = Publication::limit($limit)
-                    ->offset($offset)
-                    ->year($year)
-                    ->link($link)
-                    ->id($id)
+                $query = Publication::limit($limit)
                     ->orderBy('published_at', 'DESC')
                     ->orderBy('id', 'DESC')
                     ->with('metatag')
-                    ->active()
-                    ->get();
+                    ->active();
+
+                if ($year) {
+                    $query->year($year);
+                }
+
+                if ($link) {
+                    $query->year($link);
+                }
+
+                if ($id) {
+                    $query->id($id);
+                }
+
+                if ($offset) {
+                    $query->offset($offset);
+                }
+
+                $publications = $query->get();
 
                 return $publications ? PublicationEntity::collection($publications) : null;
             }

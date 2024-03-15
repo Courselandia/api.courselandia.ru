@@ -9,28 +9,22 @@
 namespace App\Modules\Publication\Models;
 
 use DB;
-use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasTimestamps;
-use Size;
 use Eloquent;
-use ImageStore;
 use Carbon\Carbon;
 use App\Models\Status;
 use App\Models\Delete;
 use App\Models\Validate;
 use App\Models\Sortable;
-use CodeBuds\WebPConverter\WebPConverter;
 use EloquentFilter\Filterable;
 use App\Modules\Image\Entities\Image as ImageEntity;
-use App\Modules\Image\Helpers\Image;
 use App\Modules\Metatag\Models\Metatag;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Modules\Publication\Database\Factories\PublicationFactory;
-use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Modules\Publication\Filters\PublicationFilter;
 use App\Modules\Publication\Images\ImageBig;
@@ -153,67 +147,6 @@ class Publication extends Eloquent
     protected static function newFactory(): Factory
     {
         return PublicationFactory::new();
-    }
-
-    /**
-     * Преобразователь атрибута - запись: большое изображение.
-     *
-     * @param mixed $value Значение атрибута.
-     *
-     * @return void
-     * @throws FileNotFoundException|Exception
-     */
-    public function setImageBigIdAttribute(mixed $value): void
-    {
-        $name = 'image_big_id';
-        $folder = 'publications';
-
-        $this->attributes[$name] = Image::set(
-            $name,
-            $value,
-            function (string $name, UploadedFile $value) use ($folder) {
-                $path = ImageStore::tmp($value->getClientOriginalExtension());
-
-                Size::make($value)->resize(
-                    1200,
-                    null,
-                    function ($constraint) {
-                        $constraint->aspectRatio();
-                        $constraint->upsize();
-                    }
-                )->save($path);
-
-                $imageWebp = $value->getClientOriginalExtension() !== 'webp'
-                    ? WebPConverter::createWebpImage($path, ['saveFile' => true])
-                    : ['path' => $path];
-
-                ImageStore::setFolder($folder);
-                $image = new ImageEntity();
-                $image->path = $imageWebp['path'];
-
-                if (isset($this->attributes[$name]) && $this->attributes[$name] !== '') {
-                    return ImageStore::update($this->attributes[$name], $image);
-                }
-
-                return ImageStore::create($image);
-            }
-        );
-    }
-
-    /**
-     * Преобразователь атрибута - получение: большое изображение.
-     *
-     * @param mixed $value Значение атрибута.
-     *
-     * @return ImageEntity|null Большое изображение.
-     */
-    public function getImageBigIdAttribute(mixed $value): ?ImageEntity
-    {
-        if (is_numeric($value) || is_string($value)) {
-            return ImageStore::get($value);
-        }
-
-        return $value;
     }
 
     /**
