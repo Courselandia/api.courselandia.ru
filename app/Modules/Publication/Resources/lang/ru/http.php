@@ -32,10 +32,6 @@ return [
                 'offset' => 'Отступ',
                 'path' => 'Путь',
             ],
-            'publicationGetRequest' => [
-                'id' => 'ID',
-                'link' => 'Ссылка',
-            ],
         ]
     ],
     'controllers' => [

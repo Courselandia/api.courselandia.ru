@@ -14,8 +14,6 @@ use App\Modules\Publication\Entities\Publication as PublicationEntity;
 use Cache;
 use Closure;
 use Util;
-use View;
-use Storage;
 use ReflectionException;
 use App\Models\Contracts\Pipe;
 use App\Models\Exceptions\ParameterInvalidException;
@@ -71,7 +69,7 @@ class PublicationRead implements Pipe
                 }
 
                 if ($link) {
-                    $query->year($link);
+                    $query->link($link);
                 }
 
                 if ($id) {
@@ -90,20 +88,7 @@ class PublicationRead implements Pipe
 
         if ($data->id || $data->link) {
             if (isset($publications[0])) {
-                $publication = $publications[0];
-
-                if ($publication) {
-                    $pathFile = $publication->id . '.blade.php';
-
-                    if (!Storage::disk('publications')->exists($pathFile)) {
-                        Storage::disk('publications')->put($pathFile, $publication->article ?: '');
-                    }
-
-                    $publication->article = View::make('tmp.publications.' . $publication->id)
-                        ->render();
-
-                    $data->publication = $publication;
-                }
+                $data->publication = $publications[0];
             }
         } else {
             $data->publications = $publications;

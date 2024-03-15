@@ -32,10 +32,6 @@ return [
                 'offset' => 'Offset',
                 'path' => 'Path',
             ],
-            'publicationGetRequest' => [
-                'id' => 'ID',
-                'link' => 'Link',
-            ],
         ]
     ],
     'controllers' => [
