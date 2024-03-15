@@ -42,6 +42,7 @@ class PublicationRead implements Pipe
         $year = $data->year;
         $link = $data->link;
         $limit = $data->limit;
+        $offset = $data->offset;
 
         $cacheKey = Util::getKey(
             'publication',
@@ -50,6 +51,7 @@ class PublicationRead implements Pipe
             $link,
             $id,
             $limit,
+            $offset,
             'active',
             'metatag'
         );
@@ -57,8 +59,9 @@ class PublicationRead implements Pipe
         $publications = Cache::tags(['publication'])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
-            function () use ($year, $link, $id, $limit) {
+            function () use ($year, $link, $id, $limit, $offset) {
                 $publications = Publication::limit($limit)
+                    ->offset($offset)
                     ->year($year)
                     ->link($link)
                     ->id($id)
