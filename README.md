@@ -1,4 +1,4 @@
-Installation process:
+Installation process: 
 - docker compose down
 - docker compose up -d
 - docker compose exec app composer update
