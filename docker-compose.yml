@@ -26,6 +26,16 @@ services:
             - mongo
             - smtp
             - rabbitmq
+            - npm
+
+    npm:
+        image: node:14
+        container_name: api-courselandia-ru-npm
+        working_dir: /var/www
+        entrypoint:
+            - npm
+        volumes:
+            - ./:/var/www
 
     queue:
         build:

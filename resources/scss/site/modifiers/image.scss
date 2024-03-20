@@ -1,0 +1,65 @@
+@import "./../vars/modifiers/images";
+@import "./../vars/modifiers/colors";
+
+.image {
+  width: 100%;
+  height: auto;
+  border: none;
+  outline: none;
+  border-radius: 10px;
+
+  @each $image in $images {
+    &--#{$image} {
+      max-width: #{$image}px;
+    }
+  }
+
+  &--center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 1rem;
+  }
+
+  &--left {
+    float: left;
+    margin-right: 1.5rem;
+    margin-bottom: 1.5rem;
+    max-width: 400px;
+    height: auto;
+
+    @media all and (max-width: 700px) {
+      float: none;
+      margin-left: 0;
+      margin-right: 0;
+      clear: both;
+      max-width: none;
+    }
+  }
+
+  &--right {
+    float: right;
+    margin-left: 1.5rem;
+    margin-bottom: 1.5rem;
+    max-width: 400px;
+    height: auto;
+
+    @media all and (max-width: 600px) {
+      float: none;
+      margin-left: 0;
+      margin-right: 0;
+      clear: both;
+      max-width: none;
+    }
+  }
+
+  &--bck {
+    &-black {
+      background-color: $black;
+    }
+
+    &-white {
+      background-color: $white;
+    }
+  }
+}

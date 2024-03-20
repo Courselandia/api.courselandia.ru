@@ -1,0 +1,52 @@
+@import "./../vars/modifiers/ranges";
+@import "./../vars/modifiers/resolutions";
+
+.p {
+  @each $range in $ranges {
+    &a-#{$range} {
+      padding: #{$range * $step}rem !important;
+    }
+
+    &t-#{$range} {
+      padding-top: #{$range * $step}rem !important;
+    }
+
+    &r-#{$range} {
+      padding-right: #{$range * $step}rem !important;
+    }
+
+    &b-#{$range} {
+      padding-bottom: #{$range * $step}rem !important;
+    }
+
+    &l-#{$range} {
+      padding-left: #{$range * $step}rem !important;
+    }
+  }
+
+  @each $name, $resolution in $resolutions {
+    @media all and (max-width: #{$resolution}) {
+      @each $range in $ranges {
+        &a-#{$range}-#{$name} {
+          padding: #{$range * $step}rem !important;
+        }
+
+        &t-#{$range}-#{$name} {
+          padding-top: #{$range * $step}rem !important;
+        }
+
+        &r-#{$range}-#{$name} {
+          padding-right: #{$range * $step}rem !important;
+        }
+
+        &b-#{$range}-#{$name} {
+          padding-bottom: #{$range * $step}rem !important;
+        }
+
+        &l-#{$range}-#{$name} {
+          padding-left: #{$range * $step}rem !important;
+        }
+      }
+    }
+  }
+}

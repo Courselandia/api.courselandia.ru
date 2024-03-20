@@ -1,0 +1,74 @@
+@import "./../vars/modifiers/ranges";
+@import "./../vars/modifiers/resolutions";
+
+.m {
+  @each $range in $rangesMinus {
+    &a-m-#{$range * 1} {
+      margin: #{-$range * $step}rem;
+    }
+
+    &t-m-#{$range * 1} {
+      margin-top: #{-$range * $step}rem;
+    }
+
+    &l-m-#{$range * 1} {
+      margin-left: #{-$range * $step}rem;
+    }
+
+    &r-m-#{$range * 1} {
+      margin-right: #{-$range * $step}rem;
+    }
+
+    &b-m-#{$range * 1} {
+      margin-bottom: #{-$range * $step}rem;
+    }
+  }
+
+  @each $range in $ranges {
+    &a-#{$range} {
+      margin: #{$range * $step}rem !important;
+    }
+
+    &t-#{$range} {
+      margin-top: #{$range * $step}rem !important;
+    }
+
+    &r-#{$range} {
+      margin-right: #{$range * $step}rem !important;
+    }
+
+    &b-#{$range} {
+      margin-bottom: #{$range * $step}rem !important;
+    }
+
+    &l-#{$range} {
+      margin-left: #{$range * $step}rem !important;
+    }
+  }
+
+  @each $name, $resolution in $resolutions {
+    @media all and (max-width: #{$resolution}) {
+      @each $range in $ranges {
+        &a-#{$range}-#{$name} {
+          margin: #{$range * $step}rem !important;
+        }
+
+        &t-#{$range}-#{$name} {
+          margin-top: #{$range * $step}rem !important;
+        }
+
+        &r-#{$range}-#{$name} {
+          margin-right: #{$range * $step}rem !important;
+        }
+
+        &b-#{$range}-#{$name} {
+          margin-bottom: #{$range * $step}rem !important;
+        }
+
+        &l-#{$range}-#{$name} {
+          margin-left: #{$range * $step}rem !important;
+        }
+      }
+    }
+  }
+}

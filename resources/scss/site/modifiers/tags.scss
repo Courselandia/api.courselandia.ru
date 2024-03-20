@@ -1,0 +1,41 @@
+@import "./../vars/modifiers/colors";
+@import "./../vars/modifiers/fonts";
+
+HTML {
+  height: -webkit-fill-available;
+}
+
+BODY {
+  font-family: $fontPrimary, $fontSecondary;
+  color: $primary;
+  min-height: 100vh;
+  min-height: -webkit-fill-available;
+}
+
+DIV, SPAN, OBJECT, H1, H2,
+H3, H4, H5, H6, P, OL, UL,
+LI, TABLE, TBODY, TFOOT, THEAD, TR, TH, TD,
+ARTICLE, ASIDE, CANVAS, FOOTER, HEADER,
+MENU, NAV, SECTION {
+  word-wrap: break-word;
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+}
+
+TD {
+  font-family: $fontPrimary, $fontSecondary;
+  color: $primary;
+}
+
+P {
+  margin: 0;
+  padding: 0 0 1rem 0;
+
+  &:last-child {
+    padding-bottom: 0;
+  }
+}
+
+.main {
+  padding: 20px;
+}
