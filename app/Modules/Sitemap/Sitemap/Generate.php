@@ -8,6 +8,12 @@
 
 namespace App\Modules\Sitemap\Sitemap;
 
+use Carbon\Carbon;
+use Config;
+use DomDocument;
+use DOMElement;
+use DOMException;
+use Storage;
 use App\Models\Error;
 use App\Models\Event;
 use App\Modules\Course\Imports\Parser;
@@ -17,6 +23,7 @@ use App\Modules\Sitemap\Sitemap\Parts\PartCourse;
 use App\Modules\Sitemap\Sitemap\Parts\PartCourses;
 use App\Modules\Sitemap\Sitemap\Parts\PartDirection;
 use App\Modules\Sitemap\Sitemap\Parts\PartProfession;
+use App\Modules\Sitemap\Sitemap\Parts\PartPublication;
 use App\Modules\Sitemap\Sitemap\Parts\PartReview;
 use App\Modules\Sitemap\Sitemap\Parts\PartReviews;
 use App\Modules\Sitemap\Sitemap\Parts\PartSchool;
@@ -25,12 +32,6 @@ use App\Modules\Sitemap\Sitemap\Parts\PartSkill;
 use App\Modules\Sitemap\Sitemap\Parts\PartStatic;
 use App\Modules\Sitemap\Sitemap\Parts\PartTeacher;
 use App\Modules\Sitemap\Sitemap\Parts\PartTool;
-use Carbon\Carbon;
-use Config;
-use DomDocument;
-use DOMElement;
-use DOMException;
-use Storage;
 
 /**
  * Класс генерации sitemap.xml.
@@ -75,6 +76,7 @@ class Generate
     {
         $this
             ->addPart(new PartStatic())
+            ->addPart(new PartPublication())
             ->addPart(new PartSection())
             ->addPart(new PartCourses())
             ->addPart(new PartReviews())
