@@ -47,6 +47,6 @@ Route::group([
         Route::get('read/', 'Site\PublicationController@read')
             ->name('read');
 
-        Route::get('get/', 'Site\PublicationController@get')
-            ->name('get');
+        Route::get('link/{link}', 'Site\PublicationController@link')
+            ->name('link');
     });

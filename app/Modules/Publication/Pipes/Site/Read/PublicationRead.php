@@ -8,16 +8,14 @@
 
 namespace App\Modules\Publication\Pipes\Site\Read;
 
-use App\Models\Data;
-use App\Models\Enums\CacheTime;
-use App\Modules\Publication\Entities\Publication as PublicationEntity;
 use Cache;
 use Closure;
 use Util;
-use View;
-use Storage;
+use App\Models\Data;
 use ReflectionException;
+use App\Models\Enums\CacheTime;
 use App\Models\Contracts\Pipe;
+use App\Modules\Publication\Entities\Publication as PublicationEntity;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Publication\Models\Publication;
 use App\Modules\Publication\Data\Decorators\PublicationRead as PublicationReadData;
@@ -42,6 +40,7 @@ class PublicationRead implements Pipe
         $year = $data->year;
         $link = $data->link;
         $limit = $data->limit;
+        $offset = $data->offset;
 
         $cacheKey = Util::getKey(
             'publication',
@@ -50,6 +49,7 @@ class PublicationRead implements Pipe
             $link,
             $id,
             $limit,
+            $offset,
             'active',
             'metatag'
         );
@@ -57,16 +57,30 @@ class PublicationRead implements Pipe
         $publications = Cache::tags(['publication'])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
-            function () use ($year, $link, $id, $limit) {
-                $publications = Publication::limit($limit)
-                    ->year($year)
-                    ->link($link)
-                    ->id($id)
+            function () use ($year, $link, $id, $limit, $offset) {
+                $query = Publication::limit($limit)
                     ->orderBy('published_at', 'DESC')
                     ->orderBy('id', 'DESC')
                     ->with('metatag')
-                    ->active()
-                    ->get();
+                    ->active();
+
+                if ($year) {
+                    $query->year($year);
+                }
+
+                if ($link) {
+                    $query->link($link);
+                }
+
+                if ($id) {
+                    $query->id($id);
+                }
+
+                if ($offset) {
+                    $query->offset($offset);
+                }
+
+                $publications = $query->get();
 
                 return $publications ? PublicationEntity::collection($publications) : null;
             }
@@ -74,20 +88,7 @@ class PublicationRead implements Pipe
 
         if ($data->id || $data->link) {
             if (isset($publications[0])) {
-                $publication = $publications[0];
-
-                if ($publication) {
-                    $pathFile = $publication->id . '.blade.php';
-
-                    if (!Storage::disk('publications')->exists($pathFile)) {
-                        Storage::disk('publications')->put($pathFile, $publication->article ?: '');
-                    }
-
-                    $publication->article = View::make('tmp.publications.' . $publication->id)
-                        ->render();
-
-                    $data->publication = $publication;
-                }
+                $data->publication = $publications[0];
             }
         } else {
             $data->publications = $publications;

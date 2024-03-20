@@ -1,0 +1,10 @@
+@import "./../vars/modifiers/colors";
+
+A {
+  text-decoration: underline;
+  color: $blue2;
+
+  &:hover {
+    text-decoration: none;
+  }
+}

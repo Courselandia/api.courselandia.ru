@@ -12,7 +12,6 @@ use App\Modules\Publication\Values\PublicationYear;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
 use App\Modules\Publication\Actions\Site\PublicationReadAction;
-use App\Modules\Publication\Http\Requests\Site\PublicationGetRequest;
 use App\Modules\Publication\Http\Requests\Site\PublicationReadRequest;
 use App\Modules\Publication\Data\Actions\Site\PublicationRead;
 
@@ -60,15 +59,14 @@ class PublicationController extends Controller
     /**
      * Получение публикаций.
      *
-     * @param PublicationGetRequest $request Запрос.
+     * @param string $link Ссылка.
      *
      * @return JsonResponse Вернет JSON ответ.
      */
-    public function get(PublicationGetRequest $request): JsonResponse
+    public function link(string $link): JsonResponse
     {
         $action = new PublicationReadAction(PublicationRead::from([
-            'id' => $request->get('id'),
-            'link' => $request->get('link'),
+            'link' => $link,
         ]));
         $data = $action->run();
 

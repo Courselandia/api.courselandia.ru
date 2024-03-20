@@ -17,3 +17,5 @@ Connection to the app in the container
 Connection to the database in the container
 - docker exec -it db bash
 - mysql -u ikit -p
+
+- docker compose run --rm npm run dev
