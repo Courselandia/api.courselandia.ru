@@ -2,17 +2,18 @@
 
 .quote {
   font-style: italic;
-  padding-top: 1rem !important;
-  padding-bottom: 1rem !important;
-  margin-bottom: 1rem !important;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
   font-size: 1.1rem;
-  line-height: 1.5rem;
+  line-height: 1.7rem;
   width: 100%;
+  background-color: $blue1;
+  border-radius: 10px;
 
   &--left,
   &--right {
-    max-width: 250px;
-    margin-bottom: 1rem;
+    max-width: 400px;
+    margin-bottom: 1.5rem;
 
     @media all and (max-width: 600px) {
       float: none !important;
