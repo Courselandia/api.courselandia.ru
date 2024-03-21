@@ -101,7 +101,7 @@ class ArticleController extends Controller
     public function update(int|string $id, ArticleUpdateRequest $request): JsonResponse
     {
         try {
-            $action = new ArticleUpdateAction($id, $request->get('text'), $request->get('apply', false));
+            $action = new ArticleUpdateAction($id, $request->get('text', '') ?? '', $request->get('apply', false));
             $data = $action->run();
 
             Log::info(
