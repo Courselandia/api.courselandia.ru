@@ -34,16 +34,23 @@ class ParserOtzyvru extends Parser
 
         try {
             $driver->get($this->getUrl());
-            sleep(5);
+            sleep(10);
 
             $total = (int)$driver->findElement(WebDriverBy::cssSelector('.inav-badge.inav-badge-green'))->getText();
             $perPage = 30;
             $buttons = ceil($total / $perPage) - 1;
 
             for ($i = 0; $i < $buttons; $i++) {
+                $buttonAdv = $driver->findElements(WebDriverBy::cssSelector('#close_Label_BOTTOM'));
+
+                if (isset($buttonAdv[0])) {
+                    $buttonAdv[0]->click();
+                    sleep(2);
+                }
+
                 $button = $driver->findElement(WebDriverBy::cssSelector('.my_pagination .btn.blue'));
                 $button->click();
-                sleep(3);
+                sleep(10);
             }
 
             $reviews = $driver->findElements(WebDriverBy::cssSelector('.commentbox'));
@@ -92,7 +99,7 @@ class ParserOtzyvru extends Parser
 
                     yield $review;
                 } catch (Throwable $error) {
-                    $this->addError($this->getSchool()->getLabel() . ', из: ' . $this->getUrl() . ' : Не удается получить список отзывов. ' . $error->getMessage());
+                    $this->addError($this->getSchool()->getLabel() . ', из: ' . $this->getUrl() . ' : Не удается получить отзыв. ' . $error->getMessage());
                 }
             }
         } catch (Throwable $error) {

@@ -102,10 +102,10 @@ class Import
             ->addParser(new ParserMapsYandex(School::MAED, 'https://yandex.ru/maps/org/marketingovoye_obrazovaniye/119627619376/reviews/'))
             ->addParser(new ParserMooc(School::MAED, 'maed'))*/
 
-            ->addParser(new ParserMapsYandex(School::SKILL_FACTORY, 'https://yandex.ru/maps/org/skillfactory/237135461560/reviews/'))
-            // ->addParser(new ParserMapsYandex(School::CONTENTED, 'https://yandex.ru/maps/org/contented/115157665135/reviews/'))
-            // ->addParser(new ParserMapsYandex(School::INTERNATIONAL_SCHOOL_PROFESSIONS, 'https://yandex.ru/maps/org/mezhdunarodnaya_shkola_professiy/33978597831/reviews/'))
-            // ->addParser(new ParserOtzyvru(School::SKILLBOX, 'https://otzyvru.com/skillbox'))
+            // ->addParser(new ParserMapsYandex(School::SKILL_FACTORY, 'https://yandex.ru/maps/org/skillfactory/237135461560/reviews/'))
+            // ->addParser(new ParserMapsYandex(School::CONTENTED, 'https://yandex.ru/maps/org/contented/56878205703/reviews/'))
+            // ->addParser(new ParserMapsYandex(School::INTERNATIONAL_SCHOOL_PROFESSIONS, 'https://yandex.ru/maps/org/mezhdunarodnaya_shkola_professiy/80806979609/reviews/'))
+            ->addParser(new ParserOtzyvru(School::SKILLBOX, 'https://otzyvru.com/skillbox'))
             // ->addParser(new ParserProgbasics(School::SKILLBOX, 'https://progbasics.ru/schools/skillbox/reviews'))
             // ->addParser(new ParserProgbasics(School::SKYPRO, 'https://progbasics.ru/schools/skypro/reviews'))
             // ->addParser(new ParserSpr(School::SKILLBOX, 'https://spr.ru/moskva/uchebnie-i-obrazovatelnie-tsentri-kursi/reviews/skillbox-5153272.html'))
