@@ -108,8 +108,8 @@ class Import
             // ->addParser(new ParserOtzyvru(School::SKILLBOX, 'https://otzyvru.com/skillbox'))
             // ->addParser(new ParserProgbasics(School::SKILLBOX, 'https://progbasics.ru/schools/skillbox/reviews'))
             // ->addParser(new ParserProgbasics(School::SKYPRO, 'https://progbasics.ru/schools/skypro/reviews'))
-            ->addParser(new ParserSpr(School::SKILLBOX, 'https://spr.ru/moskva/uchebnie-i-obrazovatelnie-tsentri-kursi/reviews/skillbox-5153272.html'))
-            // ->addParser(new ParserZoon(School::SKILLBOX, 'https://zoon.ru/msk/trainings/kompaniya_skillbox_na_leninskom_prospekte/reviews/'))
+            // ->addParser(new ParserSpr(School::SKILLBOX, 'https://spr.ru/moskva/uchebnie-i-obrazovatelnie-tsentri-kursi/reviews/skillbox-5153272.html'))
+            ->addParser(new ParserZoon(School::SKILLBOX, 'https://zoon.ru/msk/trainings/kompaniya_skillbox_na_leninskom_prospekte/reviews/'))
             // ->addParser(new ParserSkillbox(School::SKILLBOX, 'https://skillbox.ru/otzyvy/'))
             // ->addParser(new ParserCoddyschool(School::CODDY, 'https://berlin.coddyschool.com/vse-otzyvy/'))
         ;
@@ -206,7 +206,7 @@ class Import
      *
      * @return int|string|null Вернет ID созданного отзыва.
      */
-    public function save(School $school, string $source, string $uuid, ParserReview $entityReview): int|string|null
+    private function save(School $school, string $source, string $uuid, ParserReview $entityReview): int|string|null
     {
         try {
             $review = Review::create([
@@ -238,13 +238,13 @@ class Import
     }
 
     /**
-     * Проверка, что отзыв не пустой.
+     * Проверка, что отзыв пустой.
      *
      * @param ParserReview $entityReview Спарсенный отзыв.
      *
      * @return bool Вернет true, если отзыв пустой.
      */
-    public function isReviewEmpty(ParserReview $entityReview): bool
+    private function isReviewEmpty(ParserReview $entityReview): bool
     {
         if (
             !$entityReview->name
