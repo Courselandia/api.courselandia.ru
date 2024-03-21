@@ -37,7 +37,7 @@ class TaskTeacher extends Task
      *
      * @var string
      */
-    private string $description_template = 'Все курсы преподавателя {teacher} — полный список обучающих онлайн-курсов в каталоге Courselandia.';
+    private string $description_template = 'Все курсы преподавателя {teacher} — полный список [countTeacherCourses:из {countTeacherCourses:курс|genitive}] преподавателя в каталоге Courselandia.';
 
     /**
      * Возвращает количество обрабатываемых записей.
