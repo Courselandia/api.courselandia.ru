@@ -61,7 +61,7 @@ class ImageBig implements CastsAttributes
                 $path = ImageStore::tmp($value->getClientOriginalExtension());
 
                 Size::make($value)->resize(
-                    1200,
+                    800,
                     null,
                     function ($constraint) {
                         $constraint->aspectRatio();
