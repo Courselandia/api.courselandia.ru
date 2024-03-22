@@ -120,7 +120,7 @@ class ParserZoon extends Parser
 
                     yield $item;
                 } catch (Throwable $error) {
-                    $this->addError($this->getSchool()->getLabel() . ', из: ' . $this->getUrl() . ' : Не удается получить отзывов. ' . $error->getMessage());
+                    $this->addError($this->getSchool()->getLabel() . ', из: ' . $this->getUrl() . ' : Не удается получить отзыв. ' . $error->getMessage());
                 }
             }
         } catch (Throwable $error) {

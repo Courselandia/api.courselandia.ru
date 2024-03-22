@@ -102,7 +102,7 @@ class ParserSpr extends Parser
 
                     yield $review;
                 } catch (Throwable $error) {
-                    $this->addError($this->getSchool()->getLabel() . ', из: ' . $this->getUrl() . ' : Не удается получить отзывов. ' . $error->getMessage());
+                    $this->addError($this->getSchool()->getLabel() . ', из: ' . $this->getUrl() . ' : Не удается получить отзыв. ' . $error->getMessage());
                 }
             }
         } catch (Throwable $error) {

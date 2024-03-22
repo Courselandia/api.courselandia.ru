@@ -109,9 +109,9 @@ class Import
             // ->addParser(new ParserProgbasics(School::SKILLBOX, 'https://progbasics.ru/schools/skillbox/reviews'))
             // ->addParser(new ParserProgbasics(School::SKYPRO, 'https://progbasics.ru/schools/skypro/reviews'))
             // ->addParser(new ParserSpr(School::SKILLBOX, 'https://spr.ru/moskva/uchebnie-i-obrazovatelnie-tsentri-kursi/reviews/skillbox-5153272.html'))
-            ->addParser(new ParserZoon(School::SKILLBOX, 'https://zoon.ru/msk/trainings/kompaniya_skillbox_na_leninskom_prospekte/reviews/'))
+            // ->addParser(new ParserZoon(School::SKILLBOX, 'https://zoon.ru/msk/trainings/kompaniya_skillbox_na_leninskom_prospekte/reviews/'))
             // ->addParser(new ParserSkillbox(School::SKILLBOX, 'https://skillbox.ru/otzyvy/'))
-            // ->addParser(new ParserCoddyschool(School::CODDY, 'https://berlin.coddyschool.com/vse-otzyvy/'))
+            ->addParser(new ParserCoddyschool(School::CODDY, 'https://berlin.coddyschool.com/vse-otzyvy/'))
         ;
     }
 
