@@ -223,7 +223,7 @@ class Import
             ]);
 
             return $review->id;
-        } catch (RecordExistException $error) {
+        } catch (RecordExistException) {
             return null;
         } catch (Throwable $error) {
             $this->addError(
