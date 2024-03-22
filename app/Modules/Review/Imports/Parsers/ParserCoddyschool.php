@@ -8,6 +8,7 @@
 
 namespace App\Modules\Review\Imports\Parsers;
 
+use Storage;
 use Generator;
 use Throwable;
 use Carbon\Carbon;
@@ -44,13 +45,13 @@ class ParserCoddyschool extends Parser
 
             do {
                 $buttonMore = $driver->findElements(WebDriverBy::cssSelector('.center-btn .link.primary.loader'));
-                $driver->takeScreenshot(\Storage::drive('local')->path('/screens/all.jpg'));
+                $driver->takeScreenshot(Storage::drive('local')->path('/screens/all.jpg'));
 
                 if (count($buttonMore)) {
                     $hasButtonMore = true;
-                    $buttonMore[0]->takeElementScreenshot(\Storage::drive('local')->path('/screens/button.jpg'));
+                    $buttonMore[0]->takeElementScreenshot(Storage::drive('local')->path('/screens/button.jpg'));
                     $buttonMore[0]->click();
-                    sleep(2);
+                    sleep(3);
                 } else {
                     $hasButtonMore = false;
                 }
