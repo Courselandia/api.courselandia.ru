@@ -22,6 +22,7 @@ use App\Modules\Article\Categories\ProfessionTextArticleCategory;
 use App\Modules\Article\Categories\SchoolTextArticleCategory;
 use App\Modules\Article\Categories\SkillTextArticleCategory;
 use App\Modules\Article\Categories\TeacherTextArticleCategory;
+use App\Modules\Article\Categories\CollectionTextArticleCategory;
 use App\Modules\Article\Categories\ToolTextArticleCategory;
 use App\Modules\Article\Commands\ArticleRewriteCommand;
 
@@ -84,6 +85,10 @@ class ArticleServiceProvider extends ServiceProvider
 
         ArticleCategory::extend('category.text', function () {
             return new CategoryTextArticleCategory();
+        });
+
+        ArticleCategory::extend('collection.text', function () {
+            return new CollectionTextArticleCategory();
         });
 
         $this->commands([

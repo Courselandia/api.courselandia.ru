@@ -19,7 +19,7 @@ class CreateTableCollectionFilters extends Migration
             $table->bigInteger('id', true)->unsigned();
             $table->bigInteger('collection_id')->unsigned()->index('collection_id')->nullable();
             $table->string('name', 191);
-            $table->string('value', 191);
+            $table->json('value');
 
             $table->timestamps();
             $table->softDeletes()->index();

@@ -9,6 +9,9 @@
 namespace App\Modules\Analyzer\Providers;
 
 use App;
+use Config;
+use AnalyzerCategory;
+use Illuminate\Support\ServiceProvider;
 use App\Modules\Analyzer\Categories\ArticleTextAnalyzerCategory;
 use App\Modules\Analyzer\Categories\CategoryTextAnalyzerCategory;
 use App\Modules\Analyzer\Categories\DirectionTextAnalyzerCategory;
@@ -17,12 +20,9 @@ use App\Modules\Analyzer\Categories\SchoolTextAnalyzerCategory;
 use App\Modules\Analyzer\Categories\SkillTextAnalyzerCategory;
 use App\Modules\Analyzer\Categories\TeacherTextAnalyzerCategory;
 use App\Modules\Analyzer\Categories\ToolTextAnalyzerCategory;
-use Config;
-use AnalyzerCategory;
-use Illuminate\Support\ServiceProvider;
-use App\Modules\Analyzer\Commands\AnalyzerAnalyzeCommand;
 use App\Modules\Analyzer\Categories\AnalyzerCategoryManager;
 use App\Modules\Analyzer\Categories\CourseTextAnalyzerCategory;
+use App\Modules\Analyzer\Categories\CollectionTextAnalyzerCategory;
 
 /**
  * Класс сервис-провайдера для настройки этого модуля.
@@ -87,6 +87,10 @@ class AnalyzerServiceProvider extends ServiceProvider
 
         AnalyzerCategory::extend('teacher.text', function () {
             return new TeacherTextAnalyzerCategory();
+        });
+
+        AnalyzerCategory::extend('collection.text', function () {
+            return new CollectionTextAnalyzerCategory();
         });
     }
 

@@ -20,6 +20,7 @@ use App\Modules\Analyzer\Analyze\Tasks\ProfessionTextTask;
 use App\Modules\Analyzer\Analyze\Tasks\CategoryTextTask;
 use App\Modules\Analyzer\Analyze\Tasks\SchoolTextTask;
 use App\Modules\Analyzer\Analyze\Tasks\TeacherTextTask;
+use App\Modules\Analyzer\Analyze\Tasks\CollectionTextTask;
 
 /**
  * Анализ статей для разных сущностей.
@@ -45,7 +46,8 @@ class Analyze
             ->addTask(new ProfessionTextTask())
             ->addTask(new CategoryTextTask())
             ->addTask(new SchoolTextTask())
-            ->addTask(new TeacherTextTask());
+            ->addTask(new TeacherTextTask())
+            ->addTask(new CollectionTextTask());
     }
 
     /**

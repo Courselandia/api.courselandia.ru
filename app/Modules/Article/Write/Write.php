@@ -20,6 +20,7 @@ use App\Modules\Article\Write\Tasks\TeacherTextTask;
 use App\Modules\Article\Write\Tasks\SkillTextTask;
 use App\Modules\Article\Write\Tasks\CourseTextTask;
 use App\Modules\Article\Write\Tasks\ToolTextTask;
+use App\Modules\Article\Write\Tasks\CollectionTextTask;
 
 /**
  * Написание статей для разных сущностей.
@@ -48,7 +49,8 @@ class Write
             ->addTask(new DirectionTextTask())
             ->addTask(new ProfessionTextTask())
             ->addTask(new SchoolTextTask())
-            ->addTask(new TeacherTextTask());
+            ->addTask(new TeacherTextTask())
+            ->addTask(new CollectionTextTask());
     }
 
     /**

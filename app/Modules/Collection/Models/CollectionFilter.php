@@ -50,6 +50,10 @@ class CollectionFilter extends Eloquent
         'value',
     ];
 
+    protected $casts = [
+        'value' => 'array',
+    ];
+
     /**
      * Метод, который должен вернуть все правила валидации.
      *
@@ -60,7 +64,7 @@ class CollectionFilter extends Eloquent
         return [
             'collection_id' => 'required|digits_between:0,20',
             'name' => 'required|between:1,191',
-            'value' => 'required|between:1,191',
+            'value' => 'required|json',
         ];
     }
 
