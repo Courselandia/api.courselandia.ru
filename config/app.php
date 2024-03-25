@@ -316,6 +316,9 @@ return [
 
         App\Modules\Section\Providers\SectionServiceProvider::class,
         App\Modules\Section\Providers\RouteServiceProvider::class,
+
+        App\Modules\Collection\Providers\CollectionServiceProvider::class,
+        App\Modules\Collection\Providers\RouteServiceProvider::class,
     ],
 
     /*
