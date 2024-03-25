@@ -94,10 +94,10 @@ class CollectionUpdateAction extends Action
                 if ($this->data->filters) {
                     foreach ($this->data->filters as $filter) {
                         /**
-                         * @var CollectionFilterCreate $experience
+                         * @var CollectionFilterCreate $filter
                          */
                         $entity = CollectionFilterEntity::from([
-                            ...$experience->toArray(),
+                            ...$filter->toArray(),
                             'collection_id' => $collection->id,
                         ]);
 
