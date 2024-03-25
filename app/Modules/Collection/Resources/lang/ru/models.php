@@ -11,6 +11,8 @@ return [
         'imageMiddleId' => 'Средняя картинка',
         'imageSmallId' => 'Маленькая картинка',
         'amount' => 'Рейтинг',
+        'sort_field' => ' Поле сортировки',
+        'sort_direction' => 'Направление сортировки',
         'status' => 'Статус',
     ],
     'collectionExperience' => [

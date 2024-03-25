@@ -80,6 +80,20 @@ class Collection extends Entity
     public ?int $amount = null;
 
     /**
+     * Поле сортировки.
+     *
+     * @var string|null
+     */
+    public ?string $sort_field = null;
+
+    /**
+     * Направление сортировки.
+     *
+     * @var string|null
+     */
+    public ?string $sort_direction = null;
+
+    /**
      * Изображение маленькое.
      *
      * @var ?Image
@@ -175,6 +189,8 @@ class Collection extends Entity
      * @param string|null $text Статья.
      * @param string|null $additional Дополнительное описание.
      * @param int|null $amount Количество курсов.
+     * @param string|null $sort_field Поле сортировки.
+     * @param string|null $sort_direction Направление сортировки.
      * @param Image|null $image_small_id Изображение маленькое.
      * @param Image|null $image_middle_id Изображение среднее.
      * @param Image|null $image_big_id Изображение большое.
@@ -197,6 +213,8 @@ class Collection extends Entity
         ?string         $text = null,
         ?string         $additional = null,
         ?int            $amount = null,
+        ?string         $sort_field = null,
+        ?string         $sort_direction = null,
         ?Image          $image_small_id = null,
         ?Image          $image_middle_id = null,
         ?Image          $image_big_id = null,
@@ -219,6 +237,8 @@ class Collection extends Entity
         $this->text = $text;
         $this->additional = $additional;
         $this->amount = $amount;
+        $this->sort_field = $sort_field;
+        $this->sort_direction = $sort_direction;
         $this->image_small_id = $image_small_id;
         $this->image_middle_id = $image_middle_id;
         $this->image_big_id = $image_big_id;

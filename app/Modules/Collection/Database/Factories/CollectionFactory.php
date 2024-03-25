@@ -41,6 +41,8 @@ class CollectionFactory extends Factory
             'text' => $this->faker->text(1000),
             'additional' => $this->faker->text(1000),
             'amount' => 4,
+            'sort_field' => 'id',
+            'sort_direction' => 'asc',
             'status' => true,
         ];
     }

@@ -11,6 +11,8 @@ return [
         'imageMiddleId' => 'ID middle image',
         'imageSmallId' => 'ID small image',
         'amount' => 'Amount',
+        'sort_field' => 'Sort field',
+        'sort_direction' => 'Sort direction',
         'status' => 'Status',
     ],
     'collectionFilter' => [

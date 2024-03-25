@@ -31,6 +31,8 @@ class CollectionUpdate extends CollectionCreate
      * @param string|null $text Текст.
      * @param string|null $additional Дополнительное описание.
      * @param int|null $amount Количество курсов.
+     * @param string|null $sort_field Поле сортировки.
+     * @param string|null $sort_direction Направление сортировки.
      * @param UploadedFile|null $image Изображение.
      * @param bool|null $status Статус.
      * @param string|null $title Заголовок.
@@ -46,6 +48,8 @@ class CollectionUpdate extends CollectionCreate
         ?string           $text = null,
         ?string           $additional = null,
         ?int              $amount = null,
+        ?string           $sort_field = null,
+        ?string           $sort_direction = null,
         UploadedFile|null $image = null,
         ?bool             $status = null,
         ?string           $title = null,
@@ -63,6 +67,8 @@ class CollectionUpdate extends CollectionCreate
             $text,
             $additional,
             $amount,
+            $sort_field,
+            $sort_direction,
             $image,
             $status,
             $description,

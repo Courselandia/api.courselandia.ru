@@ -48,11 +48,11 @@ class CollectionControllerTest extends TestCase
                 ],
             ],
             [
-                'Authorization' => 'Bearer ' . $this->getAdminToken()
+                'Authorization' => 'Bearer ' . $this->getAdminToken(),
             ]
         )->assertStatus(200)->assertJsonStructure([
             'data' => [
-                '*' => $this->getCollectionStructure()
+                '*' => $this->getCollectionStructure(),
             ],
             'total',
             'success',
@@ -122,6 +122,8 @@ class CollectionControllerTest extends TestCase
                 'text' => $faker->text(1500),
                 'additional' => $faker->text(1500),
                 'amount' => 10,
+                'sort_field' => 'name',
+                'sort_direction' => 'ASC',
                 'status' => true,
                 'image' => UploadedFile::fake()->image('collection.jpg', 1500, 1500),
                 'filters' => [
@@ -159,6 +161,8 @@ class CollectionControllerTest extends TestCase
                 'text' => $faker->text(1500),
                 'additional' => $faker->text(1500),
                 'amount' => 10,
+                'sort_field' => 'name',
+                'sort_direction' => 'ASC',
                 'status' => true,
                 'image' => UploadedFile::fake()->image('collection.jpg', 1500, 1500),
                 'filters' => [
@@ -198,6 +202,8 @@ class CollectionControllerTest extends TestCase
                 'text' => $faker->text(1500),
                 'additional' => $faker->text(1500),
                 'amount' => 10,
+                'sort_field' => 'name',
+                'sort_direction' => 'ASC',
                 'status' => true,
                 'image' => UploadedFile::fake()->image('collection.jpg', 1500, 1500),
                 'filters' => [
@@ -236,6 +242,8 @@ class CollectionControllerTest extends TestCase
                 'text' => $faker->text(1500),
                 'additional' => $faker->text(1500),
                 'amount' => 10,
+                'sort_field' => 'name',
+                'sort_direction' => 'ASC',
                 'status' => true,
                 'image' => UploadedFile::fake()->image('collection.jpg', 1500, 1500),
                 'filters' => [
@@ -274,6 +282,8 @@ class CollectionControllerTest extends TestCase
                 'text' => $faker->text(1500),
                 'additional' => $faker->text(1500),
                 'amount' => 10,
+                'sort_field' => 'name',
+                'sort_direction' => 'ASC',
                 'status' => true,
                 'image' => UploadedFile::fake()->image('collection.jpg', 1500, 1500),
                 'filters' => [
@@ -406,6 +416,8 @@ class CollectionControllerTest extends TestCase
             'text',
             'additional',
             'amount',
+            'sort_field',
+            'sort_direction',
             'status',
             'image_small_id',
             'image_middle_id',

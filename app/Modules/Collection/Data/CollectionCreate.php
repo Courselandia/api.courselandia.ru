@@ -61,6 +61,20 @@ class CollectionCreate extends Data
     public ?int $amount = null;
 
     /**
+     * Поле сортировки.
+     *
+     * @var string|null
+     */
+    public ?string $sort_field = null;
+
+    /**
+     * Направление сортировки.
+     *
+     * @var string|null
+     */
+    public ?string $sort_direction = null;
+
+    /**
      * Изображение.
      *
      * @var UploadedFile|null
@@ -110,6 +124,8 @@ class CollectionCreate extends Data
      * @param string|null $text Текст.
      * @param string|null $additional Дополнительное описание.
      * @param int|null $amount Количество курсов.
+     * @param string|null $sort_field Поле сортировки.
+     * @param string|null $sort_direction Направление сортировки.
      * @param UploadedFile|null $image Изображение.
      * @param bool|null $status Статус.
      * @param string|null $title Заголовок.
@@ -124,6 +140,8 @@ class CollectionCreate extends Data
         ?string           $text = null,
         ?string           $additional = null,
         ?int              $amount = null,
+        ?string           $sort_field = null,
+        ?string           $sort_direction = null,
         UploadedFile|null $image = null,
         ?bool             $status = null,
         ?string           $title = null,
@@ -138,6 +156,8 @@ class CollectionCreate extends Data
         $this->text = $text;
         $this->additional = $additional;
         $this->amount = $amount;
+        $this->sort_field = $sort_field;
+        $this->sort_direction = $sort_direction;
         $this->image = $image;
         $this->status = $status;
         $this->description = $description;

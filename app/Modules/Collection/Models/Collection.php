@@ -47,6 +47,8 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
  * @property string $text Текст.
  * @property string $additional Дополнительное описание.
  * @property int $amount Количество курсов.
+ * @property int $sort_field Поле сортировки.
+ * @property int $sort_direction Направление сортировки.
  * @property string $status Статус.
  * @property int|string|array|UploadedFile|ImageEntity $image_small_id Изображение маленькое.
  * @property int|string|array|UploadedFile|ImageEntity $image_middle_id Изображение среднее.
@@ -84,6 +86,8 @@ class Collection extends Eloquent
         'text',
         'additional',
         'amount',
+        'sort_field',
+        'sort_direction',
         'image_small_id',
         'image_middle_id',
         'image_big_id',
@@ -111,6 +115,8 @@ class Collection extends Eloquent
             'text' => 'max:65000',
             'additional' => 'max:65000',
             'amount' => 'required|digits_between:0,5',
+            'sort_field' => 'max:25',
+            'sort_direction' => 'max:4',
             'status' => 'required|boolean',
         ];
     }
@@ -133,6 +139,8 @@ class Collection extends Eloquent
             'image_cropped_options' => trans('collection::models.collection.imageCroppedOptions'),
             'image_big_id' => trans('collection::models.collection.imageBigId'),
             'amount' => trans('collection::models.collection.amount'),
+            'sort_field' => trans('collection::models.collection.sortField'),
+            'sort_direction' => trans('collection::models.collection.sortDirection'),
             'status' => trans('collection::models.collection.status'),
         ];
     }

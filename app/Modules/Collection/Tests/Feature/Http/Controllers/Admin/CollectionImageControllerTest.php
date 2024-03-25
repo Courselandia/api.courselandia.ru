@@ -155,6 +155,8 @@ class CollectionImageControllerTest extends TestCase
             'text',
             'additional',
             'amount',
+            'sort_field',
+            'sort_direction',
             'status',
             'image_small_id',
             'image_middle_id',
