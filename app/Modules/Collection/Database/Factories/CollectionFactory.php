@@ -40,7 +40,7 @@ class CollectionFactory extends Factory
             'link' => Util::latin($this->faker->text(160)),
             'text' => $this->faker->text(1000),
             'additional' => $this->faker->text(1000),
-            'amount' => 4.27,
+            'amount' => 4,
             'status' => true,
         ];
     }

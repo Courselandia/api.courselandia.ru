@@ -6,17 +6,18 @@
  * @package App\Modules\Collection
  */
 
-namespace App\Modules\Teacher\Tests\Feature\Http\Controllers\Admin;
+namespace App\Modules\Collection\Tests\Feature\Http\Controllers\Admin;
 
 use App\Models\Test\TokenTest;
-use App\Modules\Teacher\Models\Teacher;
+use App\Modules\Collection\Models\Collection;
+use App\Modules\Collection\Models\CollectionFilter;
 use Illuminate\Http\UploadedFile;
 use Tests\TestCase;
 
 /**
  * Тестирование: Класс контроллер для изображений учителя.
  */
-class TeacherImageControllerTest extends TestCase
+class CollectionImageControllerTest extends TestCase
 {
     use TokenTest;
 
@@ -27,21 +28,21 @@ class TeacherImageControllerTest extends TestCase
      */
     public function testUpdate(): void
     {
-        $teacher = Teacher::factory()->create();
+        $collection = Collection::factory()->create();
+        CollectionFilter::factory()->count(3)->for($collection)->create();
 
         $this->json(
             'PUT',
-            'api/private/admin/teacher/update/image/' . $teacher['id'],
+            'api/private/admin/collection/update/image/' . $collection['id'],
             [
                 'image' => UploadedFile::fake()->image('me.jpg', 1000, 1000),
-                'type' => 'logo',
             ],
             [
                 'Authorization' => 'Bearer ' . $this->getAdminToken()
             ]
         )->assertStatus(200)->assertJsonStructure([
             'success',
-            'data' => $this->getTeacherStructure(),
+            'data' => $this->getCollectionStructure(),
         ]);
     }
 
@@ -52,11 +53,12 @@ class TeacherImageControllerTest extends TestCase
      */
     public function testUpdateNotValid(): void
     {
-        $teacher = Teacher::factory()->create();
+        $collection = Collection::factory()->create();
+        CollectionFilter::factory()->count(3)->for($collection)->create();
 
         $this->json(
             'PUT',
-            'api/private/admin/teacher/update/image/' . $teacher['id'],
+            'api/private/admin/collection/update/image/' . $collection['id'],
             [
                 'image' => UploadedFile::fake()->image('me.mp4'),
             ],
@@ -78,10 +80,9 @@ class TeacherImageControllerTest extends TestCase
     {
         $this->json(
             'PUT',
-            'api/private/admin/teacher/update/image/1000',
+            'api/private/admin/collection/update/image/1000',
             [
                 'image' => UploadedFile::fake()->image('me.jpg', 1000, 1000),
-                'type' => 'logo',
             ],
             [
                 'Authorization' => 'Bearer ' . $this->getAdminToken()
@@ -99,14 +100,13 @@ class TeacherImageControllerTest extends TestCase
      */
     public function testDestroy(): void
     {
-        $teacher = Teacher::factory()->create();
+        $collection = Collection::factory()->create();
+        CollectionFilter::factory()->count(3)->for($collection)->create();
 
         $this->json(
             'DELETE',
-            'api/private/admin/teacher/destroy/image/' . $teacher->id,
-            [
-                'type' => 'logo',
-            ],
+            'api/private/admin/collection/destroy/image/' . $collection->id,
+            [],
             [
                 'Authorization' => 'Bearer ' . $this->getAdminToken()
             ]
@@ -124,7 +124,7 @@ class TeacherImageControllerTest extends TestCase
     {
         $this->json(
             'DELETE',
-            'api/private/admin/teacher/destroy/image/10000',
+            'api/private/admin/collection/destroy/image/10000',
             [
                 'type' => 'logo',
             ],
@@ -144,27 +144,32 @@ class TeacherImageControllerTest extends TestCase
      *
      * @return array Массив структуры данных учителя.
      */
-    private function getTeacherStructure(bool $image = false): array
+    private function getCollectionStructure(bool $image = false): array
     {
         $structure = [
             'id',
+            'direction_id',
             'metatag_id',
             'name',
             'link',
             'text',
-            'rating',
+            'additional',
+            'amount',
             'status',
             'image_small_id',
             'image_middle_id',
+            'image_big_id',
             'created_at',
             'updated_at',
             'deleted_at',
-            'metatag'
+            'metatag',
+            'direction',
         ];
 
         if ($image) {
             $structure['image_small_id'] = $this->getImageStructure();
             $structure['image_middle_id'] = $this->getImageStructure();
+            $structure['image_big_id'] = $this->getImageStructure();
         }
 
         return $structure;

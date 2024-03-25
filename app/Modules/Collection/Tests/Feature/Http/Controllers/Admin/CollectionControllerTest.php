@@ -193,6 +193,7 @@ class CollectionControllerTest extends TestCase
             'api/private/admin/collection/update/' . $collection->id,
             [
                 'direction_id' => $collection->direction->id,
+                'name' => $faker->text(191),
                 'link' => Util::latin($faker->text(191)),
                 'text' => $faker->text(1500),
                 'additional' => $faker->text(1500),
@@ -392,7 +393,7 @@ class CollectionControllerTest extends TestCase
      *
      * @param bool $image Добавить структуру данных изображения.
      *
-     * @return array Массив структуры данных учителя.
+     * @return array Массив структуры данных коллекции.
      */
     private function getCollectionStructure(bool $image = false): array
     {
@@ -442,7 +443,7 @@ class CollectionControllerTest extends TestCase
             'height',
             'path',
             'pathCache',
-            'pathSource'
+            'pathSource',
         ];
     }
 }
