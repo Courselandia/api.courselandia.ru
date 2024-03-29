@@ -1,12 +1,14 @@
 @import "./../vars/modifiers/colors";
 
 .index {
-  A {
-    text-decoration: none;
-    border-bottom: 1px solid $blue2;
-
-    &:hover {
+  LI {
+    A {
       text-decoration: none;
+      border-bottom: 1px solid $blue2;
+
+      &:hover {
+        text-decoration: none;
+      }
     }
   }
 }
