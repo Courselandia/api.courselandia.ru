@@ -97,6 +97,7 @@ class CollectionReadAction extends Action
                     ->with([
                         'metatag',
                         'filters',
+                        'direction',
                     ]);
 
                 $queryCount = $query->clone();

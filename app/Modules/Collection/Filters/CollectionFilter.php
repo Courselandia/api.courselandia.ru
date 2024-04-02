@@ -46,9 +46,9 @@ class CollectionFilter extends ModelFilter
      *
      * @return CollectionFilter Правила поиска.
      */
-    public function directionId(string|int|array $ids): self
+    public function directionsId(string|int|array $ids): self
     {
-        $ids = is_array($ids) ?: [$ids];
+        $ids = is_array($ids) ? $ids : [$ids];
 
         return $this->whereIn('collections.direction_id', $ids);
     }

@@ -24,13 +24,23 @@ class CollectionReadRequest extends FormRequest
     public function rules(): array
     {
         $columns = Schema::getColumnListing('collections');
-        $columns = implode(',', $columns);
+
+        $columnsSort = array_merge($columns, [
+            'direction-name',
+        ]);
+
+        $columnsFilter = array_merge(
+            $columns,
+            [
+                'directions-id',
+            ],
+        );
 
         return [
-            'sorts' => 'array|sorts:' . $columns,
+            'sorts' => 'array|sorts:' . implode(',', $columnsSort),
             'offset' => 'integer|digits_between:0,20',
             'limit' => 'integer|digits_between:0,20',
-            'filters' => 'array|filters:' . $columns,
+            'filters' => 'array|filters:' . implode(',', $columnsFilter),
             'filters.status' => 'boolean',
         ];
     }
