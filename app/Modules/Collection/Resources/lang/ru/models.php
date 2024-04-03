@@ -10,7 +10,7 @@ return [
         'imageBigId' => 'Большая картинка',
         'imageMiddleId' => 'Средняя картинка',
         'imageSmallId' => 'Маленькая картинка',
-        'amount' => 'Рейтинг',
+        'amount' => 'Количество',
         'sort_field' => ' Поле сортировки',
         'sort_direction' => 'Направление сортировки',
         'status' => 'Статус',

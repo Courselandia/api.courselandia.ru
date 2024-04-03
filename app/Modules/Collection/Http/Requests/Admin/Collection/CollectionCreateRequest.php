@@ -9,12 +9,27 @@
 namespace App\Modules\Collection\Http\Requests\Admin\Collection;
 
 use App\Models\FormRequest;
+use Illuminate\Support\Str;
 
 /**
  * Класс запрос для создания коллекции.
  */
 class CollectionCreateRequest extends FormRequest
 {
+    /**
+     * Конвертация отправленных данных.
+     *
+     * @return void
+     */
+    protected function prepareForValidation(): void
+    {
+        $this->merge([
+            'filters' => Str::isJson($this->get('filters'))
+                ? json_decode($this->get('filters'), true)
+                : $this->get('filters'),
+        ]);
+    }
+
     /**
      * Возвращает правила проверки.
      *

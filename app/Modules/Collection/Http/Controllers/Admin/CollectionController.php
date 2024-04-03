@@ -105,8 +105,8 @@ class CollectionController extends Controller
             $data = CollectionCreate::from([
                 ...$request->all(),
                 'filters' => CollectionFilterCreate::collection(collect($request->get('filters'))
-                    ->map(static function ($socialMedia) {
-                        return CollectionFilterCreate::from($socialMedia);
+                    ->map(static function ($filter) {
+                        return CollectionFilterCreate::from($filter);
                     })
                     ->toArray()),
             ]);
@@ -162,8 +162,8 @@ class CollectionController extends Controller
                 ...$request->all(),
                 'id' => $id,
                 'filters' => CollectionFilterCreate::collection(collect($request->get('filters'))
-                    ->map(static function ($socialMedia) {
-                        return CollectionFilterCreate::from($socialMedia);
+                    ->map(static function ($filter) {
+                        return CollectionFilterCreate::from($filter);
                     })
                     ->toArray()),
             ]);

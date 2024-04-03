@@ -47,8 +47,8 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
  * @property string $text Текст.
  * @property string $additional Дополнительное описание.
  * @property int $amount Количество курсов.
- * @property int $sort_field Поле сортировки.
- * @property int $sort_direction Направление сортировки.
+ * @property string $sort_field Поле сортировки.
+ * @property string $sort_direction Направление сортировки.
  * @property string $status Статус.
  * @property int|string|array|UploadedFile|ImageEntity $image_small_id Изображение маленькое.
  * @property int|string|array|UploadedFile|ImageEntity $image_middle_id Изображение среднее.
@@ -115,8 +115,8 @@ class Collection extends Eloquent
             'text' => 'max:65000',
             'additional' => 'max:65000',
             'amount' => 'required|digits_between:0,5',
-            'sort_field' => 'max:25',
-            'sort_direction' => 'max:4',
+            'sort_field' => 'required|max:25',
+            'sort_direction' => 'required|max:4',
             'status' => 'required|boolean',
         ];
     }
