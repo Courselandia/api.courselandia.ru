@@ -11,9 +11,9 @@ namespace App\Modules\Collection\Data;
 use App\Models\Data;
 
 /**
- * Данные для создания фильтра коллекции.
+ * Данные для хранения фильтра коллекции.
  */
-class CollectionFilterCreate extends Data
+class CollectionFilter extends Data
 {
     /**
      * Название.

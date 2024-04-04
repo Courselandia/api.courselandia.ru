@@ -114,7 +114,7 @@ class CollectionCreate extends Data
      *
      * @var ?DataCollection
      */
-    #[DataCollectionOf(CollectionFilterCreate::class)]
+    #[DataCollectionOf(CollectionFilter::class)]
     public ?DataCollection $filters = null;
 
     /**

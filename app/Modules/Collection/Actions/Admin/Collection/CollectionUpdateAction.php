@@ -22,7 +22,7 @@ use App\Modules\Collection\Models\Collection;
 use App\Modules\Analyzer\Actions\Admin\AnalyzerUpdateAction;
 use App\Modules\Metatag\Data\MetatagSet;
 use App\Modules\Collection\Data\CollectionUpdate;
-use App\Modules\Collection\Data\CollectionFilterCreate;
+use App\Modules\Collection\Data\CollectionFilter;
 use App\Modules\Collection\Entities\CollectionFilter as CollectionFilterEntity;
 use App\Modules\Collection\Models\CollectionFilter as CollectionFilterModel;
 
@@ -94,7 +94,7 @@ class CollectionUpdateAction extends Action
                 if ($this->data->filters) {
                     foreach ($this->data->filters as $filter) {
                         /**
-                         * @var CollectionFilterCreate $filter
+                         * @var CollectionFilter $filter
                          */
                         $entity = CollectionFilterEntity::from([
                             ...$filter->toArray(),

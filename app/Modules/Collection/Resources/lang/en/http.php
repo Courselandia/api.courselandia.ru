@@ -25,6 +25,9 @@ return [
             'collectionImageUpdateRequest' => [
                 'image' => 'Image',
             ],
+            'collectionCountRequest' => [
+                'filters' => 'Filters',
+            ],
         ],
     ],
     'controllers' => [

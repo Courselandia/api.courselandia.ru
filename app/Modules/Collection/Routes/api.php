@@ -36,4 +36,7 @@ Route::group([
 
         Route::delete('destroy/image/{id}', 'Admin\CollectionImageController@destroy')
             ->name('destroy.image');
+
+        Route::get('count/', 'Admin\CollectionController@count')
+            ->name('count');
     });

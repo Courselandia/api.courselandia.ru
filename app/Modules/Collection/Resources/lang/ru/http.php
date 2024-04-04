@@ -24,7 +24,10 @@ return [
             ],
             'collectionImageUpdateRequest' => [
                 'image' => 'Изображение',
-            ]
+            ],
+            'collectionCountRequest' => [
+                'filters' => 'Фильтры',
+            ],
         ],
     ],
     'controllers' => [

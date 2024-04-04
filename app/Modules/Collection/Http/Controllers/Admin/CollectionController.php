@@ -8,6 +8,9 @@
 
 namespace App\Modules\Collection\Http\Controllers\Admin;
 
+use App\Modules\Collection\Actions\Admin\Collection\CollectionCoursesByFiltersAction;
+use App\Modules\Collection\Data\CollectionCoursesByFilters;
+use App\Modules\Collection\Http\Requests\Admin\Collection\CollectionCountRequest;
 use Auth;
 use Log;
 use Throwable;
@@ -21,7 +24,7 @@ use App\Models\Exceptions\ValidateException;
 use App\Modules\Metatag\Template\TemplateException;
 use App\Modules\Collection\Data\CollectionCreate;
 use App\Modules\Collection\Data\CollectionUpdate;
-use App\Modules\Collection\Data\CollectionFilterCreate;
+use App\Modules\Collection\Data\CollectionFilter;
 use App\Modules\Collection\Actions\Admin\Collection\CollectionCreateAction;
 use App\Modules\Collection\Actions\Admin\Collection\CollectionDestroyAction;
 use App\Modules\Collection\Actions\Admin\Collection\CollectionGetAction;
@@ -104,9 +107,9 @@ class CollectionController extends Controller
         try {
             $data = CollectionCreate::from([
                 ...$request->all(),
-                'filters' => CollectionFilterCreate::collection(collect($request->get('filters'))
+                'filters' => CollectionFilter::collection(collect($request->get('filters'))
                     ->map(static function ($filter) {
-                        return CollectionFilterCreate::from($filter);
+                        return CollectionFilter::from($filter);
                     })
                     ->toArray()),
             ]);
@@ -161,9 +164,9 @@ class CollectionController extends Controller
             $data = CollectionUpdate::from([
                 ...$request->all(),
                 'id' => $id,
-                'filters' => CollectionFilterCreate::collection(collect($request->get('filters'))
+                'filters' => CollectionFilter::collection(collect($request->get('filters'))
                     ->map(static function ($filter) {
-                        return CollectionFilterCreate::from($filter);
+                        return CollectionFilter::from($filter);
                     })
                     ->toArray()),
             ]);
@@ -265,6 +268,36 @@ class CollectionController extends Controller
 
         $data = [
             'success' => true
+        ];
+
+        return response()->json($data);
+    }
+
+    /**
+     * Получения количество курсов в коллекции.
+     *
+     * @param CollectionCountRequest $request Запрос.
+     *
+     * @return JsonResponse
+     */
+    public function count(CollectionCountRequest $request): JsonResponse
+    {
+        $data = CollectionCoursesByFilters::from([
+            'filters' => CollectionFilter::collection(collect($request->get('filters'))
+                ->map(static function ($filter) {
+                    return CollectionFilter::from($filter);
+                })
+                ->toArray()),
+        ]);
+
+        $action = new CollectionCoursesByFiltersAction($data);
+        $courses = $action->run();
+
+        $data = [
+            'data' => [
+                'count' => count($courses),
+            ],
+            'success' => true,
         ];
 
         return response()->json($data);
