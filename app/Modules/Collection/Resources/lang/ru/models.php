@@ -15,8 +15,8 @@ return [
         'sortDirection' => 'Направление сортировки',
         'status' => 'Статус',
     ],
-    'collectionExperience' => [
-        'collection_id' => 'ID учителя',
+    'collectionFilter' => [
+        'collection_id' => 'ID коллекции',
         'name' => 'Название',
         'value' => 'Значение',
     ],

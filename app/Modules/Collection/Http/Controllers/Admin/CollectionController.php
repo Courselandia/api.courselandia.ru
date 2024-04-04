@@ -161,10 +161,12 @@ class CollectionController extends Controller
     public function update(int|string $id, CollectionUpdateRequest $request): JsonResponse
     {
         try {
+            $dataAll = $request->all();
+
             $data = CollectionUpdate::from([
-                ...$request->all(),
+                ...$dataAll,
                 'id' => $id,
-                'filters' => CollectionFilter::collection(collect($request->get('filters'))
+                'filters' => CollectionFilter::collection(collect($dataAll['filters'])
                     ->map(static function ($filter) {
                         return CollectionFilter::from($filter);
                     })
