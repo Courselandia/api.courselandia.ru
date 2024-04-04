@@ -98,6 +98,9 @@ class CollectionCreateAction extends Action
 
             Cache::tags(['catalog', 'collection'])->flush();
 
+            $action = new CollectionCoursesSyncAction($collection->id);
+            $action->run();
+
             $action = new AnalyzerUpdateAction($collection->id, Collection::class, 'collection.text');
             $action->run();
 

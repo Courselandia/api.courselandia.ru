@@ -14,5 +14,8 @@ return [
         'collectionImageUpdateAction' => [
             'notExistCollection' => 'Коллекции не существует.',
         ],
+        'collectionCoursesSyncAction' => [
+            'notExistCollection' => 'Коллекции не существует.',
+        ],
     ],
 ];

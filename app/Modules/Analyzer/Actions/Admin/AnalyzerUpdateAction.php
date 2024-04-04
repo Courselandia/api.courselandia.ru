@@ -25,7 +25,8 @@ use App\Modules\Course\Models\Course;
 use App\Modules\Plagiarism\Exceptions\TextShortException;
 
 /**
- * Задание на проведения создание или обновления анализа и его запуск.
+ * Класс действия для запуска проведения анализа текста
+ * (проверка уникальности текста, его заспамленность и процент воды).
  */
 class AnalyzerUpdateAction extends Action
 {

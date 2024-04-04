@@ -56,6 +56,7 @@ class CollectionCoursesByFiltersAction extends Action
         $data = CourseRead::from([
             'filters' => $filters,
             'sorts' => $this->data->sorts,
+            'limit' => $this->data->limit,
         ]);
 
         $action = new CourseReadAction($data);

@@ -11,5 +11,8 @@ return [
         'collectionUpdateStatusAction' => [
             'notExistCollection' => 'The collection does not exist.',
         ],
+        'collectionCoursesSyncAction' => [
+            'notExistCollection' => 'The collection does not exist.',
+        ]
     ],
 ];
