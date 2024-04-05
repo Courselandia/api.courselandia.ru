@@ -8,9 +8,13 @@
 
 namespace App\Modules\Core\Actions\Admin;
 
+use Log;
+use Config;
 use Cache;
 use Artisan;
 use App\Models\Action;
+use Exception;
+use GuzzleHttp\Client;
 
 /**
  * Класс для сброса кеша в административной системе и в публичной части.
@@ -32,6 +36,14 @@ class CacheFlushAction extends Action
 
         Artisan::call('config:cache');
         Artisan::call('route:cache');
+
+        $client = new Client();
+
+        try {
+            $client->request('GET', Config::get('app.url') . '/cache-flush');
+        } catch (Exception $error) {
+            Log::debug('Не удалось удалить кеш в публичной части: ' . $error->getMessage());
+        }
 
         return true;
     }

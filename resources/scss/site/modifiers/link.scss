@@ -7,4 +7,9 @@ A {
   &:hover {
     text-decoration: none;
   }
+
+  &[name] {
+    color: $primary;
+    text-decoration: none;
+  }
 }
