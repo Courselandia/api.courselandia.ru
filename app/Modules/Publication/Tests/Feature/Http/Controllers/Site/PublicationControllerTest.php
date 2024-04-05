@@ -10,16 +10,13 @@ namespace App\Modules\Publication\Tests\Feature\Http\Controllers\Site;
 
 use Carbon\Carbon;
 use Tests\TestCase;
-use App\Models\Test\TokenTest;
 use App\Modules\Publication\Models\Publication;
 
 /**
- * Тестирование: Класс контроллер для публикации публичной части.
+ * Тестирование: Класс контроллер для публикаций публичной части.
  */
 class PublicationControllerTest extends TestCase
 {
-    use TokenTest;
-
     /**
      * Чтение данных.
      *
@@ -42,9 +39,6 @@ class PublicationControllerTest extends TestCase
                 'limit' => 10,
                 'offset' => 0,
             ],
-            [
-                'Authorization' => 'Bearer ' . $this->getAdminToken()
-            ]
         )->assertStatus(200)->assertJsonStructure([
             'data' => [
                 'publications' => [
@@ -74,13 +68,7 @@ class PublicationControllerTest extends TestCase
 
         $this->json(
             'GET',
-            'api/private/site/publication/get',
-            [
-                'link' => $publication->link,
-            ],
-            [
-                'Authorization' => 'Bearer ' . $this->getAdminToken()
-            ]
+            'api/private/site/publication/link/' . $publication->link,
         )->assertStatus(200)->assertJsonStructure([
             'data' => $this->getPublicationStructure(),
             'success',
@@ -96,13 +84,7 @@ class PublicationControllerTest extends TestCase
     {
         $this->json(
             'GET',
-            'api/private/site/publication/get',
-            [
-                'link' => 'test',
-            ],
-            [
-                'Authorization' => 'Bearer ' . $this->getAdminToken()
-            ]
+            'api/private/site/publication/link/test',
         )->assertStatus(404)->assertJsonStructure([
             'data',
             'success',

@@ -86,7 +86,8 @@ class CollectionLinkAction extends Action
                             'courses.modules_amount',
                             'courses.status',
                             'courses.updated_at',
-                        ]);
+                        ])
+                        ->where('status', Status::ACTIVE->value);
                     },
                     'courses.school' => function ($query) {
                         $query->select([
@@ -98,9 +99,6 @@ class CollectionLinkAction extends Action
                     },
                 ])
                 ->where('link', $this->link)
-                ->whereHas('courses', function ($query) {
-                    $query->where('status', Status::ACTIVE->value);
-                })
                 ->first();
 
                 return $collection ? CollectionEntity::from($collection->toArray()) : null;
