@@ -8,6 +8,13 @@
 
 namespace App\Modules\Collection\Tests\Feature\Http\Controllers\Admin;
 
+use App\Modules\Category\Models\Category;
+use App\Modules\Course\Models\Course;
+use App\Modules\Course\Normalize\Normalize;
+use App\Modules\Profession\Models\Profession;
+use App\Modules\Skill\Models\Skill;
+use App\Modules\Teacher\Models\Teacher;
+use App\Modules\Tool\Models\Tool;
 use Util;
 use Tests\TestCase;
 use Faker\Factory as Faker;
@@ -395,6 +402,120 @@ class CollectionControllerTest extends TestCase
             ]
         )->assertStatus(200)->assertJsonStructure([
             'success',
+        ]);
+    }
+
+    /**
+     * Получение количества курсов в коллекции.
+     *
+     * @return void
+     */
+    public function testCount(): void
+    {
+        $course = Course::factory()->create();
+        $directions = Direction::factory()->create();
+        $professions = Profession::factory()->count(4)->create();
+        $categories = Category::factory()->count(2)->create();
+        $skills = Skill::factory()->count(2)->create();
+        $teachers = Teacher::factory()->count(2)->create();
+        $tools = Tool::factory()->count(2)->create();
+
+        $course->directions()->sync($directions);
+        $course->professions()->sync($professions);
+        $course->categories()->sync($categories);
+        $course->skills()->sync($skills);
+        $course->teachers()->sync($teachers);
+        $course->tools()->sync($tools);
+
+        $normalize = new Normalize();
+        $normalize->run();
+
+        $this->json(
+            'GET',
+            'api/private/admin/collection/count',
+            [
+                'filters' => [
+                    [
+                        'name' => 'directions-id',
+                        'value' => $course->directions[0]->id,
+                    ],
+                    [
+                        'name' => 'school-id',
+                        'value' => json_encode($course->school->pluck('id')),
+                    ],
+                    [
+                        'name' => 'categories-id',
+                        'value' => json_encode($course->categories->pluck('id')),
+                    ],
+                    [
+                        'name' => 'professions-id',
+                        'value' => json_encode($course->professions->pluck('id')),
+                    ],
+                    [
+                        'name' => 'teachers-id',
+                        'value' => json_encode($course->teachers->pluck('id')),
+                    ],
+                    [
+                        'name' => 'skills-id',
+                        'value' => json_encode($course->skills->pluck('id')),
+                    ],
+                    [
+                        'name' => 'tools-id',
+                        'value' => json_encode($course->tools->pluck('id')),
+                    ],
+                    [
+                        'name' => 'price',
+                        'value' => json_encode([$course->price, $course->price]),
+                    ],
+                ],
+            ],
+            [
+                'Authorization' => 'Bearer ' . $this->getAdminToken(),
+            ],
+        )
+        ->assertStatus(200)
+        ->assertJsonStructure([
+            'data' => [
+                'count',
+            ],
+            'success',
+        ])
+        ->assertExactJson([
+            'data' => [
+                'count' => 1,
+            ],
+            'success' => true,
+        ]);
+    }
+
+    /**
+     * Получение количества курсов в коллекции если их нет.
+     *
+     * @return void
+     */
+    public function testCountZero(): void
+    {
+        $this->json(
+            'GET',
+            'api/private/admin/collection/count',
+            [
+                'filters' => [
+                    [
+                        'name' => 'directions-id',
+                        'value' => 1500,
+                    ],
+                ],
+            ],
+            [
+                'Authorization' => 'Bearer ' . $this->getAdminToken(),
+            ],
+        )
+        ->assertStatus(200)
+        ->assertExactJson([
+            'data' => [
+                'count' => 0,
+            ],
+            'success' => true,
         ]);
     }
 
