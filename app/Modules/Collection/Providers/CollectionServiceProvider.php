@@ -10,7 +10,7 @@ namespace App\Modules\Collection\Providers;
 
 use Config;
 use Illuminate\Support\ServiceProvider;
-
+use App\Modules\Collection\Commands\CollectionSynchronizeCommand;
 use App\Modules\Collection\Models\Collection as CollectionModel;
 use App\Modules\Collection\Events\Listeners\CollectionListener;
 
@@ -41,6 +41,9 @@ class CollectionServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
+        $this->commands([
+            CollectionSynchronizeCommand::class,
+        ]);
     }
 
     /**
