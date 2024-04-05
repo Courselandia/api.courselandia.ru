@@ -32,7 +32,7 @@ return [
                 'offset' => 'Отступ',
                 'path' => 'Путь',
             ],
-        ]
+        ],
     ],
     'controllers' => [
         'admin' => [

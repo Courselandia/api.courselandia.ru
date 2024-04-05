@@ -29,6 +29,13 @@ return [
                 'filters' => 'Filters',
             ],
         ],
+        'site' => [
+            'collectionReadRequest' => [
+                'limit' => 'Limit',
+                'offset' => 'Offset',
+                'direction' => 'Direction',
+            ],
+        ],
     ],
     'controllers' => [
         'admin' => [

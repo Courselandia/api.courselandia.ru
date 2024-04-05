@@ -105,6 +105,9 @@ class CollectionUpdateAction extends Action
                     }
                 }
 
+                $action = new CollectionCoursesSyncAction($collection->id);
+                $action->run();
+
                 $action = new AnalyzerUpdateAction($this->data->id, Collection::class, 'collection.text');
                 $action->run();
 

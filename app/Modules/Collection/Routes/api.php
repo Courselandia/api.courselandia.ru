@@ -40,3 +40,16 @@ Route::group([
         Route::get('count/', 'Admin\CollectionController@count')
             ->name('count');
     });
+
+Route::group([
+    'middleware' => ['locale', 'ajax'],
+    'prefix' => 'private/site/collection/',
+    'as' => 'api.private.site.collection'
+],
+    function () {
+        Route::get('read/', 'Site\CollectionController@read')
+            ->name('read');
+
+        Route::get('link/{link}', 'Site\CollectionController@link')
+            ->name('link');
+    });
