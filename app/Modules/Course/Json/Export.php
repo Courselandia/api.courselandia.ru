@@ -36,6 +36,8 @@ use App\Modules\Course\Json\Sources\RatedCoursesSource;
 use App\Modules\Course\Json\Sources\SectionSource;
 use App\Modules\Course\Json\Sources\PublicationsSource;
 use App\Modules\Course\Json\Sources\PublicationSource;
+use App\Modules\Course\Json\Sources\CollectionsSource;
+use App\Modules\Course\Json\Sources\CollectionSource;
 
 /**
  * Класс для экспортирования курсов в файлы json.
@@ -64,6 +66,8 @@ class Export
     public function __construct()
     {
         $this
+            ->addSource(new CollectionsSource())
+            ->addSource(new CollectionSource())
             ->addSource(new PublicationsSource())
             ->addSource(new PublicationSource())
             ->addSource(new SectionSource())
