@@ -13,6 +13,7 @@ use Illuminate\Routing\Controller;
 use App\Modules\Collection\Actions\Site\CollectionReadAction;
 use App\Modules\Collection\Http\Requests\Site\CollectionReadRequest;
 use App\Modules\Collection\Actions\Site\CollectionLinkAction;
+use App\Modules\Collection\Helpers\CleanCourseCollectionRead;
 
 /**
  * Класс контроллер для работы с коллекциями.
@@ -35,11 +36,7 @@ class CollectionController extends Controller
         );
 
         $data = $action->run();
-
-        $data = [
-            'data' => $data->toArray(),
-            'success' => true,
-        ];
+        $data['success'] = true;
 
         return response()->json($data);
     }
@@ -54,9 +51,11 @@ class CollectionController extends Controller
     public function link(string $link): JsonResponse
     {
         $action = new CollectionLinkAction($link);
-        $data = $action->run();
+        $collection = $action->run();
 
-        if ($data) {
+        if ($collection) {
+            $data = $collection->toArray();
+            $data['courses'] = CleanCourseCollectionRead::do($data['courses']);
             $data = [
                 'data' => $data,
                 'success' => true,

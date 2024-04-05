@@ -58,9 +58,9 @@ class CollectionReadAction extends Action
     /**
      * Метод запуска логики.
      *
-     * @return DataCollection<Course> Вернет коллекции курсов.
+     * @return array Вернет результат исполнения.
      */
-    public function run(): DataCollection
+    public function run(): array
     {
         $cacheKey = Util::getKey(
             'collection',

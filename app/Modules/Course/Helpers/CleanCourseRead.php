@@ -20,7 +20,7 @@ class CleanCourseRead
      *
      * @var array
      */
-    private const REMOVES = [
+    public const REMOVES = [
         'uuid',
         'metatag_id',
         'name_morphy',
@@ -62,25 +62,6 @@ class CleanCourseRead
         'level_values',
         'has_active_school',
         'amount_courses',
-    ];
-
-    /**
-     * Массив ключей подлежащих удалению если значение содержит NULL.
-     *
-     * @var array
-     */
-    private const REMOVES_IF_NULL = [
-        'link',
-        'rating',
-        'directions',
-        'professions',
-        'image_small_id',
-        'image_middle_id',
-        'image_big_id',
-        'schools',
-        'header',
-        'header_template',
-        'count',
     ];
 
     public static function do(array $data): array

@@ -14,6 +14,7 @@ use App\Models\Action;
 use App\Models\Enums\CacheTime;
 use App\Modules\Collection\Models\Collection;
 use App\Modules\Collection\Entities\Collection as CollectionEntity;
+use App\Modules\Course\Enums\Status;
 
 /**
  * Класс действия для получения коллекции по ссылке.
@@ -49,18 +50,58 @@ class CollectionLinkAction extends Action
             $this->link,
         );
 
+        Cache::flush();
+
         return Cache::tags(['catalog', 'collection'])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
             function () {
                 $collection = Collection::active()
-                    ->with([
-                        'direction',
-                        'metatag',
-                        'courses',
-                    ])
-                    ->where('link', $this->link)
-                    ->first();
+                ->with([
+                    'direction',
+                    'metatag',
+                    'courses' => function ($query) {
+                        $query->select([
+                            'courses.id',
+                            'courses.school_id',
+                            'courses.image_middle_id',
+                            'courses.name',
+                            'courses.header',
+                            'courses.header_template',
+                            'courses.text',
+                            'courses.link',
+                            'courses.url',
+                            'courses.language',
+                            'courses.rating',
+                            'courses.price',
+                            'courses.price_old',
+                            'courses.price_recurrent',
+                            'courses.currency',
+                            'courses.online',
+                            'courses.employment',
+                            'courses.duration',
+                            'courses.duration_rate',
+                            'courses.duration_unit',
+                            'courses.lessons_amount',
+                            'courses.modules_amount',
+                            'courses.status',
+                            'courses.updated_at',
+                        ]);
+                    },
+                    'courses.school' => function ($query) {
+                        $query->select([
+                            'schools.id',
+                            'schools.name',
+                            'schools.link',
+                            'schools.image_logo_id',
+                        ])->where('status', true);
+                    },
+                ])
+                ->where('link', $this->link)
+                ->whereHas('courses', function ($query) {
+                    $query->where('status', Status::ACTIVE->value);
+                })
+                ->first();
 
                 return $collection ? CollectionEntity::from($collection->toArray()) : null;
             }
