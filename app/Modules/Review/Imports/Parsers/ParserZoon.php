@@ -36,8 +36,7 @@ class ParserZoon extends Parser
             $driver->get($this->getUrl());
             sleep(5);
 
-            $total = $driver->findElements(WebDriverBy::cssSelector('.js-reviews-top-panel .service-block-title'));
-            $total = (int)str_replace('Все отзывы подряд ', '', $total[0]->getText());
+            $total = (int)$driver->findElement(WebDriverBy::cssSelector('.service-block-nav-item-count.z-text--13'))->getText();
             $perPage = 50;
             $buttons = ceil($total / $perPage) - 1;
 
@@ -85,7 +84,7 @@ class ParserZoon extends Parser
 
                     try {
                         $name = $review->findElement(WebDriverBy::cssSelector('SPAN[itemprop="name"]'))->getText();
-                    } catch (Throwable $error) {
+                    } catch (Throwable) {
                         break;
                     }
 
@@ -104,7 +103,7 @@ class ParserZoon extends Parser
                     try {
                         $rating = $review->findElement(WebDriverBy::cssSelector('.stars-rating-text'))->getText();
                         $rating = intval($rating);
-                    } catch (Throwable $error) {
+                    } catch (Throwable) {
                         $rating = null;
                     }
 
@@ -112,16 +111,16 @@ class ParserZoon extends Parser
                     $date = explode(' , ', $date);
                     $date = $date[0];
 
-                    $review = new ParserReview();
-                    $review->title = $title;
-                    $review->rating = $rating;
-                    $review->date = $this->getDate($date);
-                    $review->name = $name;
-                    $review->review = $text;
+                    $item = new ParserReview();
+                    $item->title = $title;
+                    $item->rating = $rating;
+                    $item->date = $this->getDate($date);
+                    $item->name = $name;
+                    $item->review = $text;
 
-                    yield $review;
+                    yield $item;
                 } catch (Throwable $error) {
-                    $this->addError($this->getSchool()->getLabel() . ', из: ' . $this->getUrl() . ' : Не удается получить список отзывов. ' . $error->getMessage());
+                    $this->addError($this->getSchool()->getLabel() . ', из: ' . $this->getUrl() . ' : Не удается получить отзыв. ' . $error->getMessage());
                 }
             }
         } catch (Throwable $error) {
@@ -155,6 +154,6 @@ class ParserZoon extends Parser
 
         $date = str_replace(array_keys($months), array_values($months), $date);
 
-        return Carbon::createFromFormat('j.m.Y в H:i:s', $date . ':00');
+        return Carbon::createFromFormat('j.m.Y H:i:s', $date . ' 00:00:00');
     }
 }

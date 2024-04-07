@@ -103,7 +103,7 @@ class Publication extends Eloquent
             'header' => 'required|between:1,191',
             'link' => 'required|between:1,191|alpha_dash|unique_soft:publications,link,' . $this->id . ',id',
             'anons' => 'max:1000',
-            'article' => 'max:65000',
+            'article' => 'max:16000000',
             'status' => 'required|boolean'
         ];
     }

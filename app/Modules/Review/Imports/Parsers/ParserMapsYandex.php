@@ -70,13 +70,9 @@ class ParserMapsYandex extends Parser
             foreach ($reviews as $review) {
                 try {
                     $title = null;
-                    $name = $review->findElements(WebDriverBy::cssSelector('SPAN[itemprop="name"]'));
-
-                    if (!count($name)) {
-                        $name = $review->findElements(WebDriverBy::cssSelector('.business-review-view__author SPAN'));
-                    }
-
-                    $name = $name[0]->getText();
+                    $name = $review
+                        ->findElement(WebDriverBy::cssSelector('.business-review-view__link SPAN, .business-review-view__author-info DIV SPAN'))
+                        ->getText();
                     $text = $review->findElement(WebDriverBy::cssSelector('.business-review-view__body-text'))->getText();
                     $rating = count($review->findElements(WebDriverBy::cssSelector('.business-rating-badge-view__star._full')));
 
@@ -99,7 +95,7 @@ class ParserMapsYandex extends Parser
 
                     yield $review;
                 } catch (Throwable $error) {
-                    $this->addError($this->getSchool()->getLabel() . ', из: ' . $this->getUrl() . ' : Не удается получить список отзывов. ' . $error->getMessage());
+                    $this->addError($this->getSchool()->getLabel() . ', из: ' . $this->getUrl() . ' : Не удается получить отзыв. ' . $error->getMessage());
                 }
             }
         } catch (Throwable $error) {

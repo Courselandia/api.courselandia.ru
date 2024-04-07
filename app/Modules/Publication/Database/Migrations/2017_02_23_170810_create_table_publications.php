@@ -23,7 +23,7 @@ class CreateTablePublications extends Migration
             $table->string('header', 191);
             $table->string('link', 191)->index('link');
             $table->text('anons')->nullable();
-            $table->text('article')->nullable();
+            $table->mediumText('article')->nullable();
 
             $table->string('image_big_id')->nullable()->index();
             $table->string('image_middle_id')->nullable()->index();

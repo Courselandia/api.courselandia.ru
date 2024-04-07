@@ -8,7 +8,6 @@
 
 namespace App\Modules\Review\Imports;
 
-use App\Models\Exceptions\RecordExistException;
 use Util;
 use Throwable;
 use App\Models\Error;
@@ -17,6 +16,7 @@ use App\Modules\School\Enums\School;
 use App\Modules\Review\Enums\Status;
 use App\Modules\Review\Models\Review;
 use App\Modules\Review\Entities\ParserReview;
+use App\Models\Exceptions\RecordExistException;
 use App\Modules\Review\Imports\Parsers\ParserKursvill;
 use App\Modules\Review\Imports\Parsers\ParserContented;
 use App\Modules\Review\Imports\Parsers\ParserKatalogKursov;
@@ -70,10 +70,7 @@ class Import
             ->addParser(new ParserMapsYandex(School::SKYPRO, 'https://yandex.ru/maps/org/skypro/121650580880/reviews/'))
             ->addParser(new ParserMapsYandex(School::GEEKBRAINS, 'https://yandex.ru/maps/org/geekbrains/1402263817/reviews/'))
             ->addParser(new ParserMapsYandex(School::NETOLOGIA, 'https://yandex.ru/maps/org/netologiya/205031471256/reviews/'))
-            // ->addParser(new ParserMapsYandex(School::SKILL_FACTORY, 'https://yandex.ru/maps/org/skillfactory/237135461560/reviews/'))
-            // ->addParser(new ParserMapsYandex(School::CONTENTED, 'https://yandex.ru/maps/org/contented/115157665135/reviews/'))
             ->addParser(new ParserMapsYandex(School::XYZ_SCHOOL, 'https://yandex.ru/maps/org/xyz_school/151268379499/reviews/'))
-            ->addParser(new ParserMapsYandex(School::INTERNATIONAL_SCHOOL_PROFESSIONS, 'https://yandex.ru/maps/org/mezhdunarodnaya_shkola_professiy/33978597831/reviews/'))
             ->addParser(new ParserMooc(School::SKILLBOX, 'skillbox'))
             ->addParser(new ParserMooc(School::NETOLOGIA, 'netology'))
             ->addParser(new ParserMooc(School::XYZ_SCHOOL, 'xyz-school'))
@@ -83,16 +80,9 @@ class Import
             ->addParser(new ParserMooc(School::INTERNATIONAL_SCHOOL_PROFESSIONS, 'imba-akademia-cifrovogo-biznesa-ingate'))
             ->addParser(new ParserMooc(School::NETOLOGIA, 'https://netology.ru/otzyvy'))
             ->addParser(new ParserNetology(School::NETOLOGIA, 'https://netology.ru/otzyvy'))
-            ->addParser(new ParserOtzyvru(School::SKILLBOX, 'https://otzyvru.com/skillbox'))
-            // ->addParser(new ParserProgbasics(School::SKILLBOX, 'https://progbasics.ru/schools/skillbox/reviews'))
-            // ->addParser(new ParserProgbasics(School::SKYPRO, 'https://progbasics.ru/schools/skypro/reviews'))
-            ->addParser(new ParserSpr(School::SKILLBOX, 'https://spr.ru/moskva/uchebnie-i-obrazovatelnie-tsentri-kursi/reviews/skillbox-5153272.html'))
-            ->addParser(new ParserZoon(School::SKILLBOX, 'https://zoon.ru/msk/trainings/kompaniya_skillbox_na_leninskom_prospekte/reviews/'))
-            // ->addParser(new ParserSkillbox(School::SKILLBOX, 'https://skillbox.ru/otzyvy/'))
             ->addParser(new ParserOtzyvmarketing(School::SKILLBOX, 'https://otzyvmarketing.ru/skillbox/'))
             ->addParser(new ParserOtzyvmarketing(School::SKYPRO, 'https://otzyvmarketing.ru/skypro/'))
             ->addParser(new ParserMapsYandex(School::EDUSON_ACADEMY, 'https://yandex.ru/maps/org/eduson/64475613644/reviews/?ll=37.652226%2C55.708203&z=13'))
-            ->addParser(new ParserCoddyschool(School::CODDY, 'https://berlin.coddyschool.com/vse-otzyvy/'))
             ->addParser(new ParserMapsYandex(School::CODDY, 'https://yandex.ru/maps/org/coddy/1796824613/reviews/'))
             ->addParser(new ParserMooc(School::CODDY, 'coddyschool'))
             ->addParser(new ParserKursvill(School::OTUS, 'https://kursvill.ru/shkoly/otus.ru/?show=all#reviews'))
@@ -110,7 +100,18 @@ class Import
             ->addParser(new ParserKursvill(School::INTERRA, 'https://kursvill.ru/shkoly/interra/?show=all#reviews'))
             ->addParser(new ParserKursvill(School::MAED, 'https://kursvill.ru/shkoly/maed/?show=all#reviews'))
             ->addParser(new ParserMapsYandex(School::MAED, 'https://yandex.ru/maps/org/marketingovoye_obrazovaniye/119627619376/reviews/'))
-            ->addParser(new ParserMooc(School::MAED, 'maed'));
+            ->addParser(new ParserMooc(School::MAED, 'maed'))
+            ->addParser(new ParserMapsYandex(School::SKILL_FACTORY, 'https://yandex.ru/maps/org/skillfactory/237135461560/reviews/'))
+            ->addParser(new ParserMapsYandex(School::CONTENTED, 'https://yandex.ru/maps/org/contented/56878205703/reviews/'))
+            ->addParser(new ParserMapsYandex(School::INTERNATIONAL_SCHOOL_PROFESSIONS, 'https://yandex.ru/maps/org/mezhdunarodnaya_shkola_professiy/80806979609/reviews/'))
+            ->addParser(new ParserOtzyvru(School::SKILLBOX, 'https://otzyvru.com/skillbox'))
+            ->addParser(new ParserProgbasics(School::SKILLBOX, 'https://progbasics.ru/schools/skillbox/reviews'))
+            ->addParser(new ParserProgbasics(School::SKYPRO, 'https://progbasics.ru/schools/skypro/reviews'))
+            ->addParser(new ParserSpr(School::SKILLBOX, 'https://spr.ru/moskva/uchebnie-i-obrazovatelnie-tsentri-kursi/reviews/skillbox-5153272.html'))
+            ->addParser(new ParserZoon(School::SKILLBOX, 'https://zoon.ru/msk/trainings/kompaniya_skillbox_na_leninskom_prospekte/reviews/'))
+            ->addParser(new ParserSkillbox(School::SKILLBOX, 'https://skillbox.ru/otzyvy/'))
+            ->addParser(new ParserCoddyschool(School::CODDY, 'https://berlin.coddyschool.com/vse-otzyvy/'))
+        ;
     }
 
     /**
@@ -204,7 +205,7 @@ class Import
      *
      * @return int|string|null Вернет ID созданного отзыва.
      */
-    public function save(School $school, string $source, string $uuid, ParserReview $entityReview): int|string|null
+    private function save(School $school, string $source, string $uuid, ParserReview $entityReview): int|string|null
     {
         try {
             $review = Review::create([
@@ -222,7 +223,7 @@ class Import
             ]);
 
             return $review->id;
-        } catch (RecordExistException $error) {
+        } catch (RecordExistException) {
             return null;
         } catch (Throwable $error) {
             $this->addError(
@@ -236,13 +237,13 @@ class Import
     }
 
     /**
-     * Проверка, что отзыв не пустой.
+     * Проверка, что отзыв пустой.
      *
      * @param ParserReview $entityReview Спарсенный отзыв.
      *
      * @return bool Вернет true, если отзыв пустой.
      */
-    public function isReviewEmpty(ParserReview $entityReview): bool
+    private function isReviewEmpty(ParserReview $entityReview): bool
     {
         if (
             !$entityReview->name
