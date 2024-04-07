@@ -31,7 +31,6 @@ class CleanCourseRead
         'metatag_id',
         'status',
         'weight',
-        'text',
         'learns',
         'employments',
         'features',
@@ -62,25 +61,25 @@ class CleanCourseRead
         'level_values',
         'has_active_school',
         'amount_courses',
-    ];
-
-    /**
-     * Массив ключей подлежащих удалению если значение содержит NULL.
-     *
-     * @var array
-     */
-    private const REMOVES_IF_NULL = [
-        'link',
-        'rating',
         'directions',
         'professions',
-        'image_small_id',
-        'image_middle_id',
-        'image_big_id',
-        'schools',
-        'header',
+        'categories',
+        'skills',
+        'teachers',
+        'tools',
+        'levels',
+        'analyzers',
+        'reviews_count',
+        'reviews_1_star_count',
+        'reviews_2_stars_count',
+        'reviews_3_stars_count',
+        'reviews_4_stars_count',
+        'reviews_5_stars_count',
         'header_template',
-        'count',
+        'language',
+        'online',
+        'employment',
+        'additional'
     ];
 
     public static function do(array $data): array
