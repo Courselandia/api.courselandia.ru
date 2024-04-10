@@ -114,7 +114,9 @@ class CleanCourseRead
                 unset($data['courses'][$i]['tools'][$z]['text']);
             }
 
-            $data['courses'][$i]['program'] = self::cleanProgram($data['courses'][$i]['program']);
+            if (isset($data['courses'][$i]['program'])) {
+                $data['courses'][$i]['program'] = self::cleanProgram($data['courses'][$i]['program']);
+            }
         }
 
         return $data;
