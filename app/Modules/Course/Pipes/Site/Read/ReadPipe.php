@@ -79,6 +79,7 @@ class ReadPipe implements Pipe
                     'duration_unit',
                     'lessons_amount',
                     'modules_amount',
+                    'program',
                     'status',
                     'updated_at',
                 ])
@@ -91,6 +92,13 @@ class ReadPipe implements Pipe
                             'schools.link',
                             'schools.image_logo_id',
                         ])->where('status', true);
+                    },
+                    'learns',
+                    'tools' => function ($query) {
+                        $query->where('status', true);
+                    },
+                    'teachers' => function ($query) {
+                        $query->where('status', true);
                     },
                 ])
                 ->where('status', Status::ACTIVE->value)
