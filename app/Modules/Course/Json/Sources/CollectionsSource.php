@@ -45,7 +45,7 @@ class CollectionsSource extends Source
                 ?->toArray();
 
             if ($result) {
-                CollectionsItemLinkJob::dispatch('/json/collections/' . $result['link'] . '.json', $result['id'])
+                CollectionsItemLinkJob::dispatch('/json/collections/' . $result['id'] . '.json', $result['id'])
                     ->delay(now()->addMinute());
 
                 $this->fireEvent('export');
