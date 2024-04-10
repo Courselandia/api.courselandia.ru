@@ -91,9 +91,51 @@ class CleanCourseRead
 
         $description = $data['description'];
         $data = Clean::do($data, self::REMOVES);
-
+        $data = self::clean($data);
         $data['description'] = $description;
 
         return $data;
+    }
+
+    /**
+     * Дополнительная очистка от больших ненужных текстов.
+     *
+     * @param array $data Данные для очистки.
+     * @return array Очищенные данные.
+     */
+    private static function clean(array $data): array
+    {
+        for ($i = 0; $i < count($data['courses']); $i++) {
+            for ($z = 0; $z < count($data['courses'][$i]['teachers']); $z++) {
+                unset($data['courses'][$i]['teachers'][$z]['text']);
+            }
+
+            for ($z = 0; $z < count($data['courses'][$i]['tools']); $z++) {
+                unset($data['courses'][$i]['tools'][$z]['text']);
+            }
+
+            $data['courses'][$i]['program'] = self::cleanProgram($data['courses'][$i]['program']);
+        }
+
+        return $data;
+    }
+
+    /**
+     * Дополнительная очистка для программ от ненужных текстов.
+     *
+     * @param array $program Данные для очистки.
+     * @return array Очищенные данные.
+     */
+    private static function cleanProgram(array $program): array
+    {
+        for ($i = 0; $i < count($program); $i++) {
+            unset($program[$i]['text']);
+
+            if (isset($program[$i]['children'])) {
+                $program[$i]['children'] = self::cleanProgram($program[$i]['children']);
+            }
+        }
+
+        return $program;
     }
 }
