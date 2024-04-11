@@ -84,6 +84,7 @@ class CollectionLinkAction extends Action
                             'courses.duration_unit',
                             'courses.lessons_amount',
                             'courses.modules_amount',
+                            'courses.program',
                             'courses.status',
                             'courses.updated_at',
                         ])
@@ -96,6 +97,13 @@ class CollectionLinkAction extends Action
                             'schools.link',
                             'schools.image_logo_id',
                         ])->where('status', true);
+                    },
+                    'courses.learns',
+                    'courses.tools' => function ($query) {
+                        $query->where('status', true);
+                    },
+                    'courses.teachers' => function ($query) {
+                        $query->where('status', true);
                     },
                 ])
                 ->where('link', $this->link)
