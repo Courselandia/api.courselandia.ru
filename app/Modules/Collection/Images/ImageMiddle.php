@@ -63,7 +63,7 @@ class ImageMiddle implements CastsAttributes
                 $path = ImageStore::tmp($value->getClientOriginalExtension());
 
                 Size::make($value)->resize(
-                    400,
+                    600,
                     null,
                     function ($constraint) {
                         $constraint->aspectRatio();

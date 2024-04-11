@@ -105,6 +105,7 @@ class CollectionLinkAction extends Action
                     'courses.teachers' => function ($query) {
                         $query->where('status', true);
                     },
+                    'courses.teachers.experiences',
                 ])
                 ->where('link', $this->link)
                 ->first();

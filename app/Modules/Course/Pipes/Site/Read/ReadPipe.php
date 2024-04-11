@@ -101,6 +101,7 @@ class ReadPipe implements Pipe
                     'teachers' => function ($query) {
                         $query->where('status', true);
                     },
+                    'teachers.experiences',
                 ])
                 ->where('status', Status::ACTIVE->value)
                 ->where('has_active_school', true);
