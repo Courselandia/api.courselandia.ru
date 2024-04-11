@@ -50,6 +50,7 @@ class ReadPipe implements Pipe
             $data->offset,
             $data->limit,
             $data->onlyWithImage,
+            $data->onlyCount ? 'count' : 'all',
         );
 
         $result = Cache::tags(['catalog', 'course'])->remember(
@@ -145,6 +146,10 @@ class ReadPipe implements Pipe
                     $query->limit($data->limit);
                 }
 
+                if ($data->onlyCount) {
+                    return $query->count();
+                }
+
                 $items = $query->get()->toArray();
 
                 return [
@@ -153,6 +158,10 @@ class ReadPipe implements Pipe
                 ];
             }
         );
+
+        if ($data->onlyCount) {
+            return $result;
+        }
 
         $data->courses = $result['courses'];
         $data->total = $result['total'];

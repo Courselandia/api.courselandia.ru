@@ -290,14 +290,15 @@ class CollectionController extends Controller
                     return CollectionFilter::from($filter);
                 })
                 ->toArray()),
+            'onlyCount' => true,
         ]);
 
         $action = new CollectionCoursesByFiltersAction($data);
-        $courses = $action->run();
+        $count = $action->run();
 
         $data = [
             'data' => [
-                'count' => count($courses),
+                'count' => $count,
             ],
             'success' => true,
         ];

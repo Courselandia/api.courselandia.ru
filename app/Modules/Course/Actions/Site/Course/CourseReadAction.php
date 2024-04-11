@@ -52,11 +52,17 @@ class CourseReadAction extends Action
     /**
      * Метод запуска логики.
      *
-     * @return CourseRead|null Вернет результаты исполнения.
+     * @return CourseRead|int|null Вернет результаты исполнения.
      */
-    public function run(): ?CourseRead
+    public function run(): CourseRead|int|null
     {
         $decorator = new CourseReadDecorator(CourseReadDecoratorData::from($this->data->toArray()));
+
+        if ($this->data->onlyCount) {
+            return $decorator->setActions([
+                ReadPipe::class,
+            ])->run();
+        }
 
         return $decorator->setActions([
             ReadPipe::class,

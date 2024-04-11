@@ -39,9 +39,9 @@ class CollectionCoursesByFiltersAction extends Action
     /**
      * Метод запуска логики.
      *
-     * @return DataCollection<Course> Вернет коллекцию курсов.
+     * @return DataCollection<Course>|int Вернет коллекцию курсов или их количество.
      */
-    public function run(): DataCollection
+    public function run(): DataCollection|int
     {
         $filters = [];
 
@@ -57,11 +57,16 @@ class CollectionCoursesByFiltersAction extends Action
             'filters' => $filters,
             'sorts' => $this->data->sorts,
             'limit' => $this->data->limit,
+            'onlyCount' => $this->data->onlyCount,
         ]);
 
         $action = new CourseReadAction($data);
-        $entityCourseRead = $action->run();
+        $data = $action->run();
 
-        return $entityCourseRead->courses;
+        if ($this->data->onlyCount) {
+            return $data;
+        }
+
+        return $data->courses;
     }
 }

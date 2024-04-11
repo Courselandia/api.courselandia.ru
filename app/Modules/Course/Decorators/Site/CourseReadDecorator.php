@@ -34,14 +34,18 @@ class CourseReadDecorator extends Decorator
     /**
      * Метод обработчик события после выполнения всех действий декоратора.
      *
-     * @return CourseReadEntity Вернет сущность считанных курсов.
+     * @return CourseReadEntity|int Вернет сущность считанных курсов либо их количество.
      */
-    public function run(): CourseReadEntity
+    public function run(): CourseReadEntity|int
     {
         $data = app(Pipeline::class)
             ->send($this->data)
             ->through($this->getActions())
             ->thenReturn();
+
+        if ($this->data->onlyCount) {
+            return $data;
+        }
 
         /**
          * @var CourseRead $data

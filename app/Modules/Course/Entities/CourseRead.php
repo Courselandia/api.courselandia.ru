@@ -145,6 +145,13 @@ class CourseRead extends Entity
     public bool|null $onlyWithImage = null;
 
     /**
+     * Признак того, что нам нужно получить только количество курсов.
+     *
+     * @var bool
+     */
+    public bool $onlyCount = false;
+
+    /**
      * @param array|null $sorts Сортировка данных.
      * @param array|null $filters Фильтрация данных.
      * @param int|null $offset Начать выборку.
@@ -163,6 +170,7 @@ class CourseRead extends Entity
      * @param bool|null $openedSkills Признак навыки открыты.
      * @param bool|null $openedTools Признак инструменты открыты.
      * @param bool|null $onlyWithImage Вывести курсы только с картинками.
+     * @param bool $onlyCount Признак того, что нам нужно получить только количество курсов.
      */
     public function __construct(
         ?array          $sorts = null,
@@ -183,6 +191,7 @@ class CourseRead extends Entity
         ?bool           $openedSkills = null,
         ?bool           $openedTools = null,
         ?bool           $onlyWithImage = null,
+        bool            $onlyCount = false,
     )
     {
         $this->sorts = $sorts;
@@ -203,5 +212,6 @@ class CourseRead extends Entity
         $this->openedSkills = $openedSkills;
         $this->openedTools = $openedTools;
         $this->onlyWithImage = $onlyWithImage;
+        $this->onlyCount = $onlyCount;
     }
 }

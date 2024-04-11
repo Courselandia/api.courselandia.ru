@@ -40,14 +40,28 @@ class CollectionCoursesByFilters extends Data
     public ?DataCollection $filters = null;
 
     /**
+     * Признак того, что нам нужно получить только количество курсов.
+     *
+     * @var bool
+     */
+    public bool $onlyCount = false;
+
+    /**
      * @param ?DataCollection $filters Фильтры.
      * @param int|null $limit Количество получаемых курсов.
      * @param array|null $sorts Сортировка данных.
+     * @param bool $onlyCount Сортировка данных.
      */
-    public function __construct(?DataCollection $filters = null, ?int $limit = null, array|null $sorts)
+    public function __construct(
+        ?DataCollection $filters = null,
+        ?int $limit = null,
+        array|null $sorts = null,
+        bool $onlyCount = false,
+    )
     {
         $this->limit = $limit;
         $this->filters = $filters;
         $this->sorts = $sorts;
+        $this->onlyCount = $onlyCount;
     }
 }
