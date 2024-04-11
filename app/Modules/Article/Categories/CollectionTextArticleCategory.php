@@ -112,7 +112,7 @@ class CollectionTextArticleCategory extends ArticleCategory
         $collectionEntity = $action->run();
 
         if ($collectionEntity) {
-            return 'Напиши статью размером 500 символов для подборки курсов "' . $collectionEntity->name . '".';
+            return 'Напиши статью размером 500 символов для подборки онлайн-курсов "' . $collectionEntity->name . '".';
         } else {
             throw new RecordNotExistException(
                 trans('collection::actions.admin.collectionUpdateStatusAction.notExistCollection')
