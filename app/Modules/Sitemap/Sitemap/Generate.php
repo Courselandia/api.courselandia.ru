@@ -24,6 +24,9 @@ use App\Modules\Sitemap\Sitemap\Parts\PartCourses;
 use App\Modules\Sitemap\Sitemap\Parts\PartDirection;
 use App\Modules\Sitemap\Sitemap\Parts\PartProfession;
 use App\Modules\Sitemap\Sitemap\Parts\PartPublication;
+use App\Modules\Sitemap\Sitemap\Parts\PartPublications;
+use App\Modules\Sitemap\Sitemap\Parts\PartCollection;
+use App\Modules\Sitemap\Sitemap\Parts\PartCollections;
 use App\Modules\Sitemap\Sitemap\Parts\PartReview;
 use App\Modules\Sitemap\Sitemap\Parts\PartReviews;
 use App\Modules\Sitemap\Sitemap\Parts\PartSchool;
@@ -76,6 +79,9 @@ class Generate
     {
         $this
             ->addPart(new PartStatic())
+            ->addPart(new PartCollections())
+            ->addPart(new PartCollection())
+            ->addPart(new PartPublications())
             ->addPart(new PartPublication())
             ->addPart(new PartSection())
             ->addPart(new PartCourses())
