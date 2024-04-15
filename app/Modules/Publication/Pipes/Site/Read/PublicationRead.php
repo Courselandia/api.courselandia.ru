@@ -82,7 +82,7 @@ class PublicationRead implements Pipe
 
                 $publications = $query->get();
 
-                return $publications ? PublicationEntity::collection($publications) : null;
+                return $publications ? PublicationEntity::collect($publications) : null;
             }
         );
 

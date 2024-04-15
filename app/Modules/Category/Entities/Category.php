@@ -14,8 +14,6 @@ use App\Modules\Direction\Entities\Direction;
 use App\Modules\Profession\Entities\Profession;
 use Carbon\Carbon;
 use App\Modules\Metatag\Entities\Metatag;
-use Spatie\LaravelData\Attributes\DataCollectionOf;
-use Spatie\LaravelData\DataCollection;
 
 /**
  * Сущность для категорий.
@@ -116,26 +114,23 @@ class Category extends Entity
     /**
      * Направления.
      *
-     * @var ?DataCollection
+     * @var ?array<int, Direction>
      */
-    #[DataCollectionOf(Direction::class)]
-    public ?DataCollection $directions = null;
+    public ?array $directions = null;
 
     /**
      * Профессии.
      *
-     * @var ?DataCollection
+     * @var ?array<int, Profession>
      */
-    #[DataCollectionOf(Profession::class)]
-    public ?DataCollection $professions = null;
+    public ?array $professions = null;
 
     /**
      * Анализ хранения текстов.
      *
-     * @var ?DataCollection
+     * @var ?array<int, Analyzer>
      */
-    #[DataCollectionOf(Analyzer::class)]
-    public ?DataCollection $analyzers = null;
+    public ?array $analyzers = null;
 
     /**
      * @param int|string|null $id ID записи.
@@ -151,9 +146,9 @@ class Category extends Entity
      * @param Carbon|null $created_at Дата создания.
      * @param Carbon|null $updated_at Дата обновления.
      * @param Carbon|null $deleted_at Дата удаления.
-     * @param DataCollection|null $directions Направления.
-     * @param DataCollection|null $professions Профессии.
-     * @param DataCollection|null $analyzers Анализ хранения текстов.
+     * @param array<int, Direction>|null $directions Направления.
+     * @param array<int, Profession>|null $professions Профессии.
+     * @param array<int, Analyzer>|null $analyzers Анализ хранения текстов.
      */
     public function __construct(
         int|string|null $id = null,
@@ -169,9 +164,9 @@ class Category extends Entity
         ?Carbon         $created_at = null,
         ?Carbon         $updated_at = null,
         ?Carbon         $deleted_at = null,
-        ?DataCollection $directions = null,
-        ?DataCollection $professions = null,
-        ?DataCollection $analyzers = null
+        ?array          $directions = null,
+        ?array          $professions = null,
+        ?array          $analyzers = null
     )
     {
         $this->id = $id;

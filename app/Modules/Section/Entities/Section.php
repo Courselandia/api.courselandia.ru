@@ -12,8 +12,6 @@ use App\Models\Entity;
 use App\Modules\Metatag\Entities\Metatag;
 use App\Modules\Salary\Enums\Level;
 use Carbon\Carbon;
-use Spatie\LaravelData\Attributes\DataCollectionOf;
-use Spatie\LaravelData\DataCollection;
 
 /**
  * Модель раздела.
@@ -121,10 +119,9 @@ class Section extends Entity
     /**
      * Элементы.
      *
-     * @var ?DataCollection
+     * @var ?array<int, SectionItem>
      */
-    #[DataCollectionOf(SectionItem::class)]
-    public ?DataCollection $items = null;
+    public ?array $items = null;
 
     /**
      * @param int|string|null $id ID записи.
@@ -141,7 +138,7 @@ class Section extends Entity
      * @param Carbon|null $deleted_at Дата удаления.
      * @param string|null $url URL на раздел.
      * @param Metatag|null $metatag Метатеги.
-     * @param DataCollection|null $items Элементы.
+     * @param array<int, SectionItem>|null $items Элементы.
      */
     public function __construct(
         int|string|null $id = null,
@@ -158,7 +155,7 @@ class Section extends Entity
         ?Carbon         $deleted_at = null,
         ?string         $url = null,
         ?Metatag        $metatag = null,
-        ?DataCollection $items = null,
+        ?array          $items = null,
     )
     {
         $this->id = $id;

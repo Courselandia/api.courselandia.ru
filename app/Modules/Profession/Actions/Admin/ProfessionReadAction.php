@@ -113,7 +113,7 @@ class ProfessionReadAction extends Action
                 $items = $query->get()->toArray();
 
                 return [
-                    'data' => ProfessionEntity::collection($items),
+                    'data' => ProfessionEntity::collect($items),
                     'total' => $queryCount->count(),
                 ];
             }

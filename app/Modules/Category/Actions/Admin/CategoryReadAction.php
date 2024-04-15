@@ -111,7 +111,7 @@ class CategoryReadAction extends Action
                 }
 
                 return [
-                    'data' => CategoryEntity::collection($query->get()->toArray()),
+                    'data' => CategoryEntity::collect($query->get()->toArray()),
                     'total' => $queryCount->count(),
                 ];
             }

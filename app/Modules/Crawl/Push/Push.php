@@ -140,7 +140,7 @@ class Push
     {
         $pages = $this->getQuery($pusher)->get();
 
-        return PageEntity::collection($pages->toArray());
+        return PageEntity::collect($pages->toArray());
     }
 
     /**

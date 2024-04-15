@@ -8,12 +8,10 @@
 
 namespace App\Modules\Course\Data\Decorators;
 
+use stdClass;
 use App\Models\Entity;
 use App\Modules\Course\Entities\Course;
 use App\Modules\Course\Entities\CourseFilter;
-use Spatie\LaravelData\Attributes\DataCollectionOf;
-use Spatie\LaravelData\DataCollection;
-use stdClass;
 
 /**
  * Данные для декоратора для чтения курсов.
@@ -51,10 +49,9 @@ class CourseRead extends Entity
     /**
      * Курсы.
      *
-     * @var ?DataCollection
+     * @var ?array<int, Course>
      */
-    #[DataCollectionOf(Course::class)]
-    public ?DataCollection $courses = null;
+    public ?array $courses = null;
 
     /**
      * Сущность фильтров.
@@ -159,7 +156,7 @@ class CourseRead extends Entity
      * @param array|null $filters Фильтрация данных.
      * @param int|null $offset Начать выборку.
      * @param int|null $limit Лимит выборки.
-     * @param DataCollection|null $courses Курсы.
+     * @param array<int, Course>|null $courses Курсы.
      * @param CourseFilter|null $filter Сущность фильтров.
      * @param string|null $section Название описания.
      * @param string|null $sectionLink Ссылка на раздел описания.
@@ -176,25 +173,25 @@ class CourseRead extends Entity
      * @param bool $onlyCount Признак того, что нам нужно получить только количество курсов.
      */
     public function __construct(
-        ?array          $sorts = null,
-        ?array          $filters = null,
-        ?int            $offset = null,
-        ?int            $limit = null,
-        ?DataCollection $courses = null,
-        ?CourseFilter   $filter = null,
-        ?string         $section = null,
-        ?string         $sectionLink = null,
-        stdClass|null   $description = null,
-        ?int            $total = null,
-        ?bool           $disabled = null,
-        ?bool           $openedSchools = null,
-        ?bool           $openedCategories = null,
-        ?bool           $openedProfessions = null,
-        ?bool           $openedTeachers = null,
-        ?bool           $openedSkills = null,
-        ?bool           $openedTools = null,
-        ?bool           $onlyWithImage = null,
-        bool            $onlyCount = false,
+        ?array        $sorts = null,
+        ?array        $filters = null,
+        ?int          $offset = null,
+        ?int          $limit = null,
+        ?array        $courses = null,
+        ?CourseFilter $filter = null,
+        ?string       $section = null,
+        ?string       $sectionLink = null,
+        stdClass|null $description = null,
+        ?int          $total = null,
+        ?bool         $disabled = null,
+        ?bool         $openedSchools = null,
+        ?bool         $openedCategories = null,
+        ?bool         $openedProfessions = null,
+        ?bool         $openedTeachers = null,
+        ?bool         $openedSkills = null,
+        ?bool         $openedTools = null,
+        ?bool         $onlyWithImage = null,
+        bool          $onlyCount = false,
     )
     {
         $this->sorts = $sorts;

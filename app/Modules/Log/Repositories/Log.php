@@ -54,7 +54,7 @@ class Log extends Repository
             ];
         })->toArray();
 
-        return LogEntity::collection($items);
+        return LogEntity::collect($items);
     }
 
     /**

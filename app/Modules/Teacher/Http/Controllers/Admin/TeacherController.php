@@ -155,12 +155,12 @@ class TeacherController extends Controller
         try {
             $data = TeacherCreate::from([
                 ...$request->all(),
-                'socialMedias' => TeacherSocialMedia::collection(collect($request->get('socialMedias'))
+                'socialMedias' => TeacherSocialMedia::collect(collect($request->get('socialMedias'))
                     ->map(static function ($socialMedia) {
                         return TeacherSocialMedia::from($socialMedia);
                     })
                     ->toArray()),
-                'experiences' => TeacherExperience::collection(collect($request->get('experiences'))
+                'experiences' => TeacherExperience::collect(collect($request->get('experiences'))
                     ->map(static function ($experience) {
                         return TeacherExperience::from([
                             ...$experience,
@@ -234,12 +234,12 @@ class TeacherController extends Controller
             $data = TeacherUpdate::from([
                 ...$request->all(),
                 'id' => $id,
-                'socialMedias' => TeacherSocialMedia::collection(collect($request->get('socialMedias'))
+                'socialMedias' => TeacherSocialMedia::collect(collect($request->get('socialMedias'))
                     ->map(static function ($socialMedia) {
                         return TeacherSocialMedia::from($socialMedia);
                     })
                     ->toArray()),
-                'experiences' => TeacherExperience::collection(collect($request->get('experiences'))
+                'experiences' => TeacherExperience::collect(collect($request->get('experiences'))
                     ->map(static function ($experience) {
                         return TeacherExperience::from([
                             ...$experience,

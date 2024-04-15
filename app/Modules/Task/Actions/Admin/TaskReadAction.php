@@ -111,7 +111,7 @@ class TaskReadAction extends Action
                 $items = $query->get()->toArray();
 
                 return [
-                    'data' => TaskEntity::collection($items),
+                    'data' => TaskEntity::collect($items),
                     'total' => $queryCount->count(),
                 ];
             }

@@ -133,7 +133,7 @@ class CourseReadAction extends Action
                 $items = $query->get()->toArray();
 
                 return [
-                    'data' => CourseEntity::collection($items),
+                    'data' => CourseEntity::collect($items),
                     'total' => $queryCount->count(),
                 ];
             }

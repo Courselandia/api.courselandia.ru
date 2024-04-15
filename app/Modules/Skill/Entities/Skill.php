@@ -12,8 +12,6 @@ use App\Models\Entity;
 use App\Modules\Analyzer\Entities\Analyzer;
 use Carbon\Carbon;
 use App\Modules\Metatag\Entities\Metatag;
-use Spatie\LaravelData\Attributes\DataCollectionOf;
-use Spatie\LaravelData\DataCollection;
 
 /**
  * Сущность для навыков.
@@ -114,10 +112,9 @@ class Skill extends Entity
     /**
      * Анализ хранения текстов.
      *
-     * @var ?DataCollection
+     * @var ?array<int, Analyzer>
      */
-    #[DataCollectionOf(Analyzer::class)]
-    public ?DataCollection $analyzers = null;
+    public ?array $analyzers = null;
 
     /**
      * @param int|string|null $id ID записи.
@@ -133,7 +130,7 @@ class Skill extends Entity
      * @param Carbon|null $updated_at Дата обновления.
      * @param Carbon|null $deleted_at Дата удаления.
      * @param Metatag|null $metatag Метатеги.
-     * @param DataCollection|null $analyzers Анализ хранения текстов.
+     * @param array<int, Analyzer>|null $analyzers Анализ хранения текстов.
      */
     public function __construct(
         int|string|null $id = null,
@@ -149,7 +146,7 @@ class Skill extends Entity
         ?Carbon         $updated_at = null,
         ?Carbon         $deleted_at = null,
         ?Metatag        $metatag = null,
-        ?DataCollection $analyzers = null
+        ?array          $analyzers = null
     )
     {
         $this->id = $id;

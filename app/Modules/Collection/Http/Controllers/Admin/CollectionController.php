@@ -107,7 +107,7 @@ class CollectionController extends Controller
         try {
             $data = CollectionCreate::from([
                 ...$request->all(),
-                'filters' => CollectionFilter::collection(collect($request->get('filters'))
+                'filters' => CollectionFilter::collect(collect($request->get('filters'))
                     ->map(static function ($filter) {
                         return CollectionFilter::from($filter);
                     })
@@ -166,7 +166,7 @@ class CollectionController extends Controller
             $data = CollectionUpdate::from([
                 ...$dataAll,
                 'id' => $id,
-                'filters' => CollectionFilter::collection(collect($dataAll['filters'])
+                'filters' => CollectionFilter::collect(collect($dataAll['filters'])
                     ->map(static function ($filter) {
                         return CollectionFilter::from($filter);
                     })
@@ -285,7 +285,7 @@ class CollectionController extends Controller
     public function count(CollectionCountRequest $request): JsonResponse
     {
         $data = CollectionCoursesByFilters::from([
-            'filters' => CollectionFilter::collection(collect($request->get('filters'))
+            'filters' => CollectionFilter::collect(collect($request->get('filters'))
                 ->map(static function ($filter) {
                     return CollectionFilter::from($filter);
                 })

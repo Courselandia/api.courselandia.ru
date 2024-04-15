@@ -8,9 +8,6 @@
 
 namespace App\Modules\Course\Entities;
 
-use Spatie\LaravelData\Attributes\DataCollectionOf;
-use Spatie\LaravelData\DataCollection;
-
 /**
  * Сущность для пункта фильтра.
  */
@@ -19,8 +16,29 @@ class CourseItemDirectionFilter extends CourseItemFilter
     /**
      * Категории.
      *
-     * @var ?DataCollection
+     * @var ?array<int, CourseItemFilter>
      */
-    #[DataCollectionOf(CourseItemFilter::class)]
-    public ?DataCollection $categories = null;
+    public ?array $categories = null;
+
+    /**
+     * @param int|string|null $id ID записи.
+     * @param string|null $name Название.
+     * @param string|null $link Ссылка.
+     * @param int|null $count Количество.
+     * @param bool|null $disabled Фильтр отключен.
+     * @param array<int, CourseItemFilter>|null $categories Категории.
+     */
+    public function __construct(
+        int|string|null $id = null,
+        ?string         $name = null,
+        ?string         $link = null,
+        ?int            $count = null,
+        ?bool           $disabled = null,
+        ?array          $categories = null,
+    )
+    {
+        $this->categories = $categories;
+
+        parent::__construct($id, $name, $link, $count, $disabled);
+    }
 }

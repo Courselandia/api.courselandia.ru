@@ -113,7 +113,7 @@ class SectionReadAction extends Action
                 }
 
                 $items = $query->get()->toArray();
-                $sections = SectionEntity::collection($items);
+                $sections = SectionEntity::collect($items);
                 $configItems = Config::get('section.items');
 
                 foreach ($sections as $section) {

@@ -113,7 +113,7 @@ class DirectionReadAction extends Action
                 $items = $query->get()->toArray();
 
                 return [
-                    'data' => DirectionEntity::collection($items),
+                    'data' => DirectionEntity::collect($items),
                     'total' => $queryCount->count(),
                 ];
             }

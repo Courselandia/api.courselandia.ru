@@ -8,10 +8,10 @@
 
 namespace App\Modules\Publication\Images;
 
-use Size;
+use Image;
 use ImageStore;
 use App\Modules\Image\Entities\Image as ImageEntity;
-use App\Modules\Image\Helpers\Image;
+use App\Modules\Image\Helpers\Image as ImageHelper;
 use CodeBuds\WebPConverter\WebPConverter;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Http\UploadedFile;
@@ -53,21 +53,14 @@ class ImageBig implements CastsAttributes
      */
     public function set($model, string $key, mixed $value, array $attributes): null|int|string
     {
-        return Image::set(
+        return ImageHelper::set(
             $key,
             $value,
             function (string $key, UploadedFile $value) use ($attributes) {
                 $folder = 'publications';
                 $path = ImageStore::tmp($value->getClientOriginalExtension());
 
-                Size::make($value)->resize(
-                    800,
-                    null,
-                    function ($constraint) {
-                        $constraint->aspectRatio();
-                        $constraint->upsize();
-                    }
-                )->save($path);
+                Image::read($value)->resize(800)->save($path);
 
                 $imageWebp = $value->getClientOriginalExtension() !== 'webp'
                     ? WebPConverter::createWebpImage($path, ['saveFile' => true])

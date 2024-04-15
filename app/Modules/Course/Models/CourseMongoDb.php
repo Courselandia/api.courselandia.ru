@@ -8,8 +8,8 @@
 
 namespace App\Modules\Course\Models;
 
+use MongoDb;
 use App\Models\Validate;
-use MongoDB\Laravel\Eloquent\Model;
 
 /**
  * Класс модель для таблицы курсов на основе MongoDB.
@@ -20,7 +20,7 @@ use MongoDB\Laravel\Eloquent\Model;
  * @property int|string|null $category Категория фильтра.
  * @property string|null $data Данные.
  */
-class CourseMongoDb extends Model
+class CourseMongoDb extends MongoDb
 {
     /**
      * Соединение.

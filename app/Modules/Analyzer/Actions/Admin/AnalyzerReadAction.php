@@ -122,7 +122,7 @@ class AnalyzerReadAction extends Action
                 }
 
                 return [
-                    'data' => AnalyzerEntity::collection($items),
+                    'data' => AnalyzerEntity::collect($items),
                     'total' => $queryCount->count(),
                 ];
             }

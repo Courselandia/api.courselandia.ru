@@ -126,7 +126,7 @@ class CourseTeacherReadAction extends Action
                         $query->limit($this->limit);
                     }
 
-                    return CourseItemFilter::collection($query->get()->toArray());
+                    return CourseItemFilter::collect($query->get()->toArray());
                 }
             );
         }
@@ -250,10 +250,10 @@ class CourseTeacherReadAction extends Action
                         ->values()
                         ->toArray();
 
-                    return CourseItemFilter::collection($result);
+                    return CourseItemFilter::collect($result);
                 }
 
-                return CourseItemFilter::collection($activeTeachers);
+                return CourseItemFilter::collect($activeTeachers);
             }
         );
     }

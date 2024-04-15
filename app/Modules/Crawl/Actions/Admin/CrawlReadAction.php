@@ -113,7 +113,7 @@ class CrawlReadAction extends Action
                 $items = $query->get()->toArray();
 
                 return [
-                    'data' => CrawlEntity::collection($items),
+                    'data' => CrawlEntity::collect($items),
                     'total' => $queryCount->count(),
                 ];
             }

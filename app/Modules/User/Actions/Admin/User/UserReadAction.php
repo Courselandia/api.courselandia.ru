@@ -115,7 +115,7 @@ class UserReadAction extends Action
                 $items = $query->get()->toArray();
 
                 return [
-                    'data' => UserEntity::collection($items),
+                    'data' => UserEntity::collect($items),
                     'total' => $queryCount->count(),
                 ];
             }

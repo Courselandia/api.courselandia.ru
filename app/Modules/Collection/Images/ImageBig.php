@@ -8,11 +8,11 @@
 
 namespace App\Modules\Collection\Images;
 
-use Size;
+use Image;
 use ImageStore;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Image\Entities\Image as ImageEntity;
-use App\Modules\Image\Helpers\Image;
+use App\Modules\Image\Helpers\Image as ImageHelper;
 use CodeBuds\WebPConverter\WebPConverter;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Http\UploadedFile;
@@ -55,14 +55,14 @@ class ImageBig implements CastsAttributes
      */
     public function set($model, string $key, mixed $value, array $attributes): null|int|string
     {
-        return Image::set(
+        return ImageHelper::set(
             $key,
             $value,
             function (string $key, UploadedFile $value) use ($attributes) {
                 $folder = 'collections';
                 $path = ImageStore::tmp($value->getClientOriginalExtension());
 
-                Size::make($value)->resize(
+                Image::read($value)->resize(
                     800,
                     null,
                     function ($constraint) {

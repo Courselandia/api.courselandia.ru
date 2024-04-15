@@ -112,7 +112,7 @@ class FaqReadAction extends Action
                 $items = $query->get()->toArray();
 
                 return [
-                    'data' => FaqEntity::collection($items),
+                    'data' => FaqEntity::collect($items),
                     'total' => $queryCount->count(),
                 ];
             }

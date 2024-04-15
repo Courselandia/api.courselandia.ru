@@ -15,8 +15,6 @@ use App\Modules\Course\Entities\Course;
 use App\Modules\Direction\Entities\Direction;
 use App\Modules\Image\Entities\Image;
 use App\Modules\Metatag\Entities\Metatag;
-use Spatie\LaravelData\Attributes\DataCollectionOf;
-use Spatie\LaravelData\DataCollection;
 
 /**
  * Сущность для коллекции.
@@ -159,26 +157,23 @@ class Collection extends Entity
     /**
      * Фильтры.
      *
-     * @var ?DataCollection
+     * @var ?array<int, CollectionFilter>
      */
-    #[DataCollectionOf(CollectionFilter::class)]
-    public ?DataCollection $filters = null;
+    public ?array $filters = null;
 
     /**
      * Курсы коллекции.
      *
-     * @var ?DataCollection
+     * @var ?array<int, Course>
      */
-    #[DataCollectionOf(Course::class)]
-    public ?DataCollection $courses = null;
+    public ?array $courses = null;
 
     /**
      * Анализ хранения текстов.
      *
-     * @var ?DataCollection
+     * @var ?array<int, Analyzer>
      */
-    #[DataCollectionOf(Analyzer::class)]
-    public ?DataCollection $analyzers = null;
+    public ?array $analyzers = null;
 
     /**
      * @param int|string|null $id ID записи.
@@ -200,9 +195,9 @@ class Collection extends Entity
      * @param Carbon|null $deleted_at Дата удаления.
      * @param Direction|null $direction Направление.
      * @param Metatag|null $metatag Метатеги.
-     * @param DataCollection|null $filters Фильтры.
-     * @param DataCollection|null $courses Курсы коллекции.
-     * @param DataCollection|null $analyzers Анализ хранения текстов.
+     * @param array<int, CollectionFilter>|null $filters Фильтры.
+     * @param array<int, Course>|null $courses Курсы коллекции.
+     * @param array<int, Analyzer>|null $analyzers Анализ хранения текстов.
      */
     public function __construct(
         int|string|null $id = null,
@@ -224,9 +219,9 @@ class Collection extends Entity
         ?Carbon         $deleted_at = null,
         ?Direction      $direction = null,
         ?Metatag        $metatag = null,
-        ?DataCollection $filters = null,
-        ?DataCollection $courses = null,
-        ?DataCollection $analyzers = null,
+        ?array $filters = null,
+        ?array $courses = null,
+        ?array $analyzers = null,
     )
     {
         $this->id = $id;

@@ -113,7 +113,7 @@ class ToolReadAction extends Action
                 $items = $query->get()->toArray();
 
                 return [
-                    'data' => ToolEntity::collection($items),
+                    'data' => ToolEntity::collect($items),
                     'total' => $queryCount->count(),
                 ];
             }

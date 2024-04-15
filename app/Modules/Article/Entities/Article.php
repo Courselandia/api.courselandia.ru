@@ -12,8 +12,6 @@ use Carbon\Carbon;
 use App\Models\Entity;
 use App\Modules\Analyzer\Entities\Analyzer;
 use App\Modules\Article\Enums\Status;
-use Spatie\LaravelData\Attributes\DataCollectionOf;
-use Spatie\LaravelData\DataCollection;
 
 /**
  * Сущность для статьи.
@@ -149,10 +147,9 @@ class Article extends Entity
     /**
      * Анализ хранения текстов.
      *
-     * @var ?DataCollection
+     * @var ?array<int, Analyzer>
      */
-    #[DataCollectionOf(Analyzer::class)]
-    public ?DataCollection $analyzers = null;
+    public ?array $analyzers = null;
 
     /**
      * @param int|string|null $id ID записи.
@@ -173,7 +170,7 @@ class Article extends Entity
      * @param Carbon|null $updated_at Дата обновления.
      * @param Carbon|null $deleted_at Дата удаления.
      * @param mixed|null $articleable Сущность.
-     * @param DataCollection|null $analyzers Анализ хранения текстов.
+     * @param array|null $analyzers Анализ хранения текстов.
      */
     public function __construct(
         int|string|null $id = null,
@@ -193,8 +190,8 @@ class Article extends Entity
         ?Carbon         $created_at = null,
         ?Carbon         $updated_at = null,
         ?Carbon         $deleted_at = null,
-        ?array           $articleable = null,
-        ?DataCollection $analyzers = null,
+        ?array          $articleable = null,
+        ?array          $analyzers = null,
     )
     {
         $this->id = $id;

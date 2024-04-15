@@ -10,8 +10,6 @@ namespace App\Modules\Publication\Data\Decorators;
 
 use App\Models\Data;
 use App\Modules\Publication\Entities\Publication;
-use Spatie\LaravelData\Attributes\DataCollectionOf;
-use Spatie\LaravelData\DataCollection;
 
 /**
  * Данные для декоратора для чтения публикаций.
@@ -70,10 +68,9 @@ class PublicationRead extends Data
     /**
      * Публикации.
      *
-     * @var ?DataCollection
+     * @var ?array<int, Publication>
      */
-    #[DataCollectionOf(Publication::class)]
-    public ?DataCollection $publications = null;
+    public ?array $publications = null;
 
     /**
      * Количество записей.
@@ -90,7 +87,7 @@ class PublicationRead extends Data
      * @param int|string|null $id ID публикации.
      * @param string|null $link Ссылка.
      * @param int|null $total Количество записей..
-     * @param ?DataCollection $publications Публикации.
+     * @param ?array<int, Publication> $publications Публикации.
      * @param ?Publication $publication Публикация.
      */
     public function __construct(
@@ -101,7 +98,7 @@ class PublicationRead extends Data
         int|string|null $id = null,
         ?string         $link = null,
         ?int            $total = null,
-        ?DataCollection $publications = null,
+        ?array          $publications = null,
         ?Publication    $publication = null
     )
     {

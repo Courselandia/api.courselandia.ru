@@ -113,7 +113,7 @@ class SalaryReadAction extends Action
                 $items = $query->get()->toArray();
 
                 return [
-                    'data' => SalaryEntity::collection($items),
+                    'data' => SalaryEntity::collect($items),
                     'total' => $queryCount->count(),
                 ];
             }

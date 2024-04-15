@@ -103,6 +103,14 @@ class Faq extends Entity
         ?School         $school = null,
     )
     {
-
+        $this->id = $id;
+        $this->school_id = $school_id;
+        $this->question = $question;
+        $this->answer = $answer;
+        $this->status = $status;
+        $this->created_at = $created_at;
+        $this->updated_at = $updated_at;
+        $this->deleted_at = $deleted_at;
+        $this->school = $school;
     }
 }

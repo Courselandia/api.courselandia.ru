@@ -12,7 +12,6 @@ use App\Modules\Course\Entities\CourseItemDirectionFilter;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Direction\Models\Direction;
 use Cache;
-use Spatie\LaravelData\DataCollection;
 use Util;
 use App\Models\Action;
 use App\Models\Enums\CacheTime;
@@ -94,10 +93,10 @@ class CourseDirectionReadAction extends Action
     /**
      * Метод запуска логики.
      *
-     * @return DataCollection Вернет результаты исполнения.
+     * @return array Вернет результаты исполнения.
      * @throws ParameterInvalidException
      */
-    public function run(): DataCollection
+    public function run(): array
     {
         $filters = $this->filters;
 
@@ -144,7 +143,7 @@ class CourseDirectionReadAction extends Action
                         $query->limit($this->limit);
                     }
 
-                    return CourseItemFilter::collection($query->get()->toArray());
+                    return CourseItemFilter::collect($query->get()->toArray());
                 }
             );
         }
@@ -259,7 +258,7 @@ class CourseDirectionReadAction extends Action
                 }
 
                 if ($this->withCategories) {
-                    return CourseItemDirectionFilter::collection($activeDirections);
+                    return CourseItemDirectionFilter::collect($activeDirections);
                 }
 
                 if ($this->disabled) {
@@ -281,10 +280,10 @@ class CourseDirectionReadAction extends Action
                         })->toArray();
                     }
 
-                    return CourseItemFilter::collection($allDirections);
+                    return CourseItemFilter::collect($allDirections);
                 }
 
-                return CourseItemFilter::collection($activeDirections);
+                return CourseItemFilter::collect($activeDirections);
             }
         );
     }

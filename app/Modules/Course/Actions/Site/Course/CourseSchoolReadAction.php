@@ -128,7 +128,7 @@ class CourseSchoolReadAction extends Action
 
                     $result = $query->get()->toArray();
 
-                    return CourseItemFilter::collection($result);
+                    return CourseItemFilter::collect($result);
                 }
             );
         }
@@ -253,10 +253,10 @@ class CourseSchoolReadAction extends Action
                         ->values()
                         ->toArray();
 
-                    return CourseItemFilter::collection($result);
+                    return CourseItemFilter::collect($result);
                 }
 
-                return CourseItemFilter::collection($activeSchools);
+                return CourseItemFilter::collect($activeSchools);
             }
         );
     }

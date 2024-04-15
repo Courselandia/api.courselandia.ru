@@ -109,7 +109,7 @@ class FeedbackReadAction extends Action
                 $items = $query->get()->toArray();
 
                 return [
-                    'data' => FeedbackEntity::collection($items),
+                    'data' => FeedbackEntity::collect($items),
                     'total' => $queryCount->count(),
                 ];
             }

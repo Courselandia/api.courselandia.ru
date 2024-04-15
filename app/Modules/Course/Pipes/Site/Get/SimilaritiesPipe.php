@@ -117,10 +117,10 @@ class SimilaritiesPipe implements Pipe
 
                         $items = $query->get()->toArray();
 
-                        return CourseEntity::collection($items);
+                        return CourseEntity::collect($items);
                     }
 
-                    return CourseEntity::collection([]);
+                    return CourseEntity::collect([]);
                 }
             );
 

@@ -8,12 +8,12 @@
 
 namespace App\Modules\Image\Models;
 
-use MongoDB\Laravel\Eloquent\Model;
+use MongoDb;
 use App\Models\Validate;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
- * Класс модель для таблицы изображений на основе Mongo.
+ * Класс модель для таблицы изображений на основе MongoDb.
  *
  * @property int|string $id ID изображения.
  * @property int $format Формат изображения.
@@ -26,7 +26,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property ?string $pathCache Путь к изображению с кешированием.
  * @property ?string $pathSource Путь к фактическому местоположению изображения.
  */
-class ImageMongoDb extends Model
+class ImageMongoDb extends MongoDb
 {
     use SoftDeletes;
     use Validate;

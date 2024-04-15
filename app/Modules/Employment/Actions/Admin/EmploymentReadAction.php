@@ -109,7 +109,7 @@ class EmploymentReadAction extends Action
                 $items = $query->get()->toArray();
 
                 return [
-                    'data' => EmploymentEntity::collection($items),
+                    'data' => EmploymentEntity::collect($items),
                     'total' => $queryCount->count(),
                 ];
             }

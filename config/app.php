@@ -336,10 +336,9 @@ return [
         // Advanced classes
         'Geographer' => MenaraSolutions\Geographer\Integrations\LaravelFacade::class,
         'Debugbar' => Barryvdh\Debugbar\Facades\Debugbar::class,
-        'MongoDb' => Jenssegers\Mongodb\Eloquent\Model::class,
+        'MongoDb' => MongoDB\Laravel\Eloquent\Model::class,
 
         'XmlParser' => Orchestra\Parser\Xml\Facade::class,
-        'Size' => Intervention\Image\Facades\Image::class,
 
         // Own classes
         'Util' => App\Models\Facades\Util::class,

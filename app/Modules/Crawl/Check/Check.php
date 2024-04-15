@@ -131,7 +131,7 @@ class Check
     {
         $crawls = $this->getQuery($checker)->get();
 
-        return CrawlEntity::collection($crawls->toArray());
+        return CrawlEntity::collect($crawls->toArray());
     }
 
     /**

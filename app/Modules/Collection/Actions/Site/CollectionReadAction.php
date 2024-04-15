@@ -100,7 +100,7 @@ class CollectionReadAction extends Action
                 $items = $query->get()->toArray();
 
                 return [
-                    'data' => CollectionEntity::collection($items),
+                    'data' => CollectionEntity::collect($items),
                     'total' => $queryCount->count(),
                 ];
             }

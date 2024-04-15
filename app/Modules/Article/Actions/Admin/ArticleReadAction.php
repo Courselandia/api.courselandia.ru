@@ -128,7 +128,7 @@ class ArticleReadAction extends Action
                 }
 
                 return [
-                    'data' => ArticleEntity::collection($items),
+                    'data' => ArticleEntity::collect($items),
                     'total' => $queryCount->count(),
                 ];
             }

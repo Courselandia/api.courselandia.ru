@@ -113,7 +113,7 @@ class SkillReadAction extends Action
                 $items = $query->get()->toArray();
 
                 return [
-                    'data' => SkillEntity::collection($items),
+                    'data' => SkillEntity::collect($items),
                     'total' => $queryCount->count(),
                 ];
             }

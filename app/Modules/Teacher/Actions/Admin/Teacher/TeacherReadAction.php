@@ -120,7 +120,7 @@ class TeacherReadAction extends Action
                 $items = $query->get()->toArray();
 
                 return [
-                    'data' => TeacherEntity::collection($items),
+                    'data' => TeacherEntity::collect($items),
                     'total' => $queryCount->count(),
                 ];
             }

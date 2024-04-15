@@ -10,8 +10,6 @@ namespace App\Modules\Collection\Data;
 
 use App\Models\Data;
 use Illuminate\Http\UploadedFile;
-use Spatie\LaravelData\Attributes\DataCollectionOf;
-use Spatie\LaravelData\DataCollection;
 
 /**
  * Данные для создания коллекции.
@@ -112,10 +110,9 @@ class CollectionCreate extends Data
     /**
      * Фильтры.
      *
-     * @var ?DataCollection
+     * @var ?array<int, CollectionFilter>
      */
-    #[DataCollectionOf(CollectionFilter::class)]
-    public ?DataCollection $filters = null;
+    public ?array $filters = null;
 
     /**
      * @param int|string|null $direction_id ID направления.
@@ -131,7 +128,7 @@ class CollectionCreate extends Data
      * @param string|null $title Заголовок.
      * @param string|null $description Описания.
      * @param string|null $keywords Ключевые слова.
-     * @param ?DataCollection $filters Фильтры.
+     * @param ?array $filters Фильтры.
      */
     public function __construct(
         int|string|null   $direction_id = null,
@@ -147,7 +144,7 @@ class CollectionCreate extends Data
         ?string           $title = null,
         ?string           $description = null,
         ?string           $keywords = null,
-        ?DataCollection   $filters = null,
+        ?array            $filters = null,
     )
     {
         $this->direction_id = $direction_id;

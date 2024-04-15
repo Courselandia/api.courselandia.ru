@@ -8,11 +8,11 @@
 
 namespace App\Modules\Course\Images;
 
-use Size;
+use Image;
 use ImageStore;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Image\Entities\Image as ImageEntity;
-use App\Modules\Image\Helpers\Image;
+use App\Modules\Image\Helpers\Image as ImageHelper;
 use CodeBuds\WebPConverter\WebPConverter;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Http\UploadedFile;
@@ -56,7 +56,7 @@ class ImageBig implements CastsAttributes
      */
     public function set($model, string $key, mixed $value, array $attributes): null|int|string
     {
-        return Image::set(
+        return ImageHelper::set(
             $key,
             $value,
             function (string $key, UploadedFile $value) use ($attributes) {
@@ -67,20 +67,13 @@ class ImageBig implements CastsAttributes
                     $path = ImageStore::tmp('png');
                     imagepng($imageRaster, $path);
 
-                    $image = Size::make($path);
+                    $image = Image::read($path);
                 } else {
                     $path = ImageStore::tmp($value->getClientOriginalExtension());
-                    $image = Size::make($value);
+                    $image = Image::make($value);
                 }
 
-                $image->resize(
-                    600,
-                    null,
-                    function ($constraint) {
-                        $constraint->aspectRatio();
-                        $constraint->upsize();
-                    }
-                )->save($path);
+                $image->resize(600)->save($path);
 
                 $imageWebp = WebPConverter::createWebpImage($path, ['saveFile' => true]);
 

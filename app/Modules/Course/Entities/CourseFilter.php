@@ -11,8 +11,6 @@ namespace App\Modules\Course\Entities;
 use App\Models\Entity;
 use App\Modules\Course\Enums\Format;
 use App\Modules\Salary\Enums\Level;
-use Spatie\LaravelData\Attributes\DataCollectionOf;
-use Spatie\LaravelData\DataCollection;
 
 /**
  * Сущность фильтров курсов для чтения.
@@ -22,66 +20,58 @@ class CourseFilter extends Entity
     /**
      * Направления.
      *
-     * @var ?DataCollection
+     * @var ?array<int, CourseItemFilter>
      */
-    #[DataCollectionOf(CourseItemFilter::class)]
-    public ?DataCollection $directions = null;
+    public ?array $directions = null;
 
     /**
      * Категории.
      *
-     * @var ?DataCollection
+     * @var ?array<int, CourseItemFilter>
      */
-    #[DataCollectionOf(CourseItemFilter::class)]
-    public ?DataCollection $categories = null;
+    public ?array $categories = null;
 
     /**
      * Профессии.
      *
-     * @var ?DataCollection
+     * @var ?array<int, CourseItemFilter>
      */
-    #[DataCollectionOf(CourseItemFilter::class)]
-    public ?DataCollection $professions = null;
+    public ?array $professions = null;
 
     /**
      * Школы.
      *
-     * @var ?DataCollection
+     * @var ?array<int, CourseItemFilter>
      */
-    #[DataCollectionOf(CourseItemFilter::class)]
-    public ?DataCollection $schools = null;
+    public ?array $schools = null;
 
     /**
      * Инструменты.
      *
-     * @var ?DataCollection
+     * @var ?array<int, CourseItemFilter>
      */
-    #[DataCollectionOf(CourseItemFilter::class)]
-    public ?DataCollection $tools = null;
+    public ?array $tools = null;
 
     /**
      * КАк проходит обучение.
      *
-     * @var ?DataCollection
+     * @var ?array<int, CourseItemFilter>
      */
-    #[DataCollectionOf(CourseItemFilter::class)]
-    public ?DataCollection $processes = null;
+    public ?array $processes = null;
 
     /**
      * Навыки.
      *
-     * @var ?DataCollection
+     * @var ?array<int, CourseItemFilter>
      */
-    #[DataCollectionOf(CourseItemFilter::class)]
-    public ?DataCollection $skills = null;
+    public ?array $skills = null;
 
     /**
      * Учителя.
      *
-     * @var ?DataCollection
+     * @var ?array<int, CourseItemFilter>
      */
-    #[DataCollectionOf(CourseItemFilter::class)]
-    public ?DataCollection $teachers = null;
+    public ?array $teachers = null;
 
     /**
      * Массив доступных рейтингов.
@@ -133,15 +123,15 @@ class CourseFilter extends Entity
     public ?array $levels = null;
 
     /**
-     * @param DataCollection|null $directions Направления.
-     * @param DataCollection|null $categories Категории.
-     * @param DataCollection|null $professions Профессии.
-     * @param DataCollection|null $schools Школы.
-     * @param DataCollection|null $tools Инструменты.
-     * @param DataCollection|null $processes Как проходит обучение.
-     * @param DataCollection|null $skills Навыки.
-     * @param DataCollection|null $teachers Учителя.
-     * @param array|null $ratings Массив доступных рейтингов.
+     * @param array<int, CourseItemFilter>|null $directions Направления.
+     * @param array<int, CourseItemFilter>|null $categories Категории.
+     * @param array<int, CourseItemFilter>|null $professions Профессии.
+     * @param array<int, CourseItemFilter>|null $schools Школы.
+     * @param array<int, CourseItemFilter>|null $tools Инструменты.
+     * @param array<int, CourseItemFilter>|null $processes Как проходит обучение.
+     * @param array<int, CourseItemFilter>|null $skills Навыки.
+     * @param array<int, CourseItemFilter>|null $teachers Учителя.
+     * @param array<int, CourseItemFilter>|null $ratings Массив доступных рейтингов.
      * @param CourseFilterPrice|null $price Цена от и до
      * @param CourseFilterDuration|null $duration Продолжительность от и до
      * @param bool|null $credit Признак наличия фильтра возможности взять кредит.
@@ -150,14 +140,14 @@ class CourseFilter extends Entity
      * @param array|null $levels Доступные уровни.
      */
     public function __construct(
-        ?DataCollection       $directions = null,
-        ?DataCollection       $categories = null,
-        ?DataCollection       $professions = null,
-        ?DataCollection       $schools = null,
-        ?DataCollection       $tools = null,
-        ?DataCollection       $processes = null,
-        ?DataCollection       $skills = null,
-        ?DataCollection       $teachers = null,
+        ?array                $directions = null,
+        ?array                $categories = null,
+        ?array                $professions = null,
+        ?array                $schools = null,
+        ?array                $tools = null,
+        ?array                $processes = null,
+        ?array                $skills = null,
+        ?array                $teachers = null,
         ?array                $ratings = null,
         ?CourseFilterPrice    $price = null,
         ?CourseFilterDuration $duration = null,

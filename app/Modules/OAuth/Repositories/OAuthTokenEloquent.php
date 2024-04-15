@@ -68,7 +68,7 @@ class OAuthTokenEloquent extends Repository
 
         $items = $query->get();
 
-        return OAuthToken::collection($items);
+        return OAuthToken::collect($items);
     }
 
     /**

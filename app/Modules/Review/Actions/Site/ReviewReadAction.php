@@ -97,7 +97,7 @@ class ReviewReadAction extends Action
                 $items = $query->get()->toArray();
 
                 return [
-                    'data' => ReviewEntity::collection($items),
+                    'data' => ReviewEntity::collect($items),
                     'total' => $queryCount->count(),
                 ];
             }

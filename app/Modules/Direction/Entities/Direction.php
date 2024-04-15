@@ -13,8 +13,6 @@ use App\Modules\Analyzer\Entities\Analyzer;
 use Carbon\Carbon;
 use App\Modules\Metatag\Entities\Metatag;
 use App\Modules\Category\Entities\Category;
-use Spatie\LaravelData\Attributes\DataCollectionOf;
-use Spatie\LaravelData\DataCollection;
 
 /**
  * Сущность для направлений.
@@ -122,18 +120,16 @@ class Direction extends Entity
     /**
      * Категории.
      *
-     * @var ?DataCollection
+     * @var ?array<int, Category>
      */
-    #[DataCollectionOf(Category::class)]
-    public ?DataCollection $categories = null;
+    public ?array $categories = null;
 
     /**
      * Анализ хранения текстов.
      *
-     * @var ?DataCollection
+     * @var ?array<int, Analyzer>
      */
-    #[DataCollectionOf(Analyzer::class)]
-    public ?DataCollection $analyzers = null;
+    public ?array $analyzers = null;
 
     /**
      * @param int|string|null $id ID записи.
@@ -150,8 +146,8 @@ class Direction extends Entity
      * @param Carbon|null $updated_at Дата обновления.
      * @param Carbon|null $deleted_at Дата удаления.
      * @param Metatag|null $metatag Метатеги.
-     * @param DataCollection|null $categories Категории.
-     * @param DataCollection|null $analyzers Анализ хранения текстов.
+     * @param array<int, Category>|null $categories Категории.
+     * @param array<int, Analyzer>|null $analyzers Анализ хранения текстов.
      */
     public function __construct(
         int|string|null $id = null,
@@ -168,8 +164,8 @@ class Direction extends Entity
         ?Carbon         $updated_at = null,
         ?Carbon         $deleted_at = null,
         ?Metatag        $metatag = null,
-        ?DataCollection $categories = null,
-        ?DataCollection $analyzers = null
+        ?array          $categories = null,
+        ?array          $analyzers = null
     )
     {
         $this->id = $id;

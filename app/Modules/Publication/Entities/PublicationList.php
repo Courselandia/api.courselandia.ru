@@ -10,8 +10,6 @@ namespace App\Modules\Publication\Entities;
 
 use App\Models\Entity;
 use App\Modules\Publication\Values\PublicationYear;
-use Spatie\LaravelData\Attributes\DataCollectionOf;
-use Spatie\LaravelData\DataCollection;
 
 /**
  * Сущность для списка публикаций.
@@ -42,22 +40,21 @@ class PublicationList extends Entity
     /**
      * Публикации.
      *
-     * @var DataCollection
+     * @var array<int, Publication>
      */
-    #[DataCollectionOf(Publication::class)]
-    public DataCollection $publications;
+    public array $publications;
 
     /**
-     * @param DataCollection $publications Публикации.
+     * @param array<int, Publication> $publications Публикации.
      * @param int $total Количество записей.
      * @param array|null $years Года.
      * @param int|null $year Год.
      */
     public function __construct(
-        DataCollection $publications,
-        int            $total = 0,
-        ?array         $years = null,
-        ?int           $year = null,
+        array  $publications,
+        int    $total = 0,
+        ?array $years = null,
+        ?int   $year = null,
     )
     {
         $this->publications = $publications;

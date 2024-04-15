@@ -150,7 +150,7 @@ class AlertImplement
                     $query->active();
                 }
 
-                return AlertEntity::collection($query->get()->toArray());
+                return AlertEntity::collect($query->get()->toArray());
             }
         );
     }

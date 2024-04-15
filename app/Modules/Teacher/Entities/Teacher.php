@@ -8,15 +8,12 @@
 
 namespace App\Modules\Teacher\Entities;
 
-use App\Modules\Analyzer\Entities\Analyzer;
 use Carbon\Carbon;
 use App\Models\Entity;
 use App\Modules\Direction\Entities\Direction;
 use App\Modules\School\Entities\School;
 use App\Modules\Image\Entities\Image;
 use App\Modules\Metatag\Entities\Metatag;
-use Spatie\LaravelData\Attributes\DataCollectionOf;
-use Spatie\LaravelData\DataCollection;
 
 /**
  * Сущность для учителя.
@@ -159,42 +156,37 @@ class Teacher extends Entity
     /**
      * Направления.
      *
-     * @var ?DataCollection
+     * @var ?array<int, Direction>
      */
-    #[DataCollectionOf(Direction::class)]
-    public ?DataCollection $directions = null;
+    public ?array $directions = null;
 
     /**
      * Школы.
      *
-     * @var ?DataCollection
+     * @var ?array<int, School>
      */
-    #[DataCollectionOf(School::class)]
-    public ?DataCollection $schools = null;
+    public ?array $schools = null;
 
     /**
      * Опыт работы учителя.
      *
-     * @var ?DataCollection
+     * @var ?array<int, TeacherExperience>
      */
-    #[DataCollectionOf(TeacherExperience::class)]
-    public ?DataCollection $experiences = null;
+    public ?array $experiences = null;
 
     /**
      * Социальные сети учителя.
      *
-     * @var ?DataCollection
+     * @var ?array<int, TeacherSocialMedia>
      */
-    #[DataCollectionOf(TeacherSocialMedia::class)]
-    public ?DataCollection $social_medias = null;
+    public ?array $social_medias = null;
 
     /**
      * Анализ хранения текстов.
      *
-     * @var ?DataCollection
+     * @var ?array<int, TeacherSocialMedia>
      */
-    #[DataCollectionOf(Analyzer::class)]
-    public ?DataCollection $analyzers = null;
+    public ?array $analyzers = null;
 
     /**
      * @param int|string|null $id ID записи.
@@ -216,11 +208,11 @@ class Teacher extends Entity
      * @param Carbon|null $updated_at Дата обновления.
      * @param Carbon|null $deleted_at Дата удаления.
      * @param Metatag|null $metatag Метатеги.
-     * @param DataCollection|null $directions Направления.
-     * @param DataCollection|null $schools Школы.
-     * @param DataCollection|null $experiences Опыт работы учителя.
-     * @param DataCollection|null $social_medias Социальные сети учителя.
-     * @param DataCollection|null $analyzers Анализ хранения текстов.
+     * @param array<int, Direction>|null $directions Направления.
+     * @param array<int, School>|null $schools Школы.
+     * @param array<int, TeacherExperience>|null $experiences Опыт работы учителя.
+     * @param array<int, TeacherSocialMedia>|null $social_medias Социальные сети учителя.
+     * @param array<int, TeacherSocialMedia>|null $analyzers Анализ хранения текстов.
      */
     public function __construct(
         int|string|null $id = null,
@@ -242,11 +234,11 @@ class Teacher extends Entity
         ?Carbon         $updated_at = null,
         ?Carbon         $deleted_at = null,
         ?Metatag        $metatag = null,
-        ?DataCollection $directions = null,
-        ?DataCollection $schools = null,
-        ?DataCollection $experiences = null,
-        ?DataCollection $social_medias = null,
-        ?DataCollection $analyzers = null
+        ?array          $directions = null,
+        ?array          $schools = null,
+        ?array          $experiences = null,
+        ?array          $social_medias = null,
+        ?array          $analyzers = null
     )
     {
         $this->id = $id;

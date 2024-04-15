@@ -154,7 +154,7 @@ class ReadPipe implements Pipe
                 $items = $query->get()->toArray();
 
                 return [
-                    'courses' => CourseEntity::collection($items),
+                    'courses' => CourseEntity::collect($items),
                     'total' => $queryCount->count(),
                 ];
             }

@@ -10,8 +10,6 @@ namespace App\Modules\Course\Data\Decorators;
 
 use App\Models\Entity;
 use App\Modules\Course\Entities\Course as CourseEntity;
-use Spatie\LaravelData\Attributes\DataCollectionOf;
-use Spatie\LaravelData\DataCollection;
 
 /**
  * Данные для декоратора получения курса.
@@ -28,10 +26,9 @@ class CourseGet extends Entity
     /**
      * Похожие курсы.
      *
-     * @var ?DataCollection
+     * @var ?array<int, CourseEntity>
      */
-    #[DataCollectionOf(CourseEntity::class)]
-    public ?DataCollection $similarities = null;
+    public ?array $similarities = null;
 
     /**
      * Ссылка школы.
@@ -56,17 +53,17 @@ class CourseGet extends Entity
 
     /**
      * @param CourseEntity|null $course Курс.
-     * @param DataCollection|null $similarities Похожие курсы.
+     * @param array<int, CourseEntity>|null $similarities Похожие курсы.
      * @param string|null $school Ссылка школы.
      * @param string|null $link Ссылка курса.
      * @param string|null $id ID курса.
      */
     public function __construct(
-        ?CourseEntity   $course = null,
-        ?DataCollection $similarities = null,
-        string|null     $school = null,
-        string|null     $link = null,
-        string|null     $id = null,
+        ?CourseEntity $course = null,
+        ?array        $similarities = null,
+        string|null   $school = null,
+        string|null   $link = null,
+        string|null   $id = null,
     )
     {
         $this->course = $course;

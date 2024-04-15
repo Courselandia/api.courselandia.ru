@@ -8,10 +8,10 @@
 
 namespace App\Modules\Image\Tests\Feature\Helpers;
 
-use Size;
+use Image;
 use ImageStore;
 use App\Modules\Image\Entities\Image as ImageEntity;
-use App\Modules\Image\Helpers\Image;
+use App\Modules\Image\Helpers\Image as ImageHelper;
 use Illuminate\Http\UploadedFile;
 use Tests\TestCase;
 
@@ -29,17 +29,13 @@ class ImageTest extends TestCase
     {
         $image = UploadedFile::fake()->image('test.jpg', 1000, 1000);
 
-        $result = Image::set('test', $image, function (string $name, UploadedFile $value) {
+        $result = ImageHelper::set('test', $image, function (string $name, UploadedFile $value) {
             $path = ImageStore::tmp($value->getClientOriginalExtension());
 
-            Size::make($value)->resize(
-                300,
-                300,
-                function ($constraint) {
-                    $constraint->aspectRatio();
-                    $constraint->upsize();
-                }
-            )->crop(300, 300)->save($path);
+            Image::read($value)
+                ->resize(300, 300)
+                ->crop(300, 300)
+                ->save($path);
 
             ImageStore::setFolder('test');
             $image = new ImageEntity();
@@ -60,17 +56,13 @@ class ImageTest extends TestCase
     {
         $image = UploadedFile::fake()->image('test.jpg', 1000, 1000);
 
-        $result = Image::set('test', $image, function (string $name, UploadedFile $value) {
+        $result = ImageHelper::set('test', $image, function (string $name, UploadedFile $value) {
             $path = ImageStore::tmp($value->getClientOriginalExtension());
 
-            Size::make($value)->resize(
-                60,
-                60,
-                function ($constraint) {
-                    $constraint->aspectRatio();
-                    $constraint->upsize();
-                }
-            )->crop(60, 60)->save($path);
+            Image::read($value)
+                ->resize(60, 60)
+                ->crop(60, 60)
+                ->save($path);
 
             ImageStore::setFolder('test');
             $image = new ImageEntity();

@@ -113,7 +113,7 @@ class PublicationReadAction extends Action
                 $items = $query->get()->toArray();
 
                 return [
-                    'data' => PublicationEntity::collection($items),
+                    'data' => PublicationEntity::collect($items),
                     'total' => $queryCount->count(),
                 ];
             }

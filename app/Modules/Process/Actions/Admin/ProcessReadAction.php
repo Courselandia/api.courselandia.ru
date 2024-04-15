@@ -109,7 +109,7 @@ class ProcessReadAction extends Action
                 $items = $query->get()->toArray();
 
                 return [
-                    'data' => ProcessEntity::collection($items),
+                    'data' => ProcessEntity::collect($items),
                     'total' => $queryCount->count(),
                 ];
             }

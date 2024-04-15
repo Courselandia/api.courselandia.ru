@@ -8,8 +8,8 @@
 
 namespace App\Models;
 
+use MongoDb;
 use Eloquent;
-use MongoDB\Laravel\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 /**
@@ -20,9 +20,9 @@ class Repository
     /**
      * Модель данного репозитория.
      *
-     * @var Eloquent|Authenticatable|Model
+     * @var Eloquent|Authenticatable|MongoDb
      */
-    private Eloquent|Authenticatable|Model $model;
+    private Eloquent|Authenticatable|MongoDb $model;
 
     /**
      * Название класса сущности данного репозитория.
@@ -34,10 +34,10 @@ class Repository
     /**
      * Конструктор.
      *
-     * @param Eloquent|Authenticatable|Model $model Модель данного репозитория.
+     * @param Eloquent|Authenticatable|MongoDb $model Модель данного репозитория.
      * @param string $entity Сущность данного репозитория.
      */
-    public function __construct(Eloquent|Authenticatable|Model $model, string $entity)
+    public function __construct(Eloquent|Authenticatable|MongoDb $model, string $entity)
     {
         $this->setModel($model);
         $this->setEntity($entity);
@@ -46,9 +46,9 @@ class Repository
     /**
      * Получение модели этого репозитория.
      *
-     * @return Eloquent|Authenticatable|Model Модель данного репозитория.
+     * @return Eloquent|Authenticatable|MongoDb Модель данного репозитория.
      */
-    public function getModel(): Eloquent|Authenticatable|Model
+    public function getModel(): Eloquent|Authenticatable|MongoDb
     {
         return $this->model;
     }
@@ -56,11 +56,11 @@ class Repository
     /**
      * Установка модели этого репозитория.
      *
-     * @param Eloquent|Authenticatable|Model $model Модель данного репозитория.
+     * @param Eloquent|Authenticatable|MongoDb $model Модель данного репозитория.
      *
      * @return Repository
      */
-    protected function setModel(Eloquent|Authenticatable|Model $model): Repository
+    protected function setModel(Eloquent|Authenticatable|MongoDb $model): Repository
     {
         $this->model = $model;
 
