@@ -298,7 +298,7 @@ class CourseController extends Controller
     {
         $action = new CourseReadRatedAction($request->get('limit', 16));
         $data = $action->run();
-        $data = CleanCourseList::do($data->toArray());
+        $data = CleanCourseList::do($data);
 
         return response()->json([
             'data' => $data,
@@ -335,7 +335,7 @@ class CourseController extends Controller
         if ($request->get('ids')) {
             $action = new CourseReadFavoritesAction($request->get('ids'));
             $data = $action->run();
-            $data['data'] = CleanCourseList::do($data['data']->toArray());
+            $data['data'] = CleanCourseList::do($data['data']);
             $data['success'] = true;
         } else {
             $data = [

@@ -80,7 +80,7 @@ class PublicationRead implements Pipe
                     $query->offset($offset);
                 }
 
-                $publications = $query->get();
+                $publications = $query->get()->toArray();
 
                 return $publications ? PublicationEntity::collect($publications) : null;
             }

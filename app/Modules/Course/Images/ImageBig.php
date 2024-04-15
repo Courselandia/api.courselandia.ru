@@ -70,7 +70,7 @@ class ImageBig implements CastsAttributes
                     $image = Image::read($path);
                 } else {
                     $path = ImageStore::tmp($value->getClientOriginalExtension());
-                    $image = Image::make($value);
+                    $image = Image::read($value);
                 }
 
                 $image->resize(600)->save($path);

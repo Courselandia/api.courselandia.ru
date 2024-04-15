@@ -422,9 +422,9 @@ class Course extends Entity
      * @param string|null $uuid ID источника курса.
      * @param string|int|null $metatag_id ID метатэгов.
      * @param string|null $school_id ID школы.
-     * @param string|null $image_small_id Маленькое изображение.
-     * @param string|null $image_middle_id Среднее изображение.
-     * @param string|null $image_big_id Большое изображение.
+     * @param Image|null $image_small_id Маленькое изображение.
+     * @param Image|null $image_middle_id Среднее изображение.
+     * @param Image|null $image_big_id Большое изображение.
      * @param string|null $name Название.
      * @param string|null $header Заголовок.
      * @param string|null $header_template Шаблон заголовка.
@@ -479,9 +479,9 @@ class Course extends Entity
         ?string         $uuid = null,
         string|int|null $metatag_id = null,
         ?string         $school_id = null,
-        ?string         $image_small_id = null,
-        ?string         $image_middle_id = null,
-        ?string         $image_big_id = null,
+        ?Image          $image_small_id = null,
+        ?Image          $image_middle_id = null,
+        ?Image          $image_big_id = null,
         ?string         $name = null,
         ?string         $header = null,
         ?string         $header_template = null,

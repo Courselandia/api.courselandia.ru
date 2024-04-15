@@ -86,7 +86,7 @@ class PublicationRead extends Data
      * @param int|null $offset Отступ.
      * @param int|string|null $id ID публикации.
      * @param string|null $link Ссылка.
-     * @param int|null $total Количество записей..
+     * @param int|null $total Количество записей.
      * @param ?array<int, Publication> $publications Публикации.
      * @param ?Publication $publication Публикация.
      */
