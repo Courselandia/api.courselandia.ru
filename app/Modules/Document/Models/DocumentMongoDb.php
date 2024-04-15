@@ -8,12 +8,12 @@
 
 namespace App\Modules\Document\Models;
 
-use MongoDb;
+use MongoDB\Laravel\Eloquent\Model;
 use App\Models\Validate;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
- * Класс модель для таблицы документов на основе MongoDb.
+ * Класс модель для таблицы документов на основе Mongo.
  *
  * @property int|string $id ID документа.
  * @property int $format Формат документа.
@@ -24,7 +24,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property ?string $pathCache Путь к документу с кешированием.
  * @property ?string $pathSource Путь к фактическому местоположению документа.
  */
-class DocumentMongoDb extends MongoDb
+class DocumentMongoDb extends Model
 {
     use SoftDeletes;
     use Validate;

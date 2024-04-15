@@ -67,7 +67,7 @@ class Kernel extends HttpKernel
      *
      * @var array<string, class-string|string>
      */
-    protected $routeMiddleware = [
+    protected $middlewareAliases = [
         'auth.api' => AllowOAuth::class,
         'auth.user' => AllowUser::class,
         'auth.guest' => AllowGuest::class,

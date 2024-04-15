@@ -4,7 +4,6 @@ namespace App\Providers;
 
 use Auth;
 use App\Modules\Access\Models\AccessUserProvider;
-use App\Modules\User\Repositories\User;
 use Illuminate\Contracts\Auth\Access\Gate as GateContract;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
@@ -27,8 +26,6 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot(GateContract $gate): void
     {
-        $this->registerPolicies();
-
         Auth::provider('access', function() {
             return new AccessUserProvider();
         });

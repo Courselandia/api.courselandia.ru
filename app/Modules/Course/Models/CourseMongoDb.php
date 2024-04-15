@@ -9,7 +9,7 @@
 namespace App\Modules\Course\Models;
 
 use App\Models\Validate;
-use Jenssegers\Mongodb\Eloquent\Model;
+use MongoDB\Laravel\Eloquent\Model;
 
 /**
  * Класс модель для таблицы курсов на основе MongoDB.

@@ -12,11 +12,11 @@ use App\Models\Delete;
 use App\Models\Sortable;
 use App\Modules\Log\Filters\LogFilter;
 use EloquentFilter\Filterable;
-use MongoDb;
+use MongoDB\Laravel\Eloquent\Model;
 use danielme85\LaravelLogToDB\Models\LogToDbCreateObject;
 
 /**
- * Класс модель для таблицы логов на основе MongoDb.
+ * Класс модель для таблицы логов на основе Mongo.
  *
  * @property int|string $id ID.
  * @property ?string $message Сообщение.
@@ -28,7 +28,7 @@ use danielme85\LaravelLogToDB\Models\LogToDbCreateObject;
  * @property ?string $context Контекст.
  * @property ?string $extra Дополнительные данные.
  */
-class LogMongoDb extends MongoDb
+class LogMongoDb extends Model
 {
     use Delete;
     use Sortable;

@@ -14,9 +14,9 @@ use DateTime;
 use DateInterval;
 use Illuminate\Contracts\Cache\Store;
 use Illuminate\Cache\TaggableStore;
-use Jenssegers\Mongodb\Connection;
+use MongoDB\Laravel\Connection;
 use MongoDB\BSON\UTCDateTime;
-use Jenssegers\Mongodb\Query\Builder;
+use MongoDB\Laravel\Query\Builder;
 
 /**
  * Класс драйвер кеша на основе Memcache.

@@ -1,4 +1,4 @@
-FROM php:8.1-fpm
+FROM php:8.2-fpm
 
 # Arguments defined in docker-compose.yml
 ARG user
@@ -24,6 +24,9 @@ RUN apt-get update && apt-get install -y \
 
 # Clear cache
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
+
+RUN docker-php-ext-configure ftp --with-openssl-dir=/usr \
+	&& docker-php-ext-install ftp
 
 # Install PECL extensions
 RUN pecl install mongodb \
