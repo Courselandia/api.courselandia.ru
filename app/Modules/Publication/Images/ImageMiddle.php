@@ -60,7 +60,7 @@ class ImageMiddle implements CastsAttributes
                 $folder = 'publications';
                 $path = ImageStore::tmp($value->getClientOriginalExtension());
 
-                Image::read($value)->resize(400, 250)->save($path);
+                Image::read($value)->cover(400, 250)->save($path);
 
                 $imageWebp = $value->getClientOriginalExtension() !== 'webp'
                     ? WebPConverter::createWebpImage($path, ['saveFile' => true])

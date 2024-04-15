@@ -33,8 +33,8 @@ class ImageTest extends TestCase
             $path = ImageStore::tmp($value->getClientOriginalExtension());
 
             Image::read($value)
-                ->resize(300, 300)
-                ->crop(300, 300)
+                ->scale(300, 300)
+                ->cover(300, 300)
                 ->save($path);
 
             ImageStore::setFolder('test');
@@ -60,8 +60,8 @@ class ImageTest extends TestCase
             $path = ImageStore::tmp($value->getClientOriginalExtension());
 
             Image::read($value)
-                ->resize(60, 60)
-                ->crop(60, 60)
+                ->scale(60, 60)
+                ->cover(60, 60)
                 ->save($path);
 
             ImageStore::setFolder('test');

@@ -73,7 +73,7 @@ class ImageBig implements CastsAttributes
                     $image = Image::read($value);
                 }
 
-                $image->resize(600)->save($path);
+                $image->scale(600)->save($path);
 
                 $imageWebp = WebPConverter::createWebpImage($path, ['saveFile' => true]);
 

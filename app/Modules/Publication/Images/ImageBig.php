@@ -60,7 +60,7 @@ class ImageBig implements CastsAttributes
                 $folder = 'publications';
                 $path = ImageStore::tmp($value->getClientOriginalExtension());
 
-                Image::read($value)->resize(800)->save($path);
+                Image::read($value)->scale(800)->save($path);
 
                 $imageWebp = $value->getClientOriginalExtension() !== 'webp'
                     ? WebPConverter::createWebpImage($path, ['saveFile' => true])

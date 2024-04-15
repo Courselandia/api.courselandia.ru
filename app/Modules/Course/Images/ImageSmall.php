@@ -59,7 +59,7 @@ class ImageSmall implements CastsAttributes
         return ImageHelper::set(
             $key,
             $value,
-            function (string $key, UploadedFile $value) {
+            function (string $key, UploadedFile $value) use ($attributes) {
                 $folder = 'courses';
 
                 if ($value->getClientOriginalExtension() === 'svg') {
@@ -74,7 +74,7 @@ class ImageSmall implements CastsAttributes
                     $image = Image::read($value);
                 }
 
-                $image->scale(150, 150)->save($path);
+                $image->cover(150, 150)->save($path);
 
                 $imageWebp = $value->getClientOriginalExtension() !== 'webp'
                     ? WebPConverter::createWebpImage($path, ['saveFile' => true])

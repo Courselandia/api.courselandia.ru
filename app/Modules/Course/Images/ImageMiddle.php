@@ -59,7 +59,7 @@ class ImageMiddle implements CastsAttributes
         return ImageHelper::set(
             $key,
             $value,
-            function (string $key, UploadedFile $value) {
+            function (string $key, UploadedFile $value) use ($attributes) {
                 $folder = 'courses';
 
                 if ($value->getClientOriginalExtension() === 'svg') {
@@ -74,7 +74,7 @@ class ImageMiddle implements CastsAttributes
                     $image = Image::read($value);
                 }
 
-                $image->resize(500)->save($path);
+                $image->scale(500)->save($path);
 
                 $imageWebp = WebPConverter::createWebpImage($path, ['saveFile' => true]);
 
