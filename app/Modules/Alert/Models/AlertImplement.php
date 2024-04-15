@@ -9,7 +9,6 @@
 namespace App\Modules\Alert\Models;
 
 use Cache;
-use Spatie\LaravelData\DataCollection;
 use Util;
 use App\Models\Enums\CacheTime;
 use App\Models\Exceptions\ParameterInvalidException;
@@ -125,10 +124,10 @@ class AlertImplement
      * @param int|null $limit Лимит вывода.
      * @param bool $status Если установить true, то получит только прочитанные.
      *
-     * @return DataCollection Вернет коллекцию данных предупреждений.
+     * @return array<int, AlertEntity> Вернет массив данных предупреждений.
      * @throws ParameterInvalidException
      */
-    public function list(int $offset = null, int $limit = null, bool $status = null): DataCollection
+    public function list(int $offset = null, int $limit = null, bool $status = null): array
     {
         $cacheKey = Util::getKey('alert', 'list', $offset, $limit, $status);
 

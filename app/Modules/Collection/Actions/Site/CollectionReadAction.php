@@ -13,8 +13,6 @@ use Cache;
 use App\Models\Action;
 use App\Models\Enums\CacheTime;
 use App\Modules\Collection\Models\Collection;
-use App\Modules\Course\Entities\Course;
-use Spatie\LaravelData\DataCollection;
 use App\Modules\Collection\Entities\Collection as CollectionEntity;
 
 /**

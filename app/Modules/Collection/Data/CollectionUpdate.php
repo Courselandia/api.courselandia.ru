@@ -9,7 +9,6 @@
 namespace App\Modules\Collection\Data;
 
 use Illuminate\Http\UploadedFile;
-use Spatie\LaravelData\DataCollection;
 
 /**
  * Данные для обновления коллекции.
@@ -38,7 +37,7 @@ class CollectionUpdate extends CollectionCreate
      * @param string|null $title Заголовок.
      * @param string|null $description Описания.
      * @param string|null $keywords Ключевые слова.
-     * @param ?DataCollection $filters Фильтры.
+     * @param ?array<int, CollectionFilter> $filters Фильтры.
      */
     public function __construct(
         int|string        $id,
@@ -55,7 +54,7 @@ class CollectionUpdate extends CollectionCreate
         ?string           $title = null,
         ?string           $description = null,
         ?string           $keywords = null,
-        ?DataCollection   $filters = null,
+        ?array            $filters = null,
     )
     {
         $this->id = $id;

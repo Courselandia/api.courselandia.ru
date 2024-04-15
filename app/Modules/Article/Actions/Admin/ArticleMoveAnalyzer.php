@@ -13,7 +13,6 @@ use App\Modules\Analyzer\Entities\Analyzer as AnalyzerEntity;
 use App\Modules\Analyzer\Enums\Status;
 use App\Modules\Analyzer\Models\Analyzer;
 use App\Models\Exceptions\ParameterInvalidException;
-use Spatie\LaravelData\DataCollection;
 
 /**
  * Класс для переноса готовых результатов анализа со статей в указанную сущность.
@@ -30,9 +29,9 @@ class ArticleMoveAnalyzer extends Action
     /**
      * Набор готовых анализаторов.
      *
-     * @var DataCollection
+     * @var array<int, AnalyzerEntity>
      */
-    private DataCollection $analyzers;
+    private array $analyzers;
 
     /**
      * Название категории анализатора.
@@ -52,11 +51,11 @@ class ArticleMoveAnalyzer extends Action
      * Конструктор.
      *
      * @param int|string $id ID модели куда переносим результат анализа.
-     * @param DataCollection $analyzers Набор готовых анализаторов.
+     * @param array<int, AnalyzerEntity> $analyzers Набор готовых анализаторов.
      * @param string $category Название категории анализатора.
      * @param string $model Модель, куда переносится анализатор.
      */
-    public function __construct(int|string $id, DataCollection $analyzers, string $category, string $model)
+    public function __construct(int|string $id, array $analyzers, string $category, string $model)
     {
         $this->id = $id;
         $this->analyzers = $analyzers;

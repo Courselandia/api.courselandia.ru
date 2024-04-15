@@ -14,7 +14,6 @@ use App\Modules\Course\Entities\Course;
 use App\Modules\Course\Entities\CourseRead;
 use App\Modules\Collection\Data\CollectionCoursesByFilters;
 use App\Modules\Course\Actions\Site\Course\CourseReadAction;
-use Spatie\LaravelData\DataCollection;
 
 /**
  * Класс действия для получения курсов по фильтру.
@@ -39,9 +38,9 @@ class CollectionCoursesByFiltersAction extends Action
     /**
      * Метод запуска логики.
      *
-     * @return DataCollection<Course>|int Вернет коллекцию курсов или их количество.
+     * @return array<int, Course>|int Вернет массив курсов или их количество.
      */
-    public function run(): DataCollection|int
+    public function run(): array|int
     {
         $filters = [];
 

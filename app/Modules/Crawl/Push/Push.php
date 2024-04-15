@@ -19,7 +19,6 @@ use App\Modules\Page\Models\Page;
 use App\Modules\Page\Entities\Page as PageEntity;
 use Illuminate\Database\Eloquent\Builder;
 use Spatie\LaravelData\CursorPaginatedDataCollection;
-use Spatie\LaravelData\DataCollection;
 use Spatie\LaravelData\PaginatedDataCollection;
 
 /**
@@ -134,9 +133,9 @@ class Push
      * Получение страниц сайта, которые нужно отправить на индексацию.
      *
      * @param Pusher $pusher Отправитель на индексацию.
-     * @return DataCollection|CursorPaginatedDataCollection|PaginatedDataCollection Вернет коллекцию сущностей страниц.
+     * @return array|CursorPaginatedDataCollection|PaginatedDataCollection Вернет коллекцию сущностей страниц.
      */
-    private function getPages(Pusher $pusher): DataCollection|CursorPaginatedDataCollection|PaginatedDataCollection
+    private function getPages(Pusher $pusher): array|CursorPaginatedDataCollection|PaginatedDataCollection
     {
         $pages = $this->getQuery($pusher)->get();
 
@@ -147,10 +146,10 @@ class Push
      * Отправка на индексацию страниц.
      *
      * @param Pusher $pusher Отправитель на индексацию.
-     * @param DataCollection|CursorPaginatedDataCollection|PaginatedDataCollection $pages Коллекция сущностей страниц, которые должны быть отправлены на индексацию.
+     * @param array|CursorPaginatedDataCollection|PaginatedDataCollection $pages Коллекция сущностей страниц, которые должны быть отправлены на индексацию.
      * @return void
      */
-    private function push(Pusher $pusher, DataCollection|CursorPaginatedDataCollection|PaginatedDataCollection $pages): void
+    private function push(Pusher $pusher, array|CursorPaginatedDataCollection|PaginatedDataCollection $pages): void
     {
         $delay = Carbon::now();
 

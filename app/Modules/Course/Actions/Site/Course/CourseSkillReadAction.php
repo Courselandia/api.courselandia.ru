@@ -12,7 +12,6 @@ use DB;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Skill\Models\Skill;
 use Cache;
-use Spatie\LaravelData\DataCollection;
 use Util;
 use App\Models\Action;
 use App\Models\Enums\CacheTime;
@@ -74,10 +73,10 @@ class CourseSkillReadAction extends Action
     /**
      * Метод запуска логики.
      *
-     * @return DataCollection Вернет результаты исполнения.
+     * @return array<int, CourseItemFilter> Вернет результаты исполнения.
      * @throws ParameterInvalidException
      */
-    public function run(): DataCollection
+    public function run(): array
     {
         $filters = $this->filters;
 

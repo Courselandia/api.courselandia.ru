@@ -12,7 +12,6 @@ use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Repository;
 use App\Modules\Log\Entities\Log as LogEntity;
 use Spatie\LaravelData\CursorPaginatedDataCollection;
-use Spatie\LaravelData\DataCollection;
 use Spatie\LaravelData\PaginatedDataCollection;
 
 /**
@@ -27,11 +26,11 @@ class Log extends Repository
      * @param array|null $sorts Сортировки.
      * @param int|null $offset Начать выборку.
      * @param int|null $limit Лимит выборки.
-     * @return DataCollection|CursorPaginatedDataCollection|PaginatedDataCollection Вернет коллекцию логов.
+     * @return array<int, LogEntity>|CursorPaginatedDataCollection|PaginatedDataCollection Вернет коллекцию логов.
      *
      * @throws ParameterInvalidException
      */
-    public function read(?array $filters = null, ?array $sorts = null, ?int $offset = null, ?int $limit = null): DataCollection|CursorPaginatedDataCollection|PaginatedDataCollection
+    public function read(?array $filters = null, ?array $sorts = null, ?int $offset = null, ?int $limit = null): array|CursorPaginatedDataCollection|PaginatedDataCollection
     {
         $query = $this->newInstance()->newQuery();
         $query->filter($filters ?: []);

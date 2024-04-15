@@ -12,7 +12,6 @@ use App\Models\Exceptions\RecordNotExistException;
 use App\Models\Repository;
 use App\Modules\OAuth\Entities\OAuthToken;
 use Carbon\Carbon;
-use Spatie\LaravelData\DataCollection;
 
 /**
  * Класс репозитория токенов на основе Eloquent.
@@ -56,9 +55,9 @@ class OAuthTokenEloquent extends Repository
      * Получение токенов.
      *
      * @param Carbon|null $expiresAt Дата действия.
-     * @return DataCollection
+     * @return array<int, OAuthToken>
      */
-    public function find(?Carbon $expiresAt = null): DataCollection
+    public function find(?Carbon $expiresAt = null): array
     {
         $query = $this->newInstance()->newQuery();
 

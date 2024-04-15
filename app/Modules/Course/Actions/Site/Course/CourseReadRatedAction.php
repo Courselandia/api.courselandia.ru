@@ -10,10 +10,10 @@ namespace App\Modules\Course\Actions\Site\Course;
 
 use App\Models\Action;
 use App\Modules\Course\Data\Decorators\CourseRead;
+use App\Modules\Course\Entities\Course;
 use App\Modules\Course\Pipes\Site\Read\ReadPipe;
 use App\Modules\Course\Pipes\Site\Read\DescriptionPipe;
 use App\Modules\Course\Decorators\Site\CourseReadDecorator;
-use Spatie\LaravelData\DataCollection;
 
 /**
  * Класс действия для получения лучших курсов.
@@ -38,9 +38,9 @@ class CourseReadRatedAction extends Action
     /**
      * Метод запуска логики.
      *
-     * @return DataCollection Вернет результаты исполнения.
+     * @return array<int, Course> Вернет результаты исполнения.
      */
-    public function run(): DataCollection
+    public function run(): array
     {
         $decorator = new CourseReadDecorator(CourseRead::from([
             'sorts' => [

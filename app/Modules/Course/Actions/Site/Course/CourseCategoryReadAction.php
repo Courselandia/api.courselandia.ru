@@ -10,7 +10,6 @@ namespace App\Modules\Course\Actions\Site\Course;
 
 use DB;
 use Cache;
-use Spatie\LaravelData\DataCollection;
 use Util;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Category\Models\Category;
@@ -74,10 +73,10 @@ class CourseCategoryReadAction extends Action
     /**
      * Метод запуска логики.
      *
-     * @return DataCollection Вернет результаты исполнения.
+     * @return array<int, CourseItemFilter> Вернет результаты исполнения.
      * @throws ParameterInvalidException
      */
-    public function run(): DataCollection
+    public function run(): array
     {
         $filters = $this->filters;
 
