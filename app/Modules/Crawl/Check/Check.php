@@ -124,7 +124,7 @@ class Check
      * Получение записей на индексацию.
      *
      * @param Checker $checker Получатель на индексацию.
-     * @return array|CursorPaginatedDataCollection|PaginatedDataCollection Вернет коллекцию сущностей индексации.
+     * @return array|CursorPaginatedDataCollection|PaginatedDataCollection Вернет массив сущностей индексации.
      */
     private function getCrawls(Checker $checker):  array|CursorPaginatedDataCollection|PaginatedDataCollection
     {
@@ -137,7 +137,7 @@ class Check
      * Отправка на проверку страниц.
      *
      * @param Checker $checker Проверятель на индексацию.
-     * @param array|CursorPaginatedDataCollection|PaginatedDataCollection $crawls Коллекция сущностей индексации.
+     * @param array|CursorPaginatedDataCollection|PaginatedDataCollection $crawls Массив сущностей индексации.
      * @return void
      */
     private function check(Checker $checker, array|CursorPaginatedDataCollection|PaginatedDataCollection $crawls): void

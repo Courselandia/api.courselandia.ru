@@ -26,7 +26,7 @@ use App\Modules\Collection\Entities\CollectionFilter as CollectionFilterEntity;
 use App\Modules\Collection\Models\CollectionFilter as CollectionFilterModel;
 
 /**
- * Класс действия для создания колекции.
+ * Класс действия для создания коллекции.
  */
 class CollectionCreateAction extends Action
 {

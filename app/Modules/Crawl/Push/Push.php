@@ -133,7 +133,7 @@ class Push
      * Получение страниц сайта, которые нужно отправить на индексацию.
      *
      * @param Pusher $pusher Отправитель на индексацию.
-     * @return array|CursorPaginatedDataCollection|PaginatedDataCollection Вернет коллекцию сущностей страниц.
+     * @return array|CursorPaginatedDataCollection|PaginatedDataCollection Вернет массив сущностей страниц.
      */
     private function getPages(Pusher $pusher): array|CursorPaginatedDataCollection|PaginatedDataCollection
     {
@@ -146,7 +146,7 @@ class Push
      * Отправка на индексацию страниц.
      *
      * @param Pusher $pusher Отправитель на индексацию.
-     * @param array|CursorPaginatedDataCollection|PaginatedDataCollection $pages Коллекция сущностей страниц, которые должны быть отправлены на индексацию.
+     * @param array|CursorPaginatedDataCollection|PaginatedDataCollection $pages Массив сущностей страниц, которые должны быть отправлены на индексацию.
      * @return void
      */
     private function push(Pusher $pusher, array|CursorPaginatedDataCollection|PaginatedDataCollection $pages): void

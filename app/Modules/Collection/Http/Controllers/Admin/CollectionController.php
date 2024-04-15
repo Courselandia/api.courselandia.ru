@@ -38,7 +38,7 @@ use App\Modules\Collection\Http\Requests\Admin\Collection\CollectionUpdateReques
 use App\Modules\Collection\Http\Requests\Admin\Collection\CollectionUpdateStatusRequest;
 
 /**
- * Класс контроллер для работы с коллекциям в административной части.
+ * Класс контроллер для работы с коллекциями в административной части.
  */
 class CollectionController extends Controller
 {

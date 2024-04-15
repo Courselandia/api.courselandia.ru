@@ -26,7 +26,7 @@ class Log extends Repository
      * @param array|null $sorts Сортировки.
      * @param int|null $offset Начать выборку.
      * @param int|null $limit Лимит выборки.
-     * @return array<int, LogEntity>|CursorPaginatedDataCollection|PaginatedDataCollection Вернет коллекцию логов.
+     * @return array<int, LogEntity>|CursorPaginatedDataCollection|PaginatedDataCollection Вернет массив логов.
      *
      * @throws ParameterInvalidException
      */
