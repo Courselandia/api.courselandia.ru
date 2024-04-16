@@ -238,10 +238,6 @@ class Export
                 ?->toArray();
 
             if ($result) {
-                if (!$result['text'] || !count($result['directions']) || !$result['image_middle_id']) {
-                    continue;
-                }
-
                 try {
                     $offer = new Offer();
                     $offer->id = $result['id'];
@@ -366,8 +362,18 @@ class Export
                 $query->where('status', true);
             },
         ])
+            ->where(function ($query) {
+                $query->where('text', '!=')
+                    ->whereNotNull('text');
+            })
+            ->where(function ($query) {
+                $query->where('image_middle_id', '!=')
+                    ->whereNotNull('image_middle_id');
+            })
             ->where('status', Status::ACTIVE->value)
             ->whereHas('school', function ($query) {
+                $query->where('status', true);
+            })->whereHas('directions', function ($query) {
                 $query->where('status', true);
             });
     }

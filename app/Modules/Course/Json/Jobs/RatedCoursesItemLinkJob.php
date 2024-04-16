@@ -30,7 +30,7 @@ class RatedCoursesItemLinkJob extends JsonItemLinkJob
     {
         $action = new CourseReadRatedAction(self::LIMIT);
         $data = $action->run();
-        $data = CleanCourseList::do($data->toArray());
+        $data = CleanCourseList::do($data);
 
         $data = [
             'data' => $data,

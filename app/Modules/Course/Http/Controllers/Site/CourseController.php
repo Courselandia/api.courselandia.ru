@@ -309,7 +309,7 @@ class CourseController extends Controller
     {
         $action = new CourseReadSearchAction($request->get('limit', 12), $request->get('search'));
         $data = $action->run();
-        $data['data'] = CleanCourseList::do($data['data']->toArray());
+        $data['data'] = CleanCourseList::do($data['data']);
         $data['success'] = true;
 
         return response()->json($data);
