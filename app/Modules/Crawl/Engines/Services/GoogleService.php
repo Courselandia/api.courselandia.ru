@@ -8,10 +8,12 @@
 
 namespace App\Modules\Crawl\Engines\Services;
 
+use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Crawl\Contracts\EngineService;
 use App\Modules\Crawl\Engines\Providers\GoogleProvider;
 use Google\Exception;
 use GuzzleHttp\Exception\GuzzleException;
+use Throwable;
 
 /**
  * Работа с поисковой системой Google.
@@ -49,7 +51,7 @@ class GoogleService implements EngineService
      *
      * @param string $taskId ID задачи.
      * @return bool Вернет true если индексация прошла.
-     * @throws Exception|GuzzleException
+     * @throws Exception|GuzzleException|ParameterInvalidException|Throwable
      */
     public function isPushed(string $taskId): bool
     {

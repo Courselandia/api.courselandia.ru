@@ -61,6 +61,7 @@ class YandexService implements EngineService
      * @param string $url URL для индексации.
      * @return string Вернет ID задачи.
      * @throws LimitException|ResponseException|GuzzleException|InvalidCodeException
+     * @throws ParameterInvalidException
      */
     public function push(string $url): string
     {

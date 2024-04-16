@@ -8,11 +8,13 @@
 
 namespace App\Modules\Crawl\Check\Checkers;
 
+use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Crawl\Contracts\Checker;
 use App\Modules\Crawl\Engines\Services\GoogleService;
 use App\Modules\Crawl\Enums\Engine;
 use Google\Exception;
 use GuzzleHttp\Exception\GuzzleException;
+use Throwable;
 
 /**
  * Проверка URL сайта на индексацию в Google.
@@ -34,7 +36,7 @@ class GoogleChecker implements Checker
      *
      * @param string $taskId ID задачи на индексацию.
      * @return bool Вернет true если URL проиндексрован.
-     * @throws Exception|GuzzleException
+     * @throws Exception|GuzzleException|ParameterInvalidException|Throwable
      */
     public function check(string $taskId): bool
     {
