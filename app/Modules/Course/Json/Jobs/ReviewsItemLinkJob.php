@@ -9,7 +9,6 @@
 namespace App\Modules\Course\Json\Jobs;
 
 use App\Modules\Review\Actions\Site\ReviewReadAction;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Review\Data\Site\ReviewRead;
 
 /**
@@ -21,7 +20,6 @@ class ReviewsItemLinkJob extends JsonItemLinkJob
      * Выполнение задачи.
      *
      * @return void
-     * @throws ParameterInvalidException
      */
     public function handle(): void
     {

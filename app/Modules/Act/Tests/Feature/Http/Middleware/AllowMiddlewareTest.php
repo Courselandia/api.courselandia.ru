@@ -9,7 +9,6 @@
 namespace App\Modules\Act\Tests\Feature\Http\Middleware;
 
 use Act;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
 use ReflectionException;
 use Tests\TestCase;
@@ -32,7 +31,6 @@ class AllowMiddlewareTest extends TestCase
      * Проверка пользователя, что он может выполнить действие.
      *
      * @return void
-     * @throws ParameterInvalidException
      * @throws ReflectionException
      * @throws RecordNotExistException
      */
@@ -68,7 +66,7 @@ class AllowMiddlewareTest extends TestCase
      * Проверка пользователя, что он может выполнить действие с ошибкой.
      *
      * @return void
-     * @throws ParameterInvalidException|RecordNotExistException|ReflectionException
+     * @throws RecordNotExistException|ReflectionException
      */
     public function testActNotValid(): void
     {

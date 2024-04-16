@@ -11,7 +11,6 @@ namespace App\Modules\Task\Http\Controllers\Admin;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
 use ReflectionException;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Task\Actions\Admin\TaskReadAction;
 use App\Modules\Task\Http\Requests\Admin\TaskReadRequest;
 
@@ -26,7 +25,7 @@ class TaskController extends Controller
      * @param TaskReadRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException|ReflectionException
+     * @throws ReflectionException
      */
     public function read(TaskReadRequest $request): JsonResponse
     {

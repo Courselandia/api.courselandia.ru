@@ -8,7 +8,6 @@
 
 namespace App\Modules\User\Http\Controllers\Admin;
 
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\User\Actions\Admin\UserImage\UserImageUpdateAction;
 use App\Modules\User\Data\Actions\UserProfileUpdate;
 use App\Modules\User\Http\Requests\Admin\Profile\UserProfileUpdateImageRequest;
@@ -114,7 +113,7 @@ class UserProfileController extends Controller
      * Удаление данных.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException|ReflectionException
+     * @throws ReflectionException
      */
     public function destroyImage(): JsonResponse
     {

@@ -9,7 +9,6 @@
 namespace App\Modules\Access\Actions\Site;
 
 use App\Models\Enums\CacheTime;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\UserNotExistException;
 use App\Models\Action;
 use App\Models\Exceptions\UserVerifiedException;
@@ -42,7 +41,7 @@ class AccessSendEmailVerificationAction extends Action
      *
      * @return bool Вернет результаты исполнения.
      * @throws UserNotExistException
-     * @throws ParameterInvalidException|UserVerifiedException
+     * @throws UserVerifiedException
      */
     public function run(): bool
     {

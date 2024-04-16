@@ -8,7 +8,6 @@
 
 namespace App\Modules\Course\Json\Jobs;
 
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Skill\Actions\Site\SkillLinkAction;
 
 /**
@@ -20,7 +19,6 @@ class SkillItemLinkJob extends JsonItemLinkJob
      * Выполнение задачи.
      *
      * @return void
-     * @throws ParameterInvalidException
      */
     public function handle(): void
     {

@@ -19,7 +19,6 @@ use Throwable;
 use ReflectionException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordExistException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Models\Exceptions\ValidateException;
@@ -79,7 +78,7 @@ class TeacherController extends Controller
      * @param TeacherReadRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException|ReflectionException
+     * @throws ReflectionException
      */
     public function read(TeacherReadRequest $request): JsonResponse
     {
@@ -102,7 +101,6 @@ class TeacherController extends Controller
      * @param int|string $id ID учителя.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException
      */
     public function courses(int|string $id): JsonResponse
     {
@@ -148,7 +146,7 @@ class TeacherController extends Controller
      * @param TeacherCreateRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException|Throwable
+     * @throws Throwable
      */
     public function create(TeacherCreateRequest $request): JsonResponse
     {
@@ -226,7 +224,7 @@ class TeacherController extends Controller
      * @param TeacherUpdateRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException|Throwable
+     * @throws Throwable
      */
     public function update(int|string $id, TeacherUpdateRequest $request): JsonResponse
     {

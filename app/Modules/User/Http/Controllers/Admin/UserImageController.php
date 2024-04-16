@@ -8,7 +8,6 @@
 
 namespace App\Modules\User\Http\Controllers\Admin;
 
-use App\Models\Exceptions\ParameterInvalidException;
 use Log;
 use Auth;
 use Illuminate\Routing\Controller;
@@ -72,7 +71,7 @@ class UserImageController extends Controller
      * @param int|string $id ID пользователя.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException|ReflectionException
+     * @throws ReflectionException
      */
     public function destroy(int|string $id): JsonResponse
     {

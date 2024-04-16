@@ -18,7 +18,6 @@ use App\Modules\Feedback\Actions\Admin\FeedbackGetAction;
 use App\Modules\Feedback\Actions\Admin\FeedbackReadAction;
 use App\Modules\Feedback\Http\Requests\Admin\FeedbackReadRequest;
 use App\Modules\Feedback\Http\Requests\Admin\FeedbackDestroyRequest;
-use App\Models\Exceptions\ParameterInvalidException;
 
 /**
  * Класс контроллер для работы с обратной связью в административной системе.
@@ -60,7 +59,7 @@ class FeedbackController extends Controller
      * @param FeedbackReadRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException|ReflectionException
+     * @throws ReflectionException
      */
     public function read(FeedbackReadRequest $request): JsonResponse
     {

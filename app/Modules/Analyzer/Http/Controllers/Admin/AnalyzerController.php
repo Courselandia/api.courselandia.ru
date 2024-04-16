@@ -14,7 +14,6 @@ use ReflectionException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
 use App\Models\Exceptions\ResponseException;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Models\Exceptions\ValidateException;
 use App\Modules\Analyzer\Actions\Admin\AnalyzerGetAction;
@@ -35,7 +34,6 @@ class AnalyzerController extends Controller
      * @param int|string $id ID данных.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException
      */
     public function get(int|string $id): JsonResponse
     {
@@ -65,7 +63,7 @@ class AnalyzerController extends Controller
      * @param AnalyzerReadRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException|ReflectionException
+     * @throws ReflectionException
      */
     public function read(AnalyzerReadRequest $request): JsonResponse
     {
@@ -89,7 +87,6 @@ class AnalyzerController extends Controller
      * @param int|string $id ID данных.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException
      */
     public function analyze(int|string $id): JsonResponse
     {

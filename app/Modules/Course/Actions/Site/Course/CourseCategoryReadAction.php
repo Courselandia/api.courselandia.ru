@@ -11,7 +11,6 @@ namespace App\Modules\Course\Actions\Site\Course;
 use DB;
 use Cache;
 use Util;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Category\Models\Category;
 use App\Models\Action;
 use App\Models\Enums\CacheTime;
@@ -74,7 +73,6 @@ class CourseCategoryReadAction extends Action
      * Метод запуска логики.
      *
      * @return array<int, CourseItemFilter> Вернет результаты исполнения.
-     * @throws ParameterInvalidException
      */
     public function run(): array
     {

@@ -14,7 +14,6 @@ use Cache;
 use Throwable;
 use Typography;
 use App\Models\Action;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Modules\Category\Entities\Category as CategoryEntity;
 use App\Modules\Category\Models\Category;
@@ -51,7 +50,6 @@ class CategoryUpdateAction extends Action
      *
      * @return CategoryEntity Вернет результаты исполнения.
      * @throws RecordNotExistException
-     * @throws ParameterInvalidException
      * @throws TemplateException
      * @throws Throwable
      */

@@ -8,7 +8,6 @@
 
 namespace App\Modules\Course\Json\Jobs;
 
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Section\Actions\Site\SectionLinkAction;
 
 /**
@@ -20,7 +19,6 @@ class SectionItemLinkJob extends JsonItemSectionJob
      * Выполнение задачи.
      *
      * @return void
-     * @throws ParameterInvalidException
      */
     public function handle(): void
     {

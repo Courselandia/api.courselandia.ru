@@ -15,7 +15,6 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
 use App\Modules\Article\Enums\Status;
 use App\Models\Exceptions\ResponseException;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Models\Exceptions\ValidateException;
 use App\Modules\Article\Actions\Admin\ArticleGetAction;
@@ -42,7 +41,6 @@ class ArticleController extends Controller
      * @param int|string $id ID категории.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException
      */
     public function get(int|string $id): JsonResponse
     {
@@ -72,7 +70,7 @@ class ArticleController extends Controller
      * @param ArticleReadRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException|ReflectionException
+     * @throws ReflectionException
      */
     public function read(ArticleReadRequest $request): JsonResponse
     {
@@ -96,7 +94,6 @@ class ArticleController extends Controller
      * @param ArticleUpdateRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException
      */
     public function update(int|string $id, ArticleUpdateRequest $request): JsonResponse
     {
@@ -139,7 +136,6 @@ class ArticleController extends Controller
      * @param ArticleUpdateStatusRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException
      */
     public function updateStatus(int|string $id, ArticleUpdateStatusRequest $request): JsonResponse
     {
@@ -179,7 +175,6 @@ class ArticleController extends Controller
      * @param ArticleRewriteRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException
      */
     public function rewrite(int|string $id, ArticleRewriteRequest $request): JsonResponse
     {
@@ -233,7 +228,6 @@ class ArticleController extends Controller
      * @param int|string $id ID статьи.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException
      */
     public function apply(int|string $id): JsonResponse
     {

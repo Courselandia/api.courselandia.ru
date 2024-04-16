@@ -13,7 +13,6 @@ use Cache;
 use Util;
 use App\Models\Action;
 use App\Models\Enums\CacheTime;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Tool\Entities\Tool as ToolEntity;
 use App\Modules\Tool\Models\Tool;
 
@@ -41,7 +40,6 @@ class ToolLinkAction extends Action
      * Метод запуска логики.
      *
      * @return ToolEntity|null Вернет результаты исполнения.
-     * @throws ParameterInvalidException
      */
     public function run(): ?ToolEntity
     {

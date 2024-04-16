@@ -9,7 +9,6 @@
 namespace App\Modules\Course\Pipes\Site\Read;
 
 use App\Models\Data;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Course\Actions\Site\Course\CourseSchoolReadAction;
 use App\Modules\Course\Data\Decorators\CourseRead;
 use Closure;
@@ -27,7 +26,6 @@ class FilterSchoolPipe implements Pipe
      * @param Closure $next Ссылка на следующий pipe.
      *
      * @return mixed Вернет значение полученное после выполнения следующего pipe.
-     * @throws ParameterInvalidException
      */
     public function handle(Data|CourseRead $data, Closure $next): mixed
     {

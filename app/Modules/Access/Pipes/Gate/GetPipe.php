@@ -11,7 +11,6 @@ namespace App\Modules\Access\Pipes\Gate;
 use App\Models\Contracts\Pipe;
 use App\Models\Data;
 use App\Models\Exceptions\InvalidPasswordException;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\UserNotExistException;
 use App\Modules\Access\Actions\AccessApiTokenAction;
 use App\Modules\Access\Actions\AccessGateAction;
@@ -34,7 +33,7 @@ class GetPipe implements Pipe
      * @param Closure $next Ссылка на следующий pipe.
      *
      * @return mixed Вернет значение полученное после выполнения следующего pipe.
-     * @throws InvalidPasswordException|ParameterInvalidException|UserNotExistException|ReflectionException
+     * @throws InvalidPasswordException|UserNotExistException|ReflectionException
      */
     public function handle(Data|AccessSocial|AccessSignUp|AccessVerify $data, Closure $next): mixed
     {

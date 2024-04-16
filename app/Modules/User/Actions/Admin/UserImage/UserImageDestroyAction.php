@@ -8,7 +8,6 @@
 
 namespace App\Modules\User\Actions\Admin\UserImage;
 
-use App\Models\Exceptions\ParameterInvalidException;
 use Cache;
 use ImageStore;
 use App\Models\Action;
@@ -45,7 +44,6 @@ class UserImageDestroyAction extends Action
      * @return UserEntity Вернет результаты исполнения.
      * @throws UserNotExistException
      * @throws RecordNotExistException
-     * @throws ParameterInvalidException
      * @throws ReflectionException
      */
     public function run(): UserEntity

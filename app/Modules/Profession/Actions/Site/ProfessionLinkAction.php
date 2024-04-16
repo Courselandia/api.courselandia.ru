@@ -13,7 +13,6 @@ use Cache;
 use Util;
 use App\Models\Action;
 use App\Models\Enums\CacheTime;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Profession\Entities\Profession as ProfessionEntity;
 use App\Modules\Profession\Models\Profession;
 
@@ -41,7 +40,6 @@ class ProfessionLinkAction extends Action
      * Метод запуска логики.
      *
      * @return ProfessionEntity|null Вернет результаты исполнения.
-     * @throws ParameterInvalidException
      */
     public function run(): ?ProfessionEntity
     {

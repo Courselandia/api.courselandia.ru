@@ -17,7 +17,6 @@ use ReflectionException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
 use App\Modules\Salary\Enums\Level;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordExistException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Models\Exceptions\ValidateException;
@@ -72,7 +71,7 @@ class SalaryController extends Controller
      * @param SalaryReadRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException|ReflectionException
+     * @throws ReflectionException
      */
     public function read(SalaryReadRequest $request): JsonResponse
     {

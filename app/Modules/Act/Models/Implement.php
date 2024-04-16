@@ -14,7 +14,6 @@ use Request;
 use Carbon\Carbon;
 use ReflectionException;
 use App\Models\Enums\CacheTime;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Modules\Act\Entities\Act as ActEntity;
 
@@ -34,7 +33,6 @@ class Implement
      * @param int $minutes Через сколько минут это действие будет доступно.
      *
      * @return bool Если вернет true, то действие может быть выполнено еще раз. Если false, то максимальный порог его выполнения достигнут.
-     * @throws ParameterInvalidException
      * @throws ReflectionException
      */
     public function status(string $index, int $maxCount, int $minutes = 60): bool
@@ -70,7 +68,6 @@ class Implement
      *
      * @return Implement
      * @throws RecordNotExistException
-     * @throws ParameterInvalidException
      * @throws ReflectionException
      */
     public function add(string $index, int $to = 1, int $minutes = 60 * 24 * 31): Implement
@@ -96,7 +93,7 @@ class Implement
      * @param string $index Индекс действия.
      *
      * @return Implement
-     * @throws ParameterInvalidException|ReflectionException
+     * @throws ReflectionException
      */
     public function delete(string $index): Implement
     {
@@ -112,7 +109,6 @@ class Implement
      * @param string $index Индекс действия.
      *
      * @return int Вернет текущее количество.
-     * @throws ParameterInvalidException
      * @throws ReflectionException
      */
     public function get(string $index): int
@@ -130,7 +126,6 @@ class Implement
      * @param ActEntity|null $default Значение по умолчанию, если значение отсутствует.
      *
      * @return ActEntity|null Возвращает сущность действия.
-     * @throws ParameterInvalidException
      * @throws ReflectionException
      */
     protected function read(string $index, ?ActEntity $default = null): ?ActEntity
@@ -165,7 +160,6 @@ class Implement
      *
      * @return Implement
      * @throws RecordNotExistException
-     * @throws ParameterInvalidException
      * @throws ReflectionException
      */
     protected function set(string $index, int $count, int $minutes): Implement
@@ -207,7 +201,6 @@ class Implement
      * @param string $index Индекс действия.
      *
      * @return Implement
-     * @throws ParameterInvalidException
      * @throws ReflectionException
      */
     protected function clean(string $index): Implement

@@ -8,7 +8,6 @@
 
 namespace App\Modules\Category\Http\Controllers\Admin;
 
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordExistException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Models\Exceptions\ValidateException;
@@ -43,7 +42,6 @@ class CategoryController extends Controller
      * @param int|string $id ID категории.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException
      */
     public function get(int|string $id): JsonResponse
     {
@@ -73,7 +71,7 @@ class CategoryController extends Controller
      * @param CategoryReadRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException|ReflectionException
+     * @throws ReflectionException
      */
     public function read(CategoryReadRequest $request): JsonResponse
     {
@@ -97,7 +95,6 @@ class CategoryController extends Controller
      * @param CategoryCreateRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException
      */
     public function create(CategoryCreateRequest $request): JsonResponse
     {
@@ -141,7 +138,6 @@ class CategoryController extends Controller
      * @param CategoryUpdateRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException
      */
     public function update(int|string $id, CategoryUpdateRequest $request): JsonResponse
     {
@@ -188,7 +184,6 @@ class CategoryController extends Controller
      * @param CategoryUpdateStatusRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException
      */
     public function updateStatus(int|string $id, CategoryUpdateStatusRequest $request): JsonResponse
     {

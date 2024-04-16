@@ -9,7 +9,6 @@
 namespace App\Modules\Publication\Actions\Admin\PublicationImage;
 
 use App\Models\Action;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Modules\Publication\Actions\Admin\Publication\PublicationGetAction;
 use App\Modules\Publication\Entities\Publication as PublicationEntity;

@@ -14,7 +14,6 @@ use ReflectionException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
 use App\Modules\Salary\Enums\Level;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordExistException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Models\Exceptions\ValidateException;
@@ -73,7 +72,7 @@ class SectionController extends Controller
      * @param SectionReadRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException|ReflectionException
+     * @throws ReflectionException
      */
     public function read(SectionReadRequest $request): JsonResponse
     {
@@ -96,7 +95,6 @@ class SectionController extends Controller
      * @param SectionCreateRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException
      */
     public function create(SectionCreateRequest $request): JsonResponse
     {
@@ -144,7 +142,6 @@ class SectionController extends Controller
      * @param SectionUpdateRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException
      */
     public function update(int|string $id, SectionUpdateRequest $request): JsonResponse
     {

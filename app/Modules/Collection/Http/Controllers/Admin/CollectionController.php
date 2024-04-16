@@ -17,7 +17,6 @@ use Throwable;
 use ReflectionException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordExistException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Models\Exceptions\ValidateException;
@@ -77,7 +76,7 @@ class CollectionController extends Controller
      * @param CollectionReadRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException|ReflectionException
+     * @throws ReflectionException
      */
     public function read(CollectionReadRequest $request): JsonResponse
     {
@@ -100,7 +99,7 @@ class CollectionController extends Controller
      * @param CollectionCreateRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException|Throwable
+     * @throws Throwable
      */
     public function create(CollectionCreateRequest $request): JsonResponse
     {
@@ -156,7 +155,7 @@ class CollectionController extends Controller
      * @param CollectionUpdateRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException|Throwable
+     * @throws Throwable
      */
     public function update(int|string $id, CollectionUpdateRequest $request): JsonResponse
     {

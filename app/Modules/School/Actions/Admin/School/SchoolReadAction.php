@@ -10,7 +10,6 @@ namespace App\Modules\School\Actions\Admin\School;
 
 use App\Models\Action;
 use App\Models\Enums\CacheTime;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\School\Entities\School as SchoolEntity;
 use App\Modules\School\Models\School;
 use Cache;
@@ -73,7 +72,7 @@ class SchoolReadAction extends Action
      * Метод запуска логики.
      *
      * @return mixed Вернет результаты исполнения.
-     * @throws ParameterInvalidException|ReflectionException
+     * @throws ReflectionException
      */
     public function run(): array
     {

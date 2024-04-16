@@ -9,7 +9,6 @@
 namespace App\Modules\Log\Actions\Admin;
 
 use App\Models\Action;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Log\Repositories\Log;
 
 /**
@@ -80,7 +79,6 @@ class LogReadAction extends Action
      * Метод запуска логики.
      *
      * @return array Вернет результаты исполнения.
-     * @throws ParameterInvalidException
      */
     public function run(): array
     {

@@ -13,7 +13,6 @@ use App\Modules\User\Entities\User as UserEntity;
 use Cache;
 use Mail;
 use App\Models\Action;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Modules\User\Models\User;
 use App\Modules\User\Models\UserRecovery;
@@ -68,7 +67,7 @@ class AccessResetAction extends Action
      * @throws UserNotExistException
      * @throws RecordNotExistException
      * @throws InvalidCodeException
-     * @throws ParameterInvalidException|ReflectionException
+     * @throws ReflectionException
      */
     public function run(): bool
     {

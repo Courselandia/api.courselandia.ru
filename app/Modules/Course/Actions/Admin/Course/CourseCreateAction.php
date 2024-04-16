@@ -15,7 +15,6 @@ use DB;
 use Throwable;
 use ReflectionException;
 use App\Models\Action;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Modules\Analyzer\Actions\Admin\AnalyzerUpdateAction;
 use App\Modules\Course\Entities\Course as CourseEntity;
@@ -58,7 +57,6 @@ class CourseCreateAction extends Action
      *
      * @return CourseEntity Вернет результаты исполнения.
      * @throws RecordNotExistException
-     * @throws ParameterInvalidException
      * @throws ReflectionException|Throwable
      */
     public function run(): CourseEntity

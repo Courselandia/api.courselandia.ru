@@ -8,7 +8,6 @@
 
 namespace App\Modules\Direction\Http\Controllers\Site;
 
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Direction\Actions\Site\DirectionGetAction;
 use App\Modules\Direction\Actions\Site\DirectionLinkAction;
 use Illuminate\Http\JsonResponse;
@@ -25,7 +24,6 @@ class DirectionController extends Controller
      * @param int|string $id ID категории.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException
      */
     public function get(int|string $id): JsonResponse
     {
@@ -55,7 +53,6 @@ class DirectionController extends Controller
      * @param string $link Ссылка категорий.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException
      */
     public function link(string $link): JsonResponse
     {

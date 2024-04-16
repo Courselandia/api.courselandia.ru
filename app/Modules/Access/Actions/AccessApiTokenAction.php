@@ -11,7 +11,6 @@ namespace App\Modules\Access\Actions;
 use App\Models\Action;
 use App\Models\Enums\CacheTime;
 use App\Models\Exceptions\InvalidPasswordException;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\UserNotExistException;
 use App\Modules\Access\Data\Actions\AccessApiToken as AccessApiTokenData;
 use App\Modules\Access\Entities\AccessApiToken;
@@ -46,7 +45,7 @@ class AccessApiTokenAction extends Action
      * Метод запуска логики.
      *
      * @return mixed Вернет результаты исполнения.
-     * @throws ParameterInvalidException|ReflectionException
+     * @throws ReflectionException
      * @throws InvalidPasswordException
      * @throws UserNotExistException
      */

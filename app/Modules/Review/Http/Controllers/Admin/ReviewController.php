@@ -19,7 +19,6 @@ use Carbon\Carbon;
 use Log;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordExistException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Models\Exceptions\ValidateException;
@@ -71,7 +70,6 @@ class ReviewController extends Controller
      * @param ReviewReadRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException
      */
     public function read(ReviewReadRequest $request): JsonResponse
     {

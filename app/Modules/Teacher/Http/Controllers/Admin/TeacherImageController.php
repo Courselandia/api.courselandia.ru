@@ -8,7 +8,6 @@
 
 namespace App\Modules\Teacher\Http\Controllers\Admin;
 
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordExistException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Models\Exceptions\ValidateException;
@@ -71,7 +70,7 @@ class TeacherImageController extends Controller
      * @param int|string $id ID шаблона страницы.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException|ReflectionException
+     * @throws ReflectionException
      */
     public function destroy(int|string $id): JsonResponse
     {

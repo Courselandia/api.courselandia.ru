@@ -10,7 +10,6 @@ namespace App\Modules\Document\Repositories;
 
 use DB;
 use Generator;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Modules\Document\Models\DocumentMongoDb as DocumentMongoDbModel;
 use App\Modules\Document\Entities\Document as DocumentEntity;
@@ -26,7 +25,6 @@ class DocumentMongoDb extends Document
      * @param DocumentEntity $entity Данные для добавления.
      *
      * @return int|string Вернет ID последней вставленной строки.
-     * @throws ParameterInvalidException
      */
     public function create(DocumentEntity $entity): int|string
     {
@@ -52,7 +50,7 @@ class DocumentMongoDb extends Document
      * @param DocumentEntity $entity Данные для добавления.
      *
      * @return int|string Вернет ID вставленной строки.
-     * @throws RecordNotExistException|ParameterInvalidException
+     * @throws RecordNotExistException
      */
     public function update(int|string $id, DocumentEntity $entity): int|string
     {
@@ -82,7 +80,6 @@ class DocumentMongoDb extends Document
      * @param string $byte Байт код картинки.
      *
      * @return bool Вернет булево значение успешности операции.
-     * @throws ParameterInvalidException
      */
     public function updateByte(int|string $id, string $byte): bool
     {
@@ -99,7 +96,6 @@ class DocumentMongoDb extends Document
      * @param DocumentEntity|null $entity Сущность.
      *
      * @return DocumentEntity|null Данные.
-     * @throws ParameterInvalidException
      */
     public function get(int|string $id, DocumentEntity $entity = null): DocumentEntity|null
     {
@@ -141,7 +137,6 @@ class DocumentMongoDb extends Document
      * @param int|string $id Id записи для обновления.
      *
      * @return string|null Вернет байт код документа.
-     * @throws ParameterInvalidException
      */
     public function getByte(int|string $id): ?string
     {
@@ -164,7 +159,6 @@ class DocumentMongoDb extends Document
      * @param DocumentEntity|null $entity Сущность.
      *
      * @return Generator|DocumentEntity|null Генератор.
-     * @throws ParameterInvalidException
      */
     public function all(DocumentEntity $entity = null): Generator|DocumentEntity|null
     {
@@ -204,7 +198,6 @@ class DocumentMongoDb extends Document
      * Получить количество всех документов.
      *
      * @return int Количество записей.
-     * @throws ParameterInvalidException
      */
     public function count(): int
     {
@@ -217,7 +210,6 @@ class DocumentMongoDb extends Document
      * @param int|string|array|null $id Id записи для удаления.
      *
      * @return bool Вернет булево значение успешности операции.
-     * @throws ParameterInvalidException
      */
     public function destroy(int|string|array $id = null): bool
     {

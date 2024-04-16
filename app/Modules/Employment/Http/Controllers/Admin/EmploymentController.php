@@ -8,7 +8,6 @@
 
 namespace App\Modules\Employment\Http\Controllers\Admin;
 
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordExistException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Models\Exceptions\ValidateException;
@@ -71,7 +70,7 @@ class EmploymentController extends Controller
      * @param EmploymentReadRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException|ReflectionException
+     * @throws ReflectionException
      */
     public function read(EmploymentReadRequest $request): JsonResponse
     {
@@ -184,7 +183,6 @@ class EmploymentController extends Controller
      * @param EmploymentUpdateStatusRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException
      */
     public function updateStatus(int|string $id, EmploymentUpdateStatusRequest $request): JsonResponse
     {

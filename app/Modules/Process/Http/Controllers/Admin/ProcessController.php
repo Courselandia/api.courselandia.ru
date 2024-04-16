@@ -8,7 +8,6 @@
 
 namespace App\Modules\Process\Http\Controllers\Admin;
 
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordExistException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Models\Exceptions\ValidateException;
@@ -71,7 +70,7 @@ class ProcessController extends Controller
      * @param ProcessReadRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException|ReflectionException
+     * @throws ReflectionException
      */
     public function read(ProcessReadRequest $request): JsonResponse
     {

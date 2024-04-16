@@ -10,7 +10,6 @@ namespace App\Modules\Access\Pipes\Site\Update;
 
 use App\Models\Data;
 use App\Models\Enums\CacheTime;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Modules\User\Entities\User as UserEntity;
 use Cache;
@@ -34,7 +33,6 @@ class UserPipe implements Pipe
      * @param Closure $next Ссылка на следующий pipe.
      *
      * @return mixed Вернет значение полученное после выполнения следующего pipe.
-     * @throws ParameterInvalidException
      * @throws RecordNotExistException
      * @throws UserNotExistException
      * @throws ReflectionException

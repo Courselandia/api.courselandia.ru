@@ -12,7 +12,6 @@ use Cache;
 use Typography;
 use App\Modules\Skill\Models\Skill;
 use App\Modules\Article\Actions\Admin\ArticleMoveAnalyzer;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Modules\Article\Actions\Admin\ArticleGetAction;
 use App\Modules\Skill\Actions\Admin\SkillGetAction;
@@ -72,7 +71,6 @@ class SkillTextArticleCategory extends ArticleCategory
      *
      * @return void
      * @throws RecordNotExistException
-     * @throws ParameterInvalidException
      */
     public function apply(int $id): void
     {

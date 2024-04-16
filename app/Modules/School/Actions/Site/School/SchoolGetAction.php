@@ -12,7 +12,6 @@ use Cache;
 use Util;
 use App\Models\Action;
 use App\Models\Enums\CacheTime;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\School\Entities\School as SchoolEntity;
 use App\Modules\School\Models\School;
 use App\Modules\Review\Enums\Status;
@@ -42,7 +41,6 @@ class SchoolGetAction extends Action
      * Метод запуска логики.
      *
      * @return SchoolEntity|null Вернет результаты исполнения.
-     * @throws ParameterInvalidException
      */
     public function run(): ?SchoolEntity
     {

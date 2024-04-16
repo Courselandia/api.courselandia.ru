@@ -10,7 +10,6 @@ namespace App\Modules\Faq\Http\Controllers\Site;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Faq\Actions\Site\FaqReadAction;
 
 /**
@@ -24,7 +23,6 @@ class FaqController extends Controller
      * @param string $school ID школы.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException
      */
     public function read(string $school): JsonResponse
     {

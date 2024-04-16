@@ -12,7 +12,6 @@ use Cache;
 use Typography;
 use App\Modules\Course\Models\Course;
 use App\Modules\Article\Actions\Admin\ArticleMoveAnalyzer;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Modules\Article\Actions\Admin\ArticleGetAction;
 use App\Modules\Course\Actions\Admin\Course\CourseGetAction;
@@ -72,7 +71,6 @@ class CourseTextArticleCategory extends ArticleCategory
      *
      * @return void
      * @throws RecordNotExistException
-     * @throws ParameterInvalidException
      */
     public function apply(int $id): void
     {

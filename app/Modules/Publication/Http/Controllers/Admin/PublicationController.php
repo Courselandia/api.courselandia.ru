@@ -8,7 +8,6 @@
 
 namespace App\Modules\Publication\Http\Controllers\Admin;
 
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordExistException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Models\Exceptions\ValidateException;
@@ -73,7 +72,7 @@ class PublicationController extends Controller
      * @param PublicationReadRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException|ReflectionException
+     * @throws ReflectionException
      */
     public function read(PublicationReadRequest $request): JsonResponse
     {

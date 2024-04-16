@@ -15,7 +15,6 @@ use Cache;
 use Throwable;
 use Typography;
 use App\Models\Action;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Metatag\Template\Template;
 use App\Modules\Metatag\Template\TemplateException;
 use App\Modules\Tool\Entities\Tool as ToolEntity;
@@ -47,7 +46,6 @@ class ToolCreateAction extends Action
      * Метод запуска логики.
      *
      * @return ToolEntity Вернет результаты исполнения.
-     * @throws ParameterInvalidException
      * @throws TemplateException
      * @throws Throwable
      */

@@ -13,7 +13,6 @@ use App\Modules\Review\Data\Site\ReviewRead;
 use App\Modules\Review\Values\ReviewBreakDown;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Review\Actions\Site\ReviewReadAction;
 use App\Modules\Review\Http\Requests\Site\ReviewReadRequest;
 
@@ -28,7 +27,6 @@ class ReviewController extends Controller
      * @param ReviewReadRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException
      */
     public function read(ReviewReadRequest $request): JsonResponse
     {
@@ -47,7 +45,6 @@ class ReviewController extends Controller
      * @param int $schoolId ID школы.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException
      */
     public function breakDown(int $schoolId): JsonResponse
     {

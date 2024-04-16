@@ -13,7 +13,6 @@ use Config;
 use Util;
 use App\Models\Action;
 use App\Models\Enums\CacheTime;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Section\Entities\Section as SectionEntity;
 use App\Modules\Section\Models\Section;
 use App\Modules\Salary\Enums\Level;
@@ -60,7 +59,6 @@ class SectionLinkAction extends Action
      * Метод запуска логики.
      *
      * @return SectionEntity|null Вернет результаты исполнения.
-     * @throws ParameterInvalidException
      */
     public function run(): ?SectionEntity
     {

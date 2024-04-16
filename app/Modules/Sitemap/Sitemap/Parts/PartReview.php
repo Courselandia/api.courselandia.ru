@@ -8,7 +8,6 @@
 
 namespace App\Modules\Sitemap\Sitemap\Parts;
 
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Course\Enums\Status;
 use App\Modules\Review\Actions\Site\ReviewReadAction;
 use App\Modules\Review\Data\Site\ReviewRead;
@@ -40,7 +39,6 @@ class PartReview extends Part
      * Генерация элемента.
      *
      * @return Generator<Item> Генерируемый элемент.
-     * @throws ParameterInvalidException
      */
     public function generate(): Generator
     {
@@ -96,7 +94,6 @@ class PartReview extends Part
      * @param string $link Ссылка на школу.
      *
      * @return ?Carbon Дата последней модификации.
-     * @throws ParameterInvalidException
      */
     protected function getLastmod(string $link): ?Carbon
     {

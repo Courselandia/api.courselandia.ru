@@ -18,7 +18,6 @@ use App\Modules\Course\Enums\Currency;
 use App\Modules\Course\Enums\Duration;
 use App\Modules\Course\Enums\Language;
 use App\Modules\Course\Enums\Status;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordExistException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Models\Exceptions\ValidateException;
@@ -75,7 +74,6 @@ class CourseController extends Controller
      * @param CourseReadRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException
      */
     public function read(CourseReadRequest $request): JsonResponse
     {
@@ -98,7 +96,7 @@ class CourseController extends Controller
      * @param CourseCreateRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws RecordNotExistException|ParameterInvalidException|ReflectionException|Throwable
+     * @throws RecordNotExistException|ReflectionException|Throwable
      */
     public function create(CourseCreateRequest $request): JsonResponse
     {
@@ -156,7 +154,7 @@ class CourseController extends Controller
      * @param CourseUpdateRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException|ReflectionException|Throwable
+     * @throws ReflectionException|Throwable
      */
     public function update(int|string $id, CourseUpdateRequest $request): JsonResponse
     {

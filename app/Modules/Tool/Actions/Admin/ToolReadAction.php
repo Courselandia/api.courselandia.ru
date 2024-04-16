@@ -10,7 +10,6 @@ namespace App\Modules\Tool\Actions\Admin;
 
 use App\Models\Action;
 use App\Models\Enums\CacheTime;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Tool\Entities\Tool as ToolEntity;
 use App\Modules\Tool\Models\Tool;
 use Cache;
@@ -73,7 +72,7 @@ class ToolReadAction extends Action
      * Метод запуска логики.
      *
      * @return mixed Вернет результаты исполнения.
-     * @throws ParameterInvalidException|ReflectionException
+     * @throws ReflectionException
      */
     public function run(): array
     {

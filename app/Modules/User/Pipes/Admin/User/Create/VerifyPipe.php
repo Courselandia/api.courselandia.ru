@@ -11,7 +11,6 @@ namespace App\Modules\User\Pipes\Admin\User\Create;
 use App\Models\Contracts\Pipe;
 use App\Models\Data;
 use App\Models\Enums\CacheTime;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Modules\User\Data\Decorators\UserCreate;
 use App\Modules\User\Data\Decorators\UserUpdate;
@@ -34,7 +33,6 @@ class VerifyPipe implements Pipe
      * @param Closure $next Ссылка на следующий pipe.
      *
      * @return mixed Вернет значение полученное после выполнения следующего pipe.
-     * @throws ParameterInvalidException
      * @throws RecordNotExistException|ReflectionException
      */
     public function handle(Data|UserCreate|UserUpdate $data, Closure $next): mixed

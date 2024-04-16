@@ -10,7 +10,6 @@ namespace App\Modules\Employment\Actions\Admin;
 
 use App\Models\Action;
 use App\Models\Enums\CacheTime;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Employment\Entities\Employment as EmploymentEntity;
 use App\Modules\Employment\Models\Employment;
 use Cache;
@@ -73,7 +72,7 @@ class EmploymentReadAction extends Action
      * Метод запуска логики.
      *
      * @return mixed Вернет результаты исполнения.
-     * @throws ParameterInvalidException|ReflectionException
+     * @throws ReflectionException
      */
     public function run(): array
     {

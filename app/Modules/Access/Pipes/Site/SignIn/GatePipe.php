@@ -9,7 +9,6 @@ namespace App\Modules\Access\Pipes\Site\SignIn;
 use Closure;
 use App\Models\Contracts\Pipe;
 use App\Models\Data;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Access\Actions\AccessGateAction;
 use App\Modules\Access\Data\Decorators\AccessSignIn;
 
@@ -25,7 +24,6 @@ class GatePipe implements Pipe
      * @param Closure $next Ссылка на следующий pipe.
      *
      * @return mixed Вернет значение полученное после выполнения следующего pipe.
-     * @throws ParameterInvalidException
      */
     public function handle(Data|AccessSignIn $data, Closure $next): mixed
     {

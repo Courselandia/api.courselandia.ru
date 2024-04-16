@@ -16,7 +16,6 @@ use Cache;
 use Throwable;
 use Typography;
 use App\Models\Action;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Modules\Course\Enums\Status;
 use App\Modules\Course\Models\Course;
@@ -51,7 +50,6 @@ class DirectionUpdateAction extends Action
      *
      * @return DirectionEntity Вернет результаты исполнения.
      * @throws RecordNotExistException
-     * @throws ParameterInvalidException
      * @throws TemplateException
      * @throws Throwable
      */

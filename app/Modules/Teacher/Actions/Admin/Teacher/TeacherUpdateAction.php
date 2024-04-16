@@ -19,7 +19,6 @@ use Throwable;
 use Typography;
 use App\Models\Action;
 use App\Modules\Teacher\Enums\SocialMedia;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Modules\Course\Enums\Status;
 use App\Modules\Course\Models\Course;
@@ -57,7 +56,6 @@ class TeacherUpdateAction extends Action
      *
      * @return TeacherEntity Вернет результаты исполнения.
      * @throws RecordNotExistException
-     * @throws ParameterInvalidException
      * @throws TemplateException|Throwable
      */
     public function run(): TeacherEntity

@@ -12,7 +12,6 @@ use Cache;
 use Util;
 use App\Models\Action;
 use App\Models\Enums\CacheTime;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Direction\Models\Direction;
 use ReflectionException;
 use App\Modules\Direction\Entities\Direction as DirectionEntity;
@@ -73,7 +72,7 @@ class DirectionReadAction extends Action
      * Метод запуска логики.
      *
      * @return mixed Вернет результаты исполнения.
-     * @throws ParameterInvalidException|ReflectionException
+     * @throws ReflectionException
      */
     public function run(): array
     {

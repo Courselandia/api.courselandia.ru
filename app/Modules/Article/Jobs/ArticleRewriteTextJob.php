@@ -12,7 +12,6 @@ use Log;
 use Writer;
 use Cache;
 use Illuminate\Bus\Queueable;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\PaymentException;
 use App\Modules\Article\Actions\Admin\ArticleGetAction;
 use App\Modules\Article\Enums\Status;
@@ -81,7 +80,6 @@ class ArticleRewriteTextJob implements ShouldQueue
      * Выполнение задачи.
      *
      * @return void
-     * @throws ParameterInvalidException
      */
     public function handle(): void
     {

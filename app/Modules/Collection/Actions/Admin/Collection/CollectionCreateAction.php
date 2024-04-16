@@ -13,7 +13,6 @@ use Cache;
 use Throwable;
 use Typography;
 use App\Models\Action;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Metatag\Actions\MetatagSetAction;
 use App\Modules\Metatag\Template\TemplateException;
 use App\Modules\Collection\Entities\Collection as CollectionEntity;
@@ -49,7 +48,6 @@ class CollectionCreateAction extends Action
      * Метод запуска логики.
      *
      * @return CollectionEntity Вернет результаты исполнения.
-     * @throws ParameterInvalidException
      * @throws TemplateException
      * @throws Throwable
      */

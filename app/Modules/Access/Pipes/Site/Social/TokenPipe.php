@@ -13,7 +13,6 @@ use App\Models\Data;
 use App\Models\Contracts\Pipe;
 use ReflectionException;
 use App\Models\Exceptions\InvalidPasswordException;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\UserNotExistException;
 use App\Modules\Access\Actions\AccessApiTokenAction;
 use App\Modules\Access\Actions\AccessGateAction;
@@ -33,7 +32,6 @@ class TokenPipe implements Pipe
      *
      * @return mixed Вернет значение полученное после выполнения следующего pipe.
      * @throws InvalidPasswordException
-     * @throws ParameterInvalidException
      * @throws ReflectionException
      */
     public function handle(Data|AccessSocial $data, Closure $next): mixed

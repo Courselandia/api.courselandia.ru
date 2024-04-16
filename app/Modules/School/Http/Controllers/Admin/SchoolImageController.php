@@ -8,7 +8,6 @@
 
 namespace App\Modules\School\Http\Controllers\Admin;
 
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordExistException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Models\Exceptions\ValidateException;
@@ -73,7 +72,7 @@ class SchoolImageController extends Controller
      * @param  SchoolImageDestroyRequest  $request  Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException|ReflectionException
+     * @throws ReflectionException
      */
     public function destroy(int|string $id, SchoolImageDestroyRequest $request): JsonResponse
     {

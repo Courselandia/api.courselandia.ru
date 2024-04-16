@@ -10,7 +10,6 @@ namespace App\Modules\User\Actions\Admin\User;
 
 use App\Models\Action;
 use App\Models\Enums\CacheTime;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\User\Entities\User as UserEntity;
 use App\Modules\User\Models\User;
 use Cache;
@@ -73,7 +72,7 @@ class UserReadAction extends Action
      * Метод запуска логики.
      *
      * @return array Вернет результаты исполнения.
-     * @throws ParameterInvalidException|ReflectionException
+     * @throws ReflectionException
      */
     public function run(): array
     {

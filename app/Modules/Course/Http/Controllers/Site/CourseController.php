@@ -8,7 +8,6 @@
 
 namespace App\Modules\Course\Http\Controllers\Site;
 
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Course\Actions\Site\Course\CourseDirectionReadAction;
 use App\Modules\Course\Actions\Site\Course\CourseCategoryReadAction;
 use App\Modules\Course\Actions\Site\Course\CourseProfessionReadAction;
@@ -73,7 +72,6 @@ class CourseController extends Controller
      * @param CourseFilterItemReadRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException
      */
     public function directions(CourseFilterItemReadRequest $request): JsonResponse
     {
@@ -101,7 +99,6 @@ class CourseController extends Controller
      * @param CourseFilterItemReadRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException
      */
     public function professions(CourseFilterItemReadRequest $request): JsonResponse
     {
@@ -129,7 +126,6 @@ class CourseController extends Controller
      * @param CourseFilterItemReadRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException
      */
     public function categories(CourseFilterItemReadRequest $request): JsonResponse
     {
@@ -156,7 +152,6 @@ class CourseController extends Controller
      * @param CourseFilterItemReadRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException
      */
     public function schools(CourseFilterItemReadRequest $request): JsonResponse
     {
@@ -183,7 +178,6 @@ class CourseController extends Controller
      * @param CourseFilterItemReadRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException
      */
     public function tools(CourseFilterItemReadRequest $request): JsonResponse
     {
@@ -210,7 +204,6 @@ class CourseController extends Controller
      * @param CourseFilterItemReadRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException
      */
     public function skills(CourseFilterItemReadRequest $request): JsonResponse
     {
@@ -237,7 +230,6 @@ class CourseController extends Controller
      * @param CourseFilterItemReadRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException
      */
     public function teachers(CourseFilterItemReadRequest $request): JsonResponse
     {

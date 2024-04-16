@@ -13,7 +13,6 @@ use App\Models\Exceptions\ValidateException;
 use Illuminate\Routing\Controller;
 use Illuminate\Http\JsonResponse;
 use App\Models\Exceptions\InvalidPasswordException;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Models\Exceptions\UserNotExistException;
 use App\Models\Exceptions\InvalidFormatException;
@@ -34,7 +33,7 @@ class AccessApiController extends Controller
      * @param AccessApiTokenRequest $request Запрос на генерацию токена.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException|ReflectionException
+     * @throws ReflectionException
      */
     public function token(AccessApiTokenRequest $request): JsonResponse
     {
@@ -73,7 +72,7 @@ class AccessApiController extends Controller
      * @param AccessApiRefreshRequest $request Запрос на обновление токена.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException|ReflectionException
+     * @throws ReflectionException
      */
     public function refresh(AccessApiRefreshRequest $request): JsonResponse
     {

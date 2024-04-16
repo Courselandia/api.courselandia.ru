@@ -8,7 +8,6 @@
 
 namespace App\Modules\Category\Http\Controllers\Site;
 
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Category\Actions\Site\CategoryGetAction;
 use App\Modules\Category\Actions\Site\CategoryLinkAction;
 use Illuminate\Http\JsonResponse;
@@ -54,7 +53,6 @@ class CategoryController extends Controller
      * @param string $link Ссылка категории.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException
      */
     public function link(string $link): JsonResponse
     {

@@ -13,7 +13,6 @@ use Cache;
 use Plagiarism;
 use AnalyzerCategory;
 use App\Models\Action;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Modules\Analyzer\Enums\Status;
 use App\Modules\Analyzer\Entities\Analyzer as AnalyzerEntity;
@@ -45,7 +44,6 @@ class AnalyzerAnalyzeAction extends Action
      *
      * @return AnalyzerEntity Вернет результаты исполнения.
      * @throws RecordNotExistException
-     * @throws ParameterInvalidException
      */
     public function run(): AnalyzerEntity
     {

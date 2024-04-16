@@ -8,7 +8,6 @@
 
 namespace App\Modules\Direction\Http\Controllers\Admin;
 
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordExistException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Models\Exceptions\ValidateException;
@@ -72,7 +71,7 @@ class DirectionController extends Controller
      * @param DirectionReadRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException|ReflectionException
+     * @throws ReflectionException
      */
     public function read(DirectionReadRequest $request): JsonResponse
     {
@@ -96,7 +95,6 @@ class DirectionController extends Controller
      * @param DirectionCreateRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException
      */
     public function create(DirectionCreateRequest $request): JsonResponse
     {
@@ -140,7 +138,6 @@ class DirectionController extends Controller
      * @param DirectionUpdateRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException
      */
     public function update(int|string $id, DirectionUpdateRequest $request): JsonResponse
     {

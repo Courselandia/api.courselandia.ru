@@ -15,7 +15,6 @@ use App\Modules\Profession\Data\ProfessionUpdate;
 use Throwable;
 use Typography;
 use App\Models\Action;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Modules\Course\Enums\Status;
 use App\Modules\Course\Models\Course;
@@ -49,7 +48,6 @@ class ProfessionUpdateAction extends Action
      *
      * @return ProfessionEntity Вернет результаты исполнения.
      * @throws RecordNotExistException
-     * @throws ParameterInvalidException
      * @throws TemplateException
      * @throws Throwable
      */

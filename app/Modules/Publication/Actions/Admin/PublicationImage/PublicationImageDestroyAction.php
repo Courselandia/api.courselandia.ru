@@ -10,7 +10,6 @@ namespace App\Modules\Publication\Actions\Admin\PublicationImage;
 
 use App\Models\Action;
 use App\Models\Enums\CacheTime;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Modules\Publication\Models\Publication;
 use Cache;
@@ -43,7 +42,7 @@ class PublicationImageDestroyAction extends Action
      *
      * @return bool Вернет результаты исполнения.
      * @throws RecordNotExistException
-     * @throws ParameterInvalidException|ReflectionException
+     * @throws ReflectionException
      */
     public function run(): bool
     {

@@ -23,7 +23,6 @@ use App\Models\Enums\CacheTime;
 use App\Modules\Course\Entities\Course as CourseEntity;
 use App\Modules\Course\Data\Decorators\CourseRead;
 use App\Modules\Course\Models\Course;
-use App\Models\Exceptions\ParameterInvalidException;
 
 /**
  * Чтение курсов: получение.
@@ -37,7 +36,6 @@ class ReadPipe implements Pipe
      * @param Closure $next Ссылка на следующий pipe.
      *
      * @return mixed Вернет значение полученное после выполнения следующего pipe.
-     * @throws ParameterInvalidException
      */
     public function handle(Data|CourseRead $data, Closure $next): mixed
     {

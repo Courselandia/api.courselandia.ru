@@ -8,7 +8,6 @@
 
 namespace App\Modules\Profession\Http\Controllers\Admin;
 
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordExistException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Models\Exceptions\ValidateException;
@@ -72,7 +71,7 @@ class ProfessionController extends Controller
      * @param ProfessionReadRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException|ReflectionException
+     * @throws ReflectionException
      */
     public function read(ProfessionReadRequest $request): JsonResponse
     {
@@ -96,7 +95,6 @@ class ProfessionController extends Controller
      * @param ProfessionCreateRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException
      */
     public function create(ProfessionCreateRequest $request): JsonResponse
     {
@@ -140,7 +138,6 @@ class ProfessionController extends Controller
      * @param ProfessionUpdateRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException
      */
     public function update(int|string $id, ProfessionUpdateRequest $request): JsonResponse
     {

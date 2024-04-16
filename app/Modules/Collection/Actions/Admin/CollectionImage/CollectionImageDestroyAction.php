@@ -10,7 +10,6 @@ namespace App\Modules\Collection\Actions\Admin\CollectionImage;
 
 use App\Models\Action;
 use App\Models\Enums\CacheTime;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Modules\Collection\Models\Collection;
 use Cache;
@@ -43,7 +42,7 @@ class CollectionImageDestroyAction extends Action
      *
      * @return bool Вернет результаты исполнения.
      * @throws RecordNotExistException
-     * @throws ParameterInvalidException|ReflectionException
+     * @throws ReflectionException
      */
     public function run(): bool
     {

@@ -8,7 +8,6 @@
 
 namespace App\Modules\Skill\Http\Controllers\Site;
 
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Skill\Actions\Site\SkillGetAction;
 use App\Modules\Skill\Actions\Site\SkillLinkAction;
 use Illuminate\Http\JsonResponse;
@@ -54,7 +53,6 @@ class SkillController extends Controller
      * @param string $link Ссылка категории.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException
      */
     public function link(string $link): JsonResponse
     {

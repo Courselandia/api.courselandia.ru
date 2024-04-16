@@ -13,7 +13,6 @@ use Cache;
 use Util;
 use App\Models\Action;
 use App\Models\Enums\CacheTime;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Skill\Entities\Skill as SkillEntity;
 use App\Modules\Skill\Models\Skill;
 
@@ -41,7 +40,6 @@ class SkillLinkAction extends Action
      * Метод запуска логики.
      *
      * @return SkillEntity|null Вернет результаты исполнения.
-     * @throws ParameterInvalidException
      */
     public function run(): ?SkillEntity
     {

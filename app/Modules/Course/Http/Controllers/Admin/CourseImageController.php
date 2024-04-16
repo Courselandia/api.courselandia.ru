@@ -13,7 +13,6 @@ use Log;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
 use ReflectionException;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordExistException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Models\Exceptions\ValidateException;
@@ -71,7 +70,7 @@ class CourseImageController extends Controller
      * @param int|string $id ID курса.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException|ReflectionException
+     * @throws ReflectionException
      */
     public function destroy(int|string $id): JsonResponse
     {

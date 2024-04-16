@@ -14,7 +14,6 @@ use Closure;
 use App\Models\Data;
 use App\Models\Contracts\Pipe;
 use App\Models\Enums\CacheTime;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Category\Actions\Site\CategoryLinkAction;
 use App\Modules\Direction\Actions\Site\DirectionLinkAction;
 use App\Modules\Profession\Actions\Site\ProfessionLinkAction;
@@ -36,7 +35,6 @@ class DescriptionPipe implements Pipe
      * @param Closure $next Ссылка на следующий pipe.
      *
      * @return mixed Вернет значение полученное после выполнения следующего pipe.
-     * @throws ParameterInvalidException
      */
     public function handle(Data|CourseRead $data, Closure $next): mixed
     {

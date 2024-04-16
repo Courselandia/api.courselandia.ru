@@ -16,7 +16,6 @@ use Cache;
 use Throwable;
 use Typography;
 use App\Models\Action;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Metatag\Actions\MetatagSetAction;
 use App\Modules\Metatag\Template\Template;
 use App\Modules\Metatag\Template\TemplateException;
@@ -47,7 +46,6 @@ class SchoolCreateAction extends Action
      * Метод запуска логики.
      *
      * @return SchoolEntity Вернет результаты исполнения.
-     * @throws ParameterInvalidException
      * @throws TemplateException
      * @throws Throwable
      */

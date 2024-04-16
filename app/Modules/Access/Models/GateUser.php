@@ -8,7 +8,6 @@
 
 namespace App\Modules\Access\Models;
 
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Access\Actions\AccessGateAction;
 use App\Modules\User\Models\User;
 
@@ -23,7 +22,6 @@ class GateUser
      * @param  User  $user  Данные пользователя.
      *
      * @return bool Вернет результат проверки.
-     * @throws ParameterInvalidException
      */
     public function check(User $user): bool
     {

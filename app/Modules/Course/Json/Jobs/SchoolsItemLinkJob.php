@@ -9,7 +9,6 @@
 namespace App\Modules\Course\Json\Jobs;
 
 use ReflectionException;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\School\Actions\Site\School\SchoolReadAction;
 
 /**
@@ -21,7 +20,6 @@ class SchoolsItemLinkJob extends JsonItemLinkJob
      * Выполнение задачи.
      *
      * @return void
-     * @throws ParameterInvalidException
      * @throws ReflectionException
      */
     public function handle(): void

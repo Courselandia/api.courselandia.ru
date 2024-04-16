@@ -9,7 +9,6 @@
 namespace App\Modules\Crawl\Check\Checkers;
 
 use App\Models\Exceptions\InvalidCodeException;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\ProcessingException;
 use App\Models\Exceptions\ResponseException;
 use App\Modules\Crawl\Contracts\Checker;
@@ -37,7 +36,7 @@ class YandexChecker implements Checker
      *
      * @param string $taskId ID задачи на индексацию.
      * @return bool Вернет true если URL проиндексрован.
-     * @throws InvalidCodeException|ParameterInvalidException|ProcessingException|ResponseException|GuzzleException
+     * @throws InvalidCodeException|ProcessingException|ResponseException|GuzzleException
      */
     public function check(string $taskId): bool
     {

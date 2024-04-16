@@ -8,7 +8,6 @@
 
 namespace App\Modules\Profession\Http\Controllers\Site;
 
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Profession\Actions\Site\ProfessionGetAction;
 use App\Modules\Profession\Actions\Site\ProfessionLinkAction;
 use Illuminate\Http\JsonResponse;
@@ -54,7 +53,6 @@ class ProfessionController extends Controller
      * @param string $link Ссылка на категорию.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException
      */
     public function link(string $link): JsonResponse
     {

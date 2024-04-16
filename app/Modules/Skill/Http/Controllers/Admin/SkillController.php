@@ -8,7 +8,6 @@
 
 namespace App\Modules\Skill\Http\Controllers\Admin;
 
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordExistException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Models\Exceptions\ValidateException;
@@ -72,7 +71,7 @@ class SkillController extends Controller
      * @param SkillReadRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException|ReflectionException
+     * @throws ReflectionException
      */
     public function read(SkillReadRequest $request): JsonResponse
     {
@@ -95,7 +94,6 @@ class SkillController extends Controller
      * @param SkillCreateRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException
      */
     public function create(SkillCreateRequest $request): JsonResponse
     {
@@ -139,7 +137,6 @@ class SkillController extends Controller
      * @param SkillUpdateRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException
      */
     public function update(int|string $id, SkillUpdateRequest $request): JsonResponse
     {

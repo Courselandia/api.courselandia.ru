@@ -12,7 +12,6 @@ use Cache;
 use Typography;
 use App\Modules\Profession\Models\Profession;
 use App\Modules\Article\Actions\Admin\ArticleMoveAnalyzer;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Modules\Article\Actions\Admin\ArticleGetAction;
 use App\Modules\Profession\Actions\Admin\ProfessionGetAction;
@@ -72,7 +71,6 @@ class ProfessionTextArticleCategory extends ArticleCategory
      *
      * @return void
      * @throws RecordNotExistException
-     * @throws ParameterInvalidException
      */
     public function apply(int $id): void
     {

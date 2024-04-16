@@ -14,7 +14,6 @@ use Config;
 use Throwable;
 use Typography;
 use App\Models\Action;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Modules\Metatag\Template\TemplateException;
 use App\Modules\Section\Entities\Section as SectionEntity;
@@ -48,7 +47,6 @@ class SectionUpdateAction extends Action
      *
      * @return SectionEntity Вернет результаты исполнения.
      * @throws RecordNotExistException
-     * @throws ParameterInvalidException
      * @throws TemplateException
      * @throws Throwable
      */

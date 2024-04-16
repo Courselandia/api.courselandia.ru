@@ -10,7 +10,6 @@ namespace App\Modules\Image\Repositories;
 
 use DB;
 use Generator;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Modules\Image\Models\ImageMongoDb as ImageMongoDbModel;
 use App\Modules\Image\Entities\Image as ImageEntity;
@@ -145,7 +144,6 @@ class ImageMongoDb extends Image
      * @param int|string $id Id записи для обновления.
      *
      * @return string|null Вернет байт код изображения.
-     * @throws ParameterInvalidException
      */
     public function getByte(int|string $id): ?string
     {
@@ -168,7 +166,6 @@ class ImageMongoDb extends Image
      * @param ImageEntity|null $entity Сущность.
      *
      * @return Generator|ImageEntity|null Генератор.
-     * @throws ParameterInvalidException
      */
     public function all(ImageEntity $entity = null): Generator|ImageEntity|null
     {
@@ -208,7 +205,6 @@ class ImageMongoDb extends Image
      * Получить количество всех изображений.
      *
      * @return int Количество записей.
-     * @throws ParameterInvalidException
      */
     public function count(): int
     {
@@ -221,7 +217,6 @@ class ImageMongoDb extends Image
      * @param int|string|array|null $id Id записи для удаления.
      *
      * @return bool Вернет булево значение успешности операции.
-     * @throws ParameterInvalidException
      */
     public function destroy(int|string|array $id = null): bool
     {

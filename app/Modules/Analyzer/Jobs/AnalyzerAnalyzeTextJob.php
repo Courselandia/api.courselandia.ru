@@ -13,7 +13,6 @@ use Plagiarism;
 use Cache;
 use AnalyzerCategory;
 use Illuminate\Bus\Queueable;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\PaymentException;
 use App\Modules\Analyzer\Actions\Admin\AnalyzerGetAction;
 use App\Modules\Analyzer\Enums\Status;
@@ -65,7 +64,6 @@ class AnalyzerAnalyzeTextJob implements ShouldQueue
      * Выполнение задачи.
      *
      * @return void
-     * @throws ParameterInvalidException
      */
     public function handle(): void
     {

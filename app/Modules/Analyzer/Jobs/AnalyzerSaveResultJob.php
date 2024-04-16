@@ -8,7 +8,6 @@
 
 namespace App\Modules\Analyzer\Jobs;
 
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\ProcessingException;
 use App\Modules\Analyzer\Actions\Admin\AnalyzerGetAction;
 use App\Modules\Analyzer\Enums\Status;
@@ -57,7 +56,6 @@ class AnalyzerSaveResultJob implements ShouldQueue
      * Выполнение задачи.
      *
      * @return void
-     * @throws ParameterInvalidException
      */
     public function handle(): void
     {

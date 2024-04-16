@@ -13,7 +13,6 @@ use Generator;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Modules\Image\Entities\Image as ImageEntity;
 use App\Modules\Image\Models\ImageEloquent as ImageEloquentModel;
-use App\Models\Exceptions\ParameterInvalidException;
 
 /**
  * Класс репозитория изображений на основе Eloquent.
@@ -102,7 +101,6 @@ class ImageEloquent extends Image
      * @param int|string $id Id записи.
      *
      * @return ImageEntity|null Данные.
-     * @throws ParameterInvalidException
      */
     public function get(int|string $id): ImageEntity|null {
         $image = $this->getById($id);
@@ -144,7 +142,6 @@ class ImageEloquent extends Image
      * @param int|string $id Id записи для обновления.
      *
      * @return string|null Вернет байт код изображения.
-     * @throws ParameterInvalidException
      */
     public function getByte(int|string $id): ?string
     {
@@ -167,7 +164,6 @@ class ImageEloquent extends Image
      * @param ImageEntity|null $entity Сущность.
      *
      * @return Generator|ImageEntity|null Генератор.
-     * @throws ParameterInvalidException
      */
     public function all(ImageEntity $entity = null): Generator|ImageEntity|null
     {
@@ -206,7 +202,6 @@ class ImageEloquent extends Image
      * Получить количество всех изображений.
      *
      * @return int Количество записей.
-     * @throws ParameterInvalidException
      */
     public function count(): int
     {
@@ -219,7 +214,6 @@ class ImageEloquent extends Image
      * @param int|string|array|null $id Id записи для удаления.
      *
      * @return bool Вернет булево значение успешности операции.
-     * @throws ParameterInvalidException
      */
     public function destroy(int|string|array $id = null): bool
     {

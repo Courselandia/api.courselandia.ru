@@ -8,7 +8,6 @@
 
 namespace App\Modules\User\Http\Controllers\Admin;
 
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\User\Data\Actions\UserCreate;
 use App\Modules\User\Data\Decorators\UserUpdate;
 use Auth;
@@ -78,7 +77,7 @@ class UserController extends Controller
      * @param UserReadRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException|ReflectionException
+     * @throws ReflectionException
      */
     public function read(UserReadRequest $request): JsonResponse
     {

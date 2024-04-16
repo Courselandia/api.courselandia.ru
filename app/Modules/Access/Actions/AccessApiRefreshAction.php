@@ -10,7 +10,6 @@ namespace App\Modules\Access\Actions;
 
 use App\Models\Action;
 use App\Models\Enums\CacheTime;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Access\Entities\AccessApiToken;
 use App\Modules\OAuth\Values\Token;
 use App\Modules\User\Entities\User as UserEntity;
@@ -54,7 +53,7 @@ class AccessApiRefreshAction extends Action
      * Метод запуска логики.
      *
      * @return mixed Вернет результаты исполнения.
-     * @throws ParameterInvalidException|ReflectionException
+     * @throws ReflectionException
      */
     public function run(): AccessApiToken
     {

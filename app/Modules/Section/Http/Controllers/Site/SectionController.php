@@ -8,7 +8,6 @@
 
 namespace App\Modules\Section\Http\Controllers\Site;
 
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Section\Actions\Site\SectionLinkAction;
 use App\Modules\Section\Http\Requests\Site\SectionLinkRequest;
 use App\Modules\Salary\Enums\Level;
@@ -26,7 +25,6 @@ class SectionController extends Controller
      * @param SectionLinkRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException
      */
     public function link(SectionLinkRequest $request): JsonResponse
     {

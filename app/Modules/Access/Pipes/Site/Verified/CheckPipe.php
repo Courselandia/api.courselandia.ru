@@ -16,7 +16,6 @@ use App\Models\Data;
 use App\Models\Enums\CacheTime;
 use ReflectionException;
 use App\Models\Contracts\Pipe;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Access\Data\Decorators\AccessVerify;
 use App\Modules\User\Models\User;
 use App\Modules\User\Models\UserVerification;
@@ -40,7 +39,6 @@ class CheckPipe implements Pipe
      * @throws UserNotExistException
      * @throws RecordNotExistException
      * @throws InvalidCodeException
-     * @throws ParameterInvalidException
      * @throws ReflectionException|UserVerifiedException
      */
     public function handle(Data|AccessVerify $data, Closure $next): mixed

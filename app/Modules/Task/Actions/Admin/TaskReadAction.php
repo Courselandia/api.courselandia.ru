@@ -12,7 +12,6 @@ use Util;
 use Cache;
 use App\Models\Action;
 use App\Models\Enums\CacheTime;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Task\Entities\Task as TaskEntity;
 use App\Modules\Task\Models\Task;
 use ReflectionException;
@@ -73,7 +72,7 @@ class TaskReadAction extends Action
      * Метод запуска логики.
      *
      * @return mixed Вернет результаты исполнения.
-     * @throws ParameterInvalidException|ReflectionException
+     * @throws ReflectionException
      */
     public function run(): array
     {

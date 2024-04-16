@@ -13,7 +13,6 @@ use Cache;
 use Writer;
 use App\Models\Action;
 use App\Modules\Task\Jobs\Launcher;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Modules\Article\Enums\Status;
 use App\Modules\Article\Entities\Article as ArticleEntity;
@@ -54,7 +53,6 @@ class ArticleRewriteAction extends Action
      *
      * @return ArticleEntity Вернет результаты исполнения.
      * @throws RecordNotExistException
-     * @throws ParameterInvalidException
      */
     public function run(): ArticleEntity
     {

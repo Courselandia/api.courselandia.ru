@@ -11,7 +11,6 @@ namespace App\Modules\Article\Actions\Admin;
 use Cache;
 use App\Models\Action;
 use App\Modules\Article\Enums\Status;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Modules\Article\Entities\Article as ArticleEntity;
 use App\Modules\Article\Models\Article;
@@ -49,7 +48,7 @@ class ArticleUpdateStatusAction extends Action
      * Метод запуска логики.
      *
      * @return ArticleEntity Вернет результаты исполнения.
-     * @throws RecordNotExistException|ParameterInvalidException
+     * @throws RecordNotExistException
      */
     public function run(): ArticleEntity
     {

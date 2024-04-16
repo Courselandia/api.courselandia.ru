@@ -8,7 +8,6 @@
 
 namespace App\Modules\School\Http\Controllers\Site;
 
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\School\Actions\Site\School\SchoolGetAction;
 use App\Modules\School\Actions\Site\School\SchoolLinkAction;
 use App\Modules\School\Actions\Site\School\SchoolReadAction;
@@ -28,7 +27,6 @@ class SchoolController extends Controller
      * @param int|string $id ID школы.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException
      */
     public function get(int|string $id): JsonResponse
     {
@@ -87,7 +85,7 @@ class SchoolController extends Controller
      * @param SchoolReadRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException|ReflectionException
+     * @throws ReflectionException
      */
     public function read(SchoolReadRequest $request): JsonResponse
     {

@@ -8,12 +8,12 @@
 
 namespace App\Modules\Crawl\Jobs;
 
+use App\Models\Exceptions\ParameterInvalidException;
 use Log;
 use App\Modules\Crawl\Contracts\Checker;
 use App\Modules\Crawl\Models\Crawl;
 use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
-use App\Models\Exceptions\ParameterInvalidException;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;

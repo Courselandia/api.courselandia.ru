@@ -12,7 +12,6 @@ use Cache;
 use Util;
 use App\Models\Action;
 use App\Models\Enums\CacheTime;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Teacher\Entities\Teacher as TeacherEntity;
 use App\Modules\Teacher\Models\Teacher;
 use App\Modules\Course\Enums\Status;
@@ -41,7 +40,6 @@ class TeacherLinkAction extends Action
      * Метод запуска логики.
      *
      * @return TeacherEntity|null Вернет результаты исполнения.
-     * @throws ParameterInvalidException
      */
     public function run(): ?TeacherEntity
     {

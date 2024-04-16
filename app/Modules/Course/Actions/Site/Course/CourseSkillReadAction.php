@@ -9,7 +9,6 @@
 namespace App\Modules\Course\Actions\Site\Course;
 
 use DB;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Skill\Models\Skill;
 use Cache;
 use Util;
@@ -74,7 +73,6 @@ class CourseSkillReadAction extends Action
      * Метод запуска логики.
      *
      * @return array<int, CourseItemFilter> Вернет результаты исполнения.
-     * @throws ParameterInvalidException
      */
     public function run(): array
     {

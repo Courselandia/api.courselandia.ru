@@ -20,7 +20,6 @@ use App\Models\Contracts\Pipe;
 use App\Modules\User\Models\UserAuth;
 use App\Modules\Access\Data\Decorators\AccessSocial;
 use App\Modules\Access\Data\Decorators\AccessSignUp;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Access\Data\Decorators\AccessSignIn;
 
 /**
@@ -35,7 +34,6 @@ class AuthPipe implements Pipe
      * @param Closure $next Ссылка на следующий pipe.
      *
      * @return mixed Вернет значение полученное после выполнения следующего pipe.
-     * @throws ParameterInvalidException
      */
     public function handle(Data|AccessSocial|AccessSignUp|AccessSignIn $data, Closure $next): mixed
     {

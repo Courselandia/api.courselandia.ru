@@ -16,7 +16,6 @@ use Cache;
 use Throwable;
 use Typography;
 use App\Models\Action;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Category\Entities\Category as CategoryEntity;
 use App\Modules\Category\Models\Category;
 use App\Modules\Metatag\Actions\MetatagSetAction;
@@ -47,7 +46,6 @@ class CategoryCreateAction extends Action
      * Метод запуска логики.
      *
      * @return CategoryEntity Вернет результаты исполнения.
-     * @throws ParameterInvalidException
      * @throws TemplateException
      * @throws Throwable
      */

@@ -8,7 +8,6 @@
 
 namespace App\Modules\School\Http\Controllers\Admin;
 
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordExistException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Models\Exceptions\ValidateException;
@@ -72,7 +71,7 @@ class SchoolController extends Controller
      * @param SchoolReadRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException|ReflectionException
+     * @throws ReflectionException
      */
     public function read(SchoolReadRequest $request): JsonResponse
     {
@@ -96,7 +95,6 @@ class SchoolController extends Controller
      * @param SchoolCreateRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException
      */
     public function create(SchoolCreateRequest $request): JsonResponse
     {
@@ -152,7 +150,6 @@ class SchoolController extends Controller
      * @param SchoolUpdateRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException
      */
     public function update(int|string $id, SchoolUpdateRequest $request): JsonResponse
     {

@@ -8,7 +8,6 @@
 
 namespace App\Modules\Tool\Http\Controllers\Admin;
 
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordExistException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Models\Exceptions\ValidateException;
@@ -72,7 +71,7 @@ class ToolController extends Controller
      * @param ToolReadRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException|ReflectionException
+     * @throws ReflectionException
      */
     public function read(ToolReadRequest $request): JsonResponse
     {
@@ -95,7 +94,6 @@ class ToolController extends Controller
      * @param ToolCreateRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException
      */
     public function create(ToolCreateRequest $request): JsonResponse
     {
@@ -139,7 +137,6 @@ class ToolController extends Controller
      * @param ToolUpdateRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException
      */
     public function update(int|string $id, ToolUpdateRequest $request): JsonResponse
     {

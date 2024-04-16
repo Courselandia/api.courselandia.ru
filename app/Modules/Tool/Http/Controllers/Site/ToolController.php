@@ -8,7 +8,6 @@
 
 namespace App\Modules\Tool\Http\Controllers\Site;
 
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Tool\Actions\Site\ToolGetAction;
 use App\Modules\Tool\Actions\Site\ToolLinkAction;
 use Illuminate\Http\JsonResponse;
@@ -54,7 +53,6 @@ class ToolController extends Controller
      * @param string $link Ссылка категории.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException
      */
     public function link(string $link): JsonResponse
     {

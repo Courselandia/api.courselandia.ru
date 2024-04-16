@@ -11,7 +11,6 @@ namespace App\Modules\Article\Jobs;
 use Illuminate\Bus\Queueable;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Modules\Article\Actions\Admin\ArticleApplyAction;
-use App\Models\Exceptions\ParameterInvalidException;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
@@ -48,7 +47,6 @@ class ArticleApplyJob implements ShouldQueue
      * Выполнение задачи.
      *
      * @return void
-     * @throws ParameterInvalidException
      * @throws RecordNotExistException
      */
     public function handle(): void

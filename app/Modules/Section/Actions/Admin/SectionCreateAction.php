@@ -14,7 +14,6 @@ use Config;
 use Throwable;
 use Typography;
 use App\Models\Action;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Metatag\Template\TemplateException;
 use App\Modules\Section\Entities\Section as SectionEntity;
 use App\Modules\Section\Entities\SectionItem as SectionItemEntity;
@@ -48,7 +47,6 @@ class SectionCreateAction extends Action
      * Метод запуска логики.
      *
      * @return SectionEntity Вернет результаты исполнения.
-     * @throws ParameterInvalidException
      * @throws TemplateException
      * @throws Throwable
      */

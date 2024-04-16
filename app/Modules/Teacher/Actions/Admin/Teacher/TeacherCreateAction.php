@@ -18,7 +18,6 @@ use ImageStore;
 use Throwable;
 use Typography;
 use App\Models\Action;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Metatag\Actions\MetatagSetAction;
 use App\Modules\Metatag\Template\Template;
 use App\Modules\Metatag\Template\TemplateException;
@@ -54,7 +53,6 @@ class TeacherCreateAction extends Action
      * Метод запуска логики.
      *
      * @return TeacherEntity Вернет результаты исполнения.
-     * @throws ParameterInvalidException
      * @throws TemplateException
      * @throws Throwable
      */

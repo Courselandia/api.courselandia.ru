@@ -14,7 +14,6 @@ use AnalyzerCategory;
 use App\Models\Action;
 use ReflectionException;
 use App\Models\Enums\CacheTime;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Analyzer\Models\Analyzer;
 use App\Modules\Analyzer\Entities\Analyzer as AnalyzerEntity;
 
@@ -74,7 +73,7 @@ class AnalyzerReadAction extends Action
      * Метод запуска логики.
      *
      * @return mixed Вернет результаты исполнения.
-     * @throws ParameterInvalidException|ReflectionException
+     * @throws ReflectionException
      */
     public function run(): array
     {

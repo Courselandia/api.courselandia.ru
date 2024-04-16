@@ -13,7 +13,6 @@ use Cache;
 use Util;
 use App\Models\Action;
 use App\Models\Enums\CacheTime;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Course\Models\Course;
 
 /**
@@ -82,7 +81,6 @@ class CourseReadAction extends Action
      * Метод запуска логики.
      *
      * @return mixed Вернет результаты исполнения.
-     * @throws ParameterInvalidException
      */
     public function run(): array
     {

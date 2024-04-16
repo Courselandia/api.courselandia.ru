@@ -8,7 +8,6 @@
 
 namespace App\Modules\Course\Json\Jobs;
 
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Publication\Actions\Site\PublicationReadAction;
 use App\Modules\Publication\Data\Actions\Site\PublicationRead;
 

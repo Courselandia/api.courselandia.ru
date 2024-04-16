@@ -16,7 +16,6 @@ use Typography;
 use Illuminate\Bus\Queueable;
 use App\Modules\Article\Models\Article;
 use App\Models\Exceptions\ProcessingException;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Article\Actions\Admin\ArticleGetAction;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -58,7 +57,6 @@ class ArticleSaveResultJob implements ShouldQueue
      * Выполнение задачи.
      *
      * @return void
-     * @throws ParameterInvalidException
      */
     public function handle(): void
     {

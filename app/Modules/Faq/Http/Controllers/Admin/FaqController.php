@@ -18,7 +18,6 @@ use App\Modules\Faq\Http\Requests\Admin\FaqCreateRequest;
 use App\Modules\Faq\Http\Requests\Admin\FaqUpdateRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordExistException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Models\Exceptions\ValidateException;
@@ -70,7 +69,6 @@ class FaqController extends Controller
      * @param FaqReadRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException
      */
     public function read(FaqReadRequest $request): JsonResponse
     {

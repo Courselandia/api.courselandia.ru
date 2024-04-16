@@ -8,6 +8,7 @@
 
 namespace App\Modules\Crawl\Engines\Providers;
 
+use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\ProcessingException;
 use Config;
 use GuzzleHttp\Client;
@@ -16,7 +17,6 @@ use GuzzleHttp\Exception\GuzzleException;
 use App\Models\Exceptions\ResponseException;
 use App\Modules\Crawl\Engines\Tokens\YandexToken;
 use App\Models\Exceptions\LimitException;
-use App\Models\Exceptions\ParameterInvalidException;
 
 /**
  * Провайдер для работы с Yandex Console.

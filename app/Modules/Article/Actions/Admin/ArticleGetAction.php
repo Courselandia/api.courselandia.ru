@@ -13,7 +13,6 @@ use Util;
 use ArticleCategory;
 use App\Models\Action;
 use App\Models\Enums\CacheTime;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Article\Entities\Article as ArticleEntity;
 use App\Modules\Article\Models\Article;
 
@@ -41,7 +40,6 @@ class ArticleGetAction extends Action
      * Метод запуска логики.
      *
      * @return ArticleEntity|null Вернет результаты исполнения.
-     * @throws ParameterInvalidException
      */
     public function run(): ?ArticleEntity
     {

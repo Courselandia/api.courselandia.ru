@@ -13,7 +13,6 @@ use Util;
 use App\Models\Action;
 use App\Models\Enums\CacheTime;
 use App\Modules\User\Entities\User as UserEntity;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\User\Models\User;
 
 /**

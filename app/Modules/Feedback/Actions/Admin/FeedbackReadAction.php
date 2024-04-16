@@ -9,7 +9,6 @@
 namespace App\Modules\Feedback\Actions\Admin;
 
 use App\Models\Enums\CacheTime;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Feedback\Entities\Feedback as FeedbackEntity;
 use App\Modules\Feedback\Models\Feedback;
 use App\Models\Action;
@@ -73,7 +72,7 @@ class FeedbackReadAction extends Action
      * Метод запуска логики.
      *
      * @return array Вернет результаты исполнения.
-     * @throws ParameterInvalidException|ReflectionException
+     * @throws ReflectionException
      */
     public function run(): array
     {

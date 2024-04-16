@@ -8,7 +8,6 @@
 
 namespace App\Modules\OAuth\Repositories;
 
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Models\Repository;
 use App\Modules\OAuth\Entities\OAuthRefresh;
@@ -70,7 +69,6 @@ class OAuthRefreshTokenEloquent extends Repository
      *
      * @return int|string ID токена.
      *
-     * @throws ParameterInvalidException
      * @throws RecordNotExistException
      */
     public function update(string|int $id, OAuthRefresh $entity): int|string
@@ -96,7 +94,6 @@ class OAuthRefreshTokenEloquent extends Repository
      * @param int|string|array|null $id Id записи для удаления.
      *
      * @return bool Вернет булево значение успешности операции.
-     * @throws ParameterInvalidException
      */
     public function destroy(int|string|array $id = null): bool
     {

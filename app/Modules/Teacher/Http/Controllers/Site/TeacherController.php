@@ -8,7 +8,6 @@
 
 namespace App\Modules\Teacher\Http\Controllers\Site;
 
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Teacher\Actions\Site\TeacherGetAction;
 use App\Modules\Teacher\Actions\Site\TeacherLinkAction;
 use Illuminate\Http\JsonResponse;
@@ -54,7 +53,6 @@ class TeacherController extends Controller
      * @param string $link Ссылка категории.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException
      */
     public function link(string $link): JsonResponse
     {

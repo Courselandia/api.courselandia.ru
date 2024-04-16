@@ -9,7 +9,6 @@
 namespace App\Modules\Course\Json\Jobs;
 
 use App\Modules\Faq\Actions\Site\FaqReadAction;
-use App\Models\Exceptions\ParameterInvalidException;
 
 /**
  * Задача для формирования всех FAQ's.
@@ -20,7 +19,6 @@ class FaqsItemLinkJob extends JsonItemLinkJob
      * Выполнение задачи.
      *
      * @return void
-     * @throws ParameterInvalidException
      */
     public function handle(): void
     {

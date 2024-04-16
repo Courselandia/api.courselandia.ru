@@ -10,7 +10,6 @@ namespace App\Modules\School\Actions\Admin\SchoolImage;
 
 use App\Models\Action;
 use App\Models\Enums\CacheTime;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Modules\School\Models\School;
 use Cache;
@@ -52,7 +51,7 @@ class SchoolImageDestroyAction extends Action
      *
      * @return bool Вернет результаты исполнения.
      * @throws RecordNotExistException
-     * @throws ParameterInvalidException|ReflectionException
+     * @throws ReflectionException
      */
     public function run(): bool
     {

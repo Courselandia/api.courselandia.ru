@@ -9,7 +9,6 @@
 namespace App\Modules\Course\Actions\Site\Course;
 
 use App\Modules\Course\Entities\CourseItemDirectionFilter;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Direction\Models\Direction;
 use Cache;
 use Util;
@@ -93,8 +92,7 @@ class CourseDirectionReadAction extends Action
     /**
      * Метод запуска логики.
      *
-     * @return array Вернет результаты исполнения.
-     * @throws ParameterInvalidException
+     * @return array<int, CourseItemFilter> Вернет результаты исполнения.
      */
     public function run(): array
     {

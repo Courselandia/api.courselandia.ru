@@ -12,7 +12,6 @@ use App\Modules\Metatag\Data\MetatagSet;
 use Throwable;
 use App\Modules\Profession\Models\Profession;
 use App\Modules\Metatag\Apply\Apply;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Course\Enums\Status;
 use App\Modules\Course\Models\Course;
 use App\Modules\Metatag\Actions\MetatagSetAction;
@@ -69,7 +68,7 @@ class TaskProfession extends Task
      * @param Callable|null $read Метод, который будет вызван каждый раз при генерации метатэга.
      *
      * @return void
-     * @throws TemplateException|ParameterInvalidException
+     * @throws TemplateException
      */
     public function apply(?callable $read = null): void
     {

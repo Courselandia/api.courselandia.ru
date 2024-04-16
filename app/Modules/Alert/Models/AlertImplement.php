@@ -11,7 +11,6 @@ namespace App\Modules\Alert\Models;
 use Cache;
 use Util;
 use App\Models\Enums\CacheTime;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Modules\Alert\Entities\Alert as AlertEntity;
 
@@ -125,7 +124,6 @@ class AlertImplement
      * @param bool $status Если установить true, то получит только прочитанные.
      *
      * @return array<int, AlertEntity> Вернет массив данных предупреждений.
-     * @throws ParameterInvalidException
      */
     public function list(int $offset = null, int $limit = null, bool $status = null): array
     {

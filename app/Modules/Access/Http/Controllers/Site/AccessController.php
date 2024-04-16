@@ -18,7 +18,6 @@ use Illuminate\Routing\Controller;
 use App\Models\Exceptions\InvalidCodeException;
 use App\Models\Exceptions\InvalidFormatException;
 use App\Models\Exceptions\InvalidPasswordException;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Models\Exceptions\UserExistException;
 use App\Models\Exceptions\UserNotExistException;
@@ -202,7 +201,7 @@ class AccessController extends Controller
      * Отправка e-mail сообщения на верификацию.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws UserNotExistException|ParameterInvalidException
+     * @throws UserNotExistException
      */
     public function verify(): JsonResponse
     {
@@ -300,7 +299,7 @@ class AccessController extends Controller
      * @param AccessResetRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException|ReflectionException
+     * @throws ReflectionException
      */
     public function reset(int|string $id, AccessResetRequest $request): JsonResponse
     {
@@ -359,7 +358,7 @@ class AccessController extends Controller
      * @param AccessPasswordRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException|ReflectionException
+     * @throws ReflectionException
      */
     public function password(AccessPasswordRequest $request): JsonResponse
     {

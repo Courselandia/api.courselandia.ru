@@ -13,7 +13,6 @@ use Util;
 use AnalyzerCategory;
 use App\Models\Action;
 use App\Models\Enums\CacheTime;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Analyzer\Entities\Analyzer as AnalyzerEntity;
 use App\Modules\Analyzer\Models\Analyzer;
 
@@ -41,7 +40,6 @@ class AnalyzerGetAction extends Action
      * Метод запуска логики.
      *
      * @return AnalyzerEntity|null Вернет результаты исполнения.
-     * @throws ParameterInvalidException
      */
     public function run(): ?AnalyzerEntity
     {

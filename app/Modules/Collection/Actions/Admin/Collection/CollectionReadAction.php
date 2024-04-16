@@ -10,7 +10,6 @@ namespace App\Modules\Collection\Actions\Admin\Collection;
 
 use App\Models\Action;
 use App\Models\Enums\CacheTime;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Collection\Entities\Collection as CollectionEntity;
 use App\Modules\Collection\Models\Collection;
 use Cache;
@@ -73,7 +72,7 @@ class CollectionReadAction extends Action
      * Метод запуска логики.
      *
      * @return mixed Вернет результаты исполнения.
-     * @throws ParameterInvalidException|ReflectionException
+     * @throws ReflectionException
      */
     public function run(): array
     {

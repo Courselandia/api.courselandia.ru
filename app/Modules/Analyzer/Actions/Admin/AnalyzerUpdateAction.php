@@ -16,7 +16,6 @@ use AnalyzerCategory;
 use App\Models\Action;
 use App\Modules\Task\Jobs\Launcher;
 use App\Models\Exceptions\LimitException;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\PaymentException;
 use App\Modules\Analyzer\Enums\Status;
 use App\Modules\Analyzer\Jobs\AnalyzerSaveResultJob;
@@ -67,7 +66,6 @@ class AnalyzerUpdateAction extends Action
      * Выполнение задачи.
      *
      * @return boolean
-     * @throws ParameterInvalidException
      */
     public function run(): bool
     {

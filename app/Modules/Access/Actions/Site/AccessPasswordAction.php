@@ -12,7 +12,6 @@ use App\Models\Enums\CacheTime;
 use Cache;
 use Hash;
 use App\Models\Action;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Models\Exceptions\UserNotExistException;
 use App\Models\Exceptions\InvalidPasswordException;
@@ -65,7 +64,7 @@ class AccessPasswordAction extends Action
      * @throws InvalidPasswordException
      * @throws UserNotExistException
      * @throws RecordNotExistException
-     * @throws ParameterInvalidException|ReflectionException
+     * @throws ReflectionException
      */
     public function run(): bool
     {

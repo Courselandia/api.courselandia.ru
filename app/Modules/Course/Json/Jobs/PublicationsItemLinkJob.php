@@ -8,10 +8,8 @@
 
 namespace App\Modules\Course\Json\Jobs;
 
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Publication\Actions\Site\PublicationReadAction;
 use App\Modules\Publication\Data\Actions\Site\PublicationRead;
-use App\Modules\Section\Actions\Site\SectionLinkAction;
 
 /**
  * Задача для формирования списка публикаций.
@@ -22,7 +20,6 @@ class PublicationsItemLinkJob extends JsonItemLinkJob
      * Выполнение задачи.
      *
      * @return void
-     * @throws ParameterInvalidException
      */
     public function handle(): void
     {

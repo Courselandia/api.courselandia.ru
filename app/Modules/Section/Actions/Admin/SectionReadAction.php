@@ -10,7 +10,6 @@ namespace App\Modules\Section\Actions\Admin;
 
 use App\Models\Action;
 use App\Models\Enums\CacheTime;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Section\Entities\Section as SectionEntity;
 use App\Modules\Section\Models\Section;
 use Cache;
@@ -74,7 +73,7 @@ class SectionReadAction extends Action
      * Метод запуска логики.
      *
      * @return mixed Вернет результаты исполнения.
-     * @throws ParameterInvalidException|ReflectionException
+     * @throws ReflectionException
      */
     public function run(): array
     {

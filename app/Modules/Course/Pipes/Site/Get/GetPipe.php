@@ -11,7 +11,6 @@ namespace App\Modules\Course\Pipes\Site\Get;
 use App\Models\Contracts\Pipe;
 use App\Models\Data;
 use App\Models\Enums\CacheTime;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Course\Data\Decorators\CourseGet;
 use App\Modules\Course\Entities\Course as CourseEntity;
 use App\Modules\Course\Enums\Status;
@@ -32,7 +31,6 @@ class GetPipe implements Pipe
      * @param Closure $next Ссылка на следующий pipe.
      *
      * @return mixed Вернет значение полученное после выполнения следующего pipe.
-     * @throws ParameterInvalidException
      */
     public function handle(Data|CourseGet $data, Closure $next): mixed
     {

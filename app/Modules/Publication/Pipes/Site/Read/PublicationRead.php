@@ -16,7 +16,6 @@ use ReflectionException;
 use App\Models\Enums\CacheTime;
 use App\Models\Contracts\Pipe;
 use App\Modules\Publication\Entities\Publication as PublicationEntity;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Publication\Models\Publication;
 use App\Modules\Publication\Data\Decorators\PublicationRead as PublicationReadData;
 
@@ -32,7 +31,7 @@ class PublicationRead implements Pipe
      * @param Closure $next Ссылка на следующий pipe.
      *
      * @return mixed Вернет значение полученное после выполнения следующего pipe.
-     * @throws ParameterInvalidException|ReflectionException
+     * @throws ReflectionException
      */
     public function handle(Data|PublicationReadData $data, Closure $next): mixed
     {

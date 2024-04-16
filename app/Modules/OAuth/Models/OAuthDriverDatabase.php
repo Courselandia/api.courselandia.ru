@@ -10,7 +10,6 @@ namespace App\Modules\OAuth\Models;
 
 use App\Models\Enums\CacheTime;
 use App\Models\Exceptions\InvalidFormatException;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordExistException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Models\Exceptions\UserNotExistException;
@@ -131,7 +130,6 @@ class OAuthDriverDatabase extends OAuthDriver
      * @return Token Токен.
      * @throws RecordNotExistException
      * @throws UserNotExistException
-     * @throws ParameterInvalidException
      */
     public function token(int $userId): Token
     {
@@ -214,7 +212,6 @@ class OAuthDriverDatabase extends OAuthDriver
      * @throws RecordNotExistException
      * @throws UserNotExistException
      * @throws InvalidFormatException
-     * @throws ParameterInvalidException
      */
     public function refresh(string $refreshToken): Token
     {
@@ -299,7 +296,6 @@ class OAuthDriverDatabase extends OAuthDriver
      * @return bool Вернет результат проверки.
      * @throws InvalidFormatException
      * @throws UserNotExistException
-     * @throws ParameterInvalidException
      */
     public function check(string $token): bool
     {
@@ -328,7 +324,6 @@ class OAuthDriverDatabase extends OAuthDriver
      * Очистка системы от старых токенов.
      *
      * @return void
-     * @throws ParameterInvalidException
      */
     public function clean(): void
     {

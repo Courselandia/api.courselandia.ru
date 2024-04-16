@@ -14,7 +14,6 @@ use ArticleCategory;
 use App\Models\Action;
 use ReflectionException;
 use App\Models\Enums\CacheTime;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Article\Models\Article;
 use App\Modules\Article\Entities\Article as ArticleEntity;
 
@@ -74,7 +73,7 @@ class ArticleReadAction extends Action
      * Метод запуска логики.
      *
      * @return mixed Вернет результаты исполнения.
-     * @throws ParameterInvalidException|ReflectionException
+     * @throws ReflectionException
      */
     public function run(): array
     {

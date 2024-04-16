@@ -12,7 +12,6 @@ use App\Models\Action;
 use App\Modules\Analyzer\Entities\Analyzer as AnalyzerEntity;
 use App\Modules\Analyzer\Enums\Status;
 use App\Modules\Analyzer\Models\Analyzer;
-use App\Models\Exceptions\ParameterInvalidException;
 
 /**
  * Класс для переноса готовых результатов анализа со статей в указанную сущность.
@@ -67,7 +66,6 @@ class ArticleMoveAnalyzer extends Action
      * Метод запуска логики.
      *
      * @return bool Признако того что перенос состоялся.
-     * @throws ParameterInvalidException
      */
     public function run(): bool
     {

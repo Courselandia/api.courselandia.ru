@@ -13,7 +13,6 @@ use Cache;
 use Throwable;
 use Typography;
 use App\Models\Action;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Modules\Metatag\Actions\MetatagSetAction;
 use App\Modules\Metatag\Template\TemplateException;
@@ -49,7 +48,6 @@ class CollectionUpdateAction extends Action
      *
      * @return CollectionEntity Вернет результаты исполнения.
      * @throws RecordNotExistException
-     * @throws ParameterInvalidException
      * @throws TemplateException|Throwable
      */
     public function run(): CollectionEntity

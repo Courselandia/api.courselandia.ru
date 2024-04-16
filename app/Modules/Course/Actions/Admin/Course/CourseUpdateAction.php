@@ -12,7 +12,6 @@ use App\Modules\Course\Data\Actions\CourseUpdate;
 use App\Modules\Metatag\Data\MetatagSet;
 use Typography;
 use App\Models\Action;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Modules\Analyzer\Actions\Admin\AnalyzerUpdateAction;
 use App\Modules\Course\Entities\Course as CourseEntity;
@@ -56,7 +55,7 @@ class CourseUpdateAction extends Action
      *
      * @return CourseEntity Вернет результаты исполнения.
      * @throws RecordNotExistException
-     * @throws ParameterInvalidException|Throwable
+     * @throws Throwable
      */
     public function run(): CourseEntity
     {

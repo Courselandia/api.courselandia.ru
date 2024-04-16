@@ -10,7 +10,6 @@ namespace App\Modules\Category\Actions\Admin;
 
 use App\Models\Action;
 use App\Models\Enums\CacheTime;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Category\Models\Category;
 use Cache;
 use ReflectionException;
@@ -73,7 +72,7 @@ class CategoryReadAction extends Action
      * Метод запуска логики.
      *
      * @return mixed Вернет результаты исполнения.
-     * @throws ParameterInvalidException|ReflectionException
+     * @throws ReflectionException
      */
     public function run(): array
     {

@@ -11,7 +11,6 @@ namespace App\Modules\Crawl\Http\Controllers\Admin;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
 use ReflectionException;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Crawl\Actions\Admin\CrawlReadAction;
 use App\Modules\Crawl\Http\Requests\Admin\CrawlReadRequest;
 
@@ -26,7 +25,7 @@ class CrawlController extends Controller
      * @param CrawlReadRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
-     * @throws ParameterInvalidException|ReflectionException
+     * @throws ReflectionException
      */
     public function read(CrawlReadRequest $request): JsonResponse
     {

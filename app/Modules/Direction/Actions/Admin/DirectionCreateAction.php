@@ -10,7 +10,6 @@ namespace App\Modules\Direction\Actions\Admin;
 
 use DB;
 use App\Models\Action;
-use App\Models\Exceptions\ParameterInvalidException;
 use App\Modules\Analyzer\Actions\Admin\AnalyzerUpdateAction;
 use App\Modules\Direction\Data\DirectionCreate;
 use App\Modules\Direction\Entities\Direction as DirectionEntity;
@@ -47,7 +46,7 @@ class DirectionCreateAction extends Action
      * Метод запуска логики.
      *
      * @return DirectionEntity Вернет результаты исполнения.
-     * @throws ParameterInvalidException|TemplateException
+     * @throws TemplateException
      * @throws Throwable
      */
     public function run(): DirectionEntity
