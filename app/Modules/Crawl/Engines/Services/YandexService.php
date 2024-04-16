@@ -60,7 +60,7 @@ class YandexService implements EngineService
      *
      * @param string $url URL для индексации.
      * @return string Вернет ID задачи.
-     * @throws LimitException|ResponseException|GuzzleException|InvalidCodeException
+     * @throws LimitException|ResponseException|GuzzleException
      * @throws ParameterInvalidException
      */
     public function push(string $url): string
@@ -75,7 +75,7 @@ class YandexService implements EngineService
      *
      * @param string $taskId ID задачи.
      * @return bool Вернет true если индексация прошла.
-     * @throws ProcessingException|ResponseException|GuzzleException|InvalidCodeException
+     * @throws ProcessingException|ResponseException|GuzzleException
      * @throws ParameterInvalidException
      */
     public function isPushed(string $taskId): bool

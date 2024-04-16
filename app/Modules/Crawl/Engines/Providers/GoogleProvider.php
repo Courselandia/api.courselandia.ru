@@ -13,6 +13,7 @@ use Config;
 use Google\Client;
 use Google\Exception;
 use GuzzleHttp\Exception\GuzzleException;
+use Log;
 use Throwable;
 
 /**
@@ -86,7 +87,7 @@ class GoogleProvider
         try {
             return $content['latestUpdate']['type'] === 'URL_UPDATED';
         } catch (Throwable $error) {
-            \Log::error(print_r($content, true));
+            Log::error(print_r($content, true));
             throw $error;
         }
     }

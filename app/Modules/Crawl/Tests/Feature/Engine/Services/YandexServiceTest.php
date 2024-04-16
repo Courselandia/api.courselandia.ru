@@ -8,7 +8,6 @@
 
 namespace App\Modules\Crawl\Tests\Feature\Engine\Services;
 
-use App\Models\Exceptions\InvalidCodeException;
 use App\Models\Exceptions\LimitException;
 use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\ProcessingException;
@@ -26,7 +25,7 @@ class YandexServiceTest extends TestCase
      * Тестирование получение лимитов на переобход.
      *
      * @return void
-     * @throws ResponseException|GuzzleException|InvalidCodeException
+     * @throws ResponseException|GuzzleException
      */
     public function testGetLimit(): void
     {
@@ -40,7 +39,7 @@ class YandexServiceTest extends TestCase
      * Тестирование отправки URL на переобход.
      *
      * @return void
-     * @throws ResponseException|GuzzleException|InvalidCodeException
+     * @throws ResponseException|GuzzleException|ParameterInvalidException
      */
     public function testPush(): void
     {
@@ -59,7 +58,7 @@ class YandexServiceTest extends TestCase
      * Тестирование работы метода проверки, что переобход призошел.
      *
      * @return void
-     * @throws ResponseException|GuzzleException|InvalidCodeException
+     * @throws ResponseException|GuzzleException
      * @throws ProcessingException|ParameterInvalidException
      */
     public function testIsPushed(): void

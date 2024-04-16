@@ -61,7 +61,7 @@ class CrawlFilter extends ModelFilter
      *
      * @return self Правила поиска.
      */
-    public function task(string $taskId): self
+    public function task(int|string $taskId): self
     {
         return $this->where('crawls.task_id', $taskId);
     }
