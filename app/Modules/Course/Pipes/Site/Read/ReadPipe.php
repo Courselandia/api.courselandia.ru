@@ -97,7 +97,19 @@ class ReadPipe implements Pipe
                         $query->where('status', true);
                     },
                     'teachers' => function ($query) {
-                        $query->where('status', true);
+                        $query->select([
+                            'teachers.id',
+                            'teachers.name',
+                            'teachers.link',
+                            'teachers.copied',
+                            'teachers.city',
+                            'teachers.comment',
+                            'teachers.additional',
+                            'teachers.text',
+                            'teachers.rating',
+                            'teachers.status',
+                            'teachers.image_small_id',
+                        ])->where('status', true);
                     },
                     'teachers.experiences',
                 ])
