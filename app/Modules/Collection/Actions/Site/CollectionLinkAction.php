@@ -50,8 +50,6 @@ class CollectionLinkAction extends Action
             $this->link,
         );
 
-        Cache::flush();
-
         return Cache::tags(['catalog', 'collection'])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,

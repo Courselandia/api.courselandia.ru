@@ -40,9 +40,17 @@ class CourseYmlCommand extends Command
      */
     public function handle(): void
     {
+        $export = new Export();
+        $total = $export->getTotal();
+
+        if (!$total) {
+            $this->info('Нет курсов для генерации.');
+
+            return;
+        }
+
         $this->line('Начинаем генерацию файла...');
 
-        $export = new Export();
         $bar = $this->output->createProgressBar($export->getTotal());
         $bar->start();
 
