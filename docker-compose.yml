@@ -198,7 +198,7 @@ services:
             - RABBITMQ_DEFAULT_USER=${RABBITMQ_USER}
             - RABBITMQ_DEFAULT_PASS=${RABBITMQ_PASSWORD}
         volumes:
-            - rabbitmq:/var/lib/rabbitmq/
+            - rabbitmq2:/var/lib/rabbitmq/
         networks:
             - network
 
@@ -228,5 +228,7 @@ volumes:
     smtp-dkim:
         driver: local
     rabbitmq:
+        driver: local
+    rabbitmq2:
         driver: local
 
