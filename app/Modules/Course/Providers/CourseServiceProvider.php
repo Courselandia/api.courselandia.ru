@@ -8,7 +8,6 @@
 
 namespace App\Modules\Course\Providers;
 
-use App\Modules\Course\Commands\CourseYmlCommand;
 use Config;
 use Illuminate\Support\ServiceProvider;
 use App\Modules\Course\Commands\CourseFillCommand;
@@ -17,6 +16,8 @@ use App\Modules\Course\Commands\CourseNormalizeCommand;
 use App\Modules\Course\Models\Course as CourseModel;
 use App\Modules\Course\Events\Listeners\CourseListener;
 use App\Modules\Course\Commands\CourseJsonCommand;
+use App\Modules\Course\Commands\CourseCleanImagesCommand;
+use App\Modules\Course\Commands\CourseYmlCommand;
 
 /**
  * Класс сервис-провайдера для настройки этого модуля.
@@ -51,6 +52,7 @@ class CourseServiceProvider extends ServiceProvider
             CourseNormalizeCommand::class,
             CourseJsonCommand::class,
             CourseYmlCommand::class,
+            CourseCleanImagesCommand::class,
         ]);
     }
 
