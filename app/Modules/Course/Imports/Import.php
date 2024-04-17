@@ -242,8 +242,8 @@ class Import
                 $headerTemplate = '{course} от {school:genitive}';
 
                 $action = new MetatagSetAction(MetatagSet::from([
-                    'title' => $template->convert($templateTitle, $templateValues),
-                    'description' => $template->convert($templateDescription, $templateValues),
+                    'title' => Typography::process($template->convert($templateTitle, $templateValues), true),
+                    'description' => Typography::process($template->convert($templateDescription, $templateValues), true),
                     'title_template' => $templateTitle,
                     'description_template' => $templateDescription,
                 ]));

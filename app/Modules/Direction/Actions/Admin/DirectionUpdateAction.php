@@ -77,8 +77,8 @@ class DirectionUpdateAction extends Action
                 $template = new Template();
 
                 $metatagSet = MetatagSet::from([
-                    'description' => $template->convert($this->data->description_template, $templateValues),
-                    'title' => $template->convert($this->data->title_template, $templateValues),
+                    'description' => Typography::process($template->convert($this->data->description_template, $templateValues), true),
+                    'title' => Typography::process($template->convert($this->data->title_template, $templateValues), true),
                     'description_template' => $this->data->description_template,
                     'title_template' => $this->data->title_template,
                     'keywords' => $this->data->keywords,
