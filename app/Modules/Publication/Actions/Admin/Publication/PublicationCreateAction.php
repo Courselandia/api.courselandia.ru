@@ -49,9 +49,9 @@ class PublicationCreateAction extends Action
     {
         $id = DB::transaction(function () {
             $action = new MetatagSetAction(MetatagSet::from([
-                'description' => $this->data->description,
+                'description' => Typography::process($this->data->description, true),
+                'title' => Typography::process($this->data->title, true),
                 'keywords' => $this->data->keywords,
-                'title' => $this->data->title,
             ]));
 
             $metatag = $action->run();

@@ -55,9 +55,9 @@ class PublicationUpdateAction extends Action
         if ($publicationEntity) {
             DB::transaction(function () use ($publicationEntity) {
                 $action = new MetatagSetAction(MetatagSet::from([
-                    'description' => $this->data->description,
+                    'title' => Typography::process($this->data->title, true),
+                    'description' => Typography::process($this->data->description, true),
                     'keywords' => $this->data->keywords,
-                    'title' => $this->data->title,
                     'id' => $publicationEntity->metatag_id ?: null,
                 ]));
 

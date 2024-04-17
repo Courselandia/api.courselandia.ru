@@ -58,8 +58,8 @@ class CollectionUpdateAction extends Action
         if ($collectionEntity) {
             DB::transaction(function () use ($collectionEntity) {
                 $action = new MetatagSetAction(MetatagSet::from([
-                    'description' => $this->data->description,
-                    'title' => $this->data->title,
+                    'description' => Typography::process($this->data->description, true),
+                    'title' => Typography::process($this->data->title, true),
                     'keywords' => $this->data->keywords,
                     'id' => $collectionEntity->metatag_id ?: null,
                 ]));
