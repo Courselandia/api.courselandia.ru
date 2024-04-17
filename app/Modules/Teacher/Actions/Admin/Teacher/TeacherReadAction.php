@@ -10,7 +10,7 @@ namespace App\Modules\Teacher\Actions\Admin\Teacher;
 
 use App\Models\Action;
 use App\Models\Enums\CacheTime;
-use App\Modules\Teacher\Entities\Teacher as TeacherEntity;
+use App\Modules\Teacher\Entities\TeacherSimple as TeacherEntity;
 use App\Modules\Teacher\Models\Teacher;
 use Cache;
 use ReflectionException;
@@ -99,9 +99,6 @@ class TeacherReadAction extends Action
                         'image_small_id',
                         'image_middle_id',
                         'status',
-                    ])
-                    ->with([
-                        'metatag',
                     ]);
 
                 $queryCount = $query->clone();
