@@ -65,7 +65,7 @@ class OAuthTokenEloquent extends Repository
             $query->where('expires_at', '<=', $expiresAt);
         }
 
-        $items = $query->get();
+        $items = $query->get()->toArray();
 
         return OAuthToken::collect($items);
     }
