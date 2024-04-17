@@ -41,7 +41,7 @@
         "ralouphie/mimey": "^1.0.2",
         "spatie/laravel-data": "^4.5.1",
         "tucker-eric/eloquentfilter": "^3.3.0",
-        "vladimir-yuldashev/laravel-queue-rabbitmq": "^14.0",
+        "vladimir-yuldashev/laravel-queue-rabbitmq": "^13.0",
         "wamania/php-stemmer": "^3.0"
     },
     "require-dev": {
