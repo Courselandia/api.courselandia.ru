@@ -59,7 +59,7 @@ class TeacherControllerTest extends TestCase
             ]
         )->assertStatus(200)->assertJsonStructure([
             'data' => [
-                '*' => $this->getTeacherStructure()
+                '*' => $this->getSimpleTeacherStructure(),
             ],
             'total',
             'success',
@@ -494,6 +494,22 @@ class TeacherControllerTest extends TestCase
         )->assertStatus(200)->assertJsonStructure([
             'success',
         ]);
+    }
+
+    /**
+     * Получение упрощенной структуры данных учителя.
+     *
+     * @return string[] Массив структуры данных учителя.
+     */
+    private function getSimpleTeacherStructure(): array
+    {
+        return [
+            'id',
+            'name',
+            'status',
+            'image_small_id',
+            'image_middle_id',
+        ];
     }
 
     /**
