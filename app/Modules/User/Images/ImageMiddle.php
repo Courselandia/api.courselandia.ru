@@ -60,7 +60,7 @@ class ImageMiddle implements CastsAttributes
             Image::read($value)->scale(350)->save($path);
 
             $imageWebp = $value->getClientOriginalExtension() !== 'webp'
-                ? WebPConverter::createWebpImage($path, ['saveFile' => true])
+                ? WebPConverter::createWebpImage($path, ['saveFile' => true, 'force' => true])
                 : ['path' => $path];
 
             ImageStore::setFolder($folder);

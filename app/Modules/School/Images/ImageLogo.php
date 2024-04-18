@@ -63,7 +63,7 @@ class ImageLogo implements CastsAttributes
                 Image::read($value)->scale(200)->save($path);
 
                 $imageWebp = $value->getClientOriginalExtension() !== 'webp'
-                    ? WebPConverter::createWebpImage($path, ['saveFile' => true])
+                    ? WebPConverter::createWebpImage($path, ['saveFile' => true, 'force' => true])
                     : ['path' => $path];
 
                 ImageStore::setFolder($folder);

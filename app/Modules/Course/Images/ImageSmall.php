@@ -75,7 +75,7 @@ class ImageSmall implements CastsAttributes
                 $image->cover(150, 150)->save($path);
 
                 $imageWebp = $value->getClientOriginalExtension() !== 'webp'
-                    ? WebPConverter::createWebpImage($path, ['saveFile' => true])
+                    ? WebPConverter::createWebpImage($path, ['saveFile' => true, 'force' => true])
                     : ['path' => $path];
 
                 ImageStore::setFolder($folder);
