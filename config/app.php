@@ -319,6 +319,9 @@ return [
 
         App\Modules\Collection\Providers\CollectionServiceProvider::class,
         App\Modules\Collection\Providers\RouteServiceProvider::class,
+
+        App\Modules\Term\Providers\TermServiceProvider::class,
+        App\Modules\Term\Providers\RouteServiceProvider::class,
     ],
 
     /*
