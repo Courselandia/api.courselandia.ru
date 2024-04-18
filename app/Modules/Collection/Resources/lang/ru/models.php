@@ -13,6 +13,7 @@ return [
         'amount' => 'Количество',
         'sortField' => ' Поле сортировки',
         'sortDirection' => 'Направление сортировки',
+        'copied' => 'Скопировано',
         'status' => 'Статус',
     ],
     'collectionFilter' => [

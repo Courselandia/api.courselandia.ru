@@ -80,6 +80,7 @@ class CollectionTextArticleCategory extends ArticleCategory
         if ($articleEntity) {
             $collection = $articleEntity->articleable;
             $collection['text'] = Typography::process($articleEntity->text);
+            $collection['copied'] = false;
 
             Collection::find($collection['id'])->update($collection);
 

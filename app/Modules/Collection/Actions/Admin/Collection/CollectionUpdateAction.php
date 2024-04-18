@@ -103,13 +103,15 @@ class CollectionUpdateAction extends Action
                     }
                 }
 
+                Cache::tags(['catalog', 'collection'])->flush();
+
                 $action = new CollectionCoursesSyncAction($collection->id);
                 $action->run();
 
-                $action = new AnalyzerUpdateAction($this->data->id, Collection::class, 'collection.text');
-                $action->run();
-
-                Cache::tags(['catalog', 'collection'])->flush();
+                if (!$this->data->copied) {
+                    $action = new AnalyzerUpdateAction($this->data->id, Collection::class, 'collection.text');
+                    $action->run();
+                }
             });
 
             $action =  new CollectionGetAction($this->data->id);

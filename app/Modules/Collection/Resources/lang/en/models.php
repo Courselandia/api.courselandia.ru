@@ -13,6 +13,7 @@ return [
         'amount' => 'Amount',
         'sortField' => 'Sort field',
         'sortDirection' => 'Sort direction',
+        'copied' => 'Copied',
         'status' => 'Status',
     ],
     'collectionFilter' => [

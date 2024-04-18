@@ -43,6 +43,7 @@ class CollectionFactory extends Factory
             'amount' => 4,
             'sort_field' => 'id',
             'sort_direction' => 'asc',
+            'copied' => true,
             'status' => true,
         ];
     }

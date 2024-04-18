@@ -75,6 +75,7 @@ class CollectionTextTask extends Task
             ->doesntHave('analyzers', 'and', function (Builder $query) {
                 $query->where('analyzers.category', 'collection.text');
             })
+            ->where('copied', false)
             ->orderBy('id', 'ASC');
     }
 }

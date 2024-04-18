@@ -49,6 +49,7 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
  * @property int $amount Количество курсов.
  * @property string $sort_field Поле сортировки.
  * @property string $sort_direction Направление сортировки.
+ * @property bool|null $copied Скопировано.
  * @property string $status Статус.
  * @property int|string|array|UploadedFile|ImageEntity $image_small_id Изображение маленькое.
  * @property int|string|array|UploadedFile|ImageEntity $image_middle_id Изображение среднее.
@@ -88,6 +89,7 @@ class Collection extends Eloquent
         'amount',
         'sort_field',
         'sort_direction',
+        'copied',
         'image_small_id',
         'image_middle_id',
         'image_big_id',
@@ -117,6 +119,7 @@ class Collection extends Eloquent
             'amount' => 'required|digits_between:0,5',
             'sort_field' => 'required|max:25',
             'sort_direction' => 'required|max:4',
+            'copied' => 'boolean',
             'status' => 'required|boolean',
         ];
     }
@@ -141,6 +144,7 @@ class Collection extends Eloquent
             'amount' => trans('collection::models.collection.amount'),
             'sort_field' => trans('collection::models.collection.sortField'),
             'sort_direction' => trans('collection::models.collection.sortDirection'),
+            'copied' => trans('collection::models.collection.copied'),
             'status' => trans('collection::models.collection.status'),
         ];
     }

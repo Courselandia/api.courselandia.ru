@@ -92,6 +92,13 @@ class Collection extends Entity
     public ?string $sort_direction = null;
 
     /**
+     * Скопировано.
+     *
+     * @var bool|null
+     */
+    public ?bool $copied = null;
+
+    /**
      * Изображение маленькое.
      *
      * @var ?Image
@@ -186,6 +193,7 @@ class Collection extends Entity
      * @param int|null $amount Количество курсов.
      * @param string|null $sort_field Поле сортировки.
      * @param string|null $sort_direction Направление сортировки.
+     * @param bool|null $copied Скопировано.
      * @param Image|null $image_small_id Изображение маленькое.
      * @param Image|null $image_middle_id Изображение среднее.
      * @param Image|null $image_big_id Изображение большое.
@@ -210,6 +218,7 @@ class Collection extends Entity
         ?int            $amount = null,
         ?string         $sort_field = null,
         ?string         $sort_direction = null,
+        ?bool           $copied = null,
         ?Image          $image_small_id = null,
         ?Image          $image_middle_id = null,
         ?Image          $image_big_id = null,
@@ -219,9 +228,9 @@ class Collection extends Entity
         ?Carbon         $deleted_at = null,
         ?Direction      $direction = null,
         ?Metatag        $metatag = null,
-        ?array $filters = null,
-        ?array $courses = null,
-        ?array $analyzers = null,
+        ?array          $filters = null,
+        ?array          $courses = null,
+        ?array          $analyzers = null,
     )
     {
         $this->id = $id;
@@ -234,6 +243,7 @@ class Collection extends Entity
         $this->amount = $amount;
         $this->sort_field = $sort_field;
         $this->sort_direction = $sort_direction;
+        $this->copied = $copied;
         $this->image_small_id = $image_small_id;
         $this->image_middle_id = $image_middle_id;
         $this->image_big_id = $image_big_id;

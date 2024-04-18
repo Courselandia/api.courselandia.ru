@@ -27,6 +27,7 @@ class CreateTableCollections extends Migration
             $table->integer('amount')->unsigned();
             $table->string('sort_field', 25)->default('name');
             $table->string('sort_direction', 4)->default('ASC');
+            $table->boolean('copied')->default(false);
 
             $table->string('image_small_id')->nullable()->index();
             $table->string('image_middle_id')->nullable()->index();

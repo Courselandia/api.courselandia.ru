@@ -158,12 +158,12 @@ class TeacherUpdateAction extends Action
                 }
 
                 Cache::tags(['catalog', 'teacher'])->flush();
-            });
 
-            if (!$this->data->copied) {
-                $action = new AnalyzerUpdateAction($this->data->id, Teacher::class, 'teacher.text');
-                $action->run();
-            }
+                if (!$this->data->copied) {
+                    $action = new AnalyzerUpdateAction($this->data->id, Teacher::class, 'teacher.text');
+                    $action->run();
+                }
+            });
 
             $action =  new TeacherGetAction($this->data->id);
 

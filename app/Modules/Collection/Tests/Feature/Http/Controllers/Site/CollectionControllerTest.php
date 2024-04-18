@@ -93,6 +93,7 @@ class CollectionControllerTest extends TestCase
             'amount',
             'sort_field',
             'sort_direction',
+            'copied',
             'image_small_id',
             'image_middle_id',
             'image_big_id',

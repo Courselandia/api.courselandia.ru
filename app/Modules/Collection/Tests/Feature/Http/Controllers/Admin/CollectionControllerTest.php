@@ -131,6 +131,7 @@ class CollectionControllerTest extends TestCase
                 'amount' => 10,
                 'sort_field' => 'name',
                 'sort_direction' => 'ASC',
+                'copied' => true,
                 'status' => true,
                 'image' => UploadedFile::fake()->image('collection.jpg', 1500, 1500),
                 'filters' => [
@@ -170,6 +171,7 @@ class CollectionControllerTest extends TestCase
                 'amount' => 10,
                 'sort_field' => 'name',
                 'sort_direction' => 'ASC',
+                'copied' => true,
                 'status' => true,
                 'image' => UploadedFile::fake()->image('collection.jpg', 1500, 1500),
                 'filters' => [
@@ -211,6 +213,7 @@ class CollectionControllerTest extends TestCase
                 'amount' => 10,
                 'sort_field' => 'name',
                 'sort_direction' => 'ASC',
+                'copied' => true,
                 'status' => true,
                 'image' => UploadedFile::fake()->image('collection.jpg', 1500, 1500),
                 'filters' => [
@@ -251,6 +254,7 @@ class CollectionControllerTest extends TestCase
                 'amount' => 10,
                 'sort_field' => 'name',
                 'sort_direction' => 'ASC',
+                'copied' => true,
                 'status' => true,
                 'image' => UploadedFile::fake()->image('collection.jpg', 1500, 1500),
                 'filters' => [
@@ -291,6 +295,7 @@ class CollectionControllerTest extends TestCase
                 'amount' => 10,
                 'sort_field' => 'name',
                 'sort_direction' => 'ASC',
+                'copied' => true,
                 'status' => true,
                 'image' => UploadedFile::fake()->image('collection.jpg', 1500, 1500),
                 'filters' => [
@@ -540,6 +545,7 @@ class CollectionControllerTest extends TestCase
             'sort_field',
             'sort_direction',
             'status',
+            'copied',
             'image_small_id',
             'image_middle_id',
             'image_big_id',

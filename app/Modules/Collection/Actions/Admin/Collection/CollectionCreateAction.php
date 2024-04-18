@@ -99,8 +99,10 @@ class CollectionCreateAction extends Action
             $action = new CollectionCoursesSyncAction($collection->id);
             $action->run();
 
-            $action = new AnalyzerUpdateAction($collection->id, Collection::class, 'collection.text');
-            $action->run();
+            if (!$this->data->copied) {
+                $action = new AnalyzerUpdateAction($collection->id, Collection::class, 'collection.text');
+                $action->run();
+            }
 
             return $collection->id;
         });
