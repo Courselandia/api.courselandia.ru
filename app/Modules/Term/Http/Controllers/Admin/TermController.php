@@ -30,6 +30,7 @@ use App\Modules\Term\Http\Requests\Admin\TermDestroyRequest;
 use App\Modules\Term\Http\Requests\Admin\TermReadRequest;
 use App\Modules\Term\Http\Requests\Admin\TermUpdateRequest;
 use App\Modules\Term\Http\Requests\Admin\TermUpdateStatusRequest;
+use Throwable;
 
 /**
  * Класс контроллер для работы с терминами в административной части.
@@ -94,6 +95,7 @@ class TermController extends Controller
      * @param TermCreateRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
+     * @throws Throwable
      */
     public function create(TermCreateRequest $request): JsonResponse
     {
@@ -137,6 +139,7 @@ class TermController extends Controller
      * @param TermUpdateRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
+     * @throws Throwable
      */
     public function update(int|string $id, TermUpdateRequest $request): JsonResponse
     {

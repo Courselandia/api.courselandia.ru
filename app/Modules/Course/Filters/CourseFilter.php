@@ -9,6 +9,7 @@
 namespace App\Modules\Course\Filters;
 
 use App\Modules\Course\Normalize\Data;
+use App\Modules\Term\Actions\Site\TermQuerySearchAction;
 use DB;
 use Morph;
 use App\Modules\Course\Enums\Status;
@@ -160,11 +161,14 @@ class CourseFilter extends ModelFilter
     {
         $queryMorph = Morph::get($query);
 
-        return $this->where(function ($q) use ($queryMorph, $query) {
+        $action = new TermQuerySearchAction($queryMorph);
+        $queryTerm = $action->run();
+
+        return $this->where(function ($q) use ($queryTerm, $query) {
             return $q
                 ->whereRaw(
                     'MATCH(name_morphy, text_morphy) AGAINST(?)',
-                    [$queryMorph]
+                    [$queryTerm],
                 );
         }
         );

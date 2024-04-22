@@ -169,7 +169,7 @@ class Util
      */
     public static function latin(string $string, string $separator = '-', bool $symbols = true): string
     {
-        $order = array(
+        $order = [
             'а' => 'a',
             'б' => 'b',
             'в' => 'v',
@@ -305,7 +305,7 @@ class Util
 
             ' ' => $separator,
             $separator => $separator
-        );
+        ];
 
         $length = strlen($string);
         $latin = '';
