@@ -23,6 +23,7 @@ use App\Models\Enums\CacheTime;
 use App\Modules\Course\Entities\Course as CourseEntity;
 use App\Modules\Course\Data\Decorators\CourseRead;
 use App\Modules\Course\Models\Course;
+use App\Modules\Term\Actions\Site\TermQuerySearchAction;
 
 /**
  * Чтение курсов: получение.
@@ -125,13 +126,13 @@ class ReadPipe implements Pipe
 
                 if ($data->sorts) {
                     if (
-                        !array_key_exists('relevance', $data->sorts)
-                        || (
-                            isset($data->filters['search'])
-                            && $data->filters['search']
-                            && $data->filters['search']
-                        )
+                        isset($data->sorts['relevance'])
+                        && isset($data->filters['search'])
+                        && $data->filters['search']
                     ) {
+                        $columnSort = DB::raw('relevance_name + relevance');
+                        $query->orderBy($columnSort, 'DESC');
+                    } else if ($data->sorts && !isset($data->sorts['relevance'])) {
                         $query->sorted($data->sorts);
                     } else {
                         $query->orderBy('name', 'ASC');
@@ -139,11 +140,14 @@ class ReadPipe implements Pipe
                 }
 
                 if (isset($data->filters['search']) && $data->filters['search']) {
-                    $search = Morph::get($data->filters['search']);
-                    $search = DB::getPdo()->quote($search);
+                    $action = new TermQuerySearchAction($data->filters['search']);
+                    $queryTerm = $action->run();
+                    $search = DB::getPdo()->quote($queryTerm);
 
                     $query->addSelect(
-                        DB::raw('MATCH(name_morphy, text_morphy) AGAINST(' . $search . ') AS relevance')
+                        DB::raw('MATCH(name_morphy, text_morphy) AGAINST(' . $search . ') AS relevance'),
+                        DB::raw('MATCH(name_morphy) AGAINST(' . $search . ') AS relevance_name'),
+                        DB::raw('MATCH(text_morphy) AGAINST(' . $search . ') AS relevance_text'),
                     );
                 }
 

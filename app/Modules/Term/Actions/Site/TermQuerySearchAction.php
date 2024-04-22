@@ -8,6 +8,7 @@
 
 namespace App\Modules\Term\Actions\Site;
 
+use Morph;
 use Util;
 use Cache;
 use App\Models\Enums\CacheTime;
@@ -81,10 +82,48 @@ class TermQuerySearchAction extends Action
      */
     public function run(): string
     {
-        $queryRussified = $this->getRussified($this->query);
-        $queryTermed = $this->getTermed($this->query . ' ' . $queryRussified);
+        $query = $this->getSearchQuery($this->query);
+        $queryMorph = Morph::get($this->query);
 
-        $result = $this->query;
+        if (strtoupper($this->query) !== strtoupper($queryMorph)) {
+            $queryResultMorph = $this->getSearchQuery($queryMorph);
+
+            if ($queryResultMorph) {
+                $query .= ' ' . $queryResultMorph;
+            }
+        }
+
+        return $this->getUniqueQuery($query);
+    }
+
+    /**
+     * Очистит запрос от повторяющихся слов.
+     *
+     * @param string $query Запрос на поиск.
+     *
+     * @return string Запрос на поиск.
+     */
+    private function getUniqueQuery(string $query): string
+    {
+        $queries = explode(' ', $query);
+        $queries = array_unique($queries);
+
+        return implode(' ', $queries);
+    }
+
+    /**
+     * Получить конечный вариант запроса для поиска.
+     *
+     * @param string $query Запрос на поиск.
+     *
+     * @return string Конечный вариант запроса.
+     */
+    private function getSearchQuery(string $query): string
+    {
+        $queryRussified = $this->getRussified($query);
+        $queryTermed = $this->getTermed($query . ' ' . $queryRussified);
+
+        $result = $query;
 
         if ($queryRussified) {
             $result .= ' ' . $queryRussified;
@@ -116,6 +155,8 @@ class TermQuerySearchAction extends Action
                 $result .= $this->alphabetic[$letter];
             } else if (isset($this->alphabetic[strtolower($letter)])) {
                 $result .= strtoupper($this->alphabetic[strtolower($letter)]);
+            } else {
+                $result .= $letter;
             }
         }
 

@@ -8,10 +8,10 @@
 
 namespace App\Modules\Course\Filters;
 
-use App\Modules\Course\Normalize\Data;
-use App\Modules\Term\Actions\Site\TermQuerySearchAction;
 use DB;
 use Morph;
+use App\Modules\Course\Normalize\Data;
+use App\Modules\Term\Actions\Site\TermQuerySearchAction;
 use App\Modules\Course\Enums\Status;
 use App\Modules\Salary\Enums\Level;
 use EloquentFilter\ModelFilter;
@@ -159,9 +159,7 @@ class CourseFilter extends ModelFilter
      */
     public function search(string $query): self
     {
-        $queryMorph = Morph::get($query);
-
-        $action = new TermQuerySearchAction($queryMorph);
+        $action = new TermQuerySearchAction($query);
         $queryTerm = $action->run();
 
         return $this->where(function ($q) use ($queryTerm, $query) {
@@ -170,7 +168,7 @@ class CourseFilter extends ModelFilter
                     'MATCH(name_morphy, text_morphy) AGAINST(?)',
                     [$queryTerm],
                 );
-        }
+            }
         );
     }
 
