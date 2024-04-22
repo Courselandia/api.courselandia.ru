@@ -24,6 +24,7 @@ use App\Modules\Course\Pipes\Site\Read\FilterSchoolPipe;
 use App\Modules\Course\Pipes\Site\Read\FilterSkillPipe;
 use App\Modules\Course\Pipes\Site\Read\FilterTeacherPipe;
 use App\Modules\Course\Pipes\Site\Read\FilterToolPipe;
+use App\Modules\Course\Pipes\Site\Read\MarkTestWithSearchQueryPipe;
 use App\Modules\Course\Pipes\Site\Read\ReadPipe;
 use App\Modules\Course\Pipes\Site\Read\DescriptionPipe;
 use App\Modules\Course\Decorators\Site\CourseReadDecorator;
@@ -66,6 +67,7 @@ class CourseReadAction extends Action
 
         return $decorator->setActions([
             ReadPipe::class,
+            MarkTestWithSearchQueryPipe::class,
             DescriptionPipe::class,
             FilterDirectionPipe::class,
             FilterCategoryPipe::class,

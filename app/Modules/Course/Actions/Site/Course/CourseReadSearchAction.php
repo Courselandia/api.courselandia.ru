@@ -10,6 +10,7 @@ namespace App\Modules\Course\Actions\Site\Course;
 
 use App\Models\Action;
 use App\Modules\Course\Entities\CourseRead;
+use App\Modules\Course\Pipes\Site\Read\MarkTestWithSearchQueryPipe;
 use App\Modules\Course\Pipes\Site\Read\ReadPipe;
 use App\Modules\Course\Decorators\Site\CourseReadDecorator;
 use App\Modules\Course\Data\Decorators\CourseRead as CourseReadDecoratorData;
@@ -66,6 +67,7 @@ class CourseReadSearchAction extends Action
 
         $result = $decorator->setActions([
             ReadPipe::class,
+            MarkTestWithSearchQueryPipe::class,
         ])->run();
 
         /**
