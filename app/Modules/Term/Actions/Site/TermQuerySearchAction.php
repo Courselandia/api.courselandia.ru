@@ -28,6 +28,20 @@ class TermQuerySearchAction extends Action
     private string $query;
 
     /**
+     * Приводить строку к морфированию.
+     *
+     * @var bool
+     */
+    private bool $toMorph;
+
+    /**
+     * Количество допустимых слов в запросе на поиск.
+     *
+     * @var int
+     */
+    private const WORDS = 4;
+
+    /**
      * Массив сопоставлений английской раскладки к русской на клавиатуре.
      *
      * @var array|string[]
@@ -69,10 +83,12 @@ class TermQuerySearchAction extends Action
 
     /**
      * @param string $query Запрос на поиск.
+     * @param bool $toMorph Приводить строку к морфированию.
      */
-    public function __construct(string $query)
+    public function __construct(string $query, bool $toMorph = true)
     {
         $this->query = $query;
+        $this->toMorph = $toMorph;
     }
 
     /**
@@ -82,18 +98,44 @@ class TermQuerySearchAction extends Action
      */
     public function run(): string
     {
-        $query = $this->getSearchQuery($this->query);
-        $queryMorph = Morph::get($this->query);
+        $query = $this->short($this->query);
 
-        if (strtoupper($this->query) !== strtoupper($queryMorph)) {
-            $queryResultMorph = $this->getSearchQuery($queryMorph);
+        if ($this->toMorph) {
+            $querySearch = $this->getSearchQuery($query);
+            $queryMorph = Morph::get($query);
 
-            if ($queryResultMorph) {
-                $query .= ' ' . $queryResultMorph;
+            if (strtoupper($query) !== strtoupper($queryMorph)) {
+                $queryResultMorph = $this->getSearchQuery($queryMorph);
+
+                if ($queryResultMorph) {
+                    $querySearch .= ' ' . $queryResultMorph;
+                }
+            }
+        } else {
+            $querySearch = $query;
+            $queryResult = $this->getSearchQuery($query);
+
+            if ($queryResult) {
+                $querySearch .= ' ' . $queryResult;
             }
         }
 
-        return $this->getUniqueQuery($query);
+        return $this->getUniqueQuery($querySearch);
+    }
+
+    /**
+     * Сокращение строки поиска.
+     *
+     * @param string $query Изначальная строка поиска.
+     *
+     * @return string Сокращенная строка поиска.
+     */
+    private function short(string $query): string
+    {
+        $arr = explode(' ', $query);
+        $newArr = array_slice($arr, 0, self::WORDS);
+
+        return implode(' ', $newArr);
     }
 
     /**

@@ -30,7 +30,7 @@ class MarkTestWithSearchQueryPipe implements Pipe
     public function handle(Data|CourseRead $data, Closure $next): mixed
     {
         if (isset($data->filters['search'])) {
-            $action = new TermQuerySearchAction($data->filters['search']);
+            $action = new TermQuerySearchAction($data->filters['search'], false);
             $queryTerm = $action->run();
 
             for ($i = 0; $i < count($data->courses); $i++) {
@@ -56,12 +56,12 @@ class MarkTestWithSearchQueryPipe implements Pipe
         $queries = explode(' ', $query);
 
         for ($i = 0; $i < count($queries); $i++) {
-            $text = str_ireplace($queries[$i], '<span>' . $queries[$i] . '</span>', $text);
+            $text = $this->addSpan($queries[$i], $text);
 
             $queryDashed = explode('-', $queries[$i]);
 
             for ($j = 0; $j < count($queryDashed); $j++) {
-                $text = str_ireplace($queryDashed[$j], '<span>' . $queryDashed[$j] . '</span>', $text);
+                $text = $this->addSpan($queryDashed[$j], $text);
             }
         }
 
@@ -76,12 +76,21 @@ class MarkTestWithSearchQueryPipe implements Pipe
      */
     private function clean(string $text): string
     {
-        $text = str_ireplace('</span><span>', '', $text);
-        $text = str_ireplace('<span><span>', '<span>', $text);
-        $text = str_ireplace('<span><span>', '<span>', $text);
-        $text = str_ireplace('</span></span>', '</span>', $text);
-        $text = str_ireplace('</span></span>', '</span>', $text);
+        $text = str_replace('</span> <span>', ' ', $text);
+        $text = str_replace('</span> <span>', ' ', $text);
+        $text = str_replace('</span><span>', '', $text);
+        $text = str_replace('<span><span>', '<span>', $text);
+        $text = str_replace('<span><span>', '<span>', $text);
+        $text = str_replace('</span></span>', '</span>', $text);
+        $text = str_replace('</span></span>', '</span>', $text);
 
-        return str_ireplace('</span>-<span>', '-', $text);
+        return str_replace('</span>-<span>', '-', $text);
+    }
+
+    private function addSpan(string $search, string $text): string
+    {
+        $search = preg_quote($search, '/');
+
+        return preg_replace('/(' . $search . ')/iu', '<span>$1</span>', $text);
     }
 }
