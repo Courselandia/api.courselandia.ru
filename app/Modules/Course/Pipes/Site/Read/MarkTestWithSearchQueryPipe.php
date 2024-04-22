@@ -56,12 +56,12 @@ class MarkTestWithSearchQueryPipe implements Pipe
         $queries = explode(' ', $query);
 
         for ($i = 0; $i < count($queries); $i++) {
-            $text = str_replace($queries[$i], '<span>' . $queries[$i] . '</span>', $text);
+            $text = str_ireplace($queries[$i], '<span>' . $queries[$i] . '</span>', $text);
 
             $queryDashed = explode('-', $queries[$i]);
 
             for ($j = 0; $j < count($queryDashed); $j++) {
-                $text = str_replace($queryDashed[$j], '<span>' . $queryDashed[$j] . '</span>', $text);
+                $text = str_ireplace($queryDashed[$j], '<span>' . $queryDashed[$j] . '</span>', $text);
             }
         }
 
@@ -76,12 +76,12 @@ class MarkTestWithSearchQueryPipe implements Pipe
      */
     private function clean(string $text): string
     {
-        $text = str_replace('</span><span>', '', $text);
-        $text = str_replace('<span><span>', '<span>', $text);
-        $text = str_replace('<span><span>', '<span>', $text);
-        $text = str_replace('</span></span>', '</span>', $text);
-        $text = str_replace('</span></span>', '</span>', $text);
+        $text = str_ireplace('</span><span>', '', $text);
+        $text = str_ireplace('<span><span>', '<span>', $text);
+        $text = str_ireplace('<span><span>', '<span>', $text);
+        $text = str_ireplace('</span></span>', '</span>', $text);
+        $text = str_ireplace('</span></span>', '</span>', $text);
 
-        return str_replace('</span>-<span>', '-', $text);
+        return str_ireplace('</span>-<span>', '-', $text);
     }
 }
