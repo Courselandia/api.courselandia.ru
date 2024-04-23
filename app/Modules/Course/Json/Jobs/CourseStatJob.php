@@ -23,15 +23,18 @@ class CourseStatJob extends JsonItemLinkJob
     public function handle(): void
     {
         $action = new CourseStatAction();
-        $data = $action->run();
+        $stat = $action->run();
 
-        if ($data) {
-            $data = [
-                'data' => $data,
-                'success' => true,
-            ];
+        $data = [
+            'data' => [
+                'amountCourses' => $stat->getAmountCourses(),
+                'amountSchools' => $stat->getAmountSchools(),
+                'amountTeachers' => $stat->getAmountTeachers(),
+                'amountReviews' => $stat->getAmountReviews(),
+            ],
+            'success' => true,
+        ];
 
-            $this->save($data);
-        }
+        $this->save($data);
     }
 }
