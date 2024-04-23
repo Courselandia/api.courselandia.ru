@@ -351,11 +351,16 @@ class CourseController extends Controller
         $action = new CourseStatAction();
         $stat = $action->run();
 
-        return response()->json([
-            'amountCourses' => $stat->getAmountCourses(),
-            'amountSchools' => $stat->getAmountSchools(),
-            'amountTeachers' => $stat->getAmountTeachers(),
-            'amountReviews' => $stat->getAmountReviews(),
-        ]);
+        $data = [
+            'data' => [
+                'amountCourses' => $stat->getAmountCourses(),
+                'amountSchools' => $stat->getAmountSchools(),
+                'amountTeachers' => $stat->getAmountTeachers(),
+                'amountReviews' => $stat->getAmountReviews(),
+            ],
+            'success' => true,
+        ];
+
+        return response()->json($data);
     }
 }

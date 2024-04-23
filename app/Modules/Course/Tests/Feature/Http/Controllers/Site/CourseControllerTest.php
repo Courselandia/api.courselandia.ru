@@ -16,6 +16,7 @@ use App\Modules\Direction\Models\Direction;
 use App\Modules\Employment\Models\Employment;
 use App\Modules\Process\Models\Process;
 use App\Modules\Profession\Models\Profession;
+use App\Modules\Review\Models\Review;
 use App\Modules\Skill\Models\Skill;
 use App\Modules\Teacher\Models\Teacher;
 use App\Modules\Tool\Models\Tool;
@@ -198,6 +199,11 @@ class CourseControllerTest extends TestCase
         ]);
     }
 
+    /**
+     * Чтение правлений.
+     *
+     * @return void
+     */
     public function testDirections(): void
     {
         self::createCourse();
@@ -214,6 +220,11 @@ class CourseControllerTest extends TestCase
         ]);
     }
 
+    /**
+     * Чтение категорий.
+     *
+     * @return void
+     */
     public function testCategories(): void
     {
         self::createCourse();
@@ -230,6 +241,11 @@ class CourseControllerTest extends TestCase
         ]);
     }
 
+    /**
+     * Чтение профессий.
+     *
+     * @return void
+     */
     public function testProfessions(): void
     {
         self::createCourse();
@@ -246,6 +262,11 @@ class CourseControllerTest extends TestCase
         ]);
     }
 
+    /**
+     * Чтение школ.
+     *
+     * @return void
+     */
     public function testSchools(): void
     {
         self::createCourse();
@@ -262,6 +283,11 @@ class CourseControllerTest extends TestCase
         ]);
     }
 
+    /**
+     * Чтение инструментов.
+     *
+     * @return void
+     */
     public function testTools(): void
     {
         self::createCourse();
@@ -278,6 +304,11 @@ class CourseControllerTest extends TestCase
         ]);
     }
 
+    /**
+     * Чтение навыков.
+     *
+     * @return void
+     */
     public function testSkills(): void
     {
         self::createCourse();
@@ -294,6 +325,11 @@ class CourseControllerTest extends TestCase
         ]);
     }
 
+    /**
+     * Чтение учителей.
+     *
+     * @return void
+     */
     public function testTeachers(): void
     {
         self::createCourse();
@@ -307,6 +343,31 @@ class CourseControllerTest extends TestCase
                 '*' => $this->getCourseFilterItem()
             ],
             'success',
+        ]);
+    }
+
+    /**
+     * Чтение статистики.
+     *
+     * @return void
+     */
+    public function testStat(): void
+    {
+        self::createCourse();
+        self::createCourse();
+        Review::factory()->count(2)->create();
+
+        $this->json(
+            'GET',
+            'api/private/site/course/stat',
+        )->assertStatus(200)->assertExactJson([
+            'data' => [
+                'amountCourses' => 2,
+                'amountSchools' => 4,
+                'amountTeachers' => 4,
+                'amountReviews' => 2,
+            ],
+            'success' => true,
         ]);
     }
 
