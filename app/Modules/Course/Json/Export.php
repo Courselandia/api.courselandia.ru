@@ -38,6 +38,7 @@ use App\Modules\Course\Json\Sources\PublicationsSource;
 use App\Modules\Course\Json\Sources\PublicationSource;
 use App\Modules\Course\Json\Sources\CollectionsSource;
 use App\Modules\Course\Json\Sources\CollectionSource;
+use App\Modules\Course\Json\Sources\CourseStatSource;
 
 /**
  * Класс для экспортирования курсов в файлы json.
@@ -66,6 +67,7 @@ class Export
     public function __construct()
     {
         $this
+            ->addSource(new CourseStatSource())
             ->addSource(new CollectionsSource())
             ->addSource(new CollectionSource())
             ->addSource(new PublicationsSource())
