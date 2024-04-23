@@ -69,6 +69,9 @@ Route::group([
         Route::get('teachers', 'Site\CourseController@teachers')
             ->name('teachers');
 
+        Route::get('stat', 'Site\CourseController@stat')
+            ->name('stat');
+
         Route::group([
             'prefix' => 'read',
             'as' => 'read'

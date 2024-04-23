@@ -15,6 +15,7 @@ use App\Modules\Course\Actions\Site\Course\CourseReadRatedAction;
 use App\Modules\Course\Actions\Site\Course\CourseReadSearchAction;
 use App\Modules\Course\Actions\Site\Course\CourseReadFavoritesAction;
 use App\Modules\Course\Actions\Site\Course\CourseSchoolReadAction;
+use App\Modules\Course\Actions\Site\Course\CourseStatAction;
 use App\Modules\Course\Actions\Site\Course\CourseToolReadAction;
 use App\Modules\Course\Actions\Site\Course\CourseSkillReadAction;
 use App\Modules\Course\Actions\Site\Course\CourseTeacherReadAction;
@@ -338,5 +339,23 @@ class CourseController extends Controller
         }
 
         return response()->json($data);
+    }
+
+    /**
+     * Получение статистики.
+     *
+     * @return JsonResponse Вернет JSON ответ.
+     */
+    public function stat(): JsonResponse
+    {
+        $action = new CourseStatAction();
+        $stat = $action->run();
+
+        return response()->json([
+            'amountCourses' => $stat->getAmountCourses(),
+            'amountSchools' => $stat->getAmountSchools(),
+            'amountTeachers' => $stat->getAmountTeachers(),
+            'amountReviews' => $stat->getAmountReviews(),
+        ]);
     }
 }
