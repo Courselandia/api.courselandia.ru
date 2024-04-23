@@ -53,6 +53,8 @@ use App\Modules\School\Filters\SchoolFilter;
  * @property int|string|array|UploadedFile|ImageEntity $image_site_id Изображение сайта.
  * @property int|string|array|UploadedFile|ImageEntity $image_logo_id Изображение логотипа.
  * @property array $amount_courses Статистика количества курсов.
+ * @property int $amount_teachers Количества учителей.
+ * @property int $amount_reviews Количества отзывов.
  *
  * @property-read Metatag $metatag
  * @property-read Teacher[] $teachers
@@ -104,6 +106,8 @@ class School extends Eloquent
         'image_logo_id',
         'image_site_id',
         'amount_courses',
+        'amount_teachers',
+        'amount_reviews',
     ];
 
     /**
@@ -125,6 +129,8 @@ class School extends Eloquent
             'site' => 'url',
             'status' => 'required|boolean',
             'amount_courses' => 'json',
+            'amount_teachers' => 'digits_between:0,20',
+            'amount_reviews' => 'digits_between:0,20',
         ];
     }
 
@@ -149,6 +155,8 @@ class School extends Eloquent
             'site' => trans('school::models.school.site'),
             'status' => trans('school::models.school.status'),
             'amount_courses' => trans('school::models.school.amountCourses'),
+            'amount_teachers' => trans('school::models.school.amountTeachers'),
+            'amount_reviews' => trans('school::models.school.amountReviews'),
         ];
     }
 

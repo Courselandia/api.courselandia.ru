@@ -13,7 +13,6 @@ use App\Modules\Analyzer\Entities\Analyzer;
 use Carbon\Carbon;
 use App\Modules\Image\Entities\Image;
 use App\Modules\Metatag\Entities\Metatag;
-use Spatie\LaravelData\Attributes\WithCast;
 
 /**
  * Сущность для школ.
@@ -183,6 +182,20 @@ class School extends Entity
     public array|null $amount_courses = null;
 
     /**
+     * Количество учителей.
+     *
+     * @var int|null
+     */
+    public int|null $amount_teachers = null;
+
+    /**
+     * Количество отзывов.
+     *
+     * @var int|null
+     */
+    public int|null $amount_reviews = null;
+
+    /**
      * Метатеги.
      *
      * @var Metatag|null
@@ -220,6 +233,8 @@ class School extends Entity
      * @param int|null $reviews_4_stars_count Количество отзывов с четырмя звездами.
      * @param int|null $reviews_5_stars_count Количество отзывов с пятью звездами.
      * @param array|null $amount_courses Количество курсов.
+     * @param int|null $amount_teachers Количество учителей.
+     * @param int|null $amount_reviews Количество отзывов.
      * @param Metatag|null $metatag Метатеги.
      * @param array|null $analyzers Анализ хранения текстов.
      */
@@ -247,6 +262,8 @@ class School extends Entity
         ?int            $reviews_4_stars_count = null,
         ?int            $reviews_5_stars_count = null,
         array|null      $amount_courses = null,
+        int|null        $amount_teachers = null,
+        int|null        $amount_reviews = null,
         ?Metatag        $metatag = null,
         ?array          $analyzers = null
     )
@@ -274,6 +291,8 @@ class School extends Entity
         $this->reviews_4_stars_count = $reviews_4_stars_count;
         $this->reviews_5_stars_count = $reviews_5_stars_count;
         $this->amount_courses = $amount_courses;
+        $this->amount_teachers = $amount_teachers;
+        $this->amount_reviews = $amount_reviews;
         $this->metatag = $metatag;
         $this->analyzers = $analyzers;
     }

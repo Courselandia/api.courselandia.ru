@@ -16,5 +16,8 @@ return [
         'rating' => 'Rating',
         'text' => 'Text',
         'additional' => 'Additional',
+        'amountCourses' => 'Amount courses',
+        'amount_teachers' => 'Amount teachers',
+        'amount_reviews' => 'Amount reviews',
     ],
 ];

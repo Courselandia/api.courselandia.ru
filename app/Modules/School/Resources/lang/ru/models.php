@@ -16,5 +16,8 @@ return [
         'rating' => 'Рейтинг',
         'text' => 'Текст',
         'additional' => 'Дополнительное описание',
+        'amountCourses' => 'Количество курсов',
+        'amount_teachers' => 'Количество учителей',
+        'amount_reviews' => 'Количество отзывов',
     ],
 ];

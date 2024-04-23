@@ -57,9 +57,7 @@ class CourseStatAction extends Action
     {
         return School::active()
             ->whereHas('courses', function ($query) {
-                $query->select([
-                    'courses.id',
-                ])->where('status', Status::ACTIVE->value);
+                $query->where('status', Status::ACTIVE->value);
             })
             ->count();
     }
@@ -73,10 +71,7 @@ class CourseStatAction extends Action
     {
         return Teacher::active()
             ->whereHas('courses', function ($query) {
-                $query->select([
-                    'courses.id',
-                ])
-                    ->where('status', Status::ACTIVE->value)
+                $query->where('status', Status::ACTIVE->value)
                     ->where('has_active_school', true);
             })
             ->count();
