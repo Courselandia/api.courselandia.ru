@@ -137,7 +137,10 @@ class SchoolControllerTest extends TestCase
             'created_at',
             'updated_at',
             'deleted_at',
-            'metatag'
+            'metatag',
+            'amount_courses',
+            'amount_teachers',
+            'amount_reviews',
         ];
     }
 }

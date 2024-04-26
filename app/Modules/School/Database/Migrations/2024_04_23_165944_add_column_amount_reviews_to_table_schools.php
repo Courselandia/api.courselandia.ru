@@ -16,7 +16,7 @@ class AddColumnAmountReviewsToTableSchools extends Migration
     public function up(): void
     {
         Schema::table('schools', function (Blueprint $table) {
-            $table->integer('amount_reviews')->unique()->nullable();
+            $table->integer('amount_reviews')->unsigned()->nullable();
         });
     }
 
