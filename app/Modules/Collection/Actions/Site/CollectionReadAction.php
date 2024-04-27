@@ -75,8 +75,35 @@ class CollectionReadAction extends Action
             CacheTime::GENERAL->value,
             function () {
                 $query = Collection::active()
+                    ->select([
+                        'id',
+                        'metatag_id',
+                        'direction_id',
+                        'name',
+                        'link',
+                        'additional',
+                        'amount',
+                        'sort_field',
+                        'sort_direction',
+                        'copied',
+                        'image_small_id',
+                        'image_middle_id',
+                        'image_big_id',
+                        'status',
+                    ])
                     ->with([
-                        'direction',
+                        'direction' => function ($query) {
+                            $query->select([
+                                'directions.id',
+                                'directions.metatag_id',
+                                'directions.name',
+                                'directions.header',
+                                'directions.header_template',
+                                'directions.weight',
+                                'directions.link',
+                                'directions.status',
+                            ])->where('status', true);
+                        },
                     ]);
 
                 if ($this->direction_id) {

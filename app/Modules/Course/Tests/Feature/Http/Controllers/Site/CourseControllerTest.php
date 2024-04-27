@@ -353,8 +353,10 @@ class CourseControllerTest extends TestCase
      */
     public function testStat(): void
     {
+        self::cleanCourses();
         self::createCourse();
         self::createCourse();
+        Review::truncate();
         Review::factory()->count(2)->create();
 
         $this->json(
@@ -369,6 +371,15 @@ class CourseControllerTest extends TestCase
             ],
             'success' => true,
         ]);
+    }
+
+    static public function cleanCourses(): void
+    {
+        $courses = Course::all();
+
+        foreach ($courses as $course) {
+            $course->delete();
+        }
     }
 
     /**

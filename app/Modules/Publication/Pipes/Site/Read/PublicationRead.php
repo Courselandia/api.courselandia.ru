@@ -63,16 +63,45 @@ class PublicationRead implements Pipe
                     ->with('metatag')
                     ->active();
 
+                $shortColumns = [
+                    'id',
+                    'metatag_id',
+                    'published_at',
+                    'header',
+                    'link',
+                    'anons',
+                    'status',
+                    'image_big_id',
+                    'image_middle_id',
+                    'image_small_id',
+                ];
+
                 if ($year) {
-                    $query->year($year);
+                    $query
+                        ->year($year);
                 }
 
                 if ($link) {
-                    $query->link($link);
+                    $query
+                        ->select([
+                            ...$shortColumns,
+                            'article',
+                        ])
+                        ->link($link);
                 }
 
                 if ($id) {
-                    $query->id($id);
+                    $query
+                        ->select([
+                            ...$shortColumns,
+                            'article',
+                        ])
+                        ->id($id);
+                }
+
+                if (!$link && !$id) {
+                    $query
+                        ->select($shortColumns);
                 }
 
                 if ($offset) {
