@@ -6,6 +6,8 @@ use OAuth;
 use Config;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use App\Modules\User\Models\UserAuth;
+use App\Modules\Task\Models\Task;
 
 class Kernel extends ConsoleKernel
 {
@@ -27,6 +29,10 @@ class Kernel extends ConsoleKernel
         $schedule->call(function () {
             OAuth::clean();
         })->daily();
+
+        $schedule->command('model:prune', [
+            '--model' => [Task::class, UserAuth::class],
+        ])->daily();
 
         $schedule->command('course:import')->dailyAt('00:00');
         // $schedule->command('article:write')->dailyAt('02:00');

@@ -13,10 +13,12 @@ use App\Modules\User\Filters\UserAuthFilter;
 use Eloquent;
 use App\Models\Validate;
 use EloquentFilter\Filterable;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasTimestamps;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\Delete;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Prunable;
 
 /**
  * Класс модель для таблицы хранения данных об аутентификации пользователей на основе Eloquent.
@@ -41,6 +43,7 @@ class UserAuth extends Eloquent
     use Validate;
     use Filterable;
     use HasTimestamps;
+    use Prunable;
 
     /**
      * Атрибуты, для которых разрешено массовое назначение.
@@ -127,5 +130,15 @@ class UserAuth extends Eloquent
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Очистка старых данных.
+     *
+     * @return Builder Построитель запросов.
+     */
+    public function prunable(): Builder
+    {
+        return static::where('created_at', '<=', now()->subMonths(6));
     }
 }

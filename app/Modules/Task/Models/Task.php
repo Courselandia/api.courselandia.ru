@@ -25,6 +25,8 @@ use App\Modules\Task\Database\Factories\TaskFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Modules\Task\Filters\TaskFilter;
 use App\Modules\Task\Enums\Status as TaskStatus;
+use Illuminate\Database\Eloquent\Prunable;
+use Illuminate\Database\Eloquent\Builder;
 
 /**
  * Класс модель для таблицы заданий на основе Eloquent.
@@ -49,6 +51,7 @@ class Task extends Eloquent
     use Validate;
     use Filterable;
     use HasTimestamps;
+    use Prunable;
 
     /**
      * Типизирование атрибутов.
@@ -137,5 +140,15 @@ class Task extends Eloquent
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Очистка старых данных.
+     *
+     * @return Builder Построитель запросов.
+     */
+    public function prunable(): Builder
+    {
+        return static::where('created_at', '<=', now()->subMonths(2));
     }
 }
