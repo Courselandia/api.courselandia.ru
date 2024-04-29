@@ -21,6 +21,7 @@ composer.lock
 package-lock.json
 /public/mix-manifest.json
 /public/sitemap.xml
+/public/sitemap_part_*.xml
 /public/courses.xml
 /public/manifest.js
 /public/vendor.js
