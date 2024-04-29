@@ -31,13 +31,3 @@ Route::group([
         Route::delete('destroy/', 'Admin\PromotionController@destroy')
             ->name('destroy');
     });
-
-Route::group([
-    'middleware' => ['locale', 'ajax'],
-    'prefix' => 'private/site/promotion/',
-    'as' => 'api.private.site.promotion'
-],
-    function () {
-        Route::get('read/', 'Site\PromotionController@read')
-            ->name('read');
-    });
