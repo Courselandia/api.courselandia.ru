@@ -12,6 +12,7 @@ use App\Modules\Analyzer\Models\Analyzer;
 use App\Modules\Article\Models\Article;
 use App\Modules\Course\Models\Course;
 use App\Modules\Faq\Models\Faq;
+use App\Modules\Promotion\Models\Promotion;
 use App\Modules\Review\Models\Review;
 use App\Modules\School\Images\ImageLogo;
 use App\Modules\School\Images\ImageSite;
@@ -63,6 +64,7 @@ use App\Modules\School\Filters\SchoolFilter;
  * @property-read Course[] $courses
  * @property-read Article[] $articles
  * @property-read Analyzer[] $analyzers
+ * @property-read Promotion[] $promotions
  */
 class School extends Eloquent
 {
@@ -248,5 +250,15 @@ class School extends Eloquent
     public function analyzers(): MorphMany
     {
         return $this->morphMany(Analyzer::class, 'analyzerable');
+    }
+
+    /**
+     * Промоакции школы.
+     *
+     * @return HasMany Модели промоакций.
+     */
+    public function promotions(): HasMany
+    {
+        return $this->hasMany(Promotion::class);
     }
 }

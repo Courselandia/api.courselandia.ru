@@ -39,6 +39,7 @@ class SchoolListener
         $school->teachers()->detach();
         $school->deleteRelation($school->analyzers(), $school->isForceDeleting());
         $school->deleteRelation($school->articles(), $school->isForceDeleting());
+        $school->deleteRelation($school->promotions(), $school->isForceDeleting());
 
         return true;
     }

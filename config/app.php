@@ -322,6 +322,9 @@ return [
 
         App\Modules\Term\Providers\TermServiceProvider::class,
         App\Modules\Term\Providers\RouteServiceProvider::class,
+
+        App\Modules\Promotion\Providers\PromotionServiceProvider::class,
+        App\Modules\Promotion\Providers\RouteServiceProvider::class,
     ],
 
     /*
