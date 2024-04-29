@@ -275,6 +275,9 @@ class Generate
         $chunks = collect($items)->chunk(self::LIMIT)->toArray();
         $i = 0;
 
+        $files = Storage::drive('public-root')->allFiles('sitemaps');
+        Storage::drive('public-root')->delete($files);
+
         foreach ($chunks as $chunk) {
             $xml = new DomDocument('1.0', 'utf-8');
             $root = $xml->createElement('urlset');
@@ -292,7 +295,7 @@ class Generate
             }
 
             $xml->formatOutput = true;
-            $path = Storage::drive('public-root')->path('sitemap_part_' . $i . '.xml');
+            $path = Storage::drive('public-root')->path('sitemaps/' . $i . '.xml');
             $xml->save($path);
 
             $i++;
