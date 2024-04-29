@@ -110,6 +110,7 @@ class Generate
      * Генератор файла.
      *
      * @return void
+     * @throws DOMException
      */
     public function run(): void
     {
