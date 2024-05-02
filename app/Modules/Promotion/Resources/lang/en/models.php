@@ -8,6 +8,7 @@ return [
         'description' => 'Title',
         'date_start' => 'Date start promotion',
         'date_end' => 'Date end promotion',
+        'url' => 'URL',
         'status' => 'Status',
     ],
 ];

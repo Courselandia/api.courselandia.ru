@@ -50,6 +50,7 @@ class ParserNetology extends Parser
                 $promotion->date_start = $item['date_start'] ? Carbon::createFromFormat('Y-m-d',
                     $item['date_start']) : null;
                 $promotion->date_end = $item['date_end'] ? Carbon::createFromFormat('Y-m-d', $item['date_end']) : null;
+                $promotion->url = $item['landings'][0]['link'];
                 $promotion->status = $item['active'];
 
                 yield $promotion;

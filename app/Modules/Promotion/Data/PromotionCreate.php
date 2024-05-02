@@ -59,6 +59,13 @@ class PromotionCreate extends Data
     public ?Carbon $date_end = null;
 
     /**
+     * Ссылка на акцию.
+     *
+     * @var ?string
+     */
+    public ?string $url = null;
+
+    /**
      * Статус.
      *
      * @var bool|null
@@ -72,6 +79,7 @@ class PromotionCreate extends Data
      * @param string|null $description Описание.
      * @param Carbon|null $date_start Дата начала.
      * @param Carbon|null $date_end Дата окончания.
+     * @param string|null $url Ссылка на акцию.
      * @param bool|null $status Статус.
      */
     public function __construct(
@@ -81,6 +89,7 @@ class PromotionCreate extends Data
         ?string $description = null,
         ?Carbon $date_start = null,
         ?Carbon $date_end = null,
+        ?string $url = null,
         ?bool $status = null,
     ) {
         $this->school_id = $school_id;
@@ -89,6 +98,7 @@ class PromotionCreate extends Data
         $this->description = $description;
         $this->date_start = $date_start;
         $this->date_end = $date_end;
+        $this->url = $url;
         $this->status = $status;
     }
 }

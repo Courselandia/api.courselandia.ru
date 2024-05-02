@@ -53,6 +53,13 @@ class ParserPromotion extends Entity
     public Carbon|null $date_end = null;
 
     /**
+     * Ссылка на акцию.
+     *
+     * @var string|null
+     */
+    public string|null $url = null;
+
+    /**
      * Статус.
      *
      * @var bool|null
@@ -72,6 +79,7 @@ class ParserPromotion extends Entity
      * @param string|null $description Описание.
      * @param Carbon|null $date_start Дата начала.
      * @param Carbon|null $date_end Дата окончания.
+     * @param string|null $url Ссылка на акцию.
      * @param bool|null $status Статус.
      * @param School|null $school Школа.
      */
@@ -81,6 +89,7 @@ class ParserPromotion extends Entity
         string|null $description = null,
         Carbon|null $date_start = null,
         Carbon|null $date_end = null,
+        string|null $url = null,
         bool|null $status = null,
         School|null $school = null,
     ) {
@@ -89,6 +98,7 @@ class ParserPromotion extends Entity
         $this->description = $description;
         $this->date_start = $date_start;
         $this->date_end = $date_end;
+        $this->url = $url;
         $this->status = $status;
         $this->school = $school;
     }

@@ -24,6 +24,7 @@ class CreateTablePromotions extends Migration
             $table->text('description')->nullable();
             $table->date('date_start')->nullable();
             $table->date('date_end')->nullable();
+            $table->string('url', 191);
             $table->boolean('status')->default(1)->index();
 
             $table->timestamps();

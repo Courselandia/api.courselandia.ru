@@ -118,6 +118,7 @@ class PromotionControllerTest extends TestCase
                 'description' => $faker->text(500),
                 'date_start' => Carbon::now()->addMonths(-5)->format('Y-m-d O'),
                 'date_end' => Carbon::now()->addMonths(2)->format('Y-m-d O'),
+                'url' => $faker->url(),
                 'status' => true,
             ],
             [
@@ -149,6 +150,7 @@ class PromotionControllerTest extends TestCase
                 'description' => $faker->text(500),
                 'date_start' => Carbon::now()->addMonths(-5)->format('Y-m-d'),
                 'date_end' => Carbon::now()->addMonths(2)->format('Y-m-d O'),
+                'url' => $faker->url(),
                 'status' => true,
             ],
             [
@@ -181,6 +183,7 @@ class PromotionControllerTest extends TestCase
                 'description' => $faker->text(500),
                 'date_start' => Carbon::now()->addMonths(-5)->format('Y-m-d O'),
                 'date_end' => Carbon::now()->addMonths(2)->format('Y-m-d O'),
+                'url' => $faker->url(),
                 'status' => true,
             ],
             [
@@ -213,6 +216,7 @@ class PromotionControllerTest extends TestCase
                 'description' => $faker->text(500),
                 'date_start' => Carbon::now()->addMonths(-5)->format('Y-m-d O'),
                 'date_end' => Carbon::now()->addMonths(2)->format('Y-m-d'),
+                'url' => $faker->url(),
                 'status' => true,
             ],
             [
@@ -244,6 +248,7 @@ class PromotionControllerTest extends TestCase
                 'description' => $faker->text(500),
                 'date_start' => Carbon::now()->addMonths(-5)->format('Y-m-d O'),
                 'date_end' => Carbon::now()->addMonths(2)->format('Y-m-d O'),
+                'url' => $faker->url(),
                 'status' => true,
             ],
             [
@@ -363,6 +368,7 @@ class PromotionControllerTest extends TestCase
             'description',
             'date_start',
             'date_end',
+            'url',
             'status',
             'applicable',
             'created_at',

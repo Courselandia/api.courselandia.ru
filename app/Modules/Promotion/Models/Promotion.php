@@ -34,6 +34,7 @@ use App\Modules\School\Models\School;
  * @property null|string $description Описание.
  * @property null|Carbon $date_start Дата начала.
  * @property null|Carbon $date_end Дата окончания.
+ * @property string $url Ссылка на акцию.
  * @property string $status Статус.
  *
  * @property-read School $school
@@ -61,6 +62,7 @@ class Promotion extends Eloquent
         'description',
         'date_start',
         'date_end',
+        'url',
         'status',
     ];
 
@@ -106,6 +108,7 @@ class Promotion extends Eloquent
             'description' => trans('promotion::models.promotion.description'),
             'date_start' => trans('promotion::models.promotion.dateStart'),
             'date_end' => trans('promotion::models.promotion.dateEnd'),
+            'url' => trans('promotion::models.promotion.url'),
             'status' => trans('promotion::models.promotion.status')
         ];
     }

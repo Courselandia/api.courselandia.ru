@@ -171,6 +171,7 @@ class Import
                     'description' => Typography::process($description, true),
                     'date_start' => $promotionEntity->date_start,
                     'date_end' => $promotionEntity->date_end,
+                    'url' => $promotionEntity->url,
                     'status' => $promotionEntity->status,
                 ];
 
@@ -183,6 +184,7 @@ class Import
                     'description' => Typography::process($description, true),
                     'date_start' => $promotionEntity->date_start,
                     'date_end' => $promotionEntity->date_end,
+                    'url' => $promotionEntity->url,
                     'status' => $promotionEntity->status,
                 ]);
             }

@@ -39,6 +39,7 @@ class PromotionFactory extends Factory
             'description' => $this->faker->text(300),
             'date_start' => Carbon::now()->subMonths(2),
             'date_end' => Carbon::now()->addMonths(2),
+            'url' => $this->faker->url(),
             'status' => true,
         ];
     }
