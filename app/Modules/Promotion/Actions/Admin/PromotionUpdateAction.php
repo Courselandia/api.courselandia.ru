@@ -56,7 +56,7 @@ class PromotionUpdateAction extends Action
             ]);
 
             Promotion::find($this->data->id)->update($promotionEntity->toArray());
-            Cache::tags(['catalog', 'school'])->flush();
+            Cache::tags(['promotion', 'school'])->flush();
 
             $action = new PromotionGetAction($this->data->id);
 

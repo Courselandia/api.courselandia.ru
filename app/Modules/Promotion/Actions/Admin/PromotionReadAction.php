@@ -89,7 +89,7 @@ class PromotionReadAction extends Action
             'school',
         );
 
-        return Cache::tags(['catalog', 'school'])->remember(
+        return Cache::tags(['promotion', 'school'])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
             function () {

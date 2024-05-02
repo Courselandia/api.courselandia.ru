@@ -10,6 +10,7 @@ namespace App\Modules\Promotion\Providers;
 
 use Config;
 use Illuminate\Support\ServiceProvider;
+use App\Modules\Promotion\Commands\PromotionImportCommand;
 
 /**
  * Класс сервис-провайдера для настройки этого модуля.
@@ -36,6 +37,9 @@ class PromotionServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
+        $this->commands([
+            PromotionImportCommand::class,
+        ]);
     }
 
     /**
