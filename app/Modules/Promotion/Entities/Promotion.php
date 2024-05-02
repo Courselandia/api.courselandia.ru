@@ -74,6 +74,13 @@ class Promotion extends Entity
     public ?bool $status = null;
 
     /**
+     * Признак того, что промоакция действует.
+     *
+     * @var bool|null
+     */
+    public ?bool $applicable = null;
+
+    /**
      * Дата создания.
      *
      * @var ?Carbon
@@ -107,9 +114,10 @@ class Promotion extends Entity
      * @param string|null $uuid ID источника промоакции.
      * @param string|null $title Название.
      * @param string|null $description Описание.
-     * @param string|null $date_start Дата начала.
-     * @param string|null $date_end Дата окончания.
+     * @param Carbon|null $date_start Дата начала.
+     * @param Carbon|null $date_end Дата окончания.
      * @param bool|string|null $status Статус.
+     * @param bool|null $applicable Признак того, что промоакция действует.
      * @param Carbon|null $created_at Дата создания.
      * @param Carbon|null $updated_at Дата обновления.
      * @param Carbon|null $deleted_at Дата удаления.
@@ -121,9 +129,10 @@ class Promotion extends Entity
         string|null $uuid = null,
         string|null $title = null,
         string|null $description = null,
-        string|null $date_start = null,
-        string|null $date_end = null,
+        Carbon|null $date_start = null,
+        Carbon|null $date_end = null,
         bool|string|null $status = null,
+        bool|null $applicable = null,
         ?Carbon $created_at = null,
         ?Carbon $updated_at = null,
         ?Carbon $deleted_at = null,
@@ -137,6 +146,7 @@ class Promotion extends Entity
         $this->date_start = $date_start;
         $this->date_end = $date_end;
         $this->status = $status;
+        $this->applicable = $applicable;
         $this->created_at = $created_at;
         $this->updated_at = $updated_at;
         $this->deleted_at = $deleted_at;

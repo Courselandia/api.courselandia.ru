@@ -9,6 +9,7 @@
 namespace App\Modules\Promotion\Actions\Admin;
 
 use Cache;
+use Throwable;
 use Util;
 use ReflectionException;
 use App\Models\Action;
@@ -72,6 +73,7 @@ class PromotionReadAction extends Action
      *
      * @return mixed Вернет результаты исполнения.
      * @throws ReflectionException
+     * @throws Throwable
      */
     public function run(): array
     {
@@ -109,6 +111,11 @@ class PromotionReadAction extends Action
                 }
 
                 $items = $query->get()->toArray();
+
+                for ($i = 0; $i < count($items); $i++) {
+                    $action = new PromotionApplicableAction($items[$i]['id']);
+                    $items[$i]['applicable'] = $action->run();
+                }
 
                 return [
                     'data' => PromotionEntity::collect($items),

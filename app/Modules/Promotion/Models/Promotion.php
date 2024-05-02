@@ -65,6 +65,16 @@ class Promotion extends Eloquent
     ];
 
     /**
+     * Типизирование атрибутов.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'date_start' => 'date',
+        'date_end' => 'date',
+    ];
+
+    /**
      * Метод, который должен вернуть все правила валидации.
      *
      * @return array Вернет массив правил.

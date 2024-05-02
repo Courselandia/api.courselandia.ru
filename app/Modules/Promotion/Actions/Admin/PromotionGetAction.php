@@ -8,6 +8,7 @@
 
 namespace App\Modules\Promotion\Actions\Admin;
 
+use Throwable;
 use Util;
 use Cache;
 use App\Models\Action;
@@ -39,6 +40,7 @@ class PromotionGetAction extends Action
      * Метод запуска логики.
      *
      * @return PromotionEntity|null Вернет результаты исполнения.
+     * @throws Throwable
      */
     public function run(): ?PromotionEntity
     {
@@ -54,7 +56,16 @@ class PromotionGetAction extends Action
                     ])
                     ->first();
 
-                return $promotion ? PromotionEntity::from($promotion->toArray()) : null;
+                if ($promotion) {
+                    $promotion = PromotionEntity::from($promotion->toArray());
+
+                    $action = new PromotionApplicableAction($promotion->id);
+                    $promotion->applicable = $action->run();
+
+                    return $promotion;
+                }
+
+                return null;
             }
         );
     }
