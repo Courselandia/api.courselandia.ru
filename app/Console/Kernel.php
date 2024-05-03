@@ -35,6 +35,7 @@ class Kernel extends ConsoleKernel
         ])->daily();
 
         $schedule->command('course:import')->dailyAt('00:00');
+        $schedule->command('promotion:import')->dailyAt('01:00');
         // $schedule->command('article:write')->dailyAt('02:00');
         $schedule->command('metatag:apply --update')->dailyAt('01:00');
         $schedule->command('course:normalize')->dailyAt('05:00');
