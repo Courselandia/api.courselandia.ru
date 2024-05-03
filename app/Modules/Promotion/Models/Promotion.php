@@ -90,7 +90,8 @@ class Promotion extends Eloquent
             'description' => 'max:65000',
             'date_start' => 'date',
             'date_end' => 'date',
-            'status' => 'required|boolean'
+            'url' => 'required|url|max:191',
+            'status' => 'required|boolean',
         ];
     }
 
