@@ -3,28 +3,32 @@
 return [
     'requests' => [
         'admin' => [
-            'promotionReadRequest' => [
+            'promocodeReadRequest' => [
                 'sorts' => 'Sorts',
                 'offset' => 'Offset',
                 'limit' => 'Limit',
                 'filters' => 'Filters',
                 'status' => 'Status',
             ],
-            'promotionDestroyRequest' => [
+            'promocodeDestroyRequest' => [
                 'ids' => 'ID',
             ],
-            'promotionCreateRequest' => [
-                'dateStart' => 'Start date of promotion',
-                'dateEnd' => 'End date of promotion',
+            'promocodeCreateRequest' => [
+                'dateStart' => 'Start date of promocode',
+                'dateEnd' => 'End date of promocode',
                 'status' => 'Status',
-                'school_id' => 'ID school',
+                'schoolId' => 'School ID',
+                'minPrice' => 'Min price',
+                'discount' => 'Discount',
+                'discountType' => 'Discount type',
+                'type' => 'Type',
             ],
-            'promotionUpdateStatusRequest' => [
+            'promocodeUpdateStatusRequest' => [
                 'status' => 'Status',
             ],
         ],
         'site' => [
-            'promotionReadRequest' => [
+            'promocodeReadRequest' => [
                 'year' => 'Year',
                 'limit' => 'Limit',
                 'offset' => 'Offset',
@@ -34,15 +38,15 @@ return [
     ],
     'controllers' => [
         'admin' => [
-            'promotionController' => [
+            'promocodeController' => [
                 'create' => [
-                    'log' => 'Create a promotion.',
+                    'log' => 'Create a promocode.',
                 ],
                 'update' => [
-                    'log' => 'Update the promotion.',
+                    'log' => 'Update the promocode.',
                 ],
                 'destroy' => [
-                    'log' => 'Destroy the promotion.',
+                    'log' => 'Destroy the promocode.',
                 ],
             ],
         ],

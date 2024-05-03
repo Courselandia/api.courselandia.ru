@@ -1,12 +1,12 @@
 <?php
 /**
- * Модуль Промоакций.
- * Этот модуль содержит все классы для работы с промоакциями.
+ * Модуль Промокодов.
+ * Этот модуль содержит все классы для работы с промокодами.
  *
- * @package App\Modules\Promotion
+ * @package App\Modules\Promocode
  */
 
-namespace App\Modules\Promotion\Http\Controllers\Admin;
+namespace App\Modules\Promocode\Http\Controllers\Admin;
 
 use Log;
 use Auth;
@@ -20,36 +20,38 @@ use App\Models\Exceptions\RecordExistException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Models\Exceptions\ValidateException;
 use App\Modules\Metatag\Template\TemplateException;
-use App\Modules\Promotion\Actions\Admin\PromotionCreateAction;
-use App\Modules\Promotion\Actions\Admin\PromotionDestroyAction;
-use App\Modules\Promotion\Actions\Admin\PromotionGetAction;
-use App\Modules\Promotion\Actions\Admin\PromotionReadAction;
-use App\Modules\Promotion\Actions\Admin\PromotionUpdateAction;
-use App\Modules\Promotion\Actions\Admin\PromotionUpdateStatusAction;
-use App\Modules\Promotion\Data\PromotionCreate;
-use App\Modules\Promotion\Data\PromotionUpdate;
-use App\Modules\Promotion\Http\Requests\Admin\PromotionCreateRequest;
-use App\Modules\Promotion\Http\Requests\Admin\PromotionDestroyRequest;
-use App\Modules\Promotion\Http\Requests\Admin\PromotionReadRequest;
-use App\Modules\Promotion\Http\Requests\Admin\PromotionUpdateRequest;
-use App\Modules\Promotion\Http\Requests\Admin\PromotionUpdateStatusRequest;
+use App\Modules\Promocode\Actions\Admin\PromocodeCreateAction;
+use App\Modules\Promocode\Actions\Admin\PromocodeDestroyAction;
+use App\Modules\Promocode\Actions\Admin\PromocodeGetAction;
+use App\Modules\Promocode\Actions\Admin\PromocodeReadAction;
+use App\Modules\Promocode\Actions\Admin\PromocodeUpdateAction;
+use App\Modules\Promocode\Actions\Admin\PromocodeUpdateStatusAction;
+use App\Modules\Promocode\Data\PromocodeCreate;
+use App\Modules\Promocode\Data\PromocodeUpdate;
+use App\Modules\Promocode\Http\Requests\Admin\PromocodeCreateRequest;
+use App\Modules\Promocode\Http\Requests\Admin\PromocodeDestroyRequest;
+use App\Modules\Promocode\Http\Requests\Admin\PromocodeReadRequest;
+use App\Modules\Promocode\Http\Requests\Admin\PromocodeUpdateRequest;
+use App\Modules\Promocode\Http\Requests\Admin\PromocodeUpdateStatusRequest;
+use App\Modules\Promocode\Enums\DiscountType;
+use App\Modules\Promocode\Enums\Type;
 
 /**
- * Класс контроллер для работы с промоакций в административной части.
+ * Класс контроллер для работы с промокодов в административной части.
  */
-class PromotionController extends Controller
+class PromocodeController extends Controller
 {
     /**
-     * Получение промоакций.
+     * Получение промокодов.
      *
-     * @param int|string $id ID промоакции.
+     * @param int|string $id ID промокода.
      *
      * @return JsonResponse Вернет JSON ответ.
      * @throws Throwable
      */
     public function get(int|string $id): JsonResponse
     {
-        $action = new PromotionGetAction($id);
+        $action = new PromocodeGetAction($id);
         $data = $action->run();
 
         if ($data) {
@@ -72,14 +74,14 @@ class PromotionController extends Controller
     /**
      * Чтение данных.
      *
-     * @param PromotionReadRequest $request Запрос.
+     * @param PromocodeReadRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
      * @throws ReflectionException|Throwable
      */
-    public function read(PromotionReadRequest $request): JsonResponse
+    public function read(PromocodeReadRequest $request): JsonResponse
     {
-        $action = new PromotionReadAction(
+        $action = new PromocodeReadAction(
             $request->get('sorts'),
             $request->get('filters'),
             $request->get('offset'),
@@ -95,15 +97,15 @@ class PromotionController extends Controller
     /**
      * Добавление данных.
      *
-     * @param PromotionCreateRequest $request Запрос.
+     * @param PromocodeCreateRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
      * @throws Throwable
      */
-    public function create(PromotionCreateRequest $request): JsonResponse
+    public function create(PromocodeCreateRequest $request): JsonResponse
     {
         try {
-            $data = PromotionCreate::from([
+            $data = PromocodeCreate::from([
                 ...$request->toArray(),
                 'date_start' => Carbon::createFromFormat(
                     'Y-m-d O',
@@ -113,14 +115,16 @@ class PromotionController extends Controller
                     'Y-m-d O',
                     $request->get('date_end')
                 )->setTimezone(Config::get('app.timezone')),
+                'discount_type' => DiscountType::from($request->get('discount_type')),
+                'type' => Type::from($request->get('type')),
             ]);
-            $action = new PromotionCreateAction($data);
+            $action = new PromocodeCreateAction($data);
             $data = $action->run();
 
             Log::info(
-                trans('promotion::http.controllers.admin.promotionController.create.log'),
+                trans('promocode::http.controllers.admin.promocodeController.create.log'),
                 [
-                    'module' => 'Promotion',
+                    'module' => 'Promocode',
                     'login' => Auth::getUser()->login,
                     'type' => 'create',
                 ],
@@ -148,16 +152,16 @@ class PromotionController extends Controller
     /**
      * Обновление данных.
      *
-     * @param int|string $id ID промоакции.
-     * @param PromotionUpdateRequest $request Запрос.
+     * @param int|string $id ID промокода.
+     * @param PromocodeUpdateRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
      * @throws Throwable
      */
-    public function update(int|string $id, PromotionUpdateRequest $request): JsonResponse
+    public function update(int|string $id, PromocodeUpdateRequest $request): JsonResponse
     {
         try {
-            $data = PromotionUpdate::from([
+            $data = PromocodeUpdate::from([
                 ...$request->toArray(),
                 'date_start' => Carbon::createFromFormat(
                     'Y-m-d O',
@@ -167,15 +171,17 @@ class PromotionController extends Controller
                     'Y-m-d O',
                     $request->get('date_end')
                 )->setTimezone(Config::get('app.timezone')),
+                'discount_type' => DiscountType::from($request->get('discount_type')),
+                'type' => Type::from($request->get('type')),
                 'id' => $id,
             ]);
-            $action = new PromotionUpdateAction($data);
+            $action = new PromocodeUpdateAction($data);
             $data = $action->run();
 
             Log::info(
-                trans('promotion::http.controllers.admin.promotionController.update.log'),
+                trans('promocode::http.controllers.admin.promocodeController.update.log'),
                 [
-                    'module' => 'Promotion',
+                    'module' => 'Promocode',
                     'login' => Auth::getUser()->login,
                     'type' => 'update',
                 ]
@@ -204,17 +210,18 @@ class PromotionController extends Controller
      * Обновление статуса.
      *
      * @param int|string $id ID пользователя.
-     * @param PromotionUpdateStatusRequest $request Запрос.
+     * @param PromocodeUpdateStatusRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
+     * @throws Throwable
      */
-    public function updateStatus(int|string $id, PromotionUpdateStatusRequest $request): JsonResponse
+    public function updateStatus(int|string $id, PromocodeUpdateStatusRequest $request): JsonResponse
     {
         try {
-            $action = new PromotionUpdateStatusAction($id, $request->get('status'));
+            $action = new PromocodeUpdateStatusAction($id, $request->get('status'));
             $data = $action->run();
 
-            Log::info(trans('promotion::http.controllers.admin.promotionController.update.log'), [
+            Log::info(trans('promocode::http.controllers.admin.promocodeController.update.log'), [
                 'module' => 'User',
                 'login' => Auth::getUser()->login,
                 'type' => 'update',
@@ -242,19 +249,19 @@ class PromotionController extends Controller
     /**
      * Удаление данных.
      *
-     * @param PromotionDestroyRequest $request Запрос.
+     * @param PromocodeDestroyRequest $request Запрос.
      *
      * @return JsonResponse Вернет JSON ответ.
      */
-    public function destroy(PromotionDestroyRequest $request): JsonResponse
+    public function destroy(PromocodeDestroyRequest $request): JsonResponse
     {
-        $action = new PromotionDestroyAction($request->get('ids'));
+        $action = new PromocodeDestroyAction($request->get('ids'));
         $action->run();
 
         Log::info(
-            trans('promotion::http.controllers.admin.promotionController.destroy.log'),
+            trans('promocode::http.controllers.admin.promocodeController.destroy.log'),
             [
-                'module' => 'Promotion',
+                'module' => 'Promocode',
                 'login' => Auth::getUser()->login,
                 'type' => 'destroy',
             ]

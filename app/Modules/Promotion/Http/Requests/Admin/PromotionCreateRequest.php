@@ -26,6 +26,7 @@ class PromotionCreateRequest extends FormRequest
             'status' => 'boolean',
             'date_start' => 'required|date_format:Y-m-d O',
             'date_end' => 'required|date_format:Y-m-d O',
+            'school_id' => 'exists_soft:schools,id',
         ];
     }
 
@@ -40,6 +41,7 @@ class PromotionCreateRequest extends FormRequest
             'status' => trans('promotion::http.requests.admin.promotionCreateRequest.status'),
             'date_start' => trans('promotion::http.requests.admin.promotionCreateRequest.dateStart'),
             'date_end' => trans('promotion::http.requests.admin.promotionCreateRequest.dateEnd'),
+            'school_id' => trans('promotion::http.requests.admin.promotionCreateRequest.schoolId'),
         ];
     }
 }

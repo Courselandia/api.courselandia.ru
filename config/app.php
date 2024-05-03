@@ -324,6 +324,9 @@ return [
 
         App\Modules\Promotion\Providers\PromotionServiceProvider::class,
         App\Modules\Promotion\Providers\RouteServiceProvider::class,
+
+        App\Modules\Promocode\Providers\PromocodeServiceProvider::class,
+        App\Modules\Promocode\Providers\RouteServiceProvider::class,
     ],
 
     /*

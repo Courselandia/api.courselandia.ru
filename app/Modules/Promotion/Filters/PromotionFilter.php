@@ -80,7 +80,7 @@ class PromotionFilter extends ModelFilter
      */
     public function description(string $query): self
     {
-        return $this->whereLike('promotions.link', $query);
+        return $this->whereLike('promotions.description', $query);
     }
 
     /**

@@ -3,28 +3,32 @@
 return [
     'requests' => [
         'admin' => [
-            'promotionReadRequest' => [
+            'promocodeReadRequest' => [
                 'sorts' => 'Сортировка',
                 'offset' => 'Отступ',
                 'limit' => 'Лимит',
                 'filters' => 'Фильтр',
                 'status' => 'Статус',
             ],
-            'promotionDestroyRequest' => [
+            'promocodeDestroyRequest' => [
                 'ids' => 'ID'
             ],
-            'promotionCreateRequest' => [
+            'promocodeCreateRequest' => [
                 'dateStart' => 'Дата начала',
                 'dateEnd' => 'Дата окончания',
                 'status' => 'Статус',
-                'school_id' => 'ID школы',
+                'schoolId' => 'ID школы',
+                'minPrice' => 'Минимальная цена',
+                'discount' => 'Скидка',
+                'discountType' => 'Тип скидки',
+                'type' => 'Тип промокода',
             ],
-            'promotionUpdateStatusRequest' => [
+            'promocodeUpdateStatusRequest' => [
                 'status' => 'Статус',
             ],
         ],
         'site' => [
-            'promotionReadRequest' => [
+            'promocodeReadRequest' => [
                 'year' => 'Год',
                 'limit' => 'Лимит',
                 'offset' => 'Отступ',
@@ -34,7 +38,7 @@ return [
     ],
     'controllers' => [
         'admin' => [
-            'promotionController' => [
+            'promocodeController' => [
                 'create' => [
                     'log' => 'Создание публикации.',
                 ],
