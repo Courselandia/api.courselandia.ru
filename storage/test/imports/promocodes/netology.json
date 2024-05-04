@@ -1,0 +1,326 @@
+{
+  "success": true,
+  "date": "2024-05-02 10:46:56",
+  "total": 76,
+  "data": [
+    {
+      "id": "pc63312",
+      "name": "may24",
+      "short_name": "Скидка 5000 руб. на заказ",
+      "offer_id": 447,
+      "offer_name": "maed.ru",
+      "offer_url": "https://maed.ru",
+      "description": "Скидка 5000 рублей на все курсы для любых пользователей",
+      "min_price": null,
+      "discount": 5000,
+      "discount_type": "rub",
+      "date_start": "2024-05-02",
+      "date_end": "2024-05-31",
+      "active": true,
+      "forced_attribution": false,
+      "referral_link": "https://go.courselandia.ru/go/2a3bcfb2ae410f31?m=34",
+      "private": false,
+      "present_title": null,
+      "present_url": null,
+      "present_image": null,
+      "type": "discount",
+      "promotion": null,
+      "landing": {
+        "id": "ln6084",
+        "name": "Главная страница",
+        "promotional": "false",
+        "available_deep_link": true,
+        "originalLink": "https://maed.ru/",
+        "link": "https://go.courselandia.ru/go/2a3bcfb2ae410f31?m=34"
+      },
+      "banners": [],
+      "categories_selection": "all",
+      "categories": null,
+      "status": "active",
+      "used_24h": false,
+      "used_7d": false,
+      "last_use": null,
+      "min_price_24h": null,
+      "min_price_7d": null,
+      "chance": "unknown"
+    },
+    {
+      "id": "pc62641",
+      "name": "May24",
+      "short_name": "До 12 уроков в подарок при покупке в подарок при покупке",
+      "offer_id": 542,
+      "offer_name": "eng.skillbox.ru",
+      "offer_url": "https://eng.skillbox.ru",
+      "description": "До 12 уроков в подарок при покупке в подарок при покупке пакета уроков",
+      "min_price": null,
+      "discount": null,
+      "discount_type": "percent",
+      "date_start": "2024-04-27",
+      "date_end": "2024-05-12",
+      "active": true,
+      "forced_attribution": false,
+      "referral_link": "https://go.courselandia.ru/go/884d98a60d274d50?m=34",
+      "private": false,
+      "present_title": "До 12 уроков в подарок при покупке",
+      "present_url": null,
+      "present_image": null,
+      "type": "present",
+      "promotion": {
+        "id": "pr20024",
+        "title": "Уроки в подарок по промокоду",
+        "description": "Бесплатный вводный урок и уроки в подарок по промокоду"
+      },
+      "landing": {
+        "id": "ln22634",
+        "name": "Уроки в подарок по промокоду",
+        "promotional": "true",
+        "originalLink": "https://eng.skillbox.ru/platform-cpa/",
+        "link": "https://go.courselandia.ru/go/884d98a60d274d50?m=34"
+      },
+      "banners": [],
+      "categories_selection": "all",
+      "categories": null,
+      "status": "active",
+      "used_24h": false,
+      "used_7d": false,
+      "last_use": null,
+      "min_price_24h": null,
+      "min_price_7d": null,
+      "chance": "unknown"
+    },
+    {
+      "id": "pc29551",
+      "name": "40SALE",
+      "short_name": "Скидка 40% на заказ",
+      "offer_id": 672,
+      "offer_name": "englex.ru",
+      "offer_url": "https://englex.ru",
+      "description": "Скидка 40% на любой пакет при первой покупке пакета новым учеников с русскоязычным преподавателем",
+      "min_price": null,
+      "discount": 40,
+      "discount_type": "percent",
+      "date_start": "2023-05-17",
+      "date_end": "2024-12-31",
+      "active": true,
+      "forced_attribution": false,
+      "referral_link": "https://go.courselandia.ru/go/61d88102ec2770e0?m=34",
+      "private": false,
+      "present_title": null,
+      "present_url": null,
+      "present_image": null,
+      "type": "discount",
+      "promotion": {
+        "id": "pr13633",
+        "title": "Скидка -40% по промокоду",
+        "description": "Скидка 40% на любой пакет при первой покупке пакета новым учеником с русскоязычным преподавателем"
+      },
+      "landing": {
+        "id": "ln15302",
+        "name": "Скидка -40% по промокоду",
+        "promotional": "true",
+        "originalLink": "https://englex.ru/",
+        "link": "https://go.courselandia.ru/go/61d88102ec2770e0?m=34"
+      },
+      "banners": [
+        {
+          "id": "bn98529",
+          "name": "Скидка -30% по промокоду (2_468x60-2)",
+          "type": "Акционный",
+          "size_width": 468,
+          "size_height": 60,
+          "banner_image_url": "https://static.advcake.ru/upload/banners/englexru/a5e5a20736758b87eeadc6609e018091.png",
+          "mime_type": "image/png"
+        },
+        {
+          "id": "bn98530",
+          "name": "Скидка -30% по промокоду (120х600-2)",
+          "type": "Акционный",
+          "size_width": 120,
+          "size_height": 600,
+          "banner_image_url": "https://static.advcake.ru/upload/banners/englexru/03dd82bbc5808bb708f37be61261139b.png",
+          "mime_type": "image/png"
+        },
+        {
+          "id": "bn98531",
+          "name": "Скидка -30% по промокоду (160х600-2)",
+          "type": "Акционный",
+          "size_width": 160,
+          "size_height": 600,
+          "banner_image_url": "https://static.advcake.ru/upload/banners/englexru/25b7bb502a13e3994cc82ecc7f1824c2.png",
+          "mime_type": "image/png"
+        },
+        {
+          "id": "bn98532",
+          "name": "Скидка -30% по промокоду (240х300-1)",
+          "type": "Акционный",
+          "size_width": 200,
+          "size_height": 300,
+          "banner_image_url": "https://static.advcake.ru/upload/banners/englexru/ed5c0187c93e0bdd4cbb28ab7a0ea904.png",
+          "mime_type": "image/png"
+        },
+        {
+          "id": "bn98533",
+          "name": "Скидка -30% по промокоду (240х400-2)",
+          "type": "Акционный",
+          "size_width": 240,
+          "size_height": 400,
+          "banner_image_url": "https://static.advcake.ru/upload/banners/englexru/2461008134a507bbc75c365b993c6b80.png",
+          "mime_type": "image/png"
+        },
+        {
+          "id": "bn98534",
+          "name": "Скидка -30% по промокоду (300х250-2)",
+          "type": "Акционный",
+          "size_width": 300,
+          "size_height": 250,
+          "banner_image_url": "https://static.advcake.ru/upload/banners/englexru/a32853e28698d44a61454dafb4388340.png",
+          "mime_type": "image/png"
+        },
+        {
+          "id": "bn98535",
+          "name": "Скидка -30% по промокоду (336x280-2)",
+          "type": "Акционный",
+          "size_width": 336,
+          "size_height": 280,
+          "banner_image_url": "https://static.advcake.ru/upload/banners/englexru/a39ad10a271778dcfb24eb09c598d30e.png",
+          "mime_type": "image/png"
+        },
+        {
+          "id": "bn98536",
+          "name": "Скидка -30% по промокоду (500x500-1)",
+          "type": "Акционный",
+          "size_width": 500,
+          "size_height": 500,
+          "banner_image_url": "https://static.advcake.ru/upload/banners/englexru/0ea25eee44df4e0609d0a22082b0747d.png",
+          "mime_type": "image/png"
+        },
+        {
+          "id": "bn98537",
+          "name": "Скидка -30% по промокоду (600x90)",
+          "type": "Акционный",
+          "size_width": 600,
+          "size_height": 90,
+          "banner_image_url": "https://static.advcake.ru/upload/banners/englexru/d35f6432ad27cad1544c3639d1931d3e.png",
+          "mime_type": "image/png"
+        },
+        {
+          "id": "bn98538",
+          "name": "Скидка -30% по промокоду (728x90)",
+          "type": "Акционный",
+          "size_width": 728,
+          "size_height": 90,
+          "banner_image_url": "https://static.advcake.ru/upload/banners/englexru/effb5ee9f51ffd18bbb42d9597bd5162.png",
+          "mime_type": "image/png"
+        },
+        {
+          "id": "bn107783",
+          "name": "Скидка -40% по промокоду (120х600)",
+          "type": "Акционный",
+          "size_width": 120,
+          "size_height": 600,
+          "banner_image_url": "https://static.advcake.ru/upload/banners/englexru/75e6f21619a92f0fd7045198fa47b982.png",
+          "mime_type": "image/png"
+        },
+        {
+          "id": "bn107784",
+          "name": "Скидка -40% по промокоду (160х600)",
+          "type": "Акционный",
+          "size_width": 160,
+          "size_height": 600,
+          "banner_image_url": "https://static.advcake.ru/upload/banners/englexru/1093a81437482b25d04199bd047efe6d.png",
+          "mime_type": "image/png"
+        },
+        {
+          "id": "bn107785",
+          "name": "Скидка -40% по промокоду (240х200)",
+          "type": "Акционный",
+          "size_width": 200,
+          "size_height": 200,
+          "banner_image_url": "https://static.advcake.ru/upload/banners/englexru/461753bf8c4cd3fbcb4841e5529d964e.png",
+          "mime_type": "image/png"
+        },
+        {
+          "id": "bn107786",
+          "name": "Скидка -40% по промокоду (240х300)",
+          "type": "Акционный",
+          "size_width": 200,
+          "size_height": 300,
+          "banner_image_url": "https://static.advcake.ru/upload/banners/englexru/cad0b32231fee4ccbbdb0f217689ab98.png",
+          "mime_type": "image/png"
+        },
+        {
+          "id": "bn107787",
+          "name": "Скидка -40% по промокоду (240х400)",
+          "type": "Акционный",
+          "size_width": 240,
+          "size_height": 400,
+          "banner_image_url": "https://static.advcake.ru/upload/banners/englexru/e78d48fd5e450a2b3b25a56293aeb146.png",
+          "mime_type": "image/png"
+        },
+        {
+          "id": "bn107782",
+          "name": "Скидка -40% по промокоду (2_468x60)",
+          "type": "Акционный",
+          "size_width": 468,
+          "size_height": 60,
+          "banner_image_url": "https://static.advcake.ru/upload/banners/englexru/9bde63f08fa86459a8a9f43667537587.png",
+          "mime_type": "image/png"
+        },
+        {
+          "id": "bn107788",
+          "name": "Скидка -40% по промокоду (300х250)",
+          "type": "Акционный",
+          "size_width": 300,
+          "size_height": 250,
+          "banner_image_url": "https://static.advcake.ru/upload/banners/englexru/954a70e5a06550bc3e8080dc2fb0f202.png",
+          "mime_type": "image/png"
+        },
+        {
+          "id": "bn107789",
+          "name": "Скидка -40% по промокоду (336x280)",
+          "type": "Акционный",
+          "size_width": 336,
+          "size_height": 280,
+          "banner_image_url": "https://static.advcake.ru/upload/banners/englexru/e1d559be2312bb6cc6da53e52ee43421.png",
+          "mime_type": "image/png"
+        },
+        {
+          "id": "bn107790",
+          "name": "Скидка -40% по промокоду (500x500)",
+          "type": "Акционный",
+          "size_width": 500,
+          "size_height": 500,
+          "banner_image_url": "https://static.advcake.ru/upload/banners/englexru/ab0af8dbb0240f4f9d0782a0ab504c5e.png",
+          "mime_type": "image/png"
+        },
+        {
+          "id": "bn107791",
+          "name": "Скидка -40% по промокоду (600x90)",
+          "type": "Акционный",
+          "size_width": 600,
+          "size_height": 90,
+          "banner_image_url": "https://static.advcake.ru/upload/banners/englexru/40dda48bb2d8002e5449f006ede66076.png",
+          "mime_type": "image/png"
+        },
+        {
+          "id": "bn107792",
+          "name": "Скидка -40% по промокоду (728x90)",
+          "type": "Акционный",
+          "size_width": 728,
+          "size_height": 90,
+          "banner_image_url": "https://static.advcake.ru/upload/banners/englexru/8b1e0bd6287fbb512a410f8db668d5ec.png",
+          "mime_type": "image/png"
+        }
+      ],
+      "categories_selection": "all",
+      "categories": null,
+      "status": "active",
+      "used_24h": false,
+      "used_7d": false,
+      "last_use": null,
+      "min_price_24h": null,
+      "min_price_7d": null,
+      "chance": "unknown"
+    }
+  ]
+}

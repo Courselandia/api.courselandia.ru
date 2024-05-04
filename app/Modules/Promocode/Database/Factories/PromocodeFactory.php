@@ -42,10 +42,10 @@ class PromocodeFactory extends Factory
             'description' => $this->faker->text(300),
             'min_price' => $this->faker->randomFloat(2, 10),
             'discount' => $this->faker->randomFloat(2, 10),
-            'discount_type' => DiscountType::PERCENT,
+            'discount_type' => DiscountType::PERCENT->value,
             'date_start' => Carbon::now()->subMonths(2),
             'date_end' => Carbon::now()->addMonths(2),
-            'type' => Type::DISCOUNT,
+            'type' => Type::DISCOUNT->value,
             'url' => $this->faker->url(),
             'status' => true,
         ];
