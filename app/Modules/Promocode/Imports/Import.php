@@ -167,10 +167,15 @@ class Import
 
             if ($promocode) {
                 $data = [
+                    'code' => $promocodeEntity->code,
                     'title' => Typography::process($title, true),
                     'description' => Typography::process($description, true),
+                    'min_price' => $promocodeEntity->min_price,
+                    'discount' => $promocodeEntity->discount,
+                    'discount_type' => $promocodeEntity->discount_type->value,
                     'date_start' => $promocodeEntity->date_start,
                     'date_end' => $promocodeEntity->date_end,
+                    'type' => $promocodeEntity->type->value,
                     'url' => $promocodeEntity->url,
                     'status' => $promocodeEntity->status,
                 ];
@@ -179,11 +184,16 @@ class Import
             } else {
                 $promocode = Promocode::create([
                     'uuid' => $promocodeEntity->uuid,
+                    'code' => $promocodeEntity->code,
                     'school_id' => $promocodeEntity->school->value,
                     'title' => Typography::process($title, true),
                     'description' => Typography::process($description, true),
+                    'min_price' => $promocodeEntity->min_price,
+                    'discount' => $promocodeEntity->discount,
+                    'discount_type' => $promocodeEntity->discount_type->value,
                     'date_start' => $promocodeEntity->date_start,
                     'date_end' => $promocodeEntity->date_end,
+                    'type' => $promocodeEntity->type->value,
                     'url' => $promocodeEntity->url,
                     'status' => $promocodeEntity->status,
                 ]);

@@ -24,8 +24,8 @@ class CreateTablePromocodes extends Migration
             $table->string('title', 191);
             $table->text('description')->nullable();
             $table->float('min_price', 9)->unsigned()->nullable();
-            $table->float('discount', 9)->unsigned();
-            $table->text('discount_type');
+            $table->float('discount', 9)->unsigned()->nullable();
+            $table->text('discount_type')->nullable();
             $table->date('date_start')->nullable();
             $table->date('date_end')->nullable();
             $table->string('type', 191);

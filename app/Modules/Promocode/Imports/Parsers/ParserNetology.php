@@ -52,7 +52,7 @@ class ParserNetology extends Parser
                 $promocode->description = $item['description'];
                 $promocode->min_price = $item['min_price'];
                 $promocode->discount = $item['discount'];
-                $promocode->discount_type = DiscountType::from($item['discount']);
+                $promocode->discount_type = DiscountType::from($item['discount_type']);
                 $promocode->date_start = $item['date_start'] ? Carbon::createFromFormat('Y-m-d',
                     $item['date_start']) : null;
                 $promocode->date_end = $item['date_end'] ? Carbon::createFromFormat('Y-m-d', $item['date_end']) : null;
