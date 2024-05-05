@@ -24,13 +24,28 @@ class PromocodeReadRequest extends FormRequest
     public function rules(): array
     {
         $columns = Schema::getColumnListing('promocodes');
-        $columns = implode(',', $columns);
+
+        $columnsFilter = array_merge(
+            $columns,
+            [
+                'school-id',
+                'date',
+                'filter_applicable',
+            ]
+        );
+
+        $columnsSort = array_merge(
+            $columns,
+            [
+                'school-name'
+            ]
+        );
 
         return [
-            'sorts' => 'array|sorts:' . $columns,
+            'sorts' => 'array|sorts:' . implode(',', $columnsSort),
             'offset' => 'integer|digits_between:0,20',
             'limit' => 'integer|digits_between:0,20',
-            'filters' => 'array|filters:' . $columns . '|filter_date_range:date_start|filter_date_range:date_end',
+            'filters' => 'array|filters:' . implode(',', $columnsFilter) . '|filter_date_range:date_start|filter_date_range:date_end',
             'filters.status' => 'boolean',
         ];
     }

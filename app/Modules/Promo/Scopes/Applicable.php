@@ -20,7 +20,7 @@ use Illuminate\Database\Eloquent\Builder;
 trait Applicable
 {
     /**
-     * Заготовка запроса для получения только активных промокодов.
+     * Заготовка запроса для получения только активных промоматериалов.
      *
      * @param Builder $query Запрос.
      */
@@ -44,6 +44,30 @@ trait Applicable
                     ->where(DB::raw("'" . Carbon::now()->format('Y-m-d') . "'"), '>=', DB::raw('date_start'))
                     ->where(DB::raw("'" . Carbon::now()->startOfDay()->format('Y-m-d') . "'"), '<=', DB::raw('date_end'));
             });
-        })->where('status', 1);
+        })->where($this->getTable() . '.status', 1);
+    }
+
+    /**
+     * Заготовка запроса для получения только неактивных промоматериалов.
+     *
+     * @param Builder $query Запрос.
+     */
+    public function scopeInapplicable(Builder $query): Builder
+    {
+        return $query->where(function ($query) {
+            $query->orWhere(function ($query) {
+                $query
+                    ->where(DB::raw("'" . Carbon::now()->format('Y-m-d') . "'"), '<', DB::raw('date_start'))
+                    ->whereNull('date_end');
+            })->orWhere(function ($query) {
+                $query
+                    ->whereNull('date_start')
+                    ->where(DB::raw("'" . Carbon::now()->startOfDay()->format('Y-m-d') . "'"), '>', DB::raw('date_end'));
+            })->orWhere(function ($query) {
+                $query
+                    ->where(DB::raw("'" . Carbon::now()->format('Y-m-d') . "'"), '<', DB::raw('date_start'))
+                    ->orWhere(DB::raw("'" . Carbon::now()->startOfDay()->format('Y-m-d') . "'"), '>', DB::raw('date_end'));
+            })->orWhere($this->getTable() . '.status', 0);
+        });
     }
 }

@@ -100,25 +100,33 @@ class PromocodeFilter extends ModelFilter
     /**
      * Поиск по минимальной цене.
      *
-     * @param float[] $price Цена от и до.
+     * @param float[]|float $price Цена от и до.
      *
      * @return self Правила поиска.
      */
-    public function minPrice(array $price): self
+    public function minPrice(array|float $price): self
     {
-        return $this->whereBetween('promocodes.min_price', $price);
+        if (is_array($price)) {
+            return $this->whereBetween('promocodes.min_price', $price);
+        }
+
+        return $this->where('promocodes.min_price', $price);
     }
 
     /**
      * Поиск по скидке.
      *
-     * @param float[] $price Скидка от и до.
+     * @param float[]|float $discount Скидка от и до.
      *
      * @return self Правила поиска.
      */
-    public function discount(array $price): self
+    public function discount(array|float $discount): self
     {
-        return $this->whereBetween('promocodes.discount', $price);
+        if (is_array($discount)) {
+            return $this->whereBetween('promocodes.discount', $discount);
+        }
+
+        return $this->where('promocodes.discount', $discount);
     }
 
     /**
@@ -181,5 +189,21 @@ class PromocodeFilter extends ModelFilter
     public function status(bool $status): self
     {
         return $this->where('promocodes.status', $status);
+    }
+
+    /**
+     * Поиск по возможности применить.
+     *
+     * @param bool $status Статус.
+     *
+     * @return PromocodeFilter Правила поиска.
+     */
+    public function filterApplicable(bool $status): self
+    {
+        if ($status) {
+            return $this->applicable();
+        }
+
+        return $this->inapplicable();
     }
 }

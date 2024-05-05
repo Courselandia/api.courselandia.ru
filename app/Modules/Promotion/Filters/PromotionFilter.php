@@ -8,6 +8,7 @@
 
 namespace App\Modules\Promotion\Filters;
 
+use App\Modules\Promocode\Filters\PromocodeFilter;
 use Config;
 use Carbon\Carbon;
 use EloquentFilter\ModelFilter;
@@ -117,5 +118,21 @@ class PromotionFilter extends ModelFilter
     public function status(bool $status): self
     {
         return $this->where('promotions.status', $status);
+    }
+
+    /**
+     * Поиск по возможности применить.
+     *
+     * @param bool $status Статус.
+     *
+     * @return PromocodeFilter Правила поиска.
+     */
+    public function filterApplicable(bool $status): self
+    {
+        if ($status) {
+            return $this->applicable();
+        }
+
+        return $this->inapplicable();
     }
 }
