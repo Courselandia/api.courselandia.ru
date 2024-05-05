@@ -105,14 +105,14 @@ class PromotionController extends Controller
         try {
             $data = PromotionCreate::from([
                 ...$request->toArray(),
-                'date_start' => Carbon::createFromFormat(
+                'date_start' => $request->get('date_start') ? Carbon::createFromFormat(
                     'Y-m-d O',
                     $request->get('date_start')
-                )->setTimezone(Config::get('app.timezone')),
-                'date_end' => Carbon::createFromFormat(
+                )->setTimezone(Config::get('app.timezone')) : null,
+                'date_end' => $request->get('date_end') ? Carbon::createFromFormat(
                     'Y-m-d O',
                     $request->get('date_end')
-                )->setTimezone(Config::get('app.timezone')),
+                )->setTimezone(Config::get('app.timezone')) : null,
             ]);
             $action = new PromotionCreateAction($data);
             $data = $action->run();
@@ -159,14 +159,14 @@ class PromotionController extends Controller
         try {
             $data = PromotionUpdate::from([
                 ...$request->toArray(),
-                'date_start' => Carbon::createFromFormat(
+                'date_start' => $request->get('date_start') ? Carbon::createFromFormat(
                     'Y-m-d O',
                     $request->get('date_start')
-                )->setTimezone(Config::get('app.timezone')),
-                'date_end' => Carbon::createFromFormat(
+                )->setTimezone(Config::get('app.timezone')) : null,
+                'date_end' => $request->get('date_end') ? Carbon::createFromFormat(
                     'Y-m-d O',
                     $request->get('date_end')
-                )->setTimezone(Config::get('app.timezone')),
+                )->setTimezone(Config::get('app.timezone')) : null,
                 'id' => $id,
             ]);
             $action = new PromotionUpdateAction($data);

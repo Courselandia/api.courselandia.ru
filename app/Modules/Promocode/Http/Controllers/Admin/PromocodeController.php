@@ -107,15 +107,17 @@ class PromocodeController extends Controller
         try {
             $data = PromocodeCreate::from([
                 ...$request->toArray(),
-                'date_start' => Carbon::createFromFormat(
+                'date_start' => $request->get('date_start') ? Carbon::createFromFormat(
                     'Y-m-d O',
                     $request->get('date_start')
-                )->setTimezone(Config::get('app.timezone')),
-                'date_end' => Carbon::createFromFormat(
+                )->setTimezone(Config::get('app.timezone')) : null,
+                'date_end' => $request->get('date_end') ? Carbon::createFromFormat(
                     'Y-m-d O',
                     $request->get('date_end')
-                )->setTimezone(Config::get('app.timezone')),
-                'discount_type' => DiscountType::from($request->get('discount_type')),
+                )->setTimezone(Config::get('app.timezone')) : null,
+                'discount_type' => $request->get('discount_type')
+                    ? DiscountType::from($request->get('discount_type'))
+                    : null,
                 'type' => Type::from($request->get('type')),
             ]);
             $action = new PromocodeCreateAction($data);
@@ -163,15 +165,17 @@ class PromocodeController extends Controller
         try {
             $data = PromocodeUpdate::from([
                 ...$request->toArray(),
-                'date_start' => Carbon::createFromFormat(
+                'date_start' => $request->get('date_start') ? Carbon::createFromFormat(
                     'Y-m-d O',
                     $request->get('date_start')
-                )->setTimezone(Config::get('app.timezone')),
-                'date_end' => Carbon::createFromFormat(
+                )->setTimezone(Config::get('app.timezone')) : null,
+                'date_end' => $request->get('date_end') ? Carbon::createFromFormat(
                     'Y-m-d O',
                     $request->get('date_end')
-                )->setTimezone(Config::get('app.timezone')),
-                'discount_type' => DiscountType::from($request->get('discount_type')),
+                )->setTimezone(Config::get('app.timezone')) : null,
+                'discount_type' => $request->get('discount_type')
+                    ? DiscountType::from($request->get('discount_type'))
+                    :null,
                 'type' => Type::from($request->get('type')),
                 'id' => $id,
             ]);

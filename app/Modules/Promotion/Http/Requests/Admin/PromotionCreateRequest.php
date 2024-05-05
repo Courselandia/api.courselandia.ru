@@ -24,8 +24,8 @@ class PromotionCreateRequest extends FormRequest
     {
         return [
             'status' => 'boolean',
-            'date_start' => 'required|date_format:Y-m-d O',
-            'date_end' => 'required|date_format:Y-m-d O',
+            'date_start' => 'date_format:Y-m-d O',
+            'date_end' => 'date_format:Y-m-d O',
             'school_id' => 'exists_soft:schools,id',
         ];
     }
