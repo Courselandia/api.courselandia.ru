@@ -8,6 +8,7 @@
 
 namespace App\Modules\Promotion\Models;
 
+use App\Modules\Promo\Scopes\Applicable;
 use Carbon\Carbon;
 use Eloquent;
 use App\Models\Status;
@@ -49,6 +50,7 @@ class Promotion extends Eloquent
     use Validate;
     use Filterable;
     use HasTimestamps;
+    use Applicable;
 
     /**
      * Атрибуты, для которых разрешено массовое назначение.

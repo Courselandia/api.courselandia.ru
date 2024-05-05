@@ -8,6 +8,7 @@
 
 namespace App\Modules\Promocode\Models;
 
+use App\Modules\Promo\Scopes\Applicable;
 use Carbon\Carbon;
 use Eloquent;
 use App\Models\Status;
@@ -57,6 +58,7 @@ class Promocode extends Eloquent
     use Validate;
     use Filterable;
     use HasTimestamps;
+    use Applicable;
 
     /**
      * Атрибуты, для которых разрешено массовое назначение.

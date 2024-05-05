@@ -13,6 +13,7 @@ use App\Modules\Article\Models\Article;
 use App\Modules\Course\Models\Course;
 use App\Modules\Faq\Models\Faq;
 use App\Modules\Promotion\Models\Promotion;
+use App\Modules\Promocode\Models\Promocode;
 use App\Modules\Review\Models\Review;
 use App\Modules\School\Images\ImageLogo;
 use App\Modules\School\Images\ImageSite;
@@ -65,6 +66,7 @@ use App\Modules\School\Filters\SchoolFilter;
  * @property-read Article[] $articles
  * @property-read Analyzer[] $analyzers
  * @property-read Promotion[] $promotions
+ * @property-read Promocode[] $promocodes
  */
 class School extends Eloquent
 {
@@ -260,5 +262,15 @@ class School extends Eloquent
     public function promotions(): HasMany
     {
         return $this->hasMany(Promotion::class);
+    }
+
+    /**
+     * Промокоды школы.
+     *
+     * @return HasMany Модели промокодов.
+     */
+    public function promocodes(): HasMany
+    {
+        return $this->hasMany(Promocode::class);
     }
 }

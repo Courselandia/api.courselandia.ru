@@ -10,6 +10,8 @@ namespace App\Modules\School\Entities;
 
 use App\Models\Entity;
 use App\Modules\Analyzer\Entities\Analyzer;
+use App\Modules\Promocode\Entities\Promocode;
+use App\Modules\Promotion\Entities\Promotion;
 use Carbon\Carbon;
 use App\Modules\Image\Entities\Image;
 use App\Modules\Metatag\Entities\Metatag;
@@ -210,6 +212,20 @@ class School extends Entity
     public ?array $analyzers = null;
 
     /**
+     * Промокоды.
+     *
+     * @var Promocode[]
+     */
+    public ?array $promocodes = null;
+
+    /**
+     * Промоакции.
+     *
+     * @var Promotion[]
+     */
+    public ?array $promotions = null;
+
+    /**
      * @param int|string|null $id ID записи.
      * @param int|string|null $metatag_id ID метатегов.
      * @param string|null $name Название.
@@ -237,37 +253,40 @@ class School extends Entity
      * @param int|null $amount_reviews Количество отзывов.
      * @param Metatag|null $metatag Метатеги.
      * @param array|null $analyzers Анализ хранения текстов.
+     * @param array|null $promocodes Промокоды.
+     * @param array|null $promotions Промоакции.
      */
     public function __construct(
         int|string|null $id = null,
         int|string|null $metatag_id = null,
-        ?string         $name = null,
-        ?string         $header = null,
-        ?string         $header_template = null,
-        ?string         $link = null,
-        ?string         $text = null,
-        ?string         $additional = null,
-        ?string         $site = null,
-        ?float          $rating = null,
-        ?Image          $image_logo_id = null,
-        ?Image          $image_site_id = null,
-        ?bool           $status = null,
-        ?Carbon         $created_at = null,
-        ?Carbon         $updated_at = null,
-        ?Carbon         $deleted_at = null,
-        ?int            $reviews_count = null,
-        ?int            $reviews_1_star_count = null,
-        ?int            $reviews_2_stars_count = null,
-        ?int            $reviews_3_stars_count = null,
-        ?int            $reviews_4_stars_count = null,
-        ?int            $reviews_5_stars_count = null,
-        array|null      $amount_courses = null,
-        int|null        $amount_teachers = null,
-        int|null        $amount_reviews = null,
-        ?Metatag        $metatag = null,
-        ?array          $analyzers = null
-    )
-    {
+        ?string $name = null,
+        ?string $header = null,
+        ?string $header_template = null,
+        ?string $link = null,
+        ?string $text = null,
+        ?string $additional = null,
+        ?string $site = null,
+        ?float $rating = null,
+        ?Image $image_logo_id = null,
+        ?Image $image_site_id = null,
+        ?bool $status = null,
+        ?Carbon $created_at = null,
+        ?Carbon $updated_at = null,
+        ?Carbon $deleted_at = null,
+        ?int $reviews_count = null,
+        ?int $reviews_1_star_count = null,
+        ?int $reviews_2_stars_count = null,
+        ?int $reviews_3_stars_count = null,
+        ?int $reviews_4_stars_count = null,
+        ?int $reviews_5_stars_count = null,
+        array|null $amount_courses = null,
+        int|null $amount_teachers = null,
+        int|null $amount_reviews = null,
+        ?Metatag $metatag = null,
+        ?array $analyzers = null,
+        array $promocodes = null,
+        array $promotions = null,
+    ) {
         $this->id = $id;
         $this->metatag_id = $metatag_id;
         $this->name = $name;
@@ -295,5 +314,7 @@ class School extends Entity
         $this->amount_reviews = $amount_reviews;
         $this->metatag = $metatag;
         $this->analyzers = $analyzers;
+        $this->promocodes = $promocodes;
+        $this->promotions = $promotions;
     }
 }
