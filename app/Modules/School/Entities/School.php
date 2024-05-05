@@ -219,6 +219,13 @@ class School extends Entity
     public ?array $promocodes = null;
 
     /**
+     * Самый выгодный промокод.
+     *
+     * @var ?Promocode
+     */
+    public ?Promocode $promocode = null;
+
+    /**
      * Промоакции.
      *
      * @var Promotion[]
@@ -254,6 +261,7 @@ class School extends Entity
      * @param Metatag|null $metatag Метатеги.
      * @param array|null $analyzers Анализ хранения текстов.
      * @param array|null $promocodes Промокоды.
+     * @param Promocode|null $promocode Самый выгодный промокод.
      * @param array|null $promotions Промоакции.
      */
     public function __construct(
@@ -285,6 +293,7 @@ class School extends Entity
         ?Metatag $metatag = null,
         ?array $analyzers = null,
         array $promocodes = null,
+        ?Promocode $promocode = null,
         array $promotions = null,
     ) {
         $this->id = $id;
@@ -315,6 +324,7 @@ class School extends Entity
         $this->metatag = $metatag;
         $this->analyzers = $analyzers;
         $this->promocodes = $promocodes;
+        $this->promocode = $promocode;
         $this->promotions = $promotions;
     }
 }

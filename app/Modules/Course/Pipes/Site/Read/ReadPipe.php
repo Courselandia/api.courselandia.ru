@@ -93,6 +93,9 @@ class ReadPipe implements Pipe
                             'schools.image_logo_id',
                         ])->where('status', true);
                     },
+                    'school.promocode' => function ($query) {
+                        $query->applicable();
+                    },
                     'learns',
                     'tools' => function ($query) {
                         $query->where('status', true);

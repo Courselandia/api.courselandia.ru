@@ -21,6 +21,7 @@ use App\Modules\Teacher\Models\Teacher;
 use Illuminate\Database\Eloquent\Concerns\HasTimestamps;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Eloquent;
 use App\Models\Status;
@@ -67,6 +68,7 @@ use App\Modules\School\Filters\SchoolFilter;
  * @property-read Analyzer[] $analyzers
  * @property-read Promotion[] $promotions
  * @property-read Promocode[] $promocodes
+ * @property-read Promocode $promocode
  */
 class School extends Eloquent
 {
@@ -272,5 +274,15 @@ class School extends Eloquent
     public function promocodes(): HasMany
     {
         return $this->hasMany(Promocode::class);
+    }
+
+    /**
+     * Самый выгодный промокод.
+     *
+     * @return HasOne Модель промокода.
+     */
+    public function promocode(): HasOne
+    {
+        return $this->hasOne(Promocode::class)->orderBy('discount', 'DESC');
     }
 }
