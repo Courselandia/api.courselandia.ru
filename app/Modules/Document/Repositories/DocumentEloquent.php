@@ -71,7 +71,6 @@ class DocumentEloquent extends Document
         );
 
         if ($model) {
-
             $model->path = $entity->path;
             $model->cache = time();
             $model->folder = $this->getFolder();
