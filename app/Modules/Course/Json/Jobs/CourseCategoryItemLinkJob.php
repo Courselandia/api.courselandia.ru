@@ -28,7 +28,7 @@ class CourseCategoryItemLinkJob extends JsonItemLinkJob
             'sorts' => ['name' => 'ASC'],
             'filters' => ['categories-id' => $this->id],
             'offset' => 0,
-            'limit' => 36,
+            'limit' => 18,
             'section' => 'category',
             'sectionLink' => $this->link,
         ]));
