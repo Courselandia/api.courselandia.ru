@@ -85,7 +85,7 @@ class CollectionTextArticleCategory extends ArticleCategory
             Collection::find($collection['id'])->update($collection);
 
             if ($articleEntity->analyzers) {
-                $action = new ArticleMoveAnalyzer($collection['id'], $articleEntity->analyzers, 'collection.text', Teacher::class);
+                $action = new ArticleMoveAnalyzer($collection['id'], $articleEntity->analyzers, 'collection.text', Collection::class);
                 $action->run();
             }
 
