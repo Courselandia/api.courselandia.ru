@@ -49,6 +49,7 @@ use App\Modules\School\Filters\SchoolFilter;
  * @property string $additional Дополнительное описание.
  * @property string $rating Рейтинг.
  * @property string $site Ссылка на сайт.
+ * @property string $referral Реферальная ссылка на сайт.
  * @property string $status Статус.
  * @property int|string|array|UploadedFile|ImageEntity $image_site_id Изображение сайта.
  * @property int|string|array|UploadedFile|ImageEntity $image_logo_id Изображение логотипа.
@@ -102,6 +103,7 @@ class School extends Eloquent
         'additional',
         'rating',
         'site',
+        'referral',
         'status',
         'image_logo_id',
         'image_site_id',
@@ -127,6 +129,7 @@ class School extends Eloquent
             'additional' => 'max:65000',
             'rating' => 'nullable|float|float_between:0,5',
             'site' => 'url',
+            'referral' => 'url',
             'status' => 'required|boolean',
             'amount_courses' => 'json',
             'amount_teachers' => 'digits_between:0,20',
@@ -153,6 +156,7 @@ class School extends Eloquent
             'image_site_id' => trans('school::models.school.imageSiteId'),
             'rating' => trans('school::models.school.rating'),
             'site' => trans('school::models.school.site'),
+            'referral' => trans('school::models.school.referral'),
             'status' => trans('school::models.school.status'),
             'amount_courses' => trans('school::models.school.amountCourses'),
             'amount_teachers' => trans('school::models.school.amountTeachers'),

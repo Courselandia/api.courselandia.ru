@@ -84,6 +84,13 @@ class School extends Entity
     public ?string $site = null;
 
     /**
+     * Реферальная ссылка на сайт..
+     *
+     * @var string|null
+     */
+    public ?string $referral = null;
+
+    /**
      * Рейтинг.
      *
      * @var float|null
@@ -219,6 +226,7 @@ class School extends Entity
      * @param string|null $text Статья.
      * @param string|null $additional Дополнительное описание.
      * @param string|null $site Сайт.
+     * @param string|null $referral Реферальная ссылка на сайт.
      * @param float|null $rating Рейтинг.
      * @param Image|null $image_logo_id Изображение логотипа.
      * @param Image|null $image_site_id Изображение сайта.
@@ -241,33 +249,33 @@ class School extends Entity
     public function __construct(
         int|string|null $id = null,
         int|string|null $metatag_id = null,
-        ?string         $name = null,
-        ?string         $header = null,
-        ?string         $header_template = null,
-        ?string         $link = null,
-        ?string         $text = null,
-        ?string         $additional = null,
-        ?string         $site = null,
-        ?float          $rating = null,
-        ?Image          $image_logo_id = null,
-        ?Image          $image_site_id = null,
-        ?bool           $status = null,
-        ?Carbon         $created_at = null,
-        ?Carbon         $updated_at = null,
-        ?Carbon         $deleted_at = null,
-        ?int            $reviews_count = null,
-        ?int            $reviews_1_star_count = null,
-        ?int            $reviews_2_stars_count = null,
-        ?int            $reviews_3_stars_count = null,
-        ?int            $reviews_4_stars_count = null,
-        ?int            $reviews_5_stars_count = null,
-        array|null      $amount_courses = null,
-        int|null        $amount_teachers = null,
-        int|null        $amount_reviews = null,
-        ?Metatag        $metatag = null,
-        ?array          $analyzers = null
-    )
-    {
+        ?string $name = null,
+        ?string $header = null,
+        ?string $header_template = null,
+        ?string $link = null,
+        ?string $text = null,
+        ?string $additional = null,
+        ?string $site = null,
+        ?string $referral = null,
+        ?float $rating = null,
+        ?Image $image_logo_id = null,
+        ?Image $image_site_id = null,
+        ?bool $status = null,
+        ?Carbon $created_at = null,
+        ?Carbon $updated_at = null,
+        ?Carbon $deleted_at = null,
+        ?int $reviews_count = null,
+        ?int $reviews_1_star_count = null,
+        ?int $reviews_2_stars_count = null,
+        ?int $reviews_3_stars_count = null,
+        ?int $reviews_4_stars_count = null,
+        ?int $reviews_5_stars_count = null,
+        array|null $amount_courses = null,
+        int|null $amount_teachers = null,
+        int|null $amount_reviews = null,
+        ?Metatag $metatag = null,
+        ?array $analyzers = null
+    ) {
         $this->id = $id;
         $this->metatag_id = $metatag_id;
         $this->name = $name;
@@ -277,6 +285,7 @@ class School extends Entity
         $this->text = $text;
         $this->additional = $additional;
         $this->site = $site;
+        $this->referral = $referral;
         $this->rating = $rating;
         $this->image_logo_id = $image_logo_id;
         $this->image_site_id = $image_site_id;
