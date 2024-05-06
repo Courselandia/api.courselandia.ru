@@ -9,7 +9,10 @@
 namespace App\Modules\Image\Repositories;
 
 use DB;
+use Cache;
+use Util;
 use Generator;
+use App\Models\Enums\CacheTime;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Modules\Image\Entities\Image as ImageEntity;
 use App\Modules\Image\Models\ImageEloquent as ImageEloquentModel;
@@ -57,10 +60,18 @@ class ImageEloquent extends Image
      */
     public function update(int|string $id, ImageEntity $entity): int|string
     {
+        $cacheKey = Util::getKey('image', 'mysql', $id);
+
         /**
-         * @var ImageEloquentModel $model
+         * @var ImageEloquentModel|null $model
          */
-        $model = $this->newInstance()->newQuery()->find($id);
+        $model = Cache::tags(['image'])->remember(
+            $cacheKey,
+            CacheTime::GENERAL->value,
+            function () use ($id) {
+                return $this->newInstance()->newQuery()->find($id);
+            }
+        );
 
         if ($model) {
             $pro = getImageSize($entity->path);
@@ -73,6 +84,8 @@ class ImageEloquent extends Image
             $model->format = $this->getFormatText($pro[2]);
 
             $model->save();
+
+            Cache::tags(['image'])->forget($cacheKey);
 
             return $id;
         }
@@ -90,6 +103,9 @@ class ImageEloquent extends Image
      */
     public function updateByte(int|string $id, string $byte): bool
     {
+        $cacheKey = Util::getKey('image', 'mysql', $id);
+        Cache::tags(['image'])->forget($cacheKey);
+
         return DB::table($this->newInstance()->getTable())
             ->where('id', $id)
             ->update(['byte' => $byte]);
@@ -111,10 +127,18 @@ class ImageEloquent extends Image
             return $image;
         }
 
+        $cacheKey = Util::getKey('image', 'mysql', $id);
+
         /**
-         * @var ImageEloquentModel $image
+         * @var ImageEloquentModel|null $image
          */
-        $image = $this->newInstance()->newQuery()->find($id);
+        $image = Cache::tags(['image'])->remember(
+            $cacheKey,
+            CacheTime::GENERAL->value,
+            function () use ($id) {
+                return $this->newInstance()->newQuery()->find($id);
+            }
+        );
 
         if ($image) {
             /**
@@ -151,9 +175,20 @@ class ImageEloquent extends Image
             return $image->byte;
         }
 
-        $image = DB::table($this->newInstance()->getTable())
-            ->where('id', $id)
-            ->first();
+        $cacheKey = Util::getKey('image', 'mysql', $id);
+
+        /**
+         * @var ImageEloquentModel|null $image
+         */
+        $image = Cache::tags(['image'])->remember(
+            $cacheKey,
+            CacheTime::GENERAL->value,
+            function () use ($id) {
+                return DB::table($this->newInstance()->getTable())
+                    ->where('id', $id)
+                    ->first();
+            }
+        );
 
         return $image?->byte;
     }
@@ -217,6 +252,16 @@ class ImageEloquent extends Image
      */
     public function destroy(int|string|array $id = null): bool
     {
+        if (is_array($id)) {
+            foreach ($id as $itm) {
+                $cacheKey = Util::getKey('image', 'mysql', $itm);
+                Cache::tags(['image'])->forget($cacheKey);
+            }
+        } else {
+            $cacheKey = Util::getKey('image', 'mysql', $id);
+            Cache::tags(['image'])->forget($cacheKey);
+        }
+
         $model = $this->newInstance();
 
         return $model->destroy($id);
