@@ -107,7 +107,7 @@ class Apply
                 }
 
                 if ($this->spam) {
-                    $query->where('spam', '<', $this->water);
+                    $query->where('spam', '<', $this->spam);
                 }
             });
         }

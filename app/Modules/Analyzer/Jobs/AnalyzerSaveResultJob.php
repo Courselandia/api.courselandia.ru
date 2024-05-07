@@ -8,20 +8,21 @@
 
 namespace App\Modules\Analyzer\Jobs;
 
+use Log;
+use Util;
+use Cache;
+use Plagiarism;
+use Throwable;
 use App\Models\Exceptions\ProcessingException;
 use App\Modules\Analyzer\Actions\Admin\AnalyzerGetAction;
 use App\Modules\Analyzer\Enums\Status;
 use App\Modules\Analyzer\Models\Analyzer;
 use App\Modules\Plagiarism\Values\Quality;
-use Cache;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Log;
-use Plagiarism;
-use Throwable;
 
 /**
  * Задание на получения результата анализа текста.
@@ -76,6 +77,9 @@ class AnalyzerSaveResultJob implements ShouldQueue
                     'status' => Status::READY->value,
                     'tries' => $analyzerEntity->tries + 1,
                 ]);
+
+                $cacheKey = Util::getKey('analyzer', $this->id);
+                Cache::tags(['analyzer'])->forget($cacheKey);
             } catch (ProcessingException) {
                 if ($analyzerEntity->tries < self::MAX_TRIES) {
                     AnalyzerSaveResultJob::dispatch($this->id)
@@ -91,14 +95,19 @@ class AnalyzerSaveResultJob implements ShouldQueue
                         'status' => Status::FAILED->value,
                     ]);
                 }
+
+                $cacheKey = Util::getKey('analyzer', $this->id);
+                Cache::tags(['analyzer'])->forget($cacheKey);
             } catch (Throwable $error) {
                 Log::error('Ошибка получения анализ текста: ' . $error->getMessage() . '. ID: ' . $this->id . '. Task ID: ' . $analyzerEntity->task_id);
+
                 Analyzer::find($this->id)->update([
                     'status' => Status::FAILED->value,
                 ]);
-            }
 
-            Cache::tags(['analyzer'])->flush();
+                $cacheKey = Util::getKey('analyzer', $this->id);
+                Cache::tags(['analyzer'])->forget($cacheKey);
+            }
         }
     }
 }

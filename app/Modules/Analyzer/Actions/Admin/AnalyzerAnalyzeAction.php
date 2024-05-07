@@ -8,7 +8,7 @@
 
 namespace App\Modules\Analyzer\Actions\Admin;
 
-use App\Modules\Plagiarism\Exceptions\TextShortException;
+use Util;
 use Cache;
 use Plagiarism;
 use AnalyzerCategory;
@@ -18,6 +18,7 @@ use App\Modules\Analyzer\Enums\Status;
 use App\Modules\Analyzer\Entities\Analyzer as AnalyzerEntity;
 use App\Modules\Analyzer\Models\Analyzer;
 use App\Modules\Analyzer\Jobs\AnalyzerSaveResultJob;
+use App\Modules\Plagiarism\Exceptions\TextShortException;
 
 /**
  * Класс действия для проведения повторного анализа.
@@ -60,19 +61,25 @@ class AnalyzerAnalyzeAction extends Action
                     $analyzerEntity->status = Status::PROCESSING;
 
                     Analyzer::find($this->id)->update($analyzerEntity->toArray());
+                    $cacheKey = Util::getKey('analyzer', $this->id);
+                    Cache::tags(['analyzer'])->forget($cacheKey);
 
                     AnalyzerSaveResultJob::dispatch($this->id)
                         ->delay(now()->addMinutes(2));
                 } catch (TextShortException $error) {
                     $analyzerEntity->status = Status::SKIPPED;
                     Analyzer::find($this->id)->update($analyzerEntity->toArray());
+
+                    $cacheKey = Util::getKey('analyzer', $this->id);
+                    Cache::tags(['analyzer'])->forget($cacheKey);
                 }
             } else {
                 $analyzerEntity->status = Status::SKIPPED;
                 Analyzer::find($this->id)->update($analyzerEntity->toArray());
-            }
 
-            Cache::tags(['analyzer'])->flush();
+                $cacheKey = Util::getKey('analyzer', $this->id);
+                Cache::tags(['analyzer'])->forget($cacheKey);
+            }
 
             $action = new AnalyzerGetAction($this->id);
 
