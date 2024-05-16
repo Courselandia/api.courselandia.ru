@@ -86,6 +86,13 @@ class School extends Entity
     public ?string $site = null;
 
     /**
+     * Реферальная ссылка на сайт..
+     *
+     * @var string|null
+     */
+    public ?string $referral = null;
+
+    /**
      * Рейтинг.
      *
      * @var float|null
@@ -242,6 +249,7 @@ class School extends Entity
      * @param string|null $text Статья.
      * @param string|null $additional Дополнительное описание.
      * @param string|null $site Сайт.
+     * @param string|null $referral Реферальная ссылка на сайт.
      * @param float|null $rating Рейтинг.
      * @param Image|null $image_logo_id Изображение логотипа.
      * @param Image|null $image_site_id Изображение сайта.
@@ -274,6 +282,7 @@ class School extends Entity
         ?string $text = null,
         ?string $additional = null,
         ?string $site = null,
+        ?string $referral = null,
         ?float $rating = null,
         ?Image $image_logo_id = null,
         ?Image $image_site_id = null,
@@ -305,6 +314,7 @@ class School extends Entity
         $this->text = $text;
         $this->additional = $additional;
         $this->site = $site;
+        $this->referral = $referral;
         $this->rating = $rating;
         $this->image_logo_id = $image_logo_id;
         $this->image_site_id = $image_site_id;

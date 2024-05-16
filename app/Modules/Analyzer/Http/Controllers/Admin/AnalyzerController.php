@@ -10,6 +10,7 @@ namespace App\Modules\Analyzer\Http\Controllers\Admin;
 
 use Auth;
 use Log;
+use Cache;
 use ReflectionException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
@@ -99,6 +100,8 @@ class AnalyzerController extends Controller
                 'login' => Auth::getUser()->login,
                 'type' => 'update'
             ]);
+
+            Cache::tags(['analyzer'])->flush();
 
             $data = [
                 'success' => true,

@@ -157,6 +157,7 @@ class SchoolImageControllerTest extends TestCase
             'additional',
             'rating',
             'site',
+            'referral',
             'status',
             'image_logo_id',
             'image_site_id',

@@ -32,4 +32,4 @@ package-lock.json
 !/public/js/ckfinder
 /resources/views/tmp
 /.phpunit.cache/*
-.run
+/.run

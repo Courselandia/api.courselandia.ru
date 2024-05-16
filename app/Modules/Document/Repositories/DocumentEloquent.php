@@ -9,7 +9,10 @@
 namespace App\Modules\Document\Repositories;
 
 use DB;
+use Cache;
+use Util;
 use Generator;
+use App\Models\Enums\CacheTime;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Modules\Document\Entities\Document as DocumentEntity;
 use App\Modules\Document\Models\DocumentEloquent as DocumentEloquentModel;
@@ -54,19 +57,28 @@ class DocumentEloquent extends Document
      */
     public function update(int|string $id, DocumentEntity $entity): int|string
     {
+        $cacheKey = Util::getKey('document', 'mysql', $id);
+
         /**
-         * @var DocumentEloquentModel $model
+         * @var DocumentEloquentModel|null $model
          */
-        $model = $this->newInstance()->newQuery()->find($id);
+        $model = Cache::tags(['document'])->remember(
+            $cacheKey,
+            CacheTime::GENERAL->value,
+            function () use ($id) {
+                return $this->newInstance()->newQuery()->find($id);
+            }
+        );
 
         if ($model) {
-
             $model->path = $entity->path;
             $model->cache = time();
             $model->folder = $this->getFolder();
             $model->format = pathinfo($entity->path)['extension'];
 
             $model->save();
+
+            Cache::tags(['document'])->forget($cacheKey);
 
             return $id;
         }
@@ -84,6 +96,9 @@ class DocumentEloquent extends Document
      */
     public function updateByte(int|string $id, string $byte): bool
     {
+        $cacheKey = Util::getKey('document', 'mysql', $id);
+        Cache::tags(['document'])->forget($cacheKey);
+
         return DB::table($this->newInstance()->getTable())
             ->where('id', $id)
             ->update(['byte' => $byte]);
@@ -107,12 +122,18 @@ class DocumentEloquent extends Document
             return $document;
         }
 
-        $query = $this->newInstance()->newQuery()->find($id);
+        $cacheKey = Util::getKey('document', 'mysql', $id);
 
         /**
-         * @var DocumentEloquentModel $document
+         * @var DocumentEloquentModel|null $document
          */
-        $document = $query->first();
+        $document = Cache::tags(['document'])->remember(
+            $cacheKey,
+            CacheTime::GENERAL->value,
+            function () use ($id) {
+                return $this->newInstance()->newQuery()->find($id);
+            }
+        );
 
         if ($document) {
             $entity = $entity ? $entity->set($document->toArray()) : $this->getEntity($document->toArray());
@@ -145,9 +166,20 @@ class DocumentEloquent extends Document
             return $document->byte;
         }
 
-        $document = DB::table($this->newInstance()->getTable())
-            ->where('id', $id)
-            ->first();
+        $cacheKey = Util::getKey('document', 'mysql', $id);
+
+        /**
+         * @var DocumentEloquentModel|null $document
+         */
+        $document = Cache::tags(['document'])->remember(
+            $cacheKey,
+            CacheTime::GENERAL->value,
+            function () use ($id) {
+                return DB::table($this->newInstance()->getTable())
+                    ->where('id', $id)
+                    ->first();
+            }
+        );
 
         return $document?->byte;
     }
@@ -211,6 +243,16 @@ class DocumentEloquent extends Document
      */
     public function destroy(int|string|array $id = null): bool
     {
+        if (is_array($id)) {
+            foreach ($id as $itm) {
+                $cacheKey = Util::getKey('document', 'mysql', $itm);
+                Cache::tags(['document'])->forget($cacheKey);
+            }
+        } else {
+            $cacheKey = Util::getKey('document', 'mysql', $id);
+            Cache::tags(['document'])->forget($cacheKey);
+        }
+
         $model = $this->newInstance();
 
         return $model->destroy($id);

@@ -42,6 +42,7 @@ class SchoolFactory extends Factory
             'additional' => $this->faker->text(1000),
             'rating' => 4.27,
             'site' => $this->faker->url(),
+            'referral' => $this->faker->url(),
             'status' => true,
         ];
     }

@@ -28,7 +28,7 @@ class CourseDirectionItemLinkJob extends JsonItemLinkJob
             'sorts' => ['name' => 'ASC'],
             'filters' => ['directions-id' => $this->id],
             'offset' => 0,
-            'limit' => 36,
+            'limit' => 18,
             'section' => 'direction',
             'sectionLink' => $this->link,
         ]));

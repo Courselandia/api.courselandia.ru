@@ -60,11 +60,18 @@ class SchoolCreate extends Data
     public ?float $rating = null;
 
     /**
-     * Сыылка на сайт.
+     * Ссылка на сайт.
      *
      * @var string|null
      */
     public ?string $site = null;
+
+    /**
+     * Реферальная ссылка.
+     *
+     * @var string|null
+     */
+    public ?string $referral = null;
 
     /**
      * Изображение логотипа.
@@ -116,6 +123,7 @@ class SchoolCreate extends Data
      * @param string|null $additional Дополнительное описание.
      * @param float|null $rating Рейтинг.
      * @param string|null $site Ссылка на сайт.
+     * @param string|null $referral Реферальная ссылка на сайт.
      * @param UploadedFile|null $image_logo_id Изображение логотипа.
      * @param UploadedFile|null $image_site_id Изображение сайта.
      * @param bool|null $status Статус.
@@ -124,21 +132,21 @@ class SchoolCreate extends Data
      * @param string|null $title_template Шаблон заголовка.
      */
     public function __construct(
-        ?string           $name = null,
-        ?string           $header_template = null,
-        ?string           $link = null,
-        ?string           $text = null,
-        ?string           $additional = null,
-        ?float            $rating = null,
-        ?string           $site = null,
+        ?string $name = null,
+        ?string $header_template = null,
+        ?string $link = null,
+        ?string $text = null,
+        ?string $additional = null,
+        ?float $rating = null,
+        ?string $site = null,
+        ?string $referral = null,
         UploadedFile|null $image_logo_id = null,
         UploadedFile|null $image_site_id = null,
-        ?bool             $status = null,
-        ?string           $description_template = null,
-        ?string           $keywords = null,
-        ?string           $title_template = null
-    )
-    {
+        ?bool $status = null,
+        ?string $description_template = null,
+        ?string $keywords = null,
+        ?string $title_template = null
+    ) {
         $this->name = $name;
         $this->header_template = $header_template;
         $this->link = $link;
@@ -146,6 +154,7 @@ class SchoolCreate extends Data
         $this->additional = $additional;
         $this->rating = $rating;
         $this->site = $site;
+        $this->referral = $referral;
         $this->image_logo_id = $image_logo_id;
         $this->image_site_id = $image_site_id;
         $this->status = $status;

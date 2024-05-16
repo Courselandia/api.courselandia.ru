@@ -16,6 +16,8 @@ return [
         'rating' => 'Rating',
         'text' => 'Text',
         'additional' => 'Additional',
+        'site' => 'Site',
+        'referral' => 'Referral URL',
         'amountCourses' => 'Amount courses',
         'amount_teachers' => 'Amount teachers',
         'amount_reviews' => 'Amount reviews',

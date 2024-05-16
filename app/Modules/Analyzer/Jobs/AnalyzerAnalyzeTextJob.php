@@ -8,6 +8,7 @@
 
 namespace App\Modules\Analyzer\Jobs;
 
+use Util;
 use Log;
 use Plagiarism;
 use Cache;
@@ -83,7 +84,8 @@ class AnalyzerAnalyzeTextJob implements ShouldQueue
                             'status' => Status::PROCESSING->value,
                         ]);
 
-                        Cache::tags(['analyzer'])->flush();
+                        $cacheKey = Util::getKey('analyzer', $this->id);
+                        Cache::tags(['analyzer'])->forget($cacheKey);
 
                         AnalyzerSaveResultJob::dispatch($this->id)
                             ->delay(now()->addMinutes(2));
@@ -95,6 +97,9 @@ class AnalyzerAnalyzeTextJob implements ShouldQueue
                             'spam' => null,
                             'tries' => 0,
                         ]);
+
+                        $cacheKey = Util::getKey('analyzer', $this->id);
+                        Cache::tags(['analyzer'])->forget($cacheKey);
                     }
                 } else {
                     Analyzer::find($this->id)->update([
@@ -104,6 +109,9 @@ class AnalyzerAnalyzeTextJob implements ShouldQueue
                         'spam' => null,
                         'tries' => 0,
                     ]);
+
+                    $cacheKey = Util::getKey('analyzer', $this->id);
+                    Cache::tags(['analyzer'])->forget($cacheKey);
                 }
             }
         } catch (PaymentException|LimitException $error) {

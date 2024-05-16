@@ -23,6 +23,8 @@ use App\Modules\Analyzer\Categories\ToolTextAnalyzerCategory;
 use App\Modules\Analyzer\Categories\AnalyzerCategoryManager;
 use App\Modules\Analyzer\Categories\CourseTextAnalyzerCategory;
 use App\Modules\Analyzer\Categories\CollectionTextAnalyzerCategory;
+use App\Modules\Analyzer\Commands\AnalyzerAnalyzeCommand;
+use App\Modules\Analyzer\Commands\AnalyzerReanalyzeCommand;
 
 /**
  * Класс сервис-провайдера для настройки этого модуля.
@@ -92,6 +94,11 @@ class AnalyzerServiceProvider extends ServiceProvider
         AnalyzerCategory::extend('collection.text', function () {
             return new CollectionTextAnalyzerCategory();
         });
+
+        $this->commands([
+            AnalyzerAnalyzeCommand::class,
+            AnalyzerReanalyzeCommand::class,
+        ]);
     }
 
     /**

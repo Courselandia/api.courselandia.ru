@@ -26,6 +26,7 @@ class CreateTableSchools extends Migration
             $table->text('text')->nullable();
             $table->text('additional')->nullable();
             $table->string('site', 191)->nullable();
+            $table->string('referral', 191)->nullable();
             $table->float('rating', 3)->default(0);
 
             $table->string('image_logo_id')->nullable()->index();

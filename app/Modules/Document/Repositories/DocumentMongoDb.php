@@ -9,7 +9,10 @@
 namespace App\Modules\Document\Repositories;
 
 use DB;
+use Cache;
+use Util;
 use Generator;
+use App\Models\Enums\CacheTime;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Modules\Document\Models\DocumentMongoDb as DocumentMongoDbModel;
 use App\Modules\Document\Entities\Document as DocumentEntity;
@@ -54,10 +57,18 @@ class DocumentMongoDb extends Document
      */
     public function update(int|string $id, DocumentEntity $entity): int|string
     {
+        $cacheKey = Util::getKey('document', 'mongodb', $id);
+
         /**
-         * @var DocumentMongoDbModel $model
+         * @var DocumentMongoDbModel|null $model
          */
-        $model = $this->newInstance()->newQuery()->find($id);
+        $model = Cache::tags(['document'])->remember(
+            $cacheKey,
+            CacheTime::GENERAL->value,
+            function () use ($id) {
+                return $this->newInstance()->newQuery()->find($id);
+            }
+        );
 
         if ($model) {
             $model->path = $entity->path;
@@ -66,6 +77,8 @@ class DocumentMongoDb extends Document
             $model->format = pathinfo($entity->path)['extension'];
 
             $model->save();
+
+            Cache::tags(['document'])->forget($cacheKey);
 
             return $id;
         }
@@ -83,6 +96,9 @@ class DocumentMongoDb extends Document
      */
     public function updateByte(int|string $id, string $byte): bool
     {
+        $cacheKey = Util::getKey('document', 'mongodb', $id);
+        Cache::tags(['document'])->forget($cacheKey);
+
         return DB::connection('mongodb')
             ->table($this->newInstance()->getTable())
             ->where('_id', $id)
@@ -107,12 +123,18 @@ class DocumentMongoDb extends Document
             return $document;
         }
 
-        $query = $this->newInstance()->newQuery()->find($id);
+        $cacheKey = Util::getKey('document', 'mongodb', $id);
 
         /**
-         * @var DocumentMongoDbModel $document
+         * @var DocumentMongoDbModel|null $document
          */
-        $document = $query->first();
+        $document = Cache::tags(['document'])->remember(
+            $cacheKey,
+            CacheTime::GENERAL->value,
+            function () use ($id) {
+                return $this->newInstance()->newQuery()->find($id);
+            }
+        );
 
         if ($document) {
             $entity = $entity ? $entity->set($document->toArray()) : $this->getEntity($document->toArray());
@@ -146,9 +168,21 @@ class DocumentMongoDb extends Document
             return $document->byte;
         }
 
-        $document = DB::connection('mongodb')
-            ->collection($this->newInstance()->getTable())
-            ->where('id', $id)->first();
+        $cacheKey = Util::getKey('document', 'mongodb', $id);
+
+        /**
+         * @var DocumentMongoDbModel|null $document
+         */
+        $document = Cache::tags(['document'])->remember(
+            $cacheKey,
+            CacheTime::GENERAL->value,
+            function () use ($id) {
+                return DB::connection('mongodb')
+                    ->collection($this->newInstance()->getTable())
+                    ->where('id', $id)
+                    ->first();
+            }
+        );
 
         return $document?->byte;
     }
@@ -213,6 +247,16 @@ class DocumentMongoDb extends Document
      */
     public function destroy(int|string|array $id = null): bool
     {
+        if (is_array($id)) {
+            foreach ($id as $itm) {
+                $cacheKey = Util::getKey('document', 'mongodb', $itm);
+                Cache::tags(['document'])->forget($cacheKey);
+            }
+        } else {
+            $cacheKey = Util::getKey('document', 'mongodb', $id);
+            Cache::tags(['document'])->forget($cacheKey);
+        }
+
         $model = $this->newInstance();
 
         return $model->destroy($id);

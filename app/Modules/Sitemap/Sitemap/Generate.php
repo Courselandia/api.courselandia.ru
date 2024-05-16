@@ -45,6 +45,13 @@ class Generate
     use Error;
 
     /**
+     * Лимит количества URL на один файл разбитый на части.
+     *
+     * @var int
+     */
+    private const LIMIT = 200;
+
+    /**
      * Части для генерации.
      *
      * @var array<Part>
@@ -103,6 +110,7 @@ class Generate
      * Генератор файла.
      *
      * @return void
+     * @throws DOMException
      */
     public function run(): void
     {
@@ -236,12 +244,63 @@ class Generate
      * Сохранение результата генерации в файл sitemap.xml.
      *
      * @return void
+     * @throws DOMException
      */
     private function saveInFile(): void
+    {
+        $this->saveInOneFile();
+        $this->saveInPartFiles();
+    }
+
+    /**
+     * Сохранение в один файл.
+     *
+     * @return void
+     */
+    private function saveInOneFile(): void
     {
         $this->xml->formatOutput = true;
         $path = Storage::drive('public-root')->path('sitemap.xml');
         $this->xml->save($path);
+    }
+
+    /**
+     * Сохранение URL'ов в несколько файлов разбитых по частям.
+     *
+     * @return void
+     * @throws DOMException
+     */
+    private function saveInPartFiles(): void
+    {
+        $items = $this->root->childNodes->getIterator();
+        $chunks = collect($items)->chunk(self::LIMIT)->toArray();
+        $i = 0;
+
+        $files = Storage::drive('public-root')->allFiles('sitemaps');
+        Storage::drive('public-root')->delete($files);
+
+        foreach ($chunks as $chunk) {
+            $xml = new DomDocument('1.0', 'utf-8');
+            $root = $xml->createElement('urlset');
+            $root->setAttribute('xmlns', 'http://www.sitemaps.org/schemas/sitemap/0.9');
+            $xml->appendChild($root);
+
+            foreach ($chunk as $item) {
+                $url = $xml->createElement('url');
+
+                foreach ($item->childNodes as $child) {
+                    $url->appendChild($xml->createElement($child->tagName, $child->nodeValue));
+                }
+
+                $root->appendChild($url);
+            }
+
+            $xml->formatOutput = true;
+            $path = Storage::drive('public-root')->path('sitemaps/' . $i . '.xml');
+            $xml->save($path);
+
+            $i++;
+        }
     }
 
     /**

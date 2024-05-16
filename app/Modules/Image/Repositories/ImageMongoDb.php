@@ -9,7 +9,10 @@
 namespace App\Modules\Image\Repositories;
 
 use DB;
+use Cache;
+use Util;
 use Generator;
+use App\Models\Enums\CacheTime;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Modules\Image\Models\ImageMongoDb as ImageMongoDbModel;
 use App\Modules\Image\Entities\Image as ImageEntity;
@@ -57,10 +60,18 @@ class ImageMongoDb extends Image
      */
     public function update(int|string $id, ImageEntity $entity): int|string
     {
+        $cacheKey = Util::getKey('image', 'mongodb', $id);
+
         /**
-         * @var ImageMongoDbModel $model
+         * @var ImageMongoDbModel|null $model
          */
-        $model = $this->newInstance()->newQuery()->find($id);
+        $model = Cache::tags(['image'])->remember(
+            $cacheKey,
+            CacheTime::GENERAL->value,
+            function () use ($id) {
+                return $this->newInstance()->newQuery()->find($id);
+            }
+        );
 
         if ($model) {
             $pro = getImageSize($entity->path);
@@ -73,6 +84,8 @@ class ImageMongoDb extends Image
             $model->format = $this->getFormatText($pro[2]);
 
             $model->save();
+
+            Cache::tags(['image'])->forget($cacheKey);
 
             return $id;
         }
@@ -90,6 +103,9 @@ class ImageMongoDb extends Image
      */
     public function updateByte(int|string $id, string $byte): bool
     {
+        $cacheKey = Util::getKey('image', 'mongodb', $id);
+        Cache::tags(['image'])->forget($cacheKey);
+
         return DB::connection('mongodb')
             ->table($this->newInstance()->getTable())
             ->where('_id', $id)
@@ -112,10 +128,18 @@ class ImageMongoDb extends Image
             return $image;
         }
 
+        $cacheKey = Util::getKey('image', 'mongodb', $id);
+
         /**
-         * @var ImageMongoDbModel $image
+         * @var ImageMongoDbModel|null $image
          */
-        $image = $this->newInstance()->newQuery()->find($id);
+        $image = Cache::tags(['image'])->remember(
+            $cacheKey,
+            CacheTime::GENERAL->value,
+            function () use ($id) {
+                return $this->newInstance()->newQuery()->find($id);
+            }
+        );
 
         if ($image) {
             /**
@@ -153,9 +177,21 @@ class ImageMongoDb extends Image
             return $image->byte;
         }
 
-        $image = DB::connection('mongodb')
-            ->collection($this->newInstance()->getTable())
-            ->where('id', $id)->first();
+        $cacheKey = Util::getKey('image', 'mongodb', $id);
+
+        /**
+         * @var ImageMongoDbModel|null $image
+         */
+        $image = Cache::tags(['image'])->remember(
+            $cacheKey,
+            CacheTime::GENERAL->value,
+            function () use ($id) {
+                return DB::connection('mongodb')
+                    ->collection($this->newInstance()->getTable())
+                    ->where('id', $id)
+                    ->first();
+            }
+        );
 
         return $image?->byte;
     }
@@ -220,6 +256,16 @@ class ImageMongoDb extends Image
      */
     public function destroy(int|string|array $id = null): bool
     {
+        if (is_array($id)) {
+            foreach ($id as $itm) {
+                $cacheKey = Util::getKey('image', 'mongodb', $itm);
+                Cache::tags(['image'])->forget($cacheKey);
+            }
+        } else {
+            $cacheKey = Util::getKey('image', 'mongodb', $id);
+            Cache::tags(['image'])->forget($cacheKey);
+        }
+
         $model = $this->newInstance();
 
         return $model->destroy($id);

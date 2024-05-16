@@ -9,6 +9,7 @@
 namespace App\Modules\Sitemap\Commands;
 
 use App\Modules\Sitemap\Sitemap\Generate;
+use DOMException;
 use Illuminate\Console\Command;
 use Log;
 
@@ -35,6 +36,7 @@ class SitemapGenerateCommand extends Command
      * Выполнение команды.
      *
      * @return void
+     * @throws DOMException
      */
     public function handle(): void
     {

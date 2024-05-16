@@ -91,6 +91,7 @@ class ParserNetology extends ParserYml
             'Онлайн Курс Медицина' => Direction::OTHER,
             'Онлайн Модульный набор B2B' => Direction::BUSINESS,
             'Онлайн Открытое занятие Прочее' => Direction::PROGRAMMING,
+            'Онлайн Курс Творческие профессии' => Direction::OTHER,
         ];
     }
 
