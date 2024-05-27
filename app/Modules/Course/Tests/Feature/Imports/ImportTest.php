@@ -29,9 +29,9 @@ class ImportTest extends TestCase
         $import = new Import();
         $import->clearParsers();
 
-        $import->addParser(new ParserNetology(storage_path('test/imports/netology.xml')))
-            ->addParser(new ParserGeekBrains(storage_path('test/imports/geekBrains.xml')))
-            ->addParser(new ParserSkillbox(storage_path('test/imports/skillbox.xml')));
+        $import->addParser(new ParserNetology(storage_path('test/imports/courses/netology.xml')))
+            ->addParser(new ParserGeekBrains(storage_path('test/imports/courses/geekBrains.xml')))
+            ->addParser(new ParserSkillbox(storage_path('test/imports/courses/skillbox.xml')));
 
         $import->run();
 

@@ -1,0 +1,50 @@
+{
+  "success": true,
+  "date": "2024-05-02 10:46:56",
+  "total": 76,
+  "data": [
+    {
+      "id": "pr10364",
+      "title": "Подключитесь к офферу «Alter — сервис по подбору психолога». ",
+      "description": "Осень – горячий сезон в нише ментального здоровья. Подключитесь к офферу «Alter — сервис по подбору психолога». Сервис соединяет клиентов со специалистами, которые лучше и быстрее всего помогут решить проблему. Ставка за привлеченного клиента от 600 ₽ до 1000 ₽, а аппрув стремится к 90%.",
+      "offer_id": 596,
+      "date_start": "2022-09-22",
+      "date_end": null,
+      "active": true,
+      "private": false,
+      "promocodes": [],
+      "landings": [
+        {
+          "id": "ln10338",
+          "name": "alter.ru",
+          "promotional": "false",
+          "available_deep_link": true,
+          "link": "https://go.courselandia.ru/go/5f03ecf094fa2da1?m=33"
+        }
+      ],
+      "banners": [],
+      "status": "active"
+    },
+    {
+      "id": "pr12045",
+      "title": "АКЦИЯ «Приведи друга».",
+      "description": "Запишитесь сами, приведите с собой друга и получите скидку 5% на обучение. Скидка будет предоставлена и Вам, и другу.",
+      "offer_id": 699,
+      "date_start": "2024-01-01",
+      "date_end": "2024-12-31",
+      "active": true,
+      "private": false,
+      "promocodes": [],
+      "landings": [
+        {
+          "id": "ln20166",
+          "name": "АКЦИЯ «Приведи друга».",
+          "promotional": "true",
+          "link": "https://go.courselandia.ru/go/ffbc70744b64c461?m=33"
+        }
+      ],
+      "banners": [],
+      "status": "active"
+    }
+  ]
+}

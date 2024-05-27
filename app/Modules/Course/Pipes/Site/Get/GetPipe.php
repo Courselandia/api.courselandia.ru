@@ -70,6 +70,9 @@ class GetPipe implements Pipe
                     'school' => function ($query) {
                         $query->where('status', true);
                     },
+                    'school.promocode' => function ($query) {
+                        $query->applicable();
+                    },
                     'school.faqs' => function ($query) {
                         $query->where('status', true);
                     },

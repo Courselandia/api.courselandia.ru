@@ -198,7 +198,6 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-        App\Providers\TelescopeServiceProvider::class,
 
         //
 
@@ -322,6 +321,15 @@ return [
 
         App\Modules\Term\Providers\TermServiceProvider::class,
         App\Modules\Term\Providers\RouteServiceProvider::class,
+
+        App\Modules\Promotion\Providers\PromotionServiceProvider::class,
+        App\Modules\Promotion\Providers\RouteServiceProvider::class,
+
+        App\Modules\Promocode\Providers\PromocodeServiceProvider::class,
+        App\Modules\Promocode\Providers\RouteServiceProvider::class,
+
+        App\Modules\Promo\Providers\PromoServiceProvider::class,
+        App\Modules\Promo\Providers\RouteServiceProvider::class,
     ],
 
     /*

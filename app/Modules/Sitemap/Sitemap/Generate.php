@@ -35,6 +35,8 @@ use App\Modules\Sitemap\Sitemap\Parts\PartSkill;
 use App\Modules\Sitemap\Sitemap\Parts\PartStatic;
 use App\Modules\Sitemap\Sitemap\Parts\PartTeacher;
 use App\Modules\Sitemap\Sitemap\Parts\PartTool;
+use App\Modules\Sitemap\Sitemap\Parts\PartPromo;
+use App\Modules\Sitemap\Sitemap\Parts\PartPromos;
 
 /**
  * Класс генерации sitemap.xml.
@@ -85,6 +87,8 @@ class Generate
     public function __construct()
     {
         $this
+            ->addPart(new PartPromos())
+            ->addPart(new PartPromo())
             ->addPart(new PartStatic())
             ->addPart(new PartCollections())
             ->addPart(new PartCollection())

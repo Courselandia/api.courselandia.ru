@@ -12,6 +12,8 @@ use App\Modules\Analyzer\Models\Analyzer;
 use App\Modules\Article\Models\Article;
 use App\Modules\Course\Models\Course;
 use App\Modules\Faq\Models\Faq;
+use App\Modules\Promotion\Models\Promotion;
+use App\Modules\Promocode\Models\Promocode;
 use App\Modules\Review\Models\Review;
 use App\Modules\School\Images\ImageLogo;
 use App\Modules\School\Images\ImageSite;
@@ -19,6 +21,7 @@ use App\Modules\Teacher\Models\Teacher;
 use Illuminate\Database\Eloquent\Concerns\HasTimestamps;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Eloquent;
 use App\Models\Status;
@@ -64,6 +67,9 @@ use App\Modules\School\Filters\SchoolFilter;
  * @property-read Course[] $courses
  * @property-read Article[] $articles
  * @property-read Analyzer[] $analyzers
+ * @property-read Promotion[] $promotions
+ * @property-read Promocode[] $promocodes
+ * @property-read Promocode $promocode
  */
 class School extends Eloquent
 {
@@ -252,5 +258,35 @@ class School extends Eloquent
     public function analyzers(): MorphMany
     {
         return $this->morphMany(Analyzer::class, 'analyzerable');
+    }
+
+    /**
+     * Промоакции школы.
+     *
+     * @return HasMany Модели промоакций.
+     */
+    public function promotions(): HasMany
+    {
+        return $this->hasMany(Promotion::class);
+    }
+
+    /**
+     * Промокоды школы.
+     *
+     * @return HasMany Модели промокодов.
+     */
+    public function promocodes(): HasMany
+    {
+        return $this->hasMany(Promocode::class);
+    }
+
+    /**
+     * Самый выгодный промокод.
+     *
+     * @return HasOne Модель промокода.
+     */
+    public function promocode(): HasOne
+    {
+        return $this->hasOne(Promocode::class)->orderBy('discount', 'DESC');
     }
 }

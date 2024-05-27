@@ -10,6 +10,8 @@ namespace App\Modules\School\Entities;
 
 use App\Models\Entity;
 use App\Modules\Analyzer\Entities\Analyzer;
+use App\Modules\Promocode\Entities\Promocode;
+use App\Modules\Promotion\Entities\Promotion;
 use Carbon\Carbon;
 use App\Modules\Image\Entities\Image;
 use App\Modules\Metatag\Entities\Metatag;
@@ -217,6 +219,27 @@ class School extends Entity
     public ?array $analyzers = null;
 
     /**
+     * Промокоды.
+     *
+     * @var Promocode[]
+     */
+    public ?array $promocodes = null;
+
+    /**
+     * Самый выгодный промокод.
+     *
+     * @var ?Promocode
+     */
+    public ?Promocode $promocode = null;
+
+    /**
+     * Промоакции.
+     *
+     * @var Promotion[]
+     */
+    public ?array $promotions = null;
+
+    /**
      * @param int|string|null $id ID записи.
      * @param int|string|null $metatag_id ID метатегов.
      * @param string|null $name Название.
@@ -245,6 +268,9 @@ class School extends Entity
      * @param int|null $amount_reviews Количество отзывов.
      * @param Metatag|null $metatag Метатеги.
      * @param array|null $analyzers Анализ хранения текстов.
+     * @param array|null $promocodes Промокоды.
+     * @param Promocode|null $promocode Самый выгодный промокод.
+     * @param array|null $promotions Промоакции.
      */
     public function __construct(
         int|string|null $id = null,
@@ -274,7 +300,10 @@ class School extends Entity
         int|null $amount_teachers = null,
         int|null $amount_reviews = null,
         ?Metatag $metatag = null,
-        ?array $analyzers = null
+        ?array $analyzers = null,
+        array $promocodes = null,
+        ?Promocode $promocode = null,
+        array $promotions = null,
     ) {
         $this->id = $id;
         $this->metatag_id = $metatag_id;
@@ -304,5 +333,8 @@ class School extends Entity
         $this->amount_reviews = $amount_reviews;
         $this->metatag = $metatag;
         $this->analyzers = $analyzers;
+        $this->promocodes = $promocodes;
+        $this->promocode = $promocode;
+        $this->promotions = $promotions;
     }
 }
