@@ -137,6 +137,7 @@ class Import
 
             Promotion::where('school_id', $parser->getSchool()->value)
                 ->whereNotIn('id', $this->getIds())
+                ->whereNotNull('uuid')
                 ->update([
                     'status' => false,
                 ]);
