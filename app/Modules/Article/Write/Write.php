@@ -21,6 +21,7 @@ use App\Modules\Article\Write\Tasks\SkillTextTask;
 use App\Modules\Article\Write\Tasks\CourseTextTask;
 use App\Modules\Article\Write\Tasks\ToolTextTask;
 use App\Modules\Article\Write\Tasks\CollectionTextTask;
+use App\Modules\Article\Write\Tasks\SectionTextTask;
 
 /**
  * Написание статей для разных сущностей.
@@ -43,6 +44,7 @@ class Write
     public function __construct()
     {
         $this->addTask(new CourseTextTask())
+            ->addTask(new SectionTextTask())
             ->addTask(new SkillTextTask())
             ->addTask(new ToolTextTask())
             ->addTask(new CategoryTextTask())

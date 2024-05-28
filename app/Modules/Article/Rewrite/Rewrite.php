@@ -18,6 +18,7 @@ use App\Modules\Article\Rewrite\Tasks\CategoryTextTask;
 use App\Modules\Article\Rewrite\Tasks\SchoolTextTask;
 use App\Modules\Article\Rewrite\Tasks\TeacherTextTask;
 use App\Modules\Article\Rewrite\Tasks\CollectionTextTask;
+use App\Modules\Article\Rewrite\Tasks\SectionTextTask;
 
 /**
  * Переписывание статей для разных сущностей.
@@ -68,6 +69,7 @@ class Rewrite extends Write
         $this->creative = $creative;
 
         $this->addTask(new CourseTextTask($this->unique, $this->water, $this->spam, $this->creative))
+            ->addTask(new SectionTextTask($this->unique, $this->water, $this->spam, $this->creative))
             ->addTask(new SkillTextTask($this->unique, $this->water, $this->spam, $this->creative))
             ->addTask(new ToolTextTask($this->unique, $this->water, $this->spam, $this->creative))
             ->addTask(new DirectionTextTask($this->unique, $this->water, $this->spam, $this->creative))

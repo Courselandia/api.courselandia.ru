@@ -22,6 +22,7 @@ use App\Modules\Section\Models\SectionItem;
 use App\Modules\Metatag\Actions\MetatagSetAction;
 use App\Modules\Metatag\Data\MetatagSet;
 use App\Modules\Section\Data\SectionCreate;
+use App\Modules\Analyzer\Actions\Admin\AnalyzerUpdateAction;
 
 /**
  * Класс действия для создания раздела.
@@ -88,6 +89,9 @@ class SectionCreateAction extends Action
             }
 
             Cache::tags(['catalog', 'section'])->flush();
+
+            $action = new AnalyzerUpdateAction($section->id, Section::class, 'section.text');
+            $action->run();
 
             return $section->id;
         });

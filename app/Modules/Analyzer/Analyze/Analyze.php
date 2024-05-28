@@ -10,6 +10,7 @@ namespace App\Modules\Analyzer\Analyze;
 
 use App\Models\Error;
 use App\Models\Event;
+use App\Modules\Analyzer\Analyze\Tasks\SectionTextTask;
 use Carbon\Carbon;
 use App\Modules\Analyzer\Analyze\Tasks\Task;
 use App\Modules\Analyzer\Analyze\Tasks\CourseTextTask;
@@ -40,6 +41,7 @@ class Analyze
     public function __construct()
     {
         $this->addTask(new CourseTextTask())
+            ->addTask(new SectionTextTask())
             ->addTask(new SkillTextTask())
             ->addTask(new ToolTextTask())
             ->addTask(new DirectionTextTask())

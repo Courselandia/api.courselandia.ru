@@ -23,6 +23,7 @@ use App\Modules\Metatag\Data\MetatagSet;
 use App\Modules\Section\Data\SectionUpdate;
 use App\Modules\Section\Entities\SectionItem as SectionItemEntity;
 use App\Modules\Section\Models\SectionItem;
+use App\Modules\Analyzer\Actions\Admin\AnalyzerUpdateAction;
 
 /**
  * Класс действия для обновления раздела.
@@ -96,6 +97,9 @@ class SectionUpdateAction extends Action
                 }
 
                 Cache::tags(['catalog', 'section'])->flush();
+
+                $action = new AnalyzerUpdateAction($sectionEntity->id, Section::class, 'section.text');
+                $action->run();
             });
 
             $action = new SectionGetAction($this->data->id);

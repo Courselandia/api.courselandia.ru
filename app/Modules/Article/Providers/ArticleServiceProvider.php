@@ -21,6 +21,7 @@ use App\Modules\Article\Categories\DirectionTextArticleCategory;
 use App\Modules\Article\Categories\ProfessionTextArticleCategory;
 use App\Modules\Article\Categories\SchoolTextArticleCategory;
 use App\Modules\Article\Categories\SkillTextArticleCategory;
+use App\Modules\Article\Categories\SectionTextArticleCategory;
 use App\Modules\Article\Categories\TeacherTextArticleCategory;
 use App\Modules\Article\Categories\CollectionTextArticleCategory;
 use App\Modules\Article\Categories\ToolTextArticleCategory;
@@ -61,6 +62,10 @@ class ArticleServiceProvider extends ServiceProvider
 
         ArticleCategory::extend('skill.text', function () {
             return new SkillTextArticleCategory();
+        });
+
+        ArticleCategory::extend('section.text', function () {
+            return new SectionTextArticleCategory();
         });
 
         ArticleCategory::extend('tool.text', function () {

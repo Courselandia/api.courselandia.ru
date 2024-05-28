@@ -18,6 +18,7 @@ use App\Modules\Analyzer\Categories\DirectionTextAnalyzerCategory;
 use App\Modules\Analyzer\Categories\ProfessionTextAnalyzerCategory;
 use App\Modules\Analyzer\Categories\SchoolTextAnalyzerCategory;
 use App\Modules\Analyzer\Categories\SkillTextAnalyzerCategory;
+use App\Modules\Analyzer\Categories\SectionTextAnalyzerCategory;
 use App\Modules\Analyzer\Categories\TeacherTextAnalyzerCategory;
 use App\Modules\Analyzer\Categories\ToolTextAnalyzerCategory;
 use App\Modules\Analyzer\Categories\AnalyzerCategoryManager;
@@ -65,6 +66,10 @@ class AnalyzerServiceProvider extends ServiceProvider
 
         AnalyzerCategory::extend('skill.text', function () {
             return new SkillTextAnalyzerCategory();
+        });
+
+        AnalyzerCategory::extend('section.text', function () {
+            return new SectionTextAnalyzerCategory();
         });
 
         AnalyzerCategory::extend('tool.text', function () {

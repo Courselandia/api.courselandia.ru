@@ -17,6 +17,7 @@ use EloquentFilter\Filterable;
 use App\Modules\Metatag\Models\Metatag;
 use Illuminate\Database\Eloquent\Concerns\HasTimestamps;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -24,8 +25,9 @@ use App\Modules\Section\Database\Factories\SectionFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Modules\Section\Filters\SectionFilter;
 use App\Models\Enums\EnumList;
-use App\Modules\Course\Models\Course;
 use App\Modules\Salary\Enums\Level;
+use App\Modules\Analyzer\Models\Analyzer;
+use App\Modules\Article\Models\Article;
 
 /**
  * Класс модель для таблицы разделов на основе Eloquent.
@@ -148,5 +150,25 @@ class Section extends Eloquent
     {
         return $this->hasMany(SectionItem::class)
             ->orderBy('weight', 'ASC');
+    }
+
+    /**
+     * Статьи написанные искусственным интеллектом.
+     *
+     * @return MorphMany Модели статей.
+     */
+    public function articles(): MorphMany
+    {
+        return $this->morphMany(Article::class, 'articleable');
+    }
+
+    /**
+     * Результаты анализа текста.
+     *
+     * @return MorphMany Модели анализа текста.
+     */
+    public function analyzers(): MorphMany
+    {
+        return $this->morphMany(Analyzer::class, 'analyzerable');
     }
 }

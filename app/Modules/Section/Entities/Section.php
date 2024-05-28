@@ -9,6 +9,7 @@
 namespace App\Modules\Section\Entities;
 
 use App\Models\Entity;
+use App\Modules\Analyzer\Entities\Analyzer;
 use App\Modules\Metatag\Entities\Metatag;
 use App\Modules\Salary\Enums\Level;
 use Carbon\Carbon;
@@ -124,6 +125,13 @@ class Section extends Entity
     public ?array $items = null;
 
     /**
+     * Анализ хранения текстов.
+     *
+     * @var ?array<int, Analyzer>
+     */
+    public ?array $analyzers = null;
+
+    /**
      * @param int|string|null $id ID записи.
      * @param int|string|null $metatag_id ID метатегов.
      * @param string|null $name Название.
@@ -139,25 +147,26 @@ class Section extends Entity
      * @param string|null $url URL на раздел.
      * @param Metatag|null $metatag Метатеги.
      * @param array<int, SectionItem>|null $items Элементы.
+     * @param array<int, Analyzer>|null $analyzers Анализ хранения текстов.
      */
     public function __construct(
         int|string|null $id = null,
         int|string|null $metatag_id = null,
-        ?string         $name = null,
-        ?string         $header = null,
-        ?string         $text = null,
-        ?string         $additional = null,
-        ?Level          $level = null,
-        ?bool           $free = null,
-        ?bool           $status = null,
-        ?Carbon         $created_at = null,
-        ?Carbon         $updated_at = null,
-        ?Carbon         $deleted_at = null,
-        ?string         $url = null,
-        ?Metatag        $metatag = null,
-        ?array          $items = null,
-    )
-    {
+        ?string $name = null,
+        ?string $header = null,
+        ?string $text = null,
+        ?string $additional = null,
+        ?Level $level = null,
+        ?bool $free = null,
+        ?bool $status = null,
+        ?Carbon $created_at = null,
+        ?Carbon $updated_at = null,
+        ?Carbon $deleted_at = null,
+        ?string $url = null,
+        ?Metatag $metatag = null,
+        ?array $items = null,
+        ?array $analyzers = null,
+    ) {
         $this->id = $id;
         $this->metatag_id = $metatag_id;
         $this->name = $name;
@@ -173,5 +182,6 @@ class Section extends Entity
         $this->url = $url;
         $this->metatag = $metatag;
         $this->items = $items;
+        $this->analyzers = $analyzers;
     }
 }
