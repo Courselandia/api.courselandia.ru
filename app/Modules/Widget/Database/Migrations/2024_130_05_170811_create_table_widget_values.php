@@ -20,7 +20,7 @@ class CreateTableWidgetValues extends Migration
             $table->bigInteger('widget_id')->unsigned()->index('widget_id');
 
             $table->string('name', 191)->index('name');
-            $table->string('value', 191)->nullable();
+            $table->json('value');
 
             $table->timestamps();
             $table->softDeletes()->index();

@@ -48,6 +48,10 @@ class WidgetValue extends Eloquent
         'value',
     ];
 
+    protected $casts = [
+        'value' => 'array',
+    ];
+
     /**
      * Метод, который должен вернуть все правила валидации.
      *
@@ -58,7 +62,7 @@ class WidgetValue extends Eloquent
         return [
             'widget_id' => 'required|digits_between:0,20',
             'name' => 'required|between:1,191',
-            'value' => 'max:191',
+            'value' => 'required|json',
         ];
     }
 
