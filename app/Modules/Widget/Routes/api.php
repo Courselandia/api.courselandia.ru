@@ -19,16 +19,10 @@ Route::group([
         Route::get('get/{id}', 'Admin\WidgetController@get')
             ->name('get');
 
-        Route::post('create/', 'Admin\WidgetController@create')
-            ->name('create');
-
         Route::put('update/{id}', 'Admin\WidgetController@update')
             ->name('update');
 
         Route::put('update/status/{id}', 'Admin\WidgetController@updateStatus')
             ->name('update.status');
-
-        Route::delete('destroy/', 'Admin\WidgetController@destroy')
-            ->name('destroy');
     }
 );

@@ -17,18 +17,13 @@ use Illuminate\Routing\Controller;
 use App\Models\Exceptions\RecordExistException;
 use App\Models\Exceptions\RecordNotExistException;
 use App\Models\Exceptions\ValidateException;
+use App\Modules\Widget\Data\WidgetUpdate;
+use App\Modules\Widget\Data\WidgetValue;
 use App\Modules\Metatag\Template\TemplateException;
-use App\Modules\Widget\Actions\Admin\WidgetCreateAction;
-use App\Modules\Widget\Actions\Admin\WidgetDestroyAction;
 use App\Modules\Widget\Actions\Admin\WidgetGetAction;
 use App\Modules\Widget\Actions\Admin\WidgetReadAction;
 use App\Modules\Widget\Actions\Admin\WidgetUpdateAction;
 use App\Modules\Widget\Actions\Admin\WidgetUpdateStatusAction;
-use App\Modules\Widget\Data\WidgetCreate;
-use App\Modules\Widget\Data\WidgetUpdate;
-use App\Modules\Widget\Data\WidgetValue;
-use App\Modules\Widget\Http\Requests\Admin\WidgetCreateRequest;
-use App\Modules\Widget\Http\Requests\Admin\WidgetDestroyRequest;
 use App\Modules\Widget\Http\Requests\Admin\WidgetReadRequest;
 use App\Modules\Widget\Http\Requests\Admin\WidgetUpdateRequest;
 use App\Modules\Widget\Http\Requests\Admin\WidgetUpdateStatusRequest;
@@ -88,57 +83,6 @@ class WidgetController extends Controller
         $data['success'] = true;
 
         return response()->json($data);
-    }
-
-    /**
-     * Добавление данных.
-     *
-     * @param WidgetCreateRequest $request Запрос.
-     *
-     * @return JsonResponse Вернет JSON ответ.
-     * @throws Throwable
-     */
-    public function create(WidgetCreateRequest $request): JsonResponse
-    {
-        try {
-            $data = WidgetCreate::from([
-                ...$request->all(),
-                'values' => WidgetValue::collect(collect($request->get('values'))
-                    ->map(static function ($filter) {
-                        return WidgetValue::from($filter);
-                    })
-                    ->toArray()),
-            ]);
-
-            $action = new WidgetCreateAction($data);
-            $data = $action->run();
-
-            Log::info(
-                trans('widget::http.controllers.admin.widgetController.create.log'),
-                [
-                    'module' => 'Widget',
-                    'login' => Auth::getUser()->login,
-                    'type' => 'create'
-                ]
-            );
-
-            $data = [
-                'data' => $data,
-                'success' => true
-            ];
-
-            return response()->json($data);
-        } catch (ValidateException|TemplateException $error) {
-            return response()->json([
-                'success' => false,
-                'message' => $error->getMessage()
-            ])->setStatusCode(400);
-        } catch (RecordExistException $error) {
-            return response()->json([
-                'success' => false,
-                'message' => $error->getMessage()
-            ])->setStatusCode(404);
-        }
     }
 
     /**
@@ -234,33 +178,5 @@ class WidgetController extends Controller
                 'message' => $error->getMessage()
             ])->setStatusCode(404);
         }
-    }
-
-    /**
-     * Удаление данных.
-     *
-     * @param WidgetDestroyRequest $request Запрос.
-     *
-     * @return JsonResponse Вернет JSON ответ.
-     */
-    public function destroy(WidgetDestroyRequest $request): JsonResponse
-    {
-        $action = new WidgetDestroyAction($request->get('ids'));
-        $action->run();
-
-        Log::info(
-            trans('widget::http.controllers.admin.widgetController.destroy.log'),
-            [
-                'module' => 'Widget',
-                'login' => Auth::getUser()->login,
-                'type' => 'destroy'
-            ]
-        );
-
-        $data = [
-            'success' => true
-        ];
-
-        return response()->json($data);
     }
 }
