@@ -62,7 +62,10 @@ class Photo
                     $pathNew = $nameFileNew . '.jpeg';
                 }
 
-                if (!Storage::disk('local')->exists($pathOld)) {
+                if (
+                    !Storage::disk('local')->exists($pathOld) &&
+                    !Storage::disk('local')->exists($pathNew)
+                ) {
                     try {
                         if ($ext === 'webp') {
                             $im = imagecreatefromwebp($urlToImage);
