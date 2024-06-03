@@ -50,22 +50,27 @@ class Photo
                 }
 
                 $ext = pathinfo($urlToImage, PATHINFO_EXTENSION);
-                $nameFile = 'teachers/' . $item['slug'];
-                $path = $nameFile . '.' . $ext;
+                $dirOld = 'teachers/';
+                $dirNew = 'teachers/new/';
+                $nameFileOld = $dirOld . $item['slug'];
+                $pathOld = $nameFileOld . '.' . $ext;
+                $nameFileNew = $dirNew . $item['slug'];
+                $pathNew = $nameFileNew . '.' . $ext;
 
                 if ($ext === 'webp') {
-                    $path = $nameFile . '.jpeg';
+                    $pathOld = $nameFileOld . '.jpeg';
+                    $pathNew = $nameFileNew . '.jpeg';
                 }
 
-                if (!Storage::disk('local')->exists($path)) {
+                if (!Storage::disk('local')->exists($pathOld)) {
                     try {
                         if ($ext === 'webp') {
                             $im = imagecreatefromwebp($urlToImage);
-                            Storage::disk('local')->put($path, '');
-                            imagejpeg($im, Storage::disk('local')->path($path));
+                            Storage::disk('local')->put($pathNew, '');
+                            imagejpeg($im, Storage::disk('local')->path($pathNew));
                         } else {
                             $bites = file_get_contents($urlToImage);
-                            Storage::disk('local')->put($path, $bites);
+                            Storage::disk('local')->put($pathNew, $bites);
                         }
                     } catch (Throwable) {
                         continue;
@@ -75,15 +80,15 @@ class Photo
                 $this->fireEvent(
                     'put',
                     [
-                        $path
-                    ]
+                        $pathNew,
+                    ],
                 );
             }
         }
     }
 
     /**
-     * Получение количеста учителей.
+     * Получение количества учителей.
      *
      * @return int Количество учителей.
      * @throws GuzzleException
