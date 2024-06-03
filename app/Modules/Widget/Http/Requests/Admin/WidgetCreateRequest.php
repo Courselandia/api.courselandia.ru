@@ -40,7 +40,7 @@ class WidgetCreateRequest extends FormRequest
         return [
             'status' => 'boolean',
             'values.*.name' => 'required|between:1,191',
-            'values.*.index' => 'required|json',
+            'values.*.value' => 'required|json',
         ];
     }
 
@@ -53,8 +53,8 @@ class WidgetCreateRequest extends FormRequest
     {
         return [
             'status' => trans('widget::http.requests.admin.widgetCreateRequest.status'),
-            'values.*.name' => trans('widget::http.requests.admin.widgetCreateRequest.values'),
-            'values.*.value' => trans('widget::http.requests.admin.widgetCreateRequest.values'),
+            'values.*.name' => trans('widget::http.requests.admin.widgetCreateRequest.name'),
+            'values.*.value' => trans('widget::http.requests.admin.widgetCreateRequest.value'),
         ];
     }
 }

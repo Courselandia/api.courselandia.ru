@@ -8,6 +8,7 @@
 
 namespace App\Modules\Widget\Database\Factories;
 
+use Util;
 use App\Modules\Widget\Models\Widget;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -32,7 +33,7 @@ class WidgetFactory extends Factory
     {
         return [
             'name' => $this->faker->text(160),
-            'index' => $this->faker->text(160),
+            'index' => Util::latin($this->faker->text(160)),
             'status' => true,
         ];
     }

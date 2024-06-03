@@ -10,14 +10,13 @@ return [
                 'filters' => 'Фильтр',
                 'status' => 'Статус',
             ],
-            'widgetDestroyRequest' => [
-                'ids' => 'ID',
-            ],
             'widgetUpdateStatusRequest' => [
                 'status' => 'Статус',
             ],
             'widgetCreateRequest' => [
                 'status' => 'Статус',
+                'name' => 'Название значения',
+                'value' => 'Значения',
             ],
         ],
     ],

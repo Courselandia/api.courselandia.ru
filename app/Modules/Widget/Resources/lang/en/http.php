@@ -15,6 +15,8 @@ return [
             ],
             'widgetCreateRequest' => [
                 'status' => 'Status',
+                'name' => 'Name of value',
+                'value' => 'Value',
             ],
         ],
     ],
