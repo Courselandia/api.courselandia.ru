@@ -57,6 +57,7 @@ class UploadPhotosCommand extends Command
         $bar->finish();
 
         if ($photoUpload->hasError()) {
+            $this->info("\n\n");
             $errors = $photoUpload->getErrors();
 
             foreach ($errors as $error) {
