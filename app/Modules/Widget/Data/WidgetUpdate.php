@@ -23,19 +23,17 @@ class WidgetUpdate extends WidgetCreate
     /**
      * @param int|string $id ID навыка.
      * @param string|null $name Название.
-     * @param string|null $index Индекс.
      * @param bool|null $status Статус.
      * @param array<int, WidgetValue>|null $values Значения.
      */
     public function __construct(
         int|string $id,
         ?string $name = null,
-        ?string $index = null,
         ?bool $status = null,
         ?array $values = null,
     ) {
         $this->id = $id;
 
-        parent::__construct($name, $index, $status, $values);
+        parent::__construct($name, $status, $values);
     }
 }

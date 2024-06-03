@@ -78,7 +78,7 @@ class Widget extends Eloquent
     {
         return [
             'name' => trans('widget::models.widget.name'),
-            'index' => trans('widget::models.widget.header'),
+            'index' => trans('widget::models.widget.index'),
             'status' => trans('widget::models.widget.status')
         ];
     }
