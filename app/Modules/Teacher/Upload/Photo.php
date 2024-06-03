@@ -8,6 +8,7 @@
 
 namespace App\Modules\Teacher\Upload;
 
+use App\Models\Error;
 use Throwable;
 use Storage;
 use App\Models\Event;
@@ -22,6 +23,7 @@ use GuzzleHttp\Exception\GuzzleException;
 class Photo
 {
     use Event;
+    use Error;
 
     /**
      * Домен.
@@ -75,40 +77,33 @@ class Photo
                 }
 
                 $ext = pathinfo($urlToImage, PATHINFO_EXTENSION);
-                $dirOld = 'teachers/';
-                $dirNew = 'teachers/new/';
-                $nameFileOld = $dirOld . $item['slug'];
-                $pathOld = $nameFileOld . '.' . $ext;
-                $nameFileNew = $dirNew . $item['slug'];
-                $pathNew = $nameFileNew . '.' . $ext;
+                $dir = 'teachers/';
+                $nameFile = $dir . $item['slug'];
+                $path = $nameFile . '.' . $ext;
 
                 if ($ext === 'webp') {
-                    $pathOld = $nameFileOld . '.jpeg';
-                    $pathNew = $nameFileNew . '.jpeg';
+                    $path = $nameFile . '.jpeg';
                 }
 
-                if (
-                    !Storage::disk('local')->exists($pathOld) &&
-                    !Storage::disk('local')->exists($pathNew)
-                ) {
+                if (!Storage::disk('local')->exists($path)) {
                     try {
                         if ($ext === 'webp') {
                             $im = imagecreatefromwebp($urlToImage);
-                            Storage::disk('local')->put($pathNew, '');
-                            imagejpeg($im, Storage::disk('local')->path($pathNew));
+                            Storage::disk('local')->put($path, '');
+                            imagejpeg($im, Storage::disk('local')->path($path));
                         } else {
                             $bites = file_get_contents($urlToImage);
-                            Storage::disk('local')->put($pathNew, $bites);
+                            Storage::disk('local')->put($path, $bites);
                         }
-                    } catch (Throwable) {
-                        continue;
+                    } catch (Throwable $error) {
+                        $this->addError($error);
                     }
                 }
 
                 $this->fireEvent(
                     'put',
                     [
-                        $pathNew,
+                        $path,
                     ],
                 );
             }

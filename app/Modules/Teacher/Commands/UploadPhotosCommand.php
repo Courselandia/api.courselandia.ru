@@ -56,6 +56,15 @@ class UploadPhotosCommand extends Command
 
         $bar->finish();
 
+        if ($photoUpload->hasError()) {
+            $errors = $photoUpload->getErrors();
+
+            foreach ($errors as $error) {
+                $message = 'Ошибка загрузки фотографий: ' . $error->getMessage();
+                $this->error($message);
+            }
+        }
+
         $this->info("\n\nГрабинг фотографий завершен.");
     }
 }
