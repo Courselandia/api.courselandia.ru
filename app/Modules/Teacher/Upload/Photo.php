@@ -37,6 +37,31 @@ class Photo
      */
     public function run(): void
     {
+        $this->offLimits();
+        $this->upload();
+    }
+
+    /**
+     * Отключение лимитов.
+     *
+     * @return void
+     */
+    private function offLimits(): void
+    {
+        ini_set('memory_limit', '2048M');
+        ini_set('max_execution_time', '0');
+        ignore_user_abort(true);
+    }
+
+    /**
+     * Загрузка фотографий.
+     *
+     * @return void
+     * @throws GuzzleException
+     * @throws ResponseException
+     */
+    private function upload(): void
+    {
         $items = $this->getItems();
 
         foreach ($items as $item) {
