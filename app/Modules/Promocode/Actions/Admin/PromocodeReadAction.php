@@ -89,8 +89,6 @@ class PromocodeReadAction extends Action
             'school',
         );
 
-        Cache::flush();
-
         return Cache::tags(['promocode', 'school'])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,

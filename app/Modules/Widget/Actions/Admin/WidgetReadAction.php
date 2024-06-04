@@ -91,10 +91,7 @@ class WidgetReadAction extends Action
             $cacheKey,
             CacheTime::GENERAL->value,
             function () {
-                $query = Widget::filter($this->filters ?: [])
-                    ->with([
-                        'values',
-                    ]);
+                $query = Widget::filter($this->filters ?: []);
 
                 $queryCount = $query->clone();
 

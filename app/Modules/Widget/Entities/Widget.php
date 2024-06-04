@@ -68,7 +68,7 @@ class Widget extends Entity
     /**
      * Значения.
      *
-     * @var ?array<int, WidgetValue>
+     * @var ?array<string, array<string | int>>
      */
     public ?array $values = null;
 
@@ -80,7 +80,7 @@ class Widget extends Entity
      * @param Carbon|null $created_at Дата создания.
      * @param Carbon|null $updated_at Дата обновления.
      * @param Carbon|null $deleted_at Дата удаления.
-     * @param array<int, WidgetValue>|null $values Значения.
+     * @param array<string, array<string | int>>|null $values Значения.
      */
     public function __construct(
         int|string|null $id = null,

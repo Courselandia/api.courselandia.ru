@@ -54,7 +54,19 @@ class WidgetGetAction extends Action
                     ])
                     ->first();
 
-                return $widget ? WidgetEntity::from($widget->toArray()) : null;
+                if ($widget) {
+                    $data = $widget->toArray();
+                    $values = $data['values'];
+                    $data['values'] = [];
+
+                    for ($i = 0; $i < count($values); $i++) {
+                        $data['values'][$values[$i]['name']] = $values[$i]['value'];
+                    }
+
+                    return WidgetEntity::from($data);
+                }
+
+                return null;
             }
         );
     }
