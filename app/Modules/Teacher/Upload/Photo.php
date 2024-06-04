@@ -78,7 +78,7 @@ class Photo
 
                 $ext = pathinfo($urlToImage, PATHINFO_EXTENSION);
                 $dir = 'teachers/';
-                $nameFile = $dir . $item['slug'];
+                $nameFile = $dir . $item['slug'] . '-' . $item['id'];
                 $path = $nameFile . '.' . $ext;
 
                 if ($ext === 'webp') {
