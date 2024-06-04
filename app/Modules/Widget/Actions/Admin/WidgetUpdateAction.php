@@ -11,7 +11,6 @@ namespace App\Modules\Widget\Actions\Admin;
 use DB;
 use Cache;
 use Throwable;
-use Typography;
 use App\Models\Action;
 use App\Modules\Widget\Models\Widget;
 use App\Modules\Widget\Data\WidgetValue;
@@ -58,7 +57,7 @@ class WidgetUpdateAction extends Action
                 $widgetEntity = WidgetEntity::from([
                     ...$widgetEntity->toArray(),
                     ...$this->data->toArray(),
-                    'name' => Typography::process($this->data->name, true),
+                    'name' => $this->data->name,
                 ]);
 
                 Widget::find($this->data->id)->update($widgetEntity->toArray());
