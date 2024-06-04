@@ -27,7 +27,7 @@ class WidgetCreateRequest extends FormRequest
             'status' => 'boolean',
             'values' => 'nullable',
             'values.*.name' => 'required|between:1,191',
-            'values.*.value' => 'required|json',
+            'values.*.value' => 'required',
         ];
     }
 

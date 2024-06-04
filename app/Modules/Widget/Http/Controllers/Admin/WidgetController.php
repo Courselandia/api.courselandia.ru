@@ -103,8 +103,11 @@ class WidgetController extends Controller
                 ...$dataAll,
                 'id' => $id,
                 'values' => WidgetValue::collect(collect($dataAll['values'])
-                    ->map(static function ($value) {
-                        return WidgetValue::from($value);
+                    ->map(static function ($itm) {
+                        return WidgetValue::from([
+                            ...$itm,
+                            'value' => is_array($itm['value']) ? json_encode($itm['value']) : $itm['value'],
+                        ]);
                     })
                     ->toArray()),
             ]);
