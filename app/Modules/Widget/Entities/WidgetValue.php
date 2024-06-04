@@ -40,9 +40,9 @@ class WidgetValue extends Entity
     /**
      * Значение.
      *
-     * @var array|null
+     * @var array|string|int|null
      */
-    public ?array $value = null;
+    public array|string|int|null $value = null;
 
     /**
      * Дата создания.
@@ -76,7 +76,7 @@ class WidgetValue extends Entity
      * @param int|string|null $id ID записи.
      * @param int|string|null $widget_id ID виджета.
      * @param string|null $name Название.
-     * @param array|null $value Значение.
+     * @param array|string|int|null $value Значение.
      * @param Carbon|null $created_at Дата создания.
      * @param Carbon|null $updated_at Дата обновления.
      * @param Carbon|null $deleted_at Дата удаления.
@@ -86,7 +86,7 @@ class WidgetValue extends Entity
         int|string|null $id = null,
         int|string|null $widget_id = null,
         ?string $name = null,
-        ?array $value = null,
+        array|string|int|null $value = null,
         ?Carbon $created_at = null,
         ?Carbon $updated_at = null,
         ?Carbon $deleted_at = null,
