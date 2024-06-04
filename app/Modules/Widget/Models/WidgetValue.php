@@ -75,8 +75,8 @@ class WidgetValue extends Eloquent
     {
         return [
             'widget_id' => trans('widget::models.widgetValue.widgetId'),
-            'name' => trans('widget::models.widget.name'),
-            'value' => trans('widget::models.widget.value'),
+            'name' => trans('widget::models.widgetValue.name'),
+            'value' => trans('widget::models.widgetValue.value'),
         ];
     }
 
