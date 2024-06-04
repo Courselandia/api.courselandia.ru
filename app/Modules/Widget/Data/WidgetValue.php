@@ -23,19 +23,19 @@ class WidgetValue extends Data
     public ?string $name = null;
 
     /**
-     * Индекс.
+     * Значение.
      *
-     * @var string|null
+     * @var array|null
      */
-    public ?string $value = null;
+    public ?array $value = null;
 
     /**
      * @param string|null $name Название.
-     * @param string|null $value Значение.
+     * @param array|null $value Значение.
      */
     public function __construct(
         ?string $name = null,
-        ?string $value = null,
+        ?array $value = null,
     ) {
         $this->name = $name;
         $this->value = $value;

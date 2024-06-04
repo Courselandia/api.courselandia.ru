@@ -63,7 +63,7 @@ class WidgetUpdateAction extends Action
 
                 Widget::find($this->data->id)->update($widgetEntity->toArray());
 
-                WidgetValueModel::whereIn('id', collect($widgetEntity->values)->pluck('id')->toArray())
+                WidgetValueModel::where('widget_id', $this->data->id)
                     ->forceDelete();
 
                 if ($this->data->values) {

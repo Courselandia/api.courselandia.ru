@@ -106,7 +106,7 @@ class WidgetController extends Controller
                     ->map(static function ($itm) {
                         return WidgetValue::from([
                             ...$itm,
-                            'value' => is_array($itm['value']) ? json_encode($itm['value']) : $itm['value'],
+                            'value' => $itm['value'],
                         ]);
                     })
                     ->toArray()),
