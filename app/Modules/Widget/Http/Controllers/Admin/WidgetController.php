@@ -103,8 +103,8 @@ class WidgetController extends Controller
                 ...$dataAll,
                 'id' => $id,
                 'values' => WidgetValue::collect(collect($dataAll['values'])
-                    ->map(static function ($filter) {
-                        return WidgetValue::from($filter);
+                    ->map(static function ($value) {
+                        return WidgetValue::from($value);
                     })
                     ->toArray()),
             ]);

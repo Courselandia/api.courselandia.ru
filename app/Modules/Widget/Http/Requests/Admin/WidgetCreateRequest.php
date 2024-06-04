@@ -17,20 +17,6 @@ use Illuminate\Support\Str;
 class WidgetCreateRequest extends FormRequest
 {
     /**
-     * Конвертация отправленных данных.
-     *
-     * @return void
-     */
-    protected function prepareForValidation(): void
-    {
-        $this->merge([
-            'values' => Str::isJson($this->get('filters'))
-                ? json_decode($this->get('values'), true)
-                : $this->get('values'),
-        ]);
-    }
-
-    /**
      * Возвращает правила проверки.
      *
      * @return array Массив правил проверки.
@@ -39,6 +25,7 @@ class WidgetCreateRequest extends FormRequest
     {
         return [
             'status' => 'boolean',
+            'values' => 'nullable',
             'values.*.name' => 'required|between:1,191',
             'values.*.value' => 'required|json',
         ];
