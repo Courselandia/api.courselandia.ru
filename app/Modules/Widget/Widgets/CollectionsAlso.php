@@ -8,6 +8,9 @@
 
 namespace App\Modules\Widget\Widgets;
 
+use Util;
+use Cache;
+use App\Models\Enums\CacheTime;
 use App\Modules\Collection\Entities\Collection as CollectionEntity;
 use App\Modules\Collection\Models\Collection;
 use App\Modules\Widget\Contracts\Widget;
@@ -31,16 +34,31 @@ class CollectionsAlso implements Widget
             return null;
         }
 
-        $collection = Collection::find($params['id']);
+        $id = $params['id'];
 
-        if (!$collection) {
-            return null;
-        }
+        $cacheKey = Util::getKey(
+            'collection',
+            'site',
+            'widget',
+            $id,
+        );
 
-        return view('widget::widgets.collectionsAlso', [
-            'collection' => CollectionEntity::from($collection->toArray()),
-            'values' => $values,
-            'params' => $params,
-        ])->render();
+        return Cache::tags(['collection'])->remember(
+            $cacheKey,
+            CacheTime::GENERAL->value,
+            function () use ($id, $values, $params) {
+                $collection = Collection::find($id);
+
+                if (!$collection) {
+                    return null;
+                }
+
+                return view('widget::widgets.collectionsAlso', [
+                    'collection' => CollectionEntity::from($collection->toArray()),
+                    'values' => $values,
+                    'params' => $params,
+                ])->render();
+            }
+        );
     }
 }

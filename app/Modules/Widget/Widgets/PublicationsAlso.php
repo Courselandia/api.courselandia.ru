@@ -8,6 +8,9 @@
 
 namespace App\Modules\Widget\Widgets;
 
+use Cache;
+use Util;
+use App\Models\Enums\CacheTime;
 use App\Modules\Widget\Contracts\Widget;
 use App\Modules\Publication\Models\Publication;
 use App\Modules\Publication\Entities\Publication as PublicationEntity;
@@ -31,16 +34,31 @@ class PublicationsAlso implements Widget
             return null;
         }
 
-        $publication = Publication::find($params['id']);
+        $id = $params['id'];
 
-        if (!$publication) {
-            return null;
-        }
+        $cacheKey = Util::getKey(
+            'publication',
+            'site',
+            'widget',
+            $id,
+        );
 
-        return view('widget::widgets.publicationsAlso', [
-            'publication' => PublicationEntity::from($publication->toArray()),
-            'values' => $values,
-            'params' => $params,
-        ])->render();
+        return Cache::tags(['publication'])->remember(
+            $cacheKey,
+            CacheTime::GENERAL->value,
+            function () use ($id, $values, $params) {
+                $publication = Publication::find($params['id']);
+
+                if (!$publication) {
+                    return null;
+                }
+
+                return view('widget::widgets.publicationsAlso', [
+                    'publication' => PublicationEntity::from($publication->toArray()),
+                    'values' => $values,
+                    'params' => $params,
+                ])->render();
+            }
+        );
     }
 }
