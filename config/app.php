@@ -370,6 +370,7 @@ return [
         'Alert' => App\Modules\Alert\Facades\Alert::class,
         'OAuth' => App\Modules\OAuth\Facades\OAuth::class,
         'Writer' => App\Modules\Writer\Facades\Writer::class,
+        'Widget' => App\Modules\Widget\Facades\Widget::class,
         'ArticleCategory' => App\Modules\Article\Facades\ArticleCategory::class,
         'Plagiarism' => App\Modules\Plagiarism\Facades\Plagiarism::class,
         'AnalyzerCategory' => App\Modules\Analyzer\Facades\AnalyzerCategory::class,

@@ -8,6 +8,7 @@
 
 namespace App\Modules\Publication\Pipes\Site\Read;
 
+use App\Modules\Widget\Actions\Admin\WidgetRenderAction;
 use Cache;
 use Closure;
 use Util;
@@ -116,6 +117,9 @@ class PublicationRead implements Pipe
 
         if ($data->id || $data->link) {
             if (isset($publications[0])) {
+                $action = new WidgetRenderAction($publications[0]->article);
+                $publications[0]->article = $action->run();
+
                 $data->publication = $publications[0];
             }
         } else {

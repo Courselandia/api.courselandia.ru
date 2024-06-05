@@ -8,10 +8,15 @@
 
 namespace App\Modules\Widget\Providers;
 
+use App;
 use Config;
+use Widget;
+use App\Modules\Widget\Managers\WidgetManager;
 use Illuminate\Support\ServiceProvider;
 use App\Modules\Widget\Models\Widget as WidgetModel;
 use App\Modules\Widget\Events\Listeners\WidgetListener;
+use App\Modules\Widget\Widgets\CollectionsAlso;
+use App\Modules\Widget\Widgets\PublicationsAlso;
 
 /**
  * Класс сервис-провайдера для настройки этого модуля.
@@ -40,6 +45,17 @@ class WidgetServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
+        App::singleton('widget', function ($app) {
+            return new WidgetManager($app);
+        });
+
+        Widget::extend('publications-also', function () {
+            return new PublicationsAlso();
+        });
+
+        Widget::extend('collections-also', function () {
+            return new CollectionsAlso();
+        });
     }
 
     /**
