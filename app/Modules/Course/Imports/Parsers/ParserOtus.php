@@ -49,6 +49,7 @@ class ParserOtus extends ParserYml
             'Корпоративные курсы' => Direction::OTHER,
             'Архитектура' => Direction::OTHER,
             'Безопасность' => Direction::OTHER,
+            'Аналитика и анализ' => Direction::ANALYTICS,
         ];
     }
 
