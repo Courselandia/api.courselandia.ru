@@ -8,7 +8,9 @@
 
 namespace App\Modules\Widget\Actions\Admin;
 
+use Widget;
 use App\Models\Action;
+use App\Modules\Widget\Models\Widget as WidgetModel;
 
 /**
  * Класс действия для отображения виджетов.
@@ -49,23 +51,51 @@ class WidgetRenderAction extends Action
      * Метод переводит тэг в реальный HTML виджета.
      *
      * @param string $tagComponent Строка тэга.
-     * @return string Вернет реальный HTML тэга.
+     * @return string|null Вернет реальный HTML тэга.
      */
-    private function transpile(string $tagComponent): string
+    private function transpile(string $tagComponent): ?string
     {
-        $onlyParams = str_replace(['<component ', '></component>'], '', $tagComponent);
+        $onlyParams = str_replace(['<component ', '></component>', '"'], '', $tagComponent);
         $onlyParams = explode(' ', $onlyParams);
-        print_r($onlyParams);
-        exit;
+        $data = [];
 
-        preg_match(
-            '/(\s*[a-z-_0-9]+="[a-z-_0-9]+")/i',
-            $tagComponent,
-            $matches,
-        );
-        print_r($matches);
-        exit;
+        foreach ($onlyParams as $onlyParam) {
+            $onlyParamData = explode('=', $onlyParam);
+            $data[$onlyParamData[0]] = $onlyParamData[1];
+        }
 
-        return 'HERE!';
+        if (isset($data['is'])) {
+            $params = $data;
+            unset($params['is']);
+
+            return Widget::driver($data['is'])->render($this->getValues($data['is']), $params);
+        }
+
+        return '';
+    }
+
+    /**
+     * Получить значения виджета.
+     *
+     * @param string $index Индекс виджета.
+     * @return array<string, Array<string, int> | string | int> Параметры виджета.
+     */
+    private function getValues(string $index): array
+    {
+        $widget = WidgetModel::where('index', $index)
+            ->with('values')
+            ->first();
+
+        if ($widget?->values) {
+            $data = [];
+
+            foreach ($widget->values as $value) {
+                $data[$value->name] = $value->value;
+            }
+
+            return $data;
+        }
+
+        return [];
     }
 }

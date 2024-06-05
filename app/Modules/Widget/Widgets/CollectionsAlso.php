@@ -8,6 +8,8 @@
 
 namespace App\Modules\Widget\Widgets;
 
+use App\Modules\Collection\Entities\Collection as CollectionEntity;
+use App\Modules\Collection\Models\Collection;
 use App\Modules\Widget\Contracts\Widget;
 
 /**
@@ -25,6 +27,20 @@ class CollectionsAlso implements Widget
      */
     public function render(array $values, array $params): ?string
     {
-        return 'Collections Also';
+        if (!isset($params['id']) || !$params['id']) {
+            return null;
+        }
+
+        $collection = Collection::find($params['id']);
+
+        if (!$collection) {
+            return null;
+        }
+
+        return view('widget::widgets.collectionsAlso', [
+            'collection' => CollectionEntity::from($collection->toArray()),
+            'values' => $values,
+            'params' => $params,
+        ])->render();
     }
 }
