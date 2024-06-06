@@ -5,7 +5,7 @@
 
 /**
  * A helper file for Laravel, to provide autocomplete information to your IDE
- * Generated for Laravel 10.48.7.
+ * Generated for Laravel 10.48.9.
  *
  * This file should not be included in your code, only analyzed by your IDE!
  *
@@ -18171,201 +18171,6 @@ namespace Orchestra\Parser\Xml {
             }
     }
 
-namespace Intervention\Image\Laravel\Facades {
-            /**
-     * 
-     *
-     */        class Image {
-                    /**
-         * Create image mangager with given driver
-         *
-         * @link https://image.intervention.io/v3/basics/image-manager
-         * @param string|\Intervention\Image\Interfaces\DriverInterface $driver
-         * @return \Intervention\Image\ImageManager 
-         * @static 
-         */        public static function withDriver($driver)
-        {
-                        return \Intervention\Image\ImageManager::withDriver($driver);
-        }
-                    /**
-         * Create image manager with GD driver
-         *
-         * @link https://image.intervention.io/v3/basics/image-manager#static-gd-driver-constructor
-         * @return \Intervention\Image\ImageManager 
-         * @static 
-         */        public static function gd()
-        {
-                        return \Intervention\Image\ImageManager::gd();
-        }
-                    /**
-         * Create image manager with Imagick driver
-         *
-         * @link https://image.intervention.io/v3/basics/image-manager#static-imagick-driver-constructor
-         * @return \Intervention\Image\ImageManager 
-         * @static 
-         */        public static function imagick()
-        {
-                        return \Intervention\Image\ImageManager::imagick();
-        }
-                    /**
-         * Create new image instance with given width & height
-         *
-         * @link https://image.intervention.io/v3/basics/instantiation#creating-new-images
-         * @param int $width
-         * @param int $height
-         * @throws RuntimeException
-         * @return \Intervention\Image\Interfaces\ImageInterface 
-         * @static 
-         */        public static function create($width, $height)
-        {
-                        /** @var \Intervention\Image\ImageManager $instance */
-                        return $instance->create($width, $height);
-        }
-                    /**
-         * Create new image instance from given input which can be one of the following
-         * 
-         * - Path in filesystem
-         * - File Pointer resource
-         * - SplFileInfo object
-         * - Raw binary image data
-         * - Base64 encoded image data
-         * - Data Uri
-         * - Intervention\Image\Image Instance
-         * 
-         * To decode the raw input data, you can optionally specify a decoding strategy
-         * with the second parameter. This can be an array of class names or objects
-         * of decoders to be processed in sequence. In this case, the input must be
-         * decodedable with one of the decoders passed. It is also possible to pass
-         * a single object or class name of a decoder.
-         * 
-         * All decoders that implement the `DecoderInterface::class` can be passed. Usually
-         * a selection of classes of the namespace `Intervention\Image\Decoders`
-         * 
-         * If the second parameter is not set, an attempt to decode the input is made
-         * with all available decoders of the driver.
-         *
-         * @link https://image.intervention.io/v3/basics/instantiation#reading-images
-         * @param mixed $input
-         * @param string|array|\Intervention\Image\Interfaces\DecoderInterface $decoders
-         * @throws RuntimeException
-         * @return \Intervention\Image\Interfaces\ImageInterface 
-         * @static 
-         */        public static function read($input, $decoders = [])
-        {
-                        /** @var \Intervention\Image\ImageManager $instance */
-                        return $instance->read($input, $decoders);
-        }
-                    /**
-         * Create new animated image by given callback
-         *
-         * @link https://image.intervention.io/v3/basics/instantiation#creating-animations
-         * @param callable $init
-         * @return \Intervention\Image\Interfaces\ImageInterface 
-         * @static 
-         */        public static function animate($init)
-        {
-                        /** @var \Intervention\Image\ImageManager $instance */
-                        return $instance->animate($init);
-        }
-            }
-            /**
-     * 
-     *
-     */        class Image {
-                    /**
-         * Create image mangager with given driver
-         *
-         * @link https://image.intervention.io/v3/basics/image-manager
-         * @param string|\Intervention\Image\Interfaces\DriverInterface $driver
-         * @return \Intervention\Image\ImageManager 
-         * @static 
-         */        public static function withDriver($driver)
-        {
-                        return \Intervention\Image\ImageManager::withDriver($driver);
-        }
-                    /**
-         * Create image manager with GD driver
-         *
-         * @link https://image.intervention.io/v3/basics/image-manager#static-gd-driver-constructor
-         * @return \Intervention\Image\ImageManager 
-         * @static 
-         */        public static function gd()
-        {
-                        return \Intervention\Image\ImageManager::gd();
-        }
-                    /**
-         * Create image manager with Imagick driver
-         *
-         * @link https://image.intervention.io/v3/basics/image-manager#static-imagick-driver-constructor
-         * @return \Intervention\Image\ImageManager 
-         * @static 
-         */        public static function imagick()
-        {
-                        return \Intervention\Image\ImageManager::imagick();
-        }
-                    /**
-         * Create new image instance with given width & height
-         *
-         * @link https://image.intervention.io/v3/basics/instantiation#creating-new-images
-         * @param int $width
-         * @param int $height
-         * @throws RuntimeException
-         * @return \Intervention\Image\Interfaces\ImageInterface 
-         * @static 
-         */        public static function create($width, $height)
-        {
-                        /** @var \Intervention\Image\ImageManager $instance */
-                        return $instance->create($width, $height);
-        }
-                    /**
-         * Create new image instance from given input which can be one of the following
-         * 
-         * - Path in filesystem
-         * - File Pointer resource
-         * - SplFileInfo object
-         * - Raw binary image data
-         * - Base64 encoded image data
-         * - Data Uri
-         * - Intervention\Image\Image Instance
-         * 
-         * To decode the raw input data, you can optionally specify a decoding strategy
-         * with the second parameter. This can be an array of class names or objects
-         * of decoders to be processed in sequence. In this case, the input must be
-         * decodedable with one of the decoders passed. It is also possible to pass
-         * a single object or class name of a decoder.
-         * 
-         * All decoders that implement the `DecoderInterface::class` can be passed. Usually
-         * a selection of classes of the namespace `Intervention\Image\Decoders`
-         * 
-         * If the second parameter is not set, an attempt to decode the input is made
-         * with all available decoders of the driver.
-         *
-         * @link https://image.intervention.io/v3/basics/instantiation#reading-images
-         * @param mixed $input
-         * @param string|array|\Intervention\Image\Interfaces\DecoderInterface $decoders
-         * @throws RuntimeException
-         * @return \Intervention\Image\Interfaces\ImageInterface 
-         * @static 
-         */        public static function read($input, $decoders = [])
-        {
-                        /** @var \Intervention\Image\ImageManager $instance */
-                        return $instance->read($input, $decoders);
-        }
-                    /**
-         * Create new animated image by given callback
-         *
-         * @link https://image.intervention.io/v3/basics/instantiation#creating-animations
-         * @param callable $init
-         * @return \Intervention\Image\Interfaces\ImageInterface 
-         * @static 
-         */        public static function animate($init)
-        {
-                        /** @var \Intervention\Image\ImageManager $instance */
-                        return $instance->animate($init);
-        }
-            }
-    }
-
 namespace App\Models\Facades {
             /**
      * Фасад класса для работы с утилитами.
@@ -19041,7 +18846,6 @@ namespace App\Modules\Act\Facades {
          * @param int $maxCount Сколько раз это действий может быть исполнено.
          * @param int $minutes Через сколько минут это действие будет доступно.
          * @return bool Если вернет true, то действие может быть выполнено еще раз. Если false, то максимальный порог его выполнения достигнут.
-         * @throws ParameterInvalidException
          * @throws ReflectionException
          * @static 
          */        public static function status($index, $maxCount, $minutes = 60)
@@ -19057,7 +18861,6 @@ namespace App\Modules\Act\Facades {
          * @param int $minutes Общее время жизни этой записи в минутах.
          * @return \App\Modules\Act\Models\Implement 
          * @throws RecordNotExistException
-         * @throws ParameterInvalidException
          * @throws ReflectionException
          * @static 
          */        public static function add($index, $to = 1, $minutes = 44640)
@@ -19072,7 +18875,7 @@ namespace App\Modules\Act\Facades {
          *
          * @param string $index Индекс действия.
          * @return \App\Modules\Act\Models\Implement 
-         * @throws ParameterInvalidException|ReflectionException
+         * @throws ReflectionException
          * @static 
          */        public static function delete($index)
         {
@@ -19084,7 +18887,6 @@ namespace App\Modules\Act\Facades {
          *
          * @param string $index Индекс действия.
          * @return int Вернет текущее количество.
-         * @throws ParameterInvalidException
          * @throws ReflectionException
          * @static 
          */        public static function get($index)
@@ -19323,8 +19125,7 @@ namespace App\Modules\Alert\Facades {
          * @param int|null $offset Отступ вывода.
          * @param int|null $limit Лимит вывода.
          * @param bool $status Если установить true, то получит только прочитанные.
-         * @return \Spatie\LaravelData\DataCollection Вернет коллекцию данных предупреждений.
-         * @throws ParameterInvalidException
+         * @return array<int, AlertEntity> Вернет массив данных предупреждений.
          * @static 
          */        public static function list($offset = null, $limit = null, $status = null)
         {
@@ -19494,6 +19295,88 @@ namespace App\Modules\Writer\Facades {
          */        public static function forgetDrivers()
         {            //Method inherited from \Illuminate\Support\Manager         
                         /** @var \App\Modules\Writer\Models\WriterManager $instance */
+                        return $instance->forgetDrivers();
+        }
+            }
+    }
+
+namespace App\Modules\Widget\Facades {
+            /**
+     * Фасад класса для рендеринга виджетов.
+     *
+     */        class Widget {
+                    /**
+         * 
+         *
+         * @static 
+         */        public static function getDefaultDriver()
+        {
+                        /** @var \App\Modules\Widget\Managers\WidgetManager $instance */
+                        return $instance->getDefaultDriver();
+        }
+                    /**
+         * Get a driver instance.
+         *
+         * @param string|null $driver
+         * @return mixed 
+         * @throws \InvalidArgumentException
+         * @static 
+         */        public static function driver($driver = null)
+        {            //Method inherited from \Illuminate\Support\Manager         
+                        /** @var \App\Modules\Widget\Managers\WidgetManager $instance */
+                        return $instance->driver($driver);
+        }
+                    /**
+         * Register a custom driver creator Closure.
+         *
+         * @param string $driver
+         * @param \Closure $callback
+         * @return \App\Modules\Widget\Managers\WidgetManager 
+         * @static 
+         */        public static function extend($driver, $callback)
+        {            //Method inherited from \Illuminate\Support\Manager         
+                        /** @var \App\Modules\Widget\Managers\WidgetManager $instance */
+                        return $instance->extend($driver, $callback);
+        }
+                    /**
+         * Get all of the created "drivers".
+         *
+         * @return array 
+         * @static 
+         */        public static function getDrivers()
+        {            //Method inherited from \Illuminate\Support\Manager         
+                        /** @var \App\Modules\Widget\Managers\WidgetManager $instance */
+                        return $instance->getDrivers();
+        }
+                    /**
+         * Get the container instance used by the manager.
+         *
+         * @return \Illuminate\Contracts\Container\Container 
+         * @static 
+         */        public static function getContainer()
+        {            //Method inherited from \Illuminate\Support\Manager         
+                        /** @var \App\Modules\Widget\Managers\WidgetManager $instance */
+                        return $instance->getContainer();
+        }
+                    /**
+         * Set the container instance used by the manager.
+         *
+         * @param \Illuminate\Contracts\Container\Container $container
+         * @return \App\Modules\Widget\Managers\WidgetManager 
+         * @static 
+         */        public static function setContainer($container)
+        {            //Method inherited from \Illuminate\Support\Manager         
+                        /** @var \App\Modules\Widget\Managers\WidgetManager $instance */
+                        return $instance->setContainer($container);
+        }
+                    /**
+         * Forget all of the resolved driver instances.
+         *
+         * @return \App\Modules\Widget\Managers\WidgetManager 
+         * @static 
+         */        public static function forgetDrivers()
+        {            //Method inherited from \Illuminate\Support\Manager         
+                        /** @var \App\Modules\Widget\Managers\WidgetManager $instance */
                         return $instance->forgetDrivers();
         }
             }
@@ -19741,6 +19624,115 @@ namespace App\Modules\Analyzer\Facades {
         {            //Method inherited from \Illuminate\Support\Manager         
                         /** @var \App\Modules\Analyzer\Categories\AnalyzerCategoryManager $instance */
                         return $instance->forgetDrivers();
+        }
+            }
+    }
+
+namespace Intervention\Image\Laravel\Facades {
+            /**
+     * 
+     *
+     */        class Image {
+                    /**
+         * Create image manager with given driver
+         *
+         * @link https://image.intervention.io/v3/basics/image-manager
+         * @param string|\Intervention\Image\Interfaces\DriverInterface $driver
+         * @return \Intervention\Image\ImageManager 
+         * @static 
+         */        public static function withDriver($driver)
+        {
+                        return \Intervention\Image\ImageManager::withDriver($driver);
+        }
+                    /**
+         * Create image manager with GD driver
+         *
+         * @link https://image.intervention.io/v3/basics/image-manager#static-gd-driver-constructor
+         * @return \Intervention\Image\ImageManager 
+         * @static 
+         */        public static function gd()
+        {
+                        return \Intervention\Image\ImageManager::gd();
+        }
+                    /**
+         * Create image manager with Imagick driver
+         *
+         * @link https://image.intervention.io/v3/basics/image-manager#static-imagick-driver-constructor
+         * @return \Intervention\Image\ImageManager 
+         * @static 
+         */        public static function imagick()
+        {
+                        return \Intervention\Image\ImageManager::imagick();
+        }
+                    /**
+         * Create new image instance with given width & height
+         *
+         * @link https://image.intervention.io/v3/basics/instantiation#creating-new-images
+         * @param int $width
+         * @param int $height
+         * @throws RuntimeException
+         * @return \Intervention\Image\Interfaces\ImageInterface 
+         * @static 
+         */        public static function create($width, $height)
+        {
+                        /** @var \Intervention\Image\ImageManager $instance */
+                        return $instance->create($width, $height);
+        }
+                    /**
+         * Create new image instance from given input which can be one of the following
+         * 
+         * - Path in filesystem
+         * - File Pointer resource
+         * - SplFileInfo object
+         * - Raw binary image data
+         * - Base64 encoded image data
+         * - Data Uri
+         * - Intervention\Image\Image Instance
+         * 
+         * To decode the raw input data, you can optionally specify a decoding strategy
+         * with the second parameter. This can be an array of class names or objects
+         * of decoders to be processed in sequence. In this case, the input must be
+         * decodedable with one of the decoders passed. It is also possible to pass
+         * a single object or class name of a decoder.
+         * 
+         * All decoders that implement the `DecoderInterface::class` can be passed. Usually
+         * a selection of classes of the namespace `Intervention\Image\Decoders`
+         * 
+         * If the second parameter is not set, an attempt to decode the input is made
+         * with all available decoders of the driver.
+         *
+         * @link https://image.intervention.io/v3/basics/instantiation#reading-images
+         * @param mixed $input
+         * @param string|array|\Intervention\Image\Interfaces\DecoderInterface $decoders
+         * @throws RuntimeException
+         * @return \Intervention\Image\Interfaces\ImageInterface 
+         * @static 
+         */        public static function read($input, $decoders = [])
+        {
+                        /** @var \Intervention\Image\ImageManager $instance */
+                        return $instance->read($input, $decoders);
+        }
+                    /**
+         * Create new animated image by given callback
+         *
+         * @link https://image.intervention.io/v3/basics/instantiation#creating-animations
+         * @param callable $init
+         * @return \Intervention\Image\Interfaces\ImageInterface 
+         * @static 
+         */        public static function animate($init)
+        {
+                        /** @var \Intervention\Image\ImageManager $instance */
+                        return $instance->animate($init);
+        }
+                    /**
+         * Return currently used driver
+         *
+         * @return \Intervention\Image\Interfaces\DriverInterface 
+         * @static 
+         */        public static function driver()
+        {
+                        /** @var \Intervention\Image\ImageManager $instance */
+                        return $instance->driver();
         }
             }
     }
@@ -20176,6 +20168,31 @@ namespace Illuminate\Support {
         {
                         return \Illuminate\Support\Collection::debug();
         }
+                    /**
+         * 
+         *
+         * @see \Spatie\LaravelRay\RayServiceProvider::registerMacros()
+         * @param string $description
+         * @static 
+         */        public static function ray($description = '')
+        {
+                        return \Illuminate\Support\Collection::ray($description);
+        }
+            }
+            /**
+     * 
+     *
+     */        class Stringable {
+                    /**
+         * 
+         *
+         * @see \Spatie\LaravelRay\RayServiceProvider::registerMacros()
+         * @param string $description
+         * @static 
+         */        public static function ray($description = '')
+        {
+                        return \Illuminate\Support\Stringable::ray($description);
+        }
             }
     }
 
@@ -20262,6 +20279,41 @@ namespace Illuminate\Database\Schema {
          */        public static function dropNestedSet()
         {
                         return \Illuminate\Database\Schema\Blueprint::dropNestedSet();
+        }
+            }
+    }
+
+namespace Illuminate\Testing {
+            /**
+     * 
+     *
+     * @mixin \Illuminate\Http\Response
+     */        class TestResponse {
+                    /**
+         * 
+         *
+         * @see \Spatie\LaravelRay\RayServiceProvider::registerMacros()
+         * @static 
+         */        public static function ray()
+        {
+                        return \Illuminate\Testing\TestResponse::ray();
+        }
+            }
+    }
+
+namespace Illuminate\Database\Query {
+            /**
+     * 
+     *
+     */        class Builder {
+                    /**
+         * 
+         *
+         * @see \Spatie\LaravelRay\RayServiceProvider::registerMacros()
+         * @static 
+         */        public static function ray()
+        {
+                        return \Illuminate\Database\Query\Builder::ray();
         }
             }
     }
@@ -23735,6 +23787,15 @@ namespace  {
                                 /** @var \Illuminate\Database\Query\Builder $instance */
                                 return $instance->macroCall($method, $parameters);
             }
+                            /**
+             * 
+             *
+             * @see \Spatie\LaravelRay\RayServiceProvider::registerMacros()
+             * @static 
+             */            public static function ray()
+            {
+                                return \Illuminate\Database\Query\Builder::ray();
+            }
                     }
             class Event extends \Illuminate\Support\Facades\Event {}
             class File extends \Illuminate\Support\Facades\File {}
@@ -23767,7 +23828,6 @@ namespace  {
             class Debugbar extends \Barryvdh\Debugbar\Facades\Debugbar {}
             class MongoDb extends \MongoDB\Laravel\Eloquent\Model {}
             class XmlParser extends \Orchestra\Parser\Xml\Facade {}
-            class Size extends \Intervention\Image\Laravel\Facades\Image {}
             class Util extends \App\Models\Facades\Util {}
             class Morph extends \App\Models\Facades\Morph {}
             class Typography extends \App\Models\Facades\Typography {}
@@ -23783,6 +23843,7 @@ namespace  {
             class Alert extends \App\Modules\Alert\Facades\Alert {}
             class OAuth extends \App\Modules\OAuth\Facades\OAuth {}
             class Writer extends \App\Modules\Writer\Facades\Writer {}
+            class Widget extends \App\Modules\Widget\Facades\Widget {}
             class ArticleCategory extends \App\Modules\Article\Facades\ArticleCategory {}
             class Plagiarism extends \App\Modules\Plagiarism\Facades\Plagiarism {}
             class AnalyzerCategory extends \App\Modules\Analyzer\Facades\AnalyzerCategory {}

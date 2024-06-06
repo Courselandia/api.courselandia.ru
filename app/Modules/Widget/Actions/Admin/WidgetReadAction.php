@@ -1,26 +1,25 @@
 <?php
 /**
- * Модуль Промокодов.
- * Этот модуль содержит все классы для работы с промокодами.
+ * Модуль Виджетов.
+ * Этот модуль содержит все классы для работы с виджетами, которые можно использовать в публикациях.
  *
- * @package App\Modules\Promocode
+ * @package App\Modules\Widget
  */
 
-namespace App\Modules\Promocode\Actions\Admin;
+namespace App\Modules\Widget\Actions\Admin;
 
-use Cache;
-use Throwable;
-use Util;
-use ReflectionException;
 use App\Models\Action;
 use App\Models\Enums\CacheTime;
-use App\Modules\Promocode\Entities\Promocode as PromocodeEntity;
-use App\Modules\Promocode\Models\Promocode;
+use App\Modules\Widget\Entities\Widget as WidgetEntity;
+use App\Modules\Widget\Models\Widget;
+use Cache;
+use ReflectionException;
+use Util;
 
 /**
- * Класс действия для чтения промокодов.
+ * Класс действия для чтения виджетов.
  */
-class PromocodeReadAction extends Action
+class WidgetReadAction extends Action
 {
     /**
      * Сортировка данных.
@@ -57,11 +56,12 @@ class PromocodeReadAction extends Action
      * @param int|null $limit Лимит выборки выборку.
      */
     public function __construct(
-        array $sorts = null,
+        array  $sorts = null,
         ?array $filters = null,
-        ?int $offset = null,
-        ?int $limit = null
-    ) {
+        ?int   $offset = null,
+        ?int   $limit = null
+    )
+    {
         $this->sorts = $sorts;
         $this->filters = $filters;
         $this->offset = $offset;
@@ -73,12 +73,11 @@ class PromocodeReadAction extends Action
      *
      * @return mixed Вернет результаты исполнения.
      * @throws ReflectionException
-     * @throws Throwable
      */
     public function run(): array
     {
         $cacheKey = Util::getKey(
-            'promocode',
+            'widget',
             'admin',
             'read',
             'count',
@@ -86,17 +85,13 @@ class PromocodeReadAction extends Action
             $this->filters,
             $this->offset,
             $this->limit,
-            'school',
         );
 
-        return Cache::tags(['promocode', 'school'])->remember(
+        return Cache::tags(['widget'])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
             function () {
-                $query = Promocode::filter($this->filters ?: [])
-                    ->with([
-                        'school',
-                    ]);
+                $query = Widget::filter($this->filters ?: []);
 
                 $queryCount = $query->clone();
 
@@ -112,13 +107,8 @@ class PromocodeReadAction extends Action
 
                 $items = $query->get()->toArray();
 
-                for ($i = 0; $i < count($items); $i++) {
-                    $action = new PromocodeApplicableAction($items[$i]['id']);
-                    $items[$i]['applicable'] = $action->run();
-                }
-
                 return [
-                    'data' => PromocodeEntity::collect($items),
+                    'data' => WidgetEntity::collect($items),
                     'total' => $queryCount->count(),
                 ];
             }
