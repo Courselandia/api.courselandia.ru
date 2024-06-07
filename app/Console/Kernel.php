@@ -42,7 +42,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('course:normalize')->dailyAt('05:00');
         $schedule->command('collection:synchronize')->dailyAt('06:00');
         $schedule->command('teacher:normalize')->dailyAt('06:30');
-        $schedule->command('course:json')->dailyAt('07:00');
+        $schedule->command('course:json')->twiceDaily(7, 19);
         $schedule->command('sitemap:generate')->dailyAt('13:00');
         $schedule->command('course:yml')->dailyAt('13:00');
         // $schedule->command('crawl:push')->dailyAt('16:00');
