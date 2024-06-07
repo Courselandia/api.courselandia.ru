@@ -10,7 +10,6 @@ namespace App\Modules\Crawl\Providers;
 
 use Config;
 use App\Modules\Crawl\Commands\PushCommand;
-use App\Modules\Crawl\Commands\CheckCommand;
 use Illuminate\Support\ServiceProvider;
 
 /**
@@ -40,7 +39,6 @@ class CrawlServiceProvider extends ServiceProvider
     {
         $this->commands([
             PushCommand::class,
-            CheckCommand::class,
         ]);
     }
 

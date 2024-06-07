@@ -8,13 +8,13 @@
 
 namespace App\Modules\Crawl\Jobs;
 
-use App\Models\Exceptions\ParameterInvalidException;
 use Log;
+use Config;
+use Carbon\Carbon;
+use App\Models\Exceptions\ParameterInvalidException;
 use App\Models\Exceptions\LimitException;
 use App\Modules\Crawl\Contracts\Pusher;
-use Config;
 use App\Modules\Crawl\Models\Crawl;
-use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -66,7 +66,7 @@ class PushJob implements ShouldQueue
     public function handle(): void
     {
         try {
-            $taskId = $this->pusher->push(Config::get('app.url') . $this->page->path);
+            $this->pusher->push(Config::get('app.url') . $this->page->path);
 
             $crawl = Crawl::where('page_id', $this->page->id)
                 ->where('engine', $this->pusher->getEngine()->value)
@@ -78,9 +78,7 @@ class PushJob implements ShouldQueue
                 $crawl->engine = $this->pusher->getEngine()->value;
             }
 
-            $crawl->task_id = $taskId;
             $crawl->pushed_at = Carbon::now();
-            $crawl->crawled_at = null;
             $crawl->save();
         } catch (ParameterInvalidException|LimitException $error) {
             Log::warning($error->getMessage() . ' Path: ' . $this->page->path);

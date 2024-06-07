@@ -42,11 +42,11 @@ class CrawlControllerTest extends TestCase
                 ],
             ],
             [
-                'Authorization' => 'Bearer ' . $this->getAdminToken()
+                'Authorization' => 'Bearer ' . $this->getAdminToken(),
             ]
         )->assertStatus(200)->assertJsonStructure([
             'data' => [
-                '*' => $this->getCrawlStructure()
+                '*' => $this->getCrawlStructure(),
             ],
             'total',
             'success',
@@ -62,16 +62,13 @@ class CrawlControllerTest extends TestCase
     {
         return [
             'id',
-            'id',
             'page_id',
-            'task_id',
             'pushed_at',
-            'crawled_at',
             'engine',
             'created_at',
             'updated_at',
             'deleted_at',
-            'page'
+            'page',
         ];
     }
 }

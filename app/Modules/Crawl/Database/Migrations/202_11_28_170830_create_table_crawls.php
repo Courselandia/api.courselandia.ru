@@ -19,11 +19,8 @@ class CreateTableCrawls extends Migration
             $table->bigInteger('id', true)->unsigned();
             $table->bigInteger('page_id')->unsigned()->index('page_id');
 
-            $table->string('task_id', 191)->nullable()->index('task_id');
             $table->datetime('pushed_at')->nullable()->index('pushed_at');
-            $table->datetime('crawled_at')->nullable()->index('crawled_at');
             $table->string('engine', 50);
-
 
             $table->timestamps();
             $table->softDeletes()->index();

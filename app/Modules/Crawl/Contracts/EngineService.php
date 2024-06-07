@@ -27,12 +27,4 @@ interface EngineService
      * @return string Вернет ID задачи.
      */
     public function push(string $url): string;
-
-    /**
-     * Вернет статус индексации.
-     *
-     * @param string $taskId ID задачи.
-     * @return bool Вернет true если индексация прошла.
-     */
-    public function isPushed(string $taskId): bool;
 }
