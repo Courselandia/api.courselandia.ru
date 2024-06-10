@@ -14,6 +14,7 @@ use App\Models\Delete;
 use App\Models\Validate;
 use App\Models\Sortable;
 use EloquentFilter\Filterable;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasTimestamps;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -22,6 +23,7 @@ use App\Modules\Crawl\Database\Factories\CrawlFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Modules\Crawl\Filters\CrawlFilter;
 use App\Modules\Page\Models\Page;
+use Illuminate\Database\Eloquent\Prunable;
 
 /**
  * Класс модель для таблицы индексации на основе Eloquent.
@@ -42,6 +44,7 @@ class Crawl extends Eloquent
     use Validate;
     use Filterable;
     use HasTimestamps;
+    use Prunable;
 
     /**
      * Типизирование атрибутов.
@@ -120,5 +123,15 @@ class Crawl extends Eloquent
     public function page(): BelongsTo
     {
         return $this->belongsTo(Page::class);
+    }
+
+    /**
+     * Очистка старых данных.
+     *
+     * @return Builder Построитель запросов.
+     */
+    public function prunable(): Builder
+    {
+        return static::where('deleted_at', '<=', now()->subMonths(2));
     }
 }

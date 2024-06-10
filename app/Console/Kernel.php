@@ -8,6 +8,7 @@ use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use App\Modules\User\Models\UserAuth;
 use App\Modules\Task\Models\Task;
+use App\Modules\Crawl\Models\Crawl;
 
 class Kernel extends ConsoleKernel
 {
@@ -31,7 +32,7 @@ class Kernel extends ConsoleKernel
         })->daily();
 
         $schedule->command('model:prune', [
-            '--model' => [Task::class, UserAuth::class],
+            '--model' => [Task::class, UserAuth::class, Crawl::class],
         ])->daily();
 
         $schedule->command('course:import')->dailyAt('00:00');

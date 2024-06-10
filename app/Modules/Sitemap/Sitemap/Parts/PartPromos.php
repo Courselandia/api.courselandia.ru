@@ -56,7 +56,7 @@ class PartPromos extends PartDirection
             $dates[] = Carbon::parse($promotion->updated_at);
         }
 
-        $lastmod = max($dates);
+        $lastmod = count($dates) ? max($dates) : null;
 
         $item = new Item();
         $item->path = '/promos';

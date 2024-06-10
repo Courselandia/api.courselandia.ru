@@ -8,6 +8,7 @@
 
 namespace App\Modules\Crawl\Http\Controllers\Admin;
 
+use App\Modules\Crawl\Actions\Admin\CrawlPlanAction;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
 use ReflectionException;
@@ -40,5 +41,20 @@ class CrawlController extends Controller
         $data['success'] = true;
 
         return response()->json($data);
+    }
+
+    /**
+     * Запуск планирования задач.
+     *
+     * @return JsonResponse
+     */
+    public function plan(): JsonResponse
+    {
+        $action = new CrawlPlanAction();
+        $action->run();
+
+        return response()->json([
+            'success' => true,
+        ]);
     }
 }

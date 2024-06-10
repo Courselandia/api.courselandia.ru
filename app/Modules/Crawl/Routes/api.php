@@ -15,5 +15,8 @@ Route::group([
     function () {
         Route::get('read/', 'Admin\CrawlController@read')
             ->name('read');
+
+        Route::post('plan/', 'Admin\CrawlController@plan')
+            ->name('plan');
     }
 );
