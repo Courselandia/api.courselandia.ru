@@ -35,9 +35,7 @@ class CrawlFactory extends Factory
     {
         return [
             'page_id' => Page::factory(),
-            'task_id' => $this->faker->name(),
             'pushed_at' => Carbon::now(),
-            'crawled_at' => Carbon::now(),
             'engine' => Engine::YANDEX->value,
         ];
     }

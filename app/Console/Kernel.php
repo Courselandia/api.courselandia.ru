@@ -8,6 +8,7 @@ use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use App\Modules\User\Models\UserAuth;
 use App\Modules\Task\Models\Task;
+use App\Modules\Crawl\Models\Crawl;
 
 class Kernel extends ConsoleKernel
 {
@@ -31,7 +32,7 @@ class Kernel extends ConsoleKernel
         })->daily();
 
         $schedule->command('model:prune', [
-            '--model' => [Task::class, UserAuth::class],
+            '--model' => [Task::class, UserAuth::class, Crawl::class],
         ])->daily();
 
         $schedule->command('course:import')->dailyAt('00:00');
@@ -42,11 +43,10 @@ class Kernel extends ConsoleKernel
         $schedule->command('course:normalize')->dailyAt('05:00');
         $schedule->command('collection:synchronize')->dailyAt('06:00');
         $schedule->command('teacher:normalize')->dailyAt('06:30');
-        $schedule->command('course:json')->dailyAt('07:00');
+        $schedule->command('course:json')->twiceDaily(7, 19);
         $schedule->command('sitemap:generate')->dailyAt('13:00');
         $schedule->command('course:yml')->dailyAt('13:00');
-        // $schedule->command('crawl:push')->dailyAt('16:00');
-        // $schedule->command('crawl:check')->dailyAt('17:00');
+        $schedule->command('crawl:push')->dailyAt('16:00');
         $schedule->command('school:count-amount-courses')->dailyAt('08:00');
         $schedule->command('school:count-amount-teachers')->dailyAt('08:05');
         $schedule->command('school:count-amount-reviews')->dailyAt('08:10');

@@ -56,12 +56,11 @@ class CrawlReadAction extends Action
      * @param int|null $limit Лимит выборки выборку.
      */
     public function __construct(
-        array  $sorts = null,
+        array $sorts = null,
         ?array $filters = null,
-        ?int   $offset = null,
-        ?int   $limit = null
-    )
-    {
+        ?int $offset = null,
+        ?int $limit = null
+    ) {
         $this->sorts = $sorts;
         $this->filters = $filters;
         $this->offset = $offset;

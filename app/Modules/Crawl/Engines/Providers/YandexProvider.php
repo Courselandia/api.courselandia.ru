@@ -8,8 +8,6 @@
 
 namespace App\Modules\Crawl\Engines\Providers;
 
-use App\Models\Exceptions\ParameterInvalidException;
-use App\Models\Exceptions\ProcessingException;
 use Config;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
@@ -17,6 +15,7 @@ use GuzzleHttp\Exception\GuzzleException;
 use App\Models\Exceptions\ResponseException;
 use App\Modules\Crawl\Engines\Tokens\YandexToken;
 use App\Models\Exceptions\LimitException;
+use App\Models\Exceptions\ParameterInvalidException;
 
 /**
  * Провайдер для работы с Yandex Console.
@@ -95,40 +94,6 @@ class YandexProvider
 
             if ($data['error_code'] === 'QUOTA_EXCEEDED') {
                 throw new LimitException(trans('crawl::engines.providers.yandexProvider.quotaExceeded'));
-            }
-
-            throw new ResponseException($error->getMessage());
-        }
-    }
-
-    /**
-     * Проверка, что переобход произошел.
-     *
-     * @param string $taskId ID задачи на переобход.
-     *
-     * @return bool Вернет true если переобход произошел.
-     * @throws ResponseException|GuzzleException|ParameterInvalidException|ProcessingException
-     */
-    public function isPushed(string $taskId): bool
-    {
-        $client = new Client();
-
-        try {
-            $fullUrl = self::URL . '/v4/user/' . $this->token->getUserId() . '/hosts/' . $this->token->getHost() . '/recrawl/queue/' . $taskId;
-            $response = $client->get($fullUrl, $this->getHeader());
-            $body = $response->getBody();
-            $content = json_decode($body, true);
-
-            if ($content['state'] === 'FAILED') {
-                throw new ProcessingException(trans('crawl::engines.providers.yandexProvider.failed'));
-            }
-
-            return $content['state'] === 'DONE';
-        } catch (ClientException $error) {
-            $data = json_decode($error->getResponse()->getBody()->getContents(), true);
-
-            if ($data['error_code'] === 'TASK_NOT_FOUND') {
-                throw new ParameterInvalidException(trans('crawl::engines.providers.yandexProvider.taskNotExist'));
             }
 
             throw new ResponseException($error->getMessage());

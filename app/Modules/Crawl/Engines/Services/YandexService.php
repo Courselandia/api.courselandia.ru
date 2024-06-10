@@ -11,7 +11,6 @@ namespace App\Modules\Crawl\Engines\Services;
 use App\Models\Exceptions\InvalidCodeException;
 use App\Models\Exceptions\LimitException;
 use App\Models\Exceptions\ParameterInvalidException;
-use App\Models\Exceptions\ProcessingException;
 use App\Models\Exceptions\ResponseException;
 use App\Modules\Crawl\Contracts\EngineService;
 use App\Modules\Crawl\Engines\Credentials\YandexCredential;
@@ -68,20 +67,5 @@ class YandexService implements EngineService
         $provider = new YandexProvider($this->token);
 
         return $provider->push($url);
-    }
-
-    /**
-     * Вернет статус индексации.
-     *
-     * @param string $taskId ID задачи.
-     * @return bool Вернет true если индексация прошла.
-     * @throws ProcessingException|ResponseException|GuzzleException
-     * @throws ParameterInvalidException
-     */
-    public function isPushed(string $taskId): bool
-    {
-        $provider = new YandexProvider($this->token);
-
-        return $provider->isPushed($taskId);
     }
 }

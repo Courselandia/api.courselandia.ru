@@ -8,13 +8,11 @@
 
 namespace App\Modules\Crawl\Push;
 
-use DB;
 use Carbon\Carbon;
 use App\Models\Event;
 use App\Modules\Crawl\Jobs\PushJob;
 use App\Modules\Crawl\Contracts\Pusher;
 use App\Modules\Crawl\Push\Pushers\GooglePusher;
-use App\Modules\Crawl\Push\Pushers\YandexPusher;
 use App\Modules\Page\Models\Page;
 use App\Modules\Page\Entities\Page as PageEntity;
 use Illuminate\Database\Eloquent\Builder;
@@ -47,8 +45,7 @@ class Push
      */
     public function __construct()
     {
-        $this->addPusher(new YandexPusher())
-            ->addPusher(new GooglePusher());
+        $this->addPusher(new GooglePusher());
     }
 
     /**
@@ -108,24 +105,18 @@ class Push
 
     /**
      * Получение запроса для выборки страниц на индексацию.
-     * Получаем отсортированные страницы по последней дате обновления в обратном порядке (самые поздние на первое место) - lastmod ASC.
-     * Берем те страницы, которые либо не были проиндексированы этим модулем.
-     * Либо берем те страницы, которые были обновлены этим модулем, но дата их индексации больше даты обновления - pages.lastmod > crawls.crawled_at.
      *
      * @param Pusher $pusher Отправитель на индексацию.
      * @return Builder
      */
     private function getQuery(Pusher $pusher): Builder
     {
-        return Page::with('crawl')
-            ->where(function ($query) use ($pusher) {
-                $query->whereDoesntHave('crawl')
-                    ->orWhereHas('crawl', function ($query) use ($pusher) {
-                        $query->where('pages.lastmod', '>', DB::raw('crawls.crawled_at'))
-                            ->where('crawls.engine', $pusher->getEngine()->value);
-                    });
+        return Page::orderBy('pages.path', 'ASC')
+            ->whereHas('crawl', function ($query) use ($pusher) {
+                $query
+                    ->whereNull('pushed_at')
+                    ->where('crawls.engine', $pusher->getEngine()->value);
             })
-            ->orderBy('pages.lastmod', 'ASC')
             ->limit($pusher->getLimit());
     }
 

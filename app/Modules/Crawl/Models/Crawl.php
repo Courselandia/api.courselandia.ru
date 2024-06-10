@@ -14,6 +14,7 @@ use App\Models\Delete;
 use App\Models\Validate;
 use App\Models\Sortable;
 use EloquentFilter\Filterable;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasTimestamps;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -22,15 +23,14 @@ use App\Modules\Crawl\Database\Factories\CrawlFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Modules\Crawl\Filters\CrawlFilter;
 use App\Modules\Page\Models\Page;
+use Illuminate\Database\Eloquent\Prunable;
 
 /**
  * Класс модель для таблицы индексации на основе Eloquent.
  *
  * @property int|string $id ID индексации.
  * @property int|string $page_id ID страницы.
- * @property string $task_id ID задания.
  * @property Carbon $pushed_at Дата отправки на индексацию.
- * @property string $crawled_at Дата индексации.
  * @property string $engine Поисковая система.
  *
  * @property-read Page $page
@@ -44,6 +44,7 @@ class Crawl extends Eloquent
     use Validate;
     use Filterable;
     use HasTimestamps;
+    use Prunable;
 
     /**
      * Типизирование атрибутов.
@@ -52,7 +53,6 @@ class Crawl extends Eloquent
      */
     protected $casts = [
         'pushed_at' => 'datetime',
-        'crawled_at' => 'datetime',
     ];
 
     /**
@@ -63,9 +63,7 @@ class Crawl extends Eloquent
     protected $fillable = [
         'id',
         'page_id',
-        'task_id',
         'pushed_at',
-        'crawled_at',
         'engine',
     ];
 
@@ -78,9 +76,7 @@ class Crawl extends Eloquent
     {
         return [
             'page_id' => 'required|digits_between:0,20',
-            'task_id' => 'max:191',
             'pushed_at' => 'date',
-            'crawled_at' => 'date',
             'engine' => 'required|between:1,50',
         ];
     }
@@ -94,9 +90,7 @@ class Crawl extends Eloquent
     {
         return [
             'page_id' => trans('direction::models.crawl.pageId'),
-            'task_id' => trans('direction::models.crawl.taskId'),
             'pushed_at' => trans('direction::models.crawl.pushedAt'),
-            'crawled_at' => trans('direction::models.crawl.crawledAt'),
             'engine' => trans('direction::models.crawl.engine'),
         ];
     }
@@ -129,5 +123,15 @@ class Crawl extends Eloquent
     public function page(): BelongsTo
     {
         return $this->belongsTo(Page::class);
+    }
+
+    /**
+     * Очистка старых данных.
+     *
+     * @return Builder Построитель запросов.
+     */
+    public function prunable(): Builder
+    {
+        return static::where('deleted_at', '<=', now()->subMonths(2));
     }
 }

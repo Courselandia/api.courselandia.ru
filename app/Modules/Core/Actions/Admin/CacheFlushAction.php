@@ -8,6 +8,7 @@
 
 namespace App\Modules\Core\Actions\Admin;
 
+use GuzzleHttp\Exception\GuzzleException;
 use Log;
 use Config;
 use Cache;
@@ -25,6 +26,7 @@ class CacheFlushAction extends Action
      * Метод запуска логики.
      *
      * @return bool Вернет результаты исполнения.
+     * @throws GuzzleException
      */
     public function run(): bool
     {

@@ -26,6 +26,11 @@ enum Engine: string implements EnumLabel
     case GOOGLE = 'google';
 
     /**
+     * Фековая поисковая система для тестирования.
+     */
+    case FAKE = 'fake';
+
+    /**
      * Получение лейбл перечисления.
      *
      * @return string|int Вернет лейбл перечисления.
@@ -35,6 +40,7 @@ enum Engine: string implements EnumLabel
         return match ($this) {
             self::YANDEX => 'Yandex',
             self::GOOGLE => 'Google',
+            self::FAKE => 'Fake',
         };
     }
 }

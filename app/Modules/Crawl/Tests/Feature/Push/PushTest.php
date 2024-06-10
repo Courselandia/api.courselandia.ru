@@ -8,12 +8,14 @@
 
 namespace App\Modules\Crawl\Tests\Feature\Push;
 
-use App\Modules\Crawl\Models\Crawl;
-use App\Modules\Crawl\Push\Push;
-use App\Modules\Crawl\Push\Pushers\FakePusher;
-use App\Modules\Page\Models\Page;
 use Carbon\Carbon;
 use Tests\TestCase;
+use App\Modules\Crawl\Enums\Engine;
+use App\Modules\Crawl\Models\Crawl;
+use App\Modules\Crawl\Plan\Plan;
+use App\Modules\Crawl\Push\Push;
+use App\Modules\Page\Models\Page;
+use App\Modules\Crawl\Push\Pushers\FakePusher;
 
 /**
  * Тестирование отправки URL сайта на индексацию.
@@ -44,6 +46,11 @@ class PushTest extends TestCase
             'path' => '/test-3',
             'lastmod' => Carbon::now()->addMonths(-5),
         ]);
+
+        $plan = new Plan();
+        $plan->clearEngines()
+            ->addEngine(Engine::FAKE);
+        $plan->start();
 
         $push = new Push();
         $push->clearPushers()

@@ -55,18 +55,6 @@ class CrawlFilter extends ModelFilter
     }
 
     /**
-     * Поиск по ID задачи.
-     *
-     * @param int|string $taskId ID задачи.
-     *
-     * @return self Правила поиска.
-     */
-    public function task(int|string $taskId): self
-    {
-        return $this->where('crawls.task_id', $taskId);
-    }
-
-    /**
      * Поиск по дате отправки на индексацию.
      *
      * @param array $dates Даты от и до.
@@ -81,23 +69,6 @@ class CrawlFilter extends ModelFilter
         ];
 
         return $this->whereBetween('crawls.pushed_at', $dates);
-    }
-
-    /**
-     * Поиск по дате индексации.
-     *
-     * @param array $dates Даты от и до.
-     *
-     * @return $this Правила поиска.
-     */
-    public function crawledAt(array $dates): self
-    {
-        $dates = [
-            Carbon::createFromFormat('Y-m-d O', $dates[0])->startOfDay()->setTimezone(Config::get('app.timezone')),
-            Carbon::createFromFormat('Y-m-d O', $dates[1])->endOfDay()->setTimezone(Config::get('app.timezone')),
-        ];
-
-        return $this->whereBetween('crawls.crawled_at', $dates);
     }
 
     /**
