@@ -8,6 +8,7 @@
 
 namespace App\Modules\Crawl\Actions\Admin;
 
+use Cache;
 use App\Modules\Crawl\Plan\Plan;
 use App\Models\Action;
 
@@ -25,6 +26,7 @@ class CrawlPlanAction extends Action
     {
         $plan = new Plan();
         $plan->start();
+        Cache::tags(['crawl', 'page'])->flush();
 
         return true;
     }

@@ -43,8 +43,21 @@ class Plan
      */
     public function start(): void
     {
+        $this->offLimits();
         $this->clear();
         $this->create();
+    }
+
+    /**
+     * Отключение лимитов.
+     *
+     * @return void
+     */
+    private function offLimits(): void
+    {
+        ini_set('memory_limit', '2048M');
+        ini_set('max_execution_time', '0');
+        ignore_user_abort(true);
     }
 
     /**
@@ -82,7 +95,6 @@ class Plan
             foreach ($pages as $page) {
                 $crawl = Crawl::create([
                     'page_id' => $page->id,
-                    'pushed_at' => Carbon::now(),
                     'engine' => $engine->value,
                 ]);
 

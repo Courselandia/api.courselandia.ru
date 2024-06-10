@@ -23,7 +23,7 @@ class FakePusher implements Pusher
      */
     public function getEngine(): Engine
     {
-        return Engine::YANDEX;
+        return Engine::FAKE;
     }
 
     /**
