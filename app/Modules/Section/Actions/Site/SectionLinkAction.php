@@ -87,6 +87,8 @@ class SectionLinkAction extends Action
 
                 if ($this->free) {
                     $query->where('free', true);
+                } else {
+                    $query->where('free', false);
                 }
 
                 $weight = 0;
