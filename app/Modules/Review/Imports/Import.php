@@ -111,6 +111,12 @@ class Import
             ->addParser(new ParserZoon(School::SKILLBOX, 'https://zoon.ru/msk/trainings/kompaniya_skillbox_na_leninskom_prospekte/reviews/'))
             ->addParser(new ParserSkillbox(School::SKILLBOX, 'https://skillbox.ru/otzyvy/'))
             ->addParser(new ParserCoddyschool(School::CODDY, 'https://berlin.coddyschool.com/vse-otzyvy/'))
+            ->addParser(new ParserTutortop(School::ANO_NIIDPO, 'https://tutortop.ru/school-reviews/niidpo/'))
+            ->addParser(new ParserKatalogKursov(School::ANO_NIIDPO, 'https://katalog-kursov.ru/reviews/niidpo/'))
+            ->addParser(new ParserMapsYandex(School::ANO_NIIDPO, 'https://yandex.ru/maps/org/natsionalny_issledovatelskiy_institut_dopolnitelnogo_obrazovaniya_i_professionalnogo_obucheniya/68115635100/reviews/'))
+            ->addParser(new ParserOtzyvru(School::ANO_NIIDPO, 'https://www.otzyvru.com/natsionalniy-issledovatelskiy-institut-dopolnitelnogo-obrazovaniya-i'))
+            ->addParser(new ParserProgbasics(School::ANO_NIIDPO, 'https://progbasics.ru/schools/niidpo'))
+            ->addParser(new ParserZoon(School::ANO_NIIDPO, 'https://zoon.ru/msk/trainings/natsionalnyj_issledovatelskij_institut_dopolnitelnogo_obrazovaniya_i_professionalnogo_obucheniya/reviews/'))
         ;
     }
 

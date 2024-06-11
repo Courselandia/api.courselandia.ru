@@ -108,8 +108,14 @@ class ParserZoon extends Parser
                     }
 
                     $date = $review->findElement(WebDriverBy::cssSelector('.z-text--dark-gray'))->getText();
-                    $date = explode(' , ', $date);
-                    $date = $date[0];
+
+                    if (str_contains($date, ' , ')) {
+                        $date = explode(' , ', $date);
+                        $date = $date[0];
+                    } else if (str_contains($date, ' через ')) {
+                        $date = explode(' через ', $date);
+                        $date = $date[0];
+                    }
 
                     $item = new ParserReview();
                     $item->title = $title;
