@@ -8,7 +8,6 @@
 
 namespace App\Modules\Course\Imports;
 
-use App\Modules\Metatag\Data\MetatagSet;
 use Util;
 use File;
 use Cache;
@@ -18,6 +17,7 @@ use ImageStore;
 use App\Models\Error;
 use Mimey\MimeTypes;
 use App\Models\Event;
+use App\Modules\Metatag\Data\MetatagSet;
 use Illuminate\Http\UploadedFile;
 use App\Modules\Course\Enums\Status;
 use App\Modules\Course\Models\Course;
@@ -42,6 +42,7 @@ use App\Modules\Course\Imports\Parsers\ParserOtus;
 use App\Modules\Course\Imports\Parsers\ParserBangBangEducation;
 use App\Modules\Course\Imports\Parsers\ParserInterra;
 use App\Modules\Course\Imports\Parsers\ParserMaed;
+use App\Modules\Course\Imports\Parsers\ParserAnoNiidpo;
 
 /**
  * Класс импорта курсов.
@@ -92,7 +93,8 @@ class Import
             ->addParser(new ParserHexlet('https://feeds.advcake.com/feed/download/faa81752171de66c811cf1c71bd8b219'))
             ->addParser(new ParserBangBangEducation('https://feeds.advcake.com/feed/download/0475089f1a85e27f985cd2038bdf7222'))
             ->addParser(new ParserInterra('https://feeds.advcake.com/feed/download/f3af68784839de1613e471267e3bc492'))
-            ->addParser(new ParserMaed('https://feeds.advcake.com/feed/download/a6128901675d0978230dc93c8801b1c7'));
+            ->addParser(new ParserMaed('https://feeds.advcake.com/feed/download/a6128901675d0978230dc93c8801b1c7'))
+            ->addParser(new ParserAnoNiidpo('https://feeds.advcake.ru/feed/download/4b819f565960261c7e6a7f286c0030e9?webmaster=04fa7cce'));
     }
 
     /**

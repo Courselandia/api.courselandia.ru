@@ -93,6 +93,11 @@ enum School: int implements EnumLabel
     case MAED = 16;
 
     /**
+     * АНО «НИИДПО»
+     */
+    case ANO_NIIDPO = 17;
+
+    /**
      * Получение лейбл перечисления.
      *
      * @return string|int Вернет лейбл перечисления.
@@ -116,6 +121,7 @@ enum School: int implements EnumLabel
             self::BANG_BANG_EDUCATION => 'Bang Bang Education',
             self::INTERRA => 'Interra',
             self::MAED => 'MAED',
+            self::ANO_NIIDPO => 'АНО «НИИДПО»',
         };
     }
 }
