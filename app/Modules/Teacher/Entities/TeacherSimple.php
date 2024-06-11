@@ -60,12 +60,11 @@ class TeacherSimple extends Entity
      */
     public function __construct(
         int|string|null $id = null,
-        ?string         $name = null,
-        ?Image          $image_small_id = null,
-        ?Image          $image_middle_id = null,
-        ?bool           $status = null,
-    )
-    {
+        ?string $name = null,
+        ?Image $image_small_id = null,
+        ?Image $image_middle_id = null,
+        ?bool $status = null,
+    ) {
         $this->id = $id;
         $this->name = $name;
         $this->image_small_id = $image_small_id;
