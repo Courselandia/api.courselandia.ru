@@ -8,13 +8,13 @@
 
 namespace App\Modules\Teacher\Actions\Admin\Teacher;
 
-use App\Models\Action;
-use App\Models\Enums\CacheTime;
-use App\Modules\Teacher\Entities\TeacherSimple as TeacherEntity;
-use App\Modules\Teacher\Models\Teacher;
+use Util;
 use Cache;
 use ReflectionException;
-use Util;
+use App\Models\Action;
+use App\Models\Enums\CacheTime;
+use App\Modules\Teacher\Models\Teacher;
+use App\Modules\Teacher\Entities\TeacherSimple as TeacherEntity;
 
 /**
  * Класс действия для чтения учителя.
@@ -50,22 +50,31 @@ class TeacherReadAction extends Action
     private ?int $limit;
 
     /**
+     * Получать фотографии учителей.
+     *
+     * @var bool
+     */
+    private bool $showPhoto = true;
+
+    /**
      * @param array|null $sorts Сортировка данных.
      * @param array|null $filters Фильтрация данных.
      * @param int|null $offset Начать выборку.
      * @param int|null $limit Лимит выборки выборку.
+     * @param bool $showPhoto Получать фотографии учителей..
      */
     public function __construct(
-        array  $sorts = null,
+        array $sorts = null,
         ?array $filters = null,
-        ?int   $offset = null,
-        ?int   $limit = null
-    )
-    {
+        ?int $offset = null,
+        ?int $limit = null,
+        bool $showPhoto = true,
+    ) {
         $this->sorts = $sorts;
         $this->filters = $filters;
         $this->offset = $offset;
         $this->limit = $limit;
+        $this->showPhoto = $showPhoto;
     }
 
     /**
@@ -85,21 +94,32 @@ class TeacherReadAction extends Action
             $this->filters,
             $this->offset,
             $this->limit,
-            'metatag'
+            $this->showPhoto,
+            'metatag',
         );
 
         return Cache::tags(['catalog', 'teacher'])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
             function () {
-                $query = Teacher::filter($this->filters ?: [])
-                    ->select([
+                $query = Teacher::filter($this->filters ?: []);
+
+                if ($this->showPhoto) {
+                    $select = [
                         'id',
                         'name',
                         'image_small_id',
                         'image_middle_id',
                         'status',
-                    ]);
+                    ];
+                } else {
+                    $select = [
+                        'id',
+                        'name',
+                    ];
+                }
+
+                $query->select($select);
 
                 $queryCount = $query->clone();
 

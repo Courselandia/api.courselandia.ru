@@ -10,6 +10,7 @@ namespace App\Modules\Teacher\Entities;
 
 use App\Models\Entity;
 use App\Modules\Image\Entities\Image;
+use Spatie\LaravelData\Optional;
 
 /**
  * Сущность для учителя - упрощенный вариант.
@@ -33,37 +34,37 @@ class TeacherSimple extends Entity
     /**
      * Изображение маленькое.
      *
-     * @var ?Image
+     * @var Image|Optional|null
      */
-    public ?Image $image_small_id = null;
+    public Image|Optional|null $image_small_id;
 
     /**
      * Изображение среднее.
      *
-     * @var ?Image
+     * @var Image|Optional|null
      */
-    public ?Image $image_middle_id = null;
+    public Image|Optional|null $image_middle_id;
 
     /**
      * Статус.
      *
-     * @var bool|null
+     * @var bool|Optional|null
      */
-    public ?bool $status = null;
+    public bool|Optional|null $status;
 
     /**
      * @param int|string|null $id ID записи.
      * @param string|null $name Название.
-     * @param Image|null $image_small_id Изображение маленькое.
-     * @param Image|null $image_middle_id Изображение среднее.
-     * @param bool|null $status Статус.
+     * @param Image|Optional|null $image_small_id Изображение маленькое.
+     * @param Image|Optional|null $image_middle_id Изображение среднее.
+     * @param bool|Optional|null $status Статус.
      */
     public function __construct(
+        bool|Optional|null $status,
+        Image|Optional|null $image_small_id,
+        Image|Optional|null $image_middle_id,
         int|string|null $id = null,
         ?string $name = null,
-        ?Image $image_small_id = null,
-        ?Image $image_middle_id = null,
-        ?bool $status = null,
     ) {
         $this->id = $id;
         $this->name = $name;

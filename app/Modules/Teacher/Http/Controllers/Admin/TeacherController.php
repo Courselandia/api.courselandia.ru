@@ -87,6 +87,7 @@ class TeacherController extends Controller
             $request->get('filters'),
             $request->get('offset'),
             $request->get('limit'),
+            $request->get('showPhoto', true),
         );
 
         $data = $action->run();

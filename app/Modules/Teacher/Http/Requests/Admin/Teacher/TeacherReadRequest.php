@@ -39,6 +39,7 @@ class TeacherReadRequest extends FormRequest
             'limit' => 'integer|digits_between:0,20',
             'filters' => 'array|filters:' . $columnsFilters,
             'filters.status' => 'boolean',
+            'showPhoto' => 'boolean',
         ];
     }
 
@@ -54,7 +55,8 @@ class TeacherReadRequest extends FormRequest
             'offset' => trans('teacher::http.requests.admin.teacherReadRequest.offset'),
             'limit' => trans('teacher::http.requests.admin.teacherReadRequest.limit'),
             'filters' => trans('teacher::http.requests.admin.teacherReadRequest.filters'),
-            'filters.status' => trans('category::http.requests.admin.categoryReadRequest.status'),
+            'filters.status' => trans('teacher::http.requests.admin.teacherReadRequest.status'),
+            'showPhoto' => trans('teacher::http.requests.admin.teacherReadRequest.showPhoto'),
         ];
     }
 }

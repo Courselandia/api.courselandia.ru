@@ -9,6 +9,7 @@ return [
                 'limit' => 'Лимит',
                 'filters' => 'Фильтр',
                 'status' => 'Статус',
+                'showPhoto' => 'Показывать фотографию',
             ],
             'teacherDestroyRequest' => [
                 'ids' => 'ID'

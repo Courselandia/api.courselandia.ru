@@ -124,8 +124,6 @@ class Export
      */
     public function run(): void
     {
-        Cache::flush();
-
         $this->offLimits();
         $this->exports();
         $this->clean();
