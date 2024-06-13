@@ -8,6 +8,7 @@
 
 namespace App\Modules\Course\Imports\Parsers;
 
+use Util;
 use Generator;
 use App\Modules\School\Enums\School;
 use App\Modules\Course\Entities\ParserCourse;
@@ -51,7 +52,7 @@ class ParserNadpo extends ParserYml
             $course = new ParserCourse();
             $course->school = $this->getSchool();
             $course->uuid = $offer['attributes']['id'];
-            $course->name = substr($offer['name'], 0, 191);
+            $course->name = $offer['name'];
             $course->url = $offer['url'];
             $course->text = $offer['description'];
             $course->price = $offer['price'];

@@ -34,6 +34,13 @@ class ParserCourse extends Entity
     public string|null $name = null;
 
     /**
+     * Ссылка.
+     *
+     * @var string|null
+     */
+    public string|null $link = null;
+
+    /**
      * Описание.
      *
      * @var string|null
@@ -134,6 +141,7 @@ class ParserCourse extends Entity
     /**
      * @param string|null $uuid ID источника курса.
      * @param string|null $name Название.
+     * @param string|null $link Ссылка.
      * @param string|null $text Описание.
      * @param bool|null $status Статус.
      * @param string|null $url URL.
@@ -150,26 +158,27 @@ class ParserCourse extends Entity
      * @param bool|null $employment С трудоустройством.
      */
     public function __construct(
-        string|null    $uuid = null,
-        string|null    $name = null,
-        string|null    $text = null,
-        bool|null      $status = null,
-        string|null    $url = null,
-        string|null    $image = null,
-        float|null     $price = null,
-        float|null     $price_old = null,
-        float|null     $price_recurrent = null,
-        int|null       $lessons_amount = null,
-        Currency|null  $currency = null,
-        School|null    $school = null,
-        int|null       $duration = null,
-        Duration|null  $duration_unit = null,
+        string|null $uuid = null,
+        string|null $name = null,
+        string|null $link = null,
+        string|null $text = null,
+        bool|null $status = null,
+        string|null $url = null,
+        string|null $image = null,
+        float|null $price = null,
+        float|null $price_old = null,
+        float|null $price_recurrent = null,
+        int|null $lessons_amount = null,
+        Currency|null $currency = null,
+        School|null $school = null,
+        int|null $duration = null,
+        Duration|null $duration_unit = null,
         Direction|null $direction = null,
-        bool|null      $employment = null,
-    )
-    {
+        bool|null $employment = null,
+    ) {
         $this->uuid = $uuid;
         $this->name = $name;
+        $this->link = $link;
         $this->text = $text;
         $this->status = $status;
         $this->url = $url;

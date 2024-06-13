@@ -25,14 +25,14 @@ class CreateTableCourses extends Migration
             $table->string('image_middle_id')->nullable()->index();
             $table->string('image_small_id')->nullable()->index();
 
-            $table->string('name', 191);
-            $table->string('header', 191)->nullable();
-            $table->string('header_template', 191)->nullable();
+            $table->text('name');
+            $table->text('header')->nullable();
+            $table->text('header_template')->nullable();
             $table->text('text')->nullable();
-            $table->string('name_morphy', 191);
+            $table->text('name_morphy');
             $table->text('text_morphy')->nullable();
 
-            $table->string('link', 191)->index('link');
+            $table->text('link');
             $table->string('url', 191);
             $table->string('language', 20)->nullable();
             $table->float('rating', 3)->unsigned()->nullable();
@@ -61,6 +61,7 @@ class CreateTableCourses extends Migration
         DB::statement('ALTER TABLE courses ADD FULLTEXT search(name_morphy, text_morphy)');
         DB::statement('ALTER TABLE courses ADD FULLTEXT search_name(name_morphy)');
         DB::statement('ALTER TABLE courses ADD FULLTEXT search_text(text_morphy)');
+        DB::statement('CREATE INDEX link ON courses(link(500))');
     }
 
     /**

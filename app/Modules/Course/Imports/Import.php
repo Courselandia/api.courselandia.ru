@@ -204,7 +204,7 @@ class Import
 
                 $data = [
                     'name' => Typography::process($name, true),
-                    'link' => strtolower(Util::latin(strtolower($name))),
+                    'link' => $courseEntity->link ?: strtolower(Util::latin(strtolower($name))),
                     'status' => $status,
                     'url' => $courseEntity->url,
                     'price' => $courseEntity->price,
@@ -261,7 +261,7 @@ class Import
                     'name' => Typography::process($name, true),
                     'header' => Typography::process($template->convert($headerTemplate, $templateValues), true),
                     'header_template' => $headerTemplate,
-                    'link' => strtolower(Util::latin(strtolower($name))),
+                    'link' => $courseEntity->link ?: strtolower(Util::latin(strtolower($name))),
                     'text' => Typography::process($text),
                     'status' => $courseEntity->status ? Status::DRAFT->value : Status::DISABLED->value,
                     'url' => $courseEntity->url,
