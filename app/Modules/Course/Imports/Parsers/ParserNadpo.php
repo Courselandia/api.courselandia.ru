@@ -51,7 +51,7 @@ class ParserNadpo extends ParserYml
             $course = new ParserCourse();
             $course->school = $this->getSchool();
             $course->uuid = $offer['attributes']['id'];
-            $course->name = $offer['name'];
+            $course->name = substr($offer['name'], 0, 191);
             $course->url = $offer['url'];
             $course->text = $offer['description'];
             $course->price = $offer['price'];
