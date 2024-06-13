@@ -98,6 +98,11 @@ enum School: int implements EnumLabel
     case ANO_NIIDPO = 17;
 
     /**
+     * НАДПО
+     */
+    case NADPO = 18;
+
+    /**
      * Получение лейбл перечисления.
      *
      * @return string|int Вернет лейбл перечисления.
@@ -122,6 +127,7 @@ enum School: int implements EnumLabel
             self::INTERRA => 'Interra',
             self::MAED => 'MAED',
             self::ANO_NIIDPO => 'АНО «НИИДПО»',
+            self::NADPO => 'НАДПО',
         };
     }
 }

@@ -117,6 +117,12 @@ class Import
             ->addParser(new ParserOtzyvru(School::ANO_NIIDPO, 'https://www.otzyvru.com/natsionalniy-issledovatelskiy-institut-dopolnitelnogo-obrazovaniya-i'))
             ->addParser(new ParserProgbasics(School::ANO_NIIDPO, 'https://progbasics.ru/schools/niidpo'))
             ->addParser(new ParserZoon(School::ANO_NIIDPO, 'https://zoon.ru/msk/trainings/natsionalnyj_issledovatelskij_institut_dopolnitelnogo_obrazovaniya_i_professionalnogo_obucheniya/reviews/'))
+            ->addParser(new ParserTutortop(School::NADPO, 'https://tutortop.ru/school-reviews/nadpo/'))
+            ->addParser(new ParserKatalogKursov(School::NADPO, 'https://katalog-kursov.ru/reviews/nadpo/'))
+            ->addParser(new ParserMapsYandex(School::NADPO, 'https://yandex.ru/maps/org/natsionalnaya_akademiya_dopolnitelnogo_professionalnogo_obrazovaniya/98271748609/reviews/?ll=37.592950%2C55.660998&tab=reviews&z=17.03'))
+            ->addParser(new ParserOtzyvru(School::NADPO, 'https://www.otzyvru.com/nadpo'))
+            ->addParser(new ParserProgbasics(School::NADPO, 'https://progbasics.ru/schools/nadpo/reviews'))
+            ->addParser(new ParserZoon(School::NADPO, 'https://zoon.ru/msk/trainings/natsionalnaya_akademiya_dopolnitelnogo_professionalnogo_obrazovaniya/reviews/'))
         ;
     }
 

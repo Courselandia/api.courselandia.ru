@@ -55,15 +55,16 @@ class ParserMapsYandex extends Parser
                             elementLast.scrollIntoView({block: "start", behavior: "smooth"});
                             console.log("Scrolling...");
                             }, 1500
-                        )
+                        );
 
-                    }, 4000 * i);
+                    }, 2500 * i);
                 }
             ';
 
-            $seconds = (ceil($totalReviews / $perPage) * 6) + 5;
+            $seconds = (ceil($totalReviews / $perPage) * 2) + 5;
             $driver->executeScript($script);
-            sleep($seconds);
+
+            sleep(min($seconds, 200));
 
             $reviews = $driver->findElements(WebDriverBy::cssSelector('.business-reviews-card-view__review'));
 

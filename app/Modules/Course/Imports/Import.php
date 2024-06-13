@@ -43,6 +43,7 @@ use App\Modules\Course\Imports\Parsers\ParserBangBangEducation;
 use App\Modules\Course\Imports\Parsers\ParserInterra;
 use App\Modules\Course\Imports\Parsers\ParserMaed;
 use App\Modules\Course\Imports\Parsers\ParserAnoNiidpo;
+use App\Modules\Course\Imports\Parsers\ParserNadpo;
 
 /**
  * Класс импорта курсов.
@@ -94,7 +95,8 @@ class Import
             ->addParser(new ParserBangBangEducation('https://feeds.advcake.com/feed/download/0475089f1a85e27f985cd2038bdf7222'))
             ->addParser(new ParserInterra('https://feeds.advcake.com/feed/download/f3af68784839de1613e471267e3bc492'))
             ->addParser(new ParserMaed('https://feeds.advcake.com/feed/download/a6128901675d0978230dc93c8801b1c7'))
-            ->addParser(new ParserAnoNiidpo('https://feeds.advcake.ru/feed/download/4b819f565960261c7e6a7f286c0030e9?webmaster=04fa7cce'));
+            ->addParser(new ParserAnoNiidpo('https://feeds.advcake.ru/feed/download/4b819f565960261c7e6a7f286c0030e9?webmaster=04fa7cce'))
+            ->addParser(new ParserNadpo('https://feeds.advcake.ru/feed/download/e66e34af4eac3c4a68b2194151def1a1?webmaster=04fa7cce'));
     }
 
     /**
