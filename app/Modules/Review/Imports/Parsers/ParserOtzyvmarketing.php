@@ -36,22 +36,28 @@ class ParserOtzyvmarketing extends Parser
             $driver->get($this->getUrl());
             sleep(5);
 
-            do {
-                $paginationButtonLast = $driver->findElement(WebDriverBy::cssSelector('.pagination LI:last-child A'));
+            $paginations = $driver->findElements(WebDriverBy::cssSelector('.pagination LI:last-child A'));
 
-                if (!$paginationButtonLast->getText()) {
-                    $paginationButtonLast = $driver->findElements(WebDriverBy::cssSelector('.pagination LI A'));
-                    $paginationCountButtons = count($paginationButtonLast);
-                    $paginationButtonBeforeLast = $paginationButtonLast[$paginationCountButtons - 1];
-                    $paginationButtonBeforeLast->click();
-                    sleep(2);
-                    $nextClick = true;
-                } else {
-                    $nextClick = false;
-                }
-            } while ($nextClick === true);
+            if (count($paginations)) {
+                do {
+                    $paginationButtonLast = $driver->findElement(WebDriverBy::cssSelector('.pagination LI:last-child A'));
 
-            $total = $driver->findElement(WebDriverBy::cssSelector('.pagination LI:last-child A'))->getText();
+                    if (!$paginationButtonLast->getText()) {
+                        $paginationButtonLast = $driver->findElements(WebDriverBy::cssSelector('.pagination LI A'));
+                        $paginationCountButtons = count($paginationButtonLast);
+                        $paginationButtonBeforeLast = $paginationButtonLast[$paginationCountButtons - 1];
+                        $paginationButtonBeforeLast->click();
+                        sleep(2);
+                        $nextClick = true;
+                    } else {
+                        $nextClick = false;
+                    }
+                } while ($nextClick === true);
+
+                $total = $driver->findElement(WebDriverBy::cssSelector('.pagination LI:last-child A'))->getText();
+            } else {
+                $total = 1;
+            }
 
             for ($page = 1; $page <= $total; $page++) {
                 $driver->get($this->getUrl() . '/?page=' . $page);

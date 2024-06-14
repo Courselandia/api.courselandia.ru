@@ -123,6 +123,13 @@ class Import
             ->addParser(new ParserOtzyvru(School::NADPO, 'https://www.otzyvru.com/nadpo'))
             ->addParser(new ParserProgbasics(School::NADPO, 'https://progbasics.ru/schools/nadpo/reviews'))
             ->addParser(new ParserZoon(School::NADPO, 'https://zoon.ru/msk/trainings/natsionalnaya_akademiya_dopolnitelnogo_professionalnogo_obrazovaniya/reviews/'))
+            ->addParser(new ParserKursvill(School::PRODUCTSTAR, 'https://kursvill.ru/shkoly/product-star/#reviews'))
+            ->addParser(new ParserTutortop(School::PRODUCTSTAR, 'https://tutortop.ru/school-reviews/productstar/'))
+            ->addParser(new ParserKatalogKursov(School::PRODUCTSTAR, 'https://katalog-kursov.ru/reviews/school-productstar/'))
+            ->addParser(new ParserOtzyvmarketing(School::PRODUCTSTAR, 'https://otzyvmarketing.ru/productstar/'))
+            ->addParser(new ParserKursyOnline(School::PRODUCTSTAR, 'https://kurshub.ru/reviews/productstar-ru/'))
+            ->addParser(new ParserProgbasics(School::PRODUCTSTAR, 'https://progbasics.ru/schools/productstar/reviews'))
+            ->addParser(new ParserZoon(School::PRODUCTSTAR, 'https://zoon.ru/spb/trainings/onlajn-shkola_productstar/reviews/'))
         ;
     }
 

@@ -33,6 +33,7 @@ use App\Modules\Promotion\Imports\Parsers\ParserSkyPro;
 use App\Modules\Promotion\Imports\Parsers\ParserXyzSchool;
 use App\Modules\Promotion\Imports\Parsers\ParserAnoNiidpo;
 use App\Modules\Promotion\Imports\Parsers\ParserNadpo;
+use App\Modules\Promotion\Imports\Parsers\ParserProductStar;
 
 /**
  * Класс импорта промоакций.
@@ -79,7 +80,8 @@ class Import
             ->addParser(new ParserInterra('https://api.advcake.com/promotions?pass=WB0r4T6JRYz7_gwK&offer_id=489'))
             ->addParser(new ParserMaed('https://api.advcake.com/promotions?pass=WB0r4T6JRYz7_gwK&offer_id=447'))
             ->addParser(new ParserAnoNiidpo('https://api.advcake.com/promotions?pass=WB0r4T6JRYz7_gwK&offer_id=632'))
-            ->addParser(new ParserNadpo('https://api.advcake.com/promotions?pass=WB0r4T6JRYz7_gwK&offer_id=699'));
+            ->addParser(new ParserNadpo('https://api.advcake.com/promotions?pass=WB0r4T6JRYz7_gwK&offer_id=699'))
+            ->addParser(new ParserProductStar('https://api.advcake.com/promotions?pass=WB0r4T6JRYz7_gwK&offer_id=557'));
     }
 
     /**
