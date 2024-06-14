@@ -20,7 +20,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        $schedule->exec('rm -r ' . storage_path('app/tmp/*'))->weekly();
+        $schedule->exec('rm -r ' . storage_path('app/tmp/*'))->daily();
         $schedule->exec(
             'mysqlcheck --user=' . Config::get('database.connections.mysql.username') . ' --password=' . Config::get(
                 'database.connections.mysql.password'
