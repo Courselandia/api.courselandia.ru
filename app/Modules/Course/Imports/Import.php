@@ -350,6 +350,10 @@ class Import
                 return null;
             }
 
+            if (stristr($name, '?')) {
+                $name = explode('?', $name)[0];
+            }
+
             return new UploadedFile($path, $name);
         }
 
