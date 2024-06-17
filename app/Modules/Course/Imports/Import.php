@@ -223,6 +223,8 @@ class Import
                     'employment' => $courseEntity->employment ?: $course->employment,
                 ];
 
+                $hasToBeChange = $this->hasToBeChanged(CourseEntity::from($course->toArray()), CourseEntity::from($data));
+
                 if ($this->getReloadImages()) {
                     $image = $courseEntity->image ? $this->getImage($courseEntity->image) : null;
 
@@ -230,8 +232,6 @@ class Import
                     $data['image_middle_id'] = $image;
                     $data['image_big_id'] = $image;
                 }
-
-                $hasToBeChange = $this->hasToBeChanged(CourseEntity::from($course->toArray()), CourseEntity::from($data));
 
                 if ($hasToBeChange) {
                     $course->update($data);
@@ -315,6 +315,10 @@ class Import
         $ext = pathinfo($imageUrl, PATHINFO_EXTENSION);
         $name = pathinfo($imageUrl, PATHINFO_BASENAME);
 
+        if (stristr($ext, '?')) {
+            $ext = explode('?', $ext)[0];
+        }
+
         if (!$ext) {
             $status = @file_get_contents($imageUrl);
 
@@ -374,8 +378,7 @@ class Import
             || $sourceCourse->duration !== $targetCourse->duration
             || $sourceCourse->duration_unit !== $targetCourse->duration_unit
             || $sourceCourse->lessons_amount !== $targetCourse->lessons_amount
-            || $sourceCourse->employment !== $targetCourse->employment
-            || $targetCourse->image_small_id;
+            || $sourceCourse->employment !== $targetCourse->employment;
     }
 
     /**
