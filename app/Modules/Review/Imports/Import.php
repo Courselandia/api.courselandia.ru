@@ -130,6 +130,13 @@ class Import
             ->addParser(new ParserKursyOnline(School::PRODUCTSTAR, 'https://kurshub.ru/reviews/productstar-ru/'))
             ->addParser(new ParserProgbasics(School::PRODUCTSTAR, 'https://progbasics.ru/schools/productstar/reviews'))
             ->addParser(new ParserZoon(School::PRODUCTSTAR, 'https://zoon.ru/spb/trainings/onlajn-shkola_productstar/reviews/'))
+            ->addParser(new ParserTutortop(School::PENTASCHOOL, 'https://tutortop.ru/school-reviews/pentaschool/'))
+            ->addParser(new ParserKatalogKursov(School::PENTASCHOOL, 'https://katalog-kursov.ru/reviews/pentaschool/'))
+            ->addParser(new ParserMapsYandex(School::PENTASCHOOL, 'https://yandex.ru/maps/org/pentaskul/181137278844/reviews/'))
+            ->addParser(new ParserOtzyvmarketing(School::PENTASCHOOL, 'https://otzyvmarketing.ru/pentaschool/'))
+            ->addParser(new ParserKursyOnline(School::PENTASCHOOL, 'https://kurshub.ru/reviews/pentaschool-ru/'))
+            ->addParser(new ParserProgbasics(School::PENTASCHOOL, 'https://progbasics.ru/schools/pentaschool/reviews'))
+            ->addParser(new ParserZoon(School::PENTASCHOOL, 'https://zoon.ru/msk/trainings/moskovskaya_akademiya_dizajn-professij_pentaschool/reviews/'))
         ;
     }
 

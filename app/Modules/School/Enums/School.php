@@ -108,6 +108,11 @@ enum School: int implements EnumLabel
     case PRODUCTSTAR = 19;
 
     /**
+     * Pentaschool
+     */
+    case PENTASCHOOL = 20;
+
+    /**
      * Получение лейбл перечисления.
      *
      * @return string|int Вернет лейбл перечисления.
@@ -134,6 +139,7 @@ enum School: int implements EnumLabel
             self::ANO_NIIDPO => 'АНО «НИИДПО»',
             self::NADPO => 'НАДПО',
             self::PRODUCTSTAR => 'ProductStar',
+            self::PENTASCHOOL => 'Pentaschool',
         };
     }
 }
