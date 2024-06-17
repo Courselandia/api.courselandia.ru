@@ -66,6 +66,7 @@ class ParserProductstar extends ParserYml
             $course->currency = Currency::RUB;
             $course->image = $offer['picture'] ?? null;
             $course->status = $offer['attributes']['available'] === 'true';
+            $course->direction = $offer['direction'];
 
             if (isset($offer['params']['Длительность']['value']) && $offer['params']['Длительность']['value']) {
                 $course->duration = (int)str_replace(' мес.', '', $offer['params']['Длительность']['value']);

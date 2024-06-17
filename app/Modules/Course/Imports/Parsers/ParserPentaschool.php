@@ -39,13 +39,13 @@ class ParserPentaschool extends ParserYml
     public function getDirections(): array
     {
         return [
-            'Мода и стиль'  => Direction::OTHER,
-            'Графический дизайн'  => Direction::DESIGN,
-            'Дизайн интерьера'  => Direction::DESIGN,
-            'Ландшафтный дизайн'  => Direction::DESIGN,
-            'Веб-дизайн'  => Direction::DESIGN,
-            'Motion-дизайн'  => Direction::DESIGN,
-            'Творчество'  => Direction::OTHER,
+            'Мода и стиль' => Direction::OTHER,
+            'Графический дизайн' => Direction::DESIGN,
+            'Дизайн интерьера' => Direction::DESIGN,
+            'Ландшафтный дизайн' => Direction::DESIGN,
+            'Веб-дизайн' => Direction::DESIGN,
+            'Motion-дизайн' => Direction::DESIGN,
+            'Творчество' => Direction::OTHER,
         ];
     }
 
@@ -68,6 +68,7 @@ class ParserPentaschool extends ParserYml
             $course->currency = Currency::RUB;
             $course->image = $offer['picture'] ?? null;
             $course->status = $offer['attributes']['available'] === 'true';
+            $course->direction = $offer['direction'];
 
             yield $course;
         }
