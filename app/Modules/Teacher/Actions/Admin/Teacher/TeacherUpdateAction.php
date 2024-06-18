@@ -77,6 +77,7 @@ class TeacherUpdateAction extends Action
                 $templateValues = [
                     'teacher' => $this->data->name,
                     'countTeacherCourses' => $countTeacherCourses,
+                    'direction' => $teacherEntity->directions ? $teacherEntity->directions[0]->name : null,
                 ];
 
                 $template = new Template();

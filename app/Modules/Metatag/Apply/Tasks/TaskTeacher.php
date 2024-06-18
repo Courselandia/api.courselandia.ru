@@ -29,14 +29,14 @@ class TaskTeacher extends Task
      *
      * @var string
      */
-    private string $title_template = 'Преподаватель {teacher} — отзывы, рейтинг[countTeacherCourses:, список из {countTeacherCourses:курс|genitive}] — Courselandia';
+    private string $title_template = 'Преподаватель {teacher} — отзывы, рейтинг[countTeacherCourses:, список из {countTeacherCourses:курс|genitive}][direction:, направление: {direction}] — Courselandia';
 
     /**
      * Шаблон описания мэтатега.
      *
      * @var string
      */
-    private string $description_template = 'Все курсы преподавателя {teacher} — полный список [countTeacherCourses:из {countTeacherCourses:курс|genitive}] преподавателя в каталоге Courselandia.';
+    private string $description_template = 'Все курсы преподавателя {teacher} [direction:, направление: {direction}] — полный список [countTeacherCourses:из {countTeacherCourses:курс|genitive}] преподавателя в каталоге Courselandia.';
 
     /**
      * Возвращает количество обрабатываемых записей.
@@ -69,6 +69,7 @@ class TaskTeacher extends Task
 
         $query = Teacher::with([
             'metatag',
+            'directions',
         ])
             ->whereHas('courses', function ($query) {
                 $query->where('status', Status::ACTIVE->value)
@@ -102,6 +103,7 @@ class TaskTeacher extends Task
                 $templateValues = [
                     'teacher' => $teacher->name,
                     'countTeacherCourses' => $countTeacherCourses,
+                    'direction' => $teacher->directions ? $teacher->directions[0]->name : null,
                 ];
 
                 $dataMetatagSet = new MetatagSet();

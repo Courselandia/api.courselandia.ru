@@ -8,10 +8,6 @@
 
 namespace App\Modules\Teacher\Actions\Admin\Teacher;
 
-use App\Modules\Analyzer\Actions\Admin\AnalyzerUpdateAction;
-use App\Modules\Metatag\Data\MetatagSet;
-use App\Modules\Teacher\Data\TeacherCreate;
-use App\Modules\Teacher\Enums\SocialMedia;
 use DB;
 use Cache;
 use ImageStore;
@@ -28,6 +24,11 @@ use App\Modules\Teacher\Models\TeacherExperience;
 use App\Modules\Teacher\Entities\TeacherExperience as TeacherExperienceEntity;
 use App\Modules\Teacher\Models\TeacherSocialMedia;
 use App\Modules\Teacher\Entities\TeacherSocialMedia as TeacherSocialMediaEntity;
+use App\Modules\Analyzer\Actions\Admin\AnalyzerUpdateAction;
+use App\Modules\Metatag\Data\MetatagSet;
+use App\Modules\Teacher\Data\TeacherCreate;
+use App\Modules\Teacher\Enums\SocialMedia;
+use App\Modules\Direction\Models\Direction;
 
 /**
  * Класс действия для создания учителя.
@@ -60,10 +61,17 @@ class TeacherCreateAction extends Action
     {
         $id = DB::transaction(function () {
             $template = new Template();
+            $direction = null;
+
+            if ($this->data->directions && count($this->data->directions)) {
+                $directionModel = Direction::find($this->data->directions[0]);
+                $direction = $directionModel?->name;
+            }
 
             $templateValues = [
                 'teacher' => $this->data->name,
                 'countTeacherCourses' => 0,
+                'direction' => $direction,
             ];
 
             $action = new MetatagSetAction(MetatagSet::from([
