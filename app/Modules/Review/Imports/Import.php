@@ -145,7 +145,7 @@ class Import
             ->addParser(new ParserZoon(School::BRUNOYAM, 'https://zoon.ru/spb/trainings/shkola_brunoyam_na_metro_sennaya_ploschad/reviews/'))
             ->addParser(new ParserTutortop(School::LOGOMASHINA, 'https://tutortop.ru/school-reviews/logomashina/'))
             ->addParser(new ParserKatalogKursov(School::LOGOMASHINA, 'https://katalog-kursov.ru/reviews/logomashina/'))
-            ->addParser(new ParserZoon(School::SKILLBOX, 'https://zoon.ru/spb/business/logomashina/reviews/'))
+            ->addParser(new ParserZoon(School::LOGOMASHINA, 'https://zoon.ru/spb/business/logomashina/reviews/'))
         ;
     }
 
