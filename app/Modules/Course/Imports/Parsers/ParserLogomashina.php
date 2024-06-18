@@ -18,7 +18,7 @@ use App\Modules\Direction\Enums\Direction;
 /**
  * Парсинг курсов Pentaschool
  */
-class ParserPentaschool extends ParserYml
+class ParserLogomashina extends ParserYml
 {
     /**
      * Вернет школу.
@@ -27,7 +27,7 @@ class ParserPentaschool extends ParserYml
      */
     public function getSchool(): School
     {
-        return School::PENTASCHOOL;
+        return School::LOGOMASHINA;
     }
 
     /**
@@ -38,13 +38,9 @@ class ParserPentaschool extends ParserYml
     public function getDirections(): array
     {
         return [
-            'Мода и стиль' => Direction::OTHER,
-            'Графический дизайн' => Direction::DESIGN,
-            'Дизайн интерьера' => Direction::DESIGN,
-            'Ландшафтный дизайн' => Direction::DESIGN,
-            'Веб-дизайн' => Direction::DESIGN,
-            'Motion-дизайн' => Direction::DESIGN,
-            'Творчество' => Direction::OTHER,
+            'All' => Direction::OTHER,
+            'Дизайн' => Direction::DESIGN,
+            'Маркетинг' => Direction::MARKETING,
         ];
     }
 
