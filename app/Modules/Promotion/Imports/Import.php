@@ -37,6 +37,7 @@ use App\Modules\Promotion\Imports\Parsers\ParserProductStar;
 use App\Modules\Promotion\Imports\Parsers\ParserPentaschool;
 use App\Modules\Promotion\Imports\Parsers\ParserBrunoyam;
 use App\Modules\Promotion\Imports\Parsers\ParserLogomashina;
+use App\Modules\Promotion\Imports\Parsers\ParserSredaObucheniya;
 
 /**
  * Класс импорта промоакций.
@@ -88,6 +89,7 @@ class Import
             ->addParser(new ParserPentaschool('https://api.advcake.com/promotions?pass=WB0r4T6JRYz7_gwK&offer_id=750'))
             ->addParser(new ParserBrunoyam('https://api.advcake.com/promotions?pass=WB0r4T6JRYz7_gwK&offer_id=497'))
             ->addParser(new ParserLogomashina('https://api.advcake.com/promotions?pass=WB0r4T6JRYz7_gwK&offer_id=669'))
+            ->addParser(new ParserSredaObucheniya('https://api.advcake.com/promotions?pass=WB0r4T6JRYz7_gwK&offer_id=532'))
         ;
     }
 

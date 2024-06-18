@@ -146,6 +146,15 @@ class Import
             ->addParser(new ParserTutortop(School::LOGOMASHINA, 'https://tutortop.ru/school-reviews/logomashina/'))
             ->addParser(new ParserKatalogKursov(School::LOGOMASHINA, 'https://katalog-kursov.ru/reviews/logomashina/'))
             ->addParser(new ParserZoon(School::LOGOMASHINA, 'https://zoon.ru/spb/business/logomashina/reviews/'))
+            ->addParser(new ParserTutortop(School::SREDA_OBUCHENIA, 'https://tutortop.ru/school-reviews/sreda-obucheniya/'))
+            ->addParser(new ParserKatalogKursov(School::SREDA_OBUCHENIA, 'https://katalog-kursov.ru/reviews/sreda-obucheniya/'))
+            ->addParser(new ParserMapsYandex(School::SREDA_OBUCHENIA, 'https://yandex.ru/maps/org/vysshaya_shkola_sreda_obucheniya/212611825347/reviews/'))
+            ->addParser(new ParserOtzyvmarketing(School::SREDA_OBUCHENIA, 'https://otzyvmarketing.ru/sredaobuchenia/'))
+            ->addParser(new ParserGeekhacker(School::SREDA_OBUCHENIA, 'https://geekhacker.ru/otzyvy-o-kursah-sreda-obucheniya/'))
+            ->addParser(new ParserKursyOnline(School::SREDA_OBUCHENIA, 'https://kurshub.ru/reviews/sredaobuchenia-ru/'))
+            ->addParser(new ParserOtzyvru(School::SREDA_OBUCHENIA, 'https://www.otzyvru.com/institut-distantsionnogo-obucheniya-sreda-obucheniya'))
+            ->addParser(new ParserProgbasics(School::SREDA_OBUCHENIA, 'https://progbasics.ru/schools/sredaobuchenia/reviews'))
+            ->addParser(new ParserZoon(School::SREDA_OBUCHENIA, 'https://zoon.ru/msk/education/vysshaya_shkola_sreda_obucheniya_v_podsosenskom_pereulke/reviews/'))
         ;
     }
 

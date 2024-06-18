@@ -123,6 +123,11 @@ enum School: int implements EnumLabel
     case LOGOMASHINA = 22;
 
     /**
+     * Среда обучения
+     */
+    case SREDA_OBUCHENIA = 23;
+
+    /**
      * Получение лейбл перечисления.
      *
      * @return string|int Вернет лейбл перечисления.
@@ -152,6 +157,7 @@ enum School: int implements EnumLabel
             self::PENTASCHOOL => 'Pentaschool',
             self::BRUNOYAM => 'Бруноям',
             self::LOGOMASHINA => 'Логомашина',
+            self::SREDA_OBUCHENIA => 'Среда обучения',
         };
     }
 }

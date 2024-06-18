@@ -48,6 +48,7 @@ use App\Modules\Course\Imports\Parsers\ParserProductstar;
 use App\Modules\Course\Imports\Parsers\ParserPentaschool;
 use App\Modules\Course\Imports\Parsers\ParserBrunoyam;
 use App\Modules\Course\Imports\Parsers\ParserLogomashina;
+use App\Modules\Course\Imports\Parsers\ParserSredaObucheniya;
 
 /**
  * Класс импорта курсов.
@@ -105,6 +106,7 @@ class Import
             ->addParser(new ParserPentaschool('https://feeds.advcake.ru/feed/download/3477010e0d638e5e1aab7eac144ef20a?webmaster=04fa7cce'))
             ->addParser(new ParserBrunoyam('https://feeds.advcake.ru/feed/download/2b5336d137193d61c32a2e92ab94c90f?webmaster=04fa7cce'))
             ->addParser(new ParserLogomashina('https://feeds.advcake.ru/feed/download/be8c68214fef61cf2638ad0fbe6c836e?webmaster=04fa7cce'))
+            ->addParser(new ParserSredaObucheniya('https://feeds.advcake.ru/feed/download/a42eb5254c7878ea6a2266833d7a4da1?webmaster=04fa7cce'))
         ;
     }
 

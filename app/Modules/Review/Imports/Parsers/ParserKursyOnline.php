@@ -46,12 +46,12 @@ class ParserKursyOnline extends Parser
                     $text = $review->findElement(WebDriverBy::cssSelector('.reviewText__short_inner'))->getText();
                     $rating = $review->findElement(WebDriverBy::cssSelector('.review__q__item__raiting'))->getText();
 
-                    $rating = explode('/', $rating)[0];
+                    $rating = (int)trim(explode('/', $rating)[0]);
                     $date = $this->getDate($date);
 
                     $review = new ParserReview();
                     $review->title = $title;
-                    $review->rating = $rating;
+                    $review->rating = min($rating, 5);
                     $review->date = $date;
                     $review->name = $name;
                     $review->review = $text;
