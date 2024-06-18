@@ -137,6 +137,12 @@ class Import
             ->addParser(new ParserKursyOnline(School::PENTASCHOOL, 'https://kurshub.ru/reviews/pentaschool-ru/'))
             ->addParser(new ParserProgbasics(School::PENTASCHOOL, 'https://progbasics.ru/schools/pentaschool/reviews'))
             ->addParser(new ParserZoon(School::PENTASCHOOL, 'https://zoon.ru/msk/trainings/moskovskaya_akademiya_dizajn-professij_pentaschool/reviews/'))
+            ->addParser(new ParserTutortop(School::BRUNOYAM, 'https://tutortop.ru/school-reviews/brunoyam/'))
+            ->addParser(new ParserKatalogKursov(School::BRUNOYAM, 'https://katalog-kursov.ru/reviews/brunoyam/'))
+            ->addParser(new ParserMapsYandex(School::BRUNOYAM, 'https://yandex.ru/maps/org/brunoyam/1091338427/reviews/'))
+            ->addParser(new ParserKursyOnline(School::BRUNOYAM, 'https://kurshub.ru/reviews/brunoyam-com/'))
+            ->addParser(new ParserProgbasics(School::BRUNOYAM, 'https://progbasics.ru/schools/brunoyam/reviews'))
+            ->addParser(new ParserZoon(School::BRUNOYAM, 'https://zoon.ru/spb/trainings/shkola_brunoyam_na_metro_sennaya_ploschad/reviews/'))
         ;
     }
 
