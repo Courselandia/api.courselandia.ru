@@ -12,6 +12,7 @@ use Config;
 use App\Modules\Core\Commands\CacheFlushCommand;
 use App\Modules\Core\Commands\TypographyCommand;
 use Illuminate\Support\ServiceProvider;
+use App\Modules\Core\Commands\DeleteTmpCommand;
 
 /**
  * Класс сервис-провайдера для настройки этого модуля.
@@ -42,6 +43,7 @@ class CoreServiceProvider extends ServiceProvider
         $this->commands([
             CacheFlushCommand::class,
             TypographyCommand::class,
+            DeleteTmpCommand::class,
         ]);
     }
 

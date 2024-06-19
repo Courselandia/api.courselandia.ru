@@ -20,7 +20,6 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        $schedule->exec('rm -r ' . storage_path('app/tmp/*'))->daily();
         $schedule->exec(
             'mysqlcheck --user=' . Config::get('database.connections.mysql.username') . ' --password=' . Config::get(
                 'database.connections.mysql.password'
@@ -52,6 +51,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('school:count-amount-reviews')->dailyAt('08:10');
         $schedule->command('review:import')->weekly();
         $schedule->command('school:count-rating')->dailyAt('09:00');
+        $schedule->command('tmp:delete')->daily();
     }
 
     /**
