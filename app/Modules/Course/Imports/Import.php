@@ -51,6 +51,7 @@ use App\Modules\Course\Imports\Parsers\ParserLogomashina;
 use App\Modules\Course\Imports\Parsers\ParserSredaObucheniya;
 use App\Modules\Course\Imports\Parsers\ParserSfEducation;
 use App\Modules\Course\Imports\Parsers\ParserTopAcademy;
+use App\Modules\Course\Imports\Parsers\ParserConvertMonster;
 
 /**
  * Класс импорта курсов.
@@ -111,6 +112,7 @@ class Import
             ->addParser(new ParserSredaObucheniya('https://feeds.advcake.ru/feed/download/a42eb5254c7878ea6a2266833d7a4da1?webmaster=04fa7cce'))
             ->addParser(new ParserSfEducation('https://feeds.advcake.ru/feed/download/8032b19723134448fe544aa7d2aae2ff?webmaster=04fa7cce'))
             ->addParser(new ParserTopAcademy('https://feeds.advcake.ru/feed/download/8c5d8729b2588c26654404b8015ef7e6?webmaster=04fa7cce'))
+            ->addParser(new ParserConvertMonster('https://feeds.advcake.ru/feed/download/0df57ce9bb22354f70cd0ab1722c0ced?webmaster=04fa7cce'))
         ;
     }
 

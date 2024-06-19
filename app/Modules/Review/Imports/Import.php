@@ -193,6 +193,15 @@ class Import
         $this->addParser(new ParserMapsYandex(School::TOP_ACADEMY, 'https://yandex.ru/maps/org/kompyuternaya_akademiya_top/133199701088/reviews/'))
             ->addParser(new ParserTutortop(School::TOP_ACADEMY, 'https://tutortop.ru/school-reviews/kompyuternaya-akademiya-top/'))
             ->addParser(new ParserKursyOnline(School::TOP_ACADEMY, 'https://kurshub.ru/reviews/top-academy-ru/'));
+
+        $this->addParser(new ParserMapsYandex(School::CONVERT_MONSTER, 'https://yandex.ru/maps/org/convert_monster/196310092555/reviews/'))
+            ->addParser(new ParserKursvill(School::CONVERT_MONSTER, 'https://kursvill.ru/shkoly/convertmonster.ru/#reviews'))
+            ->addParser(new ParserTutortop(School::CONVERT_MONSTER, 'https://tutortop.ru/school-reviews/convert-monster/'))
+            ->addParser(new ParserOtzyvmarketing(School::CONVERT_MONSTER, 'https://otzyvmarketing.ru/kursy-convert-monster/'))
+            ->addParser(new ParserKatalogKursov(School::CONVERT_MONSTER, 'https://katalog-kursov.ru/reviews/school-convert-monster/'))
+            ->addParser(new ParserKursyOnline(School::CONVERT_MONSTER, 'https://kurshub.ru/reviews/convertmonster-ru/'))
+            ->addParser(new ParserProgbasics(School::CONVERT_MONSTER, 'https://progbasics.ru/schools/convert-monster/reviews'))
+            ->addParser(new ParserZoon(School::CONVERT_MONSTER, 'https://zoon.ru/msk/education/uchebnyj_tsentr_convert_monster/reviews/'));
     }
 
     /**
