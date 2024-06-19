@@ -85,7 +85,8 @@ class Import
 
         $this->addParser(new ParserOtzyvmarketing(School::SKYPRO, 'https://otzyvmarketing.ru/skypro/'))
             ->addParser(new ParserTutortop(School::SKYPRO, 'https://tutortop.ru/school-reviews/skypro/'))
-            ->addParser(new ParserMapsYandex(School::SKYPRO, 'https://yandex.ru/maps/org/skypro/121650580880/reviews/'));
+            ->addParser(new ParserMapsYandex(School::SKYPRO, 'https://yandex.ru/maps/org/skypro/121650580880/reviews/'))
+            ->addParser(new ParserProgbasics(School::SKYPRO, 'https://progbasics.ru/schools/skypro/reviews'));
 
         $this->addParser(new ParserMapsYandex(School::EDUSON_ACADEMY, 'https://yandex.ru/maps/org/eduson/64475613644/reviews/?ll=37.652226%2C55.708203&z=13'));
 
@@ -123,7 +124,6 @@ class Import
 
         $this->addParser(new ParserOtzyvru(School::SKILLBOX, 'https://otzyvru.com/skillbox'))
             ->addParser(new ParserProgbasics(School::SKILLBOX, 'https://progbasics.ru/schools/skillbox/reviews'))
-            ->addParser(new ParserProgbasics(School::SKYPRO, 'https://progbasics.ru/schools/skypro/reviews'))
             ->addParser(new ParserSpr(School::SKILLBOX, 'https://spr.ru/moskva/uchebnie-i-obrazovatelnie-tsentri-kursi/reviews/skillbox-5153272.html'))
             ->addParser(new ParserZoon(School::SKILLBOX, 'https://zoon.ru/msk/trainings/kompaniya_skillbox_na_leninskom_prospekte/reviews/'))
             ->addParser(new ParserSkillbox(School::SKILLBOX, 'https://skillbox.ru/otzyvy/'));
@@ -202,6 +202,12 @@ class Import
             ->addParser(new ParserKursyOnline(School::CONVERT_MONSTER, 'https://kurshub.ru/reviews/convertmonster-ru/'))
             ->addParser(new ParserProgbasics(School::CONVERT_MONSTER, 'https://progbasics.ru/schools/convert-monster/reviews'))
             ->addParser(new ParserZoon(School::CONVERT_MONSTER, 'https://zoon.ru/msk/education/uchebnyj_tsentr_convert_monster/reviews/'));
+
+        $this->addParser(new ParserMapsYandex(School::MOSCOW_DIGITAL_SCHOOL, 'https://yandex.ru/maps/org/moscow_digital_school/236632787360/reviews/'))
+            ->addParser(new ParserTutortop(School::MOSCOW_DIGITAL_SCHOOL, 'https://tutortop.ru/school-reviews/moscow-digital-school/'))
+            ->addParser(new ParserOtzyvmarketing(School::MOSCOW_DIGITAL_SCHOOL, 'https://otzyvmarketing.ru/moscow-digital-school/'))
+            ->addParser(new ParserKatalogKursov(School::MOSCOW_DIGITAL_SCHOOL, 'https://katalog-kursov.ru/reviews/moscow-digital-school/'))
+            ->addParser(new ParserZoon(School::MOSCOW_DIGITAL_SCHOOL, 'https://zoon.ru/msk/trainings/onlajn-universitet_moscow_digital_school/reviews/'));
     }
 
     /**
