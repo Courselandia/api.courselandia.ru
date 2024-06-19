@@ -133,6 +133,11 @@ enum School: int implements EnumLabel
     case SF_EDUCATION = 24;
 
     /**
+     * Компьютерная Академия TOP
+     */
+    case TOP_ACADEMY = 25;
+
+    /**
      * Получение лейбл перечисления.
      *
      * @return string|int Вернет лейбл перечисления.
@@ -164,6 +169,7 @@ enum School: int implements EnumLabel
             self::LOGOMASHINA => 'Логомашина',
             self::SREDA_OBUCHENIA => 'Среда обучения',
             self::SF_EDUCATION => 'SF Education',
+            self::TOP_ACADEMY => 'Компьютерная Академия TOP',
         };
     }
 }

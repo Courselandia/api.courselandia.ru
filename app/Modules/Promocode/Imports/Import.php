@@ -39,6 +39,7 @@ use App\Modules\Promocode\Imports\Parsers\ParserBrunoyam;
 use App\Modules\Promocode\Imports\Parsers\ParserLogomashina;
 use App\Modules\Promocode\Imports\Parsers\ParserSredaObucheniya;
 use App\Modules\Promocode\Imports\Parsers\ParserSfEducation;
+use App\Modules\Promocode\Imports\Parsers\ParserTopAcademy;
 
 /**
  * Класс импорта промокодов.
@@ -93,6 +94,7 @@ class Import
             ->addParser(new ParserLogomashina('https://api.advcake.com/promocodes?pass=WB0r4T6JRYz7_gwK&offer_id=669'))
             ->addParser(new ParserSredaObucheniya('https://api.advcake.com/promocodes?pass=WB0r4T6JRYz7_gwK&offer_id=532'))
             ->addParser(new ParserSfEducation('https://api.advcake.com/promocodes?pass=WB0r4T6JRYz7_gwK&offer_id=764'))
+            ->addParser(new ParserTopAcademy('https://api.advcake.com/promocodes?pass=WB0r4T6JRYz7_gwK&offer_id=634'))
         ;
     }
 
