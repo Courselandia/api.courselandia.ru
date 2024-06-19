@@ -143,6 +143,11 @@ enum School: int implements EnumLabel
     case CONVERT_MONSTER = 26;
 
     /**
+     * Moscow Digital School
+     */
+    case MOSCOW_DIGITAL_SCHOOL = 27;
+
+    /**
      * Получение лейбл перечисления.
      *
      * @return string|int Вернет лейбл перечисления.
@@ -176,6 +181,7 @@ enum School: int implements EnumLabel
             self::SF_EDUCATION => 'SF Education',
             self::TOP_ACADEMY => 'Компьютерная Академия TOP',
             self::CONVERT_MONSTER => 'Convert Monster',
+            self::MOSCOW_DIGITAL_SCHOOL => 'Moscow Digital School',
         };
     }
 }

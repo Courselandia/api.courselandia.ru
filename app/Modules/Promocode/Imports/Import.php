@@ -41,6 +41,7 @@ use App\Modules\Promocode\Imports\Parsers\ParserSredaObucheniya;
 use App\Modules\Promocode\Imports\Parsers\ParserSfEducation;
 use App\Modules\Promocode\Imports\Parsers\ParserTopAcademy;
 use App\Modules\Promocode\Imports\Parsers\ParserConvertMonster;
+use App\Modules\Promocode\Imports\Parsers\ParserMoscowDigitalSchool;
 
 /**
  * Класс импорта промокодов.
@@ -97,6 +98,7 @@ class Import
             ->addParser(new ParserSfEducation('https://api.advcake.com/promocodes?pass=WB0r4T6JRYz7_gwK&offer_id=764'))
             ->addParser(new ParserTopAcademy('https://api.advcake.com/promocodes?pass=WB0r4T6JRYz7_gwK&offer_id=634'))
             ->addParser(new ParserConvertMonster('https://api.advcake.com/promocodes?pass=WB0r4T6JRYz7_gwK&offer_id=799'))
+            ->addParser(new ParserMoscowDigitalSchool('https://api.advcake.com/promocodes?pass=WB0r4T6JRYz7_gwK&offer_id=847'))
         ;
     }
 
