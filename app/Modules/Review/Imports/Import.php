@@ -189,6 +189,10 @@ class Import
             ->addParser(new ParserGeekhacker(School::SF_EDUCATION, 'https://geekhacker.ru/otzyvy-o-kursah-sf-education/'))
             ->addParser(new ParserKursyOnline(School::SF_EDUCATION, 'https://kurshub.ru/reviews/sf-education/'))
             ->addParser(new ParserProgbasics(School::SF_EDUCATION, 'https://progbasics.ru/schools/sf-education/reviews'));
+
+        $this->addParser(new ParserMapsYandex(School::TOP_ACADEMY, 'https://yandex.ru/maps/org/kompyuternaya_akademiya_top/133199701088/reviews/'))
+            ->addParser(new ParserTutortop(School::TOP_ACADEMY, 'https://tutortop.ru/school-reviews/kompyuternaya-akademiya-top/'))
+            ->addParser(new ParserKursyOnline(School::TOP_ACADEMY, 'https://kurshub.ru/reviews/top-academy-ru/'));
     }
 
     /**
