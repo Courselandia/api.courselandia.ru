@@ -111,7 +111,7 @@ abstract class ParserYml extends Parser
                             continue;
                         }
 
-                        if (count($directions)) {
+                        if (count($directions) && isset($categories[$offer['categoryId']])) {
                             $categoryName = $categories[$offer['categoryId']];
 
                             if (!isset($directions[$categoryName])) {
