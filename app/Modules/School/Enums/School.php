@@ -153,6 +153,11 @@ enum School: int implements EnumLabel
     case KARPOV_COURSES = 28;
 
     /**
+     * Слёрм
+     */
+    case SLERM = 29;
+
+    /**
      * Получение лейбл перечисления.
      *
      * @return string|int Вернет лейбл перечисления.
@@ -188,6 +193,7 @@ enum School: int implements EnumLabel
             self::CONVERT_MONSTER => 'Convert Monster',
             self::MOSCOW_DIGITAL_SCHOOL => 'Moscow Digital School',
             self::KARPOV_COURSES => 'KARPOV.COURSES',
+            self::SLERM => 'Слёрм',
         };
     }
 }
