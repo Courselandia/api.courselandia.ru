@@ -56,7 +56,7 @@ class ParserSlerm extends ParserYml
             $course->text = $offer['description'];
             $course->price = $offer['price'];
             $course->price_old = $offer['oldprice'] ?? null;
-            $course->price_recurrent = $offer['credit_price'];
+            $course->price_recurrent = $offer['credit_price'] ?? null;
             $course->currency = Currency::RUB;
             $course->image = $offer['picture'] ?? null;
             $course->status = $offer['attributes']['available'] === 'true';

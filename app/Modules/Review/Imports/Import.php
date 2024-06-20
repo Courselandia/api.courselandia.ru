@@ -214,6 +214,11 @@ class Import
             ->addParser(new ParserKatalogKursov(School::KARPOV_COURSES, 'https://katalog-kursov.ru/reviews/karpov-kursy/'))
             ->addParser(new ParserGeekhacker(School::KARPOV_COURSES, 'https://geekhacker.ru/otzyvy-o-kursah-karpov-courses/'))
             ->addParser(new ParserKursyOnline(School::KARPOV_COURSES, 'https://kurshub.ru/reviews/karpov-courses-ru/'));
+
+        $this->addParser(new ParserTutortop(School::SLERM, 'https://tutortop.ru/school-reviews/slurm/'))
+            ->addParser(new ParserOtzyvmarketing(School::SLERM, 'https://otzyvmarketing.ru/slurm/'))
+            ->addParser(new ParserProgbasics(School::SLERM, 'https://progbasics.ru/schools/slyorm/reviews'))
+            ->addParser(new ParserKursyOnline(School::SLERM, 'https://kurshub.ru/reviews/slurm-io/'));
     }
 
     /**
