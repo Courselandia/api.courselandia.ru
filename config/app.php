@@ -218,7 +218,7 @@ return [
         App\Modules\Article\Providers\RouteServiceProvider::class,
 
         App\Modules\OAuth\Providers\OAuthServiceProvider::class,
-        App\Modules\OAuth\Providers\RouteServiceProvider::class,
+        // App\Modules\OAuth\Providers\RouteServiceProvider::class,
 
         App\Modules\Act\Providers\ActServiceProvider::class,
         // App\Modules\Act\Providers\RouteServiceProvider::class,
@@ -257,7 +257,7 @@ return [
         App\Modules\Log\Providers\RouteServiceProvider::class,
 
         App\Modules\Metatag\Providers\MetatagServiceProvider::class,
-        //App\Modules\Metatag\Providers\RouteServiceProvider::class,
+        // App\Modules\Metatag\Providers\RouteServiceProvider::class,
 
         App\Modules\Publication\Providers\PublicationServiceProvider::class,
         App\Modules\Publication\Providers\RouteServiceProvider::class,
@@ -305,10 +305,10 @@ return [
         App\Modules\Plagiarism\Providers\RouteServiceProvider::class,
 
         App\Modules\Page\Providers\PageServiceProvider::class,
-        App\Modules\Page\Providers\RouteServiceProvider::class,
+        // App\Modules\Page\Providers\RouteServiceProvider::class,
 
         App\Modules\Sitemap\Providers\SitemapServiceProvider::class,
-        App\Modules\Sitemap\Providers\RouteServiceProvider::class,
+        // App\Modules\Sitemap\Providers\RouteServiceProvider::class,
 
         App\Modules\Crawl\Providers\CrawlServiceProvider::class,
         App\Modules\Crawl\Providers\RouteServiceProvider::class,

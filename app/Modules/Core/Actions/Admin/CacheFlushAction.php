@@ -37,7 +37,7 @@ class CacheFlushAction extends Action
         Artisan::call('route:clear');
 
         Artisan::call('config:cache');
-        Artisan::call('route:cache');
+        // Artisan::call('route:cache');
         Artisan::call('event:cache');
 
         $client = new Client();

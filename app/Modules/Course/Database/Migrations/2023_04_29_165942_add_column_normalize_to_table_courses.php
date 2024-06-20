@@ -33,6 +33,7 @@ class AddColumnNormalizeToTableCourses extends Migration
         DB::statement('CREATE INDEX courses_teacher_ids_index ON courses ( (CAST(teacher_ids AS UNSIGNED ARRAY)) );');
         DB::statement('CREATE INDEX courses_tool_ids_index ON courses ( (CAST(tool_ids AS UNSIGNED ARRAY)) );');
         DB::statement('CREATE INDEX courses_level_values_index ON courses ( (CAST(level_values AS UNSIGNED ARRAY)) );');
+        DB::statement('CREATE INDEX courses_status_has_active_school_deleted_at_index ON courses (status, has_active_school, deleted_at);');
     }
 
     /**
