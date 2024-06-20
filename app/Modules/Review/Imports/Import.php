@@ -208,6 +208,12 @@ class Import
             ->addParser(new ParserOtzyvmarketing(School::MOSCOW_DIGITAL_SCHOOL, 'https://otzyvmarketing.ru/moscow-digital-school/'))
             ->addParser(new ParserKatalogKursov(School::MOSCOW_DIGITAL_SCHOOL, 'https://katalog-kursov.ru/reviews/moscow-digital-school/'))
             ->addParser(new ParserZoon(School::MOSCOW_DIGITAL_SCHOOL, 'https://zoon.ru/msk/trainings/onlajn-universitet_moscow_digital_school/reviews/'));
+
+        $this->addParser(new ParserTutortop(School::KARPOV_COURSES, 'https://tutortop.ru/school-reviews/karpov-courses/'))
+            ->addParser(new ParserOtzyvmarketing(School::KARPOV_COURSES, 'https://otzyvmarketing.ru/karpov-courses/'))
+            ->addParser(new ParserKatalogKursov(School::KARPOV_COURSES, 'https://katalog-kursov.ru/reviews/karpov-kursy/'))
+            ->addParser(new ParserGeekhacker(School::KARPOV_COURSES, 'https://geekhacker.ru/otzyvy-o-kursah-karpov-courses/'))
+            ->addParser(new ParserKursyOnline(School::KARPOV_COURSES, 'https://kurshub.ru/reviews/karpov-courses-ru/'));
     }
 
     /**
