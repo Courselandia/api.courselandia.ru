@@ -207,6 +207,7 @@ return [
         App\Providers\GeoServiceProvider::class,
         App\Providers\SmsServiceProvider::class,
         App\Providers\MorphServiceProvider::class,
+        App\Providers\SpeedServiceProvider::class,
         App\Providers\TypographyServiceProvider::class,
 
         // Modules
@@ -355,6 +356,7 @@ return [
         'XmlParser' => Orchestra\Parser\Xml\Facade::class,
 
         // Own classes
+        'Speed' => App\Models\Facades\Speed::class,
         'Util' => App\Models\Facades\Util::class,
         'Morph' => App\Models\Facades\Morph::class,
         'Typography' => App\Models\Facades\Typography::class,
