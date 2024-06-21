@@ -45,7 +45,7 @@ class CacheFlushAction extends Action
         try {
             $client->request('GET', Config::get('app.url') . '/cache-flush');
         } catch (Exception $error) {
-            Log::debug('Не удалось удалить кеш в публичной части: ' . $error->getMessage());
+            Log::notice('Не удалось удалить кеш в публичной части: ' . $error->getMessage());
         }
 
         return true;

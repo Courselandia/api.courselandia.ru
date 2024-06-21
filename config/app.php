@@ -147,6 +147,8 @@ return [
         // 'store'  => 'redis',
     ],
 
+    'speed' => env('SPEED', false),
+
     /*
     |--------------------------------------------------------------------------
     | Autoloaded Service Providers
