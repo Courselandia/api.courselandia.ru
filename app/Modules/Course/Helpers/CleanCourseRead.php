@@ -106,12 +106,16 @@ class CleanCourseRead
     private static function clean(array $data): array
     {
         for ($i = 0; $i < count($data['courses']); $i++) {
-            for ($z = 0; $z < count($data['courses'][$i]['teachers']); $z++) {
-                unset($data['courses'][$i]['teachers'][$z]['text']);
+            if (isset($data['courses'][$i]['teachers'])) {
+                for ($z = 0; $z < count($data['courses'][$i]['teachers']); $z++) {
+                    unset($data['courses'][$i]['teachers'][$z]['text']);
+                }
             }
 
-            for ($z = 0; $z < count($data['courses'][$i]['tools']); $z++) {
-                unset($data['courses'][$i]['tools'][$z]['text']);
+            if (isset($data['courses'][$i]['tools'])) {
+                for ($z = 0; $z < count($data['courses'][$i]['tools']); $z++) {
+                    unset($data['courses'][$i]['tools'][$z]['text']);
+                }
             }
 
             if (isset($data['courses'][$i]['program'])) {
