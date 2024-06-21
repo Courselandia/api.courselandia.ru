@@ -47,6 +47,13 @@ class CourseRead extends Entity
     public ?int $limit = null;
 
     /**
+     * Позволить брать данные с файлов.
+     *
+     * @var bool
+     */
+    public bool $takeFromFiles = false;
+
+    /**
      * Курсы.
      *
      * @var ?array<int, Course>
@@ -171,29 +178,30 @@ class CourseRead extends Entity
      * @param bool|null $openedTools Признак инструменты открыты.
      * @param bool|null $onlyWithImage Вывести курсы только с картинками.
      * @param bool $onlyCount Признак того, что нам нужно получить только количество курсов.
+     * @param bool $takeFromFiles Позволить брать данные с файлов.
      */
     public function __construct(
-        ?array        $sorts = null,
-        ?array        $filters = null,
-        ?int          $offset = null,
-        ?int          $limit = null,
-        ?array        $courses = null,
+        ?array $sorts = null,
+        ?array $filters = null,
+        ?int $offset = null,
+        ?int $limit = null,
+        ?array $courses = null,
         ?CourseFilter $filter = null,
-        ?string       $section = null,
-        ?string       $sectionLink = null,
+        ?string $section = null,
+        ?string $sectionLink = null,
         stdClass|null $description = null,
-        ?int          $total = null,
-        ?bool         $disabled = null,
-        ?bool         $openedSchools = null,
-        ?bool         $openedCategories = null,
-        ?bool         $openedProfessions = null,
-        ?bool         $openedTeachers = null,
-        ?bool         $openedSkills = null,
-        ?bool         $openedTools = null,
-        ?bool         $onlyWithImage = null,
-        bool          $onlyCount = false,
-    )
-    {
+        ?int $total = null,
+        ?bool $disabled = null,
+        ?bool $openedSchools = null,
+        ?bool $openedCategories = null,
+        ?bool $openedProfessions = null,
+        ?bool $openedTeachers = null,
+        ?bool $openedSkills = null,
+        ?bool $openedTools = null,
+        ?bool $onlyWithImage = null,
+        bool $onlyCount = false,
+        bool $takeFromFiles = false,
+    ) {
         $this->sorts = $sorts;
         $this->filters = $filters;
         $this->offset = $offset;
@@ -213,5 +221,6 @@ class CourseRead extends Entity
         $this->openedTools = $openedTools;
         $this->onlyWithImage = $onlyWithImage;
         $this->onlyCount = $onlyCount;
+        $this->takeFromFiles = $takeFromFiles;
     }
 }

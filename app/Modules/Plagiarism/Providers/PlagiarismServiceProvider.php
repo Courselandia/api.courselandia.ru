@@ -31,7 +31,7 @@ class PlagiarismServiceProvider extends ServiceProvider
         $this->registerTranslations();
         $this->registerConfig();
 
-        $this->loadMigrationsFrom(__DIR__ . '/../Database/Migrations');
+        // $this->loadMigrationsFrom(__DIR__ . '/../Database/Migrations');
     }
 
     /**

@@ -29,7 +29,7 @@ class FilterProfessionPipe implements Pipe
      */
     public function handle(Data|CourseRead $data, Closure $next): mixed
     {
-        $action = new CourseProfessionReadAction($data->filters, 0, $data->openedProfessions ? null : 11, true);
+        $action = new CourseProfessionReadAction($data->filters, 0, $data->openedProfessions ? null : 11, true, $data->takeFromFiles);
 
         $data->filter->professions = $action->run();
 

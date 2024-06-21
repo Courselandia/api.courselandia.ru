@@ -58,11 +58,10 @@ class CourseSchoolReadAction extends Action
      */
     public function __construct(
         ?array $filters = null,
-        ?int   $offset = null,
-        ?int   $limit = null,
-        ?bool  $disabled = null,
-    )
-    {
+        ?int $offset = null,
+        ?int $limit = null,
+        ?bool $disabled = null,
+    ) {
         $this->filters = $filters;
         $this->offset = $offset;
         $this->limit = $limit;
@@ -148,16 +147,16 @@ class CourseSchoolReadAction extends Action
                         'schools.link',
                         'schools.name',
                     ])
-                    ->whereHas('courses', function ($query) {
-                        $query->select([
-                            'courses.id',
-                        ])
-                        ->where('status', Status::ACTIVE->value);
-                    })
-                    ->where('status', true)
-                    ->orderBy('name')
-                    ->get()
-                    ->toArray();
+                        ->whereHas('courses', function ($query) {
+                            $query->select([
+                                'courses.id',
+                            ])
+                                ->where('status', Status::ACTIVE->value);
+                        })
+                        ->where('status', true)
+                        ->orderBy('name')
+                        ->get()
+                        ->toArray();
                 }
             );
         } else {
@@ -197,7 +196,8 @@ class CourseSchoolReadAction extends Action
                         ->orderBy('name');
 
                     if (count($schoolFilters) && !$this->disabled) {
-                        $query->orderBy(DB::raw('FIELD(id, ' . implode(', ', array_reverse($schoolFilters)) . ')'), 'DESC');
+                        $query->orderBy(DB::raw('FIELD(id, ' . implode(', ', array_reverse($schoolFilters)) . ')'),
+                            'DESC');
                     }
 
                     if (!$this->disabled) {
@@ -238,13 +238,15 @@ class CourseSchoolReadAction extends Action
                         ->sortBy(function ($item) use ($schoolFilters) {
                             if (count($schoolFilters) && in_array($item['id'], $schoolFilters)) {
                                 $weight = 1;
-                            } else if (isset($item['disabled']) && !$item['disabled']) {
-                                $weight = 2;
                             } else {
-                                $weight = 3;
+                                if (isset($item['disabled']) && !$item['disabled']) {
+                                    $weight = 2;
+                                } else {
+                                    $weight = 3;
+                                }
                             }
 
-                            return $weight . ' - '. $item['name'];
+                            return $weight . ' - ' . $item['name'];
                         })
                         ->slice($this->offset, $this->limit)
                         ->values()

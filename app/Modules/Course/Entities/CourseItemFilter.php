@@ -59,12 +59,11 @@ class CourseItemFilter extends Entity
      */
     public function __construct(
         int|string|null $id = null,
-        ?string         $name = null,
-        ?string         $link = null,
-        ?int            $count = null,
-        ?bool           $disabled = null,
-    )
-    {
+        ?string $name = null,
+        ?string $link = null,
+        ?int $count = null,
+        ?bool $disabled = null,
+    ) {
         $this->id = $id;
         $this->name = $name;
         $this->link = $link;

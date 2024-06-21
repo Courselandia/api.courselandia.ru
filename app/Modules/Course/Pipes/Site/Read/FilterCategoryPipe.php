@@ -29,7 +29,7 @@ class FilterCategoryPipe implements Pipe
      */
     public function handle(Data|CourseRead $data, Closure $next): mixed
     {
-        $action = new CourseCategoryReadAction($data->filters, 0, $data->openedCategories ? null : 11, true);
+        $action = new CourseCategoryReadAction($data->filters, 0, $data->openedCategories ? null : 11, true, $data->takeFromFiles);
 
         $data->filter->categories = $action->run();
 

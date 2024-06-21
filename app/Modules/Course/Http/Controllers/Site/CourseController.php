@@ -269,6 +269,7 @@ class CourseController extends Controller
             'openedTeachers' => $request->get('openedTeachers', false),
             'openedSkills' => $request->get('openedSkills', false),
             'openedTools' => $request->get('openedTools', false),
+            'takeFromFiles' => true,
         ]);
         $action = new CourseReadAction($data);
         $entityCourseRead = $action->run();

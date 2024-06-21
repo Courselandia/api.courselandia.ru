@@ -74,13 +74,12 @@ class CourseDirectionReadAction extends Action
      */
     public function __construct(
         ?array $filters = null,
-        ?int   $offset = null,
-        ?int   $limit = null,
-        ?bool  $withCategories = null,
-        ?bool  $withCount = null,
-        ?bool  $disabled = null
-    )
-    {
+        ?int $offset = null,
+        ?int $limit = null,
+        ?bool $withCategories = null,
+        ?bool $withCount = null,
+        ?bool $disabled = null
+    ) {
         $this->filters = $filters;
         $this->offset = $offset;
         $this->limit = $limit;
