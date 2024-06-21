@@ -112,7 +112,7 @@ class ReadPipe implements Pipe
                             'teachers.text',
                             'teachers.rating',
                             'teachers.status',
-                            'teachers.image_small_id',
+                            'teachers.image_middle_id',
                         ])->where('status', true);
                     },
                     'teachers.experiences',
