@@ -69,8 +69,12 @@ class ParserBrunoyam extends ParserYml
             $course->status = $offer['attributes']['available'] === 'true';
             $course->direction = $offer['direction'];
 
-            if (isset($offer['params']['Продолжительность обучения, недель']['value']) && $offer['params']['Продолжительность обучения, недель']['value']) {
-                $course->duration = $offer['params']['Продолжительность обучения, недель']['value'];
+            if (
+                isset($offer['params']['Продолжительность обучения, недель']['value']) &&
+                $offer['params']['Продолжительность обучения, недель']['value'] &&
+                intval($offer['params']['Продолжительность обучения, недель']['value'])
+            ) {
+                $course->duration = intval($offer['params']['Продолжительность обучения, недель']['value']);
                 $course->duration_unit = Duration::WEEK;
             }
 
