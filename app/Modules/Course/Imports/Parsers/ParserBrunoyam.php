@@ -78,8 +78,12 @@ class ParserBrunoyam extends ParserYml
                 $course->duration_unit = Duration::WEEK;
             }
 
-            if (isset($offer['params']['Количество занятий']['value']) && $offer['params']['Количество занятий']['value']) {
-                $course->lessons_amount = $offer['params']['Количество занятий']['value'];
+            if (
+                isset($offer['params']['Количество занятий']['value']) &&
+                $offer['params']['Количество занятий']['value'] &&
+                intval($offer['params']['Количество занятий']['value'])
+            ) {
+                $course->lessons_amount = intval($offer['params']['Количество занятий']['value']);
             }
 
             yield $course;
