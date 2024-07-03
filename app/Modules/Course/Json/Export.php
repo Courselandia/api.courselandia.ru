@@ -8,10 +8,8 @@
 
 namespace App\Modules\Course\Json;
 
-use App\Modules\Course\Json\Sources\CategoriesSource;
 use Carbon\Carbon;
 use Storage;
-use Cache;
 use App\Models\Event;
 use App\Modules\Course\Json\Sources\SchoolsSource;
 use App\Modules\Course\Json\Sources\DirectionsSource;
@@ -46,6 +44,7 @@ use App\Modules\Course\Json\Sources\TeachersSource;
 use App\Modules\Course\Json\Sources\ProfessionsSource;
 use App\Modules\Course\Json\Sources\SkillsSource;
 use App\Modules\Course\Json\Sources\ToolsSource;
+use App\Modules\Course\Json\Sources\CategoriesSource;
 
 /**
  * Класс для экспортирования курсов в файлы json.
