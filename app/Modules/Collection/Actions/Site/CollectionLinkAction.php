@@ -79,7 +79,7 @@ class CollectionLinkAction extends Action
                             $query->select([
                                 'courses.id',
                                 'courses.school_id',
-                                'courses.image_middle_id',
+                                'courses.image_middle',
                                 'courses.name',
                                 'courses.header',
                                 'courses.header_template',
@@ -110,7 +110,7 @@ class CollectionLinkAction extends Action
                                 'schools.id',
                                 'schools.name',
                                 'schools.link',
-                                'schools.image_logo_id',
+                                'schools.image_logo',
                             ])->where('status', true);
                         },
                         'courses.learns',

@@ -67,9 +67,9 @@ class SimilaritiesPipe implements Pipe
                         $query = Course::select([
                             'id',
                             'school_id',
-                            'image_big_id',
-                            'image_middle_id',
-                            'image_small_id',
+                            'image_big',
+                            'image_middle',
+                            'image_small',
                             'name',
                             'header',
                             'header_template',
