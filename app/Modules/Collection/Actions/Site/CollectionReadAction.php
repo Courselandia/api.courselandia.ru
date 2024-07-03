@@ -86,9 +86,9 @@ class CollectionReadAction extends Action
                         'sort_field',
                         'sort_direction',
                         'copied',
-                        'image_small_id',
-                        'image_middle_id',
-                        'image_big_id',
+                        'image_small',
+                        'image_middle',
+                        'image_big',
                         'status',
                     ])
                     ->with([
