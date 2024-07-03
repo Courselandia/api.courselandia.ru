@@ -72,9 +72,9 @@ class PublicationRead implements Pipe
                     'link',
                     'anons',
                     'status',
-                    'image_big_id',
-                    'image_middle_id',
-                    'image_small_id',
+                    'image_big',
+                    'image_middle',
+                    'image_small',
                 ];
 
                 if ($year) {

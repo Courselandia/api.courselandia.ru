@@ -48,7 +48,24 @@ class TeacherGetAction extends Action
             $cacheKey,
             CacheTime::GENERAL->value,
             function () {
-                $result = Teacher::with([
+                $result = Teacher::select([
+                    'id',
+                    'metatag_id',
+                    'name',
+                    'link',
+                    'copied',
+                    'city',
+                    'comment',
+                    'additional',
+                    'text',
+                    'rating',
+                    'status',
+                    'image_cropped_options',
+                    'image_small',
+                    'image_middle',
+                    'image_big',
+                ])
+                    ->with([
                     'metatag',
                     'directions',
                     'schools',

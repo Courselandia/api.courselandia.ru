@@ -50,7 +50,26 @@ class SchoolLinkAction extends Action
             $cacheKey,
             CacheTime::GENERAL->value,
             function () {
-                $school = School::where('link', $this->link)
+                $school = School::select([
+                    'id',
+                    'metatag_id',
+                    'name',
+                    'header',
+                    'header_template',
+                    'link',
+                    'text',
+                    'additional',
+                    'rating',
+                    'site',
+                    'referral',
+                    'status',
+                    'amount_courses',
+                    'amount_teachers',
+                    'amount_reviews',
+                    'image_logo',
+                    'image_site',
+                ])
+                    ->where('link', $this->link)
                     ->active()
                     ->withCount([
                         'reviews' => function ($query) {

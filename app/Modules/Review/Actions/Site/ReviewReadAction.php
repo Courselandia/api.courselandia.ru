@@ -70,7 +70,29 @@ class ReviewReadAction extends Action
                             $query->where('schools.link', $this->data->link);
                         }
                     })
-                    ->with('school');
+                    ->with([
+                        'school' => function ($query) {
+                            $query->select([
+                                'id',
+                                'metatag_id',
+                                'name',
+                                'header',
+                                'header_template',
+                                'link',
+                                'text',
+                                'additional',
+                                'rating',
+                                'site',
+                                'referral',
+                                'status',
+                                'amount_courses',
+                                'amount_teachers',
+                                'amount_reviews',
+                                'image_logo',
+                                'image_site',
+                            ]);
+                        }
+                    ]);
 
                 if ($this->data->school_id) {
                     $query->where('school_id', $this->data->school_id);

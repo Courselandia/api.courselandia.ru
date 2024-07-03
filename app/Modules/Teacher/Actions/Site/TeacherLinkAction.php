@@ -49,7 +49,24 @@ class TeacherLinkAction extends Action
             $cacheKey,
             CacheTime::GENERAL->value,
             function () {
-                $result = Teacher::where('link', $this->link)
+                $result = Teacher::select([
+                    'id',
+                    'metatag_id',
+                    'name',
+                    'link',
+                    'copied',
+                    'city',
+                    'comment',
+                    'additional',
+                    'text',
+                    'rating',
+                    'status',
+                    'image_cropped_options',
+                    'image_small',
+                    'image_middle',
+                    'image_big',
+                ])
+                    ->where('link', $this->link)
                     ->active()
                     ->whereHas('courses', function ($query) {
                         $query->where('status', Status::ACTIVE->value)

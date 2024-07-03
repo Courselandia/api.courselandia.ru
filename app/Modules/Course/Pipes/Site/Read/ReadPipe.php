@@ -59,7 +59,7 @@ class ReadPipe implements Pipe
                 $query = Course::select([
                     'id',
                     'school_id',
-                    'image_middle_id',
+                    'image_middle',
                     'name',
                     'header',
                     'header_template',
@@ -90,7 +90,7 @@ class ReadPipe implements Pipe
                             'schools.id',
                             'schools.name',
                             'schools.link',
-                            'schools.image_logo_id',
+                            'schools.image_logo',
                         ])->where('status', true);
                     },
                     'school.promocode' => function ($query) {
@@ -112,7 +112,7 @@ class ReadPipe implements Pipe
                             'teachers.text',
                             'teachers.rating',
                             'teachers.status',
-                            'teachers.image_middle_id',
+                            'teachers.image_middle',
                         ])->where('status', true);
                     },
                     'teachers.experiences',

@@ -48,11 +48,10 @@ class SchoolReadAction extends Action
      * @param int|null $limit Лимит выборки выборку.
      */
     public function __construct(
-        array  $sorts = null,
-        ?int   $offset = null,
-        ?int   $limit = null
-    )
-    {
+        array $sorts = null,
+        ?int $offset = null,
+        ?int $limit = null
+    ) {
         $this->sorts = $sorts;
         $this->offset = $offset;
         $this->limit = $limit;
@@ -74,14 +73,33 @@ class SchoolReadAction extends Action
             $this->sorts,
             $this->offset,
             $this->limit,
-            'metatag'
+            'metatag',
         );
 
         return Cache::tags(['catalog', 'school'])->remember(
             $cacheKey,
             CacheTime::GENERAL->value,
             function () {
-                $query = School::sorted($this->sorts ?: [])
+                $query = School::select([
+                    'id',
+                    'metatag_id',
+                    'name',
+                    'header',
+                    'header_template',
+                    'link',
+                    'text',
+                    'additional',
+                    'rating',
+                    'site',
+                    'referral',
+                    'status',
+                    'amount_courses',
+                    'amount_teachers',
+                    'amount_reviews',
+                    'image_logo',
+                    'image_site',
+                ])
+                    ->sorted($this->sorts ?: [])
                     ->active()
                     ->with([
                         'metatag',

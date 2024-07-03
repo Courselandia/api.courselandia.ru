@@ -48,11 +48,10 @@ class CourseGetAction extends Action
      * @param string|int|null $id ID курса.
      */
     public function __construct(
-        string|null     $school = null,
-        string|null     $link = null,
+        string|null $school = null,
+        string|null $link = null,
         string|int|null $id = null,
-    )
-    {
+    ) {
         $this->school = $school;
         $this->link = $link;
         $this->id = $id;

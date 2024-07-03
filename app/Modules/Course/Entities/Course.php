@@ -82,6 +82,27 @@ class Course extends Entity
     public ?Image $image_big_id = null;
 
     /**
+     * Маленькое изображение.
+     *
+     * @var ?Image
+     */
+    public ?Image $image_small = null;
+
+    /**
+     * Среднее изображение.
+     *
+     * @var ?Image
+     */
+    public ?Image $image_middle = null;
+
+    /**
+     * Большое изображение.
+     *
+     * @var ?Image
+     */
+    public ?Image $image_big = null;
+
+    /**
      * Название.
      *
      * @var ?string
@@ -425,6 +446,9 @@ class Course extends Entity
      * @param Image|null $image_small_id Маленькое изображение.
      * @param Image|null $image_middle_id Среднее изображение.
      * @param Image|null $image_big_id Большое изображение.
+     * @param Image|null $image_small Маленькое изображение.
+     * @param Image|null $image_middle Среднее изображение.
+     * @param Image|null $image_big Большое изображение.
      * @param string|null $name Название.
      * @param string|null $header Заголовок.
      * @param string|null $header_template Шаблон заголовка.
@@ -476,69 +500,74 @@ class Course extends Entity
      */
     public function __construct(
         int|string|null $id = null,
-        ?string         $uuid = null,
+        ?string $uuid = null,
         string|int|null $metatag_id = null,
-        ?string         $school_id = null,
-        ?Image          $image_small_id = null,
-        ?Image          $image_middle_id = null,
-        ?Image          $image_big_id = null,
-        ?string         $name = null,
-        ?string         $header = null,
-        ?string         $header_template = null,
-        ?string         $text = null,
-        ?string         $name_morphy = null,
-        ?string         $text_morphy = null,
-        ?string         $link = null,
-        ?string         $url = null,
-        ?Language       $language = null,
-        ?float          $rating = null,
-        ?float          $price = null,
-        ?float          $price_old = null,
-        ?float          $price_recurrent = null,
-        ?Currency       $currency = null,
-        ?bool           $online = null,
-        ?bool           $employment = null,
-        ?int            $duration = null,
-        ?float          $duration_rate = null,
-        ?Duration       $duration_unit = null,
-        ?int            $lessons_amount = null,
-        ?int            $modules_amount = null,
-        ?array          $program = null,
-        ?array          $direction_ids = null,
-        ?array          $profession_ids = null,
-        ?array          $category_ids = null,
-        ?array          $skill_ids = null,
-        ?array          $teacher_ids = null,
-        ?array          $tool_ids = null,
-        ?array          $level_values = null,
-        ?bool           $has_active_school = null,
-        ?Carbon         $created_at = null,
-        ?Carbon         $updated_at = null,
-        ?Carbon         $deleted_at = null,
-        ?Status         $status = null,
-        ?Metatag        $metatag = null,
-        ?School         $school = null,
-        ?array          $directions = null,
-        ?array          $professions = null,
-        ?array          $categories = null,
-        ?array          $skills = null,
-        ?array          $teachers = null,
-        ?array          $tools = null,
-        ?array          $processes = null,
-        ?array          $levels = null,
-        ?array          $learns = null,
-        ?array          $employments = null,
-        ?array          $features = null,
-        ?array          $analyzers = null,
-    )
-    {
+        ?string $school_id = null,
+        ?Image $image_small_id = null,
+        ?Image $image_middle_id = null,
+        ?Image $image_big_id = null,
+        ?Image $image_small = null,
+        ?Image $image_middle = null,
+        ?Image $image_big = null,
+        ?string $name = null,
+        ?string $header = null,
+        ?string $header_template = null,
+        ?string $text = null,
+        ?string $name_morphy = null,
+        ?string $text_morphy = null,
+        ?string $link = null,
+        ?string $url = null,
+        ?Language $language = null,
+        ?float $rating = null,
+        ?float $price = null,
+        ?float $price_old = null,
+        ?float $price_recurrent = null,
+        ?Currency $currency = null,
+        ?bool $online = null,
+        ?bool $employment = null,
+        ?int $duration = null,
+        ?float $duration_rate = null,
+        ?Duration $duration_unit = null,
+        ?int $lessons_amount = null,
+        ?int $modules_amount = null,
+        ?array $program = null,
+        ?array $direction_ids = null,
+        ?array $profession_ids = null,
+        ?array $category_ids = null,
+        ?array $skill_ids = null,
+        ?array $teacher_ids = null,
+        ?array $tool_ids = null,
+        ?array $level_values = null,
+        ?bool $has_active_school = null,
+        ?Carbon $created_at = null,
+        ?Carbon $updated_at = null,
+        ?Carbon $deleted_at = null,
+        ?Status $status = null,
+        ?Metatag $metatag = null,
+        ?School $school = null,
+        ?array $directions = null,
+        ?array $professions = null,
+        ?array $categories = null,
+        ?array $skills = null,
+        ?array $teachers = null,
+        ?array $tools = null,
+        ?array $processes = null,
+        ?array $levels = null,
+        ?array $learns = null,
+        ?array $employments = null,
+        ?array $features = null,
+        ?array $analyzers = null,
+    ) {
         $this->id = $id;
         $this->uuid = $uuid;
         $this->metatag_id = $metatag_id;
         $this->school_id = $school_id;
         $this->image_small_id = $image_small_id;
         $this->image_middle_id = $image_middle_id;
-        $this->image_big_id = $image_big_id;
+        $this->image_big_id = $image_big;
+        $this->image_small = $image_small;
+        $this->image_middle = $image_middle;
+        $this->image_big = $image_big;
         $this->name = $name;
         $this->header = $header;
         $this->header_template = $header_template;

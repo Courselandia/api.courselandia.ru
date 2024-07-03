@@ -114,6 +114,20 @@ class School extends Entity
     public Image|null $image_site_id = null;
 
     /**
+     * Изображение логотипа.
+     *
+     * @var Image|null
+     */
+    public Image|null $image_logo = null;
+
+    /**
+     * Изображение сайта.
+     *
+     * @var Image|null
+     */
+    public Image|null $image_site = null;
+
+    /**
      * Статус.
      *
      * @var bool|null
@@ -253,6 +267,8 @@ class School extends Entity
      * @param float|null $rating Рейтинг.
      * @param Image|null $image_logo_id Изображение логотипа.
      * @param Image|null $image_site_id Изображение сайта.
+     * @param Image|null $image_logo Изображение логотипа.
+     * @param Image|null $image_site Изображение сайта.
      * @param bool|null $status Статус.
      * @param Carbon|null $created_at Дата создания.
      * @param Carbon|null $updated_at Дата обновления.
@@ -286,6 +302,8 @@ class School extends Entity
         ?float $rating = null,
         ?Image $image_logo_id = null,
         ?Image $image_site_id = null,
+        ?Image $image_logo = null,
+        ?Image $image_site = null,
         ?bool $status = null,
         ?Carbon $created_at = null,
         ?Carbon $updated_at = null,
@@ -318,6 +336,8 @@ class School extends Entity
         $this->rating = $rating;
         $this->image_logo_id = $image_logo_id;
         $this->image_site_id = $image_site_id;
+        $this->image_logo = $image_logo;
+        $this->image_site = $image_site;
         $this->status = $status;
         $this->created_at = $created_at;
         $this->updated_at = $updated_at;

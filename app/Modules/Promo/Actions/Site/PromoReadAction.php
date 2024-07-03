@@ -39,7 +39,26 @@ class PromoReadAction extends Action
             $cacheKey,
             CacheTime::GENERAL->value,
             function () {
-                $query = School::active()
+                $query = School::select([
+                    'id',
+                    'metatag_id',
+                    'name',
+                    'header',
+                    'header_template',
+                    'link',
+                    'text',
+                    'additional',
+                    'rating',
+                    'site',
+                    'referral',
+                    'status',
+                    'amount_courses',
+                    'amount_teachers',
+                    'amount_reviews',
+                    'image_logo',
+                    'image_site',
+                ])
+                    ->active()
                     ->with([
                         'promocodes' => function ($query) {
                             $query->applicable();
