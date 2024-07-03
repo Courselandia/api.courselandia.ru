@@ -52,6 +52,10 @@ class CreateTableCourses extends Migration
             $table->integer('lessons_amount')->unsigned()->nullable();
             $table->integer('modules_amount')->unsigned()->nullable();
 
+            $table->json('image_small')->nullable();
+            $table->json('image_middle')->nullable();
+            $table->json('image_big')->nullable();
+
             $table->string('status', 20)->index();
 
             $table->timestamps();

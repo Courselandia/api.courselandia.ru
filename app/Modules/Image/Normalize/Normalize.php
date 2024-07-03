@@ -10,6 +10,8 @@ namespace App\Modules\Image\Normalize;
 
 use App\Models\Error;
 use App\Models\Event;
+use App\Modules\Image\Normalize\Workers\CourseWorker;
+use App\Modules\Image\Normalize\Workers\SchoolWorker;
 use App\Modules\Image\Normalize\Workers\TeacherWorker;
 
 /**
@@ -32,7 +34,9 @@ class Normalize
      */
     public function __construct()
     {
-        $this->addWorker(new TeacherWorker());
+        $this->addWorker(new TeacherWorker())
+            ->addWorker(new CourseWorker())
+            ->addWorker(new SchoolWorker());
     }
 
     /**

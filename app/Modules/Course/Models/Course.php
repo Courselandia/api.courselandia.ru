@@ -87,6 +87,9 @@ use App\Modules\Course\Images\ImageBig;
  * @property array $tool_ids Активные инструменты.
  * @property array $level_values Активные уровни.
  * @property boolean $has_active_school Признак если активная школа.
+ * @property array|null $image_small Изображение маленькое (нормализованное).
+ * @property array|null $image_middle Изображение среднее(нормализованное).
+ * @property array|null $image_big Изображение большое(нормализованное).
  * @property string $status Статус.
  *
  * @property-read Metatag $metatag
@@ -133,6 +136,9 @@ class Course extends Eloquent
         'image_small_id' => ImageSmall::class,
         'image_middle_id' => ImageMiddle::class,
         'image_big_id' => ImageBig::class,
+        'image_small' => 'array',
+        'image_middle' => 'array',
+        'image_big' => 'array',
     ];
 
     /**
@@ -178,6 +184,9 @@ class Course extends Eloquent
         'tool_ids',
         'level_values',
         'has_active_school',
+        'image_small',
+        'image_middle',
+        'image_big',
         'status',
     ];
 
@@ -222,6 +231,9 @@ class Course extends Eloquent
             'tool_ids' => 'json',
             'level_values' => 'json',
             'has_active_school' => 'boolean',
+            'image_small' => 'nullable|json',
+            'image_middle' => 'nullable|json',
+            'image_big' => 'nullable|json',
             'status' => 'required|in:' . implode(',', EnumList::getValues(Status::class)),
         ];
     }
@@ -270,6 +282,9 @@ class Course extends Eloquent
             'tool_ids' => trans('course::models.course.toolIds'),
             'level_values' => trans('course::models.course.levelValues'),
             'has_active_school' => trans('course::models.course.hasActiveSchool'),
+            'image_small' => trans('course::models.course.imageSmallId'),
+            'image_middle' => trans('course::models.course.imageMiddleId'),
+            'image_big' => trans('course::models.course.imageBigId'),
             'status' => trans('course::models.course.status'),
         ];
     }

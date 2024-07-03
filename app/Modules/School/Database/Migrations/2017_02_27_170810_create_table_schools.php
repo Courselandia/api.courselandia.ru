@@ -32,6 +32,9 @@ class CreateTableSchools extends Migration
             $table->string('image_logo_id')->nullable()->index();
             $table->string('image_site_id')->nullable()->index();
 
+            $table->json('image_logo')->nullable();
+            $table->json('image_site')->nullable();
+
             $table->boolean('status')->default(1)->index();
 
             $table->timestamps();

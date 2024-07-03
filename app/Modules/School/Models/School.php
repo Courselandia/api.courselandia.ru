@@ -59,6 +59,8 @@ use App\Modules\School\Filters\SchoolFilter;
  * @property array $amount_courses Статистика количества курсов.
  * @property int $amount_teachers Количества учителей.
  * @property int $amount_reviews Количества отзывов.
+ * @property array|null $image_site Изображение сайта (нормализованное).
+ * @property array|null $image_logo Изображение логотипа (нормализованное).
  *
  * @property-read Metatag $metatag
  * @property-read Teacher[] $teachers
@@ -91,6 +93,8 @@ class School extends Eloquent
         'amount_courses' => 'array',
         'image_logo_id' => ImageLogo::class,
         'image_site_id' => ImageSite::class,
+        'image_logo' => 'array',
+        'image_site' => 'array',
     ];
 
     /**
@@ -116,6 +120,8 @@ class School extends Eloquent
         'amount_courses',
         'amount_teachers',
         'amount_reviews',
+        'image_logo',
+        'image_site',
     ];
 
     /**
@@ -140,6 +146,8 @@ class School extends Eloquent
             'amount_courses' => 'json',
             'amount_teachers' => 'digits_between:0,20',
             'amount_reviews' => 'digits_between:0,20',
+            'image_logo' => 'nullable|json',
+            'image_site' => 'nullable|json',
         ];
     }
 
@@ -167,6 +175,8 @@ class School extends Eloquent
             'amount_courses' => trans('school::models.school.amountCourses'),
             'amount_teachers' => trans('school::models.school.amountTeachers'),
             'amount_reviews' => trans('school::models.school.amountReviews'),
+            'image_logo' => trans('school::models.school.imageLogoId'),
+            'image_site' => trans('school::models.school.imageSiteId'),
         ];
     }
 

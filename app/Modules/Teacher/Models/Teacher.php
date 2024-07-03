@@ -54,8 +54,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property int|string|array|UploadedFile|ImageEntity $image_middle_id Изображение среднее.
  * @property int|string|array|UploadedFile|ImageEntity $image_big_id Изображение большое.
  * @property array|null $image_small Изображение маленькое (нормализованное).
- * @property array|null $image_middle Изображение среднее(нормализованное).
- * @property array|null $image_big Изображение большое(нормализованное).
+ * @property array|null $image_middle Изображение среднее (нормализованное).
+ * @property array|null $image_big Изображение большое (нормализованное).
  *
  * @property-read Metatag $metatag
  * @property-read Direction[] $directions
