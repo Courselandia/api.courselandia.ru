@@ -25,6 +25,7 @@ use App\Modules\Image\Models\ImageDriverHttp;
 use App\Modules\Image\Models\ImageDriverLocal;
 use App\Modules\Image\Entities\Image;
 use App\Modules\Image\Commands\ImageMigrateCommand;
+use App\Modules\Image\Commands\ImageNormalizeCommand;
 
 /**
  * Класс сервис-провайдера для настройки этого модуля.
@@ -56,6 +57,7 @@ class ImageServiceProvider extends ServiceProvider
     {
         $this->commands([
             ImageMigrateCommand::class,
+            ImageNormalizeCommand::class,
         ]);
 
         App::singleton('image.store', function ($app) {

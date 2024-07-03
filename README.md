@@ -19,3 +19,10 @@ Connection to the database in the container
 - mysql -u ikit -p
 
 - docker compose run --rm npm run dev
+- UPDATE courses
+  SET status = 'active',
+  updated_at = '2024-06-01 00:00:00'
+  WHERE status = 'draft'
+  and deleted_at IS NULL
+  and profession_ids IS NOT NULL
+  and JSON_LENGTH(JSON_EXTRACT(profession_ids, '$')) != 0;

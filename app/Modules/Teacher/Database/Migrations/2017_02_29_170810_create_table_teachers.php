@@ -30,6 +30,10 @@ class CreateTableTeachers extends Migration
 
             $table->boolean('status')->default(1)->index();
 
+            $table->json('image_small')->nullable();
+            $table->json('image_middle')->nullable();
+            $table->json('image_big')->nullable();
+
             $table->timestamps();
             $table->softDeletes()->index();
         });

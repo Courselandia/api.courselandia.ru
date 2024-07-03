@@ -53,6 +53,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property int|string|array|UploadedFile|ImageEntity $image_small_id Изображение маленькое.
  * @property int|string|array|UploadedFile|ImageEntity $image_middle_id Изображение среднее.
  * @property int|string|array|UploadedFile|ImageEntity $image_big_id Изображение большое.
+ * @property array|null $image_small Изображение маленькое (нормализованное).
+ * @property array|null $image_middle Изображение среднее(нормализованное).
+ * @property array|null $image_big Изображение большое(нормализованное).
  *
  * @property-read Metatag $metatag
  * @property-read Direction[] $directions
@@ -95,10 +98,16 @@ class Teacher extends Eloquent
         'image_middle_id',
         'image_big_id',
         'image_cropped_options',
+        'image_small',
+        'image_middle',
+        'image_big',
     ];
 
     protected $casts = [
         'image_cropped_options' => 'array',
+        'image_small' => 'array',
+        'image_middle' => 'array',
+        'image_big' => 'array',
         'image_small_id' => ImageSmall::class,
         'image_middle_id' => ImageMiddle::class,
         'image_big_id' => ImageBig::class,
@@ -123,6 +132,9 @@ class Teacher extends Eloquent
             'rating' => 'nullable|float|float_between:0,5',
             'status' => 'required|boolean',
             'image_cropped_options' => 'nullable|json',
+            'image_small' => 'nullable|json',
+            'image_middle' => 'nullable|json',
+            'image_big' => 'nullable|json',
         ];
     }
 
@@ -147,7 +159,10 @@ class Teacher extends Eloquent
             'image_cropped_options' => trans('teacher::models.teacher.imageCroppedOptions'),
             'image_big_id' => trans('teacher::models.teacher.imageBigId'),
             'rating' => trans('teacher::models.teacher.rating'),
-            'status' => trans('teacher::models.teacher.status')
+            'status' => trans('teacher::models.teacher.status'),
+            'image_small' => trans('teacher::models.teacher.imageSmallId'),
+            'image_middle' => trans('teacher::models.teacher.imageMiddleId'),
+            'image_big' => trans('teacher::models.teacher.imageBigId'),
         ];
     }
 
