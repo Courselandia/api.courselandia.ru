@@ -15,65 +15,6 @@ use App\Models\Clean;
  */
 class CleanCourseList
 {
-    /**
-     * Массив ключей подлежащих удалению.
-     *
-     * @var array
-     */
-    private const REMOVES = [
-        'uuid',
-        'metatag_id',
-        'name_morphy',
-        'text_morphy',
-        'created_at',
-        'updated_at',
-        'deleted_at',
-        'metatag',
-        'metatag_id',
-        'status',
-        'weight',
-        'text',
-        'learns',
-        'employments',
-        'features',
-        'byte',
-        'folder',
-        'format',
-        'cache',
-        'pathCache',
-        'pathSource',
-        'image_logo_id',
-        'image_site_id',
-        'site',
-        'course_id',
-        'processes',
-        'filter',
-        'section',
-        'sectionLink',
-        'description',
-        'disabled',
-        'program',
-    ];
-
-    /**
-     * Массив ключей подлежащих удалению если значение содержит NULL.
-     *
-     * @var array
-     */
-    private const REMOVES_IF_NULL = [
-        'link',
-        'rating',
-        'directions',
-        'professions',
-        'image_small_id',
-        'image_middle_id',
-        'image_big_id',
-        'schools',
-        'header_template',
-        'header',
-        'count',
-    ];
-
     public static function do(array $data): array
     {
         unset($data['sorts']);
@@ -87,11 +28,61 @@ class CleanCourseList
         unset($data['openedSkills']);
         unset($data['openedTools']);
 
-        $data = Clean::do($data, self::REMOVES);
-        $data = Clean::do($data, self::REMOVES_IF_NULL, true);
+        $data = Clean::do($data, CleanCourseRead::REMOVES);
+        $data = self::clean($data);
 
         unset($data['filter']);
 
         return $data;
+    }
+
+    /**
+     * Дополнительная очистка от больших ненужных текстов.
+     *
+     * @param array $data Данные для очистки.
+     * @return array Очищенные данные.
+     */
+    public static function clean(array $data): array
+    {
+        for ($i = 0; $i < count($data); $i++) {
+            $data[$i] = $data[$i]->toArray();
+
+            if (isset($data[$i]['teachers'])) {
+                for ($z = 0; $z < count($data[$i]['teachers']); $z++) {
+                    unset($data[$i]['teachers'][$z]['text']);
+                }
+            }
+
+            if (isset($data[$i]['tools'])) {
+                for ($z = 0; $z < count($data[$i]['tools']); $z++) {
+                    unset($data[$i]['tools'][$z]['text']);
+                }
+            }
+
+            if (isset($data[$i]['program'])) {
+                $data[$i]['program'] = self::cleanProgram($data[$i]['program']);
+            }
+        }
+
+        return $data;
+    }
+
+    /**
+     * Дополнительная очистка для программ от ненужных текстов.
+     *
+     * @param array $program Данные для очистки.
+     * @return array Очищенные данные.
+     */
+    private static function cleanProgram(array $program): array
+    {
+        for ($i = 0; $i < count($program); $i++) {
+            unset($program[$i]['text']);
+
+            if (isset($program[$i]['children'])) {
+                $program[$i]['children'] = self::cleanProgram($program[$i]['children']);
+            }
+        }
+
+        return $program;
     }
 }
