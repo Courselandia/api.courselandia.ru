@@ -11,7 +11,6 @@ namespace App\Modules\Category\Tests\Feature\Http\Controllers\Site;
 use App\Modules\Course\Tests\Feature\Http\Controllers\Site\CourseControllerTest;
 use App\Modules\Direction\Models\Direction;
 use App\Modules\Profession\Models\Profession;
-use App\Models\Test\TokenTest;
 use App\Modules\Category\Models\Category;
 use Tests\TestCase;
 

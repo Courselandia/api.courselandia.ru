@@ -12,7 +12,6 @@ use App\Modules\Course\Tests\Feature\Http\Controllers\Site\CourseControllerTest;
 use App\Modules\Direction\Models\Direction;
 use App\Modules\School\Models\School;
 use App\Modules\Teacher\Models\Teacher;
-use App\Models\Test\TokenTest;
 use Tests\TestCase;
 
 /**
@@ -107,8 +106,8 @@ class TeacherControllerTest extends TestCase
             'text',
             'rating',
             'status',
-            'image_small_id',
-            'image_middle_id',
+            'image_small',
+            'image_middle',
             'created_at',
             'updated_at',
             'deleted_at',
@@ -140,8 +139,8 @@ class TeacherControllerTest extends TestCase
                     'rating',
                     'site',
                     'status',
-                    'image_logo_id',
-                    'image_site_id',
+                    'image_logo',
+                    'image_site',
                     'created_at',
                     'updated_at',
                     'deleted_at',
