@@ -54,6 +54,9 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
  * @property int|string|array|UploadedFile|ImageEntity $image_small_id Изображение маленькое.
  * @property int|string|array|UploadedFile|ImageEntity $image_middle_id Изображение среднее.
  * @property int|string|array|UploadedFile|ImageEntity $image_big_id Изображение большое.
+ * @property array|null $image_small Изображение маленькое (нормализованное).
+ * @property array|null $image_middle Изображение среднее (нормализованное).
+ * @property array|null $image_big Изображение большое (нормализованное).
  *
  * @property-read Metatag $metatag
  * @property-read Direction $direction
@@ -93,6 +96,9 @@ class Collection extends Eloquent
         'image_small_id',
         'image_middle_id',
         'image_big_id',
+        'image_small',
+        'image_middle',
+        'image_big',
         'status',
     ];
 
@@ -100,6 +106,9 @@ class Collection extends Eloquent
         'image_small_id' => ImageSmall::class,
         'image_middle_id' => ImageMiddle::class,
         'image_big_id' => ImageBig::class,
+        'image_small' => 'array',
+        'image_middle' => 'array',
+        'image_big' => 'array',
     ];
 
     /**
@@ -120,6 +129,9 @@ class Collection extends Eloquent
             'sort_field' => 'required|max:25',
             'sort_direction' => 'required|max:4',
             'copied' => 'boolean',
+            'image_small' => 'nullable|json',
+            'image_middle' => 'nullable|json',
+            'image_big' => 'nullable|json',
             'status' => 'required|boolean',
         ];
     }
@@ -145,6 +157,9 @@ class Collection extends Eloquent
             'sort_field' => trans('collection::models.collection.sortField'),
             'sort_direction' => trans('collection::models.collection.sortDirection'),
             'copied' => trans('collection::models.collection.copied'),
+            'image_small' => trans('collection::models.collection.imageSmallId'),
+            'image_middle' => trans('collection::models.collection.imageMiddleId'),
+            'image_big' => trans('collection::models.collection.imageBigId'),
             'status' => trans('collection::models.collection.status'),
         ];
     }

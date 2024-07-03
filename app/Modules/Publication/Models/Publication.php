@@ -45,6 +45,9 @@ use App\Modules\Publication\Images\ImageSmall;
  * @property int|string|array|UploadedFile|ImageEntity $image_big_id Большое изображение.
  * @property int|string|array|UploadedFile|ImageEntity $image_middle_id Среднее изображение.
  * @property int|string|array|UploadedFile|ImageEntity $image_small_id Маленькое изображение.
+ * @property array|null $image_small Изображение маленькое (нормализованное).
+ * @property array|null $image_middle Изображение среднее (нормализованное).
+ * @property array|null $image_big Изображение большое (нормализованное).
  *
  * @property-read Metatag $metatag
  */
@@ -76,6 +79,9 @@ class Publication extends Eloquent
         'image_big_id',
         'image_middle_id',
         'image_small_id',
+        'image_small',
+        'image_middle',
+        'image_big',
     ];
 
     /**
@@ -88,6 +94,9 @@ class Publication extends Eloquent
         'image_middle_id' => ImageMiddle::class,
         'image_big_id' => ImageBig::class,
         'published_at' => 'datetime',
+        'image_small' => 'array',
+        'image_middle' => 'array',
+        'image_big' => 'array',
     ];
 
     /**
@@ -104,7 +113,10 @@ class Publication extends Eloquent
             'link' => 'required|between:1,191|alpha_dash|unique_soft:publications,link,' . $this->id . ',id',
             'anons' => 'max:1000',
             'article' => 'max:16000000',
-            'status' => 'required|boolean'
+            'image_small' => 'nullable|json',
+            'image_middle' => 'nullable|json',
+            'image_big' => 'nullable|json',
+            'status' => 'required|boolean',
         ];
     }
 
@@ -125,7 +137,10 @@ class Publication extends Eloquent
             'image_big_id' => trans('publication::models.publication.imageBigId'),
             'image_middle_id' => trans('publication::models.publication.imageMiddleId'),
             'image_small_id' => trans('publication::models.publication.imageSmallId'),
-            'status' => trans('publication::models.publication.status')
+            'image_small' => trans('teacher::models.teacher.imageSmallId'),
+            'image_middle' => trans('publication::models.publication.imageMiddleId'),
+            'image_big' => trans('publication::models.publication.imageBigId'),
+            'status' => trans('publication::models.publication.status'),
         ];
     }
 

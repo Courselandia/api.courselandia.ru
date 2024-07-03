@@ -10,9 +10,11 @@ namespace App\Modules\Image\Normalize;
 
 use App\Models\Error;
 use App\Models\Event;
+use App\Modules\Image\Normalize\Workers\CollectionWorker;
 use App\Modules\Image\Normalize\Workers\CourseWorker;
 use App\Modules\Image\Normalize\Workers\SchoolWorker;
 use App\Modules\Image\Normalize\Workers\TeacherWorker;
+use App\Modules\Image\Normalize\Workers\PublicationWorker;
 
 /**
  * Нормализация изображений.
@@ -36,7 +38,9 @@ class Normalize
     {
         $this->addWorker(new TeacherWorker())
             ->addWorker(new CourseWorker())
-            ->addWorker(new SchoolWorker());
+            ->addWorker(new SchoolWorker())
+            ->addWorker(new PublicationWorker())
+            ->addWorker(new CollectionWorker());
     }
 
     /**

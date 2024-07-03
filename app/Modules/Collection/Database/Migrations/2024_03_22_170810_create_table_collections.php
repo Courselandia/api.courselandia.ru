@@ -33,6 +33,10 @@ class CreateTableCollections extends Migration
             $table->string('image_middle_id')->nullable()->index();
             $table->string('image_big_id')->nullable()->index();
 
+            $table->json('image_small')->nullable();
+            $table->json('image_middle')->nullable();
+            $table->json('image_big')->nullable();
+
             $table->boolean('status')->default(1)->index();
 
             $table->timestamps();
