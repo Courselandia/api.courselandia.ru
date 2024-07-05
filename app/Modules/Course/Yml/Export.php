@@ -361,11 +361,11 @@ class Export
             },
         ])
             ->where(function ($query) {
-                $query->where('text', '!=')
+                $query->where('text', '!=', '')
                     ->whereNotNull('text');
             })
             ->where(function ($query) {
-                $query->where('image_middle_id', '!=')
+                $query->where('image_middle_id', '!=', '')
                     ->whereNotNull('image_middle_id');
             })
             ->where('status', Status::ACTIVE->value)
