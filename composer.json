@@ -62,7 +62,8 @@
             "App\\": "app/",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/"
-        }
+        },
+        "exclude-from-classmap": ["app/Modules/*/Database/Migrations/"]
     },
     "autoload-dev": {
         "psr-4": {
