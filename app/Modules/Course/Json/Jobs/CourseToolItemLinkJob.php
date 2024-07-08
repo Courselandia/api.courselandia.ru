@@ -28,7 +28,7 @@ class CourseToolItemLinkJob extends JsonItemLinkJob
             'sorts' => ['name' => 'ASC'],
             'filters' => ['tools-id' => $this->id],
             'offset' => 0,
-            'limit' => 18,
+            'limit' => 21,
             'section' => 'tool',
             'sectionLink' => $this->link,
         ]));

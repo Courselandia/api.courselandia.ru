@@ -28,7 +28,7 @@ class CourseAllItemLinkJob extends JsonItemLinkJob
             'sorts' => ['name' => 'ASC'],
             'filters' => [],
             'offset' => 0,
-            'limit' => 18,
+            'limit' => 21,
         ]));
 
         $entityCourseRead = $action->run();
