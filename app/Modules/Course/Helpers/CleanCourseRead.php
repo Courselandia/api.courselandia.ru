@@ -16,6 +16,11 @@ use App\Models\Clean;
 class CleanCourseRead
 {
     /**
+     * Лимит длины текста для описания курса.
+     */
+    public const LIMIT_TEXT = 250;
+
+    /**
      * Массив ключей подлежащих удалению.
      *
      * @var array
@@ -28,7 +33,6 @@ class CleanCourseRead
         'created_at',
         'deleted_at',
         'metatag',
-        'metatag_id',
         'status',
         'weight',
         'learns',
@@ -79,7 +83,10 @@ class CleanCourseRead
         'language',
         'online',
         'employment',
-        'additional'
+        'additional',
+        'image_small_id',
+        'image_middle_id',
+        'image_big_id',
     ];
 
     public static function do(array $data): array
@@ -120,6 +127,14 @@ class CleanCourseRead
 
             if (isset($data['courses'][$i]['program'])) {
                 $data['courses'][$i]['program'] = self::cleanProgram($data['courses'][$i]['program']);
+            }
+
+            if (isset($data['courses'][$i]['text'])) {
+                $data['courses'][$i]['text'] = strip_tags($data['courses'][$i]['text']);
+
+                if (strlen($data['courses'][$i]['text']) > CleanCourseRead::LIMIT_TEXT) {
+                    $data['courses'][$i]['text'] = mb_substr($data['courses'][$i]['text'], 0, CleanCourseRead::LIMIT_TEXT);
+                }
             }
         }
 

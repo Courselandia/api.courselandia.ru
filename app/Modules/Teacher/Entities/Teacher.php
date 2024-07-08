@@ -196,6 +196,13 @@ class Teacher extends Entity
     public ?array $experiences = null;
 
     /**
+     * Последний опыт работы учителя.
+     *
+     * @var ?TeacherExperience
+     */
+    public ?TeacherExperience $experience = null;
+
+    /**
      * Социальные сети учителя.
      *
      * @var ?array<int, TeacherSocialMedia>
@@ -235,6 +242,7 @@ class Teacher extends Entity
      * @param array<int, Direction>|null $directions Направления.
      * @param array<int, School>|null $schools Школы.
      * @param array<int, TeacherExperience>|null $experiences Опыт работы учителя.
+     * @param TeacherExperience|null $experience Последний опыт работы учителя.
      * @param array<int, TeacherSocialMedia>|null $social_medias Социальные сети учителя.
      * @param array<int, TeacherSocialMedia>|null $analyzers Анализ хранения текстов.
      */
@@ -264,6 +272,7 @@ class Teacher extends Entity
         ?array $directions = null,
         ?array $schools = null,
         ?array $experiences = null,
+        ?TeacherExperience $experience = null,
         ?array $social_medias = null,
         ?array $analyzers = null
     ) {
@@ -292,6 +301,7 @@ class Teacher extends Entity
         $this->directions = $directions;
         $this->schools = $schools;
         $this->experiences = $experiences;
+        $this->experience = $experience;
         $this->social_medias = $social_medias;
         $this->analyzers = $analyzers;
     }

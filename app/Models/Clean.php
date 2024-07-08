@@ -25,6 +25,10 @@ class Clean
     public static function do(array $items, array $removes, bool $ifNull = false): array
     {
         foreach ($items as $key => $item) {
+            if ($items[$key] instanceof Entity) {
+                $items[$key] = $items[$key]->toArray();
+            }
+
             if (is_array($items[$key]) && array_is_list($items[$key])) {
                 for ($i = 0; $i < count($items[$key]); $i++) {
                     if (is_array($items[$key][$i])) {

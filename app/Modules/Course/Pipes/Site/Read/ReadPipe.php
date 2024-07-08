@@ -115,7 +115,7 @@ class ReadPipe implements Pipe
                             'teachers.image_middle',
                         ])->where('status', true);
                     },
-                    'teachers.experiences',
+                    'teachers.experience',
                 ])
                 ->where('status', Status::ACTIVE->value)
                 ->where('has_active_school', true);

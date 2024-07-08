@@ -14,6 +14,7 @@ use App\Modules\Teacher\Images\ImageBig;
 use App\Modules\Teacher\Images\ImageMiddle;
 use App\Modules\Teacher\Images\ImageSmall;
 use Illuminate\Database\Eloquent\Concerns\HasTimestamps;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Eloquent;
 use App\Models\Status;
@@ -62,6 +63,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property-read School[] $schools
  * @property-read Course[] $courses
  * @property-read TeacherExperience[] $experiences
+ * @property-read TeacherExperience $experience
  * @property-read TeacherSocialMedia[] $socialMedias
  * @property-read Article[] $articles
  * @property-read Analyzer[] $analyzers
@@ -234,6 +236,16 @@ class Teacher extends Eloquent
     public function experiences(): HasMany
     {
         return $this->hasMany(TeacherExperience::class)->orderBy('weight', 'ASC');
+    }
+
+    /**
+     * Последний опыт работы учителя.
+     *
+     * @return HasOne Модели последнего опыт работы учителя.
+     */
+    public function experience(): HasOne
+    {
+        return $this->hasOne(TeacherExperience::class)->orderBy('weight', 'ASC');
     }
 
     /**

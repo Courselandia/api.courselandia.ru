@@ -45,8 +45,6 @@ class CleanCourseList
     public static function clean(array $data): array
     {
         for ($i = 0; $i < count($data); $i++) {
-            $data[$i] = $data[$i]->toArray();
-
             if (isset($data[$i]['teachers'])) {
                 for ($z = 0; $z < count($data[$i]['teachers']); $z++) {
                     unset($data[$i]['teachers'][$z]['text']);
@@ -61,6 +59,14 @@ class CleanCourseList
 
             if (isset($data[$i]['program'])) {
                 $data[$i]['program'] = self::cleanProgram($data[$i]['program']);
+            }
+
+            if (isset($data[$i]['text'])) {
+                $data[$i]['text'] = strip_tags($data[$i]['text']);
+
+                if (strlen($data[$i]['text']) > CleanCourseRead::LIMIT_TEXT) {
+                    $data[$i]['text'] = mb_substr($data[$i]['text'], 0, CleanCourseRead::LIMIT_TEXT);
+                }
             }
         }
 
