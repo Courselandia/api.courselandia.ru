@@ -9,6 +9,7 @@
 namespace App\Modules\Collection\Helpers;
 
 use App\Models\Clean;
+use App\Modules\Course\Helpers\CleanCourseList;
 use App\Modules\Course\Helpers\CleanCourseRead;
 
 /**
@@ -18,6 +19,8 @@ class CleanCourseCollectionRead
 {
     public static function do(array $data): array
     {
-        return Clean::do($data, CleanCourseRead::REMOVES);
+        $data = Clean::do($data, CleanCourseRead::REMOVES);
+
+        return CleanCourseList::clean($data);
     }
 }

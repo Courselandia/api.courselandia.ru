@@ -18,7 +18,7 @@ class CleanCourseRead
     /**
      * Лимит длины текста для описания курса.
      */
-    public const LIMIT_TEXT = 250;
+    public const LIMIT_TEXT = 300;
 
     /**
      * Массив ключей подлежащих удалению.
