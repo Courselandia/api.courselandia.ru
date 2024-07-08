@@ -474,7 +474,6 @@ class CourseControllerTest extends TestCase
                     'header',
                     'weight',
                     'link',
-                    'text',
                 ]
             ],
             'professions' => [
@@ -483,7 +482,6 @@ class CourseControllerTest extends TestCase
                     'name',
                     'header',
                     'link',
-                    'text',
                     'salaries' => [
                         '*' => [
                             "id",
@@ -507,7 +505,6 @@ class CourseControllerTest extends TestCase
                     'name',
                     'header',
                     'link',
-                    'text',
                 ]
             ],
             'skills' => [
@@ -516,7 +513,6 @@ class CourseControllerTest extends TestCase
                     'name',
                     'header',
                     'link',
-                    'text',
                 ]
             ],
             'teachers' => [
@@ -539,35 +535,28 @@ class CourseControllerTest extends TestCase
                 '*' => [
                     'id',
                     'name',
-                    'text',
                 ]
             ],
             'levels' => [
                 '*' => [
                     'id',
-                    'course_id',
                     'level',
                 ]
             ],
             'learns' => [
                 '*' => [
                     'id',
-                    'course_id',
-                    'text',
                 ]
             ],
             'employments' => [
                 '*' => [
                     'id',
                     'name',
-                    'text',
                 ]
             ],
             'features' => [
                 '*' => [
                     'id',
-                    'course_id',
-                    'text',
                 ]
             ]
         ];
