@@ -21,6 +21,7 @@ use App\Modules\Course\Actions\Site\Course\CourseSkillReadAction;
 use App\Modules\Course\Actions\Site\Course\CourseTeacherReadAction;
 use App\Modules\Course\Actions\Site\Course\CourseGetAction;
 use App\Modules\Course\Entities\CourseRead;
+use App\Modules\Course\Helpers\CleanCourse;
 use App\Modules\Course\Helpers\CleanCourseList;
 use App\Modules\Course\Helpers\CleanCourseRead;
 use App\Modules\Course\Http\Requests\Site\Course\CourseFilterItemReadRequest;
@@ -52,7 +53,7 @@ class CourseController extends Controller
 
         if ($data->course) {
             $data = [
-                'data' => $data,
+                'data' => CleanCourse::do($data->toArray()),
                 'success' => true,
             ];
 

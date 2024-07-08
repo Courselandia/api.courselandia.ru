@@ -9,9 +9,10 @@
 namespace App\Modules\Course\Json\Jobs;
 
 use App\Modules\Course\Actions\Site\Course\CourseGetAction;
+use App\Modules\Course\Helpers\CleanCourse;
 
 /**
- * Задача для формирования каегории.
+ * Задача для формирования курсов.
  */
 class CourseItemLinkJob extends JsonItemLinkJob
 {
@@ -27,7 +28,7 @@ class CourseItemLinkJob extends JsonItemLinkJob
 
         if ($data) {
             $data = [
-                'data' => $data->toArray(),
+                'data' => CleanCourse::do($data->toArray()),
                 'success' => true,
             ];
 

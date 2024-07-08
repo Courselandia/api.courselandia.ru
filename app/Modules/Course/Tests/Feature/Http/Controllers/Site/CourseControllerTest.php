@@ -449,16 +449,12 @@ class CourseControllerTest extends TestCase
         return [
             'id',
             'uuid',
-            'metatag_id',
-            'school_id',
             'image_big',
             'image_middle',
             'image_small',
             'name',
             'header',
             'text',
-            'name_morphy',
-            'text_morphy',
             'link',
             'url',
             'rating',
@@ -471,10 +467,6 @@ class CourseControllerTest extends TestCase
             'duration_unit',
             'lessons_amount',
             'modules_amount',
-            'status',
-            'created_at',
-            'updated_at',
-            'deleted_at',
             'directions' => [
                 '*' => [
                     'id',
@@ -483,10 +475,6 @@ class CourseControllerTest extends TestCase
                     'weight',
                     'link',
                     'text',
-                    'status',
-                    'created_at',
-                    'updated_at',
-                    'deleted_at',
                 ]
             ],
             'professions' => [
@@ -496,21 +484,13 @@ class CourseControllerTest extends TestCase
                     'header',
                     'link',
                     'text',
-                    'status',
-                    'created_at',
-                    'updated_at',
-                    'deleted_at',
                     'salaries' => [
                         '*' => [
                             "id",
-                            "profession_id",
-                            "level",
-                            "salary",
-                            "status",
-                            "profession",
-                            "created_at",
-                            "updated_at",
-                            "deleted_at",
+                            'profession_id',
+                            'level',
+                            'salary',
+                            'profession',
                         ]
                     ]
                 ]
@@ -520,9 +500,6 @@ class CourseControllerTest extends TestCase
                 'description',
                 'keywords',
                 'title',
-                'created_at',
-                'updated_at',
-                'deleted_at',
             ],
             'categories' => [
                 '*' => [
@@ -531,10 +508,6 @@ class CourseControllerTest extends TestCase
                     'header',
                     'link',
                     'text',
-                    'status',
-                    'created_at',
-                    'updated_at',
-                    'deleted_at',
                 ]
             ],
             'skills' => [
@@ -544,26 +517,14 @@ class CourseControllerTest extends TestCase
                     'header',
                     'link',
                     'text',
-                    'status',
-                    'created_at',
-                    'updated_at',
-                    'deleted_at',
                 ]
             ],
             'teachers' => [
                 '*' => [
                     'id',
-                    'metatag_id',
                     'name',
                     'link',
-                    'text',
                     'rating',
-                    'status',
-                    'image_small_id',
-                    'image_middle_id',
-                    'created_at',
-                    'updated_at',
-                    'deleted_at',
                 ]
             ],
             'tools' => [
@@ -572,11 +533,6 @@ class CourseControllerTest extends TestCase
                     'name',
                     'header',
                     'link',
-                    'text',
-                    'status',
-                    'created_at',
-                    'updated_at',
-                    'deleted_at',
                 ]
             ],
             'processes' => [
@@ -584,10 +540,6 @@ class CourseControllerTest extends TestCase
                     'id',
                     'name',
                     'text',
-                    'status',
-                    'created_at',
-                    'updated_at',
-                    'deleted_at',
                 ]
             ],
             'levels' => [
@@ -595,9 +547,6 @@ class CourseControllerTest extends TestCase
                     'id',
                     'course_id',
                     'level',
-                    'created_at',
-                    'updated_at',
-                    'deleted_at',
                 ]
             ],
             'learns' => [
@@ -605,9 +554,6 @@ class CourseControllerTest extends TestCase
                     'id',
                     'course_id',
                     'text',
-                    'created_at',
-                    'updated_at',
-                    'deleted_at',
                 ]
             ],
             'employments' => [
