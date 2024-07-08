@@ -158,7 +158,7 @@ class GetPipe implements Pipe
                     'learns',
                     'employments',
                     'features',
-                    'teachers.experiences',
+                    'teachers.experience',
                 ])
                     ->where('status', Status::ACTIVE->value)
                     ->whereHas('school', function ($query) use ($school) {
