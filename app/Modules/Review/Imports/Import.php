@@ -219,6 +219,16 @@ class Import
             ->addParser(new ParserOtzyvmarketing(School::SLERM, 'https://otzyvmarketing.ru/slurm/'))
             ->addParser(new ParserProgbasics(School::SLERM, 'https://progbasics.ru/schools/slyorm/reviews'))
             ->addParser(new ParserKursyOnline(School::SLERM, 'https://kurshub.ru/reviews/slurm-io/'));
+
+        $this->addParser(new ParserMapsYandex(School::FOXFORD, 'https://yandex.ru/maps/org/foksford/64919673278/reviews/'))
+            ->addParser(new ParserKursvill(School::FOXFORD, 'https://kursvill.ru/shkoly/foksford/#reviews'))
+            ->addParser(new ParserTutortop(School::FOXFORD, 'https://tutortop.ru/school-reviews/foksford/'))
+            ->addParser(new ParserOtzyvmarketing(School::FOXFORD, 'https://otzyvmarketing.ru/foxford/'))
+            ->addParser(new ParserKatalogKursov(School::FOXFORD, 'https://katalog-kursov.ru/reviews/foksford/'))
+            ->addParser(new ParserProgbasics(School::FOXFORD, 'https://progbasics.ru/schools/foxford/reviews'))
+            ->addParser(new ParserGeekhacker(School::FOXFORD, 'https://geekhacker.ru/otzyvy-o-kursah-foxford/'))
+            ->addParser(new ParserOtzyvru(School::FOXFORD, 'https://www.otzyvru.com/foksford'))
+            ->addParser(new ParserZoon(School::FOXFORD, 'https://zoon.ru/msk/trainings/onlajn-shkola_foksford/reviews/'));
     }
 
     /**
