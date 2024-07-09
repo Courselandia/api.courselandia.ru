@@ -55,6 +55,8 @@ class ParserTutortop extends Parser
 
                     yield $review;
                 } catch (Throwable $error) {
+                    // $review->takeElementScreenshot(\Storage::drive('local')->path('/screens/all.jpg'));
+
                     $this->addError($this->getSchool()->getLabel() . ', из: ' . $this->getUrl() . ' : Не удается получить отзыв. ' . $error->getMessage());
                 }
             }

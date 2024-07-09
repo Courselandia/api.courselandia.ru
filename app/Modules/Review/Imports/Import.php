@@ -222,7 +222,6 @@ class Import
 
         $this->addParser(new ParserMapsYandex(School::FOXFORD, 'https://yandex.ru/maps/org/foksford/64919673278/reviews/'))
             ->addParser(new ParserKursvill(School::FOXFORD, 'https://kursvill.ru/shkoly/foksford/#reviews'))
-            ->addParser(new ParserTutortop(School::FOXFORD, 'https://tutortop.ru/school-reviews/foksford/'))
             ->addParser(new ParserOtzyvmarketing(School::FOXFORD, 'https://otzyvmarketing.ru/foxford/'))
             ->addParser(new ParserKatalogKursov(School::FOXFORD, 'https://katalog-kursov.ru/reviews/foksford/'))
             ->addParser(new ParserProgbasics(School::FOXFORD, 'https://progbasics.ru/schools/foxford/reviews'))
