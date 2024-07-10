@@ -228,6 +228,12 @@ class Import
             ->addParser(new ParserGeekhacker(School::FOXFORD, 'https://geekhacker.ru/otzyvy-o-kursah-foxford/'))
             ->addParser(new ParserOtzyvru(School::FOXFORD, 'https://www.otzyvru.com/foksford'))
             ->addParser(new ParserZoon(School::FOXFORD, 'https://zoon.ru/msk/trainings/onlajn-shkola_foksford/reviews/'));
+
+        $this->addParser(new ParserTutortop(School::VEBIUM, 'https://tutortop.ru/school-reviews/vebium/'))
+            ->addParser(new ParserKatalogKursov(School::VEBIUM, 'https://katalog-kursov.ru/reviews/webium/'))
+            ->addParser(new ParserProgbasics(School::VEBIUM, 'https://progbasics.ru/schools/webium/reviews'))
+            ->addParser(new ParserOtzyvru(School::VEBIUM, 'https://www.otzyvru.com/vebium'))
+            ->addParser(new ParserZoon(School::VEBIUM, 'https://zoon.ru/spb/trainings/onlajn-shkola_vebium/reviews/'));
     }
 
     /**

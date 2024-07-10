@@ -56,6 +56,7 @@ use App\Modules\Course\Imports\Parsers\ParserMoscowDigitalSchool;
 use App\Modules\Course\Imports\Parsers\ParserKarpovcourses;
 use App\Modules\Course\Imports\Parsers\ParserSlerm;
 use App\Modules\Course\Imports\Parsers\ParserFoksford;
+use App\Modules\Course\Imports\Parsers\ParserVebium;
 
 /**
  * Класс импорта курсов.
@@ -121,6 +122,7 @@ class Import
             ->addParser(new ParserKarpovcourses('https://feeds.advcake.ru/feed/download/e62ec80c73849806ae4991ae9510cb37?webmaster=04fa7cce'))
             ->addParser(new ParserSlerm('https://feeds.advcake.ru/feed/download/249ff84f17cbf22840eaa036cdb1ea8c?webmaster=04fa7cce'))
             ->addParser(new ParserFoksford('https://feeds.advcake.ru/feed/download/4c70a4fd99137cbaedac5bac9d96217a?webmaster=04fa7cce'))
+            ->addParser(new ParserVebium('https://feeds.advcake.ru/feed/download/1095cc3c882273e631c419358a6e2cf3?webmaster=04fa7cce'))
         ;
     }
 
