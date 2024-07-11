@@ -60,9 +60,12 @@ class ParserTopAcademy extends ParserYml
             $course->currency = Currency::RUB;
             $course->image = $offer['picture'] ?? null;
             $course->status = $offer['attributes']['available'] === 'true';
-            $course->duration = $offer['duration']['value'];
 
-            if ($offer['duration']['attributes']['unit'] === 'month') {
+            if (isset($offer['duration']['value']) && $offer['duration']['value']) {
+                $course->duration = $offer['duration']['value'];
+            }
+
+            if (isset($offer['duration']['attributes']['unit']) && $offer['duration']['attributes']['unit'] === 'month') {
                 $course->duration_unit = Duration::MONTH;
             }
 
