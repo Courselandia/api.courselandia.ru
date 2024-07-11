@@ -71,7 +71,8 @@ class TeacherWorker extends Worker
             ])
             ->where('status', Status::ACTIVE->value)
             ->whereHas('school', function ($query) {
-                $query->where('status', true);
+                $query->active()
+                    ->withCourses();
             });
         })
         ->where('status', true)

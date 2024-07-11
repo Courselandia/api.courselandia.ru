@@ -60,7 +60,8 @@ class SkillUpdateAction extends Action
             DB::transaction(function () use ($skillEntity) {
                 $countSkillCourses = Course::where('courses.status', Status::ACTIVE->value)
                     ->whereHas('school', function ($query) {
-                        $query->where('schools.status', true);
+                        $query->active()
+                            ->withCourses();
                     })
                     ->whereHas('skills', function ($query) {
                         $query->where('skills.id', $this->data->id);

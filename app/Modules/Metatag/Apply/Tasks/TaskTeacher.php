@@ -48,7 +48,8 @@ class TaskTeacher extends Task
         return Teacher::whereHas('courses', function ($query) {
             $query->where('status', Status::ACTIVE->value)
                 ->whereHas('school', function ($query) {
-                    $query->where('status', true);
+                    $query->active()
+                        ->withCourses();
                 });
         })
             ->where('status', true)
@@ -74,7 +75,8 @@ class TaskTeacher extends Task
             ->whereHas('courses', function ($query) {
                 $query->where('status', Status::ACTIVE->value)
                     ->whereHas('school', function ($query) {
-                        $query->where('status', true);
+                        $query->active()
+                            ->withCourses();
                     });
             })
             ->where('status', true);
@@ -92,7 +94,8 @@ class TaskTeacher extends Task
                  */
                 $countTeacherCourses = Course::where('courses.status', Status::ACTIVE->value)
                     ->whereHas('school', function ($query) {
-                        $query->where('schools.status', true);
+                        $query->active()
+                            ->withCourses();
                     })
                     ->whereHas('teachers', function ($query) use ($teacher) {
                         $query->where('teachers.id', $teacher->id);

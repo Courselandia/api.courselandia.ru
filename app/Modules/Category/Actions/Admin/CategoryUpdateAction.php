@@ -62,7 +62,8 @@ class CategoryUpdateAction extends Action
             DB::transaction(function () use ($categoryEntity) {
                 $countCategoryCourses = Course::where('courses.status', Status::ACTIVE->value)
                     ->whereHas('school', function ($query) {
-                        $query->where('schools.status', true);
+                        $query->active()
+                            ->withCourses();
                     })
                     ->whereHas('categories', function ($query) {
                         $query->where('categories.id', $this->data->id);

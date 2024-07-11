@@ -62,7 +62,8 @@ class ToolUpdateAction extends Action
             DB::transaction(function () use ($toolEntity) {
                 $countToolCourses = Course::where('courses.status', Status::ACTIVE->value)
                     ->whereHas('school', function ($query) {
-                        $query->where('schools.status', true);
+                        $query->active()
+                            ->withCourses();
                     })
                     ->whereHas('tools', function ($query) {
                         $query->where('tools.id', $this->data->id);

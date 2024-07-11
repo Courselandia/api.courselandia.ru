@@ -54,7 +54,8 @@ class PartReviews extends Part
     {
         $review = Review::where('status', Status::ACTIVE->value)
             ->whereHas('school', function ($query) {
-                $query->where('schools.status', true);
+                $query->active()
+                    ->withCourses();
             })
             ->orderBy('created_at', 'DESC')
             ->first();

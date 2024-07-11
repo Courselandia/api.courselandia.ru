@@ -76,12 +76,15 @@ class PartCourse extends Part
                 $query->select([
                     'schools.id',
                     'schools.link',
-                ])->where('status', true);
+                ])
+                ->active()
+                ->onlyWithCourses();
             },
         ])
         ->where('status', Status::ACTIVE->value)
         ->whereHas('school', function ($query) {
-            $query->where('status', true);
+            $query->active()
+                ->withCourses();
         });
     }
 }

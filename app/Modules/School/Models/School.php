@@ -8,6 +8,7 @@
 
 namespace App\Modules\School\Models;
 
+use DB;
 use App\Modules\Analyzer\Models\Analyzer;
 use App\Modules\Article\Models\Article;
 use App\Modules\Course\Models\Course;
@@ -18,6 +19,7 @@ use App\Modules\Review\Models\Review;
 use App\Modules\School\Images\ImageLogo;
 use App\Modules\School\Images\ImageSite;
 use App\Modules\Teacher\Models\Teacher;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasTimestamps;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -298,5 +300,17 @@ class School extends Eloquent
     public function promocode(): HasOne
     {
         return $this->hasOne(Promocode::class)->orderBy('discount', 'DESC');
+    }
+
+    /**
+     * Заготовка запроса для школ у которых есть курсы.
+     *
+     * @param Builder $query Запрос.
+     *
+     * @return Builder Построитель запросов.
+     */
+    public function scopeOnlyWithCourses(Builder $query): Builder
+    {
+        return $query->where(DB::raw('amount_courses->"$.all"'), '!=', 0);
     }
 }

@@ -74,6 +74,7 @@ class PartSchool extends PartDirection
             ->where('status', Status::ACTIVE->value);
         })
         ->where('status', true)
+        ->onlyWithCourses()
         ->orderBy('name');
     }
 }

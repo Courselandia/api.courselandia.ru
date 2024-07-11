@@ -93,7 +93,8 @@ class CourseProfessionSource extends Source
         return Profession::whereHas('courses', function ($query) {
             $query->where('status', Status::ACTIVE->value)
                 ->whereHas('school', function ($query) {
-                    $query->where('status', true);
+                    $query->active()
+                        ->withCourses();
                 });
         })
         ->where('status', true)

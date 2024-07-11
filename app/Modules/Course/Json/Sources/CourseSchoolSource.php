@@ -95,6 +95,7 @@ class CourseSchoolSource extends Source
             $query->where('status', Status::ACTIVE->value);
         })
         ->where('status', true)
+        ->onlyWithCourses()
         ->orderBy('id');
     }
 }

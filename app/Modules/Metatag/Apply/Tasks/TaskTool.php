@@ -55,7 +55,8 @@ class TaskTool extends Task
         return Tool::whereHas('courses', function ($query) {
             $query->where('status', Status::ACTIVE->value)
                 ->whereHas('school', function ($query) {
-                    $query->where('status', true);
+                    $query->active()
+                        ->withCourses();
                 });
         })
             ->where('status', true)
@@ -80,7 +81,8 @@ class TaskTool extends Task
             ->whereHas('courses', function ($query) {
                 $query->where('status', Status::ACTIVE->value)
                     ->whereHas('school', function ($query) {
-                        $query->where('status', true);
+                        $query->active()
+                            ->withCourses();
                     });
             })
             ->where('status', true);
@@ -98,7 +100,8 @@ class TaskTool extends Task
                  */
                 $countToolCourses = Course::where('courses.status', Status::ACTIVE->value)
                     ->whereHas('school', function ($query) {
-                        $query->where('schools.status', true);
+                        $query->active()
+                            ->withCourses();
                     })
                     ->whereHas('tools', function ($query) use ($tool) {
                         $query->where('tools.id', $tool->id);

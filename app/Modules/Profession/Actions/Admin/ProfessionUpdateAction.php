@@ -60,7 +60,8 @@ class ProfessionUpdateAction extends Action
             DB::transaction(function () use ($professionEntity) {
                 $countProfessionCourses = Course::where('courses.status', Status::ACTIVE->value)
                     ->whereHas('school', function ($query) {
-                        $query->where('schools.status', true);
+                        $query->active()
+                            ->withCourses();
                     })
                     ->whereHas('professions', function ($query) {
                         $query->where('professions.id', $this->data->id);

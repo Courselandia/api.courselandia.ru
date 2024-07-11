@@ -8,7 +8,6 @@
 
 namespace App\Modules\Course\Pipes\Site\Read;
 
-use Morph;
 use DB;
 use Closure;
 use Util;
@@ -91,7 +90,9 @@ class ReadPipe implements Pipe
                             'schools.name',
                             'schools.link',
                             'schools.image_logo',
-                        ])->where('status', true);
+                        ])
+                        ->active()
+                        ->onlyWithCourses();
                     },
                     'school.promocode' => function ($query) {
                         $query->applicable();

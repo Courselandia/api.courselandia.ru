@@ -56,7 +56,9 @@ class FaqReadAction extends Action
             CacheTime::GENERAL->value,
             function () {
                 $query = Faq::whereHas('school', function ($query) {
-                    $query->where('link', $this->link);
+                    $query->where('link', $this->link)
+                        ->active()
+                        ->withCourses();
                 })
                 ->where('status', 1)
                 ->orderBy('question', 'ASC');

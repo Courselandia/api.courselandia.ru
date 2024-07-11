@@ -55,7 +55,8 @@ class TaskDirection extends Task
         return Direction::whereHas('courses', function ($query) {
             $query->where('status', Status::ACTIVE->value)
                 ->whereHas('school', function ($query) {
-                    $query->where('status', true);
+                    $query->active()
+                        ->withCourses();
                 });
         })
             ->where('status', true)
@@ -80,7 +81,8 @@ class TaskDirection extends Task
             ->whereHas('courses', function ($query) {
                 $query->where('status', Status::ACTIVE->value)
                     ->whereHas('school', function ($query) {
-                        $query->where('status', true);
+                        $query->active()
+                            ->withCourses();
                     });
             })
             ->where('status', true);
@@ -98,7 +100,8 @@ class TaskDirection extends Task
                  */
                 $countDirectionCourses = Course::where('courses.status', Status::ACTIVE->value)
                     ->whereHas('school', function ($query) {
-                        $query->where('schools.status', true);
+                        $query->active()
+                            ->withCourses();
                     })
                     ->whereHas('directions', function ($query) use ($direction) {
                         $query->where('directions.id', $direction->id);

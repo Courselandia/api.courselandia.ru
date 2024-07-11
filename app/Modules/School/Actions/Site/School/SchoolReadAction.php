@@ -101,6 +101,7 @@ class SchoolReadAction extends Action
                 ])
                     ->sorted($this->sorts ?: [])
                     ->active()
+                    ->onlyWithCourses()
                     ->with([
                         'metatag',
                     ])
