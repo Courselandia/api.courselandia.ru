@@ -234,6 +234,10 @@ class Import
             ->addParser(new ParserProgbasics(School::VEBIUM, 'https://progbasics.ru/schools/webium/reviews'))
             ->addParser(new ParserOtzyvru(School::VEBIUM, 'https://www.otzyvru.com/vebium'))
             ->addParser(new ParserZoon(School::VEBIUM, 'https://zoon.ru/spb/trainings/onlajn-shkola_vebium/reviews/'));
+
+        $this->addParser(new ParserTutortop(School::LEVEL_ONE, 'https://tutortop.ru/school-reviews/contented/'))
+            ->addParser(new ParserProgbasics(School::LEVEL_ONE, 'https://progbasics.ru/schools/levelone/reviews'))
+            ->addParser(new ParserZoon(School::SKILLBOX, 'https://zoon.ru/msk/trainings/onlajn-kursy_level_one/'));
     }
 
     /**
