@@ -58,7 +58,7 @@ class FaqReadAction extends Action
                 $query = Faq::whereHas('school', function ($query) {
                     $query->where('link', $this->link)
                         ->active()
-                        ->withCourses();
+                        ->hasCourses();
                 })
                 ->where('status', 1)
                 ->orderBy('question', 'ASC');

@@ -55,7 +55,7 @@ class TaskCourse extends Task
         return Course::where('status', Status::ACTIVE->value)
             ->whereHas('school', function ($query) {
                 $query->active()
-                    ->withCourses();
+                    ->hasCourses();
             })
             ->count();
     }
@@ -79,7 +79,7 @@ class TaskCourse extends Task
             ->where('status', Status::ACTIVE->value)
             ->whereHas('school', function ($query) {
                 $query->active()
-                    ->withCourses();
+                    ->hasCourses();
             });
 
         for ($i = 0; $i < $count; $i++) {

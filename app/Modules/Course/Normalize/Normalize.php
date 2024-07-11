@@ -83,7 +83,7 @@ class Normalize
                 $query->where('status', true);
             },
             'school' => function ($query) {
-                $query->active()->onlyWithCourses();
+                $query->active()->hasCourses();
             },
             'levels',
         ])

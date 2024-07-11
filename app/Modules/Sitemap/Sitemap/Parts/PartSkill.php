@@ -74,7 +74,7 @@ class PartSkill extends PartDirection
             ->where('status', Status::ACTIVE->value)
             ->whereHas('school', function ($query) {
                 $query->active()
-                    ->withCourses();
+                    ->hasCourses();
             });
         })
         ->where('status', true)

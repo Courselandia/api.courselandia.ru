@@ -71,7 +71,7 @@ class SchoolLinkAction extends Action
                 ])
                     ->where('link', $this->link)
                     ->active()
-                    ->onlyWithCourses()
+                    ->hasCourses()
                     ->withCount([
                         'reviews' => function ($query) {
                             $query->where('status', ReviewStatus::ACTIVE->value);

@@ -112,7 +112,7 @@ class CourseSchoolReadAction extends Action
                                 ->where('has_active_school', true);
                         })
                         ->where('status', true)
-                        ->onlyWithCourses()
+                        ->hasCourses()
                         ->orderBy('name');
 
                     if ($this->offset) {
@@ -155,7 +155,7 @@ class CourseSchoolReadAction extends Action
                                 ->where('status', Status::ACTIVE->value);
                         })
                         ->where('status', true)
-                        ->onlyWithCourses()
+                        ->hasCourses()
                         ->orderBy('name')
                         ->get()
                         ->toArray();
@@ -195,7 +195,7 @@ class CourseSchoolReadAction extends Action
                                 ->where('status', Status::ACTIVE->value);
                         })
                         ->where('status', true)
-                        ->onlyWithCourses()
+                        ->hasCourses()
                         ->orderBy('name');
 
                     if (count($schoolFilters) && !$this->disabled) {

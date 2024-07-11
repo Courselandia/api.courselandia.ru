@@ -78,13 +78,13 @@ class PartCourse extends Part
                     'schools.link',
                 ])
                 ->active()
-                ->onlyWithCourses();
+                ->hasCourses();
             },
         ])
         ->where('status', Status::ACTIVE->value)
         ->whereHas('school', function ($query) {
             $query->active()
-                ->withCourses();
+                ->hasCourses();
         });
     }
 }

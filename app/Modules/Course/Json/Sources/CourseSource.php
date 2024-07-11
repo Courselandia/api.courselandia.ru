@@ -94,7 +94,7 @@ class CourseSource extends Source
         return Course::where('status', Status::ACTIVE->value)
             ->whereHas('school', function ($query) {
                 $query->active()
-                    ->onlyWithCourses();
+                    ->hasCourses();
             })
             ->with([
                 'school' => function ($query) {

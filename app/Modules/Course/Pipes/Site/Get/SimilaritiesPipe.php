@@ -101,13 +101,13 @@ class SimilaritiesPipe implements Pipe
                                         'schools.image_logo_id',
                                     ])
                                     ->active()
-                                    ->onlyWithCourses();
+                                    ->hasCourses();
                                 },
                             ])
                             ->where('status', Status::ACTIVE->value)
                             ->whereHas('school', function ($query) {
                                 $query->active()
-                                    ->onlyWithCourses();
+                                    ->hasCourses();
                             })
                             ->where('id', '!=', $course->id)
                             ->addSelect(

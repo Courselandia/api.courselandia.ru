@@ -87,7 +87,7 @@ class CourseStatAction extends Action
         return Review::where('status', ReviewStatus::ACTIVE->value)
             ->whereHas('school', function ($query) {
                 $query->active()
-                    ->withCourses();
+                    ->hasCourses();
             })
             ->with('school')
             ->count();

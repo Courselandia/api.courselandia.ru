@@ -61,7 +61,7 @@ class ProfessionUpdateAction extends Action
                 $countProfessionCourses = Course::where('courses.status', Status::ACTIVE->value)
                     ->whereHas('school', function ($query) {
                         $query->active()
-                            ->withCourses();
+                            ->hasCourses();
                     })
                     ->whereHas('professions', function ($query) {
                         $query->where('professions.id', $this->data->id);

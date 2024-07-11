@@ -61,7 +61,7 @@ class SkillUpdateAction extends Action
                 $countSkillCourses = Course::where('courses.status', Status::ACTIVE->value)
                     ->whereHas('school', function ($query) {
                         $query->active()
-                            ->withCourses();
+                            ->hasCourses();
                     })
                     ->whereHas('skills', function ($query) {
                         $query->where('skills.id', $this->data->id);

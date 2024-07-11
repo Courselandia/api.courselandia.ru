@@ -54,7 +54,7 @@ class ReviewBreakDownAction extends Action
                     ->where('status', Status::ACTIVE->value)
                     ->whereHas('school', function ($query) {
                         $query->active()
-                            ->withCourses();
+                            ->hasCourses();
                     })
                     ->select([
                         DB::raw('ROUND(rating) as rating'),

@@ -63,7 +63,7 @@ class ToolUpdateAction extends Action
                 $countToolCourses = Course::where('courses.status', Status::ACTIVE->value)
                     ->whereHas('school', function ($query) {
                         $query->active()
-                            ->withCourses();
+                            ->hasCourses();
                     })
                     ->whereHas('tools', function ($query) {
                         $query->where('tools.id', $this->data->id);

@@ -92,7 +92,7 @@ class ReadPipe implements Pipe
                             'schools.image_logo',
                         ])
                         ->active()
-                        ->onlyWithCourses();
+                        ->hasCourses();
                     },
                     'school.promocode' => function ($query) {
                         $query->applicable();

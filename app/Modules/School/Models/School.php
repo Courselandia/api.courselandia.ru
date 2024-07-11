@@ -309,7 +309,7 @@ class School extends Eloquent
      *
      * @return Builder Построитель запросов.
      */
-    public function scopeOnlyWithCourses(Builder $query): Builder
+    public function scopeHasCourses(Builder $query): Builder
     {
         return $query->where(DB::raw('amount_courses->"$.all"'), '!=', 0);
     }

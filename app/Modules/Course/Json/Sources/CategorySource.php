@@ -94,7 +94,7 @@ class CategorySource extends Source
             $query->where('status', Status::ACTIVE->value)
                 ->whereHas('school', function ($query) {
                     $query->active()
-                        ->withCourses();
+                        ->hasCourses();
                 });
         })
             ->where('status', true)

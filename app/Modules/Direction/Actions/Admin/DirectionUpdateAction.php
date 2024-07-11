@@ -63,7 +63,7 @@ class DirectionUpdateAction extends Action
                 $countDirectionCourses = Course::where('courses.status', Status::ACTIVE->value)
                     ->whereHas('school', function ($query) {
                         $query->active()
-                            ->withCourses();
+                            ->hasCourses();
                     })
                     ->whereHas('directions', function ($query) {
                         $query->where('directions.id', $this->data->id);

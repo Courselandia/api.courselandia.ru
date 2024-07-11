@@ -61,7 +61,7 @@ class SchoolUpdateAction extends Action
                 $countSchoolCourses = Course::where('courses.status', Status::ACTIVE->value)
                     ->whereHas('school', function ($query) {
                         $query->active()
-                            ->withCourses()
+                            ->hasCourses()
                             ->where('schools.id', $this->data->id);
                     })
                     ->count();

@@ -56,7 +56,7 @@ class TaskCategory extends Task
             $query->where('status', Status::ACTIVE->value)
                 ->whereHas('school', function ($query) {
                     $query->active()
-                        ->withCourses();
+                        ->hasCourses();
                 });
         })
             ->where('status', true)
@@ -82,7 +82,7 @@ class TaskCategory extends Task
                 $query->where('status', Status::ACTIVE->value)
                     ->whereHas('school', function ($query) {
                         $query->active()
-                            ->withCourses();
+                            ->hasCourses();
                     });
             })
             ->where('status', true);
@@ -101,7 +101,7 @@ class TaskCategory extends Task
                 $countCategoryCourses = Course::where('courses.status', Status::ACTIVE->value)
                     ->whereHas('school', function ($query) {
                         $query->active()
-                            ->withCourses();
+                            ->hasCourses();
                     })
                     ->whereHas('categories', function ($query) use ($category) {
                         $query->where('categories.id', $category->id);

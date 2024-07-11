@@ -56,7 +56,7 @@ class TaskSkill extends Task
             $query->where('status', Status::ACTIVE->value)
                 ->whereHas('school', function ($query) {
                     $query->active()
-                        ->withCourses();
+                        ->hasCourses();
                 });
         })
             ->where('status', true)
@@ -82,7 +82,7 @@ class TaskSkill extends Task
                 $query->where('status', Status::ACTIVE->value)
                     ->whereHas('school', function ($query) {
                         $query->active()
-                            ->withCourses();
+                            ->hasCourses();
                     });
             })
             ->where('status', true);
@@ -101,7 +101,7 @@ class TaskSkill extends Task
                 $countSkillCourses = Course::where('courses.status', Status::ACTIVE->value)
                     ->whereHas('school', function ($query) {
                         $query->active()
-                            ->withCourses();
+                            ->hasCourses();
                     })
                     ->whereHas('skills', function ($query) use ($skill) {
                         $query->where('skills.id', $skill->id);

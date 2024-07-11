@@ -137,7 +137,7 @@ class GetPipe implements Pipe
                             'schools.image_site',
                         ])
                             ->active()
-                            ->onlyWithCourses();
+                            ->hasCourses();
                     },
                     'school.promocode' => function ($query) {
                         $query->applicable();
@@ -157,7 +157,7 @@ class GetPipe implements Pipe
                     ->where('status', Status::ACTIVE->value)
                     ->whereHas('school', function ($query) use ($school) {
                         $query->active()
-                            ->onlyWithCourses();
+                            ->hasCourses();
 
                         if ($school) {
                             $query->where('link', $school);

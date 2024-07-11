@@ -356,7 +356,7 @@ class Export
                     'schools.link',
                 ])
                 ->active()
-                ->onlyWithCourses();
+                ->hasCourses();
             },
             'directions' => function ($query) {
                 $query->where('status', true);
@@ -373,7 +373,7 @@ class Export
             ->where('status', Status::ACTIVE->value)
             ->whereHas('school', function ($query) {
                 $query->active()
-                    ->onlyWithCourses();
+                    ->hasCourses();
             })->whereHas('directions', function ($query) {
                 $query->where('status', true);
             });

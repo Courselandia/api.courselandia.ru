@@ -68,7 +68,7 @@ class CourseWorker extends Worker
         return Course::where('status', Status::ACTIVE->value)
             ->whereHas('school', function ($query) {
                 $query->active()
-                    ->withCourses();
+                    ->hasCourses();
             });
     }
 }

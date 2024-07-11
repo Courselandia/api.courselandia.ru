@@ -65,7 +65,7 @@ class ReviewReadAction extends Action
                 $query = Review::where('status', Status::ACTIVE->value)
                     ->whereHas('school', function ($query) {
                         $query->active()
-                            ->onlyWithCourses();
+                            ->hasCourses();
 
                         if ($this->data->link) {
                             $query->where('schools.link', $this->data->link);

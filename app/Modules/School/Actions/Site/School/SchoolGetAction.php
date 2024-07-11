@@ -71,7 +71,7 @@ class SchoolGetAction extends Action
                 ])
                     ->where('id', $this->id)
                     ->active()
-                    ->onlyWithCourses()
+                    ->hasCourses()
                     ->with('metatag')
                     ->whereHas('courses', function ($query) {
                         $query->where('status', CourseStatus::ACTIVE->value);

@@ -93,11 +93,11 @@ class TaskSchool extends Task
                 $countSchoolCourses = Course::where('courses.status', Status::ACTIVE->value)
                     ->whereHas('school', function ($query) {
                         $query->active()
-                            ->withCourses();
+                            ->hasCourses();
                     })
                     ->whereHas('school', function ($query) use ($school) {
                         $query->active()
-                            ->withCourses();
+                            ->hasCourses();
                     })
                     ->count();
 
