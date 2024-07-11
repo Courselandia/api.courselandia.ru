@@ -44,6 +44,9 @@ class SchoolFactory extends Factory
             'site' => $this->faker->url(),
             'referral' => $this->faker->url(),
             'status' => true,
+            'amount_courses' => [
+                'all' => 1,
+            ],
         ];
     }
 }
