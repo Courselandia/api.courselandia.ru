@@ -168,6 +168,11 @@ enum School: int implements EnumLabel
     case VEBIUM = 31;
 
     /**
+     * Level One
+     */
+    case LEVEL_ONE = 32;
+
+    /**
      * Получение лейбл перечисления.
      *
      * @return string|int Вернет лейбл перечисления.
@@ -206,6 +211,7 @@ enum School: int implements EnumLabel
             self::SLERM => 'Слёрм',
             self::FOXFORD => 'Фоксфорд',
             self::VEBIUM => 'Вебиум',
+            self::LEVEL_ONE => 'Level One',
         };
     }
 }
