@@ -62,7 +62,7 @@ class ParserTopAcademy extends ParserYml
             $course->status = $offer['attributes']['available'] === 'true';
             $course->duration = $offer['duration']['value'];
 
-            if ($offer['duration']['attributes']['unit'] === 'month') {
+            if (isset($offer['duration']['attributes']['unit']) && $offer['duration']['attributes']['unit'] === 'month') {
                 $course->duration_unit = Duration::MONTH;
             }
 
