@@ -106,6 +106,8 @@ class PromoSource extends Source
                     $query->applicable();
                 });
             })
+            ->active()
+            ->hasCourses()
             ->orderBy('id', 'ASC');
     }
 }

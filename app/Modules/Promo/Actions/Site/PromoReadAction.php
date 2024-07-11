@@ -59,6 +59,7 @@ class PromoReadAction extends Action
                     'image_site',
                 ])
                     ->active()
+                    ->hasCourses()
                     ->with([
                         'promocodes' => function ($query) {
                             $query->applicable();
@@ -74,7 +75,8 @@ class PromoReadAction extends Action
                         ->orWhereHas('promotions', function ($query) {
                             $query->applicable();
                         });
-                    });
+                    })
+                    ->active();
 
                 $queryCount = $query->clone();
 

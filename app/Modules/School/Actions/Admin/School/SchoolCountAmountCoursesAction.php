@@ -32,7 +32,9 @@ class SchoolCountAmountCoursesAction extends Action
     {
         $schools = School::where('status', true)
             ->withcount([
-                'courses as all',
+                'courses as all' => function (Builder $query) {
+                    $query->where('status', Status::ACTIVE->value);
+                },
                 'courses as direction_programming' => function (Builder $query) {
                     $query->whereRaw(DB::raw("JSON_CONTAINS(direction_ids, '" . Direction::PROGRAMMING->value . "')"))
                         ->where('status', Status::ACTIVE->value);
