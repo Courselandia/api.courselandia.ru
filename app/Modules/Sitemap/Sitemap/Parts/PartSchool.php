@@ -8,10 +8,10 @@
 
 namespace App\Modules\Sitemap\Sitemap\Parts;
 
+use Generator;
 use App\Modules\Course\Enums\Status;
 use App\Modules\School\Models\School;
 use App\Modules\Sitemap\Sitemap\Item;
-use Generator;
 use Illuminate\Database\Eloquent\Builder;
 
 /**
@@ -73,7 +73,7 @@ class PartSchool extends PartDirection
             ])
             ->where('status', Status::ACTIVE->value);
         })
-        ->where('status', true)
+        ->active()
         ->hasCourses()
         ->orderBy('name');
     }

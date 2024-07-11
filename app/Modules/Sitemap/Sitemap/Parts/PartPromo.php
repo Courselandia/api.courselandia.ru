@@ -80,6 +80,7 @@ class PartPromo extends PartDirection
     private function getQuery(): Builder
     {
         return School::active()
+            ->hasCourses()
             ->with([
                 'promocodes' => function ($query) {
                     $query->applicable();
