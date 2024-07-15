@@ -18,7 +18,7 @@ class Bot
      *
      * @var array
      */
-    private const ENGINES = [
+    private const array ENGINES = [
         ['Aport', 'Aport robot'],
         ['Google', 'Google'],
         ['msnbot', 'MSN'],

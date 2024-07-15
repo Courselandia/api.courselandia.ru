@@ -58,7 +58,7 @@ class Export
      *
      * @var int
      */
-    const OLD_FILE_IN_DAYS = 2;
+    const int OLD_FILE_IN_DAYS = 2;
 
     /**
      * Источники.

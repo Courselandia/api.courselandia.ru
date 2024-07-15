@@ -8,6 +8,7 @@
 
 namespace App\Modules\Collection\Images;
 
+use Exception;
 use Image;
 use ImageStore;
 use App\Modules\Image\Entities\Image as ImageEntity;
@@ -50,6 +51,7 @@ class ImageSmall implements CastsAttributes
      * @param array $attributes Атрибуты.
      *
      * @return null|int|string ID запись изображения.
+     * @throws Exception
      */
     public function set($model, string $key, mixed $value, array $attributes): null|int|string
     {

@@ -19,7 +19,7 @@ class RatedCoursesItemLinkJob extends JsonItemLinkJob
     /**
      * Количество выводимых курсов.
      */
-    const LIMIT = 16;
+    const int LIMIT = 16;
 
     /**
      * Выполнение задачи.

@@ -31,7 +31,7 @@ class SimilaritiesPipe implements Pipe
      *
      * @var int
      */
-    private const LIMIT = 12;
+    private const int LIMIT = 12;
 
     /**
      * Метод, который будет вызван у pipeline.

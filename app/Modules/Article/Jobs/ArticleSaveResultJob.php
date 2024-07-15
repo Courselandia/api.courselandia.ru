@@ -34,7 +34,7 @@ class ArticleSaveResultJob implements ShouldQueue
     use SerializesModels;
     use Dispatchable;
 
-    private const MAX_TRIES = 5;
+    private const int MAX_TRIES = 5;
 
     /**
      * ID написанных текстов (модель Article).

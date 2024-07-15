@@ -25,7 +25,7 @@ class Device
      *
      * @var array
      */
-    private const OPERATION_SYSTEMS = [
+    private const array OPERATION_SYSTEMS = [
         '/windows phone 10/i' => 'Windows Phone 8',
         '/windows phone 8/i' => 'Windows Phone 8',
         '/windows phone os 7/i' => 'Windows Phone 7',
@@ -59,7 +59,7 @@ class Device
      *
      * @var array
      */
-    private const BROWSERS = [
+    private const array BROWSERS = [
         '/edg/i' => 'Microsoft Edge',
         '/msie/i' => 'Internet Explorer',
         '/YaBrowser/i' => 'Yandex browser',

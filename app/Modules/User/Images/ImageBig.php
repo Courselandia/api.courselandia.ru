@@ -50,6 +50,7 @@ class ImageBig implements CastsAttributes
      * @param array $attributes Атрибуты.
      *
      * @return null|int|string ID запись изображения.
+     * @throws \Exception
      */
     public function set($model, string $key, mixed $value, array $attributes): null|int|string
     {

@@ -31,7 +31,7 @@ class Push
      *
      * @var int
      */
-    const DELAY = 3;
+    const int DELAY = 3;
 
     /**
      * Отправители на индексацию.

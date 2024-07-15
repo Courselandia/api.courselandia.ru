@@ -39,7 +39,7 @@ class TermQuerySearchAction extends Action
      *
      * @var int
      */
-    private const WORDS = 4;
+    private const int WORDS = 4;
 
     /**
      * Массив сопоставлений английской раскладки к русской на клавиатуре.

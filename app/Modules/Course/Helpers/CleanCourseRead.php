@@ -18,14 +18,14 @@ class CleanCourseRead
     /**
      * Лимит длины текста для описания курса.
      */
-    public const LIMIT_TEXT = 300;
+    public const int LIMIT_TEXT = 300;
 
     /**
      * Массив ключей подлежащих удалению.
      *
      * @var array
      */
-    public const REMOVES = [
+    public const array REMOVES = [
         'uuid',
         'metatag_id',
         'name_morphy',

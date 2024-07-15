@@ -30,7 +30,7 @@ class Photo
      *
      * @var string
      */
-    private const DOMAIN = 'https://api.academy-market.com';
+    private const string DOMAIN = 'https://api.academy-market.com';
 
     /**
      * Запуск процесса.

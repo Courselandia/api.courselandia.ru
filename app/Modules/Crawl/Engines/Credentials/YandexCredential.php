@@ -21,7 +21,7 @@ use App\Modules\Crawl\Engines\Tokens\YandexToken;
  */
 class YandexCredential
 {
-    const URL = 'https://api.webmaster.yandex.net';
+    const string URL = 'https://api.webmaster.yandex.net';
 
     /**
      * Получение полномочий.

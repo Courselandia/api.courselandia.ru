@@ -35,7 +35,7 @@ class CacheMongoDb extends TaggableStore implements Store
      *
      * @var string
      */
-    private const INDEX_CACHE = 'cache';
+    private const string INDEX_CACHE = 'cache';
 
     /**
      * Конструктор.

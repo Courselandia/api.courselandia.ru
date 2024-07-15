@@ -20,7 +20,7 @@ class CleanCourse
      *
      * @var array
      */
-    public const REMOVES = [
+    public const array REMOVES = [
         'metatag_id',
         'name_morphy',
         'text_morphy',

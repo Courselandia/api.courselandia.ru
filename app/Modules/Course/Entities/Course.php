@@ -564,7 +564,7 @@ class Course extends Entity
         $this->school_id = $school_id;
         $this->image_small_id = $image_small_id;
         $this->image_middle_id = $image_middle_id;
-        $this->image_big_id = $image_big;
+        $this->image_big_id = $image_big_id;
         $this->image_small = $image_small;
         $this->image_middle = $image_middle;
         $this->image_big = $image_big;

@@ -22,7 +22,7 @@ use App\Models\Exceptions\ParameterInvalidException;
  */
 class YandexProvider
 {
-    const URL = 'https://api.webmaster.yandex.net';
+    const string URL = 'https://api.webmaster.yandex.net';
 
     /**
      * Токен Yandex.

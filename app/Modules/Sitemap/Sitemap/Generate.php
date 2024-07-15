@@ -51,7 +51,7 @@ class Generate
      *
      * @var int
      */
-    private const LIMIT = 200;
+    private const int LIMIT = 200;
 
     /**
      * Части для генерации.
