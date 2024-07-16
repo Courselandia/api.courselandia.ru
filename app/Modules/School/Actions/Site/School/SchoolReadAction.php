@@ -104,8 +104,7 @@ class SchoolReadAction extends Action
                     ->hasCourses()
                     ->with([
                         'metatag',
-                    ])
-                    ->withCount('reviews');
+                    ]);
 
                 $queryCount = $query->clone();
 

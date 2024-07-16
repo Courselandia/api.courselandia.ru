@@ -44,7 +44,6 @@ class CleanCourse
         'tool_ids',
         'level_values',
         'analyzers',
-        'reviews_count',
         'reviews_1_star_count',
         'reviews_2_stars_count',
         'reviews_3_stars_count',

@@ -156,13 +156,6 @@ class School extends Entity
     public ?Carbon $deleted_at = null;
 
     /**
-     * Количество отзывов.
-     *
-     * @var ?int
-     */
-    public ?int $reviews_count = null;
-
-    /**
      * Количество отзывов с одной звездой.
      *
      * @var ?int
@@ -273,7 +266,6 @@ class School extends Entity
      * @param Carbon|null $created_at Дата создания.
      * @param Carbon|null $updated_at Дата обновления.
      * @param Carbon|null $deleted_at Дата удаления.
-     * @param int|null $reviews_count Количество отзывов.
      * @param int|null $reviews_1_star_count Количество отзывов с одной звездой.
      * @param int|null $reviews_2_stars_count Количество отзывов с двумя звездами.
      * @param int|null $reviews_3_stars_count Количество отзывов с тремя звездами.
@@ -308,7 +300,6 @@ class School extends Entity
         ?Carbon $created_at = null,
         ?Carbon $updated_at = null,
         ?Carbon $deleted_at = null,
-        ?int $reviews_count = null,
         ?int $reviews_1_star_count = null,
         ?int $reviews_2_stars_count = null,
         ?int $reviews_3_stars_count = null,
@@ -342,7 +333,6 @@ class School extends Entity
         $this->created_at = $created_at;
         $this->updated_at = $updated_at;
         $this->deleted_at = $deleted_at;
-        $this->reviews_count = $reviews_count;
         $this->reviews_1_star_count = $reviews_1_star_count;
         $this->reviews_2_stars_count = $reviews_2_stars_count;
         $this->reviews_3_stars_count = $reviews_3_stars_count;
