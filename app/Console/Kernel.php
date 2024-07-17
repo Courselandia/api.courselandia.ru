@@ -34,7 +34,7 @@ class Kernel extends ConsoleKernel
             '--model' => [Task::class, UserAuth::class, Crawl::class],
         ])->daily();
 
-        $schedule->command('course:import')->dailyAt('00:00');
+        $schedule->command('course:import')->dailyAt('00:30');
         $schedule->command('promotion:import')->dailyAt('01:00');
         $schedule->command('promocode:import')->dailyAt('01:15');
         $schedule->command('article:write')->dailyAt('02:00');
