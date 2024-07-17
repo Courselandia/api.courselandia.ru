@@ -48,7 +48,7 @@ services:
         working_dir: /var/www
         volumes:
             - ./:/var/www
-        command: "php artisan queue:work --memory=2048 --timeout=0"
+        command: "php artisan queue:work --memory=2048 --timeout=0 --queue=default"
         networks:
             - network
         depends_on:
