@@ -130,7 +130,7 @@ services:
             - network
 
     redis:
-        image: redis:7.0
+        image: redis:7.2.5
         container_name: api-courselandia-ru-redis
         restart: unless-stopped
         ports:
