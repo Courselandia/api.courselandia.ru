@@ -115,7 +115,7 @@ class Import
             ->addParser(new ParserPentaschool('https://feeds.advcake.ru/feed/download/3477010e0d638e5e1aab7eac144ef20a?webmaster=04fa7cce'))
             ->addParser(new ParserBrunoyam('https://feeds.advcake.ru/feed/download/2b5336d137193d61c32a2e92ab94c90f?webmaster=04fa7cce'))
             ->addParser(new ParserLogomashina('https://feeds.advcake.ru/feed/download/be8c68214fef61cf2638ad0fbe6c836e?webmaster=04fa7cce'))
-            ->addParser(new ParserSredaObucheniya('https://feeds.advcake.ru/feed/download/a42eb5254c7878ea6a2266833d7a4da1?webmaster=04fa7cce'))
+            //->addParser(new ParserSredaObucheniya('https://feeds.advcake.ru/feed/download/a42eb5254c7878ea6a2266833d7a4da1?webmaster=04fa7cce'))
             ->addParser(new ParserSfEducation('https://feeds.advcake.ru/feed/download/8032b19723134448fe544aa7d2aae2ff?webmaster=04fa7cce'))
             ->addParser(new ParserTopAcademy('https://feeds.advcake.ru/feed/download/8c5d8729b2588c26654404b8015ef7e6?webmaster=04fa7cce'))
             ->addParser(new ParserConvertMonster('https://feeds.advcake.ru/feed/download/0df57ce9bb22354f70cd0ab1722c0ced?webmaster=04fa7cce'))

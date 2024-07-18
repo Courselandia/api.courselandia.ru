@@ -106,7 +106,7 @@ class TaskTeacher extends Task
                 $templateValues = [
                     'teacher' => $teacher->name,
                     'countTeacherCourses' => $countTeacherCourses,
-                    'direction' => $teacher->directions ? $teacher->directions[0]->name : null,
+                    'direction' => count($teacher->directions) ? $teacher->directions[0]->name : null,
                 ];
 
                 $dataMetatagSet = new MetatagSet();
