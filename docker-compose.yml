@@ -55,7 +55,7 @@ services:
             - app
 
     db:
-        image: mysql:8.0.30
+        image: mysql:8.4.1
         container_name: api-courselandia-ru-db
         restart: unless-stopped
         environment:
@@ -78,7 +78,7 @@ services:
             - network
 
     db-test:
-        image: mysql:8.0.30
+        image: mysql:8.4.1
         container_name: api-courselandia-ru-db-test
         restart: unless-stopped
         tmpfs:
@@ -139,7 +139,7 @@ services:
             - network
 
     mongo:
-        image: mongo:5.0
+        image: mongo:5.0.28
         container_name: api-courselandia-ru-mongo
         environment:
             - MONGO_INITDB_ROOT_USERNAME=${DB_MONGODB_USERNAME}
@@ -153,7 +153,7 @@ services:
             - network
 
     mongo-test:
-        image: mongo:5.0
+        image: mongo:5.0.28
         container_name: api-courselandia-ru-mongo-test
         environment:
             - MONGO_INITDB_ROOT_USERNAME=${DB_TEST_MONGODB_USERNAME}
@@ -186,7 +186,7 @@ services:
             - network
 
     rabbitmq:
-        image: rabbitmq:3.6-management-alpine
+        image: rabbitmq:3.13.4-management-alpine
         container_name: api-courselandia-ru-rabbitmq
         restart: unless-stopped
         ports:
