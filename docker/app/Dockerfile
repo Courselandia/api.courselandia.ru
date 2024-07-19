@@ -20,7 +20,9 @@ RUN apt-get update && apt-get install -y \
     libcurl4-openssl-dev \
     pkg-config  \
     libssl-dev \
-    openssl
+    openssl \
+    libz-dev \
+    libmemcached-dev
 
 # Clear cache
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
@@ -31,6 +33,10 @@ RUN docker-php-ext-configure ftp --with-openssl-dir=/usr \
 # Install PECL extensions
 RUN pecl install mongodb \
     && echo "extension=mongodb.so" > $PHP_INI_DIR/conf.d/mongo.ini
+
+# Install PECL memcached
+RUN pecl install memcached
+RUN echo extension=memcached.so >> $PHP_INI_DIR/conf.d/memcached.ini
 
 # Install PHP extensions
 RUN docker-php-ext-configure gd --with-jpeg --with-webp

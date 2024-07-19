@@ -19,7 +19,7 @@
         <server name="DOCUMENT_DRIVER" value="local"/>
         <server name="OAUTH_DRIVER" value="database"/>
         <server name="BCRYPT_ROUNDS" value="4"/>
-        <server name="CACHE_DRIVER" value="redis"/>
+        <server name="CACHE_DRIVER" value="memcached"/>
         <server name="DB_CONNECTION" value="mysql"/>
         <server name="DB_HOST" value="db-test"/>
         <server name="DB_PORT" value="3306"/>
