@@ -21,6 +21,7 @@ services:
             - nginx
             - mailhog
             - redis
+            - memcached
             - mongo
             - smtp
             - rabbitmq
@@ -115,6 +116,7 @@ services:
             - mongo-test
             - mailhog
             - redis
+            - memcached
             - mongo
             - smtp
             - rabbitmq
@@ -135,6 +137,15 @@ services:
         restart: unless-stopped
         ports:
             - ${DOCKER_REDIS_PORT}:6379
+        networks:
+            - network
+
+    memcached:
+        image: 'memcached:alpine'
+        container_name: api-courselandia-ru-memcached
+        restart: unless-stopped
+        ports:
+            - ${DOCKER_MEMCACHED_PORT}:11211
         networks:
             - network
 
