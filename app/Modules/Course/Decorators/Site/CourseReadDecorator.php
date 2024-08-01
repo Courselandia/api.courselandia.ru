@@ -47,6 +47,8 @@ class CourseReadDecorator extends Decorator
             return $data;
         }
 
+        print_r($data->toArray());
+
         /**
          * @var CourseRead $data
          */
