@@ -72,7 +72,7 @@ class ParserHexlet extends ParserYml
             $course->price_old = isset($offer['params']['Цена по скидке']['value']) ? $offer['price'] : null;
             $course->currency = Currency::RUB;
             $course->direction = $offer['direction'];
-            $course->employment = $offer['params']['С трудоустройством']['value'];
+            $course->employment = $offer['params']['С трудоустройством']['value'] ?? null;
 
             if (isset($offer['params']['Продолжительность']['value']) && $offer['params']['Продолжительность']['value']) {
                 $course->duration = $offer['params']['Продолжительность']['value'];
