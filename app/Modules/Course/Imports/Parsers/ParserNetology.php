@@ -93,6 +93,7 @@ class ParserNetology extends ParserYml
             'Онлайн Открытое занятие Прочее' => Direction::PROGRAMMING,
             'Онлайн Курс Творческие профессии' => Direction::OTHER,
             'Онлайн Модульный набор Творческие профессии' => Direction::OTHER,
+            'Онлайн Курс Финансы и инвестиции' => Direction::OTHER,
         ];
     }
 
