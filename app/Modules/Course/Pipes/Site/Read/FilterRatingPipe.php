@@ -9,6 +9,7 @@
 namespace App\Modules\Course\Pipes\Site\Read;
 
 use App\Models\Data;
+use App\Modules\Course\Entities\CourseFilterRating;
 use App\Modules\Course\Enums\Status;
 use Util;
 use Cache;
@@ -40,22 +41,10 @@ class FilterRatingPipe implements Pipe
         }
 
         $ratings = [
-            [
-                'label' => 4.5,
-                'disabled' => !$this->hasRating(4.5, $currentFilters),
-            ],
-            [
-                'label' => 4,
-                'disabled' => !$this->hasRating(4, $currentFilters),
-            ],
-            [
-                'label' => 3.5,
-                'disabled' => !$this->hasRating(3.5, $currentFilters),
-            ],
-            [
-                'label' => 3,
-                'disabled' => !$this->hasRating(3, $currentFilters),
-            ]
+            new CourseFilterRating(4.5, !$this->hasRating(4.5, $currentFilters)),
+            new CourseFilterRating(4, !$this->hasRating(4, $currentFilters)),
+            new CourseFilterRating(3.5, !$this->hasRating(3.5, $currentFilters)),
+            new CourseFilterRating(3, !$this->hasRating(3, $currentFilters)),
         ];
 
         $data->filter->ratings = $ratings;

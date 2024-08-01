@@ -76,7 +76,7 @@ class CourseFilter extends Entity
     /**
      * Массив доступных рейтингов.
      *
-     * @var int[]|null
+     * @var ?array<int, CourseFilterRating>
      */
     public ?array $ratings = null;
 
@@ -131,7 +131,7 @@ class CourseFilter extends Entity
      * @param array<int, CourseItemFilter>|null $processes Как проходит обучение.
      * @param array<int, CourseItemFilter>|null $skills Навыки.
      * @param array<int, CourseItemFilter>|null $teachers Учителя.
-     * @param array<int, CourseItemFilter>|null $ratings Массив доступных рейтингов.
+     * @param array<int, CourseFilterRating>|null $ratings Массив доступных рейтингов.
      * @param CourseFilterPrice|null $price Цена от и до
      * @param CourseFilterDuration|null $duration Продолжительность от и до
      * @param bool|null $credit Признак наличия фильтра возможности взять кредит.
@@ -140,23 +140,22 @@ class CourseFilter extends Entity
      * @param array|null $levels Доступные уровни.
      */
     public function __construct(
-        ?array                $directions = null,
-        ?array                $categories = null,
-        ?array                $professions = null,
-        ?array                $schools = null,
-        ?array                $tools = null,
-        ?array                $processes = null,
-        ?array                $skills = null,
-        ?array                $teachers = null,
-        ?array                $ratings = null,
-        ?CourseFilterPrice    $price = null,
+        ?array $directions = null,
+        ?array $categories = null,
+        ?array $professions = null,
+        ?array $schools = null,
+        ?array $tools = null,
+        ?array $processes = null,
+        ?array $skills = null,
+        ?array $teachers = null,
+        ?array $ratings = null,
+        ?CourseFilterPrice $price = null,
         ?CourseFilterDuration $duration = null,
-        ?bool                 $credit = null,
-        ?bool                 $free = null,
-        ?array                $formats = null,
-        ?array                $levels = null,
-    )
-    {
+        ?bool $credit = null,
+        ?bool $free = null,
+        ?array $formats = null,
+        ?array $levels = null,
+    ) {
         $this->directions = $directions;
         $this->categories = $categories;
         $this->professions = $professions;
