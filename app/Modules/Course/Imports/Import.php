@@ -107,7 +107,7 @@ class Import
             ->addParser(new ParserOtus('https://feeds.advcake.com/feed/download/03c2de078b28838db48d2cabf352421e'))
             ->addParser(new ParserHexlet('https://feeds.advcake.ru/feed/download/78e352c7669d43d0590b64a1bce932ed?webmaster=04fa7cce'))
             ->addParser(new ParserBangBangEducation('https://feeds.advcake.com/feed/download/0475089f1a85e27f985cd2038bdf7222'))
-            ->addParser(new ParserInterra('https://feeds.advcake.com/feed/download/f3af68784839de1613e471267e3bc492'))
+            ->addParser(new ParserInterra('https://feeds.advcake.ru/feed/download/c7470a4365b7b1e894519b05d5719c49?webmaster=04fa7cce'))
             ->addParser(new ParserMaed('https://feeds.advcake.com/feed/download/a6128901675d0978230dc93c8801b1c7'))
             ->addParser(new ParserAnoNiidpo('https://feeds.advcake.ru/feed/download/4b819f565960261c7e6a7f286c0030e9?webmaster=04fa7cce'))
             ->addParser(new ParserNadpo('https://feeds.advcake.ru/feed/download/e66e34af4eac3c4a68b2194151def1a1?webmaster=04fa7cce'))
