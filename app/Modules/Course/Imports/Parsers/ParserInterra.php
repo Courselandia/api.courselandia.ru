@@ -81,6 +81,15 @@ class ParserInterra extends ParserYml
             'Профессия Influence-маркетолог' => Direction::MARKETING,
             'Telegram-маркетолог' => Direction::MARKETING,
             'Influence-маркетолог' => Direction::MARKETING,
+            'Маркетинг' => Direction::MARKETING,
+            'Менеджмент' => Direction::BUSINESS,
+            'Дизайн' => Direction::DESIGN,
+            'Образование' => Direction::OTHER,
+            'IT' => Direction::OTHER,
+            'Продажи' => Direction::MARKETING,
+            'Трудоустройство' => Direction::MARKETING,
+            'Юридические моменты' => Direction::OTHER,
+            'Копирайтинг' => Direction::OTHER,
         ];
     }
 
