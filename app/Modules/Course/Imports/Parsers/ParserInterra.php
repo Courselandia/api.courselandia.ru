@@ -116,12 +116,33 @@ class ParserInterra extends ParserYml
             $course->direction = $offer['direction'];
 
             if (isset($offer['duration'])) {
-                $duration = explode(' ', $offer['duration']);
-                $course->duration = (int)$duration[0];
-                $course->duration_unit = Duration::MONTH;
+                $course->duration = (int)$offer['duration']['value'];
+                $course->duration_unit = $this->getDurationUnit($offer['duration']['attributes']['unit']);
             }
 
             yield $course;
         }
+    }
+
+    /**
+     * Получить единицу измерения продолжительности.
+     *
+     * @param string $duration Продолжительность из источника.
+     *
+     * @return Duration|null Вернет единицу измерения продолжительности курса.
+     */
+    private function getDurationUnit(string $duration): ?Duration
+    {
+        if ($duration === 'year') {
+            return Duration::YEAR;
+        } elseif ($duration === 'month') {
+            return Duration::MONTH;
+        } elseif ($duration === 'week') {
+            return Duration::WEEK;
+        } elseif ($duration === 'day') {
+            return Duration::DAY;
+        }
+
+        return null;
     }
 }
