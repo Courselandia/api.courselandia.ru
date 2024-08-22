@@ -94,7 +94,7 @@ class Import
     public function __construct()
     {
         $this->addParser(new ParserNetology('https://feeds.advcake.com/feed/download/720bc9eb1b0a9ffdbbfb5a6bb5e1b430'))
-            ->addParser(new ParserGeekBrains('https://feeds.advcake.com/feed/download/fb26c1c07ea836c24f519ae06463ad97'))
+            ->addParser(new ParserGeekBrains('https://feeds.advcake.ru/feed/download/7c5efa4f1d2bd04e4c0f63ce5802e30b?webmaster=04fa7cce'))
             ->addParser(new ParserSkillbox('https://feeds.advcake.com/feed/download/04c98be3ff7eb4298b14b863b66f5447'))
             ->addParser(new ParserSkyPro('https://feeds.advcake.com/feed/download/78f9101b00fdc0ee9604c52c1498e8d6'))
             ->addParser(new ParserSkillFactory('https://feeds.advcake.com/feed/download/1b8ef478549c7676fd66df1115ea6197'))
