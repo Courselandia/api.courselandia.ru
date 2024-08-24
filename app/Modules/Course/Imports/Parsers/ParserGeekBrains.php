@@ -60,6 +60,10 @@ class ParserGeekBrains extends ParserYml
             'translation missing: ru.product_feed.categories.marketing_new' => Direction::MARKETING,
             'translation missing: ru.product_feed.categories.management_old' => Direction::BUSINESS,
             'translation missing: ru.product_feed.categories.management_new' => Direction::BUSINESS,
+            'Игры' => Direction::GAMES,
+            'Управление' => Direction::BUSINESS,
+            'Инженерия' => Direction::PROGRAMMING,
+            'Кино и Музыка' => Direction::OTHER,
         ];
     }
 
