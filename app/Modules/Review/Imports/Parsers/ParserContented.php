@@ -41,9 +41,10 @@ class ParserContented extends Parser
             foreach ($reviews as $review) {
                 try {
                     $atoms = $review->findElements(WebDriverBy::cssSelector('.tn-atom'));
-                    $name = ucfirst(mb_strtolower($atoms[4]->getText()));
+                    $name = ucfirst(mb_strtolower($atoms[2]->getText()));
                     $title = $atoms[3]->getText();
-                    $reviewText = $atoms[2]->getText();
+                    $title = mb_strlen($title) <= 191 ? $title : null;
+                    $reviewText = $atoms[4]->getText();
                     $rating = null;
 
                     $review = new ParserReview();

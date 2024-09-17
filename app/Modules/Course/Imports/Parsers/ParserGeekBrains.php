@@ -70,7 +70,7 @@ class ParserGeekBrains extends ParserYml
     /**
      * Получение курса.
      *
-     * @return Generator<ParserCourse> Вернет один считанный курс..
+     * @return Generator<ParserCourse> Вернет один считанный курс.
      */
     public function read(): Generator
     {
